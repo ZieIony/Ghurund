@@ -1,9 +1,9 @@
-#include "ghedxpch.h"
+#include "ghepch.h"
 #include "ConeMesh.h"
 
-namespace Ghurund {
-    /*void ConeMesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
-        detail = std::max<unsigned int>(detail, 3);
+namespace Ghurund::Engine {
+    void ConeMesh::init(unsigned int detail) {
+        /*detail = std::max<unsigned int>(detail, 3);
 
         List<Vertex3D> triangleVertices;
         triangleVertices.add({{0.0f,  0.0f, 0.0f},{0,0}});
@@ -36,6 +36,6 @@ namespace Ghurund {
 
         generateNormals();
 
-        Mesh::init(graphics, commandList);
-    }*/
+        MeshData::init(graphics, commandList);*/
+    }
 }

@@ -96,13 +96,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\test\graphics\mesh\VertexStreamTest.cpp" />
     <ClInclude Include="src\utepch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\test\directx\mesh\DxMeshTest.cpp" />
     <ClCompile Include="src\test\directx\shader\ShaderCompilerTest.cpp" />
-    <ClCompile Include="src\test\graphics\mesh\MeshLoaderTest.cpp" />
-    <ClCompile Include="src\test\graphics\mesh\MeshTest.cpp" />
+    <ClCompile Include="src\test\graphics\mesh\MeshDataLoaderTest.cpp" />
+    <ClCompile Include="src\test\graphics\mesh\MeshDataTest.cpp" />
     <ClCompile Include="src\test\graphics\shader\ShaderLoaderTest.cpp" />
     <ClCompile Include="src\test\net\MessageTest.cpp" />
     <ClCompile Include="src\utepch.cpp">

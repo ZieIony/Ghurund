@@ -12,7 +12,7 @@ namespace Ghurund::Engine::DirectX {
 		return TYPE;
 	}
 
-	void DxMesh::init(const Mesh& mesh, Graphics& graphics, CommandList& commandList) {
+	void DxMesh::init(const MeshData& mesh, Graphics& graphics, CommandList& commandList) {
 		if (commandList.State == CommandListState::FINISHED)
 			commandList.reset();
 

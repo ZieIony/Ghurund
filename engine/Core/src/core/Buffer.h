@@ -92,6 +92,12 @@ namespace Ghurund::Core {
             return *this;
         }
 
+        inline bool operator==(const Buffer& other) const {
+            if (this == &other)
+                return true;
+            return size == other.size && (memcmp(data, other.data, size) == 0);
+        }
+
         inline void resize(size_t size) {
             if (size) {
                 uint8_t* prev = data;

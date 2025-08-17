@@ -1,8 +1,8 @@
 #include "utepch.h"
 #include "CppUnitTest.h"
 
-#include "engine/graphics/mesh/Mesh.h"
-#include <engine/graphics/mesh/MeshLoader.h>
+#include "engine/graphics/mesh/MeshData.h"
+#include <engine/graphics/mesh/MeshDataLoader.h>
 #include <engine/directx/mesh/DxMesh.h>
 #include <test/MemoryGuard.h>
 
@@ -22,11 +22,11 @@ public:
     TEST_METHOD(DxMesh_init) {
         MemoryGuard guard;
         {
-            List<XMFLOAT3> vertices = { {1,0,0}, {1,1,0}, {0,1,0} };
-            List<uint32_t> indices = { 0,1,2 };
+            Array<XMFLOAT3> vertices = { {1,0,0}, {1,1,0}, {0,1,0} };
+            Array<uint32_t> indices = { 0,1,2 };
             VertexStream posStream = VertexStream(vertices, VertexRole::POSITION);
 
-            auto mesh = makeIntrusive<Mesh>();
+            auto mesh = makeIntrusive<MeshData>();
             mesh->init({ posStream }, vertices.Size, indices);
             auto dxMesh = makeIntrusive<DxMesh>();
             auto graphics = makeIntrusive<Graphics>();

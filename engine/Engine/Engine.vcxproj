@@ -99,6 +99,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\engine\application\GameWindow.h" />
+    <ClInclude Include="src\engine\graphics\mesh\ConeMesh.h" />
+    <ClInclude Include="src\engine\graphics\mesh\CubeMesh.h" />
+    <ClInclude Include="src\engine\graphics\mesh\MeshProcessor.h" />
+    <ClInclude Include="src\engine\graphics\mesh\PlaneMesh.h" />
+    <ClInclude Include="src\engine\graphics\mesh\QuadMesh.h" />
+    <ClInclude Include="src\engine\graphics\mesh\SphereMesh.h" />
     <ClInclude Include="src\engine\graphics\RenderingContext.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />
@@ -137,8 +143,8 @@
     <ClInclude Include="src\engine\graphics\LightSystem.h" />
     <ClInclude Include="src\engine\graphics\Renderer.h" />
     <ClInclude Include="src\engine\graphics\RenderingStatistics.h" />
-    <ClInclude Include="src\engine\graphics\mesh\Mesh.h" />
-    <ClInclude Include="src\engine\graphics\mesh\MeshLoader.h" />
+    <ClInclude Include="src\engine\graphics\mesh\MeshData.h" />
+    <ClInclude Include="src\engine\graphics\mesh\MeshDataLoader.h" />
     <ClInclude Include="src\engine\graphics\mesh\VertexStream.h" />
     <ClInclude Include="src\engine\graphics\shader\IShader.h" />
     <ClInclude Include="src\engine\graphics\shader\ShaderCode.h" />
@@ -192,6 +198,9 @@
     <ClCompile Include="src\engine\entity\camera\CameraController.cpp" />
     <ClCompile Include="src\engine\entity\light\Light.cpp" />
     <ClCompile Include="src\engine\game\GameAction.cpp" />
+    <ClCompile Include="src\engine\graphics\mesh\ConeMesh.cpp" />
+    <ClCompile Include="src\engine\graphics\mesh\CubeMesh.cpp" />
+    <ClCompile Include="src\engine\graphics\mesh\SphereMesh.cpp" />
     <ClCompile Include="src\engine\graphics\Renderer.cpp" />
     <ClCompile Include="src\ghepch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
@@ -199,8 +208,8 @@
     <ClCompile Include="src\engine\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\engine\graphics\IMaterial.cpp" />
     <ClCompile Include="src\engine\graphics\RenderingStatistics.cpp" />
-    <ClCompile Include="src\engine\graphics\mesh\Mesh.cpp" />
-    <ClCompile Include="src\engine\graphics\mesh\MeshLoader.cpp" />
+    <ClCompile Include="src\engine\graphics\mesh\MeshData.cpp" />
+    <ClCompile Include="src\engine\graphics\mesh\MeshDataLoader.cpp" />
     <ClCompile Include="src\engine\graphics\shader\IShader.cpp" />
     <ClCompile Include="src\engine\graphics\shader\ShaderCode.cpp" />
     <ClCompile Include="src\engine\net\Client.cpp" />

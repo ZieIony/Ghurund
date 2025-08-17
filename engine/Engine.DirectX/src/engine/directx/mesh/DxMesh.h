@@ -5,7 +5,7 @@
 #include "engine/directx/CommandList.h"
 #include "core/resource/Resource.h"
 #include "core/resource/ResourceManager.h"
-#include "engine/graphics/mesh/Mesh.h"
+#include "engine/graphics/mesh/MeshData.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
@@ -50,7 +50,7 @@ namespace Ghurund::Engine::DirectX {
         ComPtr<ID3D12Resource> indexUploadHeap;
 
     public:
-        virtual void init(const Mesh& mesh, Graphics& graphics, CommandList& commandList);
+        virtual void init(const MeshData& mesh, Graphics& graphics, CommandList& commandList);
 
         void initVertexBuffers(const Array<VertexStream> vertexStreams, uint32_t vertexCount, Graphics& graphics, CommandList& commandList);
 
@@ -80,11 +80,11 @@ namespace Ghurund::Engine::DirectX {
 #pragma region formats
     protected:
         virtual const Array<ResourceFormat>& getFormatsImpl() const override {
-            return Mesh::FORMATS;
+            return DxMesh::FORMATS;
         }
 
     public:
-        static const inline ResourceFormat FORMAT_MESH = ResourceFormat(L"mesh", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
+        static const inline ResourceFormat FORMAT_MESH = ResourceFormat(L"mesh", ResourceFormatOptions::CAN_LOAD);
         static const inline ResourceFormat FORMAT_OBJ = ResourceFormat(L"obj", ResourceFormatOptions::CAN_LOAD);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_MESH, FORMAT_OBJ };

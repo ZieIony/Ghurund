@@ -1,27 +1,17 @@
 #include "ghedxpch.h"
 #include "MeshLoader.h"
 
-namespace Ghurund {
-    /*Mesh* MeshLoader::load(
-        MemoryInputStream& stream,
+namespace Ghurund::Engine::DirectX {
+    Resource* MeshLoader::loadInternal(
+        NotNull<Ghurund::Core::MemoryInputStream> stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
-        LoadOption options
+        Ghurund::Core::LoadOption options
     ) {
-        Mesh* mesh = makeResource<Mesh>();
-        //mesh->load(DirectoryPath(_T(".")), stream, options);
-        mesh->init(graphics, commandList);
+        DxMesh* mesh = makeResource<DxMesh>();
+        MeshData* meshData = (MeshData*)meshDataLoader.load(stream, workingDir, format, options);
+        mesh->init(*meshData, graphics, commandList);
+        meshData->release();
         return mesh;
     }
-    
-    void MeshLoader::save(
-        MemoryOutputStream& stream,
-        const DirectoryPath& workingDir,
-        Resource& resource,
-        const ResourceFormat& format,
-        SaveOption options
-    ) const {
-        Mesh& mesh = (Mesh&)resource;
-        //mesh.save(DirectoryPath(_T(".")), stream, options);
-    }*/
 }

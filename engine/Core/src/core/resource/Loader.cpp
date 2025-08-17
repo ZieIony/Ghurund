@@ -11,6 +11,7 @@ namespace Ghurund::Core {
 
 		return TYPE;
 	}
+
 	void Loader::readHeader(NotNull<MemoryInputStream> stream, const Ghurund::Core::Type& type, uint32_t version) {
 		if (stream->Size < stream->BytesRead + sizeof(unsigned int) * 2) {
 			Logger::log(LogType::ERR0R, _T("EOF\n"));

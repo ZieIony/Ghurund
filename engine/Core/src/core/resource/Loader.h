@@ -54,7 +54,7 @@ namespace Ghurund::Core {
 
 		template<Derived<Resource> T>
 		void writeHeader(NotNull<MemoryOutputStream> stream) const {
-			unsigned int hash = hashCode(Type.Name.Data);
+			unsigned int hash = hashCode(T::TYPE.Name.Data);
 			stream->writeUInt32(hash);
 			stream->writeUInt32(T::VERSION);
 		}

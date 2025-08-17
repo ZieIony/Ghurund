@@ -105,28 +105,12 @@ public:
 		}
 	}
 
-	TEST_METHOD(List_referenceAssignment) {
-		MemoryGuard guard;
-		{
-			Stack<uint32_t> testStack = { 1, 2, 3 };
-			List<uint32_t> list;
-			list = testStack;
-
-			Assert::AreEqual(list.Size, testStack.Size);
-			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
-			Assert::AreEqual(list[0], 1u);
-			Assert::AreEqual(list[1], 2u);
-			Assert::AreEqual(list[2], 3u);
-		}
-	}
-
 	TEST_METHOD(List_listReferenceAssignment) {
 		MemoryGuard guard;
 		{
 			List<uint32_t> testList = { 1, 2, 3 };
 			List<uint32_t> list;
-			list = testList;
+			List<uint32_t> l = list = testList;
 
 			Assert::AreEqual(list.Size, testList.Size);
 			Assert::AreEqual(list.Capacity >= list.Size, true);

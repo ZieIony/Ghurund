@@ -1,9 +1,9 @@
-#include "ghedxpch.h"
+#include "ghepch.h"
 #include "SphereMesh.h"
 
-namespace Ghurund {
-    /*void SphereMesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
-        float t = (1.0f + sqrtf(5.0f)) / 2.0f;
+namespace Ghurund::Engine {
+    void SphereMesh::init(unsigned int detail) {
+        /*float t = (1.0f + sqrtf(5.0f)) / 2.0f;
 
         Vertex3D triangleVertices[] = {
             {{-1.0, t, 0.0},{0,0}},
@@ -65,6 +65,6 @@ namespace Ghurund {
 
         generateNormals();
 
-        Mesh::init(graphics, commandList);
-    }*/
+        MeshData::init();*/
+    }
 }

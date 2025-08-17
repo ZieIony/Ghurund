@@ -1,18 +1,18 @@
 #pragma once
 
-#include "Mesh.h"
+#include "MeshData.h"
 #include "core/resource/Loader.h"
 #include "core/exception/Exceptions.h"
 
 namespace Ghurund::Engine {
-    class MeshLoader:public Loader {
+    class MeshDataLoader:public Loader {
     private:
         struct ObjVert {
             uint32_t posIndex, texCoordIndex, normalIndex, vertexIndex;
         };
 
-        Mesh* loadObj(NotNull<MemoryInputStream> stream);
-        Mesh* loadMesh(NotNull<MemoryInputStream> stream);
+        MeshData* loadObj(NotNull<MemoryInputStream> stream);
+        MeshData* loadMesh(NotNull<MemoryInputStream> stream);
 
     protected:
         virtual Resource* loadInternal(

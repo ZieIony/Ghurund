@@ -108,7 +108,9 @@
     <ClInclude Include="src\utcpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\test\core\collection\ArrayTest.cpp" />
     <ClCompile Include="src\test\core\object\OwnedNotNullTest.cpp" />
+    <ClCompile Include="src\test\core\BufferTest.cpp" />
     <ClCompile Include="src\test\TestUtils.cpp" />
     <ClCompile Include="src\test\core\ColorTest.cpp" />
     <ClCompile Include="src\test\core\DataParsingTest.cpp" />

@@ -59,6 +59,12 @@ namespace Ghurund::Core {
             delete[](char*)v;
         }
 
+        inline const Value* getData() const {
+            return v;
+        }
+
+        __declspec(property(get = getData)) const Value* Data;
+
         inline void set(size_t i, const Value& e) {
             v[i].~Value();
             new(v + i) Value(e);
@@ -107,7 +113,7 @@ namespace Ghurund::Core {
             return size;
         }
 
-        inline bool contains(Value& item) const {
+        inline bool contains(const Value& item) const {
             for (size_t i = 0; i < size; i++)
                 if (v[i] == item)
                     return true;
@@ -125,17 +131,17 @@ namespace Ghurund::Core {
         Array<Value>& operator=(const Array<Value>& other) {
             if (this == &other)
                 return *this;
-            size = other.size;
             for (size_t i = 0; i < size; i++)
                 v[i].~Value();
             delete[](char*)v;
+            size = other.size;
             v = (Value*)ghnew char[sizeof(Value) * size];
             for (size_t i = 0; i < size; i++)
                 new (v + i) Value(other[i]);
             return *this;
         }
 
-        Array<Value>& operator=(Array<Value>&& other) {
+        Array<Value>& operator=(Array<Value>&& other) noexcept {
             if (this == &other)
                 return *this;
             size = other.size;
@@ -146,10 +152,10 @@ namespace Ghurund::Core {
         }
 
         Array<Value>& operator=(const std::initializer_list<Value>& other) {
-            size = other.size();
             for (size_t i = 0; i < size; i++)
                 v[i].~Value();
             delete[](char*)v;
+            size = other.size();
             v = (Value*)ghnew char[sizeof(Value) * size];
             const Value* l = other.begin();
             for (size_t i = 0; i < size; i++, l++)
@@ -192,6 +198,13 @@ namespace Ghurund::Core {
                 i++;
             }
             return size;
+        }
+
+        inline Array subarray(size_t from, size_t to) {
+            _ASSERT_EXPR(from < size, "Index out of bounds.\n");
+            _ASSERT_EXPR(to < size, "Index out of bounds.\n");
+            _ASSERT_EXPR(to > from, "Incorrect range.\n");
+            return Array(v, to - from, from);
         }
     };
 

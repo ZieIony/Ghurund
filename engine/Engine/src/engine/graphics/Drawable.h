@@ -3,14 +3,13 @@
 #include "IMaterial.h"
 #include <cstdint>
 #include <DirectXMath.h>
+#include "mesh/MeshData.h"
 
 namespace Ghurund::Engine {
-	using namespace ::DirectX;
-
 	struct Drawable {
 		uint32_t priority;
 		IMaterial* material;
 		XMFLOAT4X4 transform;
-		Mesh* mesh;
+		MeshData* mesh;
 	};
 }

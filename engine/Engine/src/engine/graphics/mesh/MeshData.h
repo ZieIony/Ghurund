@@ -10,7 +10,7 @@ namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
 	using namespace ::DirectX;
 
-	class Mesh:public Resource {
+	class MeshData:public Resource {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -20,19 +20,19 @@ namespace Ghurund::Engine {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Mesh::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = MeshData::GET_TYPE();
 #pragma endregion
 
 	protected:
 		Array<VertexStream> vertexStreams;
-		uint32_t vertexCount;
+		uint32_t vertexCount = 0;
 		Buffer indices;
-		uint32_t indexCount;
+		uint32_t indexCount = 0;
 
 		BoundingBox boundingBox;
 
 	public:
-		Mesh() {}
+		MeshData() {}
 
 		void init(Array<VertexStream> vertexStreams, uint32_t vertexCount, Buffer indices, uint32_t indexCount){
 			this->vertexStreams = vertexStreams;
@@ -49,14 +49,13 @@ namespace Ghurund::Engine {
 			this->indexCount = (uint32_t)(indices.Size);
 		}
 
-		/*void removeDuplicates();
-		void subdivide();
-		void spherify();
-		void generateSmoothing(float smoothingTreshold);
-		void generateNormals();
-		void generateTangents();
-		void invertWinding();*/
-		void computeBoundingBox();
+		template<typename T>
+		void init(Array<VertexStream> vertexStreams, uint32_t vertexCount, const Array<T>& indices) {
+			this->vertexStreams = vertexStreams;
+			this->vertexCount = vertexCount;
+			this->indices = Buffer(indices.Data, sizeof(T) * indices.Size);
+			this->indexCount = (uint32_t)(indices.Size);
+		}
 
 		//virtual bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist);
 
@@ -100,7 +99,7 @@ namespace Ghurund::Engine {
 #pragma region formats
 	protected:
 		virtual const Array<ResourceFormat>& getFormatsImpl() const override {
-			return Mesh::FORMATS;
+			return MeshData::FORMATS;
 		}
 
 	public:

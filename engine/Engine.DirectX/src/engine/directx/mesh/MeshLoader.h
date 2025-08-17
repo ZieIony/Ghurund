@@ -2,6 +2,7 @@
 
 #include "DxMesh.h"
 #include "core/resource/Loader.h"
+#include <engine/graphics/mesh/MeshDataLoader.h>
 
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
@@ -10,22 +11,15 @@ namespace Ghurund::Engine::DirectX {
     private:
         Graphics& graphics;
         CommandList& commandList;
+        MeshDataLoader meshDataLoader;
 
     protected:
         virtual Resource* loadInternal(
-            NotNull<MemoryInputStream> stream,
+            NotNull<Ghurund::Core::MemoryInputStream> stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
-            LoadOption options
+            Ghurund::Core::LoadOption options
         ) override;
-
-        virtual void saveInternal(
-            NotNull<MemoryOutputStream> stream,
-            const DirectoryPath& workingDir,
-            Resource& resource,
-            const ResourceFormat& format,
-            SaveOption options
-        ) const override;
 
     public:
         MeshLoader(Graphics& graphics, CommandList& commandList):graphics(graphics), commandList(commandList) {}
