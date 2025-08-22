@@ -94,6 +94,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\SampleApplication.h" />
+    <ClInclude Include="src\SampleWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\SampleApplication.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>

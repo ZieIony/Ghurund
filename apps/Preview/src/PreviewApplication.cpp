@@ -26,19 +26,21 @@ namespace Preview {
         ResourceManager->Libraries->add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
         ResourceManager->Libraries->add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
 
-        renderer.init(Features->get<Graphics>(), parameterManager);
+        renderer = ghnew DxRenderer(Features->get<Graphics>(), parameterManager);
+        renderer->init();
+        window = ghnew PreviewWindow(*this, renderer, *this);
 
-        window.init();
-        window.Title = _T("Preview");
-        window.ClientSize = { 800, 600 };
-        window.Position = { 0, 0 };
-        window.Visible = true;
-        window.bringToFront();
+        window->init();
+        window->Title = _T("Preview");
+        window->ClientSize = { 800, 600 };
+        window->Position = { 0, 0 };
+        window->Visible = true;
+        window->bringToFront();
     }
     
     void PreviewApplication::onUninit() {
         uninitPreviewApplication();
-        __super::uninit();
+        __super::onUninit();
     }
     
     void PreviewApplication::setThemeType(Preview::ThemeType theme) {

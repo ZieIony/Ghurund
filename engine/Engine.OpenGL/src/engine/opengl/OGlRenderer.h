@@ -13,7 +13,7 @@
 namespace Ghurund::Engine::OpenGL {
 	using namespace Ghurund::Core;
 
-	class OGlRenderer: public Renderer {
+	class OglRenderer: public Renderer {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -23,16 +23,17 @@ namespace Ghurund::Engine::OpenGL {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = OGlRenderer::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = OglRenderer::GET_TYPE();
 #pragma endregion
 
 	private:
 		ParameterManager* parameterManager = nullptr;
 
-	public:
-		void init(ParameterManager& parameterManager);
+	protected:
+		virtual void onInit() override;
 
-		void uninit();
+	public:
+		OglRenderer(NotNull<ParameterManager> parameterManager):parameterManager(&parameterManager) {}
 
 		virtual OglRenderingContext* makeRenderingContext(NotNull<SystemWindow> window) override {
 			return ghnew OglRenderingContext(window);

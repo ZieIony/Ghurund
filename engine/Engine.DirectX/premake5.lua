@@ -17,8 +17,8 @@ project "Engine.DirectX"
 
 	includedirs {
 		"src",
-		includeDir["Engine"],
 		includeDir["Core"],
+		includeDir["Engine"],
 		includeDir["DirectX"]
 	}
 

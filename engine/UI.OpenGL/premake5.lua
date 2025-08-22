@@ -6,8 +6,9 @@ project "UI.OpenGL"
 
 	dependson {
 		"Core",
-		"UI",
-		"Engine.OpenGL"
+		"Engine",
+		"Engine.OpenGL",
+		"UI"
 	}
 
 	files {
@@ -18,7 +19,20 @@ project "UI.OpenGL"
 	includedirs {
 		"src",
 		includeDir["Core"],
-		includeDir["UI"],
+		includeDir["Engine"],
 		includeDir["Engine.OpenGL"],
-		includeDir["tinyxml2"]
+		includeDir["UI"],
+		includeDir["tinyxml2"],
+		includeDir["GLEW"],
+		includeDir["GLFW"]
+	}
+	
+	links {
+		"Core",
+		"Engine",
+		"Engine.OpenGL",
+		"UI",
+		library["GLEW"],
+		library["GLFW"],
+		"opengl32"
 	}

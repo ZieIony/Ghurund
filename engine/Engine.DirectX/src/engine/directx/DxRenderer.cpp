@@ -13,10 +13,7 @@ namespace Ghurund::Engine::DirectX {
         return TYPE;
     }
 
-    void DxRenderer::init(NotNull<Graphics> graphics, NotNull<ParameterManager> parameterManager) {
-        this->graphics = &graphics;
-        this->parameterManager = &parameterManager;
-
+    void DxRenderer::onInit() {
         /*for(int i = 0; i<FRAME_COUNT; i++) {
             postprocessRenderTarget[i] = ghnew RenderTarget();
             postprocessRenderTarget[i]->init(*graphics, window.Width, window.Height, DXGI_FORMAT_B8G8R8A8_UNORM);
@@ -26,7 +23,13 @@ namespace Ghurund::Engine::DirectX {
         //fullScreenQuad = Models::makeQuad(resourceContext, *lightPassMaterial);
     }
 
-    void DxRenderer::uninit() {
+    void DxRenderer::onUninit() {
+        uninitDxRenderer();
+    }
+
+    void DxRenderer::uninitDxRenderer() {
+        if (lightPassMaterial != nullptr)
+            lightPassMaterial->release();
         /*for(int i = 0; i<FRAME_COUNT; i++) {
             delete postprocessRenderTarget[i];
             postprocessRenderTarget[i] = nullptr;

@@ -2,13 +2,13 @@
 #include "DxRenderingContext.h"
 
 namespace Ghurund::Engine::DirectX {
-	void DxRenderingContext::init() {
+	void DxRenderingContext::onInit() {
 		swapChain = ghnew Ghurund::Engine::DirectX::SwapChain();
 		swapChain->init(graphics, window);
 	}
 
-	void DxRenderingContext::uninit() {
-		uninitThis();
+	void DxRenderingContext::onUninit() {
+		uninitDxRenderingContext();
 	}
 
 	void DxRenderingContext::startFrame() {

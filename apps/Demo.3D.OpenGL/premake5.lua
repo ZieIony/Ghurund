@@ -4,8 +4,8 @@ project "Demo.3D.OpenGL"
 
 	dependson {
 		"Core",
-		"Engine.OpenGL",
-		"Engine"
+		"Engine",
+		"Engine.OpenGL"
 	}
 
 	files {
@@ -17,21 +17,20 @@ project "Demo.3D.OpenGL"
 	includedirs {
 		"src",
 		includeDir["Core"],
-		includeDir["Engine.OpenGL"],
 		includeDir["Engine"],
+		includeDir["Engine.OpenGL"],
 		includeDir["tinyxml2"],
 		includeDir["entt"],
 		includeDir["CRC"],
 		includeDir["angelscript"],
 		includeDir["PhysX"],
-		includeDir["PhysX.Shared"],
-		includeDir["OpenGL"]
+		includeDir["PhysX.Shared"]
 	}
 
 	links {
 		"Core",
-		"Engine.OpenGL",
-		"Engine"
+		"Engine",
+		"Engine.OpenGL"
 	}
 	
 	filter "configurations:Debug"

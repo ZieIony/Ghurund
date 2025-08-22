@@ -40,10 +40,6 @@ namespace Ghurund::Core {
         Microsoft::WRL::ComPtr<DragDropManager> dragDropManager;
         WindowDecorationMetrics decorationMetrics;
 
-        void setStyleInternal(WindowStyle style);
-
-        void releaseWindowClass();
-
         HWND makeWindow();
 
         void destroyWindow();

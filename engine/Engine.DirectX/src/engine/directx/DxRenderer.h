@@ -3,7 +3,7 @@
 #include "engine/directx/Graphics.h"
 #include "engine/directx/SwapChain.h"
 #include "engine/graphics/Renderer.h"
-#include "Material.h"
+#include "engine/directx/material/Material.h"
 #include "Postprocess.h"
 #include <core/Color.h>
 #include <engine/parameter/ParameterManager.h>
@@ -37,16 +37,18 @@ namespace Ghurund::Engine::DirectX {
         // borrowed
         ParameterManager* parameterManager = nullptr;
 
+    protected:
+        virtual void onInit() override;
+
+        virtual void onUninit() override;
+        void uninitDxRenderer();
+
     public:
+        DxRenderer(NotNull<Graphics> graphics, NotNull<ParameterManager> parameterManager):graphics(&graphics), parameterManager(&parameterManager) {}
+
         ~DxRenderer() {
-            if (lightPassMaterial != nullptr)
-                lightPassMaterial->release();
-            uninit();
+            uninitDxRenderer();
         }
-
-        void init(NotNull<Graphics> graphics, NotNull<ParameterManager> parameterManager);
-
-        void uninit();
 
         virtual DxRenderingContext* makeRenderingContext(NotNull<SystemWindow> window) override {
             return ghnew DxRenderingContext(window, graphics);

@@ -6,9 +6,9 @@ namespace Ghurund::Core {
         bool isInitialized = false;
 
     protected:
-        virtual void onInit() = 0;
+        virtual void onInit() {};
 
-        virtual void onUninit() = 0;
+        virtual void onUninit() {};
 
     public:
         virtual ~Initializable() = default;

@@ -12,12 +12,19 @@ namespace Ghurund::Engine::OpenGL {
         HDC dc = {};
         HGLRC renderContext = {};
 
+	protected:
+		virtual void onInit() override;
+
+		virtual void onUninit() override;
+		void uninitRenderingContext();
+
 	public:
         OglRenderingContext(NotNull<SystemWindow> window):Ghurund::Engine::RenderingContext(window) {}
 
-		virtual void init() override;
-
-        virtual void uninit() override;
+		~OglRenderingContext() {
+			if (IsInitialized)
+				uninitRenderingContext();
+		}
 
         virtual void startFrame() override;
 

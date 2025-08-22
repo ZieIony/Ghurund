@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine/directx/buffer/RenderTarget.h"
-#include "Material.h"
+#include "engine/directx/material/Material.h"
 #include "texture/Texture.h"
 
 namespace Ghurund::Engine::DirectX {

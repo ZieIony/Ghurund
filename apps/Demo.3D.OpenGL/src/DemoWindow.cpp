@@ -7,7 +7,7 @@
 namespace Demo {
 	DemoWindow::DemoWindow(
 		NotNull<DemoApplication> app,
-		NotNull<Ghurund::Engine::OpenGL::OGlRenderer> renderer
+		NotNull<Ghurund::Engine::OpenGL::OglRenderer> renderer
 	):Ghurund::Engine::GameWindow(&app), app(*app) {
 		closed += DEFAULT_QUIT_APP_WINDOW_CLOSED_HANDLER;
 		Title = _T("Demo 3D OpenGL");

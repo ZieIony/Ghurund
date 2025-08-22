@@ -2,7 +2,7 @@
 
 #include "core/application/Application.h"
 
-#include "engine/opengl/OGlRenderer.h"
+#include "engine/opengl/OglRenderer.h"
 #include "engine/parameter/ParameterManager.h"
 
 namespace Demo {
@@ -14,25 +14,21 @@ namespace Demo {
 
     class DemoApplication:public Application {
     private:
-        void uninitDemoApplication();
-
-    protected:
-        OGlRenderer renderer;
+        OglRenderer* renderer = nullptr;
         ParameterManager parameterManager;
         DemoWindow* window = nullptr;
 
-    public:
-        DemoApplication() {
-            //Features.add<Graphics>();
-        }
+        void uninitDemoApplication();
 
+    protected:
+        virtual void onInit() override;
+
+        virtual void onUninit() override;
+
+    public:
         ~DemoApplication() {
             if (IsInitialized)
                 uninitDemoApplication();
         }
-
-        virtual void onInit() override;
-
-        virtual void onUninit() override;
     };
 }

@@ -5,9 +5,10 @@
 #include <core/Color.h>
 #include "core/object/NotNull.h"
 #include "RenderingStatistics.h"
+#include "core/object/Initializable.h"
 
 namespace Ghurund::Engine {
-    class RenderingContext {
+    class RenderingContext: public Ghurund::Core::Initializable {
     protected:
         Ghurund::Core::SystemWindow* window;
         RenderingStatistics stats;
@@ -22,10 +23,6 @@ namespace Ghurund::Engine {
         }
 
         __declspec(property(get = getStatistics)) RenderingStatistics& Statistics;
-
-        virtual void init() = 0;
-
-        virtual void uninit() = 0;
 
         virtual void startFrame() = 0;
 

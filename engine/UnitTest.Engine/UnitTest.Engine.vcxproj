@@ -59,7 +59,7 @@
       <PrecompiledHeaderFile>utepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\UnitTest.Core\src;..\Engine\src;..\Engine.DirectX\src;..\Core\src;..\..\libs\CRCpp\inc;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\Engine.DirectX\src;..\Engine.OpenGL\src;..\UnitTest.Core\src;..\..\libs\CRCpp\inc;..\..\libs;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -78,7 +78,7 @@
       <PrecompiledHeaderFile>utepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\UnitTest.Core\src;..\Engine\src;..\Engine.DirectX\src;..\Core\src;..\..\libs\CRCpp\inc;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\Engine.DirectX\src;..\Engine.OpenGL\src;..\UnitTest.Core\src;..\..\libs\CRCpp\inc;..\..\libs;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -96,29 +96,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\test\graphics\mesh\VertexStreamTest.cpp" />
+    <ClInclude Include="src\test\opengl\TestOglContext.h" />
+    <ClInclude Include="src\test\opengl\shader\TestShaderSources.h" />
     <ClInclude Include="src\utepch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\test\directx\mesh\DxMeshTest.cpp" />
-    <ClCompile Include="src\test\directx\shader\ShaderCompilerTest.cpp" />
+    <ClCompile Include="src\test\directx\shader\DxShaderCompilerTest.cpp" />
+    <ClCompile Include="src\test\directx\shader\DxShaderLoaderTest.cpp" />
     <ClCompile Include="src\test\graphics\mesh\MeshDataLoaderTest.cpp" />
     <ClCompile Include="src\test\graphics\mesh\MeshDataTest.cpp" />
-    <ClCompile Include="src\test\graphics\shader\ShaderLoaderTest.cpp" />
+    <ClCompile Include="src\test\graphics\mesh\VertexStreamTest.cpp" />
     <ClCompile Include="src\test\net\MessageTest.cpp" />
+    <ClCompile Include="src\test\opengl\shader\OglShaderLoaderTest.cpp" />
+    <ClCompile Include="src\test\opengl\shader\OglShaderCompilerTest.cpp" />
     <ClCompile Include="src\utepch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.vcxproj">
+      <Project>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.vcxproj">
       <Project>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Engine.DirectX\Engine.DirectX.vcxproj">
       <Project>{BC80A119-A84E-951F-91E2-05467D4F7184}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Core\Core.vcxproj">
-      <Project>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</Project>
+    <ProjectReference Include="..\Engine.OpenGL\Engine.OpenGL.vcxproj">
+      <Project>{EE6FA103-5A30-1D3A-236B-66B78FEA6116}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

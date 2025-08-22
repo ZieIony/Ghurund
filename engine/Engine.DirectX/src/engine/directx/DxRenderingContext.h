@@ -10,22 +10,23 @@ namespace Ghurund::Engine::DirectX {
 		SwapChain* swapChain = nullptr;
 		Ghurund::Engine::DirectX::Graphics* graphics;
 
-		void uninitThis() {
+		inline void uninitDxRenderingContext() {
 			delete swapChain;
 			swapChain = nullptr;
 		}
+
+	protected:
+		virtual void onInit() override;
+
+		virtual void onUninit() override;
 
 	public:
 		DxRenderingContext(Ghurund::Core::NotNull<SystemWindow> window, NotNull<Ghurund::Engine::DirectX::Graphics> graphics)
 			:Ghurund::Engine::RenderingContext(window), graphics(&graphics) {}
 
 		~DxRenderingContext() {
-			uninitThis();
+			uninitDxRenderingContext();
 		}
-
-		virtual void init() override;
-
-		virtual void uninit() override;
 
 		virtual void startFrame() override;
 

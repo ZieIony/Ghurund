@@ -15,14 +15,18 @@ namespace Demo {
 
     class DemoApplication:public Application {
     private:
-        void uninitDemoApplication();
-
-    protected:
-        DxRenderer renderer;
+        DxRenderer* renderer = nullptr;
         ParameterManager parameterManager;
         LightTheme* theme = nullptr;
         Ghurund::UI::DrawableFactory* drawableFactory = nullptr;
         DemoWindow* window = nullptr;
+
+        void uninitDemoApplication();
+
+    protected:
+        virtual void onInit() override;
+
+        virtual void onUninit() override;
 
     public:
         DemoApplication() {
@@ -34,9 +38,5 @@ namespace Demo {
             if (IsInitialized)
                 uninitDemoApplication();
         }
-
-        virtual void onInit() override;
-
-        virtual void onUninit() override;
     };
 }

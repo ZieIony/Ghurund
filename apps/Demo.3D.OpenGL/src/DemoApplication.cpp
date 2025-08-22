@@ -4,6 +4,8 @@
 
 namespace Demo {
     void DemoApplication::uninitDemoApplication() {
+        delete renderer;
+        renderer = nullptr;
         delete window;
         window = nullptr;
     }
@@ -11,7 +13,8 @@ namespace Demo {
     void DemoApplication::onInit() {
         __super::onInit();
 
-        renderer.init(parameterManager);
+        renderer = ghnew OglRenderer(parameterManager);
+        renderer->init();
 
         window = ghnew DemoWindow(*this, renderer);
         window->ClientSize = { 800, 600 };

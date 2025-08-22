@@ -96,6 +96,7 @@
     <ClInclude Include="src\ghuid2dpch.h" />
     <ClInclude Include="src\ui\direct2d\Canvas.h" />
     <ClInclude Include="src\ui\direct2d\D2DUIFeature.h" />
+    <ClInclude Include="src\ui\direct2d\D2DUILayer.h" />
     <ClInclude Include="src\ui\direct2d\Direct2DDrawingContext.h" />
     <ClInclude Include="src\ui\direct2d\Graphics2D.h" />
     <ClInclude Include="src\ui\direct2d\Graphics2DFactory.h" />
@@ -104,7 +105,6 @@
     <ClInclude Include="src\ui\direct2d\StrokeStyle.h" />
     <ClInclude Include="src\ui\direct2d\UIContext.h" />
     <ClInclude Include="src\ui\direct2d\UIFeatureFactory.h" />
-    <ClInclude Include="src\ui\direct2d\D2DUILayer.h" />
     <ClInclude Include="src\ui\direct2d\application\Direct2DUIWindow.h" />
     <ClInclude Include="src\ui\direct2d\drawable\SvgDrawable.h" />
     <ClInclude Include="src\ui\direct2d\effects\RippleEffect.h" />
@@ -127,12 +127,12 @@
     </ClCompile>
     <ClCompile Include="src\ui\direct2d\Canvas.cpp" />
     <ClCompile Include="src\ui\direct2d\D2DUIFeature.cpp" />
+    <ClCompile Include="src\ui\direct2d\D2DUILayer.cpp" />
     <ClCompile Include="src\ui\direct2d\Direct2DDrawingContext.cpp" />
     <ClCompile Include="src\ui\direct2d\Graphics2D.cpp" />
     <ClCompile Include="src\ui\direct2d\RenderTarget2D.cpp" />
     <ClCompile Include="src\ui\direct2d\Shape.cpp" />
     <ClCompile Include="src\ui\direct2d\UIContext.cpp" />
-    <ClCompile Include="src\ui\direct2d\D2DUILayer.cpp" />
     <ClCompile Include="src\ui\direct2d\drawable\SvgDrawable.cpp" />
     <ClCompile Include="src\ui\direct2d\font\Font.cpp" />
     <ClCompile Include="src\ui\direct2d\image\Bitmap.cpp" />

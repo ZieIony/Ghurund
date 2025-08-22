@@ -108,15 +108,13 @@
     <ClInclude Include="src\utcpch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\test\core\collection\ArrayTest.cpp" />
-    <ClCompile Include="src\test\core\object\OwnedNotNullTest.cpp" />
-    <ClCompile Include="src\test\core\BufferTest.cpp" />
     <ClCompile Include="src\test\TestUtils.cpp" />
+    <ClCompile Include="src\test\core\BufferTest.cpp" />
     <ClCompile Include="src\test\core\ColorTest.cpp" />
     <ClCompile Include="src\test\core\DataParsingTest.cpp" />
     <ClCompile Include="src\test\core\ObservableTest.cpp" />
-    <ClCompile Include="src\test\core\object\SharedPointerTest.cpp" />
     <ClCompile Include="src\test\core\collection\ArrayIteratorTest.cpp" />
+    <ClCompile Include="src\test\core\collection\ArrayTest.cpp" />
     <ClCompile Include="src\test\core\collection\BagTest.cpp" />
     <ClCompile Include="src\test\core\collection\LinkedListTest.cpp" />
     <ClCompile Include="src\test\core\collection\ListTest.cpp" />
@@ -128,6 +126,8 @@
     <ClCompile Include="src\test\core\collection\StackTest.cpp" />
     <ClCompile Include="src\test\core\collection\TreeTest.cpp" />
     <ClCompile Include="src\test\core\io\PathTest.cpp" />
+    <ClCompile Include="src\test\core\object\OwnedNotNullTest.cpp" />
+    <ClCompile Include="src\test\core\object\SharedPointerTest.cpp" />
     <ClCompile Include="src\test\core\reflection\BaseTypeTest.cpp" />
     <ClCompile Include="src\test\core\reflection\ConstructorTest.cpp" />
     <ClCompile Include="src\test\core\reflection\ReflectionTest.cpp" />

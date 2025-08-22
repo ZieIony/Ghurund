@@ -98,15 +98,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\application\GameWindow.h" />
-    <ClInclude Include="src\engine\graphics\mesh\ConeMesh.h" />
-    <ClInclude Include="src\engine\graphics\mesh\CubeMesh.h" />
-    <ClInclude Include="src\engine\graphics\mesh\MeshProcessor.h" />
-    <ClInclude Include="src\engine\graphics\mesh\PlaneMesh.h" />
-    <ClInclude Include="src\engine\graphics\mesh\QuadMesh.h" />
-    <ClInclude Include="src\engine\graphics\mesh\SphereMesh.h" />
-    <ClInclude Include="src\engine\graphics\RenderingContext.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
+    <ClInclude Include="src\engine\application\GameWindow.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />
     <ClInclude Include="src\engine\audio\Sound.h" />
     <ClInclude Include="src\engine\audio\Sound3d.h" />
@@ -131,7 +124,6 @@
     <ClInclude Include="src\engine\game\sky\AdvancedSky.h" />
     <ClInclude Include="src\engine\game\sky\BasicSky.h" />
     <ClInclude Include="src\engine\game\sky\Sky.h" />
-    <ClInclude Include="src\ghepch.h" />
     <ClInclude Include="src\engine\graphics\Drawable.h" />
     <ClInclude Include="src\engine\graphics\DrawableComponent.h" />
     <ClInclude Include="src\engine\graphics\DrawableComponents.h" />
@@ -142,9 +134,16 @@
     <ClInclude Include="src\engine\graphics\ITextureProvider.h" />
     <ClInclude Include="src\engine\graphics\LightSystem.h" />
     <ClInclude Include="src\engine\graphics\Renderer.h" />
+    <ClInclude Include="src\engine\graphics\RenderingContext.h" />
     <ClInclude Include="src\engine\graphics\RenderingStatistics.h" />
+    <ClInclude Include="src\engine\graphics\mesh\ConeMesh.h" />
+    <ClInclude Include="src\engine\graphics\mesh\CubeMesh.h" />
     <ClInclude Include="src\engine\graphics\mesh\MeshData.h" />
     <ClInclude Include="src\engine\graphics\mesh\MeshDataLoader.h" />
+    <ClInclude Include="src\engine\graphics\mesh\MeshProcessor.h" />
+    <ClInclude Include="src\engine\graphics\mesh\PlaneMesh.h" />
+    <ClInclude Include="src\engine\graphics\mesh\QuadMesh.h" />
+    <ClInclude Include="src\engine\graphics\mesh\SphereMesh.h" />
     <ClInclude Include="src\engine\graphics\mesh\VertexStream.h" />
     <ClInclude Include="src\engine\graphics\shader\IShader.h" />
     <ClInclude Include="src\engine\graphics\shader\ShaderCode.h" />
@@ -186,6 +185,7 @@
     <ClInclude Include="src\engine\script\bindings\SceneScriptBindings.h" />
     <ClInclude Include="src\engine\script\bindings\ScriptBindings.h" />
     <ClInclude Include="src\engine\script\bindings\TimerScriptBindings.h" />
+    <ClInclude Include="src\ghepch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\application\GameWindow.cpp" />
@@ -198,18 +198,15 @@
     <ClCompile Include="src\engine\entity\camera\CameraController.cpp" />
     <ClCompile Include="src\engine\entity\light\Light.cpp" />
     <ClCompile Include="src\engine\game\GameAction.cpp" />
-    <ClCompile Include="src\engine\graphics\mesh\ConeMesh.cpp" />
-    <ClCompile Include="src\engine\graphics\mesh\CubeMesh.cpp" />
-    <ClCompile Include="src\engine\graphics\mesh\SphereMesh.cpp" />
-    <ClCompile Include="src\engine\graphics\Renderer.cpp" />
-    <ClCompile Include="src\ghepch.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="src\engine\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\engine\graphics\IMaterial.cpp" />
+    <ClCompile Include="src\engine\graphics\Renderer.cpp" />
     <ClCompile Include="src\engine\graphics\RenderingStatistics.cpp" />
+    <ClCompile Include="src\engine\graphics\mesh\ConeMesh.cpp" />
+    <ClCompile Include="src\engine\graphics\mesh\CubeMesh.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\MeshData.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\MeshDataLoader.cpp" />
+    <ClCompile Include="src\engine\graphics\mesh\SphereMesh.cpp" />
     <ClCompile Include="src\engine\graphics\shader\IShader.cpp" />
     <ClCompile Include="src\engine\graphics\shader\ShaderCode.cpp" />
     <ClCompile Include="src\engine\net\Client.cpp" />
@@ -228,6 +225,9 @@
     <ClCompile Include="src\engine\script\ScriptEngine.cpp" />
     <ClCompile Include="src\engine\script\ScriptLoader.cpp" />
     <ClCompile Include="src\engine\script\angelscript\scriptmath.cpp" />
+    <ClCompile Include="src\ghepch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">

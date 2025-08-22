@@ -4,7 +4,7 @@
 #include <gl/GL.h>
 
 namespace Ghurund::Engine::OpenGL {
-    void OglRenderingContext::init() {
+    void OglRenderingContext::onInit() {
         dc = GetDC(window->Handle);
 
         PIXELFORMATDESCRIPTOR pfd = { sizeof(pfd), 1 };
@@ -35,7 +35,11 @@ namespace Ghurund::Engine::OpenGL {
             throw CallFailedException();
     }
     
-    void OglRenderingContext::uninit() {
+    void OglRenderingContext::onUninit() {
+        uninitRenderingContext();
+    }
+
+    void OglRenderingContext::uninitRenderingContext() {
         wglMakeCurrent(dc, nullptr);
         wglDeleteContext(renderContext);
         ReleaseDC(window->Handle, dc);

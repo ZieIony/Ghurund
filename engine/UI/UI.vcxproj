@@ -282,6 +282,7 @@
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\Shape.cpp" />
     <ClCompile Include="src\ui\UIContext.cpp" />
+    <ClCompile Include="src\ui\UILayer.cpp" />
     <ClCompile Include="src\ui\adapter\AdapterLayout.cpp" />
     <ClCompile Include="src\ui\constraint\AnimatedConstraint.cpp" />
     <ClCompile Include="src\ui\constraint\Constraint.cpp" />
@@ -350,7 +351,6 @@
     <ClCompile Include="src\ui\theme\BaseTheme.cpp" />
     <ClCompile Include="src\ui\theme\Theme.cpp" />
     <ClCompile Include="src\ui\theme\WindowsTheme.cpp" />
-    <ClCompile Include="src\ui\UILayer.cpp" />
     <ClCompile Include="src\ui\widget\ContentWidget.cpp" />
     <ClCompile Include="src\ui\widget\DragHelper.cpp" />
     <ClCompile Include="src\ui\widget\ExpandableContainer.cpp" />

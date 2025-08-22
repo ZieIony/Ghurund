@@ -7,7 +7,7 @@
 #include "core/object/NotNull.h"
 
 namespace Ghurund::Engine {
-	class Renderer: public Ghurund::Core::Object {
+	class Renderer: public Ghurund::Core::Object, public Ghurund::Core::Initializable {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {

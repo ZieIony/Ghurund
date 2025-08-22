@@ -5,9 +5,10 @@ project "UnitTest.Engine"
 	staticruntime "on"
 
 	dependson {
+		"Core",
 		"Engine",
 		"Engine.DirectX",
-		"Core",
+		"Engine.OpenGL",
 		"UnitTest.Core"
 	}
 
@@ -18,16 +19,20 @@ project "UnitTest.Engine"
 
 	includedirs {
 		"src",
-		includeDir["UnitTest.Core"],
+		includeDir["Core"],
 		includeDir["Engine"],
 		includeDir["Engine.DirectX"],
-		includeDir["Core"],
+		includeDir["Engine.OpenGL"],
+		includeDir["UnitTest.Core"],
 		includeDir["CRC"],
-		includeDir["DirectX"]
+		includeDir["DirectX"],
+		includeDir["GLEW"],
+		includeDir["GLFW"]
 	}
 
 	links {
+		"Core",
 		"Engine",
 		"Engine.DirectX",
-		"Core"
+		"Engine.OpenGL"
 	}

@@ -15,12 +15,16 @@ namespace Demo {
 
     class DemoApplication:public Application {
     private:
+        DxRenderer* renderer = nullptr;
+        ParameterManager parameterManager;
+        DemoWindow* window = nullptr;
+
         void uninitDemoApplication();
 
     protected:
-        DxRenderer renderer;
-        ParameterManager parameterManager;
-        DemoWindow* window = nullptr;
+        virtual void onInit() override;
+
+        virtual void onUninit() override;
 
     public:
         DemoApplication() {
@@ -28,12 +32,8 @@ namespace Demo {
         }
 
         ~DemoApplication() {
-            if(IsInitialized)
+			if (IsInitialized)
                 uninitDemoApplication();
         }
-
-        virtual void onInit() override;
-
-        virtual void onUninit() override;
     };
 }

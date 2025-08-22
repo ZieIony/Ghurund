@@ -2,6 +2,8 @@
 
 namespace Demo {
     void DemoApplication::uninitDemoApplication() {
+        delete renderer;
+        renderer = nullptr;
         delete window;
         window = nullptr;
 
@@ -10,7 +12,8 @@ namespace Demo {
     }
     
     void DemoApplication::onInit() {
-        renderer.init(Features->get<Graphics>(), parameterManager);
+        renderer = ghnew DxRenderer(Features->get<Graphics>(), parameterManager);
+        renderer->init();
 
         drawableFactory = ghnew Ghurund::UI::DrawableFactory(ResourceManager);
         theme = ghnew LightTheme(ResourceManager, *drawableFactory);
@@ -26,5 +29,6 @@ namespace Demo {
     
     void DemoApplication::onUninit() {
         uninitDemoApplication();
+        __super::onUninit();
     }
 }

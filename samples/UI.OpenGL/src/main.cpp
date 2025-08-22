@@ -1,42 +1,51 @@
 #include "Ghurund.Engine.OpenGL.h"
 
 #include "engine/application/GameWindow.h"
-#include <engine/opengl/Mesh.h>
+#include <engine/opengl/mesh/OglMesh.h>
 #include <engine/opengl/OGlRenderer.h>
-#include <engine/opengl/Shader.h>
+#include <engine/opengl/shader/OglShader.h>
 #include <core/io/DirectoryLibrary.h>
+#include <engine/opengl/shader/OglShaderLoader.h>
+#include <engine/graphics/mesh/QuadMesh.h>
 
 namespace Samples {
+    using namespace Ghurund::Engine;
     using namespace Ghurund::Engine::OpenGL;
 
     class SampleWindow:public Ghurund::Engine::GameWindow {
     private:
-        Shader shader;
-        Mesh mesh;
+        OglShaderCompiler shaderCompiler;
+        OglShaderLoader shaderLoader = shaderCompiler;
+        IntrusivePointer<OglShader> shader;
+        IntrusivePointer<OglMesh> mesh;
+        QuadMesh quadMesh;
 
     public:
-        SampleWindow(NotNull<Ghurund::Core::Application> app, NotNull<OGlRenderer> renderer):GameWindow(app) {
+        SampleWindow(NotNull<Ghurund::Core::Application> app, NotNull<OglRenderer> renderer):GameWindow(app) {
             Renderer = &renderer;
+            app->ResourceManager->Loaders->set<OglShader>(shaderLoader);
         }
         
         void init() {
-            shader.init(FilePath(L"resources/shaders/OpenGL/rect.vert"), FilePath(L"resources/shaders/OpenGL/rect.frag"));
-            mesh.init();
+            shader = IntrusivePointer<OglShader>(Application->ResourceManager->load<OglShader>(FilePath(L"resources/shaders/OpenGL/rect.glsl"), DirectoryPath()));
+            mesh = makeIntrusive<OglMesh>();
+            quadMesh.init();
+            mesh->init(quadMesh);
         }
 
         virtual void paint() override {
-            shader.set();
+            shader->set();
 
-            GLuint resolutionId = glGetUniformLocation(shader.Id, "resolution");
+            GLuint resolutionId = glGetUniformLocation(shader->Id, "resolution");
             glUniform2f(resolutionId, 1024, 768);
 
-            mesh.draw();
+            mesh->draw();
         }
     };
 
     class SampleApplication:public Ghurund::Core::Application {
     private:
-        OGlRenderer renderer;
+        OglRenderer* renderer = nullptr;
         SampleWindow* window = nullptr;
 
     public:

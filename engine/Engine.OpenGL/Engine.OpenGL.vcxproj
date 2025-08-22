@@ -57,7 +57,7 @@
       <PrecompiledHeaderFile>gheoglpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\..\libs\tinyxml2;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -69,7 +69,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>..\..\libs\glew-2.1.0\lib\Release\x64\glew32.lib;..\..\libs\glfw-3.3.6\lib-vc2022\glfw3_mt.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\libs\glew-2.1.0\lib\Release\x64\glew32.lib;..\..\libs\glfw-3.3.6\lib-vc2022\glfw3_mt.lib;opengl32.lib;..\..\libs\tinyxml2\vs\x64\Debug\tinyxml2d64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
@@ -78,7 +78,7 @@
       <PrecompiledHeaderFile>gheoglpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\..\libs\tinyxml2;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -94,22 +94,32 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>..\..\libs\glew-2.1.0\lib\Release\x64\glew32.lib;..\..\libs\glfw-3.3.6\lib-vc2022\glfw3_mt.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\libs\glew-2.1.0\lib\Release\x64\glew32.lib;..\..\libs\glfw-3.3.6\lib-vc2022\glfw3_mt.lib;opengl32.lib;..\..\libs\tinyxml2\vs\x64\Release\tinyxml264.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Ghurund.Engine.OpenGL.h" />
-    <ClInclude Include="src\engine\opengl\FragmentShaderProgram.h" />
-    <ClInclude Include="src\engine\opengl\Mesh.h" />
     <ClInclude Include="src\engine\opengl\OglRenderer.h" />
     <ClInclude Include="src\engine\opengl\OglRenderingContext.h" />
-    <ClInclude Include="src\engine\opengl\Shader.h" />
-    <ClInclude Include="src\engine\opengl\VertexShaderProgram.h" />
+    <ClInclude Include="src\engine\opengl\mesh\OglMesh.h" />
+    <ClInclude Include="src\engine\opengl\mesh\OglMeshLoader.h" />
+    <ClInclude Include="src\engine\opengl\shader\OglCompilationException.h" />
+    <ClInclude Include="src\engine\opengl\shader\OglShader.h" />
+    <ClInclude Include="src\engine\opengl\shader\OglShaderCompiler.h" />
+    <ClInclude Include="src\engine\opengl\shader\OglShaderLoader.h" />
+    <ClInclude Include="src\engine\opengl\shader\OglShaderProgram.h" />
+    <ClInclude Include="src\engine\opengl\shader\OglShaderType.h" />
     <ClInclude Include="src\gheoglpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\opengl\OglRenderer.cpp" />
     <ClCompile Include="src\engine\opengl\OglRenderingContext.cpp" />
+    <ClCompile Include="src\engine\opengl\mesh\OglMesh.cpp" />
+    <ClCompile Include="src\engine\opengl\mesh\OglMeshLoader.cpp" />
+    <ClCompile Include="src\engine\opengl\shader\OglShader.cpp" />
+    <ClCompile Include="src\engine\opengl\shader\OglShaderCompiler.cpp" />
+    <ClCompile Include="src\engine\opengl\shader\OglShaderLoader.cpp" />
+    <ClCompile Include="src\engine\opengl\shader\OglShaderType.cpp" />
     <ClCompile Include="src\gheoglpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

@@ -10,21 +10,27 @@ namespace Preview {
 
     class PreviewApplication:public Ghurund::Core::Application, public ThemeApplication {
     private:
+        Ghurund::Engine::DirectX::DxRenderer* renderer = nullptr;
+        Ghurund::Engine::ParameterManager parameterManager;
+        PreviewWindow* window = nullptr;
+
+        SharedPointer<Theme> lightTheme;
+        SharedPointer<Theme> darkTheme;
+        SharedPointer<Theme> currentTheme;
+
         void uninitPreviewApplication() {
-            window.uninit();
-            renderer.uninit();
+            delete window;
+            window = nullptr;
+            delete renderer;
+            renderer = nullptr;
             darkTheme.set(nullptr);
             lightTheme.set(nullptr);
         }
 
     protected:
-        Ghurund::Engine::DirectX::DxRenderer renderer;
-        Ghurund::Engine::ParameterManager parameterManager;
-        PreviewWindow window = PreviewWindow(*this, renderer, *this);
+        virtual void onInit() override;
 
-        SharedPointer<Theme> lightTheme;
-        SharedPointer<Theme> darkTheme;
-        SharedPointer<Theme> currentTheme;
+        virtual void onUninit() override;
 
     public:
         PreviewApplication();
@@ -33,10 +39,6 @@ namespace Preview {
             if (IsInitialized)
                 uninitPreviewApplication();
         }
-
-        virtual void onInit() override;
-
-        virtual void onUninit() override;
 
         virtual void setThemeType(Preview::ThemeType theme) override;
 
