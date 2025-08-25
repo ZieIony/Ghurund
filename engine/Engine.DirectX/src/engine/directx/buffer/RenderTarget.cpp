@@ -8,7 +8,7 @@
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Engine::DirectX {
-    void RenderTarget::init(Graphics& graphics, ID3D12Resource* texture) {
+    void RenderTarget::init(DxGraphics& graphics, ID3D12Resource* texture) {
         D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {};
         rtvHeapDesc.NumDescriptors = 1;
         rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
@@ -32,7 +32,7 @@ namespace Ghurund::Engine::DirectX {
 #endif
     }
 
-    void RenderTarget::init(Graphics& graphics, uint32_t width, uint32_t height, DXGI_FORMAT format) {
+    void RenderTarget::init(DxGraphics& graphics, uint32_t width, uint32_t height, DXGI_FORMAT format) {
         this->format = format;
         this->width = width;
         this->height = height;
@@ -85,7 +85,7 @@ namespace Ghurund::Engine::DirectX {
         }
     }
 
-    void RenderTarget::captureTexture(Graphics& graphics, ID3D12CommandQueue* commandQueue, UINT64 srcPitch, const D3D12_RESOURCE_DESC& desc, ComPtr<ID3D12Resource>& stagingTexture) {
+    void RenderTarget::captureTexture(DxGraphics& graphics, ID3D12CommandQueue* commandQueue, UINT64 srcPitch, const D3D12_RESOURCE_DESC& desc, ComPtr<ID3D12Resource>& stagingTexture) {
         ID3D12Device* device = graphics.Device;
 
         if (desc.Dimension != D3D12_RESOURCE_DIMENSION_TEXTURE2D) {
@@ -196,7 +196,7 @@ namespace Ghurund::Engine::DirectX {
         commandList->release();
     }
 
-    void RenderTarget::capture(Graphics& graphics, Image*& image) {
+    void RenderTarget::capture(DxGraphics& graphics, Image*& image) {
         ID3D12Device* device = graphics.Device;
         ID3D12CommandQueue* commandQueue = graphics.DirectQueue;
 

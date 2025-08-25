@@ -4,7 +4,7 @@
 #include "core/io/File.h"
 #include "OglShaderProgram.h"
 
-#include "GL/glew.h"
+#include "gl/gl.h"
 
 using namespace Ghurund::Core;
 
@@ -26,35 +26,11 @@ namespace Ghurund::Engine::OpenGL {
 		GLuint id;
 
 	public:
-		OglShader() {
-			id = glCreateProgram();
-		}
+		OglShader();
 
-		~OglShader() {
-			glDeleteProgram(id);
-		}
+		~OglShader();
 
-		void init(SharedPointer<OglShaderProgram> vertexProgram, SharedPointer<OglShaderProgram> fragmentProgram) {
-			GLint Result = GL_FALSE;
-			int InfoLogLength;
-
-			// Link the program
-			glAttachShader(id, vertexProgram->Id);
-			glAttachShader(id, fragmentProgram->Id);
-			glLinkProgram(id);
-
-			// Check the program
-			glGetProgramiv(id, GL_LINK_STATUS, &Result);
-			glGetProgramiv(id, GL_INFO_LOG_LENGTH, &InfoLogLength);
-			if (InfoLogLength > 0) {
-				Buffer message(InfoLogLength + 1);
-				glGetShaderInfoLog(id, InfoLogLength, nullptr, (char*)message.Data);
-				throw CallFailedException((char*)message.Data);
-			}
-
-			glDetachShader(id, vertexProgram->Id);
-			glDetachShader(id, fragmentProgram->Id);
-		}
+		void init(SharedPointer<OglShaderProgram> vertexProgram, SharedPointer<OglShaderProgram> fragmentProgram);
 
 		void set() {
 			glUseProgram(id);

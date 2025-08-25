@@ -1,12 +1,12 @@
 #include "ghedxpch.h"
 #include "DescriptorHeap.h"
 
-#include "engine/directx/Graphics.h"
+#include "engine/directx/DxGraphics.h"
 #include "core/logging/Logger.h"
 
 namespace Ghurund::Engine::DirectX {
 
-	void DescriptorHeap::init(Graphics &graphics){
+	void DescriptorHeap::init(DxGraphics &graphics){
 		if (FAILED(graphics.Device->CreateDescriptorHeap(&heapDescriptor, IID_PPV_ARGS(&heap)))) {
 			return Logger::log(LogType::ERR0R, _T("CreateDescriptorHeap(...) failed\n"));
 			throw CallFailedException();

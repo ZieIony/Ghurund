@@ -15,7 +15,7 @@ namespace Ghurund::Engine::DirectX {
 
     class CommandList;
 
-    class Graphics: public Ghurund::Core::Feature {
+    class DxGraphics: public Ghurund::Core::Feature {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -25,7 +25,7 @@ namespace Ghurund::Engine::DirectX {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = Graphics::GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = DxGraphics::GET_TYPE();
 #pragma endregion
 
     private:
@@ -43,7 +43,7 @@ namespace Ghurund::Engine::DirectX {
         void uninitGraphics();
 
     public:
-        ~Graphics() {
+        ~DxGraphics() {
             if(IsInitialized)
                 uninitGraphics();
         }

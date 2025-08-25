@@ -6,7 +6,7 @@
 #include "DxShaderType.h"
 #include <core/io/DirectoryPath.h>
 #include <core/string/String.h>
-#include <engine/directx/Graphics.h>
+#include <engine/directx/DxGraphics.h>
 #include <engine/parameter/ParameterManager.h>
 
 namespace Ghurund::Engine::DirectX {
@@ -21,7 +21,7 @@ namespace Ghurund::Engine::DirectX {
 	class DxShaderCompiler {
 	private:
 		const CompilationTarget& target;
-		Graphics& graphics;
+		DxGraphics& graphics;
 		ParameterManager& parameterManager;
 
 		DXGI_FORMAT getFormat(BYTE mask, D3D_REGISTER_COMPONENT_TYPE componentType);
@@ -37,7 +37,7 @@ namespace Ghurund::Engine::DirectX {
 		void initConstants(const DxShaderProgram& program, NotNull<ShaderConstants> constants);
 
 	public:
-		DxShaderCompiler(Graphics& graphics, ParameterManager& parameterManager, const CompilationTarget& target = CompilationTarget::SHADER_5_0):
+		DxShaderCompiler(DxGraphics& graphics, ParameterManager& parameterManager, const CompilationTarget& target = CompilationTarget::SHADER_5_0):
 			graphics(graphics), parameterManager(parameterManager), target(target) {
 		}
 

@@ -37,7 +37,7 @@ namespace Ghurund::Engine::DirectX {
 		commandQueue->Release();
 	}
 
-	void CommandList::init(NotNull<Graphics> graphics, NotNull<ID3D12CommandQueue> queue) {
+	void CommandList::init(NotNull<DxGraphics> graphics, NotNull<ID3D12CommandQueue> queue) {
 		queue->AddRef();
 		commandQueue = &queue;
 

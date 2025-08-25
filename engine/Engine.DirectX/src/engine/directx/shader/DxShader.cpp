@@ -16,7 +16,7 @@ namespace Ghurund::Engine::DirectX {
 		return TYPE;
 	}
 
-	bool DxShader::set(Graphics& graphics, CommandList& commandList) {
+	bool DxShader::set(DxGraphics& graphics, CommandList& commandList) {
 		bool changed = commandList.setGraphicsRootSignature(rootSignature) || commandList.setPipelineState(pipelineState);
 
 		for (size_t i = 0; i < constants->constantBuffers.Size; i++)

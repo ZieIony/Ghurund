@@ -1,7 +1,7 @@
 #pragma once
 
 #include "RenderTarget2D.h"
-#include "engine/directx/Graphics.h"
+#include "engine/directx/DxGraphics.h"
 #include "core/feature/Feature.h"
 
 #include <d2d1_3.h>
@@ -32,7 +32,7 @@ namespace Ghurund::UI::Direct2D {
 
     private:
         // borrowed
-        Ghurund::Engine::DirectX::Graphics* graphics;
+        Ghurund::Engine::DirectX::DxGraphics* graphics;
         ComPtr<ID2D1DeviceContext5> deviceContext;
         ComPtr<ID3D11DeviceContext> d3d11DeviceContext;
         ComPtr<ID3D11On12Device> d3d11On12Device;
@@ -47,7 +47,7 @@ namespace Ghurund::UI::Direct2D {
         virtual void onUninit() override;
 
     public:
-		Graphics2D(NotNull<Ghurund::Engine::DirectX::Graphics> graphics):graphics(&graphics) {}
+		Graphics2D(NotNull<Ghurund::Engine::DirectX::DxGraphics> graphics):graphics(&graphics) {}
 
         inline ID2D1Device5* getDevice() {
             return d2dDevice.Get();

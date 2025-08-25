@@ -17,8 +17,9 @@ namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
     using namespace Microsoft::WRL;
 
-    class Graphics;
+    class DxGraphics;
 
+    // TODO: make extend Initializable
     class SwapChain:public Object {
 #pragma region reflection
     protected:
@@ -34,7 +35,7 @@ namespace Ghurund::Engine::DirectX {
 
     private:
         // borrowed
-        Graphics* graphics = nullptr;
+        DxGraphics* graphics = nullptr;
         ComPtr<IDXGISwapChain3> swapChain;
         Array<Frame>* frames = nullptr;
         uint32_t frameCount;
@@ -54,7 +55,7 @@ namespace Ghurund::Engine::DirectX {
 
         __declspec(property(get = isInitialized)) bool Initialized;
 
-        void init(NotNull<Graphics> graphics, NotNull<SystemWindow> window, uint32_t frameCount = 3);
+        void init(NotNull<DxGraphics> graphics, NotNull<SystemWindow> window, uint32_t frameCount = 3);
 
         void initBuffers();
 

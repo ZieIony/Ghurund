@@ -98,7 +98,7 @@ namespace Ghurund::Engine::DirectX {
             return *parameters;
         }*/
 
-        bool set(Graphics& graphics, CommandList& commandList);
+        bool set(DxGraphics& graphics, CommandList& commandList);
 
         bool getSupportsTransparency() {
             return supportsTransparency;

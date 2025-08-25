@@ -98,6 +98,9 @@ namespace Ghurund::Core {
 		return SharedPointer(ghnew T(std::forward<Args>(args)...));
 	}
 
+	/**
+	* For RefCountedObjects use makeIntrusive<T>(...)
+	**/
 	template<std::derived_from<RefCountedObject> T, typename... Args>
 	SharedPointer<T> makeShared(Args&&... args) = delete;
 }

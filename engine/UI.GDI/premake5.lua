@@ -18,7 +18,6 @@ project "UI.GDI"
 		"src",
 		includeDir["Core"],
 		includeDir["UI"],
-		includeDir["tinyxml2"],
 		includeDir["msdfgen"]
 	}
 

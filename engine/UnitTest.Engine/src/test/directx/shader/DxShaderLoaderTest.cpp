@@ -62,7 +62,7 @@ float4 pixelMain(DefaultPixel input): SV_Target{
     public:
 
         TEST_METHOD(DxShaderLoader_loadUnknownFormat) {
-            auto graphics = makeIntrusive<Graphics>();
+            auto graphics = makeIntrusive<DxGraphics>();
             graphics->init();
 
             ParameterManager parameterManager;
@@ -77,7 +77,7 @@ float4 pixelMain(DefaultPixel input): SV_Target{
         }
 
         TEST_METHOD(DxShaderLoader_loadHlsl) {
-            auto graphics = makeIntrusive<Graphics>();
+            auto graphics = makeIntrusive<DxGraphics>();
             graphics->init();
 
             ParameterManager parameterManager;

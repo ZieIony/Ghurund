@@ -19,7 +19,7 @@ namespace Ghurund::Engine::DirectX {
 #endif
 
         ConstantBuffer(
-            NotNull<Graphics> graphics,
+            NotNull<DxGraphics> graphics,
             ID3D12ShaderReflectionConstantBuffer* constantBuffer,
             D3D12_SHADER_BUFFER_DESC& bufferDesc,
             unsigned int bindPoint,
@@ -41,7 +41,7 @@ namespace Ghurund::Engine::DirectX {
             return parameters;
         }*/
 
-        void set(Graphics& graphics, CommandList& commandList) {
+        void set(DxGraphics& graphics, CommandList& commandList) {
             buffer.set(graphics, commandList, bindSlot);
         }
     };

@@ -29,7 +29,7 @@ namespace Ghurund::Engine::DirectX {
         return TYPE;
     }
 
-    void Texture::init(Graphics& graphics, CommandList& commandList, Ghurund::Core::Image &image) {
+    void Texture::init(DxGraphics& graphics, CommandList& commandList, Ghurund::Core::Image &image) {
         if(commandList.State==CommandListState::FINISHED)
             commandList.reset();
 

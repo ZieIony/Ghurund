@@ -1,10 +1,10 @@
 #include "ghedxpch.h"
 #include "Frame.h"
 
-#include "Graphics.h"
+#include "DxGraphics.h"
 
 namespace Ghurund::Engine::DirectX {
-    void Frame::init(Graphics& graphics, D3D12_VIEWPORT& viewport, D3D12_RECT& scissorRect, Ghurund::Engine::DirectX::RenderTarget* renderTarget, DepthBuffer* depthBuffer) {
+    void Frame::init(DxGraphics& graphics, D3D12_VIEWPORT& viewport, D3D12_RECT& scissorRect, Ghurund::Engine::DirectX::RenderTarget* renderTarget, DepthBuffer* depthBuffer) {
         this->renderTarget = renderTarget;
         this->depthBuffer = depthBuffer;
         this->viewport = viewport;

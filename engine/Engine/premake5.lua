@@ -19,7 +19,6 @@ project "Engine"
 		"src",
 		includeDir["Core"],
 		includeDir["UI"],
-		includeDir["tinyxml2"],
 		includeDir["entt"],
 		includeDir["CRC"],
 		includeDir["angelscript"],
@@ -35,12 +34,10 @@ project "Engine"
 	
 	filter "configurations:Debug"
 		links {
-			library["tinyxml2_Debug"],
 			library["angelscript_Debug"]
 		}
 
 	filter "configurations:Release"
 		links {
-			library["tinyxml2_Release"],
 			library["angelscript_Release"]
 		}

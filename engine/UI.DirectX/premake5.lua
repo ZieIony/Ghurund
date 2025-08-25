@@ -22,7 +22,6 @@ project "UI.DirectX"
 		includeDir["Engine"],
 		includeDir["Engine.DirectX"],
 		includeDir["UI"],
-		includeDir["tinyxml2"],
 		includeDir["DirectX"]
 	}
 

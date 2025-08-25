@@ -10,7 +10,7 @@
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
 
-    class Graphics;
+    class DxGraphics;
 
     class DescriptorHandle {
     private:
@@ -67,7 +67,7 @@ namespace Ghurund::Engine::DirectX {
                 heap->Release();
         }
 
-        void init(Graphics& graphics);
+        void init(DxGraphics& graphics);
 
         bool hasAvailableSpace() const { return numFreeDescriptors > 0; }
         DescriptorHandle allocate();
@@ -88,7 +88,7 @@ namespace Ghurund::Engine::DirectX {
                 delete heap;
         }
 
-        DescriptorHandle allocate(Graphics& graphics, D3D12_DESCRIPTOR_HEAP_TYPE type) {
+        DescriptorHandle allocate(DxGraphics& graphics, D3D12_DESCRIPTOR_HEAP_TYPE type) {
             if (!heapMap.contains(type)) {
                 auto dh = ghnew DescriptorHeap(type, numDescriptorsPerHeap);
                 dh->init(graphics);

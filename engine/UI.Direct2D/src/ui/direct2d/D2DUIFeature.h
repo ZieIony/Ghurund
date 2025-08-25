@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/directx/Graphics.h"
+#include "engine/directx/DxGraphics.h"
 #include "ui/UIFeature.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/loading/LayoutLoader.h"

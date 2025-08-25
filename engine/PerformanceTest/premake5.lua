@@ -17,16 +17,10 @@ project "PerformanceTest"
 	includedirs {
 		"src",
 		includeDir["Core"],
-		includeDir["UI"],
-		includeDir["tinyxml2"]
+		includeDir["UI"]
 	}
 
 	links {
 		"Core",
 		"UI"
 	}
-
-	filter "configurations:Release"
-		links {
-			library["tinyxml2_Release"]
-		}

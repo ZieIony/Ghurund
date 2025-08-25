@@ -12,7 +12,7 @@ namespace Ghurund::Engine::DirectX {
 		return TYPE;
 	}
 
-	void DxMesh::init(const MeshData& mesh, Graphics& graphics, CommandList& commandList) {
+	void DxMesh::init(const MeshData& mesh, DxGraphics& graphics, CommandList& commandList) {
 		if (commandList.State == CommandListState::FINISHED)
 			commandList.reset();
 
@@ -25,7 +25,7 @@ namespace Ghurund::Engine::DirectX {
 		uploaded = true;
 	}
 
-	void DxMesh::initVertexBuffers(const Array<VertexStream> vertexStreams, uint32_t vertexCount, Graphics& graphics, CommandList& commandList) {
+	void DxMesh::initVertexBuffers(const Array<VertexStream> vertexStreams, uint32_t vertexCount, DxGraphics& graphics, CommandList& commandList) {
 		vertexBuffers.clear();
 		for (size_t i = 0; i < vertexStreams.Size;i++) {
 			const VertexStream& stream = vertexStreams[i];
@@ -85,7 +85,7 @@ namespace Ghurund::Engine::DirectX {
 			vertexUploadHeaps.add(vertexUploadHeap);
 		}
 	}
-	void DxMesh::initIndexBuffer(const Buffer& indices, uint32_t indexCount, Graphics& graphics, CommandList& commandList) {
+	void DxMesh::initIndexBuffer(const Buffer& indices, uint32_t indexCount, DxGraphics& graphics, CommandList& commandList) {
 		unsigned int indexBufferSize = indices.Size;
 		this->indexCount = indexCount;
 

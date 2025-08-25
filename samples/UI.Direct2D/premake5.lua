@@ -24,7 +24,6 @@ project "Samples.UI.Direct2D"
 		includeDir["Engine.DirectX"],
 		includeDir["UI"],
 		includeDir["UI.Direct2D"],
-		includeDir["tinyxml2"],
 		includeDir["DirectX"]
 	}
 
@@ -35,13 +34,3 @@ project "Samples.UI.Direct2D"
 		"UI.Direct2D",
 		"Engine"
 	}
-	
-	filter "configurations:Debug"
-		links {
-			library["tinyxml2_Debug"]
-		}
-
-	filter "configurations:Release"
-		links {
-			library["tinyxml2_Release"]
-		}

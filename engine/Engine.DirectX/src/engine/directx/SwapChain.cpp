@@ -1,7 +1,7 @@
 #include "ghedxpch.h"
 #include "SwapChain.h"
 
-#include "Graphics.h"
+#include "DxGraphics.h"
 #include "core/window/SystemWindow.h"
 #include "core/logging/Logger.h"
 #include "core/logging/Formatter.h"
@@ -15,7 +15,7 @@ namespace Ghurund::Engine::DirectX {
         return TYPE;
     }
 
-    void SwapChain::init(NotNull<Graphics> graphics, NotNull<SystemWindow> window, uint32_t frameCount) {
+    void SwapChain::init(NotNull<DxGraphics> graphics, NotNull<SystemWindow> window, uint32_t frameCount) {
         this->graphics = &graphics;
         this->window = &window;
         this->frameCount = frameCount;

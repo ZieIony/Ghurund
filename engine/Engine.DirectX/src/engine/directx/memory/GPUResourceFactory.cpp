@@ -2,11 +2,11 @@
 #include "GPUResourceFactory.h"
 
 #include "core/math/MathUtils.h"
-#include "engine/directx/Graphics.h"
+#include "engine/directx/DxGraphics.h"
 #include "core/logging/Logger.h"
 
 namespace Ghurund::Engine::DirectX {
-    GPUResourceFactory::GPUResourceFactory(Graphics& graphics):graphics(graphics) {
+    GPUResourceFactory::GPUResourceFactory(DxGraphics& graphics):graphics(graphics) {
         depthClearValue.Format = DXGI_FORMAT_D32_FLOAT;
         depthClearValue.DepthStencil.Depth = 1.0f;
         depthClearValue.DepthStencil.Stencil = 0;

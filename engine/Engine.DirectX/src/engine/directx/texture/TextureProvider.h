@@ -9,7 +9,7 @@ namespace Ghurund::Engine::DirectX {
 
 	class TextureProvider:public ITextureProvider {
 	private:
-		Graphics& graphics;
+		DxGraphics& graphics;
 		CommandList& commandList;
 		ResourceManager& manager;
 
@@ -18,7 +18,7 @@ namespace Ghurund::Engine::DirectX {
 		}
 
 	public:
-		TextureProvider(Graphics& graphics, CommandList& commandList, ResourceManager& manager):graphics(graphics), commandList(commandList), manager(manager) {}
+		TextureProvider(DxGraphics& graphics, CommandList& commandList, ResourceManager& manager):graphics(graphics), commandList(commandList), manager(manager) {}
 
 		virtual Texture* makeDefaultDiffuse() const override {
 			return make(L"/textures/diffuse.png");

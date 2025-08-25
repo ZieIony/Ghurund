@@ -2,7 +2,7 @@
 #include "DxUIFeature.h"
 
 #include "core/reflection/TypeBuilder.h"
-#include "engine/directx/Graphics.h"
+#include "engine/directx/DxGraphics.h"
 #include <ui/control/Control.h>
 #include <core/image/Image.h>
 #include "ui/font/FontLoader.h"

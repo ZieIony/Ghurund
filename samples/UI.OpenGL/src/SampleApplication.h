@@ -4,6 +4,7 @@
 
 #include <engine/opengl/OGlRenderer.h>
 #include "SampleWindow.h"
+#include <engine/opengl/OglGraphics.h>
 
 namespace Samples {
     using namespace Ghurund::Engine;
@@ -23,6 +24,10 @@ namespace Samples {
         virtual void onUninit() override;
 
     public:
+        SampleApplication() {
+            Features->add<OglGraphics>();
+        }
+
         ~SampleApplication() {
             if (IsInitialized)
                 uninitSampleApplication();

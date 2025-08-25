@@ -101,7 +101,7 @@
     <ClInclude Include="src\engine\directx\Exceptions.h" />
     <ClInclude Include="src\engine\directx\Fence.h" />
     <ClInclude Include="src\engine\directx\Frame.h" />
-    <ClInclude Include="src\engine\directx\Graphics.h" />
+    <ClInclude Include="src\engine\directx\DxGraphics.h" />
     <ClInclude Include="src\engine\directx\GraphicsFactory.h" />
     <ClInclude Include="src\engine\directx\MathTypes.h" />
     <ClInclude Include="src\engine\directx\Postprocess.h" />
@@ -148,7 +148,7 @@
     <ClCompile Include="src\engine\directx\DxRenderingContext.cpp" />
     <ClCompile Include="src\engine\directx\Fence.cpp" />
     <ClCompile Include="src\engine\directx\Frame.cpp" />
-    <ClCompile Include="src\engine\directx\Graphics.cpp" />
+    <ClCompile Include="src\engine\directx\DxGraphics.cpp" />
     <ClCompile Include="src\engine\directx\MathTypes.cpp" />
     <ClCompile Include="src\engine\directx\SwapChain.cpp" />
     <ClCompile Include="src\engine\directx\adapter\AdapterOutput.cpp" />

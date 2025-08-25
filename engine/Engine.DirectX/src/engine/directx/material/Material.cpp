@@ -2,7 +2,7 @@
 
 #include "Material.h"
 
-#include "engine/directx/Graphics.h"
+#include "engine/directx/DxGraphics.h"
 #include "core/resource/ResourceManager.h"
 #include "core/object/IntrusivePointer.h"
 #include "core/reflection/TypeBuilder.h"

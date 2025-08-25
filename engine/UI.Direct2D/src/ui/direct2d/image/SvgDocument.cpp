@@ -5,6 +5,7 @@
 #include "core/reflection/TypeBuilder.h"
 #include "core/io/MemoryInputStream.h"
 #include "core/io/MemoryOutputStream.h"
+#include "core/reflection/StandardTypes.h"
 
 #include <Shlwapi.h>
 #include <wrl.h>

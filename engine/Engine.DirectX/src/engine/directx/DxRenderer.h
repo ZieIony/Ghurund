@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/directx/Graphics.h"
+#include "DxGraphics.h"
 #include "engine/directx/SwapChain.h"
 #include "engine/graphics/Renderer.h"
 #include "engine/directx/material/Material.h"
@@ -33,7 +33,7 @@ namespace Ghurund::Engine::DirectX {
         //RenderTarget* postprocessRenderTarget[FRAME_COUNT] = {};
 
         // borrowed
-        Graphics* graphics = nullptr;
+        DxGraphics* graphics = nullptr;
         // borrowed
         ParameterManager* parameterManager = nullptr;
 
@@ -44,7 +44,7 @@ namespace Ghurund::Engine::DirectX {
         void uninitDxRenderer();
 
     public:
-        DxRenderer(NotNull<Graphics> graphics, NotNull<ParameterManager> parameterManager):graphics(&graphics), parameterManager(&parameterManager) {}
+        DxRenderer(NotNull<DxGraphics> graphics, NotNull<ParameterManager> parameterManager):graphics(&graphics), parameterManager(&parameterManager) {}
 
         ~DxRenderer() {
             uninitDxRenderer();

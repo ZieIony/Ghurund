@@ -20,7 +20,6 @@ project "UnitTest.UI"
 		includeDir["UnitTest.Core"],
 		includeDir["Core"],
 		includeDir["UI"],
-		includeDir["tinyxml2"],
 		includeDir["DirectX"]
 	}
 
@@ -28,13 +27,3 @@ project "UnitTest.UI"
 		"Core",
 		"UI"
 	}
-		
-	filter "configurations:Debug"
-		links {
-			library["tinyxml2_Debug"]
-		}
-
-	filter "configurations:Release"
-		links {
-			library["tinyxml2_Release"]
-		}

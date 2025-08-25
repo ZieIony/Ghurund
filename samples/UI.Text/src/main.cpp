@@ -17,7 +17,7 @@ namespace Samples {
             file.read(buffer);
             //f->init(buffer.Data, buffer.Size);
 
-            ResourceManager.save(*f->Atlas, FilePath(_T("output.png")), DirectoryPath());
+            ResourceManager->save(*f->Atlas, FilePath(_T("output.png")), DirectoryPath());
 
             f->release();
         }

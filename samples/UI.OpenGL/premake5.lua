@@ -1,5 +1,5 @@
 project "Samples.UI.OpenGL"
-	kind "ConsoleApp"
+	kind "WindowedApp"
 	staticruntime "on"
 
 	dependson {
@@ -22,7 +22,6 @@ project "Samples.UI.OpenGL"
 		includeDir["Engine.OpenGL"],
 		includeDir["UI"],
 		includeDir["UI.OpenGL"],
-		includeDir["tinyxml2"],
 		includeDir["GLEW"],
 		includeDir["GLFW"]
 	}
@@ -37,13 +36,3 @@ project "Samples.UI.OpenGL"
 		library["GLFW"],
 		"opengl32"
 	}
-	
-	filter "configurations:Debug"
-		links {
-			library["tinyxml2_Debug"]
-		}
-
-	filter "configurations:Release"
-		links {
-			library["tinyxml2_Release"]
-		}

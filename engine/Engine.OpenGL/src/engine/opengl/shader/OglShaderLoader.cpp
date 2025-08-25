@@ -1,16 +1,20 @@
 #include "gheoglpch.h"
+#include <tinyxml2.h>
 #include "OglShaderLoader.h"
 
-#include <tinyxml2.h>
 
 namespace Ghurund::Engine::OpenGL {
-	SharedPointer<OglShaderProgram> OglShaderLoader::loadShaderProgramFromXml(const tinyxml2::XMLElement& xml, const OglShaderType& shaderType) {
+	SharedPointer<OglShaderProgram> OglShaderLoader::loadShaderProgramFromXml(
+		const tinyxml2::XMLElement& xml,
+		const DirectoryPath& workingDir,
+		const OglShaderType& shaderType
+	) {
 		const tinyxml2::XMLElement* vertexElement = xml.FirstChildElement(shaderType.TypeName.Data);
 		if (!vertexElement)
 			throw InvalidFormatException();
 		const tinyxml2::XMLAttribute* vertexPath = vertexElement->FindAttribute("path");
 		if (vertexPath) {
-			FilePath shaderFilePath = FilePath(convertText<char, wchar_t>(AString(vertexPath->Value())));
+			FilePath shaderFilePath = workingDir / FilePath(convertText<char, wchar_t>(AString(vertexPath->Value())));
 			File shaderFile = shaderFilePath;
 			if (!shaderFile.Exists)
 				throw InvalidFormatException();
@@ -24,12 +28,15 @@ namespace Ghurund::Engine::OpenGL {
 		}
 	}
 
-	OglShader* OglShaderLoader::loadXml(const tinyxml2::XMLElement& xml) {
+	OglShader* OglShaderLoader::loadXml(
+		const tinyxml2::XMLElement& xml,
+		const DirectoryPath& workingDir
+	) {
 		if (AString("Shader") != xml.Name())
 			throw InvalidFormatException();
 
-		auto vertexProgram = loadShaderProgramFromXml(xml, OglShaderType::VERTEX);
-		auto fragmentProgram = loadShaderProgramFromXml(xml, OglShaderType::FRAGMENT);
+		auto vertexProgram = loadShaderProgramFromXml(xml, workingDir, OglShaderType::VERTEX);
+		auto fragmentProgram = loadShaderProgramFromXml(xml, workingDir, OglShaderType::FRAGMENT);
 		auto shader = compiler.build(vertexProgram, fragmentProgram);
 		return &shader;
 		//bool supportsTransparency = sourceCode.find("supportsTransparency") != sourceCode.Size;
@@ -47,7 +54,7 @@ namespace Ghurund::Engine::OpenGL {
 		const tinyxml2::XMLElement* root = document.RootElement();
 		if(!root)
 			throw InvalidFormatException();
-		return loadXml(*root);
+		return loadXml(*root, workingDir);
 	}
 
 	void OglShaderLoader::saveInternal(

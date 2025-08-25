@@ -4,7 +4,7 @@
 #include "core/logging/Logger.h"
 
 namespace Ghurund::Engine::DirectX {
-    void DepthBuffer::init(Graphics& graphics, unsigned int width, unsigned int height) {
+    void DepthBuffer::init(DxGraphics& graphics, unsigned int width, unsigned int height) {
         D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};
         dsvHeapDesc.NumDescriptors = 1;
         dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;

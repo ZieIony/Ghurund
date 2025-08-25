@@ -3,7 +3,7 @@
 #include "core/Color.h"
 #include "CommandList.h"
 #include "Fence.h"
-#include "Graphics.h"
+#include "DxGraphics.h"
 #include "engine/directx/buffer/DepthBuffer.h"
 #include "engine/directx/buffer/RenderTarget.h"
 
@@ -33,7 +33,7 @@ namespace Ghurund::Engine::DirectX {
             delete depthBuffer;
         }
 
-        void init(Graphics& graphics, D3D12_VIEWPORT& viewport, D3D12_RECT& scissorRect, RenderTarget* renderTarget, DepthBuffer* depthBuffer);
+        void init(DxGraphics& graphics, D3D12_VIEWPORT& viewport, D3D12_RECT& scissorRect, RenderTarget* renderTarget, DepthBuffer* depthBuffer);
 
         void start();
         void clear(const Color* color);

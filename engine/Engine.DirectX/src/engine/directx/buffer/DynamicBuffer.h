@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/directx/Graphics.h"
+#include "engine/directx/DxGraphics.h"
 #include "core/collection/BufferedValue.h"
 #include "GPUBuffer.h"
 
@@ -15,7 +15,7 @@ namespace Ghurund::Engine::DirectX {
             delete[] buffers;
         }
 
-        void init(Graphics &graphics, size_t size) {
+        void init(DxGraphics &graphics, size_t size) {
             buffers = ghnew GPUBuffer[2];
             buffers[0].init(graphics, size);
             buffers[1].init(graphics, size);

@@ -12,16 +12,10 @@ project "Core"
 	defines { "_CRT_SECURE_NO_WARNINGS" }
 
 	includedirs {
-		"src",
-		includeDir["tinyxml2"]
+		"src"
 	}
-
-	filter "configurations:Debug"
-		links {
-			library["tinyxml2_Debug"]
-		}
-
-	filter "configurations:Release"
-		links {
-			library["tinyxml2_Release"]
-		}
+	
+	links {
+		"tinyxml2"
+	}
+	

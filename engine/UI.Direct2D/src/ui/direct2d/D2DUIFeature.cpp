@@ -4,7 +4,6 @@
 #include "ui/direct2d/Graphics2D.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
-#include "engine/directx/Graphics.h"
 #include <ui/control/Control.h>
 #include <core/image/Image.h>
 #include "ui/font/FontLoader.h"

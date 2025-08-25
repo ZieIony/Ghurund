@@ -63,13 +63,13 @@ float4 pixelMain(DefaultPixel input): SV_Target{
 }
 )";
 
-    IntrusivePointer<Graphics> graphics;
+    IntrusivePointer<DxGraphics> graphics;
     ParameterManager parameterManager;
     SharedPointer<DxShaderCompiler> shaderCompiler;
 
 public:
     DxShaderCompilerTest() {
-        graphics = makeIntrusive<Graphics>();
+        graphics = makeIntrusive<DxGraphics>();
         graphics->init();
         shaderCompiler = makeShared<DxShaderCompiler>(graphics.ref(), parameterManager);
     }

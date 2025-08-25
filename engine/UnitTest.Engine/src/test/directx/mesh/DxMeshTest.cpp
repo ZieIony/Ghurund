@@ -28,7 +28,7 @@ public:
             auto mesh = makeIntrusive<MeshData>();
             mesh->init({ posStream }, vertices.Size, indices);
             auto dxMesh = makeIntrusive<DxMesh>();
-            auto graphics = makeIntrusive<Graphics>();
+            auto graphics = makeIntrusive<DxGraphics>();
             graphics->init();
             auto commandList = makeIntrusive<CommandList>();
             commandList->init(*graphics.get(), graphics->CopyQueue);

@@ -15,7 +15,6 @@ project "UI"
 	includedirs {
 		includeDir["UI"],
 		includeDir["Core"],
-		includeDir["tinyxml2"],
 		includeDir["msdfgen"]
 	}
 

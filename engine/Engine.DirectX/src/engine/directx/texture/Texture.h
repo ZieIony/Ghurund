@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/directx/Graphics.h"
+#include "engine/directx/DxGraphics.h"
 #include "engine/directx/Fence.h"
 #include "engine/directx/CommandList.h"
 #include "core/image/Image.h"
@@ -57,7 +57,7 @@ namespace Ghurund::Engine::DirectX {
             return image != nullptr && image->Valid && __super::Valid&&uploaded;
         }
 
-        void init(Graphics& graphics, CommandList& commandList, Ghurund::Core::Image& image);
+        void init(DxGraphics& graphics, CommandList& commandList, Ghurund::Core::Image& image);
 
         inline Ghurund::Core::Image* getImage() {
             return image;

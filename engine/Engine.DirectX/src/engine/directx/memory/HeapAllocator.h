@@ -11,7 +11,7 @@
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
 
-    class Graphics;
+    class DxGraphics;
 
     class HeapAllocator:public Allocator {
     public:
@@ -19,7 +19,7 @@ namespace Ghurund::Engine::DirectX {
         AllocationStrategy* strategy;
 
     public:
-        HeapAllocator(Graphics& graphics, uint64_t size, AllocationStrategy* strategy, D3D12_HEAP_TYPE type, D3D12_HEAP_FLAGS flags);
+        HeapAllocator(DxGraphics& graphics, uint64_t size, AllocationStrategy* strategy, D3D12_HEAP_TYPE type, D3D12_HEAP_FLAGS flags);
 
         ~HeapAllocator() {
             if (heap != nullptr)

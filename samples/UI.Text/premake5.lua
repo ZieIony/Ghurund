@@ -24,7 +24,6 @@ project "Samples.UI.Text"
 		includeDir["UI.GDI"],
 		includeDir["UI.Direct2D"],
 		includeDir["Engine"],
-		includeDir["tinyxml2"],
 		includeDir["msdfgen"],
 		includeDir["entt"],
 		includeDir["CRC"],
@@ -44,7 +43,6 @@ project "Samples.UI.Text"
 	
 	filter "configurations:Debug"
 		links {
-			library["tinyxml2_Debug"],
 			library["msdfgen_Debug"],
 			library["angelscript_Debug"],
 			library["PhysX_Debug"],
@@ -56,7 +54,6 @@ project "Samples.UI.Text"
 
 	filter "configurations:Release"
 		links {
-			library["tinyxml2_Release"],
 			library["angelscript_Release"],
 			library["PhysX_Release"],
 			library["PhysXCommon_Release"],

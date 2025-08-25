@@ -1,26 +1,23 @@
 #include "ghedxpch.h"
-#include "Graphics.h"
+#include "DxGraphics.h"
 
-#include "core/exception/Exceptions.h"
 #include "core/exception/Exceptions.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
-#include "DirectXTypes.h"
 #include "core/logging/Logger.h"
-
-#include <D3Dcompiler.h>
+#include "DirectXTypes.h"
 
 namespace Ghurund::Engine::DirectX {
-    const Ghurund::Core::Type& Graphics::GET_TYPE() {
-        static auto PROPERTY_DEVICE = Property<Graphics, ID3D12Device*>("Device", &getDevice);
-        static auto PROPERTY_DIRECTQUEUE = Property<Graphics, ID3D12CommandQueue*>("DirectQueue", &getDirectQueue);
-        static auto PROPERTY_COMPUTEQUEUE = Property<Graphics, ID3D12CommandQueue*>("ComputeQueue", &getComputeQueue);
-        static auto PROPERTY_COPYQUEUE = Property<Graphics, ID3D12CommandQueue*>("CopyQueue", &getCopyQueue);
-        static auto PROPERTY_FACTORY = Property<Graphics, IDXGIFactory4*>("Factory", &getFactory);
-        static auto PROPERTY_DESCRIPTORALLOCATOR = Property<Graphics, Ghurund::Engine::DirectX::DescriptorAllocator&>("DescriptorAllocator", &getDescriptorAllocator);
-        static auto PROPERTY_RESOURCEFACTORY = Property<Graphics, GPUResourceFactory&>("ResourceFactory", &getResourceFactory);
+    const Ghurund::Core::Type& DxGraphics::GET_TYPE() {
+        static auto PROPERTY_DEVICE = Property<DxGraphics, ID3D12Device*>("Device", &getDevice);
+        static auto PROPERTY_DIRECTQUEUE = Property<DxGraphics, ID3D12CommandQueue*>("DirectQueue", &getDirectQueue);
+        static auto PROPERTY_COMPUTEQUEUE = Property<DxGraphics, ID3D12CommandQueue*>("ComputeQueue", &getComputeQueue);
+        static auto PROPERTY_COPYQUEUE = Property<DxGraphics, ID3D12CommandQueue*>("CopyQueue", &getCopyQueue);
+        static auto PROPERTY_FACTORY = Property<DxGraphics, IDXGIFactory4*>("Factory", &getFactory);
+        static auto PROPERTY_DESCRIPTORALLOCATOR = Property<DxGraphics, Ghurund::Engine::DirectX::DescriptorAllocator&>("DescriptorAllocator", &getDescriptorAllocator);
+        static auto PROPERTY_RESOURCEFACTORY = Property<DxGraphics, GPUResourceFactory&>("ResourceFactory", &getResourceFactory);
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Graphics>()
+        static const Ghurund::Core::Type TYPE = TypeBuilder<DxGraphics>()
             .withProperty(PROPERTY_DEVICE)
             .withProperty(PROPERTY_DIRECTQUEUE)
             .withProperty(PROPERTY_COMPUTEQUEUE)
@@ -33,7 +30,7 @@ namespace Ghurund::Engine::DirectX {
         return TYPE;
     }
 
-    void Graphics::initAdapters() {
+    void DxGraphics::initAdapters() {
         ComPtr<IDXGIAdapter1> adapter;
 
         unsigned int adapterIndex = 0;
@@ -64,14 +61,14 @@ namespace Ghurund::Engine::DirectX {
             throw DirectX12NotSupportedException();
     }
 
-    void Graphics::uninitGraphics() {
+    void DxGraphics::uninitGraphics() {
         uninitDevice();
         adapters.deleteItems();
         factory->Release();
         factory = nullptr;
     }
 
-    void Graphics::onInit() {
+    void DxGraphics::onInit() {
         UINT dxgiFactoryFlags = 0;
 #if defined(_DEBUG)
         ComPtr<ID3D12Debug> debugController;
@@ -91,7 +88,7 @@ namespace Ghurund::Engine::DirectX {
         initDevice(*adapters[0]);
     }
 
-    void Graphics::initDevice(GraphicsAdapter& adapter) {
+    void DxGraphics::initDevice(GraphicsAdapter& adapter) {
         if (FAILED(D3D12CreateDevice(adapter.get().Get(), D3D_FEATURE_LEVEL_12_0, IID_PPV_ARGS(&device)))) {
             Logger::log(LogType::ERR0R, _T("D3D12CreateDevice failed\n"));
             throw CallFailedException();
@@ -135,7 +132,7 @@ namespace Ghurund::Engine::DirectX {
         resourceFactory = ghnew GPUResourceFactory(*this);
     }
 
-    void Graphics::uninitDevice() {
+    void DxGraphics::uninitDevice() {
         if (directQueue) {
             directQueue->Release();
             directQueue = nullptr;
@@ -156,7 +153,7 @@ namespace Ghurund::Engine::DirectX {
         }
     }
 
-    void Graphics::onUninit() {
+    void DxGraphics::onUninit() {
         uninitGraphics();
     }
 

@@ -22,7 +22,6 @@ project "UI.OpenGL"
 		includeDir["Engine"],
 		includeDir["Engine.OpenGL"],
 		includeDir["UI"],
-		includeDir["tinyxml2"],
 		includeDir["GLEW"],
 		includeDir["GLFW"]
 	}

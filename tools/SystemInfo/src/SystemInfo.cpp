@@ -1,5 +1,5 @@
 #include "core/SystemInfo.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 #include "core/logging/Logger.h"
 #include "engine/directx/Graphics.h"
 #include "Ghurund.Engine.h"

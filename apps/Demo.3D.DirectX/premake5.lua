@@ -18,7 +18,6 @@ project "Demo.3D.DirectX"
 		includeDir["Core"],
 		includeDir["Engine.DirectX"],
 		includeDir["Engine"],
-		includeDir["tinyxml2"],
 		includeDir["entt"],
 		includeDir["CRC"],
 		includeDir["angelscript"],
@@ -35,7 +34,6 @@ project "Demo.3D.DirectX"
 	
 	filter "configurations:Debug"
 		links {
-			library["tinyxml2_Debug"],
 			library["angelscript_Debug"],
 			library["PhysX_Debug"],
 			library["PhysXCommon_Debug"],
@@ -46,7 +44,6 @@ project "Demo.3D.DirectX"
 
 	filter "configurations:Release"
 		links {
-			library["tinyxml2_Release"],
 			library["angelscript_Release"],
 			library["PhysX_Release"],
 			library["PhysXCommon_Release"],

@@ -18,6 +18,7 @@ namespace Samples {
     }
     
     void SampleApplication::onInit() {
+        __super::onInit();
         ResourceManager->Libraries->add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
         ResourceManager->Libraries->add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
 

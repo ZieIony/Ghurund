@@ -3,7 +3,7 @@
 #include "core/application/Application.h"
 
 #include "engine/directx/DxRenderer.h"
-#include "engine/directx/Graphics.h"
+#include "engine/directx/DxGraphics.h"
 #include "engine/parameter/ParameterManager.h"
 
 namespace Demo {
@@ -28,7 +28,7 @@ namespace Demo {
 
     public:
         DemoApplication() {
-            Features->add<Graphics>();
+            Features->add<DxGraphics>();
         }
 
         ~DemoApplication() {

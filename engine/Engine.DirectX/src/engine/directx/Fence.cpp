@@ -1,7 +1,7 @@
 #include "ghedxpch.h"
 #include "Fence.h"
 
-#include "Graphics.h"
+#include "DxGraphics.h"
 #include "core/logging/Logger.h"
 
 namespace Ghurund::Engine::DirectX {

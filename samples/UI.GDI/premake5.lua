@@ -20,7 +20,6 @@ project "Samples.UI.GDI"
 		includeDir["Core"],
 		includeDir["UI"],
 		includeDir["UI.GDI"],
-		includeDir["tinyxml2"],
 		includeDir["entt"],
 		includeDir["CRC"],
 		includeDir["angelscript"],
@@ -36,7 +35,6 @@ project "Samples.UI.GDI"
 	
 	filter "configurations:Debug"
 		links {
-			library["tinyxml2_Debug"],
 			library["angelscript_Debug"],
 			library["PhysX_Debug"],
 			library["PhysXCommon_Debug"],
@@ -47,7 +45,6 @@ project "Samples.UI.GDI"
 
 	filter "configurations:Release"
 		links {
-			library["tinyxml2_Release"],
 			library["angelscript_Release"],
 			library["PhysX_Release"],
 			library["PhysXCommon_Release"],

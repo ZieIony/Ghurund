@@ -13,16 +13,16 @@
 #pragma warning(pop)
 
 namespace Ghurund::Engine::DirectX {
-    class Graphics;
+    class DxGraphics;
 
     class GPUResourceFactory {
     private:
-        Graphics &graphics;
+        DxGraphics &graphics;
         Map<D3D12_HEAP_TYPE, HeapAllocator*> allocators;
         D3D12_CLEAR_VALUE depthClearValue = {};
 
     public:
-        GPUResourceFactory(Graphics &graphics);
+        GPUResourceFactory(DxGraphics &graphics);
 
         ~GPUResourceFactory() {
             for (auto& [heapType, allocator] : allocators)

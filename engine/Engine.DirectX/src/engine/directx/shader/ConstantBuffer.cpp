@@ -3,7 +3,7 @@
 
 namespace Ghurund::Engine::DirectX {
     ConstantBuffer::ConstantBuffer(
-        NotNull<Graphics> graphics,
+        NotNull<DxGraphics> graphics,
         ID3D12ShaderReflectionConstantBuffer* constantBuffer,
         D3D12_SHADER_BUFFER_DESC& bufferDesc,
         unsigned int bindPoint,

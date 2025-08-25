@@ -96,7 +96,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\test\opengl\TestOglContext.h" />
     <ClInclude Include="src\test\opengl\shader\TestShaderSources.h" />
     <ClInclude Include="src\utepch.h" />
   </ItemGroup>
@@ -108,8 +107,8 @@
     <ClCompile Include="src\test\graphics\mesh\MeshDataTest.cpp" />
     <ClCompile Include="src\test\graphics\mesh\VertexStreamTest.cpp" />
     <ClCompile Include="src\test\net\MessageTest.cpp" />
-    <ClCompile Include="src\test\opengl\shader\OglShaderLoaderTest.cpp" />
     <ClCompile Include="src\test\opengl\shader\OglShaderCompilerTest.cpp" />
+    <ClCompile Include="src\test\opengl\shader\OglShaderLoaderTest.cpp" />
     <ClCompile Include="src\utepch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

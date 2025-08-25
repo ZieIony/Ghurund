@@ -8,7 +8,7 @@
 
 namespace Preview {
     PreviewApplication::PreviewApplication() {
-        Features->add<Graphics>();
+        Features->add<DxGraphics>();
         Features->add<Ghurund::UI::Direct2D::Graphics2D, Ghurund::UI::Direct2D::Graphics2DFactory>();
         Features->add<Ghurund::UI::Direct2D::UIFeature, Ghurund::UI::Direct2D::UIFeatureFactory>();
     }
@@ -26,7 +26,7 @@ namespace Preview {
         ResourceManager->Libraries->add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
         ResourceManager->Libraries->add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
 
-        renderer = ghnew DxRenderer(Features->get<Graphics>(), parameterManager);
+        renderer = ghnew DxRenderer(Features->get<DxGraphics>(), parameterManager);
         renderer->init();
         window = ghnew PreviewWindow(*this, renderer, *this);
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine/directx/Fence.h"
-#include "engine/directx/Graphics.h"
+#include "engine/directx/DxGraphics.h"
 #include "engine/directx/CommandList.h"
 #include "core/resource/Resource.h"
 #include "core/resource/ResourceManager.h"
@@ -50,11 +50,11 @@ namespace Ghurund::Engine::DirectX {
         ComPtr<ID3D12Resource> indexUploadHeap;
 
     public:
-        virtual void init(const MeshData& mesh, Graphics& graphics, CommandList& commandList);
+        virtual void init(const MeshData& mesh, DxGraphics& graphics, CommandList& commandList);
 
-        void initVertexBuffers(const Array<VertexStream> vertexStreams, uint32_t vertexCount, Graphics& graphics, CommandList& commandList);
+        void initVertexBuffers(const Array<VertexStream> vertexStreams, uint32_t vertexCount, DxGraphics& graphics, CommandList& commandList);
 
-        void initIndexBuffer(const Buffer& indices, uint32_t indexCount, Graphics& graphics, CommandList& commandList);
+        void initIndexBuffer(const Buffer& indices, uint32_t indexCount, DxGraphics& graphics, CommandList& commandList);
 
         virtual void invalidate() override {
             uploaded = false;

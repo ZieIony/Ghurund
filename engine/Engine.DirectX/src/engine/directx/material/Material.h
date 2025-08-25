@@ -62,7 +62,7 @@ namespace Ghurund::Engine::DirectX {
             //shader->updateParameters();
         }
 
-        bool set(Graphics& graphics, CommandList& commandList) {
+        bool set(DxGraphics& graphics, CommandList& commandList) {
             return shader->set(graphics, commandList);
         }
 

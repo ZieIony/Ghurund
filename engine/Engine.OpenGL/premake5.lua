@@ -20,8 +20,7 @@ project "Engine.OpenGL"
 		includeDir["Core"],
 		includeDir["Engine"],
 		includeDir["GLEW"],
-		includeDir["GLFW"],
-		includeDir["tinyxml2"]
+		includeDir["GLFW"]
 	}
 
 	links {
@@ -32,12 +31,3 @@ project "Engine.OpenGL"
 		"opengl32"
 	}
 	
-	filter "configurations:Debug"
-		links {
-			library["tinyxml2_Debug"]
-		}
-
-	filter "configurations:Release"
-		links {
-			library["tinyxml2_Release"]
-		}

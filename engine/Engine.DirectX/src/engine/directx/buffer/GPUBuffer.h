@@ -3,7 +3,7 @@
 #include "core/Buffer.h"
 #include "core/collection/BufferedValue.h"
 #include "engine/directx/CommandList.h"
-#include "engine/directx/Graphics.h"
+#include "engine/directx/DxGraphics.h"
 #include "engine/directx/memory/GPUResourceFactory.h"
 
 namespace Ghurund::Engine::DirectX {
@@ -20,7 +20,7 @@ namespace Ghurund::Engine::DirectX {
 			uninit();
         }
 
-        void init(NotNull<Graphics> graphics, size_t size) {
+        void init(NotNull<DxGraphics> graphics, size_t size) {
             //graphics.MemoryAllocator.allocate(D3D12_HEAP_TYPE_UPLOAD, CD3DX12_RESOURCE_DESC::Buffer(align<unsigned int>(size, 1024 * 64)), D3D12_RESOURCE_STATE_GENERIC_READ, &constantBufferUploadHeap);
             /*graphics.getDevice()->CreateCommittedResource(
                 &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
@@ -62,6 +62,6 @@ namespace Ghurund::Engine::DirectX {
             memcpy((BYTE*)buffer->Data+offset, &value, sizeof(Type));
         }
 
-        void set(Graphics& graphics, CommandList& commandList, unsigned int bindSlot);
+        void set(DxGraphics& graphics, CommandList& commandList, unsigned int bindSlot);
     };
 }

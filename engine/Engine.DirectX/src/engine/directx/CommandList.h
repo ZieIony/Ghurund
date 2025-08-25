@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Fence.h"
-#include "Graphics.h"
+#include "DxGraphics.h"
 
 namespace Ghurund::Engine::DirectX {
     enum class CommandListState {
@@ -41,7 +41,7 @@ namespace Ghurund::Engine::DirectX {
     public:
         ~CommandList();
 
-        void init(NotNull<Graphics> graphics, NotNull<ID3D12CommandQueue> queue);
+        void init(NotNull<DxGraphics> graphics, NotNull<ID3D12CommandQueue> queue);
 
         void wait();
 

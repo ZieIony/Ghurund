@@ -8,7 +8,7 @@ namespace Ghurund::Engine::DirectX {
 	class DxRenderingContext: public RenderingContext {
 	private:
 		SwapChain* swapChain = nullptr;
-		Ghurund::Engine::DirectX::Graphics* graphics;
+		Ghurund::Engine::DirectX::DxGraphics* graphics;
 
 		inline void uninitDxRenderingContext() {
 			delete swapChain;
@@ -21,7 +21,7 @@ namespace Ghurund::Engine::DirectX {
 		virtual void onUninit() override;
 
 	public:
-		DxRenderingContext(Ghurund::Core::NotNull<SystemWindow> window, NotNull<Ghurund::Engine::DirectX::Graphics> graphics)
+		DxRenderingContext(Ghurund::Core::NotNull<SystemWindow> window, NotNull<Ghurund::Engine::DirectX::DxGraphics> graphics)
 			:Ghurund::Engine::RenderingContext(window), graphics(&graphics) {}
 
 		~DxRenderingContext() {

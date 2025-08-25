@@ -12,7 +12,7 @@ namespace Demo {
     }
     
     void DemoApplication::onInit() {
-        renderer = ghnew DxRenderer(Features->get<Graphics>(), parameterManager);
+        renderer = ghnew DxRenderer(Features->get<DxGraphics>(), parameterManager);
         renderer->init();
 
         drawableFactory = ghnew Ghurund::UI::DrawableFactory(ResourceManager);

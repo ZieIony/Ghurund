@@ -54,8 +54,8 @@ namespace Demo {
 			Color(0xff0000ff)
 			});
 
-		auto pasteIcon = IntrusivePointer<Drawable>(drawableFactory->makeDrawable(FilePath(_T("resources/icons/paste 18.png"))));
-		auto buttonImage = IntrusivePointer<Drawable>(drawableFactory->makeDrawable(FilePath(_T("resources/button.png"))));
+		auto pasteIcon = IntrusivePointer<Drawable>(drawableFactory->makeDrawable(ResourcePath(FilePath(_T("resources/icons/paste 18.png")))));
+		auto buttonImage = IntrusivePointer<Drawable>(drawableFactory->makeDrawable(ResourcePath(FilePath(_T("resources/button.png")))));
 
 		Toolbar* toolbar = (Toolbar*)demoLayout->find("toolbar");
 		toolbarItemAdapter = ghnew ToolbarItemAdapter(Application->ResourceManager);
