@@ -15,6 +15,16 @@ namespace Ghurund::Core {
 
 	typedef BasePoint<int32_t> IntPoint;
 	typedef BasePoint<float> FloatPoint;
+
+	template<typename T>
+	BasePoint<T> operator*(const BasePoint<T>& obj, float mul) {
+		return { obj.x * mul, obj.y * mul };
+	}
+
+	template<typename T>
+	BasePoint<T> operator+(const BasePoint<T>& obj, const BasePoint<T>& other) {
+		return { obj.x + other.x, obj.y + other.y };
+	}
 }
 
 template <typename T>

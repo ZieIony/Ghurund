@@ -20,25 +20,25 @@ namespace Ghurund::Engine {
 		modeMap.put(MouseButton::MIDDLE, Mode::PAN);
 		modeMap.put(MouseButton::RIGHT, Mode::ROTATE);
 
-		keyMap.map(GameAction::RUN, VK_SHIFT);
+		/*keyMap.map(GameAction::RUN, VK_SHIFT);
 		keyMap.map(GameAction::GO_FORWARD, 'W');
 		keyMap.map(GameAction::GO_BACKWARDS, 'S');
 		keyMap.map(GameAction::STRAFE_LEFT, 'A');
 		keyMap.map(GameAction::STRAFE_RIGHT, 'D');
 		keyMap.map(GameAction::FLOAT_UP, VK_SPACE);
-		keyMap.map(GameAction::FLOAT_DOWN, 'C');
+		keyMap.map(GameAction::FLOAT_DOWN, 'C');*/
 
 		this->window = window;
 	}
 
 	bool CameraController::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
-		if (event.Action == MouseAction::DOWN) {
+		if (event.Action == MouseAction::PRESSED) {
 			pressed = true;
 			pressedButton = event.Button;
 			if (window != nullptr)
 				SetCapture(window->Handle);
 			return true;
-		} else if (event.Action == MouseAction::UP) {
+		} else if (event.Action == MouseAction::RELEASED) {
 			pressed = false;
 			ReleaseCapture();
 			return true;

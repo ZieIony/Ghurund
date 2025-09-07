@@ -159,10 +159,10 @@ namespace Ghurund::UI {
     bool TextField::dispatchKeyEvent(const KeyEventArgs& event) {
         if (Focused) {
             if (event.Action == KeyAction::DOWN) {
-                onKeyPress(event.Key);
+                onKeyPress(event.KeyCode);
                 return true;
             } else if (event.Action == KeyAction::CHAR) {
-                onKeyCharacter(event.Key);
+                onKeyCharacter(event.KeyCode);
                 return true;
             }
         }

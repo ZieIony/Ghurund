@@ -335,7 +335,7 @@ namespace Ghurund::UI {
     }
 
     bool TextView::dispatchKeyEvent(const KeyEventArgs& event) {
-        if (event.Action == KeyAction::DOWN && event.Key == 'C' && Context->Window->Input->isControlDown()) {
+        if (event.Action == KeyAction::DOWN && event.KeyCode == 'C' && Context->Window->Input->isControlDown()) {
             copyToClipboard();
             return true;
         }
@@ -344,7 +344,7 @@ namespace Ghurund::UI {
 
     bool TextView::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
         if (event.Button == MouseButton::LEFT) {
-            if (event.Action == MouseAction::DOWN) {
+            if (event.Action == MouseAction::PRESSED) {
                 pressed = true;
                 setSelectionFromPoint((float)event.Position.x, (float)event.Position.y, Context->Window->Input->isShiftDown());
                 Parent->CapturedChild = this;

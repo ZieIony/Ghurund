@@ -33,8 +33,6 @@ namespace Ghurund::Core {
             HAND, HELP, IBEAM, NO, SIZEALL, SIZENESW,
             SIZENS, SIZENWSE, SIZEWE, UPARROW, WAIT;
 
-        static const Ghurund::Core::EnumValues<CursorEnum, Cursor> VALUES;
-
         Cursor(CursorEnum value, const char* name, const tchar* resource):Enum<CursorEnum, Cursor>(value, name) {
             handle = LoadCursor(nullptr, resource);
         }

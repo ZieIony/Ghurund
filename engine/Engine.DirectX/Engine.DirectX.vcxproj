@@ -96,12 +96,12 @@
     <ClInclude Include="src\engine\directx\CommandList.h" />
     <ClInclude Include="src\engine\directx\DirectXTypes.h" />
     <ClInclude Include="src\engine\directx\DrawPacket.h" />
+    <ClInclude Include="src\engine\directx\DxGraphics.h" />
     <ClInclude Include="src\engine\directx\DxRenderer.h" />
     <ClInclude Include="src\engine\directx\DxRenderingContext.h" />
     <ClInclude Include="src\engine\directx\Exceptions.h" />
     <ClInclude Include="src\engine\directx\Fence.h" />
     <ClInclude Include="src\engine\directx\Frame.h" />
-    <ClInclude Include="src\engine\directx\DxGraphics.h" />
     <ClInclude Include="src\engine\directx\GraphicsFactory.h" />
     <ClInclude Include="src\engine\directx\MathTypes.h" />
     <ClInclude Include="src\engine\directx\Postprocess.h" />
@@ -144,11 +144,11 @@
   <ItemGroup>
     <ClCompile Include="src\engine\directx\CommandList.cpp" />
     <ClCompile Include="src\engine\directx\DirectXTypes.cpp" />
+    <ClCompile Include="src\engine\directx\DxGraphics.cpp" />
     <ClCompile Include="src\engine\directx\DxRenderer.cpp" />
     <ClCompile Include="src\engine\directx\DxRenderingContext.cpp" />
     <ClCompile Include="src\engine\directx\Fence.cpp" />
     <ClCompile Include="src\engine\directx\Frame.cpp" />
-    <ClCompile Include="src\engine\directx\DxGraphics.cpp" />
     <ClCompile Include="src\engine\directx\MathTypes.cpp" />
     <ClCompile Include="src\engine\directx\SwapChain.cpp" />
     <ClCompile Include="src\engine\directx\adapter\AdapterOutput.cpp" />

@@ -119,8 +119,8 @@
     <ClInclude Include="src\engine\entity\light\Light.h" />
     <ClInclude Include="src\engine\entity\light\LightComponent.h" />
     <ClInclude Include="src\engine\entity\light\LightEntity.h" />
+    <ClInclude Include="src\engine\game\ActionMapping.h" />
     <ClInclude Include="src\engine\game\GameAction.h" />
-    <ClInclude Include="src\engine\game\KeyMap.h" />
     <ClInclude Include="src\engine\game\sky\AdvancedSky.h" />
     <ClInclude Include="src\engine\game\sky\BasicSky.h" />
     <ClInclude Include="src\engine\game\sky\Sky.h" />
@@ -197,7 +197,6 @@
     <ClCompile Include="src\engine\entity\camera\Camera.cpp" />
     <ClCompile Include="src\engine\entity\camera\CameraController.cpp" />
     <ClCompile Include="src\engine\entity\light\Light.cpp" />
-    <ClCompile Include="src\engine\game\GameAction.cpp" />
     <ClCompile Include="src\engine\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\engine\graphics\IMaterial.cpp" />
     <ClCompile Include="src\engine\graphics\Renderer.cpp" />

@@ -22,7 +22,7 @@ namespace Ghurund::UI {
 		if (event.Action != Ghurund::Core::KeyAction::DOWN)
 			return false;
 
-		if (event.Key == VK_TAB) {
+		if (event.KeyCode == VK_TAB) {
 			if (GetKeyState(VK_SHIFT) & 0x8000) {
 				if (!focusPrevious() && Focus) {
 					findFocus()->clearFocus();
@@ -35,22 +35,22 @@ namespace Ghurund::UI {
 				}
 			}
 			return true;
-		} else if (event.Key == VK_ESCAPE) {
+		} else if (event.KeyCode == VK_ESCAPE) {
 			if (Focus)
 				findFocus()->clearFocus();
 			if (capturedChild) {
-				capturedChild->dispatchMouseButtonEvent(MouseButtonEventArgs({ -1,-1 }, MouseAction::UP, MouseButton::VIRTUAL, event.TimeMs, false));
+				capturedChild->dispatchMouseButtonEvent(MouseButtonEventArgs({ -1,-1 }, MouseAction::RELEASED, MouseButton::VIRTUAL, event.TimeMs, false));
 				capturedChild->release();
 				capturedChild = nullptr;
 			}
 			return true;
-		} else if (event.Key == VK_UP) {
+		} else if (event.KeyCode == VK_UP) {
 			focusUp();
-		} else if (event.Key == VK_DOWN) {
+		} else if (event.KeyCode == VK_DOWN) {
 			focusDown();
-		} else if (event.Key == VK_LEFT) {
+		} else if (event.KeyCode == VK_LEFT) {
 			focusLeft();
-		} else if (event.Key == VK_RIGHT) {
+		} else if (event.KeyCode == VK_RIGHT) {
 			focusRight();
 		}
 

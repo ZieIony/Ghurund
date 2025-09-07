@@ -1,34 +1,28 @@
 #pragma once
 
+#include "EventDispatcher.h"
 #include "Mouse.h"
 #include "Keyboard.h"
 #include "core/Event.h"
-#include "core/collection/List.h"
+#include "gamepad/GamepadButtonEventArgs.h"
+#include "gamepad/GamepadStickEventArgs.h"
+#include "gamepad/GamepadTriggerEventArgs.h"
 
 namespace Ghurund::Core {
-    class EventDispatcher {
-    public:
-        virtual ~EventDispatcher() {}
-
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) {
-            return false;
-        }
-
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
-            return false;
-        }
-
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
-            return false;
-        }
-
-        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
-            return false;
-        }
-    };
-
     class EventConsumer:public EventDispatcher {
     protected:
+        virtual bool onGamepadButtonEvent(const GamepadButtonEventArgs& event) {
+            return false;
+        }
+
+        virtual bool onGamepadStickEvent(const GamepadStickEventArgs& event) {
+            return false;
+        }
+
+        virtual bool onGamepadTriggerEvent(const GamepadTriggerEventArgs& event) {
+            return false;
+        }
+
         virtual bool onKeyEvent(const KeyEventArgs& event) {
             return false;
         }
@@ -46,16 +40,37 @@ namespace Ghurund::Core {
         }
 
     public:
+        Event<EventConsumer, GamepadButtonEventArgs> gamepadButtonEvent = *this;
+        Event<EventConsumer, GamepadStickEventArgs> gamepadStickEvent = *this;
+        Event<EventConsumer, GamepadTriggerEventArgs> gamepadTriggerEvent = *this;
         Event<EventConsumer, KeyEventArgs> keyEvent = *this;
         Event<EventConsumer, MouseButtonEventArgs> mouseButtonEvent = *this;
         Event<EventConsumer, MouseMotionEventArgs> mouseMotionEvent = *this;
         Event<EventConsumer, MouseWheelEventArgs> mouseWheelEvent = *this;
 
-        virtual ~EventConsumer() {}
+        virtual ~EventConsumer() = 0 {}
 
         virtual bool dispatchKeyEvent(const KeyEventArgs& event) override {
             bool result = onKeyEvent(event);
             bool result2 = keyEvent(event);
+            return result || result2;
+        }
+
+        virtual bool dispatchGamepadButtonEvent(const GamepadButtonEventArgs& event) override {
+            bool result = onGamepadButtonEvent(event);
+            bool result2 = gamepadButtonEvent(event);
+            return result || result2;
+        }
+
+        virtual bool dispatchGamepadStickEvent(const GamepadStickEventArgs& event) override {
+            bool result = onGamepadStickEvent(event);
+            bool result2 = gamepadStickEvent(event);
+            return result || result2;
+        }
+
+        virtual bool dispatchGamepadTriggerEvent(const GamepadTriggerEventArgs& event) override {
+            bool result = onGamepadTriggerEvent(event);
+            bool result2 = gamepadTriggerEvent(event);
             return result || result2;
         }
 

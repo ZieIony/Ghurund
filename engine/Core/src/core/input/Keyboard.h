@@ -4,18 +4,18 @@
 
 namespace Ghurund::Core {
     enum class KeyAction {
-        DOWN, UP, CHAR
+        PRESSED, DOWN, RELEASED, CHAR
     };
 
     class KeyEventArgs:public InputEventArgs {
     private:
         KeyAction action;
-        int key;
+        uint8_t keyCode;
 
     public:
-        KeyEventArgs(KeyAction action, int key, uint64_t time):InputEventArgs(time) {
+        KeyEventArgs(KeyAction action, uint8_t keyCode, uint64_t time):InputEventArgs(time) {
             this->action = action;
-            this->key = key;
+            this->keyCode = keyCode;
         }
 
         KeyAction getAction() const {
@@ -24,10 +24,10 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getAction)) KeyAction Action;
 
-        int getKey() const {
-            return key;
+        uint8_t getKeyCode() const {
+            return keyCode;
         }
 
-        __declspec(property(get = getKey)) int Key;
+        __declspec(property(get = getKeyCode)) uint8_t KeyCode;
     };
 }

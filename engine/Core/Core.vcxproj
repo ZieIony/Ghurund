@@ -69,7 +69,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>tinyxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>tinyxml2.lib;Xinput.lib;Xinput9_1_0.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
@@ -94,11 +94,13 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>tinyxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>tinyxml2.lib;Xinput.lib;Xinput9_1_0.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\input\gamepad\GamepadStickEventArgs.h" />
+    <ClInclude Include="src\core\input\gamepad\GamepadTriggerEventArgs.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -169,10 +171,19 @@
     <ClInclude Include="src\core\image\Image.h" />
     <ClInclude Include="src\core\image\ImageLoader.h" />
     <ClInclude Include="src\core\input\EventConsumer.h" />
+    <ClInclude Include="src\core\input\EventDispatcher.h" />
     <ClInclude Include="src\core\input\Input.h" />
     <ClInclude Include="src\core\input\InputEventArgs.h" />
     <ClInclude Include="src\core\input\Keyboard.h" />
     <ClInclude Include="src\core\input\Mouse.h" />
+    <ClInclude Include="src\core\input\MouseButtonEventArgs.h" />
+    <ClInclude Include="src\core\input\MouseEventArgs.h" />
+    <ClInclude Include="src\core\input\MouseMotionEventArgs.h" />
+    <ClInclude Include="src\core\input\MouseWheelEventArgs.h" />
+    <ClInclude Include="src\core\input\gamepad\GamepadButton.h" />
+    <ClInclude Include="src\core\input\gamepad\GamepadButtonEventArgs.h" />
+    <ClInclude Include="src\core\input\gamepad\GamepadInput.h" />
+    <ClInclude Include="src\core\input\gamepad\GamepadState.h" />
     <ClInclude Include="src\core\io\DirectoryLibrary.h" />
     <ClInclude Include="src\core\io\DirectoryPath.h" />
     <ClInclude Include="src\core\io\File.h" />
@@ -271,6 +282,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\Color.cpp" />
+    <ClCompile Include="src\core\input\gamepad\GamepadInput.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
     <ClCompile Include="src\core\allocation\SimpleBufferStrategy.cpp" />
@@ -282,6 +294,7 @@
     <ClCompile Include="src\core\image\Image.cpp" />
     <ClCompile Include="src\core\image\ImageLoader.cpp" />
     <ClCompile Include="src\core\input\Input.cpp" />
+    <ClCompile Include="src\core\input\gamepad\GamepadButton.cpp" />
     <ClCompile Include="src\core\io\DirectoryPath.cpp" />
     <ClCompile Include="src\core\io\File.cpp" />
     <ClCompile Include="src\core\io\FilePath.cpp" />

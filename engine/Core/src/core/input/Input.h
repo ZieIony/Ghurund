@@ -5,6 +5,7 @@
 #include "Keyboard.h"
 #include "EventConsumer.h"
 #include "core/window/WindowMessage.h"
+#include "gamepad/GamepadInput.h"
 
 namespace Ghurund::Core {
 
@@ -14,6 +15,8 @@ namespace Ghurund::Core {
         IntPoint mousePos = { 0,0 };
         bool keys[256];
         List<WindowMessage> events;
+        GamepadInput gamepadInput;
+        Array<bool> gamepadButtons = GamepadButton::VALUES.Size;
 
     public:
         Input() {

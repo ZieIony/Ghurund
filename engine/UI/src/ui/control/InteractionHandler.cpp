@@ -3,17 +3,17 @@
 
 namespace Ghurund::UI {
 	bool InteractionHandler::onKeyEvent(const KeyEventArgs& event) {
-		if (event.Key == VK_SPACE || event.Key == VK_RETURN) {
+		if (event.KeyCode == VK_SPACE || event.KeyCode == VK_RETURN) {
 			if (event.Action == KeyAction::DOWN) {
 				buttons[MouseButton::VIRTUAL] = true;
 				isPressed = buttons;
 				return pressed(MousePressedEventArgs({ 0, 0 }, MouseButton::VIRTUAL, event.TimeMs));
-			} else if (event.Action == KeyAction::UP) {
+			} else if (event.Action == KeyAction::RELEASED) {
 				buttons[MouseButton::VIRTUAL] = false;
 				isPressed = buttons;
 				return clicked(MouseClickedEventArgs({ 0, 0 }, MouseButton::VIRTUAL, event.TimeMs, true));
 			}
-		} else if (event.Key == VK_ESCAPE || isPressed) {
+		} else if (event.KeyCode == VK_ESCAPE || isPressed) {
 			buttons.clear();
 			isPressed = false;
 			return canceled();
@@ -22,11 +22,11 @@ namespace Ghurund::UI {
 	}
 
 	bool InteractionHandler::onMouseButtonEvent(const MouseButtonEventArgs& event) {
-		if (event.Action == MouseAction::DOWN && !buttons[event.Button]) {
+		if (event.Action == MouseAction::PRESSED && !buttons[event.Button]) {
 			buttons[event.Button] = true;
 			isPressed = buttons;
 			return pressed(MousePressedEventArgs(event.Position, event.Button, event.TimeMs));
-		} else if (event.Action == MouseAction::UP && buttons[event.Button]) {
+		} else if (event.Action == MouseAction::RELEASED && buttons[event.Button]) {
 			buttons[event.Button] = false;
 			isPressed = buttons;
 			return clicked(MouseClickedEventArgs(event.Position, event.Button, event.TimeMs, event.Inside));

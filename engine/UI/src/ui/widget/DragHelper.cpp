@@ -4,11 +4,11 @@
 namespace Ghurund::UI {
     DragHelper::DragHelper(Control& handle, Control& content):dragged(content) {
         handle.mouseButtonEvent += [this, &content](EventConsumer& sender, const MouseButtonEventArgs& args) {
-            if (args.Action == MouseAction::DOWN && args.Button == MouseButton::LEFT) {
+            if (args.Action == MouseAction::PRESSED && args.Button == MouseButton::LEFT) {
                 pressControlPos = content.Position;
                 pressMousePos = args.Position;
                 pressed = true;
-            } else if (args.Action == MouseAction::UP && args.Button == MouseButton::LEFT) {
+            } else if (args.Action == MouseAction::RELEASED && args.Button == MouseButton::LEFT) {
                 pressed = false;
             }
             return true;

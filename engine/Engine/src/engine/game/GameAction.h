@@ -1,18 +1,41 @@
 #pragma once
 
-#include "core/Enum.h"
+namespace Ghurund::Engine {
+	class GameAction {
+    protected:
+        virtual void onStarted() {}
 
-namespace Ghurund {
-	using namespace Ghurund::Core;
+        virtual void onInProgress() {}
 
-	enum class GameActionEnum {
-		GO_FORWARD, GO_BACKWARDS, STRAFE_LEFT, STRAFE_RIGHT, FLOAT_UP, FLOAT_DOWN, RUN
-	};
+        virtual void onFinished() {}
 
-	class GameAction:public Enum<GameActionEnum, GameAction> {
-	public:
-		static const GameAction GO_FORWARD, GO_BACKWARDS, STRAFE_LEFT, STRAFE_RIGHT, FLOAT_UP, FLOAT_DOWN, RUN;
+    public:
+        virtual ~GameAction() = 0 {}
 
-		GameAction(GameActionEnum value, const char* name):Enum<GameActionEnum, GameAction>(value, name) {}
-	};
+        void dispatchStarted() {
+            onStarted();
+        }
+
+        void dispatchInProgress() {
+            onInProgress();
+        }
+
+        void dispatchFinished() {
+            onFinished();
+        }
+    };
+
+    class FloatGameAction:public GameAction {
+    private:
+        float value;
+
+    public:
+        FloatGameAction(float value):value(value) {}
+
+        inline float getValue() const {
+            return value;
+        }
+
+        __declspec(property(get = getValue)) float Value;
+    };
 }

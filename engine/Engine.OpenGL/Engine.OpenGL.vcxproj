@@ -98,8 +98,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\opengl\OglGraphics.h" />
     <ClInclude Include="src\Ghurund.Engine.OpenGL.h" />
+    <ClInclude Include="src\engine\opengl\OglGraphics.h" />
     <ClInclude Include="src\engine\opengl\OglRenderer.h" />
     <ClInclude Include="src\engine\opengl\OglRenderingContext.h" />
     <ClInclude Include="src\engine\opengl\mesh\OglMesh.h" />

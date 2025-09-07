@@ -77,7 +77,7 @@ namespace Ghurund::UI {
 	}
 
 	bool Control::onMouseButtonEvent(const MouseButtonEventArgs& event) {
-		if (focusable && event.Action == MouseAction::DOWN && !Focused) {
+		if (focusable && event.Action == MouseAction::PRESSED && !Focused) {
 			requestFocus();
 			return true;
 		}

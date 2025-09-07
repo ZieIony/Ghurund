@@ -38,7 +38,7 @@ namespace Ghurund::UI {
     }
     
     bool ScrollView::dispatchKeyEvent(const KeyEventArgs& event) {
-        if (event.Action == Ghurund::Core::KeyAction::DOWN && event.Key == VK_NEXT) {
+        if (event.Action == Ghurund::Core::KeyAction::DOWN && event.KeyCode == VK_NEXT) {
             FloatPoint prevScroll = scroll;
             if (Child && Child->Size.Height == Size.Height) {
                 Scroll = { Scroll.x + Size.Width, Scroll.y };
@@ -54,7 +54,7 @@ namespace Ghurund::UI {
                 }
             }
             return true;
-        } else if (event.Action == Ghurund::Core::KeyAction::DOWN && event.Key == VK_PRIOR) {
+        } else if (event.Action == Ghurund::Core::KeyAction::DOWN && event.KeyCode == VK_PRIOR) {
             FloatPoint prevScroll = scroll;
             if (Child && Child->Size.Height == Size.Height) {
                 Scroll = { Scroll.x - Size.Width, Scroll.y };
@@ -70,7 +70,7 @@ namespace Ghurund::UI {
                 }
             }
             return true;
-        } else if (event.Action == Ghurund::Core::KeyAction::DOWN && event.Key == VK_HOME) {
+        } else if (event.Action == Ghurund::Core::KeyAction::DOWN && event.KeyCode == VK_HOME) {
             FloatPoint prevScroll = scroll;
             Scroll = { 0.0f,0.0f };
             if (prevScroll.x != scroll.x || prevScroll.y != scroll.y) {
@@ -78,7 +78,7 @@ namespace Ghurund::UI {
                 onScrolled();
             }
             return true;
-        } else if (event.Action == Ghurund::Core::KeyAction::DOWN && event.Key == VK_END) {
+        } else if (event.Action == Ghurund::Core::KeyAction::DOWN && event.KeyCode == VK_END) {
             FloatPoint prevScroll = scroll;
             Scroll = MaxScroll;
             if (prevScroll.x != scroll.x || prevScroll.y != scroll.y) {

@@ -2,7 +2,6 @@
 #include "core/input/EventConsumer.h"
 #include "core/input/Input.h"
 #include "core/window/SystemWindow.h"
-#include "engine/game/KeyMap.h"
 
 #include <DirectXMath.h>
 
@@ -21,7 +20,6 @@ namespace Ghurund::Engine {
         float rotateSensivity = 1.0f / 5 * ::DirectX::XM_PI / 180;
         static constexpr float DIST_EPSILON = 0.01f;
         SystemWindow* window;
-        KeyMap keyMap;
 
     public:
         CameraController(CameraEntity& camera, SystemWindow* window = nullptr);

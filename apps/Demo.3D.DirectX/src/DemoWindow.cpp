@@ -21,23 +21,23 @@ namespace Demo {
 		if (result)
 			return true;
 
-		if (args.Key == VK_SPACE) {
+		if (args.KeyCode == VK_SPACE) {
 			//auto devices = DisplayManager::enumDisplayDevices();
 			//auto modes = DisplayManager::enumDisplayModes(&devices[0].name);
 			auto currentMode = DisplayManager::getDisplayMode();
 			Ghurund::Core::DisplayMode copy = currentMode;
 			copy.size = { 800, 600 };
 			DisplayManager::changeDisplayMode(copy);
-		} else if (args.Key == VK_BACK) {
+		} else if (args.KeyCode == VK_BACK) {
 			DisplayManager::revertDisplayMode();
-		} else if (args.Key == VK_ESCAPE) {
+		} else if (args.KeyCode == VK_ESCAPE) {
 			close();
-		} else if (args.Key == 'f') {
+		} else if (args.KeyCode == 'f') {
 			Style = WindowStyle::FULLSCREEN;
 			auto currentMode = DisplayManager::getDisplayMode();
 			ClientSize = currentMode.size;
 			Position = { 0, 0 };
-		} else if (args.Key == 'w') {
+		} else if (args.KeyCode == 'w') {
 			Style = DEFAULT_WINDOW_STYLE;
 			ClientSize = { 800, 600 };
 		}

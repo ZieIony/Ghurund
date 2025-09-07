@@ -90,6 +90,7 @@ namespace Ghurund::Core {
 	Resource* ResourceManager::load(NotNull<Loader> loader, const File& file, const ResourceFormat& format, LoadOption options) {
 		Resource* resource = resources.get(file.Path);
 		if (!resource) {
+			// TODO: do the same for ResourcePath - use the resource directory as workingDir
 			resource = loadInternal(loader, file.Path.Directory, file.Path, format, options);
 		} else {
 			resource->addReference();

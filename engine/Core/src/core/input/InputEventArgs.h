@@ -13,12 +13,12 @@ namespace Ghurund::Core {
             this->time = time;
         }
 
+        virtual ~InputEventArgs() = 0 {}
+
         inline uint64_t getTimeMs() const {
             return time;
         }
 
         __declspec(property(get = getTimeMs)) uint64_t TimeMs;
-
-        virtual ~InputEventArgs() = 0 {}
     };
 }
