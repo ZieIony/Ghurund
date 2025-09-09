@@ -101,6 +101,10 @@
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\core\input\gamepad\GamepadStickEventArgs.h" />
     <ClInclude Include="src\core\input\gamepad\GamepadTriggerEventArgs.h" />
+    <ClInclude Include="src\core\input\gamepad\GamepadButtonState.h" />
+    <ClInclude Include="src\core\input\keyboard\KeyEventArgs.h" />
+    <ClInclude Include="src\core\input\keyboard\KeyState.h" />
+    <ClInclude Include="src\core\input\mouse\MouseButtonState.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -174,15 +178,12 @@
     <ClInclude Include="src\core\input\EventDispatcher.h" />
     <ClInclude Include="src\core\input\Input.h" />
     <ClInclude Include="src\core\input\InputEventArgs.h" />
-    <ClInclude Include="src\core\input\Keyboard.h" />
-    <ClInclude Include="src\core\input\Mouse.h" />
-    <ClInclude Include="src\core\input\MouseButtonEventArgs.h" />
-    <ClInclude Include="src\core\input\MouseEventArgs.h" />
-    <ClInclude Include="src\core\input\MouseMotionEventArgs.h" />
-    <ClInclude Include="src\core\input\MouseWheelEventArgs.h" />
+    <ClInclude Include="src\core\input\mouse\MouseButtonEventArgs.h" />
+    <ClInclude Include="src\core\input\mouse\MouseEventArgs.h" />
+    <ClInclude Include="src\core\input\mouse\MouseMotionEventArgs.h" />
+    <ClInclude Include="src\core\input\mouse\MouseWheelEventArgs.h" />
     <ClInclude Include="src\core\input\gamepad\GamepadButton.h" />
     <ClInclude Include="src\core\input\gamepad\GamepadButtonEventArgs.h" />
-    <ClInclude Include="src\core\input\gamepad\GamepadInput.h" />
     <ClInclude Include="src\core\input\gamepad\GamepadState.h" />
     <ClInclude Include="src\core\io\DirectoryLibrary.h" />
     <ClInclude Include="src\core\io\DirectoryPath.h" />
@@ -282,7 +283,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\Color.cpp" />
-    <ClCompile Include="src\core\input\gamepad\GamepadInput.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
     <ClCompile Include="src\core\allocation\SimpleBufferStrategy.cpp" />

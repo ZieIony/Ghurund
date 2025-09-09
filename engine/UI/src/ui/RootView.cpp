@@ -39,7 +39,15 @@ namespace Ghurund::UI {
 			if (Focus)
 				findFocus()->clearFocus();
 			if (capturedChild) {
-				capturedChild->dispatchMouseButtonEvent(MouseButtonEventArgs({ -1,-1 }, MouseAction::RELEASED, MouseButton::VIRTUAL, event.TimeMs, false));
+				auto mouseButtonEvent = MouseButtonEventArgs(
+					{ -1,-1 },
+					MouseAction::RELEASED,
+					MouseButton::VIRTUAL,
+					0,
+					event.TimeMs,
+					false
+				);
+				capturedChild->dispatchMouseButtonEvent(mouseButtonEvent);
 				capturedChild->release();
 				capturedChild = nullptr;
 			}

@@ -9,18 +9,21 @@ namespace Ghurund::Core {
     };
 
     enum class MouseAction {
-        PRESSED, RELEASED
+        PRESSED, DOWN, RELEASED
     };
 
     class MouseButtonEventArgs:public MouseEventArgs {
     private:
         MouseAction action;
         MouseButton button;
+        uint64_t pressedDuration;
 
     public:
-        MouseButtonEventArgs(const IntPoint& pos, MouseAction action, MouseButton button, uint64_t time, bool inside):MouseEventArgs(pos, time, inside) {
-            this->action = action;
-            this->button = button;
+        MouseButtonEventArgs(const IntPoint& pos, MouseAction action, MouseButton button, uint64_t pressedDuration, uint64_t time, bool inside):
+            MouseEventArgs(pos, time, inside),
+            action(action),
+            button(button),
+            pressedDuration(pressedDuration){
         }
 
         inline MouseAction getAction() const {
@@ -35,9 +38,15 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getButton)) MouseButton Button;
 
+        inline uint64_t getPressedDurationMs() const {
+            return pressedDuration;
+        }
+
+        __declspec(property(get = getPressedDuration)) uint64_t PressedDurationMs;
+
         inline MouseButtonEventArgs translate(float x, float y, bool inside) const {
             IntPoint childEventPos = { (int32_t)(Position.x + x), (int32_t)(Position.y + y) };
-            return MouseButtonEventArgs(childEventPos, action, button, TimeMs, inside);
+            return MouseButtonEventArgs(childEventPos, action, button, pressedDuration, TimeMs, inside);
         }
     };
 }

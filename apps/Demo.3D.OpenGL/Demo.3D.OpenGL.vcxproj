@@ -94,8 +94,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\CloseWindowAction.h" />
     <ClInclude Include="src\DemoApplication.h" />
     <ClInclude Include="src\DemoWindow.h" />
+    <ClInclude Include="src\MoveWindowAction.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DemoApplication.cpp" />

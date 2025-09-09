@@ -3,8 +3,10 @@
 #include "gamepad/GamepadButtonEventArgs.h"
 #include "gamepad/GamepadStickEventArgs.h"
 #include "gamepad/GamepadTriggerEventArgs.h"
-#include "Keyboard.h"
-#include "Mouse.h"
+#include "keyboard/KeyEventArgs.h"
+#include "mouse/MouseButtonEventArgs.h"
+#include "mouse/MouseMotionEventArgs.h"
+#include "mouse/MouseWheelEventArgs.h"
 
 namespace Ghurund::Core {
     class EventDispatcher {

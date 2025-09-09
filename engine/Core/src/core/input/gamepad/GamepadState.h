@@ -1,6 +1,5 @@
 #pragma once
 
-#include <xinput.h>
 #include <cstdint>
 
 #include <core/math/Point.h>
@@ -13,17 +12,15 @@ namespace Ghurund::Core {
 		FloatPoint leftStick, rightStick;
 		float leftTrigger, rightTrigger;
 
-		static inline float shortToFloat(SHORT s) {
-			return (((int16_t)s) + 32768) / (float)(32767 + 32768) * 2 - 1;
-		}
-
 	public:
-		GamepadState(XINPUT_GAMEPAD state):
-			buttons(state.wButtons),
-			leftTrigger(state.bLeftTrigger / 255.0f),
-			rightTrigger(state.bRightTrigger / 255.0f),
-			leftStick(FloatPoint{ shortToFloat(state.sThumbLX), shortToFloat(state.sThumbLY) }),
-			rightStick(FloatPoint{ shortToFloat(state.sThumbRX), shortToFloat(state.sThumbRY) }) {
+		GamepadState(
+			uint16_t buttons,
+			FloatPoint leftStick, FloatPoint rightStick,
+			float leftTrigger, float rightTrigger
+		):
+			buttons(buttons),
+			leftTrigger(leftTrigger), rightTrigger(leftTrigger),
+			leftStick(leftStick), rightStick(leftStick) {
 		}
 
 		inline bool isButtonDown(const GamepadButton& button) const {

@@ -62,6 +62,12 @@ namespace Ghurund::Core {
 
         virtual bool onSizeChanged() override;
 
+        virtual bool onFocusedChanged() override {
+            __super::onFocusedChanged();
+            input.releaseAllKeysAndButtons();
+            return true;
+        }
+
     public:
         Event<Ghurund::Core::Window> draggedOver = *this;
         Event<Ghurund::Core::Window> dragLeft = *this;
@@ -154,7 +160,7 @@ namespace Ghurund::Core {
 
         virtual void update(const uint64_t time) override;
 
-        void dispatchMouseEvent(UINT msg, WPARAM wParam);
+        void dispatchMouseEvent(UINT msg, WPARAM wParam, LPARAM lParam);
 
         bool dispatchWindowEvent(UINT msg, WPARAM wParam, LPARAM lParam);
 

@@ -25,6 +25,11 @@ namespace Ghurund::Core {
 	BasePoint<T> operator+(const BasePoint<T>& obj, const BasePoint<T>& other) {
 		return { obj.x + other.x, obj.y + other.y };
 	}
+
+	template<typename T>
+	BasePoint<T> operator-(const BasePoint<T>& obj, const BasePoint<T>& other) {
+		return { obj.x - other.x, obj.y - other.y };
+	}
 }
 
 template <typename T>

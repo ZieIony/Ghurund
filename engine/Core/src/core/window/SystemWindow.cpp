@@ -149,15 +149,14 @@ namespace Ghurund::Core {
 	}
 
 	void SystemWindow::update(const uint64_t time) {
-		input.dispatchEvents(time, *this);
+		input.dispatchWindowEvents(time, *this);
+		input.dispatchMouseButtonDownEvents(time, *this);
+		input.dispatchKeyDownEvents(time, *this);
 	}
 
-	void SystemWindow::dispatchMouseEvent(UINT msg, WPARAM wParam) {
+	void SystemWindow::dispatchMouseEvent(UINT msg, WPARAM wParam, LPARAM lParam) {
 		if (msg == WM_MOUSEMOVE) {
-			POINT p;
-			GetCursorPos(&p);
-			ScreenToClient(Handle, &p);
-			input.addEvent({ msg, wParam, timer->TimeMs, p });
+			input.addWindowEvent({ msg, wParam, lParam, timer->TimeMs});
 
 			if (!mouseTracked) {
 				mouseTracked = true;
@@ -171,24 +170,19 @@ namespace Ghurund::Core {
 			}
 		} else if (msg == WM_MOUSELEAVE) {
 			mouseTracked = false;
-			POINT p;
-			GetCursorPos(&p);
-			ScreenToClient(Handle, &p);
-			input.addEvent({ msg, wParam, timer->TimeMs, p });
+			input.addWindowEvent({ msg, wParam, lParam, timer->TimeMs });
 		} else {
 			POINT p;
-			GetCursorPos(&p);
-			ScreenToClient(Handle, &p);
-			input.addEvent({ msg, wParam, timer->TimeMs, p });
+			input.addWindowEvent({ msg, wParam, lParam, timer->TimeMs });
 		}
 	}
 
 	bool SystemWindow::dispatchWindowEvent(UINT msg, WPARAM wParam, LPARAM lParam) {
 		if (msg >= WM_KEYFIRST && msg <= WM_KEYLAST) {
-			input.addEvent({ msg, wParam, timer->TimeMs });
+			input.addWindowEvent({ msg, wParam, lParam, timer->TimeMs });
 			return true;
 		} else if (msg >= WM_MOUSEFIRST && msg <= WM_MOUSELAST) {
-			dispatchMouseEvent(msg, wParam);
+			dispatchMouseEvent(msg, wParam, lParam);
 			return true;
 		} else if (msg == WM_WINDOWPOSCHANGED) {
 			WINDOWPOS* windowPos = (WINDOWPOS*)lParam;

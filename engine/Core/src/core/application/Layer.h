@@ -1,9 +1,11 @@
 #pragma once
 
-#include "core/object/RefCountedObject.h"
-#include "core/input/Keyboard.h"
-#include "core/input/Mouse.h"
+#include "core/input/keyboard/KeyEventArgs.h"
+#include "core/input/mouse/MouseButtonEventArgs.h"
+#include "core/input/mouse/MouseMotionEventArgs.h"
+#include "core/input/mouse/MouseWheelEventArgs.h"
 #include "core/math/Size.h"
+#include "core/object/RefCountedObject.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core {

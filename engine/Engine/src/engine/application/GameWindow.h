@@ -54,6 +54,8 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getRenderer, put = setRenderer)) Renderer* Renderer;
 
+        virtual void update(const uint64_t time) override;
+
         virtual void paint() override {
             if (!renderingContext)
                 return;

@@ -98,6 +98,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\game\TransformedGameAction.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="src\engine\entity\camera\Camera.cpp" />
     <ClCompile Include="src\engine\entity\camera\CameraController.cpp" />
     <ClCompile Include="src\engine\entity\light\Light.cpp" />
+    <ClCompile Include="src\engine\game\ActionMapping.cpp" />
     <ClCompile Include="src\engine\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\engine\graphics\IMaterial.cpp" />
     <ClCompile Include="src\engine\graphics\Renderer.cpp" />

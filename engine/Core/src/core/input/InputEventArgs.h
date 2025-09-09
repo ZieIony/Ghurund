@@ -9,9 +9,7 @@ namespace Ghurund::Core {
         uint64_t time;
 
     public:
-        InputEventArgs(uint64_t time) {
-            this->time = time;
-        }
+        InputEventArgs(uint64_t time):time(time) {}
 
         virtual ~InputEventArgs() = 0 {}
 

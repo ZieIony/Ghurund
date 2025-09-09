@@ -14,7 +14,20 @@ namespace Demo {
 		Renderer = &renderer;
 		BackgroundColor = &Colors::LIGHT_CORAL;
 
-		actionMapping.add(GamepadButton::A, SharedPointer<GameAction>(ghnew CloseWindowAction(*this)));
+		closeWindow = makeIntrusive<CloseWindowAction>(*this);
+		actionMapping.add(GamepadButton::A, closeWindow);
+
+		moveWindow = makeIntrusive<MoveWindowAction>(*this, Application->Timer);
+		actionMapping.add<FloatPoint>('w', moveWindow, [](float value) { return FloatPoint{ 0.0f, 1.0f }; });
+		actionMapping.add<FloatPoint>('s', moveWindow, [](float value) { return FloatPoint{ 0.0f, -1.0f }; });
+		actionMapping.add<FloatPoint>('a', moveWindow, [](float value) { return FloatPoint{ -1.0f, 0.0f }; });
+		actionMapping.add<FloatPoint>('d', moveWindow, [](float value) { return FloatPoint{ 1.0f, 0.0f }; });
+		actionMapping.add(GamepadStick::LEFT, moveWindow);
+	}
+
+	DemoWindow::~DemoWindow() {
+		actionMapping.remove('w');
+		actionMapping.clear();
 	}
 
 	bool DemoWindow::onGamepadButtonEvent(const GamepadButtonEventArgs& args) {
@@ -22,7 +35,7 @@ namespace Demo {
 		if (result)
 			return true;
 
-		if (actionMapping.onGamepadButtonEvent(args))
+		if (actionMapping.dispatchGamepadButtonEvent(args))
 			return true;
 
 		return false;
@@ -33,14 +46,8 @@ namespace Demo {
 		if (result)
 			return true;
 
-		if (args.Stick == GamepadStick::LEFT) {
-			auto p = args.Point;
-			if (std::sqrtf(std::powf(p.x, 2.0f) + std::powf(p.y, 2.0f)) > 0.1f) {
-				double dt = Application->Timer->FrameTime;
-				auto v = args.Point * dt * 1000;
-				Position = Position + IntPoint{ (int32_t)v.x, -(int32_t)v.y };
-			}
-		}
+		if (actionMapping.dispatchGamepadStickEvent(args))
+			return true;
 
 		if (args.Stick == GamepadStick::RIGHT) {
 			auto p = args.Point;

@@ -1,41 +1,50 @@
 #pragma once
 
+#include "core/object/RefCountedObject.h"
+
 namespace Ghurund::Engine {
-	class GameAction {
-    protected:
-        virtual void onStarted() {}
+	using namespace Ghurund::Core;
 
-        virtual void onInProgress() {}
+	template<typename T>
+	class GameAction:public RefCountedObject {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-        virtual void onFinished() {}
+	public:
+		static const Ghurund::Core::Type& GET_TYPE() {
+			static const Ghurund::Core::Type TYPE = TypeBuilder<GameAction>()
+				.withSupertype(__super::GET_TYPE())
+				.withTemplateParam<T>();
 
-    public:
-        virtual ~GameAction() = 0 {}
+			return TYPE;
+		}
 
-        void dispatchStarted() {
-            onStarted();
-        }
+		inline static const Ghurund::Core::Type& TYPE = GameAction::GET_TYPE();
+#pragma endregion
 
-        void dispatchInProgress() {
-            onInProgress();
-        }
+	protected:
+		virtual void onStarted(T value) {}
 
-        void dispatchFinished() {
-            onFinished();
-        }
-    };
+		virtual void onInProgress(T value, uint64_t duration) {}
 
-    class FloatGameAction:public GameAction {
-    private:
-        float value;
+		virtual void onFinished(uint64_t duration) {}
 
-    public:
-        FloatGameAction(float value):value(value) {}
+	public:
+		virtual ~GameAction() = 0 {}
 
-        inline float getValue() const {
-            return value;
-        }
+		void dispatchStarted(T value) {
+			onStarted(value);
+		}
 
-        __declspec(property(get = getValue)) float Value;
-    };
+		void dispatchInProgress(T value, uint64_t duration) {
+			onInProgress(value, duration);
+		}
+
+		void dispatchFinished(uint64_t duration) {
+			onFinished(duration);
+		}
+	};
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/input/Mouse.h"
+#include "core/input/mouse/MouseEventArgs.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;

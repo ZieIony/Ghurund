@@ -1,6 +1,6 @@
 #pragma once
 
-#include "InputEventArgs.h"
+#include "core/input/InputEventArgs.h"
 #include "core/math/Point.h"
 
 namespace Ghurund::Core {

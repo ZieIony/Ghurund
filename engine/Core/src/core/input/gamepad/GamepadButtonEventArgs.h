@@ -15,14 +15,16 @@ namespace Ghurund::Core {
 		uint8_t gamepad;
 		GamepadButtonAction action;
 		const GamepadButton& button;
+		uint64_t pressedDuration;
 
 	public:
 		GamepadButtonEventArgs(
 			uint8_t gamepad,
 			GamepadButtonAction action,
 			const GamepadButton& button,
+			uint64_t pressedDuration,
 			uint64_t time
-		):InputEventArgs(time), gamepad(gamepad), action(action), button(button) {
+		):InputEventArgs(time), gamepad(gamepad), action(action), button(button), pressedDuration(pressedDuration) {
 		}
 
 		inline uint8_t getGamepad() const {
@@ -42,5 +44,11 @@ namespace Ghurund::Core {
 		}
 
 		__declspec(property(get = getKeyCode)) const GamepadButton& Button;
+
+		inline uint64_t getPressedDurationMs() const {
+			return pressedDuration;
+		}
+
+		__declspec(property(get = getPressedDurationMs)) uint64_t PressedDurationMs;
 	};
 }
