@@ -8,6 +8,7 @@
 #include <core/string/String.h>
 #include <engine/directx/DxGraphics.h>
 #include <engine/parameter/ParameterManager.h>
+#include "core/IUnknownImpl.h"
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
@@ -43,9 +44,9 @@ namespace Ghurund::Engine::DirectX {
 
 		D3D12_INPUT_LAYOUT_DESC getInputLayout(const Buffer& byteCode);
 
-		OwnedNotNull<ID3D12PipelineState> makePipelineState(const Array<SharedPointer<DxShaderProgram>>& programs, ID3D12RootSignature* rootSignature, bool supportsTransparency);
+		OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> makePipelineState(const Array<SharedPointer<DxShaderProgram>>& programs, ID3D12RootSignature* rootSignature, bool supportsTransparency);
 
-		OwnedNotNull<ID3D12RootSignature> makeRootSignature(NotNull<ShaderConstants> constants);
+		OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> makeRootSignature(NotNull<ShaderConstants> constants);
 
 		OwnedNotNull<ShaderConstants> makeConstants(const Array<SharedPointer<DxShaderProgram>>& programs);
 
@@ -57,13 +58,6 @@ namespace Ghurund::Engine::DirectX {
 #endif
 		);
 
-		OwnedNotNull<DxShader> build(const Array<SharedPointer<DxShaderProgram>>& programs) {
-			auto constants = makeConstants(programs);
-			auto rootSignature = makeRootSignature(&constants);
-			auto pipelineState = makePipelineState(programs, &rootSignature, false);
-			DxShader* shader = ghnew DxShader();
-			shader->init(std::move(rootSignature), std::move(pipelineState), std::move(constants));
-			return shader;
-		}
+		OwnedNotNull<DxShader, RefCountedObjectDeleter> build(const Array<SharedPointer<DxShaderProgram>>& programs);
 	};
 }

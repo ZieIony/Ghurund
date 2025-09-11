@@ -67,12 +67,12 @@ float4 pixelMain(DefaultPixel input): SV_Target{
 
             ParameterManager parameterManager;
             DxShaderCompiler compiler(graphics.ref(), parameterManager);
-            IntrusivePointer<DxShaderLoader> loader(ghnew DxShaderLoader(compiler));
+            auto loader = makeIntrusive<DxShaderLoader>(compiler);
             Buffer data;
             MemoryInputStream stream(data.Data, data.Size);
 
             Assert::ExpectException<InvalidFormatException>([&]() {
-                IntrusivePointer<DxShader> shader((DxShader*)loader->load(stream, DirectoryPath()));
+                IntrusivePointer<Resource> shader(loader->load(stream, DirectoryPath()));
             });
         }
 

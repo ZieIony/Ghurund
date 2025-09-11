@@ -105,6 +105,7 @@
     <ClInclude Include="src\core\input\keyboard\KeyEventArgs.h" />
     <ClInclude Include="src\core\input\keyboard\KeyState.h" />
     <ClInclude Include="src\core\input\mouse\MouseButtonState.h" />
+    <ClInclude Include="src\core\object\DefaultDeleter.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />

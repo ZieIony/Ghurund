@@ -172,7 +172,6 @@ namespace Ghurund::Core {
 			mouseTracked = false;
 			input.addWindowEvent({ msg, wParam, lParam, timer->TimeMs });
 		} else {
-			POINT p;
 			input.addWindowEvent({ msg, wParam, lParam, timer->TimeMs });
 		}
 	}

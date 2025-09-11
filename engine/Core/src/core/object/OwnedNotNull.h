@@ -1,20 +1,30 @@
 #pragma once
 
+#include "Object.h"
 #include "core/exception/NullPointerException.h"
+#include "DefaultDeleter.h"
 
 namespace Ghurund::Core {
-	template <typename T>
+	template <typename T, typename D = DefaultDeleter<T>>
 	class OwnedNotNull {
 	private:
 		T* ptr;
 
 	public:
-		OwnedNotNull(T* ptr):ptr(std::move(ptr)) {
+		explicit OwnedNotNull(T* ptr):ptr(ptr) {
 			if (!ptr)
 				throw NullPointerException();
 		}
 
-		OwnedNotNull(OwnedNotNull<T>&& other) noexcept :ptr(std::move(other.ptr)) {}
+		OwnedNotNull(const OwnedNotNull& other) = delete;
+
+		OwnedNotNull(OwnedNotNull&& other) noexcept :ptr(std::move(other.ptr)) {
+			other.ptr = nullptr;
+		}
+
+		~OwnedNotNull() {
+			D()(ptr);
+		}
 
 		inline T* operator()() {
 			return ptr;
@@ -30,6 +40,12 @@ namespace Ghurund::Core {
 
 		inline T* operator->() {
 			return ptr;
+		}
+
+		inline T* reset() {
+			T* copy = ptr;
+			ptr = nullptr;
+			return copy;
 		}
 
 		inline bool operator==(T* other) const {

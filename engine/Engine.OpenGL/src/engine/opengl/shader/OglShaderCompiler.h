@@ -18,8 +18,8 @@ namespace Ghurund::Engine::OpenGL {
 	public:
 		OglShaderProgram* compile(const AString& sourceCode, const OglShaderType& shaderType);
 
-		OwnedNotNull<OglShader> build(SharedPointer<OglShaderProgram> vertexProgram, SharedPointer<OglShaderProgram> fragmentProgram) {
-			OglShader* shader = ghnew OglShader();
+		OwnedNotNull<OglShader, RefCountedObjectDeleter> build(SharedPointer<OglShaderProgram> vertexProgram, SharedPointer<OglShaderProgram> fragmentProgram) {
+			OwnedNotNull<OglShader, RefCountedObjectDeleter> shader(ghnew OglShader());
 			shader->init(vertexProgram, fragmentProgram);
 			return shader;
 		}

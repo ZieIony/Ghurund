@@ -18,10 +18,10 @@ namespace Demo {
 		actionMapping.add(GamepadButton::A, closeWindow);
 
 		moveWindow = makeIntrusive<MoveWindowAction>(*this, Application->Timer);
-		actionMapping.add<FloatPoint>('w', moveWindow, [](float value) { return FloatPoint{ 0.0f, 1.0f }; });
-		actionMapping.add<FloatPoint>('s', moveWindow, [](float value) { return FloatPoint{ 0.0f, -1.0f }; });
-		actionMapping.add<FloatPoint>('a', moveWindow, [](float value) { return FloatPoint{ -1.0f, 0.0f }; });
-		actionMapping.add<FloatPoint>('d', moveWindow, [](float value) { return FloatPoint{ 1.0f, 0.0f }; });
+		actionMapping.add('w', moveWindow, [](float value) { return FloatPoint{ 0.0f, 1.0f }; });
+		actionMapping.add('s', moveWindow, [](float value) { return FloatPoint{ 0.0f, -1.0f }; });
+		actionMapping.add('a', moveWindow, [](float value) { return FloatPoint{ -1.0f, 0.0f }; });
+		actionMapping.add('d', moveWindow, [](float value) { return FloatPoint{ 1.0f, 0.0f }; });
 		actionMapping.add(GamepadStick::LEFT, moveWindow);
 	}
 

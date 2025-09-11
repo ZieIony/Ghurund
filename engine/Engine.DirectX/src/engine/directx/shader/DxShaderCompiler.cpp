@@ -91,7 +91,16 @@ namespace Ghurund::Engine::DirectX {
 		}
 	}
 
-	OwnedNotNull<ID3D12PipelineState> DxShaderCompiler::makePipelineState(
+	OwnedNotNull<DxShader, RefCountedObjectDeleter> DxShaderCompiler::build(const Array<SharedPointer<DxShaderProgram>>& programs) {
+		auto constants = makeConstants(programs);
+		auto rootSignature = makeRootSignature(&constants);
+		auto pipelineState = makePipelineState(programs, &rootSignature, false);
+		OwnedNotNull<DxShader, RefCountedObjectDeleter> shader(ghnew DxShader());
+		shader->init(std::move(rootSignature), std::move(pipelineState), std::move(constants));
+		return shader;
+	}
+
+	OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> DxShaderCompiler::makePipelineState(
 		const Array<SharedPointer<DxShaderProgram>>& programs,
 		ID3D12RootSignature* rootSignature,
 		bool supportsTransparency
@@ -164,10 +173,10 @@ namespace Ghurund::Engine::DirectX {
 			delete[] psoDesc.InputLayout.pInputElementDescs;
 		};
 
-		return pipelineState;
+		return OwnedNotNull<ID3D12PipelineState, IUnknownDeleter>(pipelineState);
 	}
 
-	OwnedNotNull<ID3D12RootSignature> DxShaderCompiler::makeRootSignature(NotNull<ShaderConstants> constants) {
+	OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> DxShaderCompiler::makeRootSignature(NotNull<ShaderConstants> constants) {
 		size_t paramCount = constants->constantBuffers.Size + constants->textureBuffers.Size + constants->textures.Size;
 		Array<CD3DX12_ROOT_PARAMETER1> rootParameters(paramCount);
 
@@ -213,14 +222,14 @@ namespace Ghurund::Engine::DirectX {
 			Logger::log(LogType::ERR0R, _T("device->CreateRootSignature() failed\n"));
 			throw CallFailedException();
 		}
-		return rootSignature;
+		return OwnedNotNull<ID3D12RootSignature, IUnknownDeleter>(rootSignature);
 	}
 
 	OwnedNotNull<ShaderConstants> DxShaderCompiler::makeConstants(const Array<SharedPointer<DxShaderProgram>>& programs) {
 		ShaderConstants* constants = ghnew ShaderConstants();
 		for (auto& program:programs)
 				initConstants(*program.get(), constants);
-		return constants;
+		return OwnedNotNull<ShaderConstants>(constants);
 	}
 
 	void DxShaderCompiler::initConstants(const DxShaderProgram& program, NotNull<ShaderConstants> constants) {

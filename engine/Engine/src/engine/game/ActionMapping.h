@@ -16,20 +16,19 @@ namespace Ghurund::Engine {
         Map<GamepadStick, IntrusivePointer<GameAction<FloatPoint>>> gamepadStickActions;
 
     public:
-        template<Derived<GameAction<float>> A>
-        inline void add(const GamepadButton& gamepadButton, IntrusivePointer<A> action) {
-            gamepadButtonActions.put(gamepadButton.Value, IntrusivePointer<GameAction<float>>(action.get()));
+        inline void add(const GamepadButton& gamepadButton, IntrusivePointer<GameAction<float>> action) {
+            gamepadButtonActions.put(gamepadButton.Value, action);
         }
 
-        template<typename To, Derived<GameAction<To>> A>
+        template<typename To, typename T>
         inline void add(
             const GamepadButton& gamepadButton,
-            IntrusivePointer<A> action,
-            std::function<To(float)> transformer
+            IntrusivePointer<GameAction<To>> action,
+            T transformer
         ) {
             gamepadButtonActions.put(
                 gamepadButton.Value,
-                IntrusivePointer<GameAction<float>>(ghnew TransformedGameAction(action, transformer))
+                makeIntrusive<TransformedGameAction<float, To, T>>(action, transformer)
             );
         }
 
@@ -37,20 +36,19 @@ namespace Ghurund::Engine {
             gamepadButtonActions.remove(gamepadButton.Value);
         }
 
-        template<Derived<GameAction<FloatPoint>> A>
-        inline void add(GamepadStick gamepadStick, IntrusivePointer<A> action) {
-            gamepadStickActions.put(gamepadStick, IntrusivePointer<GameAction<FloatPoint>>(action.get()));
+        inline void add(GamepadStick gamepadStick, IntrusivePointer<GameAction<FloatPoint>> action) {
+            gamepadStickActions.put(gamepadStick, action);
         }
 
-        template<typename To, Derived<GameAction<To>> A>
+        template<typename To, typename T>
         inline void add(
             GamepadStick gamepadStick,
-            IntrusivePointer<A> action,
-            std::function<To(FloatPoint)> transformer
+            IntrusivePointer<GameAction<To>> action,
+            T transformer
         ) {
             gamepadStickActions.put(
                 gamepadStick,
-                IntrusivePointer<GameAction<FloatPoint>>(ghnew TransformedGameAction(action, transformer))
+                makeIntrusive<TransformedGameAction<float, To, T>>(action, transformer)
             );
         }
 
@@ -58,20 +56,19 @@ namespace Ghurund::Engine {
             gamepadStickActions.remove(gamepadStick);
         }
 
-        template<Derived<GameAction<float>> A>
-        inline void add(uint8_t keyCode, IntrusivePointer<A> action) {
-            keyActions.put(toupper(keyCode), IntrusivePointer<GameAction<float>>(action.get()));
+        inline void add(uint8_t keyCode, IntrusivePointer<GameAction<float>> action) {
+            keyActions.put(toupper(keyCode), action);
         }
 
-        template<typename To, Derived<GameAction<To>> A>
+        template<typename To, typename T>
         inline void add(
             uint8_t keyCode,
-            IntrusivePointer<A> action,
-            std::function<To(float)> transformer
+            IntrusivePointer<GameAction<To>> action,
+            T transformer
         ) {
             keyActions.put(
                 toupper(keyCode),
-                IntrusivePointer<GameAction<float>>(ghnew TransformedGameAction(action, transformer))
+                makeIntrusive<TransformedGameAction<float, To, T>>(action, transformer)
             );
         }
 

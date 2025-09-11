@@ -12,6 +12,7 @@
 #include "DxShaderType.h"
 #include "TextureBufferConstant.h"
 #include "TextureConstant.h"
+#include "core/IUnknownImpl.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
@@ -81,10 +82,14 @@ namespace Ghurund::Engine::DirectX {
             return pipelineState != nullptr && rootSignature != nullptr && __super::isValid();
         }
 
-        void init(OwnedNotNull<ID3D12RootSignature> rootSignature, OwnedNotNull<ID3D12PipelineState> pipelineState, OwnedNotNull<ShaderConstants> constants) {
-            this->rootSignature = &rootSignature;
-            this->pipelineState = &pipelineState;
-            this->constants = &constants;
+        void init(
+            OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> rootSignature,
+            OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,
+            OwnedNotNull<ShaderConstants> constants
+        ) {
+            this->rootSignature = rootSignature.reset();
+            this->pipelineState = pipelineState.reset();
+            this->constants = constants.reset();
         }
 
         /*virtual void initParameters(ParameterManager& parameterManager) override;

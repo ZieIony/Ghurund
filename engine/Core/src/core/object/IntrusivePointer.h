@@ -2,6 +2,7 @@
 
 #include "RefCountedObject.h"
 #include "Common.h"
+#include "core/concepts/Concepts.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core {
@@ -23,6 +24,13 @@ namespace Ghurund::Core {
 		constexpr IntrusivePointer():pointer(nullptr) {}
 
 		IntrusivePointer(const IntrusivePointer<T>& other) {
+			pointer = other.get();
+			if (pointer)
+				pointer->addReference();
+		}
+
+		template<Derived<T> R>
+		IntrusivePointer(const IntrusivePointer<R>& other) {
 			pointer = other.get();
 			if (pointer)
 				pointer->addReference();
@@ -71,7 +79,13 @@ namespace Ghurund::Core {
 		}
 
 		inline IntrusivePointer<T>& operator=(const IntrusivePointer<T>& other) {
-			setPointer(pointer, other.pointer);
+			setPointer(pointer, other.get());
+			return *this;
+		}
+
+		template<Derived<T> R>
+		inline IntrusivePointer<T>& operator=(const IntrusivePointer<R>& other) {
+			setPointer(pointer, (T*)other.get());
 			return *this;
 		}
 
@@ -83,12 +97,14 @@ namespace Ghurund::Core {
 			return *this;
 		}
 
-		inline auto operator<=>(const IntrusivePointer<T>& other) const {
-			return pointer <=> other.pointer;
+		template<Derived<T> R>
+		inline auto operator<=>(const IntrusivePointer<R>& other) const {
+			return pointer <=> other.get();
 		}
 
-		inline bool operator==(const IntrusivePointer<T>& other) const {
-			return pointer == other.pointer;
+		template<Derived<T> R>
+		inline bool operator==(const IntrusivePointer<R>& other) const {
+			return pointer == other.get();
 		}
 
 		inline bool operator==(const nullptr_t& other) const {

@@ -4,7 +4,7 @@
 #include "core/object/NotNull.h"
 
 namespace Ghurund::Engine {
-	template<typename From, typename To, Derived<GameAction<To>> A>
+	template<typename From, typename To, typename T>
 	class TransformedGameAction:public GameAction<From> {
 #pragma region reflection
 	protected:
@@ -25,8 +25,8 @@ namespace Ghurund::Engine {
 #pragma endregion
 
 	private:
-		std::function<To(From)> transformer;
-		IntrusivePointer<A> underlyingAction;
+		T transformer;
+		IntrusivePointer<GameAction<To>> underlyingAction;
 
 		virtual void onStarted(From value) override {
 			underlyingAction->dispatchStarted(transformer(value));
@@ -42,8 +42,8 @@ namespace Ghurund::Engine {
 
 	public:
 		TransformedGameAction(
-			IntrusivePointer<A> underlyingAction,
-			std::function<To(From)> transformer
+			IntrusivePointer<GameAction<To>> underlyingAction,
+			T transformer
 		):
 			transformer(transformer),
 			underlyingAction(underlyingAction) {

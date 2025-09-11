@@ -49,7 +49,7 @@ namespace Ghurund::Engine::DirectX {
 		auto shader = compiler.build(programs);
 		//bool supportsTransparency = sourceCode.find("supportsTransparency") != sourceCode.Size;
 
-		return &shader;
+		return shader.reset();
 	}
 
 	Resource* DxShaderLoader::loadInternal(

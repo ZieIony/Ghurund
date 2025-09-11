@@ -14,7 +14,7 @@ namespace Demo {
 	private:
 		DemoApplication& app;
 		IntrusivePointer<CloseWindowAction> closeWindow;
-		IntrusivePointer<MoveWindowAction> moveWindow;
+		IntrusivePointer<GameAction<FloatPoint>> moveWindow;
 		ActionMapping actionMapping;
 
 	public:

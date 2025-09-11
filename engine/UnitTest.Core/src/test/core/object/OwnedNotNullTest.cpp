@@ -30,7 +30,18 @@ public:
             OwnedNotNull ptr(i);
             Assert::AreEqual((uint32_t)35, *i);
             Assert::AreEqual((uint32_t)35, *&ptr);
-            delete i;
+        }
+    }
+
+    TEST_METHOD(SharedPointer_reset) {
+        MemoryGuard guard;
+        {
+            uint32_t* i = ghnew uint32_t(35);
+            OwnedNotNull ptr(i);
+            uint32_t* j = ptr.reset();
+            Assert::IsNull(&ptr);
+            Assert::AreEqual((uint32_t)35, *j);
+            delete j;
         }
     }
     };

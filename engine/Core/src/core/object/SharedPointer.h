@@ -2,7 +2,7 @@
 
 #include "Common.h"
 #include "RefCountedObject.h"
-#include "core/exception/Exceptions.h"
+#include "core/concepts/Concepts.h"
 
 namespace Ghurund::Core {
 	template<typename T>
@@ -15,6 +15,13 @@ namespace Ghurund::Core {
 		constexpr SharedPointer():pointer(nullptr), referenceCount(ghnew uint32_t(1)) {}
 
 		SharedPointer(const SharedPointer<T>& other) {
+			pointer = other.pointer;
+			referenceCount = other.referenceCount;
+			(*referenceCount)++;
+		}
+
+		template<Derived<T> R>
+		SharedPointer(const SharedPointer<R>& other) {
 			pointer = other.pointer;
 			referenceCount = other.referenceCount;
 			(*referenceCount)++;
@@ -78,13 +85,33 @@ namespace Ghurund::Core {
 			return *this;
 		}
 
-		inline auto operator<=>(const SharedPointer<T>& other) const {
+		template<Derived<T> R>
+		inline SharedPointer<T>& operator=(const SharedPointer<R>& other) {
+			if (*this == other)
+				return *this;
+			if (*referenceCount > 1) {
+				(*referenceCount)--;
+			} else {
+				delete referenceCount;
+				delete pointer;
+			}
+			pointer = other.pointer;
+			referenceCount = other.referenceCount;
+			if (pointer) {
+				(*referenceCount)++;
+			}
+			return *this;
+		}
+
+		template<Derived<T> R>
+		inline auto operator<=>(const SharedPointer<R>& other) const {
 			if (pointer == other.pointer)
 				return referenceCount <=> other.referenceCount;
 			return pointer <=> other.pointer;
 		}
 
-		inline bool operator==(const SharedPointer<T>& other) const {
+		template<Derived<T> R>
+		inline bool operator==(const SharedPointer<R>& other) const {
 			return pointer == other.pointer && referenceCount == other.referenceCount;
 		}
 
@@ -93,14 +120,8 @@ namespace Ghurund::Core {
 		}
 	};
 
-	template<typename T, typename... Args>
+	template<NotDerived<RefCountedObject> T, typename... Args>
 	SharedPointer<T> makeShared(Args&&... args) {
 		return SharedPointer(ghnew T(std::forward<Args>(args)...));
 	}
-
-	/**
-	* For RefCountedObjects use makeIntrusive<T>(...)
-	**/
-	template<std::derived_from<RefCountedObject> T, typename... Args>
-	SharedPointer<T> makeShared(Args&&... args) = delete;
 }

@@ -128,4 +128,12 @@ namespace Ghurund::Core {
             pointer = nullptr;
         }
     }
+
+    class RefCountedObjectDeleter {
+    public:
+        inline void operator()(RefCountedObject* obj) {
+            if(obj)
+                obj->release();
+        }
+    };
 }
