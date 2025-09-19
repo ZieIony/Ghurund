@@ -96,6 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\test\game\action\TestGameAction.h" />
     <ClInclude Include="src\test\opengl\shader\TestShaderSources.h" />
     <ClInclude Include="src\utepch.h" />
   </ItemGroup>
@@ -103,6 +104,8 @@
     <ClCompile Include="src\test\directx\mesh\DxMeshTest.cpp" />
     <ClCompile Include="src\test\directx\shader\DxShaderCompilerTest.cpp" />
     <ClCompile Include="src\test\directx\shader\DxShaderLoaderTest.cpp" />
+    <ClCompile Include="src\test\game\action\ActionMappingTest.cpp" />
+    <ClCompile Include="src\test\game\action\FloatGameActionTest.cpp" />
     <ClCompile Include="src\test\graphics\mesh\MeshDataLoaderTest.cpp" />
     <ClCompile Include="src\test\graphics\mesh\MeshDataTest.cpp" />
     <ClCompile Include="src\test\graphics\mesh\VertexStreamTest.cpp" />

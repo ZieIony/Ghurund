@@ -8,29 +8,29 @@ namespace Ghurund::Core {
         LEFT, MIDDLE, RIGHT, VIRTUAL
     };
 
-    enum class MouseAction {
+    enum class MouseButtonAction {
         PRESSED, DOWN, RELEASED
     };
 
     class MouseButtonEventArgs:public MouseEventArgs {
     private:
-        MouseAction action;
+        MouseButtonAction action;
         MouseButton button;
         uint64_t pressedDuration;
 
     public:
-        MouseButtonEventArgs(const IntPoint& pos, MouseAction action, MouseButton button, uint64_t pressedDuration, uint64_t time, bool inside):
+        MouseButtonEventArgs(const IntPoint& pos, MouseButtonAction action, MouseButton button, uint64_t pressedDuration, uint64_t time, bool inside):
             MouseEventArgs(pos, time, inside),
             action(action),
             button(button),
             pressedDuration(pressedDuration){
         }
 
-        inline MouseAction getAction() const {
+        inline MouseButtonAction getAction() const {
             return action;
         }
 
-        __declspec(property(get = getAction)) MouseAction Action;
+        __declspec(property(get = getAction)) MouseButtonAction Action;
 
         inline MouseButton getButton() const {
             return button;

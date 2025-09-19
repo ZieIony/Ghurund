@@ -2,6 +2,7 @@
 
 #include "core/application/Application.h"
 #include "core/application/ApplicationWindow.h"
+#include "engine/game/action/ActionMapping.h"
 #include "engine/graphics/Renderer.h"
 
 namespace Ghurund::Engine {
@@ -23,8 +24,37 @@ namespace Ghurund::Engine {
     private:
         Renderer* renderer = nullptr;
         std::unique_ptr<RenderingContext> renderingContext;
+        ActionMapping actionMapping;
 
     protected:
+        virtual bool onGamepadButtonEvent(const GamepadButtonEventArgs& event) override {
+            return actionMapping.onGamepadButtonEvent(event);
+        }
+
+        virtual bool onGamepadStickEvent(const GamepadStickEventArgs& event) override {
+            return actionMapping.onGamepadStickEvent(event);
+        }
+
+        virtual bool onGamepadTriggerEvent(const GamepadTriggerEventArgs& event) override {
+            return actionMapping.onGamepadTriggerEvent(event);
+        }
+
+        virtual bool onKeyEvent(const KeyEventArgs& event) override {
+            return __super::onKeyEvent(event) || actionMapping.onKeyEvent(event);
+        }
+
+        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override {
+            return __super::onMouseButtonEvent(event) || actionMapping.onMouseButtonEvent(event);
+        }
+
+        virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override {
+            return __super::onMouseMotionEvent(event) || actionMapping.onMouseMotionEvent(event);
+        }
+
+        virtual bool onMouseWheelEvent(const MouseWheelEventArgs& event) override {
+            return __super::onMouseWheelEvent(event) || actionMapping.onMouseWheelEvent(event);
+        }
+        
         virtual bool onSizeChanged() override;
 
     public:
@@ -53,6 +83,12 @@ namespace Ghurund::Engine {
         }
 
         __declspec(property(get = getRenderer, put = setRenderer)) Renderer* Renderer;
+
+        ActionMapping* getActionMapping() {
+            return &actionMapping;
+        }
+
+        __declspec(property(get = getActionMapping)) ActionMapping* ActionMapping;
 
         virtual void update(const uint64_t time) override;
 

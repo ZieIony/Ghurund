@@ -3,6 +3,8 @@
 #include "DemoApplication.h"
 #include "core/Colors.h"
 #include "core/window/DisplayManager.h"
+#include "CloseWindowAction.h"
+#include "MoveWindowAction.h"
 
 namespace Demo {
 	DemoWindow::DemoWindow(
@@ -15,57 +17,26 @@ namespace Demo {
 		BackgroundColor = &Colors::LIGHT_CORAL;
 
 		closeWindow = makeIntrusive<CloseWindowAction>(*this);
-		actionMapping.add(GamepadButton::A, closeWindow);
+		ActionMapping->add(0, GamepadButton::A, closeWindow.get());
+		ActionMapping->add(0, GamepadTrigger::LEFT, NotNull<GameAction<bool>>(closeWindow.get()), [](float value) { return value > 0.5f; });
 
 		moveWindow = makeIntrusive<MoveWindowAction>(*this, Application->Timer);
-		actionMapping.add('w', moveWindow, [](float value) { return FloatPoint{ 0.0f, 1.0f }; });
-		actionMapping.add('s', moveWindow, [](float value) { return FloatPoint{ 0.0f, -1.0f }; });
-		actionMapping.add('a', moveWindow, [](float value) { return FloatPoint{ -1.0f, 0.0f }; });
-		actionMapping.add('d', moveWindow, [](float value) { return FloatPoint{ 1.0f, 0.0f }; });
-		actionMapping.add(GamepadStick::LEFT, moveWindow);
+		ActionMapping->add<FloatPoint>('w', moveWindow.get(), [](float value) { return FloatPoint{ 0.0f, 1.0f }; });
+		ActionMapping->add<FloatPoint>('s', moveWindow.get(), [](float value) { return FloatPoint{ 0.0f, -1.0f }; });
+		ActionMapping->add<FloatPoint>('a', moveWindow.get(), [](float value) { return FloatPoint{ -1.0f, 0.0f }; });
+		ActionMapping->add<FloatPoint>('d', moveWindow.get(), [](float value) { return FloatPoint{ 1.0f, 0.0f }; });
+		ActionMapping->add(0, GamepadStick::LEFT, moveWindow.get());
+		ActionMapping->add(1, GamepadStick::RIGHT, moveWindow.get());
 	}
 
 	DemoWindow::~DemoWindow() {
-		actionMapping.remove('w');
-		actionMapping.clear();
-	}
-
-	bool DemoWindow::onGamepadButtonEvent(const GamepadButtonEventArgs& args) {
-		bool result = __super::onGamepadButtonEvent(args);
-		if (result)
-			return true;
-
-		if (actionMapping.dispatchGamepadButtonEvent(args))
-			return true;
-
-		return false;
-	}
-
-	bool DemoWindow::onGamepadStickEvent(const GamepadStickEventArgs& args) {
-		bool result = __super::onGamepadStickEvent(args);
-		if (result)
-			return true;
-
-		if (actionMapping.dispatchGamepadStickEvent(args))
-			return true;
-
-		if (args.Stick == GamepadStick::RIGHT) {
-			auto p = args.Point;
-			if (std::sqrtf(std::powf(p.x, 2.0f) + std::powf(p.y, 2.0f)) > 0.1f) {
-				double dt = Application->Timer->FrameTime;
-				auto v = args.Point * dt * 1000;
-				Position = Position + IntPoint{ (int32_t)v.x, -(int32_t)v.y };
-			}
-		}
-		return false;
+		ActionMapping->remove('w');
+		ActionMapping->clear();
 	}
 
 	bool DemoWindow::onKeyEvent(const KeyEventArgs& args) {
 		bool result = __super::onKeyEvent(args);
 		if (result)
-			return true;
-
-		if (actionMapping.dispatchKeyEvent(args))
 			return true;
 
 		if (args.KeyCode == VK_SPACE) {

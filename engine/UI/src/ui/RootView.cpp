@@ -41,7 +41,7 @@ namespace Ghurund::UI {
 			if (capturedChild) {
 				auto mouseButtonEvent = MouseButtonEventArgs(
 					{ -1,-1 },
-					MouseAction::RELEASED,
+					MouseButtonAction::RELEASED,
 					MouseButton::VIRTUAL,
 					0,
 					event.TimeMs,

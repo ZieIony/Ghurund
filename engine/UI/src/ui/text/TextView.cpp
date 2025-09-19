@@ -344,7 +344,7 @@ namespace Ghurund::UI {
 
     bool TextView::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
         if (event.Button == MouseButton::LEFT) {
-            if (event.Action == MouseAction::PRESSED) {
+            if (event.Action == MouseButtonAction::PRESSED) {
                 pressed = true;
                 setSelectionFromPoint((float)event.Position.x, (float)event.Position.y, Context->Window->Input->isShiftDown());
                 Parent->CapturedChild = this;

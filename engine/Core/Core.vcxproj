@@ -99,6 +99,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\input\gamepad\GamepadInput.h" />
     <ClInclude Include="src\core\input\gamepad\GamepadStickEventArgs.h" />
     <ClInclude Include="src\core\input\gamepad\GamepadTriggerEventArgs.h" />
     <ClInclude Include="src\core\input\gamepad\GamepadButtonState.h" />
@@ -284,6 +285,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\Color.cpp" />
+    <ClCompile Include="src\core\input\gamepad\GamepadInput.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
     <ClCompile Include="src\core\allocation\SimpleBufferStrategy.cpp" />

@@ -3,7 +3,6 @@
 #include "gamepad/GamepadButtonEventArgs.h"
 
 #include <Windows.h>
-#include <xinput.h>
 #include <windowsx.h>
 
 namespace Ghurund::Core {
@@ -34,12 +33,12 @@ namespace Ghurund::Core {
 				if (msg == WM_LBUTTONDOWN) {
 					mouseButtonLeft.isDown = true;
 					mouseButtonLeft.pressedTime = time;
-					consumer->dispatchMouseButtonEvent(MouseButtonEventArgs(p, MouseAction::PRESSED, MouseButton::LEFT, 0, time, true));
+					consumer->dispatchMouseButtonEvent(MouseButtonEventArgs(p, MouseButtonAction::PRESSED, MouseButton::LEFT, 0, time, true));
 				} else if (msg == WM_LBUTTONUP) {
 					mouseButtonLeft.isDown = false;
 					auto event = MouseButtonEventArgs(
 						p,
-						MouseAction::RELEASED,
+						MouseButtonAction::RELEASED,
 						MouseButton::LEFT,
 						time - mouseButtonLeft.pressedTime,
 						time,
@@ -49,12 +48,12 @@ namespace Ghurund::Core {
 				} else if (msg == WM_MBUTTONDOWN) {
 					mouseButtonMiddle.isDown = true;
 					mouseButtonMiddle.pressedTime = time;
-					consumer->dispatchMouseButtonEvent(MouseButtonEventArgs(p, MouseAction::PRESSED, MouseButton::MIDDLE, 0, time, true));
+					consumer->dispatchMouseButtonEvent(MouseButtonEventArgs(p, MouseButtonAction::PRESSED, MouseButton::MIDDLE, 0, time, true));
 				} else if (msg == WM_MBUTTONUP) {
 					mouseButtonMiddle.isDown = false;
 					auto event = MouseButtonEventArgs(
 						p,
-						MouseAction::RELEASED,
+						MouseButtonAction::RELEASED,
 						MouseButton::MIDDLE,
 						time - mouseButtonMiddle.pressedTime,
 						time,
@@ -64,12 +63,12 @@ namespace Ghurund::Core {
 				} else if (msg == WM_RBUTTONDOWN) {
 					mouseButtonRight.isDown = true;
 					mouseButtonRight.pressedTime = time;
-					consumer->dispatchMouseButtonEvent(MouseButtonEventArgs(p, MouseAction::PRESSED, MouseButton::RIGHT, 0, time, true));
+					consumer->dispatchMouseButtonEvent(MouseButtonEventArgs(p, MouseButtonAction::PRESSED, MouseButton::RIGHT, 0, time, true));
 				} else if (msg == WM_RBUTTONUP) {
 					mouseButtonRight.isDown = false;
 					auto event = MouseButtonEventArgs(
 						p,
-						MouseAction::RELEASED,
+						MouseButtonAction::RELEASED,
 						MouseButton::RIGHT,
 						time - mouseButtonRight.pressedTime,
 						time,
@@ -92,7 +91,7 @@ namespace Ghurund::Core {
 		if (mouseButtonLeft.isDown) {
 			auto event = MouseButtonEventArgs(
 				prevMousePos,
-				MouseAction::DOWN,
+				MouseButtonAction::DOWN,
 				MouseButton::LEFT,
 				time - mouseButtonLeft.pressedTime,
 				time,
@@ -103,7 +102,7 @@ namespace Ghurund::Core {
 		if (mouseButtonMiddle.isDown) {
 			auto event = MouseButtonEventArgs(
 				prevMousePos,
-				MouseAction::DOWN,
+				MouseButtonAction::DOWN,
 				MouseButton::MIDDLE,
 				time - mouseButtonMiddle.pressedTime,
 				time,
@@ -114,7 +113,7 @@ namespace Ghurund::Core {
 		if (mouseButtonRight.isDown) {
 			auto event = MouseButtonEventArgs(
 				prevMousePos,
-				MouseAction::DOWN,
+				MouseButtonAction::DOWN,
 				MouseButton::RIGHT,
 				time - mouseButtonRight.pressedTime,
 				time,
@@ -125,84 +124,14 @@ namespace Ghurund::Core {
 	}
 
 	void Input::dispatchKeyDownEvents(uint64_t time, NotNull<EventConsumer> consumer) {
+		EventConsumer* c = &consumer;
 		for (size_t i = 0; i < keys.Size; i++) {
 			if (keys[i].isDown)
-				consumer->dispatchKeyEvent(KeyEventArgs(KeyAction::DOWN, i, keys[i].pressedTime, time));
+				c->dispatchKeyEvent(KeyEventArgs(KeyAction::DOWN, i, keys[i].pressedTime, time));
 		}
 	}
 
 	void Input::dispatchGamepadEvents(uint64_t time, NotNull<EventConsumer> consumer) {
-		for (uint8_t gamepadIndex = 0; gamepadIndex < getMaxGamepads(); gamepadIndex++) {
-			auto state = getGamepadState(gamepadIndex);
-			if (state) {
-				for (size_t j = 0; j < gamepadButtonState.Size; j++) {
-					auto& gamepadButton = GamepadButton::VALUES[j];
-					auto& buttonState = gamepadButtonState[j];
-					bool down = state->isButtonDown(gamepadButton);
-					if (down && !buttonState.isDown) {
-						auto event = GamepadButtonEventArgs(
-							gamepadIndex,
-							GamepadButtonAction::PRESSED,
-							gamepadButton,
-							0,
-							time
-						);
-						consumer->dispatchGamepadButtonEvent(event);
-						buttonState.isDown = true;
-						buttonState.pressedTime = time;
-					}
-					if (!down && buttonState.isDown) {
-						auto event = GamepadButtonEventArgs(
-							gamepadIndex,
-							GamepadButtonAction::RELEASED,
-							gamepadButton,
-							time - buttonState.pressedTime,
-							time
-						);
-						consumer->dispatchGamepadButtonEvent(event);
-						buttonState.isDown = false;
-					}
-					if (down && buttonState.isDown) {
-						auto event = GamepadButtonEventArgs(
-							gamepadIndex,
-							GamepadButtonAction::DOWN,
-							gamepadButton,
-							time - buttonState.pressedTime,
-							time
-						);
-						consumer->dispatchGamepadButtonEvent(event);
-					}
-				}
-				consumer->dispatchGamepadStickEvent(GamepadStickEventArgs(gamepadIndex, GamepadStick::LEFT, state->LeftStick, time));
-				consumer->dispatchGamepadStickEvent(GamepadStickEventArgs(gamepadIndex, GamepadStick::RIGHT, state->RightStick, time));
-				consumer->dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(gamepadIndex, GamepadTrigger::LEFT, state->LeftTrigger, time));
-				consumer->dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(gamepadIndex, GamepadTrigger::RIGHT, state->RightTrigger, time));
-				delete state;
-			}
-		}
-	}
-
-	uint8_t Input::getMaxGamepads() const {
-		return XUSER_MAX_COUNT;
-	}
-
-	GamepadState* Input::getGamepadState(uint8_t index) {
-		DWORD dwResult;
-		XINPUT_STATE state = {};
-
-		dwResult = XInputGetState(index, &state);
-
-		if (dwResult == ERROR_SUCCESS) {
-			auto gamepad = state.Gamepad;
-			return ghnew GamepadState(
-				(uint16_t)gamepad.wButtons,
-				FloatPoint{ shortToFloat(gamepad.sThumbLX), shortToFloat(gamepad.sThumbLY) },
-				FloatPoint{ shortToFloat(gamepad.sThumbRX), shortToFloat(gamepad.sThumbRY) },
-				gamepad.bLeftTrigger / 255.0f,
-				gamepad.bRightTrigger / 255.0f
-			);
-		} else {
-			return nullptr;
-		}
+		gamepadInput.dispatchEvents(time, consumer);
 	}
 }

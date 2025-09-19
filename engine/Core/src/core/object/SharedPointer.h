@@ -20,13 +20,6 @@ namespace Ghurund::Core {
 			(*referenceCount)++;
 		}
 
-		template<Derived<T> R>
-		SharedPointer(const SharedPointer<R>& other) {
-			pointer = other.pointer;
-			referenceCount = other.referenceCount;
-			(*referenceCount)++;
-		}
-
 		explicit SharedPointer(T* p):referenceCount(ghnew uint32_t(1)) {
 			pointer = p;
 		}

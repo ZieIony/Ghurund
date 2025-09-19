@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/object/RefCountedObject.h"
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
@@ -25,26 +26,11 @@ namespace Ghurund::Engine {
 		inline static const Ghurund::Core::Type& TYPE = GameAction::GET_TYPE();
 #pragma endregion
 
-	protected:
+	public:
 		virtual void onStarted(T value) {}
 
 		virtual void onInProgress(T value, uint64_t duration) {}
 
-		virtual void onFinished(uint64_t duration) {}
-
-	public:
-		virtual ~GameAction() = 0 {}
-
-		void dispatchStarted(T value) {
-			onStarted(value);
-		}
-
-		void dispatchInProgress(T value, uint64_t duration) {
-			onInProgress(value, duration);
-		}
-
-		void dispatchFinished(uint64_t duration) {
-			onFinished(duration);
-		}
+		virtual void onFinished(T value, uint64_t duration) {}
 	};
 }

@@ -22,11 +22,11 @@ namespace Ghurund::UI {
 	}
 
 	bool InteractionHandler::onMouseButtonEvent(const MouseButtonEventArgs& event) {
-		if (event.Action == MouseAction::PRESSED && !buttons[event.Button]) {
+		if (event.Action == MouseButtonAction::PRESSED && !buttons[event.Button]) {
 			buttons[event.Button] = true;
 			isPressed = buttons;
 			return pressed(MousePressedEventArgs(event.Position, event.Button, event.TimeMs));
-		} else if (event.Action == MouseAction::RELEASED && buttons[event.Button]) {
+		} else if (event.Action == MouseButtonAction::RELEASED && buttons[event.Button]) {
 			buttons[event.Button] = false;
 			isPressed = buttons;
 			return clicked(MouseClickedEventArgs(event.Position, event.Button, event.TimeMs, event.Inside));

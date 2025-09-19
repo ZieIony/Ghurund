@@ -32,13 +32,13 @@ namespace Ghurund::Engine {
 	}
 
 	bool CameraController::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
-		if (event.Action == MouseAction::PRESSED) {
+		if (event.Action == MouseButtonAction::PRESSED) {
 			pressed = true;
 			pressedButton = event.Button;
 			if (window != nullptr)
 				SetCapture(window->Handle);
 			return true;
-		} else if (event.Action == MouseAction::RELEASED) {
+		} else if (event.Action == MouseButtonAction::RELEASED) {
 			pressed = false;
 			ReleaseCapture();
 			return true;
