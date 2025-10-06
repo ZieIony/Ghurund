@@ -28,14 +28,14 @@ namespace Ghurund::Core {
     private:
         HCURSOR handle;
 
+        Cursor(CursorEnum value, const char* name, const tchar* resource):Enum<CursorEnum, Cursor>(value, name) {
+            handle = LoadCursor(nullptr, resource);
+        }
+
     public:
         static const Cursor APPSTARTING, ARROW, CROSS,
             HAND, HELP, IBEAM, NO, SIZEALL, SIZENESW,
             SIZENS, SIZENWSE, SIZEWE, UPARROW, WAIT;
-
-        Cursor(CursorEnum value, const char* name, const tchar* resource):Enum<CursorEnum, Cursor>(value, name) {
-            handle = LoadCursor(nullptr, resource);
-        }
 
         void set() const {
             SetCursor(handle);

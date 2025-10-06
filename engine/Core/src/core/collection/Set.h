@@ -44,12 +44,16 @@ namespace Ghurund::Core {
 			__super::put(key);
 		}
 
-		Set& operator=(const Set& other) {
+		inline Set& operator=(const Set& other) {
+			if (this == &other)
+				return *this;
 			__super::operator=(other);
 			return *this;
 		}
 
-		Set& operator=(Set&& other) {
+		inline Set& operator=(Set&& other) {
+			if (this == &other)
+				return *this;
 			__super::operator=(std::move(other));
 			return *this;
 		}

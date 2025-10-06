@@ -14,9 +14,11 @@ namespace Ghurund::Core {
     };
 
     class FileChange:public Enum<FileChangeEnum, FileChange> {
+    private:
+        FileChange(FileChangeEnum value, const char* name):Enum<FileChangeEnum, FileChange>(value, name) {}
+
     public:
         static const FileChange& ADDED, & REMOVED, & MODIFIED, & RENAMED_FROM, & RENAMED_TO;
 
-        FileChange(FileChangeEnum value, const char* name):Enum<FileChangeEnum, FileChange>(value, name) {}
     };
 }

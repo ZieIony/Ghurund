@@ -21,7 +21,7 @@ namespace Ghurund::Core {
 
     template<>
     const Type& getType<GamepadButton>() {
-        static Type TYPE = Type(Ghurund::Core::NAMESPACE_NAME, "GamepadButton", sizeof(GamepadButton));
+        static Type TYPE = TypeBuilder<GamepadButton>();
         return TYPE;
     }
 }

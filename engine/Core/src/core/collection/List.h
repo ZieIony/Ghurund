@@ -22,12 +22,16 @@ namespace Ghurund::Core {
 
         List(List&& t1):ArrayCollection<Value, AllocatorType>(std::move(t1)) {}
 
-        List<Value, AllocatorType>& operator=(const List<Value, AllocatorType>& other) {
+        inline List<Value, AllocatorType>& operator=(const List<Value, AllocatorType>& other) {
+            if (this == &other)
+                return *this;
             __super::operator=(other);
             return *this;
         }
 
-        List<Value, AllocatorType>& operator=(List<Value, AllocatorType>&& other) noexcept {
+        inline List<Value, AllocatorType>& operator=(List<Value, AllocatorType>&& other) {
+            if (this == &other)
+                return *this;
             __super::operator=(std::move(other));
             return *this;
         }

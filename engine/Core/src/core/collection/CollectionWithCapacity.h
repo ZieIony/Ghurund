@@ -38,7 +38,7 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getCapacity)) size_t Capacity;
 
-        CollectionWithCapacity& operator=(const CollectionWithCapacity& other) {
+        inline CollectionWithCapacity& operator=(const CollectionWithCapacity& other) {
             if (this == &other)
                 return *this;
             __super::operator=(other);
@@ -47,7 +47,7 @@ namespace Ghurund::Core {
             return *this;
         }
 
-        CollectionWithCapacity& operator=(CollectionWithCapacity&& other) noexcept {
+        inline CollectionWithCapacity& operator=(CollectionWithCapacity&& other) noexcept {
             if (this == &other)
                 return *this;
             __super::operator=(std::move(other));

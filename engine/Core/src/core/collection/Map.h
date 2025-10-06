@@ -51,12 +51,16 @@ namespace Ghurund::Core {
 			__super::put(key, value);
 		}
 
-		Map& operator=(const Map& other) {
+		inline Map& operator=(const Map& other) {
+			if (this == &other)
+				return *this;
 			__super::operator=(other);
 			return *this;
 		}
 
-		Map& operator=(Map&& other) {
+		inline Map& operator=(Map&& other) {
+			if (this == &other)
+				return *this;
 			__super::operator=(std::move(other));
 			return *this;
 		}

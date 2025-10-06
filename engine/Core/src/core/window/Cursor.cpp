@@ -19,7 +19,7 @@ namespace Ghurund::Core {
 
     template<>
     const Type& getType<Cursor>() {
-        static Type TYPE = Type(Ghurund::Core::NAMESPACE_NAME, "Cursor", sizeof(Cursor));
+        static Type TYPE = TypeBuilder<Cursor>();
         return TYPE;
     }
 }

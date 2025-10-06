@@ -11,22 +11,20 @@ namespace Ghurund::Engine {
 
     class ParameterType:public Enum<ParameterTypeEnum, ParameterType> {
     private:
-        unsigned int size;
+        uint32_t size;
+
+        ParameterType(ParameterTypeEnum value, const char* name, uint32_t size):Enum<ParameterTypeEnum, ParameterType>(value, name), size(size) {}
 
     public:
         static const ParameterType INT, INT2, FLOAT, FLOAT2, FLOAT3, MATRIX, COLOR, TEXTURE;
 
-        ParameterType(ParameterTypeEnum value, const char* name, unsigned int size):Enum<ParameterTypeEnum, ParameterType>(value, name) {
-            this->size = size;
-        }
-
-        unsigned int getSize() const {
+        uint32_t getSize() const {
             return size;
         }
 
-        __declspec(property(get = getSize)) unsigned int Size;
+        __declspec(property(get = getSize)) uint32_t Size;
 
-        static const ParameterType &fromSize(size_t size) {
+        static const ParameterType &fromSize(uint32_t size) {
             if (size == 4) {
                 return ParameterType::FLOAT;
             } else if (size == 8) {

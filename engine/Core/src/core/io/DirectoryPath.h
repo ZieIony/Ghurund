@@ -22,17 +22,17 @@ namespace Ghurund::Core {
 
 		DirectoryPath(DirectoryPath&& path) noexcept:Path(std::move(path)) {}
 
-		DirectoryPath& operator=(const DirectoryPath& other) {
+		inline DirectoryPath& operator=(const DirectoryPath& other) {
 			if (this == &other)
 				return *this;
-			this->__super::operator=(other);
+			__super::operator=(other);
 			return *this;
 		}
 
-		DirectoryPath& operator=(DirectoryPath&& other) noexcept {
+		inline DirectoryPath& operator=(DirectoryPath&& other) noexcept {
 			if (this == &other)
 				return *this;
-			this->__super::operator=(other);
+			__super::operator=(std::move(other));
 			return *this;
 		}
 

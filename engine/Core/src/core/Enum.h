@@ -4,6 +4,7 @@
 #include "core/string/String.h"
 #include "core/exception/Exceptions.h"
 #include "core/object/Noncopyable.h"
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core {
 
@@ -57,10 +58,7 @@ namespace Ghurund::Core {
     class Enum {
     private:
 		EnumValueType value;
-        const AString name;
-
-        Enum(const Enum& other) = delete;
-        Enum(Enum&& other) = delete;
+        AString name;
 
     protected:
         Enum(EnumValueType value, const AString& name):name(name), value(value) {
@@ -86,6 +84,10 @@ namespace Ghurund::Core {
             throw InvalidParamException();
         }
 
+        Enum(const Enum& other):value(other.value), name(other.name) {}
+
+        Enum(Enum&& other) noexcept:value(other.value), name(std::move(other.name)) {}
+
         inline EnumValueType getValue() const {
             return value;
         }
@@ -104,6 +106,26 @@ namespace Ghurund::Core {
 
         inline bool operator==(const Enum& type) {
             return this->value == type.value;
+        }
+
+        Enum& operator=(const Enum& other) {
+            if (this == &other)
+                return *this;
+            value = other.value;
+            name = other.name;
+            return *this;
+        }
+
+        Enum& operator=(Enum&& other) noexcept {
+            if (this == &other)
+                return *this;
+            value = std::move(other.value);
+            name = std::move(other.name);
+            return *this;
+        }
+
+        inline auto operator<=>(const Enum& other) const {
+			return value <=> other.value;
         }
     };
 }

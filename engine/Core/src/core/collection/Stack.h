@@ -18,11 +18,15 @@ namespace Ghurund::Core {
         Stack(Stack&& t1):ArrayCollection<Value, AllocatorType>(std::move(t1)) {}
 
         inline Stack<Value, AllocatorType>& operator=(const Stack<Value, AllocatorType>& other) {
+            if (this == &other)
+                return *this;
             __super::operator=(other);
             return *this;
         }
 
-        inline Stack<Value, AllocatorType>& operator=(Stack<Value, AllocatorType>&& other) noexcept {
+        inline Stack<Value, AllocatorType>& operator=(Stack<Value, AllocatorType>&& other) {
+            if (this == &other)
+                return *this;
             __super::operator=(std::move(other));
             return *this;
         }

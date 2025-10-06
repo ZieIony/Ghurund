@@ -98,6 +98,7 @@
   <ItemGroup>
     <ClInclude Include="src\test\MemoryGuard.h" />
     <ClInclude Include="src\test\TestClass.h" />
+    <ClInclude Include="src\test\TestEnum.h" />
     <ClInclude Include="src\test\TestLogOutput.h" />
     <ClInclude Include="src\test\TestUtils.h" />
     <ClInclude Include="src\test\core\collection\TestAllocator.h" />
@@ -108,6 +109,8 @@
     <ClInclude Include="src\utcpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\test\core\EnumTest.cpp" />
+    <ClCompile Include="src\test\TestEnum.cpp" />
     <ClCompile Include="src\test\TestUtils.cpp" />
     <ClCompile Include="src\test\core\BufferTest.cpp" />
     <ClCompile Include="src\test\core\ColorTest.cpp" />

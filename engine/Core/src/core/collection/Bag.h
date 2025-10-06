@@ -20,11 +20,15 @@ namespace Ghurund::Core {
         Bag(Bag&& t1):ArrayCollection<Value, AllocatorType>(std::move(t1)) {}
 
         inline Bag<Value, AllocatorType>& operator=(const Bag<Value, AllocatorType>& other) {
+            if (this == &other)
+                return *this;
             __super::operator=(other);
             return *this;
         }
 
-        inline Bag<Value, AllocatorType>& operator=(Bag<Value, AllocatorType>&& other) noexcept {
+        inline Bag<Value, AllocatorType>& operator=(Bag<Value, AllocatorType>&& other) {
+            if (this == &other)
+                return *this;
             __super::operator=(std::move(other));
             return *this;
         }

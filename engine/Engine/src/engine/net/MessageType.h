@@ -10,9 +10,10 @@ namespace Ghurund::Net {
     };
 
     class MessageType:public Enum<MessageTypeEnum, MessageType> {
+    private:
+        MessageType(MessageTypeEnum value, const char* name):Enum<MessageTypeEnum, MessageType>(value, name) {}
+
     public:
         static const MessageType RELIABLE, CONFIRM, UPDATE, REFRESH;
-
-        MessageType(MessageTypeEnum value, const char* name):Enum<MessageTypeEnum, MessageType>(value, name) {}
     };
 }

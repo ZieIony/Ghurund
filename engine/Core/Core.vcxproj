@@ -103,6 +103,7 @@
     <ClInclude Include="src\core\input\gamepad\GamepadStickEventArgs.h" />
     <ClInclude Include="src\core\input\gamepad\GamepadTriggerEventArgs.h" />
     <ClInclude Include="src\core\input\gamepad\GamepadButtonState.h" />
+    <ClInclude Include="src\core\input\keyboard\KeyboardKey.h" />
     <ClInclude Include="src\core\input\keyboard\KeyEventArgs.h" />
     <ClInclude Include="src\core\input\keyboard\KeyState.h" />
     <ClInclude Include="src\core\input\mouse\MouseButtonState.h" />
