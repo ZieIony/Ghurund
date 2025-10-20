@@ -27,5 +27,6 @@ namespace Ghurund::Engine {
     void GameWindow::update(const uint64_t time) {
         __super::update(time);
         Input->dispatchGamepadEvents(time, *this);
+        actionMapping.executeDispatches();
     }
 }

@@ -1,37 +1,27 @@
 #pragma once
 
-#include "GameAction.h"
+#include "BaseGameActionDispatcher.h"
+#include "GameActionDispatchTask.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
 
 	template<typename T>
-	class BaseGameActionDispatcher {
-		/*
-	protected:
-		A* action;
-		uint64_t startTime;
-		T value;
-
+	class GameActionDispatcher:public BaseGameActionDispatcher<T> {
 	public:
-		GameActionDispatcher(A* action, T initialValue = {}):action(action), value(initialValue) {}
-*/
-	public:
-		virtual ~BaseGameActionDispatcher() = 0 {}
+		GameActionDispatcher(GameAction<T>* action, uint8_t priority)
+			:BaseGameActionDispatcher<T>(IntrusivePointer<BaseGameAction>((BaseGameAction*)action), priority) {
+			action->addReference();
+		}
 
-		virtual void dispatchEvent(T value, uint64_t time) = 0;
-	};
-
-	template<typename T>
-	class GameActionDispatcher:BaseGameActionDispatcher<T> {
-		/*
-	protected:
-		A* action;
-		uint64_t startTime;
-		T value;
-
-	public:
-		GameActionDispatcher(A* action, T initialValue = {}):action(action), value(initialValue) {}
-*/
+		virtual OwnedNotNull<BaseGameActionDispatchEventTask> makeDispatchEventTask(T value, uint64_t time) override {
+			BaseGameActionDispatcher<T>::action->addReference();
+			return OwnedNotNull<BaseGameActionDispatchEventTask>(ghnew GameActionDispatchEventTask<T>(
+				BaseGameActionDispatcher<T>::priority,
+				value,
+				time,
+				IntrusivePointer<GameAction<T>>((GameAction<T>*)BaseGameActionDispatcher<T>::action.get())
+			));
+		}
 	};
 }

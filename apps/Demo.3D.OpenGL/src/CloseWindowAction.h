@@ -10,7 +10,7 @@ namespace Demo {
 	private:
 		Ghurund::Engine::GameWindow* window;
 
-		virtual void onFinished(bool value, uint64_t duration) override {
+		virtual void onFinished(uint64_t duration) override {
 			window->Visible = false;
 			window->Application->quit();
 		}

@@ -16,18 +16,62 @@ namespace UnitTest {
     TEST_CLASS(ActionMappingTest) {
     public:
 
+        TEST_METHOD(ActionMapping_noExecuteDispatches) {
+            MemoryGuard guard;
+            {
+                ActionMapping mapping;
+                auto action = makeIntrusive<TestBoolAction>();
+                mapping.gamepadButtonActions.put(0, GamepadButton::A, action.get());
+
+                mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::PRESSED, GamepadButton::A, 0, 0));
+                Assert::IsTrue(TestActionState::IDLE == action->state);
+                mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::DOWN, GamepadButton::A, 0, 0));
+                Assert::IsTrue(TestActionState::IDLE == action->state);
+                mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::RELEASED, GamepadButton::A, 0, 0));
+                Assert::IsTrue(TestActionState::IDLE == action->state);
+            }
+        }
+
+        TEST_METHOD(ActionMapping_multipleExecuteDispatches) {
+            MemoryGuard guard;
+            {
+                ActionMapping mapping;
+                auto action = makeIntrusive<TestBoolAction>();
+                mapping.gamepadButtonActions.put(0, GamepadButton::A, action.get());
+
+                mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::PRESSED, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
+                Assert::IsTrue(TestActionState::STARTED == action->state);
+                mapping.executeDispatches();
+                Assert::IsTrue(TestActionState::STARTED == action->state);
+                mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::DOWN, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
+                Assert::IsTrue(TestActionState::IN_PROGRESS == action->state);
+                mapping.executeDispatches();
+                Assert::IsTrue(TestActionState::IN_PROGRESS == action->state);
+                mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::RELEASED, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
+                Assert::IsTrue(TestActionState::FINISHED == action->state);
+                mapping.executeDispatches();
+                Assert::IsTrue(TestActionState::FINISHED == action->state);
+            }
+        }
+
         TEST_METHOD(ActionMapping_addGamepadButton) {
             MemoryGuard guard;
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestBoolAction>();
-                mapping.add(0, GamepadButton::A, action.get());
+                mapping.gamepadButtonActions.put(0, GamepadButton::A, action.get());
 
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::PRESSED, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::STARTED == action->state);
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::DOWN, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IN_PROGRESS == action->state);
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::RELEASED, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::FINISHED == action->state);
             }
         }
@@ -37,13 +81,16 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestBoolAction>();
-                mapping.add(1, GamepadButton::A, action.get());
+                mapping.gamepadButtonActions.put(1, GamepadButton::A, action.get());
 
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::PRESSED, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IDLE == action->state);
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::DOWN, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IDLE == action->state);
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::RELEASED, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IDLE == action->state);
             }
         }
@@ -53,13 +100,16 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestBoolAction>();
-                mapping.add(0, GamepadButton::B, action.get());
+                mapping.gamepadButtonActions.put(0, GamepadButton::B, action.get());
 
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::PRESSED, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IDLE == action->state);
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::DOWN, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IDLE == action->state);
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::RELEASED, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IDLE == action->state);
             }
         }
@@ -69,13 +119,16 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestFloatAction>();
-                mapping.add<float>(0, GamepadButton::A, action.get(), [](bool value) { return value ? 1.0f : 0.0f; });
+                mapping.gamepadButtonActions.put<float>(0, GamepadButton::A, action.get(), [](bool value) { return value ? 1.0f : 0.0f; });
 
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::PRESSED, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::STARTED == action->state);
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::DOWN, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IN_PROGRESS == action->state);
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::RELEASED, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::FINISHED == action->state);
             }
         }
@@ -85,13 +138,16 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestFloatAction>();
-                mapping.add(0, GamepadTrigger::LEFT, action.get());
+                mapping.gamepadTriggerActions.put(0, GamepadTrigger::LEFT, action.get());
 
                 mapping.dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(0, GamepadTrigger::LEFT, 0.5f, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::STARTED == action->state);
                 mapping.dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(0, GamepadTrigger::LEFT, 1.0f, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IN_PROGRESS == action->state);
                 mapping.dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(0, GamepadTrigger::LEFT, 0.0f, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::FINISHED == action->state);
             }
         }
@@ -101,13 +157,16 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestFloatAction>();
-                mapping.add(0, GamepadTrigger::LEFT, action.get());
+                mapping.gamepadTriggerActions.put(0, GamepadTrigger::LEFT, action.get());
 
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::PRESSED, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IDLE == action->state);
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::DOWN, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IDLE == action->state);
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::RELEASED, GamepadButton::A, 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IDLE == action->state);
             }
         }
@@ -117,13 +176,16 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestFloatAction>();
-                mapping.add(0, GamepadTrigger::LEFT, action.get());
+                mapping.gamepadTriggerActions.put(0, GamepadTrigger::LEFT, action.get());
 
                 mapping.dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(0, GamepadTrigger::RIGHT, 0.5f, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IDLE == action->state);
                 mapping.dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(0, GamepadTrigger::RIGHT, 1.0f, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IDLE == action->state);
                 mapping.dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(0, GamepadTrigger::RIGHT, 0.0f, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IDLE == action->state);
             }
         }
@@ -133,13 +195,16 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestFloatAction>();
-                mapping.add(0, GamepadTrigger::LEFT, action.get());
+                mapping.gamepadTriggerActions.put(0, GamepadTrigger::LEFT, action.get());
 
                 mapping.dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(0, GamepadTrigger::LEFT, 0.0f, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IDLE == action->state);
                 mapping.dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(0, GamepadTrigger::LEFT, 0.001f, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IDLE == action->state);
                 mapping.dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(0, GamepadTrigger::LEFT, 0.0f, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IDLE == action->state);
             }
         }
@@ -149,13 +214,16 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestFloatPointAction>();
-                mapping.add(0, GamepadStick::LEFT, action.get());
+                mapping.gamepadStickActions.put(0, GamepadStick::LEFT, action.get());
 
                 mapping.dispatchGamepadStickEvent(GamepadStickEventArgs(0, GamepadStick::LEFT, { 0.5f, 0.0f }, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::STARTED == action->state);
                 mapping.dispatchGamepadStickEvent(GamepadStickEventArgs(0, GamepadStick::LEFT, { 0.5f, 0.0f }, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IN_PROGRESS == action->state);
                 mapping.dispatchGamepadStickEvent(GamepadStickEventArgs(0, GamepadStick::LEFT, { 0.0f, 0.0f }, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::FINISHED == action->state);
             }
         }
@@ -165,13 +233,16 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestBoolAction>();
-                mapping.add('a', action.get());
+                mapping.keyActions.put('a', action.get());
 
                 mapping.dispatchKeyEvent(KeyEventArgs(KeyAction::PRESSED, 'a', 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::STARTED == action->state);
                 mapping.dispatchKeyEvent(KeyEventArgs(KeyAction::DOWN, 'a', 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IN_PROGRESS == action->state);
                 mapping.dispatchKeyEvent(KeyEventArgs(KeyAction::RELEASED, 'a', 0, 0));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::FINISHED == action->state);
             }
         }
@@ -181,13 +252,16 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestBoolAction>();
-                mapping.add(MouseButton::LEFT, action.get());
+                mapping.mouseButtonActions.put(MouseButton::LEFT, action.get());
 
                 mapping.dispatchMouseButtonEvent(MouseButtonEventArgs({ 0, 0 }, MouseButtonAction::PRESSED, MouseButton::LEFT, 0, 0, true));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::STARTED == action->state);
                 mapping.dispatchMouseButtonEvent(MouseButtonEventArgs({ 0, 0 }, MouseButtonAction::DOWN, MouseButton::LEFT, 0, 0, true));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::IN_PROGRESS == action->state);
                 mapping.dispatchMouseButtonEvent(MouseButtonEventArgs({ 0, 0 }, MouseButtonAction::RELEASED, MouseButton::LEFT, 0, 0, true));
+                mapping.executeDispatches();
                 Assert::IsTrue(TestActionState::FINISHED == action->state);
             }
         }

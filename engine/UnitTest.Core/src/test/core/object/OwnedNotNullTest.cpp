@@ -44,5 +44,17 @@ public:
             delete j;
         }
     }
+
+    TEST_METHOD(SharedPointer_assignment) {
+        MemoryGuard guard;
+        {
+            uint32_t* i = ghnew uint32_t(35);
+            OwnedNotNull ptr(i);
+            uint32_t* j = ghnew uint32_t(36);
+            OwnedNotNull ptr2(j);
+            ptr = std::move(ptr2);
+            Assert::AreEqual((uint32_t)36, *ptr);
+        }
+    }
     };
 }

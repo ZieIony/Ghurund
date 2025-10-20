@@ -17,20 +17,20 @@ namespace Demo {
 		BackgroundColor = &Colors::LIGHT_CORAL;
 
 		closeWindow = makeIntrusive<CloseWindowAction>(*this);
-		ActionMapping->add(0, GamepadButton::A, closeWindow.get());
-		ActionMapping->add(0, GamepadTrigger::LEFT, NotNull<GameAction<bool>>(closeWindow.get()), [](float value) { return value > 0.5f; });
+		ActionMapping->gamepadButtonActions.put(0, GamepadButton::A, closeWindow.get());
+		ActionMapping->gamepadTriggerActions.put<bool>(0, GamepadTrigger::LEFT, closeWindow.get(), [](float value) { return value > 0.5f; });
 
 		moveWindow = makeIntrusive<MoveWindowAction>(*this, Application->Timer);
-		ActionMapping->add<FloatPoint>('w', moveWindow.get(), [](float value) { return FloatPoint{ 0.0f, 1.0f }; });
-		ActionMapping->add<FloatPoint>('s', moveWindow.get(), [](float value) { return FloatPoint{ 0.0f, -1.0f }; });
-		ActionMapping->add<FloatPoint>('a', moveWindow.get(), [](float value) { return FloatPoint{ -1.0f, 0.0f }; });
-		ActionMapping->add<FloatPoint>('d', moveWindow.get(), [](float value) { return FloatPoint{ 1.0f, 0.0f }; });
-		ActionMapping->add(0, GamepadStick::LEFT, moveWindow.get());
-		ActionMapping->add(1, GamepadStick::RIGHT, moveWindow.get());
+		ActionMapping->keyActions.put<FloatPoint>('w', moveWindow.get(), [](float value) { return FloatPoint{ 0.0f, 1.0f }; });
+		ActionMapping->keyActions.put<FloatPoint>('s', moveWindow.get(), [](float value) { return FloatPoint{ 0.0f, -1.0f }; });
+		ActionMapping->keyActions.put<FloatPoint>('a', moveWindow.get(), [](float value) { return FloatPoint{ -1.0f, 0.0f }; });
+		ActionMapping->keyActions.put<FloatPoint>('d', moveWindow.get(), [](float value) { return FloatPoint{ 1.0f, 0.0f }; });
+		ActionMapping->gamepadStickActions.put(0, GamepadStick::LEFT, moveWindow.get(), 1);
+		ActionMapping->gamepadStickActions.put(1, GamepadStick::RIGHT, moveWindow.get(), 1);
 	}
 
 	DemoWindow::~DemoWindow() {
-		ActionMapping->remove('w');
+		ActionMapping->keyActions.remove('w');
 		ActionMapping->clear();
 	}
 

@@ -66,6 +66,7 @@ namespace Ghurund::Core {
 		inline OwnedNotNull& operator=(OwnedNotNull&& other) noexcept {
 			if (*this == other)
 				return *this;
+			delete ptr;
 			ptr = std::move(other.ptr);
 			other.ptr = nullptr;
 			return *this;

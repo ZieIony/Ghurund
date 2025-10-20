@@ -57,6 +57,12 @@ namespace Ghurund::Engine {
         
         virtual bool onSizeChanged() override;
 
+        virtual bool onFocusedChanged() override {
+            if (!Focused)
+                actionMapping.cancelAll();
+            return __super::onFocusedChanged();
+        }
+
     public:
 		static inline const WindowStyle DEFAULT_WINDOW_STYLE = WindowStyle{
             .hasMinimizeButton = true,

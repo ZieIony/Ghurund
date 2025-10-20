@@ -30,8 +30,14 @@ namespace Ghurund::Core {
 
         void dispatchGamepadEvents(uint64_t time, NotNull<EventConsumer> consumer);
 
-        void releaseAllKeysAndButtons() {
-            throw NotImplementedException();
+        inline void releaseAllKeysAndButtons() {
+            // TODO: send cancel events
+            mouseButtonLeft.isDown = false;
+            mouseButtonMiddle.isDown = false;
+            mouseButtonRight.isDown = false;
+            for (auto& key : keys)
+                key.isDown = false;
+            events.clear();
         };
 
         inline bool isShiftDown() {

@@ -5,71 +5,76 @@
 
 namespace Ghurund::Engine {
 	bool ActionMapping::onGamepadButtonEvent(const GamepadButtonEventArgs& event) {
-		auto it = gamepadActions[event.Gamepad].buttonActions.find(event.Button.Value);
-		if (it != gamepadActions[event.Gamepad].buttonActions.end()) {
-			it->value->dispatchEvent(event.Action != GamepadButtonAction::RELEASED, event.TimeMs);
-			return true;
-		}
-		return false;
+		gamepadButtonActions.queryEventDispatch(
+			event.Gamepad,
+			event.Button,
+			event.Action != GamepadButtonAction::RELEASED,
+			event.TimeMs,
+			dispatchTasks
+		);
+		return true;
 	}
 
 	bool ActionMapping::onGamepadTriggerEvent(const GamepadTriggerEventArgs& event) {
-		auto it = gamepadActions[event.Gamepad].triggerActions.find(event.Trigger);
-		if (it != gamepadActions[event.Gamepad].triggerActions.end()) {
-			it->value->dispatchEvent(event.Value, event.TimeMs);
-			return true;
-		}
-		return false;
+		gamepadTriggerActions.queryEventDispatch(
+			event.Gamepad,
+			event.Trigger,
+			event.Value,
+			event.TimeMs,
+			dispatchTasks
+		);
+		return true;
 	}
 
 	bool ActionMapping::onGamepadStickEvent(const GamepadStickEventArgs& event) {
-		auto it = gamepadActions[event.Gamepad].stickActions.find(event.Stick);
-		if (it != gamepadActions[event.Gamepad].stickActions.end()) {
-			it->value->dispatchEvent(event.Point, event.TimeMs);
-			return true;
-		}
-		return false;
+		gamepadStickActions.queryEventDispatch(
+			event.Gamepad,
+			event.Stick,
+			event.Point,
+			event.TimeMs,
+			dispatchTasks
+		);
+		return true;
 	}
 
 	bool ActionMapping::onKeyEvent(const KeyEventArgs& event) {
-		auto it = keyActions.find(toupper(event.KeyCode));
-		if (it != keyActions.end()) {
-			it->value->dispatchEvent(event.Action != KeyAction::RELEASED, event.TimeMs);
-			return true;
-		}
-		return false;
+		keyActions.queryEventDispatch(event.KeyCode, event.Action != KeyAction::RELEASED, event.TimeMs, dispatchTasks);
+		return true;
 	}
 
 	bool ActionMapping::onMouseButtonEvent(const MouseButtonEventArgs& event) {
-		auto it = mouseButtonActions.find(event.Button);
-		if (it != mouseButtonActions.end()) {
-			it->value->dispatchEvent(event.Action != MouseButtonAction::RELEASED, event.TimeMs);
-			return true;
-		}
-		return false;
+		mouseButtonActions.queryEventDispatch(
+			event.Button,
+			event.Action != MouseButtonAction::RELEASED,
+			event.TimeMs,
+			dispatchTasks
+		);
+		return true;
 	}
 
 	bool ActionMapping::onMouseMotionEvent(const MouseMotionEventArgs& event) {
-		if (mouseMotionAction != nullptr) {
+		/*if (mouseMotionAction != nullptr) {
 			mouseMotionAction->dispatchEvent(event.Delta, event.TimeMs);
 			return true;
-		}
+		}*/
 		return false;
 	}
 
 	bool ActionMapping::onMouseWheelEvent(const MouseWheelEventArgs& event) {
-		auto it = mouseWheelActions.find(event.Wheel);
-		if (it != mouseWheelActions.end()) {
-			it->value->dispatchEvent(event.Delta, event.TimeMs);
-			return true;
-		}
-		return false;
+		mouseWheelActions.queryEventDispatch(
+			event.Wheel,
+			(float)event.Delta,
+			event.TimeMs,
+			dispatchTasks
+		);
+		return true;
 	}
 
 	void ActionMapping::clear() {
 		mouseButtonActions.clear();
-		for (size_t i = 0; i < gamepadActions.Size; i++)
-			gamepadActions[i].clear();
+		gamepadButtonActions.clear();
+		gamepadTriggerActions.clear();
+		gamepadStickActions.clear();
 		keyActions.clear();
 		delete mouseMotionAction;
 		mouseMotionAction = nullptr;

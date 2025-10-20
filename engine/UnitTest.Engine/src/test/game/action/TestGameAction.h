@@ -1,7 +1,6 @@
 #pragma once
 
-#include "engine/game/action/FloatGameAction.h"
-#include "engine/game/action/FloatPointGameAction.h"
+#include "engine/game/action/GameAction.h"
 
 namespace UnitTest {
 	using namespace Ghurund::Engine;
@@ -12,15 +11,15 @@ namespace UnitTest {
 
 	class TestBoolAction:public GameAction<bool> {
 	protected:
-		virtual void onStarted(bool value) override {
+		virtual void onStarted() override {
 			state = TestActionState::STARTED;
 		}
 
-		virtual void onInProgress(bool value, uint64_t duration) override {
+		virtual void onInProgress(uint64_t duration) override {
 			state = TestActionState::IN_PROGRESS;
 		}
 
-		virtual void onFinished(bool value, uint64_t duration) override {
+		virtual void onFinished(uint64_t duration) override {
 			state = TestActionState::FINISHED;
 		}
 
@@ -30,15 +29,15 @@ namespace UnitTest {
 
 	class TestFloatAction:public GameAction<float> {
 	protected:
-		virtual void onStarted(float value) override {
+		virtual void onStarted() override {
 			state = TestActionState::STARTED;
 		}
 
-		virtual void onInProgress(float value, uint64_t duration) override {
+		virtual void onInProgress(uint64_t duration) override {
 			state = TestActionState::IN_PROGRESS;
 		}
 
-		virtual void onFinished(float value, uint64_t duration) override {
+		virtual void onFinished(uint64_t duration) override {
 			state = TestActionState::FINISHED;
 		}
 
@@ -50,15 +49,15 @@ namespace UnitTest {
 
 	class TestFloatPointAction:public GameAction<FloatPoint> {
 	protected:
-		virtual void onStarted(FloatPoint value) override {
+		virtual void onStarted() override {
 			state = TestActionState::STARTED;
 		}
 
-		virtual void onInProgress(FloatPoint value, uint64_t duration) override {
+		virtual void onInProgress(uint64_t duration) override {
 			state = TestActionState::IN_PROGRESS;
 		}
 
-		virtual void onFinished(FloatPoint value, uint64_t duration) override {
+		virtual void onFinished(uint64_t duration) override {
 			state = TestActionState::FINISHED;
 		}
 

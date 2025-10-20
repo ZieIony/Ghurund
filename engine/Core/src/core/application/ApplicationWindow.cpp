@@ -28,6 +28,7 @@ namespace Ghurund::Core {
 		if (Focused) {
 			layers.restoreFocus();
 		} else {
+			Input->releaseAllKeysAndButtons();
 			layers.clearFocus();
 		}
 		return true;

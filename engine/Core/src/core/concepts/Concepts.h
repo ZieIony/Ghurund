@@ -22,4 +22,7 @@ namespace Ghurund::Core {
     template <typename T> struct is_unique_ptr<std::unique_ptr<T>> : std::true_type {};
 
     template <typename T> concept IsUniquePtr = is_unique_ptr<T>::value;
+
+    template<typename F, typename R, typename... Args>
+    concept Callable = std::is_invocable_r_v<R, F, Args...>;
 }

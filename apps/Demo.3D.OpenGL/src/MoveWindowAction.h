@@ -1,7 +1,6 @@
 #pragma once
 
 #include "engine/application/GameWindow.h"
-#include "engine/game/action/FloatPointGameAction.h"
 
 namespace Demo {
 	using namespace Ghurund::Core;
@@ -12,9 +11,9 @@ namespace Demo {
 		Ghurund::Engine::GameWindow* window;
 		Ghurund::Core::Timer* timer;
 
-		virtual void onInProgress(FloatPoint value, uint64_t duration) override {
+		virtual void onInProgress(uint64_t duration) override {
 			double dt = timer->FrameTime;
-			auto v = value * dt * 1000;
+			auto v = Value * dt * 1000;
 			window->Position = window->Position + IntPoint{ (int32_t)v.x, -(int32_t)v.y };
 		}
 

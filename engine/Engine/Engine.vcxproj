@@ -98,14 +98,13 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\game\action\BoolGameActionDispatcher.h" />
-    <ClInclude Include="src\engine\game\action\FloatGameAction.h" />
-    <ClInclude Include="src\engine\game\action\FloatGameActionDispatcher.h" />
-    <ClInclude Include="src\engine\game\action\FloatPointGameAction.h" />
-    <ClInclude Include="src\engine\game\action\FloatPointGameActionDispatcher.h" />
+    <ClInclude Include="src\engine\game\action\BaseGameAction.h" />
+    <ClInclude Include="src\engine\game\action\BaseGameActionDispatcher.h" />
+    <ClInclude Include="src\engine\game\action\BaseGameActionDispatchEventTask.h" />
+    <ClInclude Include="src\engine\game\action\GameActionDispatchTask.h" />
+    <ClInclude Include="src\engine\game\action\GameActionCollection.h" />
     <ClInclude Include="src\engine\game\action\GameActionDispatcher.h" />
-    <ClInclude Include="src\engine\game\action\IntPointGameAction.h" />
-    <ClInclude Include="src\engine\game\action\IntPointGameActionDispatcher.h" />
+    <ClInclude Include="src\engine\game\action\GamepadGameActionCollection.h" />
     <ClInclude Include="src\engine\game\action\TransformedGameActionDispatcher.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
