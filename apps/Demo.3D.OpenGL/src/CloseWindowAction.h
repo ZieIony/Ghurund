@@ -16,6 +16,8 @@ namespace Demo {
 		}
 
 	public:
-		CloseWindowAction(NotNull<Ghurund::Engine::GameWindow> window):window(&window) {}
+		CloseWindowAction(NotNull<Ghurund::Engine::GameWindow> window):window(&window) {
+			name = _T("Close Window");
+		}
 	};
 }

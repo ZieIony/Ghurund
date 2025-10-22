@@ -24,6 +24,7 @@ namespace Demo {
 		):GameAction(0.1f),
 			window(&window),
 			timer(&timer) {
+			name = _T("Move Window");
 		}
 	};
 }

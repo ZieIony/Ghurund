@@ -21,10 +21,10 @@ namespace Demo {
 		ActionMapping->gamepadTriggerActions.put<bool>(0, GamepadTrigger::LEFT, closeWindow.get(), [](float value) { return value > 0.5f; });
 
 		moveWindow = makeIntrusive<MoveWindowAction>(*this, Application->Timer);
-		ActionMapping->keyActions.put<FloatPoint>('w', moveWindow.get(), [](float value) { return FloatPoint{ 0.0f, 1.0f }; });
-		ActionMapping->keyActions.put<FloatPoint>('s', moveWindow.get(), [](float value) { return FloatPoint{ 0.0f, -1.0f }; });
-		ActionMapping->keyActions.put<FloatPoint>('a', moveWindow.get(), [](float value) { return FloatPoint{ -1.0f, 0.0f }; });
-		ActionMapping->keyActions.put<FloatPoint>('d', moveWindow.get(), [](float value) { return FloatPoint{ 1.0f, 0.0f }; });
+		ActionMapping->keyActions.put<FloatPoint>('w', moveWindow.get(), { 0.0f, 1.0f });
+		ActionMapping->keyActions.put<FloatPoint>('s', moveWindow.get(), { 0.0f, -1.0f });
+		ActionMapping->keyActions.put<FloatPoint>('a', moveWindow.get(), { -1.0f, 0.0f });
+		ActionMapping->keyActions.put<FloatPoint>('d', moveWindow.get(), { 1.0f, 0.0f });
 		ActionMapping->gamepadStickActions.put(0, GamepadStick::LEFT, moveWindow.get(), 1);
 		ActionMapping->gamepadStickActions.put(1, GamepadStick::RIGHT, moveWindow.get(), 1);
 	}

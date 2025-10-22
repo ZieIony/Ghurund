@@ -1,21 +1,21 @@
 #pragma once
 
-#include "BaseGameActionDispatchEventTask.h"
+#include "BaseDispatchInputTask.h"
 
 namespace Ghurund::Engine {
 	template<typename T>
-	class GameActionDispatchEventTask:public BaseGameActionDispatchEventTask {
+	class DispatchInputTask:public BaseDispatchInputTask {
 	public:
 		T value;
 		uint64_t time;
 		IntrusivePointer<GameAction<T>> gameAction;
 
-		GameActionDispatchEventTask(
+		DispatchInputTask(
 			uint8_t priority,
 			T value,
 			uint64_t time,
 			IntrusivePointer<GameAction<T>> gameAction
-		):BaseGameActionDispatchEventTask(priority), value(value), time(time), gameAction(gameAction) {
+		):BaseDispatchInputTask(priority), value(value), time(time), gameAction(gameAction) {
 		}
 
 		virtual BaseGameAction* getAction() override {

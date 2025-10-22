@@ -39,7 +39,7 @@ namespace Ghurund::Engine {
                 actions[i].clear();
         }
 
-        inline void queryEventDispatch(uint8_t gamepad, const K& key, const V& value, uint64_t time, List<OwnedNotNull<BaseGameActionDispatchEventTask>>& tasks) {
+        inline void queryEventDispatch(uint8_t gamepad, const K& key, const V& value, uint64_t time, List<OwnedNotNull<BaseDispatchInputTask>>& tasks) {
             actions[gamepad].queryEventDispatch(key, value, time, tasks);
         }
     };

@@ -6,13 +6,13 @@
 #include <cstdint>
 
 namespace Ghurund::Engine {
-	class BaseGameActionDispatchEventTask {
+	class BaseDispatchInputTask {
 	public:
 		uint8_t priority;
 
-		BaseGameActionDispatchEventTask(uint8_t priority):priority(priority) {}
+		BaseDispatchInputTask(uint8_t priority):priority(priority) {}
 
-		virtual ~BaseGameActionDispatchEventTask() {}
+		virtual ~BaseDispatchInputTask() {}
 
 		virtual BaseGameAction* getAction() = 0;
 

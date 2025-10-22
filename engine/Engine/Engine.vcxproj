@@ -99,13 +99,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\engine\game\action\BaseGameAction.h" />
-    <ClInclude Include="src\engine\game\action\BaseGameActionDispatcher.h" />
-    <ClInclude Include="src\engine\game\action\BaseGameActionDispatchEventTask.h" />
-    <ClInclude Include="src\engine\game\action\GameActionDispatchTask.h" />
+    <ClInclude Include="src\engine\game\action\BaseInputDispatcher.h" />
+    <ClInclude Include="src\engine\game\action\BaseDispatchInputTask.h" />
+    <ClInclude Include="src\engine\game\action\DispatchInputTask.h" />
     <ClInclude Include="src\engine\game\action\GameActionCollection.h" />
-    <ClInclude Include="src\engine\game\action\GameActionDispatcher.h" />
+    <ClInclude Include="src\engine\game\action\InputDispatcher.h" />
     <ClInclude Include="src\engine\game\action\GamepadGameActionCollection.h" />
-    <ClInclude Include="src\engine\game\action\TransformedGameActionDispatcher.h" />
+    <ClInclude Include="src\engine\game\action\OverwriteInputDispatcher.h" />
+    <ClInclude Include="src\engine\game\action\TransformedInputDispatcher.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />

@@ -20,7 +20,7 @@ public:
         MemoryGuard guard;
         {
             auto action = makeIntrusive<TestFloatAction>(0.1f);
-            GameActionDispatcher<float> dispatcher(action.get(), 0);
+            InputDispatcher<float> dispatcher(action.get(), 0);
 
             dispatcher.makeDispatchEventTask(0.2f, 0)->execute();
             Assert::IsTrue(TestActionState::STARTED == action->state);
@@ -35,7 +35,7 @@ public:
         MemoryGuard guard;
         {
             auto action = makeIntrusive<TestFloatAction>(0.1f);
-            GameActionDispatcher<float> dispatcher(action.get(), 0);
+            InputDispatcher<float> dispatcher(action.get(), 0);
 
             dispatcher.makeDispatchEventTask(0.0f, 0)->execute();
             Assert::IsTrue(TestActionState::IDLE == action->state);

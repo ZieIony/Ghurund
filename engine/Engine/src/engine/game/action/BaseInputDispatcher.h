@@ -1,21 +1,21 @@
 #pragma once
 
-#include "GameActionDispatchTask.h"
+#include "DispatchInputTask.h"
 #include "core/object/OwnedNotNull.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
 
 	template<typename T>
-	class BaseGameActionDispatcher {
+	class BaseInputDispatcher {
 	protected:
 		uint8_t priority;
 		IntrusivePointer<BaseGameAction> action;
 
 	public:
-		BaseGameActionDispatcher(IntrusivePointer<BaseGameAction> action, uint8_t priority):action(action), priority(priority) {}
+		BaseInputDispatcher(IntrusivePointer<BaseGameAction> action, uint8_t priority):action(action), priority(priority) {}
 
-		virtual ~BaseGameActionDispatcher() {
+		virtual ~BaseInputDispatcher() {
 			action->cancel();
 		}
 
@@ -35,6 +35,6 @@ namespace Ghurund::Engine {
 			action->cancel();
 		}
 
-		virtual OwnedNotNull<BaseGameActionDispatchEventTask> makeDispatchEventTask(T value, uint64_t time) = 0;
+		virtual OwnedNotNull<BaseDispatchInputTask> makeDispatchEventTask(T value, uint64_t time) = 0;
 	};
 }

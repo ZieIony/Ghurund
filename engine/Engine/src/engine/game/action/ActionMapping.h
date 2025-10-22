@@ -3,7 +3,7 @@
 #include "core/input/EventConsumer.h"
 #include "core/reflection/StandardTypes.h"
 #include "GameActionCollection.h"
-#include "GameActionDispatchTask.h"
+#include "DispatchInputTask.h"
 #include <core/collection/List.h>
 #include <core/collection/Set.h>
 #include "GamepadGameActionCollection.h"
@@ -16,9 +16,9 @@ namespace Ghurund::Engine {
     class ActionMapping: public EventConsumer {
     private:
         Set<IntrusivePointer<BaseGameAction>> currentActions;
-        List<OwnedNotNull<BaseGameActionDispatchEventTask>> dispatchTasks;
+        List<OwnedNotNull<BaseDispatchInputTask>> dispatchTasks;
 
-        BaseGameActionDispatcher<IntPoint>* mouseMotionAction = nullptr;
+        BaseInputDispatcher<IntPoint>* mouseMotionAction = nullptr;
 
     public:
         GamepadGameActionCollection<GamepadButton, bool> gamepadButtonActions;

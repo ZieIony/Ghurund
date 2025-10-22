@@ -10,6 +10,8 @@ namespace Ghurund::Engine {
 		bool isInProgress = false;
 
 	public:
+		String name;
+
 		inline bool getIsInProgress() const {
 			return isInProgress;
 		}

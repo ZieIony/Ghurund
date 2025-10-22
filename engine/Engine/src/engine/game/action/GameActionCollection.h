@@ -3,8 +3,8 @@
 #include "core/collection/Map.h"
 #include "core/object/NotNull.h"
 #include "core/reflection/StandardTypes.h"
-#include "TransformedGameActionDispatcher.h"
-#include <core/input/gamepad/GamepadInput.h>
+#include "OverwriteInputDispatcher.h"
+#include "TransformedInputDispatcher.h"
 #include <core/object/OwnedNotNull.h>
 #include <core/object/SharedPointer.h>
 
@@ -14,21 +14,27 @@ namespace Ghurund::Engine {
     template<typename K, typename V>
     class GameActionCollection {
     private:
-        Map<K, SharedPointer<BaseGameActionDispatcher<V>>> actions;
+        Map<K, SharedPointer<BaseInputDispatcher<V>>> actions;
 
         GameActionCollection& operator=(const GameActionCollection& other) = delete;
         GameActionCollection& operator=(GameActionCollection&& other) = delete;
 
     public:
         inline void put(const K& key, NotNull<GameAction<V>> action, uint8_t priority = 0) {
-            auto dispatcher = ghnew GameActionDispatcher<V>(&action, priority);
-            actions.put(key, SharedPointer<BaseGameActionDispatcher<V>>(dispatcher));
+            auto dispatcher = ghnew InputDispatcher<V>(&action, priority);
+            actions.put(key, SharedPointer<BaseInputDispatcher<V>>(dispatcher));
+        }
+
+        template<typename To>
+        inline void put(const K& key, NotNull<GameAction<To>> action, const To& value, uint8_t priority = 0) {
+            auto dispatcher = ghnew OverwriteInputDispatcher<V, To>(&action, value, priority);
+            actions.put(key, SharedPointer<BaseInputDispatcher<V>>(dispatcher));
         }
 
         template<typename To, Callable<To, V> T>
 		inline void put(const K& key, NotNull<GameAction<To>> action, T transformer, uint8_t priority = 0) {
-            auto dispatcher = ghnew TransformedGameActionDispatcher<V, To, T>(&action, transformer, priority);
-            actions.put(key, SharedPointer<BaseGameActionDispatcher<V>>(dispatcher));
+            auto dispatcher = ghnew TransformedInputDispatcher<V, To, T>(&action, transformer, priority);
+            actions.put(key, SharedPointer<BaseInputDispatcher<V>>(dispatcher));
         }
 
         inline void remove(const K& key) {
@@ -43,7 +49,7 @@ namespace Ghurund::Engine {
             actions.clear();
         }
 
-        inline void queryEventDispatch(const K& key, const V& value, uint64_t time, List<OwnedNotNull<BaseGameActionDispatchEventTask>>& tasks) {
+        inline void queryEventDispatch(const K& key, const V& value, uint64_t time, List<OwnedNotNull<BaseDispatchInputTask>>& tasks) {
             auto it = actions.find(key);
             if (it != actions.end()) {
                 size_t index = tasks.find([&](auto& item) { return item->Action == it->value->Action; });
