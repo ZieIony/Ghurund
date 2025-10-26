@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <ctype.h>
 
 namespace Ghurund::Core {
 	class KeyboardKey {
@@ -26,7 +25,7 @@ namespace Ghurund::Core {
 			return *this;
 		}
 
-		inline KeyboardKey& operator=(KeyboardKey&& other) {
+		inline KeyboardKey& operator=(KeyboardKey&& other) noexcept {
 			code = other.code;
 			return *this;
 		}
