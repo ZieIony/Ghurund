@@ -17,7 +17,8 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	bool DxShader::set(DxGraphics& graphics, CommandList& commandList) {
-		bool changed = commandList.setGraphicsRootSignature(rootSignature) || commandList.setPipelineState(pipelineState);
+		bool rsChanged = commandList.setGraphicsRootSignature(rootSignature);
+		bool psChanged = commandList.setPipelineState(pipelineState);
 
 		for (size_t i = 0; i < constants->constantBuffers.Size; i++)
 			constants->constantBuffers[i]->set(graphics, commandList);
@@ -37,7 +38,7 @@ namespace Ghurund::Engine::DirectX {
 			texture->set(commandList, textures[i]->BindSlot);*/
 		}
 
-		return changed;
+		return rsChanged || psChanged;
 	}
 
 	void DxShader::finalize() {

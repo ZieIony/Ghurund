@@ -162,7 +162,7 @@ namespace Ghurund::Engine::DirectX {
 		psoDesc.SampleDesc.Count = 1;
 
 		ID3D12PipelineState* pipelineState = nullptr;
-		if (FAILED(graphics.Device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pipelineState)))) {
+		if (FAILED(graphics->Device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pipelineState)))) {
 			Logger::log(LogType::ERR0R, _T("device->CreateGraphicsPipelineState() failed\n"));
 			throw CallFailedException();
 		}
@@ -218,7 +218,7 @@ namespace Ghurund::Engine::DirectX {
 			throw CallFailedException();
 		}
 		ID3D12RootSignature* rootSignature = nullptr;
-		if (FAILED(graphics.Device->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&rootSignature)))) {
+		if (FAILED(graphics->Device->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&rootSignature)))) {
 			Logger::log(LogType::ERR0R, _T("device->CreateRootSignature() failed\n"));
 			throw CallFailedException();
 		}
@@ -227,8 +227,8 @@ namespace Ghurund::Engine::DirectX {
 
 	OwnedNotNull<ShaderConstants> DxShaderCompiler::makeConstants(const Array<SharedPointer<DxShaderProgram>>& programs) {
 		ShaderConstants* constants = ghnew ShaderConstants();
-		for (auto& program:programs)
-				initConstants(*program.get(), constants);
+		for (auto& program : programs)
+			initConstants(*program.get(), constants);
 		return OwnedNotNull<ShaderConstants>(constants);
 	}
 

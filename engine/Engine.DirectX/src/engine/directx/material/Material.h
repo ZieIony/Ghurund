@@ -53,7 +53,7 @@ namespace Ghurund::Engine::DirectX {
             return shader != nullptr && shader->Valid && __super::Valid;
         }
 
-        void initParameters(ParameterManager& parameterManager) {
+        void initParameters(NotNull<ParameterManager> parameterManager) {
             //shader->initParameters(parameterManager);
             //OnParametersChanged();
         }

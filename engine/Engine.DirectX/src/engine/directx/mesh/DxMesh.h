@@ -50,11 +50,11 @@ namespace Ghurund::Engine::DirectX {
         ComPtr<ID3D12Resource> indexUploadHeap;
 
     public:
-        virtual void init(const MeshData& mesh, DxGraphics& graphics, CommandList& commandList);
+        virtual void init(const MeshData& mesh, NotNull<DxGraphics> graphics, NotNull<CommandList> commandList);
 
-        void initVertexBuffers(const Array<VertexStream> vertexStreams, uint32_t vertexCount, DxGraphics& graphics, CommandList& commandList);
+        void initVertexBuffers(const Array<VertexStream> vertexStreams, uint32_t vertexCount, NotNull<DxGraphics> graphics, NotNull<CommandList> commandList);
 
-        void initIndexBuffer(const Buffer& indices, uint32_t indexCount, DxGraphics& graphics, CommandList& commandList);
+        void initIndexBuffer(const Buffer& indices, uint32_t indexCount, NotNull<DxGraphics> graphics, NotNull<CommandList> commandList);
 
         virtual void invalidate() override {
             uploaded = false;

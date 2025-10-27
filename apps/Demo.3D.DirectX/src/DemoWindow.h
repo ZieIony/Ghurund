@@ -2,6 +2,8 @@
 
 #include "engine/application/GameWindow.h"
 #include "DemoApplication.h"
+#include <engine/directx/mesh/DxMesh.h>
+#include <engine/entity/camera/Camera.h>
 
 namespace Demo {
 	using namespace Ghurund;
@@ -9,14 +11,21 @@ namespace Demo {
 
 	class DemoWindow:public Ghurund::Engine::GameWindow {
 	private:
-		DemoApplication& app;
+		DemoApplication* app;
+		ParameterManager* parameterManager;
+		IntrusivePointer<DxMesh> mesh;
+		IntrusivePointer<Material> basicMaterial;
+		IntrusivePointer<Camera> camera;
 
 	public:
 		DemoWindow(
 			NotNull<DemoApplication> app,
-			NotNull<Ghurund::Engine::DirectX::DxRenderer> renderer
+			NotNull<Ghurund::Engine::DirectX::DxRenderer> renderer,
+			NotNull<ParameterManager> parameterManager
 		);
 
 		virtual bool onKeyEvent(const KeyEventArgs& args) override;
+
+		virtual void onPaint(NotNull<RenderingContext> renderingContext) override;
 	};
 }

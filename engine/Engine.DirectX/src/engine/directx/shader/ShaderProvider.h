@@ -7,57 +7,57 @@ namespace Ghurund::Engine::DirectX {
 
     class ShaderProvider {
     private:
-        ResourceManager& manager;
+        ResourceManager* manager;
 
         inline DxShader* load(const WString& fileName) {
-            return manager.load<DxShader>(ResourcePath(ResourceManager::ENGINE_LIB_NAME, fileName), DirectoryPath());
+            return manager->load<DxShader>(ResourcePath(ResourceManager::ENGINE_LIB_NAME, fileName), DirectoryPath());
         }
 
     public:
-        ShaderProvider(ResourceManager& manager):manager(manager) {}
+        ShaderProvider(NotNull<ResourceManager> manager):manager(&manager) {}
 
         DxShader* loadBasic() {
-            return load(L"/shaders/basic.hlsl");
+            return load(L"/shaders/DirectX/basic.hlsl");
         }
 
         DxShader* loadBasicLight() {
-            return load(L"/shaders/basicLight.hlsl");
+            return load(L"/shaders/DirectX/basicLight.hlsl");
         }
 
         DxShader* loadToon() {
-            return load(L"/shaders/toon.hlsl");
+            return load(L"/shaders/DirectX/toon.hlsl");
         }
 
         DxShader* loadWireframe() {
-            return load(L"/shaders/wireframe.hlsl");
+            return load(L"/shaders/DirectX/wireframe.hlsl");
         }
 
         DxShader* loadOutline() {
-            return load(L"/shaders/outline.hlsl");
+            return load(L"/shaders/DirectX/outline.hlsl");
         }
 
         DxShader* loadNormals() {
-            return load(L"/shaders/normals.hlsl");
+            return load(L"/shaders/DirectX/normals.hlsl");
         }
 
         DxShader* loadInvalid() {
-            return load(L"/shaders/invalid.hlsl");
+            return load(L"/shaders/DirectX/invalid.hlsl");
         }
 
         DxShader* loadLightPass() {
-            return load(L"/shaders/lightPass.hlsl");
+            return load(L"/shaders/DirectX/lightPass.hlsl");
         }
 
         DxShader* loadUi() {
-            return load(L"/shaders/ui.hlsl");
+            return load(L"/shaders/DirectX/ui.hlsl");
         }
 
         DxShader* loadBasicSky() {
-            return load(L"/shaders/basicSky.hlsl");
+            return load(L"/shaders/DirectX/basicSky.hlsl");
         }
 
         DxShader* loadAdvancedSky() {
-            return load(L"/shaders/advancedSky.hlsl");
+            return load(L"/shaders/DirectX/advancedSky.hlsl");
         }
     };
 }

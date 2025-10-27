@@ -1,9 +1,7 @@
 #pragma once
 
-#include "core/collection/List.h"
 #include "core/collection/Map.h"
-#include "core/threading/CriticalSection.h"
-#include "engine/directx/adapter/GraphicsAdapter.h"
+#include "core/object/NotNull.h"
 
 #include <d3d12.h>
 
@@ -67,7 +65,7 @@ namespace Ghurund::Engine::DirectX {
                 heap->Release();
         }
 
-        void init(DxGraphics& graphics);
+        void init(NotNull<DxGraphics> graphics);
 
         bool hasAvailableSpace() const { return numFreeDescriptors > 0; }
         DescriptorHandle allocate();
@@ -88,7 +86,7 @@ namespace Ghurund::Engine::DirectX {
                 delete heap;
         }
 
-        DescriptorHandle allocate(DxGraphics& graphics, D3D12_DESCRIPTOR_HEAP_TYPE type) {
+        DescriptorHandle allocate(NotNull<DxGraphics> graphics, D3D12_DESCRIPTOR_HEAP_TYPE type) {
             if (!heapMap.contains(type)) {
                 auto dh = ghnew DescriptorHeap(type, numDescriptorsPerHeap);
                 dh->init(graphics);

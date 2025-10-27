@@ -46,7 +46,7 @@ namespace Ghurund::Engine::DirectX {
 
 		void paint() {
 			startFrame();
-			Ghurund::Engine::DirectX::CommandList& commandList = swapChain->CurrentFrame.CommandList;
+			Ghurund::Engine::DirectX::CommandList* commandList = swapChain->CurrentFrame.CommandList;
 			Color clearColor = { 0xff1f1f1f };
 			clear(&clearColor);
 			//levelManager.draw(commandList);

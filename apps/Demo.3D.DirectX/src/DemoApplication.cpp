@@ -16,7 +16,7 @@ namespace Demo {
         renderer = ghnew DxRenderer(Features->get<DxGraphics>(), parameterManager);
         renderer->init();
 
-        window = ghnew DemoWindow(*this, renderer);
+        window = ghnew DemoWindow(*this, renderer, parameterManager);
 		window->ClientSize = { 800, 600 };
         window->Position = { 0, 0 };
         window->Visible = true;

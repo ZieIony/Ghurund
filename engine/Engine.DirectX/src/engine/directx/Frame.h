@@ -46,10 +46,10 @@ namespace Ghurund::Engine::DirectX {
 
         __declspec(property(get = getRenderTarget)) RenderTarget& RenderTarget;
 
-        CommandList& getCommandList() {
-            return *commandList;
+        CommandList* getCommandList() {
+            return commandList;
         }
 
-        __declspec(property(get = getCommandList)) CommandList& CommandList;
+        __declspec(property(get = getCommandList)) CommandList* CommandList;
     };
 }

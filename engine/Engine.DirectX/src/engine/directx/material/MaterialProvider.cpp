@@ -16,7 +16,7 @@ namespace Ghurund::Engine::DirectX {
 
     Material* MaterialProvider::makeBasic(ITexture* diffuseTexture) {
         Material* material = nullptr;
-        IntrusivePointer<DxShader> shader(shaderProvider.loadBasic());
+        IntrusivePointer<DxShader> shader(shaderProvider->loadBasic());
         if (shader!=nullptr) {
             material = ghnew Material(shader.get());
             /*if (diffuseTexture) {
@@ -30,7 +30,7 @@ namespace Ghurund::Engine::DirectX {
 
     Material* MaterialProvider::makeBasicLight(ITexture* diffuseTexture, ITexture* specularTexture, ITexture* normalTexture) {
         Material* material = nullptr;
-        IntrusivePointer<DxShader> shader(shaderProvider.loadBasicLight());
+        IntrusivePointer<DxShader> shader(shaderProvider->loadBasicLight());
         if (shader!=nullptr) {
             material = ghnew Material(shader.get());
             /*if (diffuseTexture) {
@@ -52,7 +52,7 @@ namespace Ghurund::Engine::DirectX {
 
     Material* MaterialProvider::makeToon(ITexture* diffuseTexture) {
         Material* material = nullptr;
-        IntrusivePointer<DxShader> shader(shaderProvider.loadToon());
+        IntrusivePointer<DxShader> shader(shaderProvider->loadToon());
         if (shader!=nullptr) {
             material = ghnew Material(shader.get());
             /*if (diffuseTexture) {
@@ -66,10 +66,10 @@ namespace Ghurund::Engine::DirectX {
 
     Material* MaterialProvider::makeChecker() {
         Material* material = nullptr;
-        IntrusivePointer<DxShader> shader(shaderProvider.loadBasic());
+        IntrusivePointer<DxShader> shader(shaderProvider->loadBasic());
         if (shader!=nullptr) {
             material = ghnew Material(shader.get());
-            Texture* texture = textureProvider.makeChecker();
+            Texture* texture = textureProvider->makeChecker();
             //TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
             //diffuse->setValue(texture);
             material->initParameters(parameterManager);
@@ -78,42 +78,42 @@ namespace Ghurund::Engine::DirectX {
     }
 
     Material* MaterialProvider::makeWireframe() {
-        IntrusivePointer<DxShader> shader(shaderProvider.loadWireframe());
+        IntrusivePointer<DxShader> shader(shaderProvider->loadWireframe());
         return makeWithShader(shader.get());
     }
 
     Material* MaterialProvider::makeOutline() {
-        IntrusivePointer<DxShader> shader(shaderProvider.loadOutline());
+        IntrusivePointer<DxShader> shader(shaderProvider->loadOutline());
         return makeWithShader(shader.get());
     }
 
     Material* MaterialProvider::makeNormals() {
-        IntrusivePointer<DxShader> shader(shaderProvider.loadNormals());
+        IntrusivePointer<DxShader> shader(shaderProvider->loadNormals());
         return makeWithShader(shader.get());
     }
 
     Material* MaterialProvider::makeInvalid() {
-        IntrusivePointer<DxShader> shader(shaderProvider.loadInvalid());
+        IntrusivePointer<DxShader> shader(shaderProvider->loadInvalid());
         return makeWithShader(shader.get());
     }
 
     Material* MaterialProvider::makeLightPass() {
-        IntrusivePointer<DxShader> shader(shaderProvider.loadLightPass());
+        IntrusivePointer<DxShader> shader(shaderProvider->loadLightPass());
         return makeWithShader(shader.get());
     }
 
     Material* MaterialProvider::makeUi() {
-        IntrusivePointer<DxShader> shader(shaderProvider.loadUi());
+        IntrusivePointer<DxShader> shader(shaderProvider->loadUi());
         return makeWithShader(shader.get());
     }
 
     Material* MaterialProvider::makeBasicSky() {
-        IntrusivePointer<DxShader> shader(shaderProvider.loadBasicSky());
+        IntrusivePointer<DxShader> shader(shaderProvider->loadBasicSky());
         return makeWithShader(shader.get());
     }
 
     Material* MaterialProvider::makeAdvancedSky() {
-        IntrusivePointer<DxShader> shader(shaderProvider.loadAdvancedSky());
+        IntrusivePointer<DxShader> shader(shaderProvider->loadAdvancedSky());
         return makeWithShader(shader.get());
     }
 }

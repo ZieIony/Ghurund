@@ -64,14 +64,13 @@ float4 pixelMain(DefaultPixel input): SV_Target{
 )";
 
     IntrusivePointer<DxGraphics> graphics;
-    ParameterManager parameterManager;
     SharedPointer<DxShaderCompiler> shaderCompiler;
 
 public:
     DxShaderCompilerTest() {
         graphics = makeIntrusive<DxGraphics>();
         graphics->init();
-        shaderCompiler = makeShared<DxShaderCompiler>(graphics.ref(), parameterManager);
+        shaderCompiler = makeShared<DxShaderCompiler>(graphics.ref());
     }
 
     TEST_METHOD(DxShaderCompiler_compileVertex) {

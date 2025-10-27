@@ -5,6 +5,7 @@
 #include "engine/directx/DxRenderer.h"
 #include "engine/directx/DxGraphics.h"
 #include "engine/parameter/ParameterManager.h"
+#include <engine/directx/shader/DxShaderLoader.h>
 
 namespace Demo {
     using namespace Ghurund::Engine;
@@ -18,6 +19,8 @@ namespace Demo {
         DxRenderer* renderer = nullptr;
         ParameterManager parameterManager;
         DemoWindow* window = nullptr;
+        IntrusivePointer<DxShaderLoader> shaderLoader;
+        SharedPointer<DxShaderCompiler> shaderCompiler;
 
         void uninitDemoApplication();
 
@@ -29,6 +32,10 @@ namespace Demo {
     public:
         DemoApplication() {
             Features->add<DxGraphics>();
+            auto graphics = Features->get<DxGraphics>();
+            shaderCompiler = makeShared<DxShaderCompiler>(*graphics);
+            shaderLoader = makeIntrusive<DxShaderLoader>(shaderCompiler.get());
+            ResourceManager->Loaders->set<DxShader>(shaderLoader.get());
         }
 
         ~DemoApplication() {

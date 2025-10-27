@@ -63,6 +63,8 @@ namespace Ghurund::Engine {
             return __super::onFocusedChanged();
         }
 
+        virtual void onPaint(NotNull<RenderingContext> renderingContext) {}
+
     public:
 		static inline const WindowStyle DEFAULT_WINDOW_STYLE = WindowStyle{
             .hasMinimizeButton = true,
@@ -104,6 +106,7 @@ namespace Ghurund::Engine {
 
             renderingContext->startFrame();
             renderingContext->clear(BackgroundColor);
+            onPaint(renderingContext.get());
             renderingContext->finishFrame();
         }
     };

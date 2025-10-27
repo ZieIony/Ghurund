@@ -37,16 +37,17 @@ namespace Ghurund::Engine::DirectX {
 		AString sourceCode((const char*)stream->Data, stream->Size);
 
 		DirectoryPath workingDir;
-		CompilerInclude include(workingDir, DirectoryPath(L"./shaders/"));
+		// TODO: load any includes
+		CompilerInclude include(workingDir, DirectoryPath(L"./resources/shaders/DirectX/"));
 		List<SharedPointer<DxShaderProgram>> programs;
 		for (const DxShaderType& shaderType : DxShaderType::VALUES) {
 			try {
-				auto program = SharedPointer<DxShaderProgram>(compiler.compile(sourceCode, shaderType, &include));
+				auto program = SharedPointer<DxShaderProgram>(compiler->compile(sourceCode, shaderType, &include));
 				programs.add(program);
 			} catch (...) {}
 		}
 		auto array = Array<SharedPointer<DxShaderProgram>>(programs);
-		auto shader = compiler.build(programs);
+		auto shader = compiler->build(programs);
 		//bool supportsTransparency = sourceCode.find("supportsTransparency") != sourceCode.Size;
 
 		return shader.reset();
