@@ -29,29 +29,29 @@ namespace Ghurund::Engine::DirectX {
         return TYPE;
     }
 
-    void Texture::init(NotNull<DxGraphics> graphics, NotNull<CommandList> commandList, NotNull<Ghurund::Core::Image> image) {
-		if (commandList->State == CommandListState::FINISHED)
-            commandList->reset();
+    void Texture::init(DxGraphics& graphics, CommandList& commandList, Ghurund::Core::Image& image) {
+		if (commandList.State == CommandListState::FINISHED)
+            commandList.reset();
 
-		descHandle = graphics->DescriptorAllocator.allocate(graphics, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+		descHandle = graphics.DescriptorAllocator.allocate(graphics, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
         setPointer(this->image, &image);
 
         {
             D3D12_RESOURCE_DESC textureDesc = {};
             textureDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
             textureDesc.Alignment = 0;  // let the driver choose
-            textureDesc.Width = image->Width;
-            textureDesc.Height = image->Height;
+            textureDesc.Width = image.Width;
+            textureDesc.Height = image.Height;
             textureDesc.DepthOrArraySize = 1;
             textureDesc.MipLevels = 1;
-            textureDesc.Format = image->Format;
+            textureDesc.Format = image.Format;
             textureDesc.SampleDesc.Count = 1;
             textureDesc.SampleDesc.Quality = 0;
             textureDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;  // let the driver choose
             textureDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 
             auto defaultHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
-            if(FAILED(graphics->Device->CreateCommittedResource(
+            if(FAILED(graphics.Device->CreateCommittedResource(
                 &defaultHeapProperties,
                 D3D12_HEAP_FLAG_NONE,
                 &textureDesc,
@@ -66,7 +66,7 @@ namespace Ghurund::Engine::DirectX {
 
             auto uploadHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
             auto uploadResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize);
-            if(FAILED((graphics->Device->CreateCommittedResource(
+            if(FAILED((graphics.Device->CreateCommittedResource(
                 &uploadHeapProperties,
                 D3D12_HEAP_FLAG_NONE,
                 &uploadResourceDesc,
@@ -78,25 +78,25 @@ namespace Ghurund::Engine::DirectX {
             }
 
             D3D12_SUBRESOURCE_DATA textureData = {};
-            textureData.pData = image->Data.Data;
-            textureData.RowPitch = image->Width * image->PixelSize;
-            textureData.SlicePitch = textureData.RowPitch * image->Height;
+            textureData.pData = image.Data.Data;
+            textureData.RowPitch = image.Width * image.PixelSize;
+            textureData.SlicePitch = textureData.RowPitch * image.Height;
 
-            UpdateSubresources(commandList->get(), textureResource.Get(), textureUploadHeap.Get(), 0, 0, 1, &textureData);
+            UpdateSubresources(commandList.get(), textureResource.Get(), textureUploadHeap.Get(), 0, 0, 1, &textureData);
             auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(textureResource.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
-            commandList->get()->ResourceBarrier(1, &barrier);
+            commandList.get()->ResourceBarrier(1, &barrier);
 
             D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
             srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
             srvDesc.Format = textureDesc.Format;
             srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
             srvDesc.Texture2D.MipLevels = 1;
-            graphics->Device->CreateShaderResourceView(textureResource.Get(), &srvDesc, descHandle.CpuHandle);
+            graphics.Device->CreateShaderResourceView(textureResource.Get(), &srvDesc, descHandle.CpuHandle);
         }
 
-        commandList->addResourceRef(textureResource.Get());
-        commandList->finish();
-        commandList->wait();
+        commandList.addResourceRef(textureResource.Get());
+        commandList.finish();
+        commandList.wait();
 
         uploaded = true;
     }

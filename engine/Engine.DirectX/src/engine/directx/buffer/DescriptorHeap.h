@@ -65,7 +65,7 @@ namespace Ghurund::Engine::DirectX {
                 heap->Release();
         }
 
-        void init(NotNull<DxGraphics> graphics);
+        void init(DxGraphics& graphics);
 
         bool hasAvailableSpace() const { return numFreeDescriptors > 0; }
         DescriptorHandle allocate();
@@ -86,7 +86,7 @@ namespace Ghurund::Engine::DirectX {
                 delete heap;
         }
 
-        DescriptorHandle allocate(NotNull<DxGraphics> graphics, D3D12_DESCRIPTOR_HEAP_TYPE type) {
+        DescriptorHandle allocate(DxGraphics& graphics, D3D12_DESCRIPTOR_HEAP_TYPE type) {
             if (!heapMap.contains(type)) {
                 auto dh = ghnew DescriptorHeap(type, numDescriptorsPerHeap);
                 dh->init(graphics);

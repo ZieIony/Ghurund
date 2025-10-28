@@ -30,7 +30,7 @@ namespace Ghurund::Engine::OpenGL {
 
 		~OglShader();
 
-		void init(SharedPointer<OglShaderProgram> vertexProgram, SharedPointer<OglShaderProgram> fragmentProgram);
+		void init(const OglShaderProgram& vertexProgram, const OglShaderProgram& fragmentProgram);
 
 		void set() {
 			glUseProgram(id);

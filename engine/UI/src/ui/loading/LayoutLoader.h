@@ -26,22 +26,17 @@ namespace Ghurund::UI {
 
 	class LayoutLoader :public Ghurund::Core::Loader {
 	private:
-		// borrowed
-		Ghurund::Core::ResourceManager* resourceManager;
-		// borrowed
-		ShapeFactory* shapeFactory;
-		// borrowed
-		IDrawableFactory* drawableFactory;
-		// borrowed
-		TextFormatFactory* textFormatFactory;
-		// borrowed
-		ConstraintFactory* constraintFactory;
+		Ghurund::Core::ResourceManager& resourceManager;
+		ShapeFactory& shapeFactory;
+		IDrawableFactory& drawableFactory;
+		TextFormatFactory& textFormatFactory;
+		ConstraintFactory& constraintFactory;
 		PropertyLoaderCollection propertyLoaders;
 		Map<AString, const BaseConstructor*> types;
 
 	protected:
 		virtual Resource* loadInternal(
-			NotNull<MemoryInputStream> stream,
+			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
 			LoadOption options
@@ -54,20 +49,20 @@ namespace Ghurund::UI {
 		static inline const char* THEME_TEXTFORMAT = "theme://textFormat/";
 
 		LayoutLoader(
-			NotNull<Ghurund::Core::ResourceManager> resourceManager,
-			NotNull<ShapeFactory> shapeFactory,
-			NotNull<IDrawableFactory> drawableFactory,
-			NotNull<TextFormatFactory> textFormatFactory,
-			NotNull<ConstraintFactory> constraintFactory
+			Ghurund::Core::ResourceManager& resourceManager,
+			ShapeFactory& shapeFactory,
+			IDrawableFactory& drawableFactory,
+			TextFormatFactory& textFormatFactory,
+			ConstraintFactory& constraintFactory
 		);
 
 		virtual ~LayoutLoader() {}
 
-		inline Ghurund::Core::ResourceManager* getResourceManager() {
+		inline Ghurund::Core::ResourceManager& getResourceManager() {
 			return resourceManager;
 		}
 
-		__declspec(property(get = getResourceManager)) Ghurund::Core::ResourceManager* ResourceManager;
+		__declspec(property(get = getResourceManager)) Ghurund::Core::ResourceManager& ResourceManager;
 
 		template<Derived<Control> T>
 		inline void registerType() {

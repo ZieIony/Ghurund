@@ -70,7 +70,7 @@ float4 pixelMain(DefaultPixel input): SV_Target{
             Buffer data;
             MemoryInputStream stream(data.Data, data.Size);
 
-            Assert::ExpectException<InvalidFormatException>([&]() {
+            Assert::ExpectException<InvalidFormatException>([&] {
                 IntrusivePointer<Resource> shader(loader->load(stream, DirectoryPath()));
             });
         }

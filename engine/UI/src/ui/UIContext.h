@@ -15,17 +15,16 @@ namespace Ghurund::Core {
 namespace Ghurund::UI {
     class IUIContext {
     private:
-        // borrowed
-        Ghurund::Core::Window* window;
+        Ghurund::Core::Window& window;
 
     public:
-        IUIContext(NotNull<Ghurund::Core::Window> window):window(&window) {}
+        IUIContext(Ghurund::Core::Window& window):window(window) {}
 
-        inline Ghurund::Core::Window* getWindow() {
+        inline Ghurund::Core::Window& getWindow() {
             return window;
         }
 
-        __declspec(property(get = getWindow)) Ghurund::Core::Window* Window;
+        __declspec(property(get = getWindow)) Ghurund::Core::Window& Window;
 
         virtual IStrokeStyle* makeStrokeStyle(Ghurund::Core::Array<float>& dashes) = 0;
 

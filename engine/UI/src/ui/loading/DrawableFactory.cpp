@@ -10,7 +10,7 @@
 namespace Ghurund::UI {
     Drawable* DrawableFactory::makeDrawable(const ResourcePath& path) {
         try {
-            IntrusivePointer<Bitmap> bitmap(resourceManager->load<Bitmap>(path, DirectoryPath()));
+            IntrusivePointer<Bitmap> bitmap(resourceManager.load<Bitmap>(path, DirectoryPath()));
             return ghnew BitmapDrawable(bitmap.get());
         } catch (...) {
             /*try {

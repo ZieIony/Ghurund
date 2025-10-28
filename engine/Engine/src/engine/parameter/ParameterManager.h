@@ -34,6 +34,8 @@ namespace Ghurund::Engine {
 		IntrusivePointer<TextureParameter> parameterSpecular = makeIntrusive<TextureParameter>(SPECULAR_TEXTURE);
 		IntrusivePointer<TextureParameter> parameterNormal = makeIntrusive<TextureParameter>(NORMAL_TEXTURE);
 		
+		ParameterManager& operator=(const ParameterManager& other) = delete;
+
 	public:
 		ParameterManager();
 

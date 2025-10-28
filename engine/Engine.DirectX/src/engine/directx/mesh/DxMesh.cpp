@@ -12,20 +12,20 @@ namespace Ghurund::Engine::DirectX {
 		return TYPE;
 	}
 
-	void DxMesh::init(const MeshData& mesh, NotNull<DxGraphics> graphics, NotNull<CommandList> commandList) {
-		if (commandList->State == CommandListState::FINISHED)
-			commandList->reset();
+	void DxMesh::init(const MeshData& mesh, DxGraphics& graphics, CommandList& commandList) {
+		if (commandList.State == CommandListState::FINISHED)
+			commandList.reset();
 
 		initVertexBuffers(mesh.VertexStreams, mesh.VertexCount, graphics, commandList);
 		initIndexBuffer(mesh.Indices, mesh.IndexCount, graphics, commandList);
 
-		commandList->finish();
-		commandList->wait();
+		commandList.finish();
+		commandList.wait();
 
 		uploaded = true;
 	}
 
-	void DxMesh::initVertexBuffers(const Array<VertexStream> vertexStreams, uint32_t vertexCount, NotNull<DxGraphics> graphics, NotNull<CommandList> commandList) {
+	void DxMesh::initVertexBuffers(const Array<VertexStream>& vertexStreams, uint32_t vertexCount, DxGraphics& graphics, CommandList& commandList) {
 		vertexBuffers.clear();
 		for (size_t i = 0; i < vertexStreams.Size;i++) {
 			const VertexStream& stream = vertexStreams[i];
@@ -35,7 +35,7 @@ namespace Ghurund::Engine::DirectX {
 			ComPtr<ID3D12Resource> vertexBuffer;
 			auto defaultHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 			auto resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize);
-			if (FAILED(graphics->Device->CreateCommittedResource(
+			if (FAILED(graphics.Device->CreateCommittedResource(
 				&defaultHeapProperties,
 				D3D12_HEAP_FLAG_NONE,
 				&resourceDesc,
@@ -48,7 +48,7 @@ namespace Ghurund::Engine::DirectX {
 
 			ComPtr<ID3D12Resource> vertexUploadHeap;
 			auto uploadHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-			if (FAILED(graphics->Device->CreateCommittedResource(
+			if (FAILED(graphics.Device->CreateCommittedResource(
 				&uploadHeapProperties,
 				D3D12_HEAP_FLAG_NONE,
 				&resourceDesc,
@@ -66,10 +66,10 @@ namespace Ghurund::Engine::DirectX {
 
 			// we are now creating a command with the command list to copy the data from
 			// the upload heap to the default heap
-			UpdateSubresources(commandList->get(), vertexBuffer.Get(), vertexUploadHeap.Get(), 0, 0, 1, &vertexData);
+			UpdateSubresources(commandList.get(), vertexBuffer.Get(), vertexUploadHeap.Get(), 0, 0, 1, &vertexData);
 
 			auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(vertexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
-			commandList->get()->ResourceBarrier(1, &barrier);
+			commandList.get()->ResourceBarrier(1, &barrier);
 
 			D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
 			vertexBufferView.BufferLocation = vertexBuffer->GetGPUVirtualAddress();
@@ -77,21 +77,21 @@ namespace Ghurund::Engine::DirectX {
 			vertexBufferView.SizeInBytes = vertexBufferSize;
 
 			// https://github.com/microsoft/DirectXTK12/blob/main/Src/ResourceUploadBatch.cpp
-			commandList->addResourceRef(vertexUploadHeap.Get());
-			commandList->addResourceRef(vertexBuffer.Get());
+			commandList.addResourceRef(vertexUploadHeap.Get());
+			commandList.addResourceRef(vertexBuffer.Get());
 
 			vertexBuffers.add(vertexBuffer);
 			vertexBuffersView.add(vertexBufferView);
 			vertexUploadHeaps.add(vertexUploadHeap);
 		}
 	}
-	void DxMesh::initIndexBuffer(const Buffer& indices, uint32_t indexCount, NotNull<DxGraphics> graphics, NotNull<CommandList> commandList) {
+	void DxMesh::initIndexBuffer(const Buffer& indices, uint32_t indexCount, DxGraphics& graphics, CommandList& commandList) {
 		unsigned int indexBufferSize = indices.Size;
 		this->indexCount = indexCount;
 
 		auto defaultHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 		auto resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(indexBufferSize);
-		if (FAILED(graphics->Device->CreateCommittedResource(
+		if (FAILED(graphics.Device->CreateCommittedResource(
 			&defaultHeapProperties,
 			D3D12_HEAP_FLAG_NONE,
 			&resourceDesc,
@@ -103,7 +103,7 @@ namespace Ghurund::Engine::DirectX {
 		}
 
 		auto uploadHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-		if (FAILED(graphics->Device->CreateCommittedResource(
+		if (FAILED(graphics.Device->CreateCommittedResource(
 			&uploadHeapProperties,
 			D3D12_HEAP_FLAG_NONE,
 			&resourceDesc,
@@ -121,10 +121,10 @@ namespace Ghurund::Engine::DirectX {
 
 		// we are now creating a command with the command list to copy the data from
 		// the upload heap to the default heap
-		UpdateSubresources(commandList->get(), indexBuffer.Get(), indexUploadHeap.Get(), 0, 0, 1, &indexData);
+		UpdateSubresources(commandList.get(), indexBuffer.Get(), indexUploadHeap.Get(), 0, 0, 1, &indexData);
 
 		auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(indexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
-		commandList->get()->ResourceBarrier(1, &barrier);
+		commandList.get()->ResourceBarrier(1, &barrier);
 
 		indexBufferView.BufferLocation = indexBuffer->GetGPUVirtualAddress();
 		uint8_t indexSize = indices.Size / indexCount;
@@ -138,8 +138,8 @@ namespace Ghurund::Engine::DirectX {
 		}
 		indexBufferView.SizeInBytes = indexBufferSize;
 
-		commandList->addResourceRef(indexUploadHeap.Get());
-		commandList->addResourceRef(indexBuffer.Get());
+		commandList.addResourceRef(indexUploadHeap.Get());
+		commandList.addResourceRef(indexBuffer.Get());
 	}
 
 	void DxMesh::draw(CommandList& commandList) {

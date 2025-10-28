@@ -33,13 +33,13 @@
 namespace Ghurund::UI {
 
     LayoutLoader::LayoutLoader(
-        NotNull<Ghurund::Core::ResourceManager> resourceManager,
-        NotNull<ShapeFactory> shapeFactory,
-        NotNull<IDrawableFactory> drawableFactory,
-        NotNull<TextFormatFactory> textFormatFactory,
-        NotNull<ConstraintFactory> constraintFactory
-    ):resourceManager(&resourceManager), shapeFactory(&shapeFactory), drawableFactory(&drawableFactory),
-        textFormatFactory(&textFormatFactory), constraintFactory(&constraintFactory)
+        Ghurund::Core::ResourceManager& resourceManager,
+        ShapeFactory& shapeFactory,
+        IDrawableFactory& drawableFactory,
+        TextFormatFactory& textFormatFactory,
+        ConstraintFactory& constraintFactory
+    ):resourceManager(resourceManager), shapeFactory(shapeFactory), drawableFactory(drawableFactory),
+        textFormatFactory(textFormatFactory), constraintFactory(constraintFactory)
     {
         propertyLoaders.add(std::make_unique<BoolPropertyLoader>());
         propertyLoaders.add(std::make_unique<UInt32PropertyLoader>());
@@ -62,13 +62,13 @@ namespace Ghurund::UI {
 	}
 
 	Resource* LayoutLoader::loadInternal(
-        NotNull<MemoryInputStream> stream,
+        MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
         LoadOption options
     ) {
 		tinyxml2::XMLDocument doc;
-		doc.Parse((const char*)stream->Data, stream->Size);
+		doc.Parse((const char*)stream.Data, stream.Size);
 
         tinyxml2::XMLElement* child = doc.FirstChildElement();
         if (!child) {
@@ -156,7 +156,7 @@ namespace Ghurund::UI {
             if (layoutAttr) {
                 AString s = layoutAttr->Value();
                 try {
-                    IntrusivePointer<Control> control(resourceManager->load<Control>(
+                    IntrusivePointer<Control> control(resourceManager.load<Control>(
                         FilePath(convertText<char, wchar_t>(s)), workingDir, Control::FORMAT_XML, LoadOption::DONT_CACHE)
                     );
                     PartialConstraintSet loadedConstraints;
@@ -210,7 +210,7 @@ namespace Ghurund::UI {
         auto maxAttr = xml.FindAttribute("max");
         if (maxAttr)
             max = maxAttr->Value();
-        return constraintFactory->parseConstraint(
+        return constraintFactory.parseConstraint(
             nameAttr ? &name : nullptr,
             ratioAttr ? &ratio : nullptr,
             offsetAttr ? &offset : nullptr,
@@ -221,7 +221,7 @@ namespace Ghurund::UI {
     }
 
     Constraint* LayoutLoader::loadConstraint(const char* str, Orientation orientation) {
-        return constraintFactory->parseConstraint(str, orientation);
+        return constraintFactory.parseConstraint(str, orientation);
     }
 
     TextFormatRef* LayoutLoader::loadTextFormat(const char* str) {

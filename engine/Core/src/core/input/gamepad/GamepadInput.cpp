@@ -26,7 +26,7 @@ namespace Ghurund::Core {
 	
 	const uint8_t GamepadInput::MAX_GAMEPADS = XUSER_MAX_COUNT;
 
-	void GamepadInput::dispatchEvents(uint64_t time, NotNull<EventConsumer> consumer) {
+	void GamepadInput::dispatchEvents(uint64_t time, EventConsumer& consumer) {
 		for (uint8_t gamepadIndex = 0; gamepadIndex < MAX_GAMEPADS; gamepadIndex++) {
 			auto state = getGamepadState(gamepadIndex);
 			if (state) {
@@ -42,7 +42,7 @@ namespace Ghurund::Core {
 							0,
 							time
 						);
-						consumer->dispatchGamepadButtonEvent(event);
+						consumer.dispatchGamepadButtonEvent(event);
 						buttonState.isDown = true;
 						buttonState.pressedTime = time;
 					}
@@ -54,7 +54,7 @@ namespace Ghurund::Core {
 							time - buttonState.pressedTime,
 							time
 						);
-						consumer->dispatchGamepadButtonEvent(event);
+						consumer.dispatchGamepadButtonEvent(event);
 						buttonState.isDown = false;
 					}
 					if (down && buttonState.isDown) {
@@ -65,13 +65,13 @@ namespace Ghurund::Core {
 							time - buttonState.pressedTime,
 							time
 						);
-						consumer->dispatchGamepadButtonEvent(event);
+						consumer.dispatchGamepadButtonEvent(event);
 					}
 				}
-				consumer->dispatchGamepadStickEvent(GamepadStickEventArgs(gamepadIndex, GamepadStick::LEFT, state->LeftStick, time));
-				consumer->dispatchGamepadStickEvent(GamepadStickEventArgs(gamepadIndex, GamepadStick::RIGHT, state->RightStick, time));
-				consumer->dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(gamepadIndex, GamepadTrigger::LEFT, state->LeftTrigger, time));
-				consumer->dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(gamepadIndex, GamepadTrigger::RIGHT, state->RightTrigger, time));
+				consumer.dispatchGamepadStickEvent(GamepadStickEventArgs(gamepadIndex, GamepadStick::LEFT, state->LeftStick, time));
+				consumer.dispatchGamepadStickEvent(GamepadStickEventArgs(gamepadIndex, GamepadStick::RIGHT, state->RightStick, time));
+				consumer.dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(gamepadIndex, GamepadTrigger::LEFT, state->LeftTrigger, time));
+				consumer.dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(gamepadIndex, GamepadTrigger::RIGHT, state->RightTrigger, time));
 				delete state;
 			}
 		}

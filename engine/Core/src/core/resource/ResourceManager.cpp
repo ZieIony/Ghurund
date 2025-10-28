@@ -20,7 +20,7 @@ namespace Ghurund::Core {
 		return loader;
 	}
 
-	Resource* ResourceManager::loadInternal(NotNull<Loader> loader, const DirectoryPath& workingDir, const ResourcePath& path, const ResourceFormat& format, LoadOption options) {
+	Resource* ResourceManager::loadInternal(Loader& loader, const DirectoryPath& workingDir, const ResourcePath& path, const ResourceFormat& format, LoadOption options) {
 		auto iterator = resourceCache.find(path);
 		SharedPointer<Buffer> buffer;
 		if (iterator == resourceCache.end()) {
@@ -34,7 +34,7 @@ namespace Ghurund::Core {
 		return loadInternal(loader, workingDir, *buffer.get(), format, options);
 	}
 
-	Resource* ResourceManager::loadInternal(NotNull<Loader> loader, const DirectoryPath& workingDir, const Buffer& buffer, const ResourceFormat& format, LoadOption options) {
+	Resource* ResourceManager::loadInternal(Loader& loader, const DirectoryPath& workingDir, const Buffer& buffer, const ResourceFormat& format, LoadOption options) {
 		if (buffer.Size == 0) {
 			auto message = std::format(_T("the buffer is empty\n"));
 			Logger::log(LogType::ERR0R, message.c_str());
@@ -44,7 +44,7 @@ namespace Ghurund::Core {
 		MemoryInputStream stream(buffer.Data, buffer.Size);
 		Resource* resource;
 		try {
-			resource = loader->load(stream, workingDir, format, options);
+			resource = loader.load(stream, workingDir, format, options);
 		} catch (std::exception& exception) {
 			auto text = std::format(_T("failed to load resource\n"));
 			Logger::log(LogType::ERR0R, text.c_str());
@@ -87,7 +87,7 @@ namespace Ghurund::Core {
 		buffer.setData(stream.Data, stream.BytesWritten);
 	}
 
-	Resource* ResourceManager::load(NotNull<Loader> loader, const File& file, const ResourceFormat& format, LoadOption options) {
+	Resource* ResourceManager::load(Loader& loader, const File& file, const ResourceFormat& format, LoadOption options) {
 		Resource* resource = resources.get(file.Path);
 		if (!resource) {
 			// TODO: do the same for ResourcePath - use the resource directory as workingDir
@@ -102,7 +102,7 @@ namespace Ghurund::Core {
 		return resource;
 	}
 
-	Resource* ResourceManager::load(NotNull<Loader> loader, const ResourcePath& path, const DirectoryPath& workingDir, const ResourceFormat& format, LoadOption options) {
+	Resource* ResourceManager::load(Loader& loader, const ResourcePath& path, const DirectoryPath& workingDir, const ResourceFormat& format, LoadOption options) {
 		ResourcePath resolvedPath = path.getAbsolutePath(workingDir, libraries);
 		Resource* resource = resources.get(resolvedPath); // TODO: why it doesn't find fonts?
 		if (!resource) {

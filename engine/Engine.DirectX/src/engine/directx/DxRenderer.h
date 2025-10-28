@@ -32,10 +32,8 @@ namespace Ghurund::Engine::DirectX {
         Postprocess* postprocess = nullptr;
         //RenderTarget* postprocessRenderTarget[FRAME_COUNT] = {};
 
-        // borrowed
-        DxGraphics* graphics = nullptr;
-        // borrowed
-        ParameterManager* parameterManager = nullptr;
+        DxGraphics& graphics;
+        ParameterManager& parameterManager;
 
     protected:
         virtual void onInit() override;
@@ -44,13 +42,13 @@ namespace Ghurund::Engine::DirectX {
         void uninitDxRenderer();
 
     public:
-        DxRenderer(NotNull<DxGraphics> graphics, NotNull<ParameterManager> parameterManager):graphics(&graphics), parameterManager(&parameterManager) {}
+        DxRenderer(DxGraphics& graphics, ParameterManager& parameterManager):graphics(graphics), parameterManager(parameterManager) {}
 
         ~DxRenderer() {
             uninitDxRenderer();
         }
 
-        virtual DxRenderingContext* makeRenderingContext(NotNull<SystemWindow> window) override {
+        virtual DxRenderingContext* makeRenderingContext(SystemWindow& window) override {
             return ghnew DxRenderingContext(window, graphics);
         }
     };

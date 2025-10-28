@@ -8,27 +8,27 @@
 
 namespace Preview {
     PreviewApplication::PreviewApplication() {
-        Features->add<DxGraphics>();
-        Features->add<Ghurund::UI::Direct2D::Graphics2D, Ghurund::UI::Direct2D::Graphics2DFactory>();
-        Features->add<Ghurund::UI::Direct2D::UIFeature, Ghurund::UI::Direct2D::UIFeatureFactory>();
+        Features.add<DxGraphics>();
+        Features.add<Ghurund::UI::Direct2D::Graphics2D, Ghurund::UI::Direct2D::Graphics2DFactory>();
+        Features.add<Ghurund::UI::Direct2D::UIFeature, Ghurund::UI::Direct2D::UIFeatureFactory>();
     }
     
     void PreviewApplication::onInit() {
         __super::onInit();
 
-        auto uiFeature = Features->get<UIFeature>();
+        auto uiFeature = Features.get<UIFeature>();
         auto drawableFactory = uiFeature->DrawableFactory;
 
-        lightTheme.set(ghnew LightTheme(ResourceManager, drawableFactory));
-        darkTheme.set(ghnew DarkTheme(ResourceManager, drawableFactory));
+        lightTheme.set(ghnew LightTheme(ResourceManager, *drawableFactory));
+        darkTheme.set(ghnew DarkTheme(ResourceManager, *drawableFactory));
         ThemeType = ThemeType::LIGHT;
 
-        ResourceManager->Libraries->add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
-        ResourceManager->Libraries->add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
+        ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
+        ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
 
-        renderer = ghnew DxRenderer(Features->get<DxGraphics>(), parameterManager);
+        renderer = ghnew DxRenderer(*Features.get<DxGraphics>(), parameterManager);
         renderer->init();
-        window = ghnew PreviewWindow(*this, renderer, *this);
+        window = ghnew PreviewWindow(*this, *renderer, *this);
 
         window->init();
         window->Title = _T("Preview");

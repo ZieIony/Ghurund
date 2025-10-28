@@ -55,7 +55,7 @@ namespace Ghurund::Engine::DirectX {
 
         __declspec(property(get = isInitialized)) bool Initialized;
 
-        void init(NotNull<DxGraphics> graphics, NotNull<SystemWindow> window, uint32_t frameCount = 3);
+        void init(DxGraphics& graphics, SystemWindow& window, uint32_t frameCount = 3);
 
         void initBuffers();
 

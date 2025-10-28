@@ -12,10 +12,10 @@
 
 namespace Demo {
 	DemoWindow::DemoWindow(
-		NotNull<DemoApplication> app,
-		NotNull<Ghurund::Engine::DirectX::DxRenderer> renderer,
-		NotNull<ParameterManager> parameterManager
-	):GameWindow(&app), app(&app), parameterManager(&parameterManager) {
+		DemoApplication& app,
+		Ghurund::Engine::DirectX::DxRenderer& renderer,
+		ParameterManager& parameterManager
+	):GameWindow(app), app(app), parameterManager(parameterManager) {
 		closed += DEFAULT_QUIT_APP_WINDOW_CLOSED_HANDLER;
 		Title = _T("Demo 3D DirectX");
 
@@ -25,14 +25,14 @@ namespace Demo {
 		auto meshData = makeIntrusive<CubeMesh>();
 		meshData->init();
 		mesh = makeIntrusive<DxMesh>();
-		DxGraphics* graphics = app->Features->get<DxGraphics>();
+		DxGraphics* graphics = app.Features.get<DxGraphics>();
 		auto commandList = makeIntrusive<CommandList>();
-		commandList->init(graphics, graphics->DirectQueue);
+		commandList->init(*graphics, graphics->DirectQueue);
 
-		mesh->init(meshData.ref(), *graphics, commandList.get());
+		mesh->init(meshData.ref(), *graphics, *commandList.get());
 
-		TextureProvider textureProvider(graphics, commandList.get(), app->ResourceManager);
-		ShaderProvider shaderProvider(app->ResourceManager);
+		TextureProvider textureProvider(*graphics, *commandList.get(), app.ResourceManager);
+		ShaderProvider shaderProvider(app.ResourceManager);
 		MaterialProvider materialProvider(parameterManager, shaderProvider, textureProvider);
 
 		basicMaterial = IntrusivePointer<Material>(materialProvider.makeBasic());
@@ -40,7 +40,7 @@ namespace Demo {
 		camera = makeIntrusive<Camera>();
 		camera->rebuild();
 		camera->updateParameters();
-		parameterManager->Parameters.putAll(camera->Parameters);
+		parameterManager.Parameters.putAll(camera->Parameters);
 	}
 	
 	bool DemoWindow::onKeyEvent(const KeyEventArgs& args) {
@@ -71,10 +71,10 @@ namespace Demo {
 		return true;
 	}
 	
-	void DemoWindow::onPaint(NotNull<RenderingContext> renderingContext) {
-		auto dxContext = (DxRenderingContext*)&renderingContext;
-		auto commandList = dxContext->SwapChain.CurrentFrame.CommandList;
-		DxGraphics* graphics = app->Features->get<DxGraphics>();
+	void DemoWindow::onPaint(RenderingContext& renderingContext) {
+		auto& dxContext = (DxRenderingContext&)renderingContext;
+		auto commandList = dxContext.SwapChain.CurrentFrame.CommandList;
+		DxGraphics* graphics = app.Features.get<DxGraphics>();
 		basicMaterial->set(*graphics, *commandList);
 		mesh->draw(*commandList);
 	}

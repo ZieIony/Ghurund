@@ -20,6 +20,6 @@ namespace Ghurund::Core {
     public:
         static const uint8_t MAX_GAMEPADS;
 
-        void dispatchEvents(uint64_t time, NotNull<EventConsumer> consumer);
+        void dispatchEvents(uint64_t time, EventConsumer& consumer);
     };
 }

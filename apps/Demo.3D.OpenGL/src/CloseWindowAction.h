@@ -8,15 +8,15 @@ namespace Demo {
 
 	class CloseWindowAction:public GameAction<bool> {
 	private:
-		Ghurund::Engine::GameWindow* window;
+		Ghurund::Engine::GameWindow& window;
 
 		virtual void onFinished(uint64_t duration) override {
-			window->Visible = false;
-			window->Application->quit();
+			window.Visible = false;
+			window.Application.quit();
 		}
 
 	public:
-		CloseWindowAction(NotNull<Ghurund::Engine::GameWindow> window):window(&window) {
+		CloseWindowAction(Ghurund::Engine::GameWindow& window):window(window) {
 			name = _T("Close Window");
 		}
 	};

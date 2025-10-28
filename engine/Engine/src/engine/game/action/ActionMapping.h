@@ -20,6 +20,8 @@ namespace Ghurund::Engine {
 
         BaseInputDispatcher<IntPoint>* mouseMotionAction = nullptr;
 
+        ActionMapping& operator=(const ActionMapping& other) = delete;
+
     public:
         GamepadGameActionCollection<GamepadButton, bool> gamepadButtonActions;
         GamepadGameActionCollection<GamepadTrigger, float> gamepadTriggerActions;

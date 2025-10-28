@@ -17,13 +17,13 @@ namespace Ghurund::Engine::OpenGL {
 		glDeleteProgram(id);
 	}
 	
-	void OglShader::init(SharedPointer<OglShaderProgram> vertexProgram, SharedPointer<OglShaderProgram> fragmentProgram) {
+	void OglShader::init(const OglShaderProgram& vertexProgram, const OglShaderProgram& fragmentProgram) {
 		GLint Result = GL_FALSE;
 		int InfoLogLength;
 
 		// Link the program
-		glAttachShader(id, vertexProgram->Id);
-		glAttachShader(id, fragmentProgram->Id);
+		glAttachShader(id, vertexProgram.Id);
+		glAttachShader(id, fragmentProgram.Id);
 		glLinkProgram(id);
 
 		// Check the program
@@ -35,7 +35,7 @@ namespace Ghurund::Engine::OpenGL {
 			throw CallFailedException((char*)message.Data);
 		}
 
-		glDetachShader(id, vertexProgram->Id);
-		glDetachShader(id, fragmentProgram->Id);
+		glDetachShader(id, vertexProgram.Id);
+		glDetachShader(id, fragmentProgram.Id);
 	}
 }

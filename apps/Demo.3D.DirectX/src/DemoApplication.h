@@ -31,11 +31,11 @@ namespace Demo {
 
     public:
         DemoApplication() {
-            Features->add<DxGraphics>();
-            auto graphics = Features->get<DxGraphics>();
+            Features.add<DxGraphics>();
+            auto graphics = Features.get<DxGraphics>();
             shaderCompiler = makeShared<DxShaderCompiler>(*graphics);
-            shaderLoader = makeIntrusive<DxShaderLoader>(shaderCompiler.get());
-            ResourceManager->Loaders->set<DxShader>(shaderLoader.get());
+            shaderLoader = makeIntrusive<DxShaderLoader>(*shaderCompiler.get());
+            ResourceManager.Loaders.set<DxShader>(*shaderLoader.get());
         }
 
         ~DemoApplication() {

@@ -9,7 +9,7 @@ namespace Samples {
         delete renderer;
         renderer = nullptr;
 
-        ResourceManager->Libraries->clear();
+        ResourceManager.Libraries.clear();
     }
 
     void SampleApplication::onUninit() {
@@ -19,12 +19,12 @@ namespace Samples {
     
     void SampleApplication::onInit() {
         __super::onInit();
-        ResourceManager->Libraries->add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
-        ResourceManager->Libraries->add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
+        ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
+        ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
 
         renderer = ghnew OglRenderer(parameterManager);
         renderer->init();
-        window = ghnew SampleWindow(*this, renderer);
+        window = ghnew SampleWindow(*this, *renderer);
         window->init();
         window->closed += [this](Window& window) {
             window.Visible = false;

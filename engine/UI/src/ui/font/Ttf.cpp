@@ -70,7 +70,7 @@ namespace Ghurund::Core {
 	}
 
 	String TtfFile::readString(uint8_t* data, size_t length) {
-		AString str = [&]() {
+		AString str = [&] {
 			if (data[0] == 0) {
 				AString familyName(length / 2);
 				for (size_t i = 0; i < length / 2; i++) {

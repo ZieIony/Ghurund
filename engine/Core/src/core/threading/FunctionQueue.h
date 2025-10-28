@@ -10,6 +10,8 @@ namespace Ghurund::Core {
         std::queue<std::function<void()>> queue;
         CriticalSection section;
 
+        FunctionQueue& operator=(const FunctionQueue& other) = delete;
+
     public:
         void post(std::function<void()> function);
 

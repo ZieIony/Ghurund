@@ -31,8 +31,7 @@ namespace Ghurund::UI::Direct2D {
 #pragma endregion
 
     private:
-        // borrowed
-        Ghurund::Engine::DirectX::DxGraphics* graphics;
+        Ghurund::Engine::DirectX::DxGraphics& graphics;
         ComPtr<ID2D1DeviceContext5> deviceContext;
         ComPtr<ID3D11DeviceContext> d3d11DeviceContext;
         ComPtr<ID3D11On12Device> d3d11On12Device;
@@ -47,7 +46,7 @@ namespace Ghurund::UI::Direct2D {
         virtual void onUninit() override;
 
     public:
-		Graphics2D(NotNull<Ghurund::Engine::DirectX::DxGraphics> graphics):graphics(&graphics) {}
+		Graphics2D(Ghurund::Engine::DirectX::DxGraphics& graphics):graphics(graphics) {}
 
         inline ID2D1Device5* getDevice() {
             return d2dDevice.Get();
@@ -85,9 +84,9 @@ namespace Ghurund::UI::Direct2D {
 
         __declspec(property(get = getState)) UIState State;
 
-        void beginPaint(NotNull<RenderTarget2D> target);
+        void beginPaint(RenderTarget2D& target);
 
-        void endPaint(NotNull<RenderTarget2D> target);
+        void endPaint(RenderTarget2D& target);
 
         void flush() {
             d3d11DeviceContext->Flush();

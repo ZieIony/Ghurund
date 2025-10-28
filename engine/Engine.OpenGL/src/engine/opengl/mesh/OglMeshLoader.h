@@ -12,7 +12,7 @@ namespace Ghurund::Engine::OpenGL {
 
     protected:
         virtual Resource* loadInternal(
-            NotNull<Ghurund::Core::MemoryInputStream> stream,
+            MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
             Ghurund::Core::LoadOption options

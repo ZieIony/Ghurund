@@ -13,10 +13,10 @@ namespace Demo {
     void DemoApplication::onInit() {
         __super::onInit();
 
-        renderer = ghnew DxRenderer(Features->get<DxGraphics>(), parameterManager);
+        renderer = ghnew DxRenderer(*Features.get<DxGraphics>(), parameterManager);
         renderer->init();
 
-        window = ghnew DemoWindow(*this, renderer, parameterManager);
+        window = ghnew DemoWindow(*this, *renderer, parameterManager);
 		window->ClientSize = { 800, 600 };
         window->Position = { 0, 0 };
         window->Visible = true;

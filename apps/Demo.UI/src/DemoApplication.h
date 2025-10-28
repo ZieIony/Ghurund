@@ -30,8 +30,8 @@ namespace Demo {
 
     public:
         DemoApplication() {
-            Features->add<DxGraphics>();
-            Features->add<UIFeature, UIFeatureFactory>();
+            Features.add<DxGraphics>();
+            Features.add<UIFeature, UIFeatureFactory>();
         }
 
         ~DemoApplication() {

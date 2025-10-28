@@ -29,9 +29,9 @@ namespace Preview {
 
 	public:
 		PreviewWindow(
-			NotNull<Ghurund::Core::Application> app,
-			NotNull<DxRenderer> renderer,
-			NotNull<ThemeApplication> themeApp
+			Ghurund::Core::Application& app,
+			DxRenderer& renderer,
+			ThemeApplication& themeApp
 		);
 
 		void init();

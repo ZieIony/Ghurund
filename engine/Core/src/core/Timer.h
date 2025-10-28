@@ -29,6 +29,8 @@ namespace Ghurund::Core {
         double time = 0.0f, frameTime = 0.0f;
         uint64_t timeMs, frameTimeMs;
 
+        Timer& operator=(const Timer& other) = delete;
+
     public:
         Timer();
 

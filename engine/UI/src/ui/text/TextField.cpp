@@ -64,7 +64,7 @@ namespace Ghurund::UI {
     void TextField::onKeyPress(UINT32 keyCode) {
         UINT32 absolutePosition = caretPosition + caretPositionOffset;
 
-        Input* input = Context->Window->Input;
+        Input* input = Context->Window.Input;
         if (keyCode == VK_RETURN) {
             onReturn();
         } else if (keyCode == VK_BACK) {
@@ -141,7 +141,7 @@ namespace Ghurund::UI {
 
         deleteSelection();
 
-        WString* data = Clipboard::getUnicodeText(Context->Window->Handle);
+        WString* data = Clipboard::getUnicodeText(Context->Window.Handle);
         if (data) {
             textLayout.insertTextAt(caretPosition + caretPositionOffset, *data);
             setSelection(SetSelectionMode::RightChar, (uint32_t)data->Length, true);

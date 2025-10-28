@@ -53,21 +53,21 @@ namespace Ghurund::Core {
 		}
 
 		template<Derived<Resource> T>
-		void writeHeader(NotNull<MemoryOutputStream> stream) const {
+		void writeHeader(MemoryOutputStream& stream) const {
 			unsigned int hash = hashCode(T::TYPE.Name.Data);
-			stream->writeUInt32(hash);
-			stream->writeUInt32(T::VERSION);
+			stream.writeUInt32(hash);
+			stream.writeUInt32(T::VERSION);
 		}
 
 		template<Derived<Resource> T>
-		void readHeader(NotNull<MemoryInputStream> stream) {
+		void readHeader(MemoryInputStream& stream) {
 			readHeader(stream, T::TYPE, T::VERSION);
 		}
 
-		void readHeader(NotNull<MemoryInputStream> stream, const Ghurund::Core::Type& type, uint32_t version);
+		void readHeader(MemoryInputStream& stream, const Ghurund::Core::Type& type, uint32_t version);
 
         virtual Resource* loadInternal(
-            NotNull<MemoryInputStream> stream,
+            MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
             LoadOption options
@@ -76,7 +76,7 @@ namespace Ghurund::Core {
         }
 
         virtual void saveInternal(
-            NotNull<MemoryOutputStream> stream,
+            MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             Resource& resource,
             const ResourceFormat& format,
@@ -91,7 +91,7 @@ namespace Ghurund::Core {
 		virtual ~Loader() = 0 {}
 
         inline Resource* load(
-            NotNull<MemoryInputStream> stream,
+            MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format = ResourceFormat::AUTO,
             LoadOption options = LoadOption::DEFAULT
@@ -102,7 +102,7 @@ namespace Ghurund::Core {
         }
 
         inline void save(
-            NotNull<MemoryOutputStream> stream,
+            MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             Resource& resource,
             const ResourceFormat& format = ResourceFormat::AUTO,

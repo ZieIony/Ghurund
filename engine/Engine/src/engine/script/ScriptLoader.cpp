@@ -3,20 +3,20 @@
 
 namespace Ghurund::Engine {
     Resource* ScriptLoader::loadInternal(
-        NotNull<MemoryInputStream> stream,
+        MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
         LoadOption options
     ) {
         Script* script = makeResource<Script>();
-        script->EntryPoint = stream->readASCII();
-        script->SourceCode = stream->readASCII();
+        script->EntryPoint = stream.readASCII();
+        script->SourceCode = stream.readASCII();
         script->build(engine);
         return script;
     }
 
     void ScriptLoader::saveInternal(
-        NotNull<MemoryOutputStream> stream,
+        MemoryOutputStream& stream,
         const DirectoryPath& workingDir,
         Resource& resource,
         const ResourceFormat& format,
@@ -25,7 +25,7 @@ namespace Ghurund::Engine {
         Script& script = (Script&)resource;
         if (script.EntryPoint.Length == 0 || script.SourceCode.Length == 0)
             throw InvalidDataException("the script is empty");
-        stream->writeASCII(script.EntryPoint.Data);
-        stream->writeASCII(script.SourceCode.Data);
+        stream.writeASCII(script.EntryPoint.Data);
+        stream.writeASCII(script.SourceCode.Data);
     }
 }

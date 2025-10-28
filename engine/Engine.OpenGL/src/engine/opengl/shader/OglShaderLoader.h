@@ -30,14 +30,14 @@ namespace Ghurund::Engine::OpenGL {
         OglShaderLoader(OglShaderCompiler& compiler):compiler(compiler) {}
 
         virtual Resource* loadInternal(
-            NotNull<MemoryInputStream> stream,
+            MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
             LoadOption options
         ) override;
 
         virtual void saveInternal(
-            NotNull<MemoryOutputStream> stream,
+            MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             Resource& resource,
             const ResourceFormat& format,

@@ -7,11 +7,10 @@
 namespace Ghurund::UI {
     class DrawableFactory:public Ghurund::UI::IDrawableFactory {
     private:
-        // borrowed
-        ResourceManager* resourceManager;
+        ResourceManager& resourceManager;
 
     public:
-        DrawableFactory(NotNull<ResourceManager> resourceManager):resourceManager(&resourceManager) {}
+        DrawableFactory(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 
         virtual Drawable* makeDrawable(const ResourcePath& path) override;
     };

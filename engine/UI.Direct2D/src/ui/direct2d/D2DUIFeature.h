@@ -26,10 +26,8 @@ namespace Ghurund::UI::Direct2D {
 #pragma endregion
 
     private:
-        // borrowed
-        ResourceManager* resourceManager;
-        // borrowed
-        Ghurund::UI::Direct2D::Graphics2D* graphics2d;
+        ResourceManager& resourceManager;
+        Ghurund::UI::Direct2D::Graphics2D& graphics2d;
         Ghurund::UI::Direct2D::ShapeFactory* shapeFactory = nullptr;
         Ghurund::UI::IDrawableFactory* drawableFactory = nullptr;
         Ghurund::UI::Direct2D::TextFormatFactory* textFormatFactory = nullptr;
@@ -38,7 +36,7 @@ namespace Ghurund::UI::Direct2D {
         IntrusivePointer<Ghurund::UI::LayoutLoader> layoutLoader;
 
     public:
-        D2DUIFeature(NotNull<Ghurund::UI::Direct2D::Graphics2D> graphics2d, NotNull<ResourceManager> resourceManager):graphics2d(&graphics2d), resourceManager(&resourceManager) {}
+        D2DUIFeature(Ghurund::UI::Direct2D::Graphics2D& graphics2d, ResourceManager& resourceManager):graphics2d(graphics2d), resourceManager(resourceManager) {}
 
         virtual void onInit() override;
 

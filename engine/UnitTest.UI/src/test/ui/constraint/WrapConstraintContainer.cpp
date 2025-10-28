@@ -60,14 +60,14 @@ public:
 
 			auto controlGroup = makeIntrusive<ConstraintLayout>();
 			ConstraintSet constraints = makeConstraints({
-				.width = []() {
+				.width = [] {
 					auto c = makeIntrusive<WrapWidthConstraint>();
 					c->Min = 100;
 					c->Ratio = 0.5f;
 					c->Offset = 10.0f;
 					return c;
 				}(),
-				.height = []() {
+				.height = [] {
 					auto c = makeIntrusive<WrapHeightConstraint>();
 					c->Min = 75;
 					c->Ratio = 0.5f;
@@ -116,14 +116,14 @@ public:
 
 			auto group = makeIntrusive<ControlContainer>();
 			group->setChild(child.get(), makeConstraints({
-				.width = []() {
+				.width = [] {
 					auto c = makeIntrusive<ParentWidthConstraint>();
 					c->Min = 100.0f;
 					c->Ratio = 0.5f;
 					c->Offset = 10.0f;
 					return c;
 				}(),
-				.height = []() {
+				.height = [] {
 					auto c = makeIntrusive<ParentHeightConstraint>();
 					c->Min = 75.0f;
 					c->Ratio = 0.5f;

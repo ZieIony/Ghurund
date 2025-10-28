@@ -10,10 +10,12 @@ namespace Ghurund::Core {
     private:
         Map<const Type*, IntrusivePointer<Loader>> loaders;
 
+        LoaderCollection& operator=(const LoaderCollection& other) = delete;
+
     public:
         template<typename T>
-        inline void set(NotNull<Loader> loader) {
-            loader->addReference();
+        inline void set(Loader& loader) {
+            loader.addReference();
             loaders.put(&(const Ghurund::Core::Type&)T::GET_TYPE(), IntrusivePointer(&loader));
         }
 

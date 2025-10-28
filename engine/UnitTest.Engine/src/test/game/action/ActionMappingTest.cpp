@@ -21,7 +21,7 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestBoolAction>();
-                mapping.gamepadButtonActions.put(0, GamepadButton::A, action.get());
+                mapping.gamepadButtonActions.put(0, GamepadButton::A, *action.get());
 
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::PRESSED, GamepadButton::A, 0, 0));
                 Assert::IsTrue(TestActionState::IDLE == action->state);
@@ -37,7 +37,7 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestBoolAction>();
-                mapping.gamepadButtonActions.put(0, GamepadButton::A, action.get());
+                mapping.gamepadButtonActions.put(0, GamepadButton::A, *action.get());
 
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::PRESSED, GamepadButton::A, 0, 0));
                 mapping.executeDispatches();
@@ -62,7 +62,7 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestBoolAction>();
-                mapping.gamepadButtonActions.put(0, GamepadButton::A, action.get());
+                mapping.gamepadButtonActions.put(0, GamepadButton::A, *action.get());
 
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::PRESSED, GamepadButton::A, 0, 0));
                 mapping.executeDispatches();
@@ -81,7 +81,7 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestBoolAction>();
-                mapping.gamepadButtonActions.put(1, GamepadButton::A, action.get());
+                mapping.gamepadButtonActions.put(1, GamepadButton::A, *action.get());
 
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::PRESSED, GamepadButton::A, 0, 0));
                 mapping.executeDispatches();
@@ -100,7 +100,7 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestBoolAction>();
-                mapping.gamepadButtonActions.put(0, GamepadButton::B, action.get());
+                mapping.gamepadButtonActions.put(0, GamepadButton::B, *action.get());
 
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::PRESSED, GamepadButton::A, 0, 0));
                 mapping.executeDispatches();
@@ -119,7 +119,7 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestFloatAction>();
-                mapping.gamepadButtonActions.put<float>(0, GamepadButton::A, action.get(), [](bool value) { return value ? 1.0f : 0.0f; });
+                mapping.gamepadButtonActions.put<float>(0, GamepadButton::A, *action.get(), [](bool value) { return value ? 1.0f : 0.0f; });
 
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::PRESSED, GamepadButton::A, 0, 0));
                 mapping.executeDispatches();
@@ -138,7 +138,7 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestFloatAction>();
-                mapping.gamepadTriggerActions.put(0, GamepadTrigger::LEFT, action.get());
+                mapping.gamepadTriggerActions.put(0, GamepadTrigger::LEFT, *action.get());
 
                 mapping.dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(0, GamepadTrigger::LEFT, 0.5f, 0));
                 mapping.executeDispatches();
@@ -157,7 +157,7 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestFloatAction>();
-                mapping.gamepadTriggerActions.put(0, GamepadTrigger::LEFT, action.get());
+                mapping.gamepadTriggerActions.put(0, GamepadTrigger::LEFT, *action.get());
 
                 mapping.dispatchGamepadButtonEvent(GamepadButtonEventArgs(0, GamepadButtonAction::PRESSED, GamepadButton::A, 0, 0));
                 mapping.executeDispatches();
@@ -176,7 +176,7 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestFloatAction>();
-                mapping.gamepadTriggerActions.put(0, GamepadTrigger::LEFT, action.get());
+                mapping.gamepadTriggerActions.put(0, GamepadTrigger::LEFT, *action.get());
 
                 mapping.dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(0, GamepadTrigger::RIGHT, 0.5f, 0));
                 mapping.executeDispatches();
@@ -195,7 +195,7 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestFloatAction>();
-                mapping.gamepadTriggerActions.put(0, GamepadTrigger::LEFT, action.get());
+                mapping.gamepadTriggerActions.put(0, GamepadTrigger::LEFT, *action.get());
 
                 mapping.dispatchGamepadTriggerEvent(GamepadTriggerEventArgs(0, GamepadTrigger::LEFT, 0.0f, 0));
                 mapping.executeDispatches();
@@ -214,7 +214,7 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestFloatPointAction>();
-                mapping.gamepadStickActions.put(0, GamepadStick::LEFT, action.get());
+                mapping.gamepadStickActions.put(0, GamepadStick::LEFT, *action.get());
 
                 mapping.dispatchGamepadStickEvent(GamepadStickEventArgs(0, GamepadStick::LEFT, { 0.5f, 0.0f }, 0));
                 mapping.executeDispatches();
@@ -233,7 +233,7 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestBoolAction>();
-                mapping.keyActions.put('a', action.get());
+                mapping.keyActions.put('a', *action.get());
 
                 mapping.dispatchKeyEvent(KeyEventArgs(KeyAction::PRESSED, 'a', 0, 0));
                 mapping.executeDispatches();
@@ -252,7 +252,7 @@ namespace UnitTest {
             {
                 ActionMapping mapping;
                 auto action = makeIntrusive<TestBoolAction>();
-                mapping.mouseButtonActions.put(MouseButton::LEFT, action.get());
+                mapping.mouseButtonActions.put(MouseButton::LEFT, *action.get());
 
                 mapping.dispatchMouseButtonEvent(MouseButtonEventArgs({ 0, 0 }, MouseButtonAction::PRESSED, MouseButton::LEFT, 0, 0, true));
                 mapping.executeDispatches();

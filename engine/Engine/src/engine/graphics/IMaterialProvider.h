@@ -5,10 +5,7 @@
 
 namespace Ghurund::Engine {
 
-    class IMaterialProvider {
-    protected:
-        virtual ~IMaterialProvider() = 0 {}
-
+	class IMaterialProvider:public Noncopyable {
     public:
         virtual IMaterial* makeBasic(ITexture* texture = nullptr) = 0;
 

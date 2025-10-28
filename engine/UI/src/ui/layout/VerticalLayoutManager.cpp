@@ -11,7 +11,7 @@ namespace Ghurund::UI {
 	PartialConstraintSet VerticalLayoutManager::makeDefaultConstraints() const {
 		return ConstraintSetInitializer{
 			.width = makeIntrusive<ContentWidthConstraint>(),
-			.top = [&]() {
+			.top = [&] {
 				auto constraint = makeIntrusive<PreviousBottomConstraint>();
 				constraint->Offset = spacing;
 				return constraint;

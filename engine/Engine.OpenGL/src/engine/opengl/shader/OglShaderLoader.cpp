@@ -37,18 +37,18 @@ namespace Ghurund::Engine::OpenGL {
 
 		auto vertexProgram = loadShaderProgramFromXml(xml, workingDir, OglShaderType::VERTEX);
 		auto fragmentProgram = loadShaderProgramFromXml(xml, workingDir, OglShaderType::FRAGMENT);
-		auto shader = compiler.build(vertexProgram, fragmentProgram);
+		auto shader = compiler.build(*vertexProgram.get(), *fragmentProgram.get());
 		return &shader;
 		//bool supportsTransparency = sourceCode.find("supportsTransparency") != sourceCode.Size;
 	}
 
 	Resource* OglShaderLoader::loadInternal(
-		NotNull<MemoryInputStream> stream,
+		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
 		LoadOption options
 	) {
-		AString streamContents = stream->readASCII();
+		AString streamContents = stream.readASCII();
 		tinyxml2::XMLDocument document;
 		document.Parse(streamContents.Data);
 		const tinyxml2::XMLElement* root = document.RootElement();
@@ -58,7 +58,7 @@ namespace Ghurund::Engine::OpenGL {
 	}
 
 	void OglShaderLoader::saveInternal(
-		NotNull<MemoryOutputStream> stream,
+		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,
 		Resource& resource,
 		const ResourceFormat& format,

@@ -11,21 +11,21 @@ namespace Demo {
 
 	class DemoWindow:public Ghurund::Engine::GameWindow {
 	private:
-		DemoApplication* app;
-		ParameterManager* parameterManager;
+		DemoApplication& app;
+		ParameterManager& parameterManager;
 		IntrusivePointer<DxMesh> mesh;
 		IntrusivePointer<Material> basicMaterial;
 		IntrusivePointer<Camera> camera;
 
 	public:
 		DemoWindow(
-			NotNull<DemoApplication> app,
-			NotNull<Ghurund::Engine::DirectX::DxRenderer> renderer,
-			NotNull<ParameterManager> parameterManager
+			DemoApplication& app,
+			Ghurund::Engine::DirectX::DxRenderer& renderer,
+			ParameterManager& parameterManager
 		);
 
 		virtual bool onKeyEvent(const KeyEventArgs& args) override;
 
-		virtual void onPaint(NotNull<RenderingContext> renderingContext) override;
+		virtual void onPaint(RenderingContext& renderingContext) override;
 	};
 }

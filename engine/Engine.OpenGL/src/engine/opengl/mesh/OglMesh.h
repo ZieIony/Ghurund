@@ -15,7 +15,7 @@ namespace Ghurund::Engine::OpenGL {
             uninit();
         }
 
-        void init(NotNull<MeshData> mesh);
+        void init(const MeshData& mesh);
 
         void uninit();
 

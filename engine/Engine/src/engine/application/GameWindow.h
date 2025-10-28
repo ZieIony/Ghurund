@@ -23,7 +23,7 @@ namespace Ghurund::Engine {
 
     private:
         Renderer* renderer = nullptr;
-        std::unique_ptr<RenderingContext> renderingContext;
+        std::unique_ptr<RenderingContext> renderingContext = nullptr;
         ActionMapping actionMapping;
 
     protected:
@@ -63,7 +63,7 @@ namespace Ghurund::Engine {
             return __super::onFocusedChanged();
         }
 
-        virtual void onPaint(NotNull<RenderingContext> renderingContext) {}
+        virtual void onPaint(RenderingContext& renderingContext) {}
 
     public:
 		static inline const WindowStyle DEFAULT_WINDOW_STYLE = WindowStyle{
@@ -74,16 +74,19 @@ namespace Ghurund::Engine {
             .showOnTaskbar = true
         };
 
-		GameWindow(NotNull<Ghurund::Core::Application> app, WindowStyle style = DEFAULT_WINDOW_STYLE):ApplicationWindow(app, style) {}
+		GameWindow(Ghurund::Core::Application& app, WindowStyle style = DEFAULT_WINDOW_STYLE):ApplicationWindow(app, style) {}
 
         Renderer* getRenderer() const {
             return renderer;
         }
 
         inline void setRenderer(Renderer* renderer) {
+            if (this->renderer == renderer)
+                return;
+            
             this->renderer = renderer;
             if (this->renderer) {
-                renderingContext.reset(this->renderer->makeRenderingContext(*this));
+                renderingContext.reset(renderer->makeRenderingContext(*this));
                 renderingContext->init();
             } else {
                 renderingContext.reset();
@@ -92,11 +95,11 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getRenderer, put = setRenderer)) Renderer* Renderer;
 
-        ActionMapping* getActionMapping() {
-            return &actionMapping;
+        ActionMapping& getActionMapping() {
+            return actionMapping;
         }
 
-        __declspec(property(get = getActionMapping)) ActionMapping* ActionMapping;
+        __declspec(property(get = getActionMapping)) ActionMapping& ActionMapping;
 
         virtual void update(const uint64_t time) override;
 
@@ -106,7 +109,7 @@ namespace Ghurund::Engine {
 
             renderingContext->startFrame();
             renderingContext->clear(BackgroundColor);
-            onPaint(renderingContext.get());
+            onPaint(*renderingContext);
             renderingContext->finishFrame();
         }
     };

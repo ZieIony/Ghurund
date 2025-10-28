@@ -33,8 +33,7 @@ namespace Ghurund::Core {
         
         HWND handle = {};
         Ghurund::Core::Input input;
-        // borrowed
-        Ghurund::Core::Timer* timer;
+        Ghurund::Core::Timer& timer;
         bool mouseTracked = false;
 
         Microsoft::WRL::ComPtr<DragDropManager> dragDropManager;
@@ -74,7 +73,7 @@ namespace Ghurund::Core {
         Event<Ghurund::Core::Window, Array<FilePath*>&> dragEntered = *this;
         Event<Ghurund::Core::Window, Array<FilePath*>&> dropped = *this;
 
-        SystemWindow(NotNull<Ghurund::Core::Timer> timer, WindowStyle style = DEFAULT_WINDOW_STYLE);
+        SystemWindow(Ghurund::Core::Timer& timer, WindowStyle style = DEFAULT_WINDOW_STYLE);
 
         ~SystemWindow();
 
@@ -118,11 +117,11 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getInput)) Ghurund::Core::Input* Input;
 
-        virtual Ghurund::Core::Timer* getTimer() const override {
+        virtual Ghurund::Core::Timer& getTimer() const override {
             return timer;
         }
 
-        __declspec(property(get = getTimer)) Ghurund::Core::Timer* Timer;
+        __declspec(property(get = getTimer)) Ghurund::Core::Timer& Timer;
 
         inline const WindowDecorationMetrics& getDecorationMetrics() const {
             return decorationMetrics;

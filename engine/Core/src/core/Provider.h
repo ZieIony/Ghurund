@@ -1,11 +1,11 @@
 #pragma once
 
+#include "core/object/Noncopyable.h"
+
 namespace Ghurund::Core {
 	template<typename Type>
-	class Provider {
+	class Provider:public Noncopyable {
 	public:
-		virtual ~Provider() = 0 {}
-
 		virtual Type get() = 0;
 	};
 }

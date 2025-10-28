@@ -10,7 +10,7 @@
 
 namespace Ghurund::Core {
 
-    class RefCountedObject: public Object {
+	class RefCountedObject: public Object {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -35,6 +35,9 @@ namespace Ghurund::Core {
 
         void checkReferenceCount() const;
 #endif
+
+    private:
+        RefCountedObject& operator=(const RefCountedObject& other) = delete;
 
     protected:
         RefCountedObject(const RefCountedObject& pointer) = delete;

@@ -17,7 +17,7 @@ public:
     TEST_METHOD(SharedPointer_empty) {
         MemoryGuard guard;
         {
-            Assert::ExpectException<NullPointerException>([]() {
+            Assert::ExpectException<NullPointerException>([] {
                 OwnedNotNull<bool> ptr(nullptr);
             });
         }

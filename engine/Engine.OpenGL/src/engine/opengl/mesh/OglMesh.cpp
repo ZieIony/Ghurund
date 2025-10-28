@@ -2,14 +2,14 @@
 #include "OglMesh.h"
 
 namespace Ghurund::Engine::OpenGL {
-    void OglMesh::init(NotNull<MeshData> mesh) {
+    void OglMesh::init(const MeshData& mesh) {
         glGenVertexArrays(1, &VertexArrayID);
         glBindVertexArray(VertexArrayID);
 
-        vertexCount = mesh->VertexCount;
+        vertexCount = mesh.VertexCount;
         glGenBuffers(1, &vertexbuffer);
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-        glBufferData(GL_ARRAY_BUFFER, mesh->VertexStreams[0].data.Size, mesh->VertexStreams[0].data.Data, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, mesh.VertexStreams[0].data.Size, mesh.VertexStreams[0].data.Data, GL_STATIC_DRAW);
         glVertexAttribPointer(
             0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
             3,                  // size

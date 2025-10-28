@@ -9,7 +9,7 @@ namespace Ghurund::UI {
 
 	PartialConstraintSet HorizontalLayoutManager::makeDefaultConstraints() const {
 		return ConstraintSetInitializer{
-			.left = [&]() {
+			.left = [&] {
 			auto constraint = makeIntrusive<PreviousRightConstraint>();
 			constraint->Offset = spacing;
 			return constraint;

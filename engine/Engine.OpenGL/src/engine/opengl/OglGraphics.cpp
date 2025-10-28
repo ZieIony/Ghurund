@@ -27,7 +27,7 @@ namespace Ghurund::Engine::OpenGL {
 		ParameterManager parameterManager;
 		renderer = ghnew OglRenderer(parameterManager);
 		renderer->init();
-		context = renderer->makeRenderingContext(window);
+		context = renderer->makeRenderingContext(*window);
 		context->init();
 		context->startFrame();
 

@@ -3,7 +3,7 @@
 
 namespace Ghurund {
     Resource* SoundLoader::loadInternal(
-        NotNull<MemoryInputStream> stream,
+        MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
         LoadOption options
@@ -14,7 +14,7 @@ namespace Ghurund {
     }
 
     void SoundLoader::saveInternal(
-        NotNull<MemoryOutputStream> stream,
+        MemoryOutputStream& stream,
         const DirectoryPath& workingDir,
         Resource& resource,
         const ResourceFormat& format,

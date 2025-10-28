@@ -15,7 +15,7 @@ namespace Ghurund::Engine::DirectX {
 		swapChain->CurrentFrame.start();
 
 		CommandList* commandList = swapChain->CurrentFrame.CommandList;
-		graphics->DescriptorAllocator.set(commandList->get());   // TODO: set allocator properly
+		graphics.DescriptorAllocator.set(commandList->get());   // TODO: set allocator properly
 		stats.startFrame();
 	}
 

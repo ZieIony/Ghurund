@@ -19,7 +19,7 @@ namespace Ghurund::Engine::OpenGL {
 		void uninitRenderingContext();
 
 	public:
-        OglRenderingContext(NotNull<SystemWindow> window):Ghurund::Engine::RenderingContext(window) {}
+        OglRenderingContext(SystemWindow& window):Ghurund::Engine::RenderingContext(window) {}
 
 		~OglRenderingContext() {
 			if (IsInitialized)

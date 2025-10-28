@@ -23,27 +23,27 @@ namespace Ghurund::UI::Direct2D {
     }
 
     void D2DUIFeature::onInit() {
-        shapeFactory = ghnew Ghurund::UI::Direct2D::ShapeFactory(graphics2d->D2DFactory);
+        shapeFactory = ghnew Ghurund::UI::Direct2D::ShapeFactory(graphics2d.D2DFactory);
         drawableFactory = ghnew Ghurund::UI::Direct2D::DrawableFactory(resourceManager);
         textFormatFactory = ghnew Ghurund::UI::Direct2D::TextFormatFactory();
         constraintFactory = ghnew Ghurund::UI::ConstraintFactory();
-        bitmapFactory = ghnew Ghurund::UI::Direct2D::BitmapFactory(graphics2d->DeviceContext);
+        bitmapFactory = ghnew Ghurund::UI::Direct2D::BitmapFactory(graphics2d.DeviceContext);
 
         auto fontLoader = makeIntrusive<FontLoader>(*bitmapFactory);
 
-        resourceManager->Loaders->set<Ghurund::UI::Font>(fontLoader.get());
+        resourceManager.Loaders.set<Ghurund::UI::Font>(*fontLoader.get());
 
-        auto bitmapLoader = makeIntrusive<BitmapLoader>(*(ImageLoader*)resourceManager->Loaders->get<Image>(), *bitmapFactory);
-        resourceManager->Loaders->set<Ghurund::UI::Bitmap>(bitmapLoader.get());
+        auto bitmapLoader = makeIntrusive<BitmapLoader>(*(ImageLoader*)resourceManager.Loaders.get<Image>(), *bitmapFactory);
+        resourceManager.Loaders.set<Ghurund::UI::Bitmap>(*bitmapLoader.get());
         layoutLoader = makeIntrusive<Ghurund::UI::LayoutLoader>(resourceManager, *shapeFactory, *drawableFactory, *textFormatFactory, *constraintFactory);
-        resourceManager->Loaders->set<Control>(layoutLoader.get());
+        resourceManager.Loaders.set<Control>(*layoutLoader.get());
     }
     
     void D2DUIFeature::onUninit() {
-        resourceManager->Loaders->remove<Control>();
-        resourceManager->Loaders->remove<Ghurund::UI::Bitmap>();
-        resourceManager->Loaders->remove<Image>();
-        resourceManager->Loaders->remove<Ghurund::UI::Font>();
+        resourceManager.Loaders.remove<Control>();
+        resourceManager.Loaders.remove<Ghurund::UI::Bitmap>();
+        resourceManager.Loaders.remove<Image>();
+        resourceManager.Loaders.remove<Ghurund::UI::Font>();
         layoutLoader.set(nullptr);
         delete bitmapFactory;
         bitmapFactory = nullptr;

@@ -10,13 +10,12 @@
 namespace Ghurund::UI {
 	class BaseTheme:public Ghurund::UI::Theme {
 	private:
-		// borrowed
-		Ghurund::Core::ResourceManager* resourceManager;
+		Ghurund::Core::ResourceManager& resourceManager;
 		
 	public:
 		BaseTheme(
-			NotNull<Ghurund::Core::ResourceManager> resourceManager,
-			NotNull<Ghurund::UI::IDrawableFactory> drawableFactory
+			Ghurund::Core::ResourceManager& resourceManager,
+			Ghurund::UI::IDrawableFactory& drawableFactory
 		);
 	};
 }

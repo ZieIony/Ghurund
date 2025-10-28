@@ -4,7 +4,7 @@
 
 namespace Ghurund::Engine::OpenGL {
     Resource* OglMeshLoader::loadInternal(
-        NotNull<Ghurund::Core::MemoryInputStream> stream,
+        MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
         Ghurund::Core::LoadOption options

@@ -37,7 +37,7 @@ namespace Ghurund::Core {
 		DestroyWindow(Handle);
 	}
 
-	SystemWindow::SystemWindow(NotNull<Ghurund::Core::Timer> timer, WindowStyle style):timer(&timer), style(style) {
+	SystemWindow::SystemWindow(Ghurund::Core::Timer& timer, WindowStyle style):timer(timer), style(style) {
 		handle = makeWindow();
 		decorationMetrics.init(handle);
 		SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR)this);
@@ -156,7 +156,7 @@ namespace Ghurund::Core {
 
 	void SystemWindow::dispatchMouseEvent(UINT msg, WPARAM wParam, LPARAM lParam) {
 		if (msg == WM_MOUSEMOVE) {
-			input.addWindowEvent({ msg, wParam, lParam, timer->TimeMs});
+			input.addWindowEvent({ msg, wParam, lParam, timer.TimeMs});
 
 			if (!mouseTracked) {
 				mouseTracked = true;
@@ -170,15 +170,15 @@ namespace Ghurund::Core {
 			}
 		} else if (msg == WM_MOUSELEAVE) {
 			mouseTracked = false;
-			input.addWindowEvent({ msg, wParam, lParam, timer->TimeMs });
+			input.addWindowEvent({ msg, wParam, lParam, timer.TimeMs });
 		} else {
-			input.addWindowEvent({ msg, wParam, lParam, timer->TimeMs });
+			input.addWindowEvent({ msg, wParam, lParam, timer.TimeMs });
 		}
 	}
 
 	bool SystemWindow::dispatchWindowEvent(UINT msg, WPARAM wParam, LPARAM lParam) {
 		if (msg >= WM_KEYFIRST && msg <= WM_KEYLAST) {
-			input.addWindowEvent({ msg, wParam, lParam, timer->TimeMs });
+			input.addWindowEvent({ msg, wParam, lParam, timer.TimeMs });
 			return true;
 		} else if (msg >= WM_MOUSEFIRST && msg <= WM_MOUSELAST) {
 			dispatchMouseEvent(msg, wParam, lParam);

@@ -8,30 +8,30 @@
 
 namespace Demo {
 	DemoWindow::DemoWindow(
-		NotNull<DemoApplication> app,
-		NotNull<Ghurund::Engine::OpenGL::OglRenderer> renderer
-	):Ghurund::Engine::GameWindow(&app), app(*app) {
+		DemoApplication& app,
+		Ghurund::Engine::OpenGL::OglRenderer& renderer
+	):Ghurund::Engine::GameWindow(app), app(app) {
 		closed += DEFAULT_QUIT_APP_WINDOW_CLOSED_HANDLER;
 		Title = _T("Demo 3D OpenGL");
 		Renderer = &renderer;
 		BackgroundColor = &Colors::LIGHT_CORAL;
 
 		closeWindow = makeIntrusive<CloseWindowAction>(*this);
-		ActionMapping->gamepadButtonActions.put(0, GamepadButton::A, closeWindow.get());
-		ActionMapping->gamepadTriggerActions.put<bool>(0, GamepadTrigger::LEFT, closeWindow.get(), [](float value) { return value > 0.5f; });
+		ActionMapping.gamepadButtonActions.put(0, GamepadButton::A, *closeWindow.get());
+		ActionMapping.gamepadTriggerActions.put<bool>(0, GamepadTrigger::LEFT, *closeWindow.get(), [](float value) { return value > 0.5f; });
 
-		moveWindow = makeIntrusive<MoveWindowAction>(*this, Application->Timer);
-		ActionMapping->keyActions.put<FloatPoint>('w', moveWindow.get(), { 0.0f, 1.0f });
-		ActionMapping->keyActions.put<FloatPoint>('s', moveWindow.get(), { 0.0f, -1.0f });
-		ActionMapping->keyActions.put<FloatPoint>('a', moveWindow.get(), { -1.0f, 0.0f });
-		ActionMapping->keyActions.put<FloatPoint>('d', moveWindow.get(), { 1.0f, 0.0f });
-		ActionMapping->gamepadStickActions.put(0, GamepadStick::LEFT, moveWindow.get(), 1);
-		ActionMapping->gamepadStickActions.put(1, GamepadStick::RIGHT, moveWindow.get(), 1);
+		moveWindow = makeIntrusive<MoveWindowAction>(*this, Application.Timer);
+		ActionMapping.keyActions.put<FloatPoint>('w', *moveWindow.get(), { 0.0f, 1.0f });
+		ActionMapping.keyActions.put<FloatPoint>('s', *moveWindow.get(), { 0.0f, -1.0f });
+		ActionMapping.keyActions.put<FloatPoint>('a', *moveWindow.get(), { -1.0f, 0.0f });
+		ActionMapping.keyActions.put<FloatPoint>('d', *moveWindow.get(), { 1.0f, 0.0f });
+		ActionMapping.gamepadStickActions.put(0, GamepadStick::LEFT, *moveWindow.get(), 1);
+		ActionMapping.gamepadStickActions.put(1, GamepadStick::RIGHT, *moveWindow.get(), 1);
 	}
 
 	DemoWindow::~DemoWindow() {
-		ActionMapping->keyActions.remove('w');
-		ActionMapping->clear();
+		ActionMapping.keyActions.remove('w');
+		ActionMapping.clear();
 	}
 
 	bool DemoWindow::onKeyEvent(const KeyEventArgs& args) {

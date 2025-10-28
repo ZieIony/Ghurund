@@ -7,21 +7,20 @@
 namespace Ghurund::UI {
 	class FileDrawableProvider:public DrawableProvider {
 	private:
-		// borrowed
-		IDrawableFactory* drawableFactory;
+		IDrawableFactory& drawableFactory;
 		ResourcePath resourcePath;
 		IntrusivePointer<Drawable> cached;
 
 	public:
 		FileDrawableProvider(
-			NotNull<IDrawableFactory> drawableFactory,
+			IDrawableFactory& drawableFactory,
 			const ResourcePath& resourcePath
-		): drawableFactory(&drawableFactory), resourcePath(resourcePath) {}
+		): drawableFactory(drawableFactory), resourcePath(resourcePath) {}
 
 		virtual IntrusivePointer<Drawable> get() override {
 			if (cached != nullptr)
 				return IntrusivePointer<Drawable>((Drawable*)cached->clone());
-			cached = IntrusivePointer<Drawable>(drawableFactory->makeDrawable(resourcePath));
+			cached = IntrusivePointer<Drawable>(drawableFactory.makeDrawable(resourcePath));
 			return cached;
 		}
 	};

@@ -6,13 +6,13 @@
 
 namespace Ghurund::Engine::DirectX {
 
-	void DescriptorHeap::init(NotNull<DxGraphics> graphics){
-		if (FAILED(graphics->Device->CreateDescriptorHeap(&heapDescriptor, IID_PPV_ARGS(&heap)))) {
+	void DescriptorHeap::init(DxGraphics& graphics){
+		if (FAILED(graphics.Device->CreateDescriptorHeap(&heapDescriptor, IID_PPV_ARGS(&heap)))) {
 			return Logger::log(LogType::ERR0R, _T("CreateDescriptorHeap(...) failed\n"));
 			throw CallFailedException();
 		}
 
-		descriptorSize = graphics->Device->GetDescriptorHandleIncrementSize(heapDescriptor.Type);
+		descriptorSize = graphics.Device->GetDescriptorHandleIncrementSize(heapDescriptor.Type);
 		numFreeDescriptors = heapDescriptor.NumDescriptors;
         cpuDescriptorHandleForHeapStart = heap->GetCPUDescriptorHandleForHeapStart();
         gpuDescriptorHandleForHeapStart = heap->GetGPUDescriptorHandleForHeapStart();

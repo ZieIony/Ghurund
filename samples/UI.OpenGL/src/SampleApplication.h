@@ -25,7 +25,7 @@ namespace Samples {
 
     public:
         SampleApplication() {
-            Features->add<OglGraphics>();
+            Features.add<OglGraphics>();
         }
 
         ~SampleApplication() {

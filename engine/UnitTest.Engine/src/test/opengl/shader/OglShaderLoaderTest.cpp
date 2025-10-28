@@ -30,7 +30,7 @@ namespace UnitTest {
             Buffer data("asdf", 5);
             MemoryInputStream stream(data.Data, data.Size);
 
-            Assert::ExpectException<InvalidFormatException>([&]() {
+            Assert::ExpectException<InvalidFormatException>([&] {
                 IntrusivePointer<OglShader> shader((OglShader*)loader->load(stream, DirectoryPath()));
             });
         }

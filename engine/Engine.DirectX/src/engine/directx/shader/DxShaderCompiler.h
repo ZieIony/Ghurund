@@ -22,7 +22,7 @@ namespace Ghurund::Engine::DirectX {
 	class DxShaderCompiler {
 	private:
 		const CompilationTarget& target;
-		DxGraphics* graphics;
+		DxGraphics& graphics;
 
 		DXGI_FORMAT getFormat(BYTE mask, D3D_REGISTER_COMPONENT_TYPE componentType);
 
@@ -37,7 +37,7 @@ namespace Ghurund::Engine::DirectX {
 		void initConstants(const DxShaderProgram& program, NotNull<ShaderConstants> constants);
 
 	public:
-		DxShaderCompiler(NotNull<DxGraphics> graphics, const CompilationTarget& target = CompilationTarget::SHADER_5_0):graphics(&graphics), target(target) {}
+		DxShaderCompiler(DxGraphics& graphics, const CompilationTarget& target = CompilationTarget::SHADER_5_0):graphics(graphics), target(target) {}
 
 		D3D12_INPUT_LAYOUT_DESC getInputLayout(const Buffer& byteCode);
 

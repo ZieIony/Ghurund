@@ -9,10 +9,8 @@
 #include "mouse/MouseWheelEventArgs.h"
 
 namespace Ghurund::Core {
-    class EventDispatcher {
+    class EventDispatcher:public Noncopyable {
     public:
-        virtual ~EventDispatcher() = 0 {}
-
         virtual bool dispatchGamepadButtonEvent(const GamepadButtonEventArgs& event) {
             return false;
         }

@@ -36,12 +36,12 @@ namespace Ghurund::UI {
 	public:
 		InvalidControl() {
 			/*setConstraints({
-				.width = []() {
+				.width = [] {
 					auto constraint = makeIntrusive<ParentWidthConstraint>();
 					constraint->Min = 18;
 					return constraint;
 				}(),
-				.height = []() {
+				.height = [] {
 					auto constraint = makeIntrusive<ParentWidthConstraint>();
 					constraint->Min = 18;
 					return constraint;

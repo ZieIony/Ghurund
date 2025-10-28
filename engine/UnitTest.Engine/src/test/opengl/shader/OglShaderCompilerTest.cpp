@@ -61,7 +61,7 @@ public:
             auto graphics = makeIntrusive<OglGraphics>();
             graphics->init();
 
-            Assert::ExpectException<OglCompilationException>([&]() {
+            Assert::ExpectException<OglCompilationException>([&] {
                 SharedPointer<OglShaderProgram> shaderProgram(shaderCompiler.compile(TEST_VERTEX_SHADER_SOURCE, OglShaderType::FRAGMENT));
             });
         }

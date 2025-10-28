@@ -7,14 +7,16 @@ namespace Ghurund::Engine::DirectX {
 
     class ShaderProvider {
     private:
-        ResourceManager* manager;
+        ResourceManager& manager;
 
         inline DxShader* load(const WString& fileName) {
-            return manager->load<DxShader>(ResourcePath(ResourceManager::ENGINE_LIB_NAME, fileName), DirectoryPath());
+            return manager.load<DxShader>(ResourcePath(ResourceManager::ENGINE_LIB_NAME, fileName), DirectoryPath());
         }
 
+        ShaderProvider& operator=(const ShaderProvider& other) = delete;
+
     public:
-        ShaderProvider(NotNull<ResourceManager> manager):manager(&manager) {}
+        ShaderProvider(ResourceManager& manager):manager(manager) {}
 
         DxShader* loadBasic() {
             return load(L"/shaders/DirectX/basic.hlsl");

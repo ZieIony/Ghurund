@@ -20,19 +20,19 @@ namespace Ghurund::Engine {
         GameActionCollection& operator=(GameActionCollection&& other) = delete;
 
     public:
-        inline void put(const K& key, NotNull<GameAction<V>> action, uint8_t priority = 0) {
+        inline void put(const K& key, GameAction<V>& action, uint8_t priority = 0) {
             auto dispatcher = ghnew InputDispatcher<V>(&action, priority);
             actions.put(key, SharedPointer<BaseInputDispatcher<V>>(dispatcher));
         }
 
         template<typename To>
-        inline void put(const K& key, NotNull<GameAction<To>> action, const To& value, uint8_t priority = 0) {
+        inline void put(const K& key, GameAction<To>& action, const To& value, uint8_t priority = 0) {
             auto dispatcher = ghnew OverwriteInputDispatcher<V, To>(&action, value, priority);
             actions.put(key, SharedPointer<BaseInputDispatcher<V>>(dispatcher));
         }
 
         template<typename To, Callable<To, V> T>
-		inline void put(const K& key, NotNull<GameAction<To>> action, T transformer, uint8_t priority = 0) {
+		inline void put(const K& key, GameAction<To>& action, T transformer, uint8_t priority = 0) {
             auto dispatcher = ghnew TransformedInputDispatcher<V, To, T>(&action, transformer, priority);
             actions.put(key, SharedPointer<BaseInputDispatcher<V>>(dispatcher));
         }

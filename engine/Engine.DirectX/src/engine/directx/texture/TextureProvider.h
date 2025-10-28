@@ -9,9 +9,9 @@ namespace Ghurund::Engine::DirectX {
 
 	class TextureProvider:public ITextureProvider {
 	private:
-		DxGraphics* graphics;
-		CommandList* commandList;
-		ResourceManager* manager;
+		DxGraphics& graphics;
+		CommandList& commandList;
+		ResourceManager& manager;
 
 		Texture* make(const WString& fileName) const {
 			return makeFromImage(ResourcePath(ResourceManager::ENGINE_LIB_NAME, fileName));
@@ -19,10 +19,10 @@ namespace Ghurund::Engine::DirectX {
 
 	public:
 		TextureProvider(
-			NotNull<DxGraphics> graphics,
-			NotNull<CommandList> commandList,
-			NotNull<ResourceManager> manager
-		):graphics(&graphics), commandList(&commandList), manager(&manager) {}
+			DxGraphics& graphics,
+			CommandList& commandList,
+			ResourceManager& manager
+		):graphics(graphics), commandList(commandList), manager(manager) {}
 
 		virtual Texture* makeDefaultDiffuse() const override {
 			return make(L"/textures/diffuse.png");
@@ -41,7 +41,7 @@ namespace Ghurund::Engine::DirectX {
 		}
 
 		virtual Texture* makeFromImage(const ResourcePath& imagePath) const override {
-			Ghurund::Core::Image* image = manager->load<Ghurund::Core::Image>(imagePath, DirectoryPath());
+			Ghurund::Core::Image* image = manager.load<Ghurund::Core::Image>(imagePath, DirectoryPath());
 			if (image == nullptr)
 				return nullptr;
 			Texture* texture = ghnew Texture();

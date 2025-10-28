@@ -22,13 +22,13 @@ namespace Ghurund::Core {
             events.add(msg);
         }
 
-        void dispatchWindowEvents(uint64_t time, NotNull<EventConsumer> consumer);
+        void dispatchWindowEvents(uint64_t time, EventConsumer& consumer);
 
-        void dispatchMouseButtonDownEvents(uint64_t time, NotNull<EventConsumer> consumer);
+        void dispatchMouseButtonDownEvents(uint64_t time, EventConsumer& consumer);
 
-        void dispatchKeyDownEvents(uint64_t time, NotNull<EventConsumer> consumer);
+        void dispatchKeyDownEvents(uint64_t time, EventConsumer& consumer);
 
-        void dispatchGamepadEvents(uint64_t time, NotNull<EventConsumer> consumer);
+        void dispatchGamepadEvents(uint64_t time, EventConsumer& consumer);
 
         inline void releaseAllKeysAndButtons() {
             // TODO: send cancel events

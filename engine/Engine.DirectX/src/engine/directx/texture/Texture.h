@@ -54,10 +54,10 @@ namespace Ghurund::Engine::DirectX {
         }
 
         virtual bool isValid() {
-            return image != nullptr && image->Valid && __super::Valid&&uploaded;
+			return image != nullptr && image->Valid && __super::Valid && uploaded;
         }
 
-        void init(NotNull<DxGraphics> graphics, NotNull<CommandList> commandList, NotNull<Ghurund::Core::Image> image);
+        void init(DxGraphics& graphics, CommandList& commandList, Ghurund::Core::Image& image);
 
         inline Ghurund::Core::Image* getImage() {
             return image;

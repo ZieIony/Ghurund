@@ -25,9 +25,9 @@ namespace Demo {
 
 	public:
 		DemoWindow(
-			NotNull<DemoApplication> app,
-			NotNull<Ghurund::Engine::DirectX::DxRenderer> renderer,
-			NotNull<Ghurund::UI::DrawableFactory> drawableFactory
+			DemoApplication& app,
+			Ghurund::Engine::DirectX::DxRenderer& renderer,
+			Ghurund::UI::DrawableFactory& drawableFactory
 		);
 
 		~DemoWindow() {

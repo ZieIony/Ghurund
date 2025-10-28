@@ -32,6 +32,8 @@ namespace Ghurund::Core {
 			}
 		}
 
+		FeatureProvider& operator=(const FeatureProvider& other) = delete;
+
 	public:
 		FeatureProvider(Application& app):app(app) {}
 

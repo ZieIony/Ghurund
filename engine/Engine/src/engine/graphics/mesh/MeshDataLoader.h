@@ -11,19 +11,19 @@ namespace Ghurund::Engine {
             uint32_t posIndex, texCoordIndex, normalIndex, vertexIndex;
         };
 
-        MeshData* loadObj(NotNull<MemoryInputStream> stream);
-        MeshData* loadMesh(NotNull<MemoryInputStream> stream);
+        MeshData* loadObj(MemoryInputStream& stream);
+        MeshData* loadMesh(MemoryInputStream& stream);
 
     protected:
         virtual Resource* loadInternal(
-            NotNull<MemoryInputStream> stream,
+            MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
             LoadOption options
         ) override;
 
         virtual void saveInternal(
-            NotNull<MemoryOutputStream> stream,
+            MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             Resource& resource,
             const ResourceFormat& format,

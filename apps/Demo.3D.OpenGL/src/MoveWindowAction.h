@@ -8,22 +8,22 @@ namespace Demo {
 
 	class MoveWindowAction:public GameAction<FloatPoint> {
 	private:
-		Ghurund::Engine::GameWindow* window;
-		Ghurund::Core::Timer* timer;
+		Ghurund::Engine::GameWindow& window;
+		Ghurund::Core::Timer& timer;
 
 		virtual void onInProgress(uint64_t duration) override {
-			double dt = timer->FrameTime;
+			double dt = timer.FrameTime;
 			auto v = Value * dt * 1000;
-			window->Position = window->Position + IntPoint{ (int32_t)v.x, -(int32_t)v.y };
+			window.Position = window.Position + IntPoint{ (int32_t)v.x, -(int32_t)v.y };
 		}
 
 	public:
 		MoveWindowAction(
-			NotNull<Ghurund::Engine::GameWindow> window,
-			NotNull<Ghurund::Core::Timer> timer
+			Ghurund::Engine::GameWindow& window,
+			Ghurund::Core::Timer& timer
 		):GameAction(0.1f),
-			window(&window),
-			timer(&timer) {
+			window(window),
+			timer(timer) {
 			name = _T("Move Window");
 		}
 	};

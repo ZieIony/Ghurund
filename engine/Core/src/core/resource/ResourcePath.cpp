@@ -21,7 +21,7 @@ namespace Ghurund::Core {
 		}
 	}
 
-	SharedPointer<Buffer> ResourcePath::resolveResource(const DirectoryPath& workingDir, LibraryList& libraries) const {
+	SharedPointer<Buffer> ResourcePath::resolveResource(const DirectoryPath& workingDir, LibraryCollection& libraries) const {
 		if (type == Type::LIBRARY) {
 			auto buffer = libraries.get(libName)->get(path);
 			if (buffer == nullptr || buffer->Size == 0) {
@@ -48,9 +48,9 @@ namespace Ghurund::Core {
 		}
 	}
 
-	bool ResourcePath::exists(const DirectoryPath& workingDir, NotNull<LibraryList> libraries) const {
+	bool ResourcePath::exists(const DirectoryPath& workingDir, const LibraryCollection& libraries) const {
 		if (type == Type::LIBRARY) {
-			return libraries->get(libName)->contains(path);
+			return libraries.get(libName)->contains(path);
 		} else {
 			FilePath absolutePath = FilePath(path);
 			if (!absolutePath.IsAbsolute)

@@ -8,7 +8,7 @@
 namespace Ghurund::Core {
 	const Ghurund::Core::Type& ApplicationWindow::GET_TYPE() {
 		static auto PROPERTY_LAYERS = Property<ApplicationWindow, LayerList&>("Layers", &getLayers);
-		static auto PROPERTY_APPLICATION = Property<ApplicationWindow, Ghurund::Core::Application*>("Application", &getApplication);
+		static auto PROPERTY_APPLICATION = Property<ApplicationWindow, Ghurund::Core::Application&>("Application", &getApplication);
 
 		static const Ghurund::Core::Type TYPE = TypeBuilder<ApplicationWindow>()
 			.withProperty(PROPERTY_LAYERS)

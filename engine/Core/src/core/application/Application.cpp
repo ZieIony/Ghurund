@@ -11,20 +11,20 @@ namespace Ghurund::Core {
     void Application::uninitApplication() {
         windows.clear();
 
-        resourceManager.Libraries->clear();
-        resourceManager.Loaders->clear();
+        resourceManager.Libraries.clear();
+        resourceManager.Loaders.clear();
         resourceManager.clearCache();
 
         features.uninit();
     }
 
     void Application::onInit() {
-        resourceManager.Libraries->add(std::make_unique<DirectoryLibrary>(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"./resources")));
+        resourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"./resources")));
 
         //parameterManager->initDefaultTextures(*resourceContext);
 
         auto imageLoader = makeIntrusive<ImageLoader>();
-        resourceManager.Loaders->set<Image>(imageLoader.get());
+        resourceManager.Loaders.set<Image>(*imageLoader.get());
 
         features.init();
     }

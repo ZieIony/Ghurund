@@ -9,10 +9,10 @@
 
 namespace Demo {
 	DemoWindow::DemoWindow(
-		NotNull<DemoApplication> app,
-		NotNull<Ghurund::Engine::DirectX::DxRenderer> renderer,
-		NotNull<Ghurund::UI::DrawableFactory> drawableFactory
-	):GameWindow(&app), drawableFactory(&drawableFactory) {
+		DemoApplication& app,
+		Ghurund::Engine::DirectX::DxRenderer& renderer,
+		Ghurund::UI::DrawableFactory& drawableFactory
+	):GameWindow(app), drawableFactory(&drawableFactory) {
 		closed += DEFAULT_QUIT_APP_WINDOW_CLOSED_HANDLER;
 		Title = _T("Demo UI");
 		Renderer = &renderer;
@@ -22,7 +22,7 @@ namespace Demo {
 		//UIDebugTools::init(UILayer.Context);
 		UIDebugTools::drawConstraints = true;
 
-		demoLayout.set(Application->ResourceManager->load<Control>(
+		demoLayout.set(Application.ResourceManager.load<Control>(
 			FilePath(L"apps/Demo.UI/res/layout.xml"),
 			DirectoryPath(),
 			ResourceFormat::AUTO,
@@ -58,7 +58,7 @@ namespace Demo {
 		auto buttonImage = IntrusivePointer<Drawable>(drawableFactory->makeDrawable(ResourcePath(FilePath(_T("resources/button.png")))));
 
 		Toolbar* toolbar = (Toolbar*)demoLayout->find("toolbar");
-		toolbarItemAdapter = ghnew ToolbarItemAdapter(Application->ResourceManager);
+		toolbarItemAdapter = ghnew ToolbarItemAdapter(Application.ResourceManager);
 		toolbarItemAdapter->Items = {
 			SharedPointer<MenuItem>(ghnew ButtonMenuItem(pasteIcon.get(),{})),
 			SharedPointer<MenuItem>(ghnew SeparatorMenuItem())
@@ -66,7 +66,7 @@ namespace Demo {
 		toolbar->ItemAdapter = *toolbarItemAdapter;
 
 		MenuBar* menuBar = (MenuBar*)demoLayout->find("menuBar");
-		menuBarItemAdapter = ghnew MenuBarItemAdapter(Application->ResourceManager);
+		menuBarItemAdapter = ghnew MenuBarItemAdapter(Application.ResourceManager);
 		menuBarItemAdapter->Items = {
 			SharedPointer<MenuItem>(ghnew ButtonMenuItem(buttonImage.get(),{})),
 			SharedPointer<MenuItem>(ghnew SeparatorMenuItem())

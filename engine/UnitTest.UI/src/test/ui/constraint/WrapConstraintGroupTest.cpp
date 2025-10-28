@@ -59,14 +59,14 @@ public:
 		{
 			/*auto group = makeIntrusive<ControlGroup>();
 			group->Constraints = {
-				.width = []() {
+				.width = [] {
 					auto c = makeIntrusive<WrapWidthConstraint>();
 					c->Min = 100;
 					c->Ratio = 0.5f;
 					c->Offset = 10.0f;
 					return c;
 				}(),
-				.height = []() {
+				.height = [] {
 					auto c = makeIntrusive<WrapHeightConstraint>();
 					c->Min = 75;
 					c->Ratio = 0.5f;
@@ -216,14 +216,14 @@ public:
 		{
 			/*auto child1 = makeIntrusive<ColorView>();
 			child1->Constraints = {
-				.width = []() {
+				.width = [] {
 					auto c = makeIntrusive<WrapWidthConstraint>();
 					c->Min = 100;
 					c->Ratio = 0.5f;
 					c->Offset = 10.0f;
 					return c;
 				}(),
-				.height = []() {
+				.height = [] {
 					auto c = makeIntrusive<WrapHeightConstraint>();
 					c->Min = 75;
 					c->Ratio = 0.5f;
@@ -233,14 +233,14 @@ public:
 			};
 			auto child2 = makeIntrusive<ColorView>();
 			child2->Constraints = {
-				.width = []() {
+				.width = [] {
 					auto c = makeIntrusive<WrapWidthConstraint>();
 					c->Min = 150;
 					c->Ratio = 0.5f;
 					c->Offset = 10.0f;
 					return c;
 				}(),
-				.height = []() {
+				.height = [] {
 					auto c = makeIntrusive<WrapHeightConstraint>();
 					c->Min = 50;
 					c->Ratio = 0.5f;

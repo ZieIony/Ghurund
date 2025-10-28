@@ -4,15 +4,15 @@
 
 namespace Preview {
 	PreviewWindow::PreviewWindow(
-		NotNull<Ghurund::Core::Application> app,
-		NotNull<DxRenderer> renderer,
-		NotNull<ThemeApplication> themeApp
-	):GameWindow(app, PREVIEW_WINDOW_STYLE), themeApp(*themeApp) {
+		Ghurund::Core::Application& app,
+		DxRenderer& renderer,
+		ThemeApplication& themeApp
+	):GameWindow(app, PREVIEW_WINDOW_STYLE), themeApp(themeApp) {
 		Renderer = &renderer;
 	}
 
 	void PreviewWindow::init() {
-		previewLayout.set(Application->ResourceManager->load<PreviewLayout>(FilePath(L"apps/Preview/res/layout.xml"), DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
+		previewLayout.set(Application.ResourceManager.load<PreviewLayout>(FilePath(L"apps/Preview/res/layout.xml"), DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
 
 		/*Ghurund::UI::Direct2D::Graphics2D* graphics2d = Application->Features->get<Ghurund::UI::Direct2D::Graphics2D>();
 		uiLayer = ghnew Ghurund::UI::Direct2D::D2DUILayer();
@@ -22,7 +22,7 @@ namespace Preview {
 		Layers.add(uiLayer);*/
 
 		previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
-			Application->FunctionQueue->post([&, type]() {
+			Application.FunctionQueue.post([&, type] {
 				themeApp.ThemeType = type;
 				previewLayout.Theme = &themeApp.CurrentTheme;
 			});
@@ -30,7 +30,7 @@ namespace Preview {
 		};
 
 		previewLayout->colorChanged += [this](PreviewLayout& previewLayout, const uint32_t color) {
-			Application->FunctionQueue->post([&, color]() {
+			Application.FunctionQueue.post([&, color] {
 				themeApp.PrimaryColor = color;
 				previewLayout.dispatchThemeChanged();
 			});
@@ -57,7 +57,7 @@ namespace Preview {
 	}
 
 	void PreviewWindow::postLoadCallback(const FilePath& path) {
-		loadCallback = [this, path]() {
+		loadCallback = [this, path] {
 			File file(path);
 			if (!file.Exists)
 				return;
@@ -72,6 +72,6 @@ namespace Preview {
 			}*/
 		};
 
-		Application->FunctionQueue->post(loadCallback);
+		Application.FunctionQueue.post(loadCallback);
 	}
 }

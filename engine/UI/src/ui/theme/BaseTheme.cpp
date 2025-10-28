@@ -10,9 +10,9 @@
 
 namespace Ghurund::UI {
 	BaseTheme::BaseTheme(
-		NotNull<Ghurund::Core::ResourceManager> resourceManager,
-		NotNull<Ghurund::UI::IDrawableFactory> drawableFactory
-	):Theme(), resourceManager(&resourceManager) {
+		Ghurund::Core::ResourceManager& resourceManager,
+		Ghurund::UI::IDrawableFactory& drawableFactory
+	):Theme(), resourceManager(resourceManager) {
 		auto buttonLayoutPath = ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/layouts/ButtonDefaultLayout.xml");
 		Layouts.put(LayoutKey(Button::GET_TYPE().Name), std::make_shared<FileLayoutProvider>(resourceManager, buttonLayoutPath));
 		auto checkBoxLayoutPath = ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/layouts/CheckBoxLayout.xml");
@@ -24,17 +24,17 @@ namespace Ghurund::UI {
 
 		Ghurund::Core::IntrusivePointer<Ghurund::UI::Font> latoMediumFont = [&]{
 			auto latoMediumPathAtlas = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/fonts\\lato_medium.fontatlas");
-			if (latoMediumPathAtlas.exists(DirectoryPath(), resourceManager->Libraries)) {
-				return IntrusivePointer<Font>(resourceManager->load<Ghurund::UI::Font>(latoMediumPathAtlas, DirectoryPath()));
+			if (latoMediumPathAtlas.exists(DirectoryPath(), resourceManager.Libraries)) {
+				return IntrusivePointer<Font>(resourceManager.load<Ghurund::UI::Font>(latoMediumPathAtlas, DirectoryPath()));
 			} else {
 				auto latoMediumPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/fonts\\lato_medium.ttf");
-				Ghurund::Core::IntrusivePointer<Ghurund::UI::Font> latoMediumFont(resourceManager->load<Ghurund::UI::Font>(latoMediumPath, DirectoryPath()));
+				Ghurund::Core::IntrusivePointer<Ghurund::UI::Font> latoMediumFont(resourceManager.load<Ghurund::UI::Font>(latoMediumPath, DirectoryPath()));
 				//resourceManager.save(*latoMediumFont.get(), latoMediumPathAtlas, DirectoryPath(), Font::FORMAT_ATLAS);
 				return latoMediumFont;
 			}
 		}();
 		auto latoLightPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/fonts\\lato_light.ttf");
-		Ghurund::Core::IntrusivePointer<Ghurund::UI::Font> latoLightFont(resourceManager->load<Ghurund::UI::Font>(latoLightPath, DirectoryPath()));
+		Ghurund::Core::IntrusivePointer<Ghurund::UI::Font> latoLightFont(resourceManager.load<Ghurund::UI::Font>(latoLightPath, DirectoryPath()));
 
 		auto buttonFont = Ghurund::Core::makeIntrusive<TextFormat>(latoMediumFont.get(), 10.0f, FW_MEDIUM);    // TODO: should medium font use FW_MEDIUM or FW_REGULAR?
 		TextFormats.put(Theme::TEXTFORMAT_BUTTON, buttonFont);

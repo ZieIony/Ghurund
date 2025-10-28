@@ -77,7 +77,7 @@ namespace Ghurund::UI {
         if (Focused || !Context)
             return;
 
-        CreateCaret(Context->Window->Handle, NULL, (int)(rect.right - rect.left), (int)(rect.bottom - rect.top));
+        CreateCaret(Context->Window.Handle, NULL, (int)(rect.right - rect.left), (int)(rect.bottom - rect.top));
         SetCaretPos((int)(rect.left), (int)(rect.top));
     }
 
@@ -335,7 +335,7 @@ namespace Ghurund::UI {
     }
 
     bool TextView::dispatchKeyEvent(const KeyEventArgs& event) {
-        if (event.Action == KeyAction::DOWN && event.KeyCode == 'C' && Context->Window->Input->isControlDown()) {
+        if (event.Action == KeyAction::DOWN && event.KeyCode == 'C' && Context->Window.Input->isControlDown()) {
             copyToClipboard();
             return true;
         }
@@ -346,7 +346,7 @@ namespace Ghurund::UI {
         if (event.Button == MouseButton::LEFT) {
             if (event.Action == MouseButtonAction::PRESSED) {
                 pressed = true;
-                setSelectionFromPoint((float)event.Position.x, (float)event.Position.y, Context->Window->Input->isShiftDown());
+                setSelectionFromPoint((float)event.Position.x, (float)event.Position.y, Context->Window.Input->isShiftDown());
                 Parent->CapturedChild = this;
             } else {
                 pressed = false;

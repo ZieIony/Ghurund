@@ -10,7 +10,7 @@ namespace Ghurund::UI::DirectX {
 		UIFeatureFactory(Application& app):FeatureFactory(app) {}
 
 		virtual OwnedNotNull<Feature> make() const override {
-			return OwnedNotNull<Feature>(ghnew DxUIFeature(app->ResourceManager));
+			return OwnedNotNull<Feature>(ghnew DxUIFeature(app.ResourceManager));
 		}
 	};
 }

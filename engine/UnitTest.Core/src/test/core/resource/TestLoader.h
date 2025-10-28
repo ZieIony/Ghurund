@@ -12,14 +12,14 @@ namespace UnitTest {
         size_t loadCalls = 0;
 
         virtual Resource* loadInternal(
-            NotNull<MemoryInputStream> stream,
+            MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format = ResourceFormat::AUTO,
             LoadOption options = LoadOption::DEFAULT
         ) override {
             loadCalls++;
             TestResource* testResource = ghnew TestResource();
-            testResource->text = stream->readASCII();
+            testResource->text = stream.readASCII();
             return testResource;
         }
     };

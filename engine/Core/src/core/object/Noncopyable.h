@@ -6,7 +6,7 @@ namespace Ghurund::Core {
         Noncopyable() = default;
         Noncopyable(const Noncopyable&) = delete;
 
-		virtual ~Noncopyable() = default;
+        virtual ~Noncopyable() = 0 {};
 
 		Noncopyable& operator=(const Noncopyable&) = delete;
     };

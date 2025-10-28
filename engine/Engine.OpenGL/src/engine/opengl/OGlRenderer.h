@@ -27,15 +27,15 @@ namespace Ghurund::Engine::OpenGL {
 #pragma endregion
 
 	private:
-		ParameterManager* parameterManager = nullptr;
+		ParameterManager& parameterManager;
 
 	protected:
 		virtual void onInit() override;
 
 	public:
-		OglRenderer(NotNull<ParameterManager> parameterManager):parameterManager(&parameterManager) {}
+		OglRenderer(ParameterManager& parameterManager):parameterManager(parameterManager) {}
 
-		virtual OglRenderingContext* makeRenderingContext(NotNull<SystemWindow> window) override {
+		virtual OglRenderingContext* makeRenderingContext(SystemWindow& window) override {
 			return ghnew OglRenderingContext(window);
 		}
 	};

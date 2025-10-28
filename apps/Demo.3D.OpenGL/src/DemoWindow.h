@@ -14,7 +14,7 @@ namespace Demo {
 		IntrusivePointer<GameAction<FloatPoint>> moveWindow;
 
 	public:
-		DemoWindow(NotNull<DemoApplication> app, NotNull<Ghurund::Engine::OpenGL::OglRenderer> renderer);
+		DemoWindow(DemoApplication& app, Ghurund::Engine::OpenGL::OglRenderer& renderer);
 
 		~DemoWindow();
 

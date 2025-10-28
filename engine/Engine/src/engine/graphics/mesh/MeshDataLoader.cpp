@@ -8,13 +8,13 @@
 
 namespace Ghurund::Engine {
 
-	MeshData* MeshDataLoader::loadObj(NotNull<MemoryInputStream> stream) {
+	MeshData* MeshDataLoader::loadObj(MemoryInputStream& stream) {
 		List<XMFLOAT3> objPositions;
 		List<XMFLOAT3> objNormals;
 		List<XMFLOAT2> objTexCoords;
 		List<ObjVert> objVerts;
 
-		AString obj((char*)stream->Data, stream->Size);
+		AString obj((char*)stream.Data, stream.Size);
 		Array<AString> lines = obj.split("\n");
 		for (AString& line : lines) {
 			if (line.startsWith("#")) {
@@ -120,25 +120,25 @@ namespace Ghurund::Engine {
 		return mesh;
 	}
 
-	MeshData* MeshDataLoader::loadMesh(NotNull<MemoryInputStream> stream) {
+	MeshData* MeshDataLoader::loadMesh(MemoryInputStream& stream) {
 		readHeader<MeshData>(stream);
 
 		IntrusivePointer<MeshData> mesh(makeResource<MeshData>());
 
-		uint32_t vertexCount = stream->readUInt32();
-		uint32_t streamCount = stream->readUInt32();
+		uint32_t vertexCount = stream.readUInt32();
+		uint32_t streamCount = stream.readUInt32();
 		Array<VertexStream> vertexStreams(streamCount);
 		for (auto& vertexStream : vertexStreams) {
-			uint32_t dataSize = stream->readUInt32();
-			const void* data = stream->readBytes(dataSize);
+			uint32_t dataSize = stream.readUInt32();
+			const void* data = stream.readBytes(dataSize);
 			vertexStream.data.setData(data, dataSize);
-			vertexStream.vertexSize = stream->readUInt32();
-			vertexStream.role = (VertexRole)stream->read<uint16_t>();
+			vertexStream.vertexSize = stream.readUInt32();
+			vertexStream.role = (VertexRole)stream.read<uint16_t>();
 		}
 
-		uint32_t indexCount = stream->readUInt32();
-		uint32_t indexSize = stream->readUInt32();
-		const void* data = stream->readBytes(indexCount * indexSize);
+		uint32_t indexCount = stream.readUInt32();
+		uint32_t indexSize = stream.readUInt32();
+		const void* data = stream.readBytes(indexCount * indexSize);
 
 		//XMFLOAT3 center = stream.read<XMFLOAT3>();
 		//XMFLOAT3 extents = stream.read<XMFLOAT3>();
@@ -150,16 +150,16 @@ namespace Ghurund::Engine {
 	}
 
 	Resource* MeshDataLoader::loadInternal(
-		NotNull<MemoryInputStream> stream,
+		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
 		const Ghurund::Core::ResourceFormat& format,
 		Ghurund::Core::LoadOption options
 	) {
-		size_t bytesRead = stream->BytesRead;
+		size_t bytesRead = stream.BytesRead;
 		try {
 			return loadMesh(stream);
 		} catch (...) {
-			stream->set(bytesRead);
+			stream.set(bytesRead);
 			try {
 				return loadObj(stream);
 			} catch (...) {
@@ -169,7 +169,7 @@ namespace Ghurund::Engine {
 	}
 
 	void MeshDataLoader::saveInternal(
-		NotNull<MemoryOutputStream> stream,
+		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,
 		Ghurund::Core::Resource& resource,
 		const Ghurund::Core::ResourceFormat& format,
@@ -182,18 +182,18 @@ namespace Ghurund::Engine {
 		writeHeader<MeshData>(stream);
 
 		MeshData& mesh = (MeshData&)resource;
-		stream->writeUInt32(mesh.VertexCount);
-		stream->writeUInt32(mesh.VertexStreams.Size);
+		stream.writeUInt32(mesh.VertexCount);
+		stream.writeUInt32(mesh.VertexStreams.Size);
 		for (auto& vertexStream : mesh.VertexStreams) {
-			stream->writeUInt32(vertexStream.data.Size);
-			stream->writeBytes(vertexStream.data.Data, vertexStream.data.Size);
-			stream->writeUInt32(vertexStream.vertexSize);
-			stream->write<uint16_t>((uint16_t)(vertexStream.role));
+			stream.writeUInt32(vertexStream.data.Size);
+			stream.writeBytes(vertexStream.data.Data, vertexStream.data.Size);
+			stream.writeUInt32(vertexStream.vertexSize);
+			stream.write<uint16_t>((uint16_t)(vertexStream.role));
 		}
 
-		stream->write(mesh.IndexCount);
-		stream->write(mesh.IndexSize);
-		stream->writeBytes(mesh.Indices.Data, mesh.Indices.Size);
+		stream.write(mesh.IndexCount);
+		stream.write(mesh.IndexSize);
+		stream.writeBytes(mesh.Indices.Data, mesh.Indices.Size);
 
 		//stream.write<XMFLOAT3>(boundingBox.Center);
 		//stream.write<XMFLOAT3>(boundingBox.Extents);

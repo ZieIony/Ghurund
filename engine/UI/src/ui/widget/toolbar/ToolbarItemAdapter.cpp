@@ -9,7 +9,7 @@ namespace Ghurund::UI {
     Control* ToolbarItemAdapter::makeControl(size_t type) const {
         Button* button = ghnew Button();
         auto layoutPath = ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/layouts/ButtonIconLayout.xml");
-        Control* layout = resourceManager->load<Control>(layoutPath);
+        Control* layout = resourceManager.load<Control>(layoutPath);
         button->Layout = std::make_unique<LayoutValue>(LayoutValue(layout));
         DrawableView* drawableView = ghnew DrawableView();
         drawableView->Name = "drawableView";

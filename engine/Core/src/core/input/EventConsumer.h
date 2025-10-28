@@ -46,8 +46,6 @@ namespace Ghurund::Core {
         Event<EventConsumer, MouseMotionEventArgs> mouseMotionEvent = *this;
         Event<EventConsumer, MouseWheelEventArgs> mouseWheelEvent = *this;
 
-        virtual ~EventConsumer() = 0 {}
-
         virtual bool dispatchKeyEvent(const KeyEventArgs& event) override {
             bool result = onKeyEvent(event);
             bool result2 = keyEvent(event);

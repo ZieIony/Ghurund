@@ -25,8 +25,7 @@ namespace Ghurund::UI::DirectX {
 #pragma endregion
 
     private:
-        // borrowed
-        ResourceManager* resourceManager;
+        ResourceManager& resourceManager;
         Ghurund::UI::DirectX::ShapeFactory* shapeFactory = nullptr;
         Ghurund::UI::IDrawableFactory* drawableFactory = nullptr;
         Ghurund::UI::DirectX::TextFormatFactory* textFormatFactory = nullptr;
@@ -35,7 +34,7 @@ namespace Ghurund::UI::DirectX {
         IntrusivePointer<Ghurund::UI::LayoutLoader> layoutLoader;
 
     public:
-        DxUIFeature(NotNull<ResourceManager> resourceManager):resourceManager(&resourceManager) {}
+        DxUIFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 
         virtual void onInit() override;
 

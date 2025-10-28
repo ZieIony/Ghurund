@@ -3,7 +3,7 @@
 #include "core/object/NotNull.h"
 #include "core/string/String.h"
 #include "core/io/File.h"
-#include "core/io/LibraryList.h"
+#include "core/io/LibraryCollection.h"
 
 namespace Ghurund::Core {
 	class ResourcePath {
@@ -24,7 +24,7 @@ namespace Ghurund::Core {
 
 		static ResourcePath parse(const WString& str);
 
-		Library* findLibrary(LibraryList& libraries) const {
+		Library* findLibrary(LibraryCollection& libraries) const {
 			if (type == Type::LIBRARY) {
 				return libraries.get(libName);
 			} else {
@@ -32,7 +32,7 @@ namespace Ghurund::Core {
 			}
 		}
 
-		ResourcePath getAbsolutePath(const DirectoryPath& workingDir, LibraryList& libraries) const {
+		ResourcePath getAbsolutePath(const DirectoryPath& workingDir, LibraryCollection& libraries) const {
 			if (type == Type::LIBRARY) {
 				return libraries.get(libName)->getResourcePath(path);
 			} else {
@@ -40,9 +40,9 @@ namespace Ghurund::Core {
 			}
 		}
 
-		SharedPointer<Buffer> resolveResource(const DirectoryPath& workingDir, LibraryList& libraries) const;
+		SharedPointer<Buffer> resolveResource(const DirectoryPath& workingDir, LibraryCollection& libraries) const;
 
-		bool exists(const DirectoryPath& workingDir, NotNull<LibraryList> libraries) const;
+		bool exists(const DirectoryPath& workingDir, const LibraryCollection& libraries) const;
 
 		inline constexpr std::strong_ordering operator<=>(const ResourcePath& other) const noexcept {
 			if (type == other.type && path == other.path && libName == other.libName)

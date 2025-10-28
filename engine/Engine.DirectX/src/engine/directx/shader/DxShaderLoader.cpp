@@ -3,7 +3,7 @@
 #include "CompilerInclude.h"
 
 namespace Ghurund::Engine::DirectX {
-	DxShader* DxShaderLoader::loadShd(NotNull<MemoryInputStream> stream) {
+	DxShader* DxShaderLoader::loadShd(MemoryInputStream& stream) {
 		//readHeader(stream);
 
 		/*if (stream.readBoolean()) {
@@ -33,8 +33,8 @@ namespace Ghurund::Engine::DirectX {
 		throw NotImplementedException();
 	}
 
-	DxShader* DxShaderLoader::loadHlsl(NotNull<MemoryInputStream> stream) {
-		AString sourceCode((const char*)stream->Data, stream->Size);
+	DxShader* DxShaderLoader::loadHlsl(MemoryInputStream& stream) {
+		AString sourceCode((const char*)stream.Data, stream.Size);
 
 		DirectoryPath workingDir;
 		// TODO: load any includes
@@ -42,19 +42,19 @@ namespace Ghurund::Engine::DirectX {
 		List<SharedPointer<DxShaderProgram>> programs;
 		for (const DxShaderType& shaderType : DxShaderType::VALUES) {
 			try {
-				auto program = SharedPointer<DxShaderProgram>(compiler->compile(sourceCode, shaderType, &include));
+				auto program = SharedPointer<DxShaderProgram>(compiler.compile(sourceCode, shaderType, &include));
 				programs.add(program);
 			} catch (...) {}
 		}
 		auto array = Array<SharedPointer<DxShaderProgram>>(programs);
-		auto shader = compiler->build(programs);
+		auto shader = compiler.build(programs);
 		//bool supportsTransparency = sourceCode.find("supportsTransparency") != sourceCode.Size;
 
 		return shader.reset();
 	}
 
 	Resource* DxShaderLoader::loadInternal(
-		NotNull<MemoryInputStream> stream,
+		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
 		LoadOption options
@@ -67,7 +67,7 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	void DxShaderLoader::saveInternal(
-		NotNull<MemoryOutputStream> stream,
+		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,
 		Resource& resource,
 		const ResourceFormat& format,

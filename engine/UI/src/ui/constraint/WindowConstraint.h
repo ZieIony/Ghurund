@@ -19,8 +19,7 @@ namespace Ghurund::UI {
 #pragma endregion
 
     private:
-        // borrowed
-        Window* window;
+        Window& window;
 
     protected:
         WindowWidthConstraint(const WindowWidthConstraint& other):Constraint(other), window(other.window) {}
@@ -28,14 +27,14 @@ namespace Ghurund::UI {
         virtual bool equalsImpl(const Object& other) const override;
 
     public:
-        WindowWidthConstraint(NotNull<Window> window):Constraint(ConstraintOptions::IS_CONSTANT), window(&window) {}
+        WindowWidthConstraint(Window& window):Constraint(ConstraintOptions::IS_CONSTANT), window(window) {}
 
         virtual void resolve(Control& control, ConstraintGraph& graph) override {
             evaluated = false;
         }
 
         virtual void evaluate() override {
-            value = (float)window->Size.Width;
+            value = (float)window.Size.Width;
             evaluated = true;
         }
 
@@ -58,8 +57,7 @@ namespace Ghurund::UI {
 #pragma endregion
 
     private:
-        // borrowed
-        Window* window;
+        Window& window;
 
     protected:
         WindowHeightConstraint(const WindowHeightConstraint& other):Constraint(other), window(other.window) {}
@@ -67,14 +65,14 @@ namespace Ghurund::UI {
         virtual bool equalsImpl(const Object& other) const override;
 
     public:
-        WindowHeightConstraint(NotNull<Window> window):Constraint(ConstraintOptions::IS_CONSTANT), window(&window) {}
+        WindowHeightConstraint(Window& window):Constraint(ConstraintOptions::IS_CONSTANT), window(window) {}
 
         virtual void resolve(Control& control, ConstraintGraph& graph) override {
             evaluated = false;
         }
 
         virtual void evaluate() override {
-            value = (float)window->Size.Height;
+            value = (float)window.Size.Height;
             evaluated = true;
         }
 

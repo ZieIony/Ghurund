@@ -8,10 +8,9 @@ namespace Ghurund::Core {
 
 	class FeatureFactory:public Factory<Feature> {
 	protected:
-		// borrowed
-		Application* app;
+		Application& app;
 
 	public:
-		FeatureFactory(NotNull<Application> app):app(&app) {}
+		FeatureFactory(Application& app):app(app) {}
 	};
 }

@@ -37,18 +37,18 @@ namespace Ghurund::Engine::DirectX {
 		commandQueue->Release();
 	}
 
-	void CommandList::init(NotNull<DxGraphics> graphics, NotNull<ID3D12CommandQueue> queue) {
+	void CommandList::init(DxGraphics& graphics, NotNull<ID3D12CommandQueue> queue) {
 		queue->AddRef();
 		commandQueue = &queue;
 
-		fence.init(graphics->Device);
+		fence.init(graphics.Device);
 
-		if (FAILED(graphics->Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandAllocator)))) {
+		if (FAILED(graphics.Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandAllocator)))) {
 			Logger::log(LogType::ERR0R, _T("CreateCommandAllocator() failed\n"));
 			throw CallFailedException();
 		}
 
-		if (FAILED(graphics->Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAllocator.Get(), nullptr, IID_PPV_ARGS(&commandList)))) {
+		if (FAILED(graphics.Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAllocator.Get(), nullptr, IID_PPV_ARGS(&commandList)))) {
 			Logger::log(LogType::ERR0R, _T("CreateCommandList() failed\n"));
 			throw CallFailedException();
 		}

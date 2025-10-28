@@ -20,6 +20,8 @@ namespace Ghurund::Core {
 			}
 		}
 
+		MemoryOutputStream& operator=(const MemoryOutputStream& other) = delete;
+
 	public:
 		MemoryOutputStream() {
 			capacity = initial = 100;

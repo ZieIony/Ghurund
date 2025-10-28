@@ -10,7 +10,7 @@
 
 #include "core/Buffer.h"
 #include "core/io/File.h"
-#include "core/io/LibraryList.h"
+#include "core/io/LibraryCollection.h"
 #include "core/io/watcher/FileWatcher.h"
 #include "core/object/Noncopyable.h"
 #include "core/object/Object.h"
@@ -36,7 +36,7 @@ namespace Ghurund::Core {
 		FileWatcher watcher;
 		ResourceCollection resources;
 		mutable Map<ResourcePath, SharedPointer<Buffer>> resourceCache;
-		LibraryList libraries;
+		LibraryCollection libraries;
 		LoaderCollection loaders;
 
 		WorkerThread loadingThread;
@@ -51,7 +51,7 @@ namespace Ghurund::Core {
 
 		[[nodiscard]]
 		Resource* load(
-			NotNull<Loader> loader,
+			Loader& loader,
 			const File& file,
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
@@ -59,7 +59,7 @@ namespace Ghurund::Core {
 
 		[[nodiscard]]
 		Resource* load(
-			NotNull<Loader> loader,
+			Loader& loader,
 			const ResourcePath& path,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format = ResourceFormat::AUTO,
@@ -67,7 +67,7 @@ namespace Ghurund::Core {
 		);
 
 		Resource* loadInternal(
-			NotNull<Loader> loader,
+			Loader& loader,
 			const DirectoryPath& workingDir,
 			const ResourcePath& path,
 			const ResourceFormat& format,
@@ -75,7 +75,7 @@ namespace Ghurund::Core {
 		);
 
 		Resource* loadInternal(
-			NotNull<Loader> loader,
+			Loader& loader,
 			const DirectoryPath& workingDir,
 			const Buffer& buffer,
 			const ResourceFormat& format,
@@ -99,12 +99,11 @@ namespace Ghurund::Core {
 
 		~ResourceManager();
 
-		// not null
-		inline LoaderCollection* getLoaders() {
-			return &loaders;
+		inline LoaderCollection& getLoaders() {
+			return loaders;
 		}
 
-		__declspec(property(get = getLoaders)) LoaderCollection* Loaders;
+		__declspec(property(get = getLoaders)) LoaderCollection& Loaders;
 
 		inline void clearCache() {
 			resources.clear();
@@ -264,10 +263,10 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = isHotReloadEnabled, put = setHotReloadEnabled)) bool HotReloadEnabled;
 
-		LibraryList* getLibraries() {
-			return &libraries;
+		LibraryCollection& getLibraries() {
+			return libraries;
 		}
 
-		__declspec(property(get = getLibraries)) LibraryList* Libraries;
+		__declspec(property(get = getLibraries)) LibraryCollection& Libraries;
 	};
 }

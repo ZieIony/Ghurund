@@ -10,18 +10,18 @@ namespace Ghurund::Engine::DirectX {
 
     class MaterialProvider: public IMaterialProvider {
     private:
-        ParameterManager* parameterManager;
-        ShaderProvider* shaderProvider;
-        TextureProvider* textureProvider;
+        ParameterManager& parameterManager;
+        ShaderProvider& shaderProvider;
+        TextureProvider& textureProvider;
 
         Material* makeWithShader(DxShader *shader);
 
     public:
         MaterialProvider(
-            NotNull<ParameterManager> parameterManager,
-            NotNull<ShaderProvider> shaderProvider,
-            NotNull<TextureProvider> textureProvider
-		):parameterManager(&parameterManager), shaderProvider(&shaderProvider), textureProvider(&textureProvider) {
+            ParameterManager& parameterManager,
+            ShaderProvider& shaderProvider,
+            TextureProvider& textureProvider
+		):parameterManager(parameterManager), shaderProvider(shaderProvider), textureProvider(textureProvider) {
 		}
 
         virtual Material* makeBasic(ITexture* texture = nullptr) override;

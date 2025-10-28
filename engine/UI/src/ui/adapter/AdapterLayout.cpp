@@ -49,7 +49,7 @@ namespace Ghurund::UI {
 
     void AdapterLayout::addChild(size_t adapterPosition, size_t groupPosition) {
         size_t type = itemAdapter->getType(adapterPosition);
-        Control* control = [&]() {
+        Control* control = [&] {
             if (pool.isEmpty(type)) {
                 return itemAdapter->makeControl(adapterPosition);
             } else {

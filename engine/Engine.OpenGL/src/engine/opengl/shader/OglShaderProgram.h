@@ -12,13 +12,11 @@ namespace Ghurund::Engine::OpenGL {
 		const OglShaderType& type;
 		GLuint id;
 
+		OglShaderProgram& operator=(const OglShaderProgram& other) = delete;
+
 	public:
 		OglShaderProgram(const OglShaderType& type, GLuint id):
 			type(type), id(id) {
-		}
-
-		OglShaderProgram(OglShaderProgram&& other) noexcept:
-			type(type), id(std::move(other.id)) {
 		}
 
 		~OglShaderProgram() {

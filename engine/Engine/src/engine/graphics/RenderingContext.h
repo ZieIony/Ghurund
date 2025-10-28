@@ -1,23 +1,25 @@
 #pragma once
 
+#include "core/Color.h"
 #include "core/math/Size.h"
-#include <core/window/SystemWindow.h>
-#include <core/Color.h>
-#include "core/object/NotNull.h"
-#include "RenderingStatistics.h"
 #include "core/object/Initializable.h"
+#include "core/object/Noncopyable.h"
+#include "core/object/NotNull.h"
+#include "core/window/SystemWindow.h"
+#include "RenderingStatistics.h"
 
 namespace Ghurund::Engine {
-    class RenderingContext: public Ghurund::Core::Initializable {
+    using namespace Ghurund::Core;
+
+    class RenderingContext:public Noncopyable, public Initializable {
     protected:
-        Ghurund::Core::SystemWindow* window;
+        SystemWindow& window;
         RenderingStatistics stats;
 
     public:
-        RenderingContext(Ghurund::Core::NotNull<Ghurund::Core::SystemWindow> window):window(&window) {}
+        RenderingContext(SystemWindow& window):window(window) {}
 
-        virtual ~RenderingContext() = 0 {}
-
+        // TODO: why is this return value a reference?
         RenderingStatistics& getStatistics() {
             return stats;
         }
@@ -28,8 +30,8 @@ namespace Ghurund::Engine {
 
         virtual void finishFrame() = 0;
 
-        virtual void clear(const Ghurund::Core::Color* clearColor) = 0;
+        virtual void clear(const Color* clearColor) = 0;
 
-        virtual void setSize(Ghurund::Core::IntSize size) = 0;
+        virtual void setSize(IntSize size) = 0;
     };
 }

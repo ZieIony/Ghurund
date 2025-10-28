@@ -22,6 +22,8 @@ namespace Ghurund::Engine {
     private:
         RenderingStatistics stats;
 
+        Renderer& operator=(const Renderer& other) = delete;
+
     public:
         RenderingStatistics& getStatistics() {
             return stats;
@@ -29,6 +31,6 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getStatistics)) RenderingStatistics& Statistics;
 
-        virtual RenderingContext* makeRenderingContext(Ghurund::Core::NotNull<Ghurund::Core::SystemWindow> window) = 0;
+        virtual RenderingContext* makeRenderingContext(Ghurund::Core::SystemWindow& window) = 0;
 	};
 }

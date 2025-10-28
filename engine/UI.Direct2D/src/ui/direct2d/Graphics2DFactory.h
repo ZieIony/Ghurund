@@ -11,8 +11,8 @@ namespace Ghurund::UI::Direct2D {
 		Graphics2DFactory(Application& app):FeatureFactory(app) {}
 
 		virtual OwnedNotNull<Feature> make() const override {
-			auto graphics = app->Features->get<Ghurund::Engine::DirectX::DxGraphics>();
-			return OwnedNotNull<Feature>(ghnew Graphics2D(graphics));
+			auto graphics = app.Features.get<Ghurund::Engine::DirectX::DxGraphics>();
+			return OwnedNotNull<Feature>(ghnew Graphics2D(*graphics));
 		}
 	};
 }

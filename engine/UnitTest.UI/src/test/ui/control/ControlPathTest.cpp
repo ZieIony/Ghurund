@@ -277,31 +277,31 @@ public:
     }
 
     TEST_METHOD(resolveInvalidPathNoQuotationMarks) {
-        Assert::ExpectException<InvalidDataException>([]() {
+        Assert::ExpectException<InvalidDataException>([] {
             ControlPath::parse("Parent.color");
         });
     }
 
     TEST_METHOD(resolveInvalidPathIndexAfterDot) {
-        Assert::ExpectException<InvalidDataException>([]() {
+        Assert::ExpectException<InvalidDataException>([] {
             ControlPath::parse("Parent.[5]");
         });
     }
 
     TEST_METHOD(resolveInvalidPathFloatIndex) {
-        Assert::ExpectException<InvalidDataException>([]() {
+        Assert::ExpectException<InvalidDataException>([] {
             ControlPath::parse("Parent[3.4]");
         });
     }
 
     TEST_METHOD(resolveInvalidPathTextIndex) {
-        Assert::ExpectException<InvalidDataException>([]() {
+        Assert::ExpectException<InvalidDataException>([] {
             ControlPath::parse("Parent[five]");
         });
     }
 
     TEST_METHOD(resolveInvalidPathParentLowerCase) {
-        Assert::ExpectException<InvalidDataException>([]() {
+        Assert::ExpectException<InvalidDataException>([] {
             ControlPath::parse("parent");
         });
     }

@@ -18,6 +18,8 @@ namespace Ghurund::Core {
 #endif
 		}
 
+		MemoryInputStream& operator=(const MemoryInputStream& other) = delete;
+
 	public:
 		MemoryInputStream(const void* data, size_t size) {
 			this->data = (uint8_t*)data;

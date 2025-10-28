@@ -31,6 +31,8 @@ namespace Ghurund::Core {
 
 		void uninitApplication();
 
+		Application& operator=(const Application& other) = delete;
+
 	protected:
 		virtual void onInit();
 
@@ -62,47 +64,41 @@ namespace Ghurund::Core {
 			PostQuitMessage(0);
 		}
 
-		// not null
-		inline const Settings* getSettings() const {
-			return &settings;
+		inline Settings getSettings() const {
+			return settings;
 		}
 
-		__declspec(property(get = getSettings)) const Settings* Settings;
+		__declspec(property(get = getSettings)) Settings Settings;
 
-		// not null
-		inline WindowCollection* getWindows() {
-			return &windows;
+		inline WindowCollection& getWindows() {
+			return windows;
 		}
 
-		__declspec(property(get = getWindows)) WindowCollection* Windows;
+		__declspec(property(get = getWindows)) WindowCollection& Windows;
 
-		// not null
-		FunctionQueue* getFunctionQueue() {
-			return &functionQueue;
+		FunctionQueue& getFunctionQueue() {
+			return functionQueue;
 		}
 
-		__declspec(property(get = getFunctionQueue)) FunctionQueue* FunctionQueue;
+		__declspec(property(get = getFunctionQueue)) FunctionQueue& FunctionQueue;
 
-		// not null
-		inline ResourceManager* getResourceManager() {
-			return &resourceManager;
+		inline ResourceManager& getResourceManager() {
+			return resourceManager;
 		}
 
-		__declspec(property(get = getResourceManager)) ResourceManager* ResourceManager;
+		__declspec(property(get = getResourceManager)) ResourceManager& ResourceManager;
 
-		// not null
-		inline Timer* getTimer() {
-			return &timer;
+		inline Timer& getTimer() {
+			return timer;
 		}
 
-		__declspec(property(get = getTimer)) Timer* Timer;
+		__declspec(property(get = getTimer)) Timer& Timer;
 
-		// not null
-		inline FeatureProvider* getFeatures() {
-			return &features;
+		inline FeatureProvider& getFeatures() {
+			return features;
 		}
 
-		__declspec(property(get = getFeatures)) FeatureProvider* Features;
+		__declspec(property(get = getFeatures)) FeatureProvider& Features;
 	};
 }
 

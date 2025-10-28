@@ -5,12 +5,14 @@
 #include <memory>
 
 namespace Ghurund::Core {
-    class LibraryList {
+    class LibraryCollection {
     private:
         List<Library*> libs;
 
+        LibraryCollection& operator=(const LibraryCollection& other) = delete;
+
     public:
-        ~LibraryList() {
+        ~LibraryCollection() {
             libs.deleteItems();
         }
 
@@ -24,11 +26,22 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getSize)) size_t Size;
 
+        const Library* get(const WString& name) const {
+            for (size_t i = 0; i < libs.Size; i++)
+                if (libs[i]->Name == name)
+                    return libs[i];
+            return nullptr;
+        }
+
         Library* get(const WString& name) {
             for (size_t i = 0; i < libs.Size; i++)
                 if (libs[i]->Name == name)
                     return libs[i];
             return nullptr;
+        }
+
+        const Library& get(size_t i) const {
+            return *libs[i];
         }
 
         Library & get(size_t i) {

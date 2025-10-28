@@ -64,7 +64,7 @@ f 5/6/6 1/12/6 8/11/6
             IntrusivePointer<MeshDataLoader> loader(ghnew MeshDataLoader());
             MemoryInputStream stream(data.Data, data.Size);
 
-            Assert::ExpectException<InvalidFormatException>([&]() {
+            Assert::ExpectException<InvalidFormatException>([&] {
                 IntrusivePointer<MeshData> mesh((MeshData*)loader->load(stream, DirectoryPath()));
             });
         }

@@ -6,10 +6,8 @@
 #include <memory>
 
 namespace Ghurund::UI {
-    class ShapeFactory {
+    class ShapeFactory:Noncopyable {
     public:
-        virtual ~ShapeFactory() = 0 {}
-
         virtual std::unique_ptr<UI::Shape> makeShape(const AString& desc) = 0;
     };
 }

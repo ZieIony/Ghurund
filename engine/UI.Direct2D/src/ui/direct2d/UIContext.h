@@ -30,7 +30,7 @@ namespace Ghurund::UI::Direct2D {
             NotNull<ID2D1Factory6> d2dFactory,
             NotNull<IDWriteFactory> dwriteFactory,
             NotNull<ID2D1DeviceContext5> deviceContext,
-            NotNull<Ghurund::Core::Window> window
+            Ghurund::Core::Window& window
         ):IUIContext(window), d2dFactory(&d2dFactory), dwriteFactory(&dwriteFactory), deviceContext(&deviceContext) {}
 
         inline ID2D1DeviceContext5* getDeviceContext() {

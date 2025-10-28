@@ -9,16 +9,18 @@ namespace Ghurund::Core {
     private:
         List<SystemWindow*> windows;
 
+		WindowCollection& operator=(const WindowCollection& other) = delete;
+
     public:
         ~WindowCollection() {
             clear();
         }
 
-        inline void add(NotNull<SystemWindow> window) {
+        inline void add(SystemWindow& window) {
             windows.add(&window);
         }
 
-        inline void remove(NotNull<SystemWindow> window) {
+        inline void remove(SystemWindow& window) {
             windows.remove(&window);
         }
 

@@ -22,16 +22,16 @@ namespace Samples {
         IntrusivePointer<QuadMesh> quadMesh = makeIntrusive<QuadMesh>();
 
     public:
-        SampleWindow(NotNull<Ghurund::Core::Application> app, NotNull<OglRenderer> renderer):GameWindow(app) {
+        SampleWindow(Ghurund::Core::Application& app, OglRenderer& renderer):GameWindow(app) {
             Renderer = &renderer;
-            app->ResourceManager->Loaders->set<OglShader>(shaderLoader.get());
+            app.ResourceManager.Loaders.set<OglShader>(*shaderLoader.get());
         }
 
         void init() {
-            shader = IntrusivePointer<OglShader>(Application->ResourceManager->load<OglShader>(FilePath(L"rect.shader"), DirectoryPath(L"./resources/shaders/OpenGL")));
+            shader = IntrusivePointer<OglShader>(Application.ResourceManager.load<OglShader>(FilePath(L"rect.shader"), DirectoryPath(L"./resources/shaders/OpenGL")));
             mesh = makeIntrusive<OglMesh>();
             quadMesh->init();
-            mesh->init(quadMesh.get());
+            mesh->init(*quadMesh.get());
         }
 
         virtual void paint() override {

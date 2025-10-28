@@ -149,7 +149,7 @@ namespace Ghurund::Core {
     }
 
     Resource* ImageLoader::loadInternal(
-        NotNull<MemoryInputStream> stream,
+        MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const Ghurund::Core::ResourceFormat& format,
         Ghurund::Core::LoadOption options
@@ -166,7 +166,7 @@ namespace Ghurund::Core {
 
         bool imageConverted = false;
 
-        Microsoft::WRL::ComPtr<IStream> memStream = SHCreateMemStream((const BYTE*)stream->Data, (UINT)stream->Size);
+        Microsoft::WRL::ComPtr<IStream> memStream = SHCreateMemStream((const BYTE*)stream.Data, (UINT)stream.Size);
         if (FAILED(hr = imageFactory->CreateDecoderFromStream(memStream.Get(), nullptr, WICDecodeMetadataCacheOnLoad, &wicDecoder))) {
             Logger::log(LogType::ERR0R, _T("Failed to create decoder\n"));
             throw std::bad_function_call();
@@ -228,7 +228,7 @@ namespace Ghurund::Core {
     }
 
     void ImageLoader::saveInternal(
-        NotNull<MemoryOutputStream> stream,
+        MemoryOutputStream& stream,
         const DirectoryPath& workingDir,
         Ghurund::Core::Resource& resource,
         const Ghurund::Core::ResourceFormat& format,
@@ -363,7 +363,7 @@ namespace Ghurund::Core {
         hr = memStream->Stat(&stg, STATFLAG_NONAME);
         BYTE* data = ghnew BYTE[stg.cbSize.LowPart];
         memStream->Read(data, stg.cbSize.LowPart, nullptr);
-        stream->writeBytes(data, stg.cbSize.LowPart);
+        stream.writeBytes(data, stg.cbSize.LowPart);
         delete[] data;
     }
 }

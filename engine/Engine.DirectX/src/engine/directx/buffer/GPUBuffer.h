@@ -20,7 +20,7 @@ namespace Ghurund::Engine::DirectX {
 			uninit();
         }
 
-        void init(NotNull<DxGraphics> graphics, size_t size) {
+        void init(DxGraphics& graphics, size_t size) {
             //graphics.MemoryAllocator.allocate(D3D12_HEAP_TYPE_UPLOAD, CD3DX12_RESOURCE_DESC::Buffer(align<unsigned int>(size, 1024 * 64)), D3D12_RESOURCE_STATE_GENERIC_READ, &constantBufferUploadHeap);
             /*graphics.getDevice()->CreateCommittedResource(
                 &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),

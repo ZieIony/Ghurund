@@ -45,6 +45,8 @@ namespace Ghurund::Core {
 
         Window* parent;
 
+        Window& operator=(const Window& other) = delete;
+
     protected:
         virtual bool onPositionChanged() {
             return false;
@@ -117,11 +119,11 @@ namespace Ghurund::Core {
         __declspec(property(get = getInput)) Ghurund::Core::Input* Input;
 
         // not null
-        virtual Timer* getTimer() const {
+        virtual Timer& getTimer() const {
             return parent->Timer;
         }
 
-        __declspec(property(get = getTimer)) Timer* Timer;
+        __declspec(property(get = getTimer)) Timer& Timer;
 
         virtual void setTitle(const String& title) {
             this->title = title;

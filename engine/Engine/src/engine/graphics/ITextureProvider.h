@@ -3,7 +3,7 @@
 #include "ITexture.h"
 
 namespace Ghurund::Engine {
-    class ITextureProvider {
+    class ITextureProvider:public Noncopyable {
     public:
         virtual ITexture* makeDefaultDiffuse() const = 0;
 

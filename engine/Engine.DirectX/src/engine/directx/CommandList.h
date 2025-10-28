@@ -41,7 +41,7 @@ namespace Ghurund::Engine::DirectX {
     public:
         ~CommandList();
 
-        void init(NotNull<DxGraphics> graphics, NotNull<ID3D12CommandQueue> queue);
+        void init(DxGraphics& graphics, NotNull<ID3D12CommandQueue> queue);
 
         void wait();
 

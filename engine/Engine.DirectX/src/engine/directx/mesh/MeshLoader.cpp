@@ -3,7 +3,7 @@
 
 namespace Ghurund::Engine::DirectX {
     Resource* MeshLoader::loadInternal(
-        NotNull<Ghurund::Core::MemoryInputStream> stream,
+        MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
         Ghurund::Core::LoadOption options

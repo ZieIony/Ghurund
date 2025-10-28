@@ -5,7 +5,7 @@
 
 namespace Ghurund::Engine::OpenGL {
     void OglRenderingContext::onInit() {
-        dc = GetDC(window->Handle);
+        dc = GetDC(window.Handle);
 
         PIXELFORMATDESCRIPTOR pfd = { sizeof(pfd), 1 };
         pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_SUPPORT_COMPOSITION | PFD_DOUBLEBUFFER;
@@ -42,7 +42,7 @@ namespace Ghurund::Engine::OpenGL {
     void OglRenderingContext::uninitRenderingContext() {
         wglMakeCurrent(dc, nullptr);
         wglDeleteContext(renderContext);
-        ReleaseDC(window->Handle, dc);
+        ReleaseDC(window.Handle, dc);
     }
     
     void OglRenderingContext::startFrame() {

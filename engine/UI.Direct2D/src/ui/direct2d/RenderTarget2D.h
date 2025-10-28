@@ -15,6 +15,8 @@ namespace Ghurund::UI::Direct2D {
         ComPtr<ID3D11Resource> wrappedRenderTarget;
         ComPtr<ID2D1Bitmap1> d2dRenderTarget;
 
+        RenderTarget2D& operator=(const RenderTarget2D& other) = delete;
+
     public:
         inline ID3D11Resource* getWrappedTarget() const {
             return wrappedRenderTarget.Get();
@@ -28,7 +30,7 @@ namespace Ghurund::UI::Direct2D {
 
         __declspec(property(get = getTarget2D)) ID2D1Bitmap1* Target2D;
 
-        void init(NotNull<Graphics2D> graphics2d, NotNull<ID3D12Resource> texture);
+        void init(Graphics2D& graphics2d, NotNull<ID3D12Resource> texture);
 
         void uninit() {
             d2dRenderTarget.Reset();

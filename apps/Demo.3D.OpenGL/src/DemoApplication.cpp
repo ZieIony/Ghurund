@@ -16,7 +16,7 @@ namespace Demo {
         renderer = ghnew OglRenderer(parameterManager);
         renderer->init();
 
-        window = ghnew DemoWindow(*this, renderer);
+        window = ghnew DemoWindow(*this, *renderer);
         window->ClientSize = { 800, 600 };
         window->Position = { 0, 0 };
         window->Visible = true;

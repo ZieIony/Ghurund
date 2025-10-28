@@ -22,12 +22,12 @@ namespace Ghurund::Core {
     private:
         LayerList layers;
         // borrowed
-        Application* app;
+        Application& app;
 
     protected:
         const EventHandler<Window> DEFAULT_QUIT_APP_WINDOW_CLOSED_HANDLER = [this](Window& window) {
             window.Visible = false;
-            app->quit();
+            app.quit();
             return true;
         };
 
@@ -36,12 +36,12 @@ namespace Ghurund::Core {
         virtual bool onFocusedChanged() override;
 
     public:
-        ApplicationWindow(NotNull<Application> app, WindowStyle style):SystemWindow(app->Timer, style), app(&app) {
-            app->Windows->add(this);
+        ApplicationWindow(Application& app, WindowStyle style):SystemWindow(app.Timer, style), app(app) {
+            app.Windows.add(*this);
         }
 
         ~ApplicationWindow() {
-            app->Windows->remove(this);
+            app.Windows.remove(*this);
         }
 
         inline LayerList& getLayers() {
@@ -50,11 +50,11 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getLayers)) LayerList& Layers;
 
-        inline Application* getApplication() {
+        inline Application& getApplication() {
             return app;
         }
 
-        __declspec(property(get = getApplication)) Ghurund::Core::Application* Application;
+        __declspec(property(get = getApplication)) Ghurund::Core::Application& Application;
 
         virtual bool onKeyEvent(const KeyEventArgs& args) override {
             return layers.dispatchKeyEvent(args);

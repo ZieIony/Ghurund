@@ -12,13 +12,13 @@ namespace Demo {
     }
     
     void DemoApplication::onInit() {
-        renderer = ghnew DxRenderer(Features->get<DxGraphics>(), parameterManager);
+        renderer = ghnew DxRenderer(*Features.get<DxGraphics>(), parameterManager);
         renderer->init();
 
         drawableFactory = ghnew Ghurund::UI::DrawableFactory(ResourceManager);
         theme = ghnew LightTheme(ResourceManager, *drawableFactory);
 
-        window = ghnew DemoWindow(*this, renderer, drawableFactory);
+        window = ghnew DemoWindow(*this, *renderer, *drawableFactory);
         window->init();
 
         window->ClientSize = { 800, 600 };

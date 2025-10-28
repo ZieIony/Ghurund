@@ -46,7 +46,7 @@ namespace Ghurund::UI::Direct2D {
             uninit();
         }
 
-        void init(NotNull<Ghurund::UI::Direct2D::Graphics2D> graphics, NotNull<Window> window, NotNull<SwapChain> swapChain);
+        void init(Ghurund::UI::Direct2D::Graphics2D& graphics, Window& window, SwapChain& swapChain);
 
         void initTargets();
 
