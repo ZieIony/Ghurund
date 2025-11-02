@@ -11,20 +11,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{64D57912-50A3-6D18-3937-DE3E25A4497D}</ProjectGuid>
+    <ProjectGuid>{B185B1FA-1D3B-2AF0-A62F-24C712E420F4}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>UnitTest.Utils</RootNamespace>
+    <RootNamespace>UnitTest.UI</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
@@ -40,23 +40,26 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
+    <LinkIncremental>true</LinkIncremental>
     <OutDir>..\..\bin\Debug\</OutDir>
     <IntDir>obj\Win64\Debug\</IntDir>
-    <TargetName>UnitTest.Utils</TargetName>
-    <TargetExt>.lib</TargetExt>
+    <TargetName>UnitTest.UI</TargetName>
+    <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
+    <LinkIncremental>false</LinkIncremental>
     <OutDir>..\..\bin\Release\</OutDir>
     <IntDir>obj\Win64\Release\</IntDir>
-    <TargetName>UnitTest.Utils</TargetName>
-    <TargetExt>.lib</TargetExt>
+    <TargetName>UnitTest.UI</TargetName>
+    <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>utuipch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\UnitTest.Utils\src;..\..\engine\Core\src;..\..\engine\UI\src;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -66,14 +69,16 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>..\..\bin\Debug\UnitTest.UI.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>utuipch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\UnitTest.Utils\src;..\..\engine\Core\src;..\..\engine\UI\src;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -87,19 +92,51 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <ImportLibrary>..\..\bin\Release\UnitTest.UI.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\test\utils\MemoryGuard.h" />
-    <ClInclude Include="src\test\utils\TestLogOutput.h" />
-    <ClInclude Include="src\test\utils\TestUtils.h" />
+    <ClInclude Include="src\test\ui\TestBitmapFactory.h" />
+    <ClInclude Include="src\test\ui\TestControlContainer.h" />
+    <ClInclude Include="src\test\ui\TestDrawableFactory.h" />
+    <ClInclude Include="src\test\ui\TestShapeFactory.h" />
+    <ClInclude Include="src\test\ui\TestUIContext.h" />
+    <ClInclude Include="src\test\ui\TextFormatFactory.h" />
+    <ClInclude Include="src\test\ui\UITestUtils.h" />
+    <ClInclude Include="src\test\ui\image\TestBitmap.h" />
+    <ClInclude Include="src\test\ui\image\TestImage.h" />
+    <ClInclude Include="src\test\ui\text\TextLayout.h" />
+    <ClInclude Include="src\utuipch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\test\utils\MemoryGuard.cpp" />
+    <ClCompile Include="src\test\ui\AlignmentTest.cpp" />
+    <ClCompile Include="src\test\ui\animation\AnimationTest.cpp" />
+    <ClCompile Include="src\test\ui\constraint\ConstraintFactoryTest.cpp" />
+    <ClCompile Include="src\test\ui\constraint\ConstraintGraphTest.cpp" />
+    <ClCompile Include="src\test\ui\constraint\ConstraintSetTest.cpp" />
+    <ClCompile Include="src\test\ui\constraint\ParentSizeConstraintTest.cpp" />
+    <ClCompile Include="src\test\ui\constraint\WrapConstraintContainer.cpp" />
+    <ClCompile Include="src\test\ui\constraint\WrapConstraintControl.cpp" />
+    <ClCompile Include="src\test\ui\constraint\WrapConstraintGroupTest.cpp" />
+    <ClCompile Include="src\test\ui\control\ControlCloningTest.cpp" />
+    <ClCompile Include="src\test\ui\control\ControlPathTest.cpp" />
+    <ClCompile Include="src\test\ui\control\TextBlockTest.cpp" />
+    <ClCompile Include="src\test\ui\font\FontTest.cpp" />
+    <ClCompile Include="src\test\ui\text\TextLayout.cpp" />
+    <ClCompile Include="src\test\ui\widget\WidgetTest.cpp" />
+    <ClCompile Include="src\utuipch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.vcxproj">
+    <ProjectReference Include="..\..\engine\Core\Core.vcxproj">
       <Project>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\UnitTest.Utils\UnitTest.Utils.vcxproj">
+      <Project>{64D57912-50A3-6D18-3937-DE3E25A4497D}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\engine\UI\UI.vcxproj">
+      <Project>{83755900-6F01-880B-D8AF-880BC45A880B}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

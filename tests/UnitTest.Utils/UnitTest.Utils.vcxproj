@@ -11,20 +11,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{DC87206D-4848-9CA3-1183-E5207D02E17F}</ProjectGuid>
+    <ProjectGuid>{64D57912-50A3-6D18-3937-DE3E25A4497D}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>UnitTest.Core</RootNamespace>
+    <RootNamespace>UnitTest.Utils</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
@@ -40,26 +40,23 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
-    <LinkIncremental>true</LinkIncremental>
     <OutDir>..\..\bin\Debug\</OutDir>
     <IntDir>obj\Win64\Debug\</IntDir>
-    <TargetName>UnitTest.Core</TargetName>
-    <TargetExt>.dll</TargetExt>
+    <TargetName>UnitTest.Utils</TargetName>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
-    <LinkIncremental>false</LinkIncremental>
     <OutDir>..\..\bin\Release\</OutDir>
     <IntDir>obj\Win64\Release\</IntDir>
-    <TargetName>UnitTest.Core</TargetName>
-    <TargetExt>.dll</TargetExt>
+    <TargetName>UnitTest.Utils</TargetName>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>utcpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\UnitTest.Utils\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -69,16 +66,14 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ImportLibrary>..\..\bin\Debug\UnitTest.Core.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>utcpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\UnitTest.Utils\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -92,62 +87,19 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <ImportLibrary>..\..\bin\Release\UnitTest.Core.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\test\TestClass.h" />
-    <ClInclude Include="src\test\TestEnum.h" />
-    <ClInclude Include="src\test\core\collection\TestAllocator.h" />
-    <ClInclude Include="src\test\core\reflection\TestClass.h" />
-    <ClInclude Include="src\test\core\resource\TestLibrary.h" />
-    <ClInclude Include="src\test\core\resource\TestLoader.h" />
-    <ClInclude Include="src\test\core\resource\TestResource.h" />
-    <ClInclude Include="src\utcpch.h" />
+    <ClInclude Include="src\test\utils\MemoryGuard.h" />
+    <ClInclude Include="src\test\utils\TestLogOutput.h" />
+    <ClInclude Include="src\test\utils\TestUtils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\test\TestEnum.cpp" />
-    <ClCompile Include="src\test\core\BufferTest.cpp" />
-    <ClCompile Include="src\test\core\ColorTest.cpp" />
-    <ClCompile Include="src\test\core\DataParsingTest.cpp" />
-    <ClCompile Include="src\test\core\EnumTest.cpp" />
-    <ClCompile Include="src\test\core\ObservableTest.cpp" />
-    <ClCompile Include="src\test\core\collection\ArrayIteratorTest.cpp" />
-    <ClCompile Include="src\test\core\collection\ArrayTest.cpp" />
-    <ClCompile Include="src\test\core\collection\BagTest.cpp" />
-    <ClCompile Include="src\test\core\collection\LinkedListTest.cpp" />
-    <ClCompile Include="src\test\core\collection\ListTest.cpp" />
-    <ClCompile Include="src\test\core\collection\MapTest.cpp" />
-    <ClCompile Include="src\test\core\collection\QueueTest.cpp" />
-    <ClCompile Include="src\test\core\collection\RangeTest.cpp" />
-    <ClCompile Include="src\test\core\collection\ReverseIteratorTest.cpp" />
-    <ClCompile Include="src\test\core\collection\SetTest.cpp" />
-    <ClCompile Include="src\test\core\collection\StackTest.cpp" />
-    <ClCompile Include="src\test\core\collection\TreeTest.cpp" />
-    <ClCompile Include="src\test\core\io\PathTest.cpp" />
-    <ClCompile Include="src\test\core\object\OwnedNotNullTest.cpp" />
-    <ClCompile Include="src\test\core\object\SharedPointerTest.cpp" />
-    <ClCompile Include="src\test\core\reflection\BaseTypeTest.cpp" />
-    <ClCompile Include="src\test\core\reflection\ConstructorTest.cpp" />
-    <ClCompile Include="src\test\core\reflection\ReflectionTest.cpp" />
-    <ClCompile Include="src\test\core\reflection\TypeBuilderTest.cpp" />
-    <ClCompile Include="src\test\core\reflection\TypeTest.cpp" />
-    <ClCompile Include="src\test\core\resource\ResourceManagerTest.cpp" />
-    <ClCompile Include="src\test\core\state\StateMachineTest.cpp" />
-    <ClCompile Include="src\test\core\string\StringTest.cpp" />
-    <ClCompile Include="src\test\core\threading\ThreadPoolExecutorTest.cpp" />
-    <ClCompile Include="src\test\core\threading\WorkerThreadTest.cpp" />
-    <ClCompile Include="src\test\core\window\SystemWindowTest.cpp" />
-    <ClCompile Include="src\utcpch.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="src\test\utils\MemoryGuard.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.vcxproj">
+    <ProjectReference Include="..\..\engine\Core\Core.vcxproj">
       <Project>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\UnitTest.Utils\UnitTest.Utils.vcxproj">
-      <Project>{64D57912-50A3-6D18-3937-DE3E25A4497D}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
