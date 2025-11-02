@@ -63,7 +63,7 @@ namespace Ghurund::Engine {
 			material->updateParameters();
 		}
 
-		virtual const PointerArray<Parameter*>& getParameters() const override {
+		virtual const Array<SharedPointer<Parameter>>& getParameters() const override {
 			return material->Parameters;
 		}*/
 

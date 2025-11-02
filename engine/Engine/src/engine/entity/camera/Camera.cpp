@@ -43,20 +43,20 @@ namespace Ghurund::Engine {
 		float rotation = 0.0f;
 		//setPositionTargetUp(XMFLOAT3(sin(rotation) * 600, 200, cos(rotation) * 600), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
 
-		parameters.put(parameterDirection = ghnew ValueParameter(CAMERA_DIRECTION, ParameterType::FLOAT3));
-		parameters.put(parameterPosition = ghnew ValueParameter(CAMERA_POSITION, ParameterType::FLOAT3));
-		parameters.put(parameterTarget = ghnew ValueParameter(CAMERA_TARGET, ParameterType::FLOAT3));
-		parameters.put(parameterUp = ghnew ValueParameter(CAMERA_UP, ParameterType::FLOAT3));
-		parameters.put(parameterRight = ghnew ValueParameter(CAMERA_RIGHT, ParameterType::FLOAT3));
+		parameters.put(parameterDirection = ghnew Float3Parameter(CAMERA_DIRECTION));
+		parameters.put(parameterPosition = ghnew Float3Parameter(CAMERA_POSITION));
+		parameters.put(parameterTarget = ghnew Float3Parameter(CAMERA_TARGET));
+		parameters.put(parameterUp = ghnew Float3Parameter(CAMERA_UP));
+		parameters.put(parameterRight = ghnew Float3Parameter(CAMERA_RIGHT));
 
-		parameters.put(parameterFov = ghnew ValueParameter(FOV, ParameterType::FLOAT));
-		parameters.put(parameterZNear = ghnew ValueParameter(ZNEAR, ParameterType::FLOAT));
-		parameters.put(parameterZFar = ghnew ValueParameter(ZFAR, ParameterType::FLOAT));
+		parameters.put(parameterFov = ghnew FloatParameter(FOV));
+		parameters.put(parameterZNear = ghnew FloatParameter(ZNEAR));
+		parameters.put(parameterZFar = ghnew FloatParameter(ZFAR));
 
-		parameters.put(parameterView = ghnew ValueParameter(VIEW, ParameterType::MATRIX));
-		parameters.put(parameterProjection = ghnew ValueParameter(PROJECTION, ParameterType::MATRIX));
-		parameters.put(parameterViewProjection = ghnew ValueParameter(VIEW_PROJECTION, ParameterType::MATRIX));
-		parameters.put(parameterViewProjectionInv = ghnew ValueParameter(VIEW_PROJECTION_INV, ParameterType::MATRIX));
+		parameters.put(parameterView = ghnew MatrixParameter(VIEW));
+		parameters.put(parameterProjection = ghnew MatrixParameter(PROJECTION));
+		parameters.put(parameterViewProjection = ghnew MatrixParameter(VIEW_PROJECTION));
+		parameters.put(parameterViewProjectionInv = ghnew MatrixParameter(VIEW_PROJECTION_INV));
 	}
 
 	Camera::~Camera() {
@@ -78,17 +78,17 @@ namespace Ghurund::Engine {
 
 	void Camera::updateParameters() {
 		//rebuild();
-		parameterDirection->setValue(&dir);
-		parameterPosition->setValue(&pos);
-		parameterUp->setValue(&up);
-		parameterRight->setValue(&right);
-		parameterFov->setValue(&fov);
-		parameterZNear->setValue(&zNear);
-		parameterZFar->setValue(&zFar);
-		parameterView->setValue(&view);
-		parameterProjection->setValue(&proj);
-		parameterViewProjection->setValue(&viewProj);
-		parameterViewProjectionInv->setValue(&viewProjInv);
+		parameterDirection->Value = dir;
+		parameterPosition->Value = pos;
+		parameterUp->Value = up;
+		parameterRight->Value = right;
+		parameterFov->Value = fov;
+		parameterZNear->Value = zNear;
+		parameterZFar->Value = zFar;
+		parameterView->Value = view;
+		parameterProjection->Value = proj;
+		parameterViewProjection->Value = viewProj;
+		parameterViewProjectionInv->Value = viewProjInv;
 	}
 
 	void Camera::calcMouseRay(const XMINT2& mousePos, XMFLOAT3& rayPos, XMFLOAT3& rayDir)const {

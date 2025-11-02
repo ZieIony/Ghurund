@@ -63,7 +63,7 @@ namespace Ghurund::Engine::DirectX {
         ShaderConstants* constants = nullptr;
         bool supportsTransparency = false;
 
-        //PointerArray<Parameter*>* parameters = nullptr;
+        //Array<SharedPointer<Parameter>>* parameters = nullptr;
 #ifdef _DEBUG
         bool* reported = nullptr;
 #endif
@@ -99,7 +99,7 @@ namespace Ghurund::Engine::DirectX {
                 constantBuffers[i]->updateParameters();
         }
 
-        virtual const PointerArray<Parameter*>& getParameters() const override {
+        virtual const Array<SharedPointer<Parameter>>& getParameters() const override {
             return *parameters;
         }*/
 

@@ -10,8 +10,11 @@ namespace Ghurund::Core {
 
     class NotImplementedException:public std::exception {};
 
-    // TODO: this is questionable - it would be better if resources didn't have save(..) methods
-    class NotSupportedException:public std::exception {};
+    // TODO: this is questionable for saving resources - it would be better if resources didn't have save(..) methods
+    class NotSupportedException:public std::exception {
+    public:
+        NotSupportedException(const char* message = nullptr):std::exception(message) {}
+    };
 
     class InvalidDataException:public std::exception {
     public:

@@ -10,12 +10,12 @@ namespace Ghurund::Engine {
         ITexture* defaultValue = nullptr;
 
     public:
-        TextureParameter(const AString& constantName):Parameter(constantName, ParameterType::TEXTURE) {
+        TextureParameter(const AString& constantName):Parameter(constantName) {
             value = nullptr;
             empty = true;
         }
 
-        TextureParameter(const AString& constantName, ITexture* value):Parameter(constantName, ParameterType::TEXTURE) {
+        TextureParameter(const AString& constantName, ITexture* value):Parameter(constantName) {
             this->value = value;
             value->addReference();
             empty = false;

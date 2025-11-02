@@ -91,8 +91,11 @@ namespace Ghurund::Engine::DirectX {
 		}
 	}
 
-	OwnedNotNull<DxShader, RefCountedObjectDeleter> DxShaderCompiler::build(const Array<SharedPointer<DxShaderProgram>>& programs) {
-		auto constants = makeConstants(programs);
+	OwnedNotNull<DxShader, RefCountedObjectDeleter> DxShaderCompiler::build(
+		const Array<SharedPointer<DxShaderProgram>>& programs,
+		ParameterManager& parameterManager
+	) {
+		auto constants = makeConstants(programs, parameterManager);
 		auto rootSignature = makeRootSignature(&constants);
 		auto pipelineState = makePipelineState(programs, &rootSignature, false);
 		OwnedNotNull<DxShader, RefCountedObjectDeleter> shader(ghnew DxShader());
@@ -225,14 +228,14 @@ namespace Ghurund::Engine::DirectX {
 		return OwnedNotNull<ID3D12RootSignature, IUnknownDeleter>(rootSignature);
 	}
 
-	OwnedNotNull<ShaderConstants> DxShaderCompiler::makeConstants(const Array<SharedPointer<DxShaderProgram>>& programs) {
+	OwnedNotNull<ShaderConstants> DxShaderCompiler::makeConstants(const Array<SharedPointer<DxShaderProgram>>& programs, ParameterManager& parameterManager) {
 		ShaderConstants* constants = ghnew ShaderConstants();
 		for (auto& program : programs)
-			initConstants(*program.get(), constants);
+			initConstants(*program.get(), constants, parameterManager);
 		return OwnedNotNull<ShaderConstants>(constants);
 	}
 
-	void DxShaderCompiler::initConstants(const DxShaderProgram& program, NotNull<ShaderConstants> constants) {
+	void DxShaderCompiler::initConstants(const DxShaderProgram& program, NotNull<ShaderConstants> constants, ParameterManager& parameterManager) {
 		ID3D12ShaderReflection* reflector = nullptr;
 		D3DReflect(program.ByteCode.Data, program.ByteCode.Size, IID_ID3D12ShaderReflection, (void**)&reflector);
 		D3D12_SHADER_DESC desc;
@@ -254,7 +257,14 @@ namespace Ghurund::Engine::DirectX {
 				ID3D12ShaderReflectionConstantBuffer* constantBuffer = reflector->GetConstantBufferByName(bindDesc.Name);
 				D3D12_SHADER_BUFFER_DESC bufferDesc;
 				constantBuffer->GetDesc(&bufferDesc);
-				ConstantBuffer* cb = ghnew ConstantBuffer(graphics, constantBuffer, bufferDesc, bindDesc.BindPoint, program.getType().getVisibility());
+				ConstantBuffer* cb = ghnew ConstantBuffer(
+					graphics,
+					constantBuffer,
+					bufferDesc,
+					bindDesc.BindPoint,
+					program.getType().getVisibility(),
+					parameterManager
+				);
 				constants->constantBuffers.add(cb);
 			}
 			break;

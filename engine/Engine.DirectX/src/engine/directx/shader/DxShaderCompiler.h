@@ -34,8 +34,6 @@ namespace Ghurund::Engine::DirectX {
 			return text;
 		}
 
-		void initConstants(const DxShaderProgram& program, NotNull<ShaderConstants> constants);
-
 	public:
 		DxShaderCompiler(DxGraphics& graphics, const CompilationTarget& target = CompilationTarget::SHADER_5_0):graphics(graphics), target(target) {}
 
@@ -49,7 +47,9 @@ namespace Ghurund::Engine::DirectX {
 
 		OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> makeRootSignature(NotNull<ShaderConstants> constants);
 
-		OwnedNotNull<ShaderConstants> makeConstants(const Array<SharedPointer<DxShaderProgram>>& programs);
+		void initConstants(const DxShaderProgram& program, NotNull<ShaderConstants> constants, ParameterManager& parameterManager);
+
+		OwnedNotNull<ShaderConstants> makeConstants(const Array<SharedPointer<DxShaderProgram>>& programs, ParameterManager& parameterManager);
 
 		DxShaderProgram* compile(const AString& sourceCode, const DxShaderType& shaderType, CompilerInclude* include = nullptr, bool debug =
 #ifdef _DEBUG
@@ -59,6 +59,6 @@ namespace Ghurund::Engine::DirectX {
 #endif
 		);
 
-		OwnedNotNull<DxShader, RefCountedObjectDeleter> build(const Array<SharedPointer<DxShaderProgram>>& programs);
+		OwnedNotNull<DxShader, RefCountedObjectDeleter> build(const Array<SharedPointer<DxShaderProgram>>& programs, ParameterManager& parameterManager);
 	};
 }

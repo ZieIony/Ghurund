@@ -170,7 +170,6 @@
     <ClInclude Include="src\engine\parameter\ParameterCollection.h" />
     <ClInclude Include="src\engine\parameter\ParameterManager.h" />
     <ClInclude Include="src\engine\parameter\ParameterProvider.h" />
-    <ClInclude Include="src\engine\parameter\ParameterType.h" />
     <ClInclude Include="src\engine\parameter\TextureParameter.h" />
     <ClInclude Include="src\engine\parameter\ValueParameter.h" />
     <ClInclude Include="src\engine\physics\Physics.h" />
@@ -228,7 +227,6 @@
     <ClCompile Include="src\engine\parameter\Parameter.cpp" />
     <ClCompile Include="src\engine\parameter\ParameterManager.cpp" />
     <ClCompile Include="src\engine\parameter\ParameterProvider.cpp" />
-    <ClCompile Include="src\engine\parameter\ParameterType.cpp" />
     <ClCompile Include="src\engine\physics\Physics.cpp" />
     <ClCompile Include="src\engine\script\Script.cpp" />
     <ClCompile Include="src\engine\script\ScriptEngine.cpp" />

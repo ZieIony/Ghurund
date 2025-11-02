@@ -10,17 +10,22 @@ namespace Ghurund::Engine {
 	private:
 		Map<AString, IntrusivePointer<Parameter>> parameters;
 
+		ParameterCollection& operator=(const ParameterCollection& other) = delete;
+
 	public:
 		inline void put(Parameter* parameter) {
 			parameters.put(parameter->ConstantName, IntrusivePointer(parameter));
 		}
 
 		inline Parameter* get(const AString& constantName) const {
-			return parameters.get(constantName).get();
+			auto it = parameters.find(constantName);
+			if (it != parameters.end())
+				return it->value.get();
+			return nullptr;
 		}
 
 		inline Parameter* operator[](const AString& constantName) const {
-			return parameters[constantName].get();
+			return get(constantName);
 		}
 
 		inline void putAll(const ParameterCollection& other) {

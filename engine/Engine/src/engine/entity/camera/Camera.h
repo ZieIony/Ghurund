@@ -45,12 +45,12 @@ namespace Ghurund::Engine {
 		inline static const AString VIEW_PROJECTION = "viewProjection";
 		inline static const AString VIEW_PROJECTION_INV = "viewProjectionInv";
 
-		ValueParameter* parameterDirection = nullptr, * parameterPosition = nullptr, * parameterTarget = nullptr;
-		ValueParameter* parameterUp = nullptr, * parameterRight = nullptr;
-		ValueParameter* parameterFov = nullptr;
-		ValueParameter* parameterZNear = nullptr, * parameterZFar = nullptr;
-		ValueParameter* parameterView = nullptr, * parameterProjection = nullptr;
-		ValueParameter* parameterViewProjection = nullptr, * parameterViewProjectionInv = nullptr;
+		Float3Parameter* parameterDirection = nullptr, * parameterPosition = nullptr, * parameterTarget = nullptr;
+		Float3Parameter* parameterUp = nullptr, * parameterRight = nullptr;
+		FloatParameter* parameterFov = nullptr;
+		FloatParameter* parameterZNear = nullptr, * parameterZFar = nullptr;
+		MatrixParameter* parameterView = nullptr, * parameterProjection = nullptr;
+		MatrixParameter* parameterViewProjection = nullptr, * parameterViewProjectionInv = nullptr;
 
 	protected:
 		virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);

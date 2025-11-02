@@ -1,62 +1,52 @@
 #include "ghedxpch.h"
 #include "ConstantBuffer.h"
 
+#include <engine/parameter/Parameter.h>
+#include "engine/directx/parameter/DxParameter.h"
+
 namespace Ghurund::Engine::DirectX {
     ConstantBuffer::ConstantBuffer(
         DxGraphics& graphics,
         ID3D12ShaderReflectionConstantBuffer* constantBuffer,
         D3D12_SHADER_BUFFER_DESC& bufferDesc,
-        unsigned int bindPoint,
-        D3D12_SHADER_VISIBILITY visibility
+        uint32_t bindPoint,
+        D3D12_SHADER_VISIBILITY visibility,
+        ParameterManager& parameterManager
 	):
-        ShaderConstant(bufferDesc.Name, bindPoint, visibility),
-        //parameters(PointerArray<Parameter*>(bufferDesc.Variables)),
-        variables(Array<ConstantBufferField*>(bufferDesc.Variables)) {
+        ShaderConstant(bufferDesc.Name, bindPoint, visibility) {
 
 #ifdef _DEBUG
-        reported = ghnew bool[variables.Size];
+        reported = ghnew bool[bufferDesc.Variables];
 #endif
 
-        for (unsigned int i = 0; i < variables.Size; i++) {
-            //parameters.set(i, nullptr);
+        for (size_t i = 0; i < bufferDesc.Variables; i++) {
 #ifdef _DEBUG
             reported[i] = false;
 #endif
             ID3D12ShaderReflectionVariable* variable = constantBuffer->GetVariableByIndex(i);
             D3D12_SHADER_VARIABLE_DESC variableDesc;
             variable->GetDesc(&variableDesc);
-            variables.set(i, ghnew ConstantBufferField(variableDesc.Name, variableDesc.Size, variableDesc.StartOffset));
+            if(!(variableDesc.uFlags & D3D10_SVF_USED))
+                continue;
+
+            variables.add(ghnew ConstantBufferField(variableDesc.Name, variableDesc.Size, variableDesc.StartOffset));
+
+            ID3D12ShaderReflectionType* variableType = variable->GetType();
+            D3D12_SHADER_TYPE_DESC typeDesc;
+            variableType->GetDesc(&typeDesc);
+
+            auto vp = makeDxParameterByType(typeDesc.Class, typeDesc.Type, variableDesc.Name, variableDesc.Size, variableDesc.DefaultValue, parameterManager);
+            Parameters.put(vp);
         }
 
         buffer.init(graphics, bufferDesc.Size);
     }
-    
-    /*void ConstantBuffer::initParameters(ParameterManager& parameterManager) {
-        for (size_t i = 0; i < variables.Size; i++) {
-            ConstantBufferField* variable = variables[i];
-            ValueParameter* vp = ghnew ValueParameter(variable->name.Data, ParameterType::fromSize(variable->size));
-            ValueParameter* p = (ValueParameter*)parameterManager.getParameter(variable->name);
-            if (p)
-                vp->DefaultValue = p->Value;
-            parameters.set(i, vp);
-            vp->release();
-        }
-    }
-    
+
     void ConstantBuffer::updateParameters() {
         for (size_t i = 0; i < variables.Size; i++) {
-            ValueParameter* p = (ValueParameter*)parameters[i];
-#ifdef _DEBUG
-            if (p->Value == nullptr) {
-                if (!reported[i]) {
-                    Logger::log(LogType::WARNING, _T("Parameter for variable '%hs' is missing.\n"), variables[i]->name);
-                    reported[i] = true;
-                }
-                continue;
-            }
-#endif
+            Parameter* p = Parameters.get(i);
             ConstantBufferField* v = variables[i];
-            buffer.setValue(p->getValue(), v->size, v->offset);
+            buffer.setValue(p->RawValue, v->size, v->offset);
         }
-    }*/
+    }
 }

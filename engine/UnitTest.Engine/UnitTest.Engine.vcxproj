@@ -58,7 +58,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>utepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;RES_DIR=LR"($(SolutionDir)resources\test)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\Engine.DirectX\src;..\Engine.OpenGL\src;..\UnitTest.Core\src;..\..\libs\CRCpp\inc;..\..\libs;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\test\directx\mesh\DxMeshTest.cpp" />
+    <ClCompile Include="src\test\directx\shader\DxParameterTest.cpp" />
     <ClCompile Include="src\test\directx\shader\DxShaderCompilerTest.cpp" />
     <ClCompile Include="src\test\directx\shader\DxShaderLoaderTest.cpp" />
     <ClCompile Include="src\test\game\action\ActionMappingTest.cpp" />

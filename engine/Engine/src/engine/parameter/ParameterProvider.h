@@ -30,7 +30,7 @@ namespace Ghurund::Engine {
 
 		virtual void updateParameters() {}
 
-		inline const ParameterCollection& getParameters() const {
+		inline ParameterCollection& getParameters() {
 			return parameters;
 		}
 

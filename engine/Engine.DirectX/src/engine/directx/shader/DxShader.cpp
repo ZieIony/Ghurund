@@ -61,7 +61,7 @@ namespace Ghurund::Engine::DirectX {
 
 	/*void Shader::reload() {
 		size_t paramCount = this->parameters ? this->parameters->Size : 0;
-		PointerArray<Parameter*> parameters(paramCount);
+		Array<SharedPointer<Parameter>> parameters(paramCount);
 		if (this->parameters)
 			this->parameters->copyTo(parameters);
 		__super::reload();
@@ -105,7 +105,7 @@ namespace Ghurund::Engine::DirectX {
 			constantBuffers[i]->initParameters(parameterManager);
 			constantsCount += constantBuffers[i]->Parameters.Size;
 		}
-		parameters = ghnew PointerArray<Parameter*>(constantsCount + textures.Size);    // TODO: correct number of parameters  +textureBuffers.Size+textures.Size
+		parameters = ghnew Array<SharedPointer<Parameter>>(constantsCount + textures.Size);    // TODO: correct number of parameters  +textureBuffers.Size+textures.Size
 #ifdef _DEBUG
 		reported = ghnew bool[textures.Size];
 #endif

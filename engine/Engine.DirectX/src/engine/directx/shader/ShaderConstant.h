@@ -1,5 +1,7 @@
 #pragma once
 
+#include <core/string/String.h>
+
 #pragma warning(push, 0)
 #include <d3d12.h>
 #pragma warning(pop)

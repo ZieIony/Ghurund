@@ -12,8 +12,8 @@ namespace Ghurund::Engine {
         Camera* camera = nullptr;
         IMaterial* material = nullptr;
         IMaterial* invalidMaterial = nullptr;
-        ValueParameter* parameterWorld = nullptr;
-        ValueParameter* parameterWorldIT = nullptr;
+        MatrixParameter* parameterWorld = nullptr;
+        MatrixParameter* parameterWorldIT = nullptr;
         RenderingStatistics stats;
 
     public:
@@ -21,8 +21,8 @@ namespace Ghurund::Engine {
         inline static const AString WORLD_IT = "worldIT";
 
         DrawingSystem() {
-            parameterWorld = ghnew ValueParameter(WORLD, ParameterType::MATRIX);
-            parameterWorldIT = ghnew ValueParameter(WORLD_IT, ParameterType::MATRIX);
+            parameterWorld = ghnew MatrixParameter(WORLD);
+            parameterWorldIT = ghnew MatrixParameter(WORLD_IT);
         }
 
         ~DrawingSystem() {
@@ -98,11 +98,11 @@ namespace Ghurund::Engine {
         }
 
         void setupDrawingParams(TransformComponent& transform) {
-            parameterWorld->setValue(&transform.Transformation);
+            parameterWorld->setValue(transform.Transformation);
             XMMATRIX world = XMLoadFloat4x4(&transform.Transformation);
             XMFLOAT4X4 worldIT;
             XMStoreFloat4x4(&worldIT, XMMatrixTranspose(XMMatrixInverse(nullptr, world)));
-            parameterWorldIT->setValue(&worldIT);
+            parameterWorldIT->setValue(worldIT);
         }
 
         void updateParameters(ParameterManager& parameterManager) {

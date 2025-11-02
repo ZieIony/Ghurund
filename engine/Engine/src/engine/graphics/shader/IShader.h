@@ -23,7 +23,7 @@ namespace Ghurund::Engine {
     private:
         bool supportsTransparency = false;
 
-        //PointerArray<Parameter*>* parameters = nullptr;
+        //Array<SharedPointer<Parameter>>* parameters = nullptr;
 #ifdef _DEBUG
         bool* reported = nullptr;
 #endif
@@ -39,7 +39,7 @@ namespace Ghurund::Engine {
                 constantBuffers[i]->updateParameters();
         }
 
-        virtual const PointerArray<Parameter*>& getParameters() const override {
+        virtual const Array<SharedPointer<Parameter>>& getParameters() const override {
             return *parameters;
         }*/
 

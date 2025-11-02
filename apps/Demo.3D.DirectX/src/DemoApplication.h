@@ -34,7 +34,7 @@ namespace Demo {
             Features.add<DxGraphics>();
             auto graphics = Features.get<DxGraphics>();
             shaderCompiler = makeShared<DxShaderCompiler>(*graphics);
-            shaderLoader = makeIntrusive<DxShaderLoader>(*shaderCompiler.get());
+            shaderLoader = makeIntrusive<DxShaderLoader>(*shaderCompiler.get(), parameterManager);
             ResourceManager.Loaders.set<DxShader>(*shaderLoader.get());
         }
 

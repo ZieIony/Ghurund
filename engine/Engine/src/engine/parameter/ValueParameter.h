@@ -1,62 +1,76 @@
 #pragma once
 
 #include "Parameter.h"
+#include "core/reflection/StandardTypes.h"
 
 namespace Ghurund::Engine {
 
-    class ValueParameter:public Parameter {
-    private:
-        void* data;
-        void* value = nullptr;
-        void* defaultValue = nullptr;
+	template<typename T>
+	class ValueParameter:public Parameter {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-    public:
-        ValueParameter(const AString& constantName, const ParameterType& type):Parameter(constantName, type) {
-            this->data = ghnew uint8_t[type.Size];
-            memset(this->data, 0, type.Size);
-            value = defaultValue;
-            empty = true;
-        }
+	public:
+		static const Ghurund::Core::Type& GET_TYPE() {
+			static const Ghurund::Core::Type TYPE = TypeBuilder<ValueParameter>()
+				.withSupertype(__super::GET_TYPE())
+				.withTemplateParam<T>();
 
-        ValueParameter(const AString& constantName, const ParameterType& type, const void* value):Parameter(constantName, type) {
-            this->data = ghnew uint8_t[type.Size];
-            memcpy(this->data, value, type.Size);
-            this->value = data;
-            empty = false;
-        }
+			return TYPE;
+		}
 
-        ~ValueParameter() {
-            delete[] data;
-        }
+		inline static const Ghurund::Core::Type& TYPE = ValueParameter::GET_TYPE();
+#pragma endregion
 
-        inline void* getValue() const {
-            return value;
-        }
+	private:
+		T value;
+		IntrusivePointer<ValueParameter<T>> defaultValue;
 
-        void setValue(const void* value) {
-            this->value = data;
-            empty = false;
-            memcpy(this->value, value, type.Size);
-        }
+	public:
+		ValueParameter(const AString& constantName, const T value = {}):Parameter(constantName), value(value) {
+			rawValue = &this->value;
+		}
 
-        void clearValue() {
-            empty = true;
-            value = defaultValue;
-        }
+		inline T getValue() const {
+			return value;
+		}
 
-        __declspec(property(get = getValue, put = setValue)) const void* Value;
+		inline void setValue(const T& value) {
+			this->value = value;
+			empty = false;
+		}
 
-        inline void* getDefaultValue() {
-            return defaultValue;
-        }
+		__declspec(property(get = getValue, put = setValue)) const T Value;
 
-        void setDefaultValue(void* value) {
-            defaultValue = value;
-            if (!this->value)
-                this->value = defaultValue;
-        }
+		inline void clearValue() {
+			empty = true;
+		}
 
-        __declspec(property(get = getDefaultValue, put = setDefaultValue)) void* DefaultValue;
-    };
+		inline ValueParameter* getDefaultValue() {
+			return defaultValue.get();
+		}
 
+		void setDefaultValue(ValueParameter* value) {
+			defaultValue.set(value);
+		}
+
+		__declspec(property(get = getDefaultValue, put = setDefaultValue)) ValueParameter* DefaultValue;
+
+		inline size_t getSize() const {
+			return sizeof(T);
+		}
+
+		__declspec(property(get = getSize)) size_t Size;
+	};
+
+	typedef ValueParameter<float> FloatParameter;
+	typedef ValueParameter<::DirectX::XMFLOAT2> Float2Parameter;
+	typedef ValueParameter<::DirectX::XMFLOAT3> Float3Parameter;
+	typedef ValueParameter<::DirectX::XMFLOAT4> Float4Parameter;
+	typedef ValueParameter<uint32_t> IntParameter;
+	typedef ValueParameter<::DirectX::XMINT2> Int2Parameter;
+	typedef ValueParameter<::DirectX::XMFLOAT4X4> MatrixParameter;
 }

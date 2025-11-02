@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ParameterType.h"
 #include "core/object/RefCountedObject.h"
 #include "core/string/String.h"
 
@@ -22,17 +21,11 @@ namespace Ghurund::Engine {
 
     protected:
         const AString constantName;
-        const ParameterType& type;
+        void* rawValue = nullptr;
         bool empty = true;
 
     public:
-        Parameter(const AString& constantName, const ParameterType& type):constantName(constantName), type(type) {}
-
-        const ParameterType& getValueType() const {
-            return type;
-        }
-
-        __declspec(property(get = getValueType)) const ParameterType& ValueType;
+        Parameter(const AString& constantName):constantName(constantName) {}
 
         const AString& getConstantName() const {
             return constantName;
@@ -40,10 +33,10 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getConstantName)) const AString& ConstantName;
 
-        bool isEmpty() const {
-            return empty;
-        }
+		inline const void* const getRawValue() const {
+			return rawValue;
+		}
 
-        __declspec(property(get = isEmpty)) bool Empty;
+		__declspec(property(get = getRawValue)) const void* const RawValue;
     };
 }

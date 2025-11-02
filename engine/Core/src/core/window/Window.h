@@ -38,7 +38,7 @@ namespace Ghurund::Core {
         const Cursor* cursor = &Cursor::ARROW;
 
         /*
-        PointerArray<Parameter*> parameters;
+        Array<SharedPointer<Parameter>> parameters;
         ValueParameter* parameterViewportSize = nullptr;
         */
         IntPoint prevMousePos = { -1, -1 };
@@ -90,7 +90,7 @@ namespace Ghurund::Core {
 
         virtual void updateParameters() override;
 
-        virtual const PointerArray<Parameter*>& getParameters() const override {
+        virtual const Array<SharedPointer<Parameter>>& getParameters() const override {
             return parameters;
         }
         */

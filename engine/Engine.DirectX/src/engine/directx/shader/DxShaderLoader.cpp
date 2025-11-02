@@ -47,7 +47,7 @@ namespace Ghurund::Engine::DirectX {
 			} catch (...) {}
 		}
 		auto array = Array<SharedPointer<DxShaderProgram>>(programs);
-		auto shader = compiler.build(programs);
+		auto shader = compiler.build(programs, parameterManager);
 		//bool supportsTransparency = sourceCode.find("supportsTransparency") != sourceCode.Size;
 
 		return shader.reset();

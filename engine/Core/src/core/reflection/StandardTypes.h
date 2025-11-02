@@ -15,6 +15,9 @@ namespace Ghurund::Core {
     const Type& getType<void>();
 
     template<>
+    const Type& getType<int32_t>();
+
+    template<>
     const Type& getType<uint32_t>();
 
     template<>
@@ -51,6 +54,9 @@ namespace Ghurund::Core {
     const Type& getType<Buffer>();
 
     template<>
+    const Type& getType<DirectX::XMINT2>();
+
+    template<>
     const Type& getType<DirectX::XMFLOAT2>();
 
     template<>
@@ -58,4 +64,7 @@ namespace Ghurund::Core {
 
     template<>
     const Type& getType<DirectX::XMFLOAT4>();
+
+    template<>
+    const Type& getType<DirectX::XMFLOAT4X4>();
 }
