@@ -7,25 +7,18 @@ namespace Ghurund::Engine {
     class TextureParameter:public Parameter {
     private:
         ITexture* value;
-        ITexture* defaultValue = nullptr;
 
     public:
-        TextureParameter(const AString& constantName):Parameter(constantName) {
-            value = nullptr;
-            empty = true;
-        }
+        TextureParameter(const AString& constantName):Parameter(constantName), value(nullptr) {}
 
-        TextureParameter(const AString& constantName, ITexture* value):Parameter(constantName) {
-            this->value = value;
+        TextureParameter(const AString& constantName, ITexture* value):Parameter(constantName), value(value) {
             value->addReference();
-            empty = false;
+            isEmpty = false;
         }
 
         ~TextureParameter() {
             if (value)
                 value->release();
-            if (defaultValue)
-                defaultValue->release();
         }
 
         inline ITexture* getValue() {
@@ -34,26 +27,22 @@ namespace Ghurund::Engine {
 
         void setValue(ITexture* value) {
             setPointer(this->value, value);
-            empty = false;
+            isEmpty = false;
         }
 
         void clearValue() {
-            setPointer(value, defaultValue);
-            empty = true;
+            if (value) {
+                value->release();
+                value = nullptr;
+            }
+            isEmpty = true;
         }
 
         __declspec(property(get = getValue, put = setValue)) ITexture* Value;
 
-        inline ITexture* getDefaultValue() const {
-            return defaultValue;
+        virtual size_t getSize() const override {
+            // TODO: this class shouldn't have this method
+            throw NotSupportedException();
         }
-
-        void setDefaultValue(ITexture* value) {
-            setPointer(defaultValue, value);
-            if (!this->value)
-                setPointer(this->value, defaultValue);
-        }
-
-        __declspec(property(get = getDefaultValue, put = setDefaultValue)) ITexture* DefaultValue;
     };
 }

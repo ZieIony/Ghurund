@@ -1,6 +1,6 @@
 #include "utcpch.h"
 #include "CppUnitTest.h"
-#include "test/MemoryGuard.h"
+#include "test/utils/MemoryGuard.h"
 
 #include "core/math/Float.h"
 #include "core/math/Int.h"

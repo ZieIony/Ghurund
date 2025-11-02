@@ -1,9 +1,9 @@
 #include "utcpch.h"
 #include "CppUnitTest.h"
-#include "test/TestUtils.h"
+#include "test/utils/TestUtils.h"
 
 #include "TestClass.h"
-#include "test/MemoryGuard.h"
+#include "test/utils/MemoryGuard.h"
 #include "core/string/TextConversionUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

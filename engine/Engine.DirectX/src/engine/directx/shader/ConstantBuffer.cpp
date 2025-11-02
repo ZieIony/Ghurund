@@ -37,6 +37,7 @@ namespace Ghurund::Engine::DirectX {
 
             auto vp = makeDxParameterByType(typeDesc.Class, typeDesc.Type, variableDesc.Name, variableDesc.Size, variableDesc.DefaultValue, parameterManager);
             Parameters.put(vp);
+            vp->release();
         }
 
         buffer.init(graphics, bufferDesc.Size);

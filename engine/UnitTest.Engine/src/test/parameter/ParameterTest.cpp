@@ -1,0 +1,120 @@
+#include "utepch.h"
+#include "CppUnitTest.h"
+
+#include "core/object/IntrusivePointer.h"
+
+#include "test/utils/TestUtils.h"
+#include <engine/directx/shader/DxShaderLoader.h>
+#include "test/utils/MemoryGuard.h"
+#include <engine/parameter/ValueParameter.h>
+#include "core/reflection/StandardTypes.h"
+#include "core/Colors.h"
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+namespace UnitTest {
+    using namespace UnitTest::Utils;
+    using namespace Ghurund::Core;
+    using namespace Ghurund::Engine;
+    using namespace Ghurund::Engine::DirectX;
+    using namespace std;
+
+    TEST_CLASS(ParameterTest) {
+private:
+    WString resDir = RES_DIR;
+
+    IntrusivePointer<DxGraphics> graphics;
+    SharedPointer<DxShaderCompiler> shaderCompiler;
+
+    AString loadShaderSource(const WString& path) {
+        File file = FilePath(resDir + path);
+        Buffer buffer;
+        file.read(buffer);
+        return AString((const char*)buffer.Data, buffer.Size);
+    }
+
+public:
+    ParameterTest() {
+        TestUtils::testClassInitialize();
+
+        graphics = makeIntrusive<DxGraphics>();
+        graphics->init();
+        shaderCompiler = makeShared<DxShaderCompiler>(graphics.ref());
+    }
+
+    TEST_METHOD(Parameter_defaultValue) {
+        const AString playerIndexName = "playerIndex";
+        const AString viewportSizeName = "viewportSize";
+        const AString teamColorName = "teamColor";
+        ParameterManager parameterManager;
+        {
+            auto playerIndexParameter = makeIntrusive<IntParameter>(playerIndexName, 3);
+            parameterManager.Parameters.put(playerIndexParameter.get());
+
+            auto viewportSizeParameter = makeIntrusive<Int2Parameter>(viewportSizeName, ::DirectX::XMINT2(800, 600));
+            parameterManager.Parameters.put(viewportSizeParameter.get());
+
+            auto teamColorParameter = makeIntrusive<Float4Parameter>(teamColorName, Colors::MINT_CREAM.toVector());
+            parameterManager.Parameters.put(teamColorParameter.get());
+        }
+
+        MemoryGuard guard;
+        {
+            AString testShaderSource = loadShaderSource(L"/shaders/DirectX/defaultParams.hlsl");
+
+            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
+            ShaderConstants constants;
+            shaderCompiler->initConstants(*shaderProgram.get(), constants, parameterManager);
+            auto& parameters = constants.constantBuffers[0]->Parameters;
+
+            // not set anywhere
+            auto time = parameters.get("time");
+            Assert::IsNull(time->RawValue);
+            Assert::IsTrue(time->IsEmpty);
+
+            // set in the constant buffer
+            auto playerIndex = parameters.get(playerIndexName);
+            ((IntParameter*)playerIndex)->Value = 1;
+            auto expectedPlayerIndex = 1;
+            Assert::IsTrue(memcmp(&expectedPlayerIndex, playerIndex->RawValue, playerIndex->Size) == 0);
+            Assert::IsFalse(playerIndex->IsEmpty);
+
+            // set in parameter manager
+            auto viewportSize = parameters.get(viewportSizeName);
+            auto expectedViewportSize = ::DirectX::XMINT2(800, 600);
+            Assert::IsTrue(memcmp(&expectedViewportSize, viewportSize->RawValue, viewportSize->Size) == 0);
+            Assert::IsTrue(viewportSize->IsEmpty);
+
+            // set in both places
+            auto teamColor = parameters.get(teamColorName);
+            ((Float4Parameter*)teamColor)->Value = Colors::AQUAMARINE.toVector();
+            auto expectedTeamColor = Colors::AQUAMARINE.toVector();
+            Assert::IsTrue(memcmp(&expectedTeamColor, teamColor->RawValue, teamColor->Size) == 0);
+            Assert::IsFalse(teamColor->IsEmpty);
+        }
+    }
+
+    TEST_METHOD(Parameter_differentTypes) {
+        const AString teamColorName = "teamColor";
+        ParameterManager parameterManager;
+        {
+            auto teamColorParameter = makeIntrusive<IntParameter>(teamColorName, 3);
+            parameterManager.Parameters.put(teamColorParameter.get());
+        }
+
+        MemoryGuard guard;
+        {
+            AString testShaderSource = loadShaderSource(L"/shaders/DirectX/defaultParams.hlsl");
+            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
+            ShaderConstants constants;
+            shaderCompiler->initConstants(*shaderProgram.get(), constants, parameterManager);
+            auto& parameters = constants.constantBuffers[0]->Parameters;
+
+            auto teamColor = parameters.get(teamColorName);
+            Assert::IsNull(teamColor->RawValue);
+            Assert::IsTrue(teamColor->IsEmpty);
+            Assert::IsNull(teamColor->DefaultValue);
+        }
+    }
+    };
+}

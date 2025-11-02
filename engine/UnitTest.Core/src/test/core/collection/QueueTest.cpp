@@ -1,7 +1,7 @@
 #include "utcpch.h"
 #include "CppUnitTest.h"
 #include "TestAllocator.h"
-#include "test/MemoryGuard.h"
+#include "test/utils/MemoryGuard.h"
 
 #include "Common.h"
 #include "core/collection/Queue.h"

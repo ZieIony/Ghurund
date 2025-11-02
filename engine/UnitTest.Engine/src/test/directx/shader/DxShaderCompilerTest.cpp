@@ -6,7 +6,7 @@
 #include <engine/directx/shader/CompilerInclude.h>
 #include <engine/directx/shader/DxShaderCompiler.h>
 #include <engine/graphics/mesh/MeshDataLoader.h>
-#include <test/MemoryGuard.h>
+#include "test/utils/MemoryGuard.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

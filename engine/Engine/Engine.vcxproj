@@ -98,15 +98,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\game\action\BaseGameAction.h" />
-    <ClInclude Include="src\engine\game\action\BaseInputDispatcher.h" />
-    <ClInclude Include="src\engine\game\action\BaseDispatchInputTask.h" />
-    <ClInclude Include="src\engine\game\action\DispatchInputTask.h" />
-    <ClInclude Include="src\engine\game\action\GameActionCollection.h" />
-    <ClInclude Include="src\engine\game\action\InputDispatcher.h" />
-    <ClInclude Include="src\engine\game\action\GamepadGameActionCollection.h" />
-    <ClInclude Include="src\engine\game\action\OverwriteInputDispatcher.h" />
-    <ClInclude Include="src\engine\game\action\TransformedInputDispatcher.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />
@@ -129,7 +120,16 @@
     <ClInclude Include="src\engine\entity\light\LightComponent.h" />
     <ClInclude Include="src\engine\entity\light\LightEntity.h" />
     <ClInclude Include="src\engine\game\action\ActionMapping.h" />
+    <ClInclude Include="src\engine\game\action\BaseDispatchInputTask.h" />
+    <ClInclude Include="src\engine\game\action\BaseGameAction.h" />
+    <ClInclude Include="src\engine\game\action\BaseInputDispatcher.h" />
+    <ClInclude Include="src\engine\game\action\DispatchInputTask.h" />
     <ClInclude Include="src\engine\game\action\GameAction.h" />
+    <ClInclude Include="src\engine\game\action\GameActionCollection.h" />
+    <ClInclude Include="src\engine\game\action\GamepadGameActionCollection.h" />
+    <ClInclude Include="src\engine\game\action\InputDispatcher.h" />
+    <ClInclude Include="src\engine\game\action\OverwriteInputDispatcher.h" />
+    <ClInclude Include="src\engine\game\action\TransformedInputDispatcher.h" />
     <ClInclude Include="src\engine\game\sky\AdvancedSky.h" />
     <ClInclude Include="src\engine\game\sky\BasicSky.h" />
     <ClInclude Include="src\engine\game\sky\Sky.h" />

@@ -4,6 +4,7 @@
 #include "core/reflection/Type.h"
 
 #include <stdint.h>
+#include <DirectXMath.h>
 
 namespace Ghurund::Core {
 
@@ -118,6 +119,10 @@ namespace Ghurund::Core {
 
 		inline operator uint32_t() const {
 			return value;
+		}
+
+		inline ::DirectX::XMFLOAT4 toVector() const {
+			return { r, g, b, a };
 		}
 
 		static Color parse(const AString& color);

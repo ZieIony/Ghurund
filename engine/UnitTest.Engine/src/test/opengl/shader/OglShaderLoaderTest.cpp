@@ -7,7 +7,7 @@
 #include <core/object/SharedPointer.h>
 #include <engine/opengl/OglGraphics.h>
 #include <engine/opengl/shader/OglShaderLoader.h>
-#include <test/TestUtils.h>
+#include "test/utils/TestUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

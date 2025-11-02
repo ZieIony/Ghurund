@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 
 #include "engine/graphics/mesh/VertexStream.h"
-#include <test/MemoryGuard.h>
+#include "test/utils/MemoryGuard.h"
 #include <DirectXMath.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

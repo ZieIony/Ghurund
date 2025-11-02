@@ -7,7 +7,7 @@ project "UnitTest.UI"
 	dependson {
 		"Core",
 		"UI",
-		"UnitTest.Core"
+		"UnitTest.Utils"
 	}
 
 	files {
@@ -17,7 +17,7 @@ project "UnitTest.UI"
 
 	includedirs {
 		"src",
-		includeDir["UnitTest.Core"],
+		includeDir["UnitTest.Utils"],
 		includeDir["Core"],
 		includeDir["UI"],
 		includeDir["DirectX"]
@@ -25,5 +25,6 @@ project "UnitTest.UI"
 
 	links {
 		"Core",
+		"UnitTest.Utils",
 		"UI"
 	}

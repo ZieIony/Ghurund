@@ -3,9 +3,9 @@
 
 #include "core/object/IntrusivePointer.h"
 
-#include <test/TestUtils.h>
+#include "test/utils/TestUtils.h"
 #include <engine/directx/shader/DxShaderLoader.h>
-#include <test/MemoryGuard.h>
+#include "test/utils/MemoryGuard.h"
 #include <engine/parameter/ValueParameter.h>
 #include "core/reflection/StandardTypes.h"
 
@@ -27,7 +27,7 @@ private:
 
     template<typename T>
     void verifyParameter(Parameter* parameter, const char* name, const T& value) {
-        Assert::AreEqual(name, parameter->ConstantName.Data);
+        Assert::AreEqual(name, parameter->Name.Data);
         Assert::IsTrue(Ghurund::Core::getType<T>() == parameter->Type.TemplateParams[0]);
         Assert::IsNotNull(dynamic_cast<ValueParameter<T>*>(parameter));
         ValueParameter<T>* typedParameter = (ValueParameter<T>*)parameter;

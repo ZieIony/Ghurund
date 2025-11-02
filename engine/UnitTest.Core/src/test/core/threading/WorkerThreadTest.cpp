@@ -3,7 +3,7 @@
 
 #include "core/object/Object.h"
 #include "core/threading/WorkerThread.h"
-#include "test/MemoryGuard.h"
+#include "test/utils/MemoryGuard.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

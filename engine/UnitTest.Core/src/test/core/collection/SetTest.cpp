@@ -1,6 +1,6 @@
 #include "utcpch.h"
 #include "CppUnitTest.h"
-#include "test/MemoryGuard.h"
+#include "test/utils/MemoryGuard.h"
 #include "test/core/collection/TestAllocator.h"
 
 #include "core/collection/Set.h"

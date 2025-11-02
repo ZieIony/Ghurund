@@ -9,8 +9,10 @@ project "UnitTest.Engine"
 		"Engine",
 		"Engine.DirectX",
 		"Engine.OpenGL",
-		"UnitTest.Core"
+		"UnitTest.Utils"
 	}
+
+	defines { "RES_DIR=LR\"($(solutionDir)resources\\test)\"" }
 
 	files {
 		"src/**.h",
@@ -23,7 +25,7 @@ project "UnitTest.Engine"
 		includeDir["Engine"],
 		includeDir["Engine.DirectX"],
 		includeDir["Engine.OpenGL"],
-		includeDir["UnitTest.Core"],
+		includeDir["UnitTest.Utils"],
 		includeDir["CRC"],
 		includeDir["DirectX"],
 		includeDir["GLEW"],
@@ -32,6 +34,7 @@ project "UnitTest.Engine"
 
 	links {
 		"Core",
+		"UnitTest.Utils",
 		"Engine",
 		"Engine.DirectX",
 		"Engine.OpenGL"

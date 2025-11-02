@@ -1,6 +1,6 @@
 #include "utcpch.h"
 #include "CppUnitTest.h"
-#include "test/MemoryGuard.h"
+#include "test/utils/MemoryGuard.h"
 
 #include "Common.h"
 #include "core/object/OwnedNotNull.h"

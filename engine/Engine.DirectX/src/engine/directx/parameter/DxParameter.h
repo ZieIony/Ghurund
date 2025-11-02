@@ -15,12 +15,10 @@ namespace Ghurund::Engine::DirectX {
 		void* defaultValue,
 		ParameterManager& parameterManager
 	) {
-		auto vp = ghnew ValueParameter<T>(name);
-		auto global = parameterManager.Parameters.get(name);
-		if (global)
-			vp->DefaultValue = (ValueParameter<T>*)global;
+		auto vp = ghnew T(name);
+		vp->initDefault(parameterManager.Parameters);
 		if (defaultValue)
-			vp->Value = *(T*)defaultValue;
+			vp->Value = *(typename T::value_t*)defaultValue;
 		return vp;
 	}
 

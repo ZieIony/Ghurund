@@ -3,7 +3,7 @@
 
 #include "engine/graphics/mesh/MeshData.h"
 #include <engine/graphics/mesh/MeshDataLoader.h>
-#include <test/MemoryGuard.h>
+#include "test/utils/MemoryGuard.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -23,7 +23,7 @@ public:
             VertexStream posStream = VertexStream(vertices, VertexRole::POSITION);
 
             auto mesh = makeIntrusive<MeshData>();
-            mesh->init({ posStream }, vertices.Size, Buffer(indices.Data, sizeof(uint32_t) * indices.Size), indices.Size);
+            mesh->init({ posStream }, vertices.Size, Buffer(indices.Data, sizeof(uint32_t) * indices.Size), (uint32_t)indices.Size);
 
             Assert::AreEqual(3u, mesh->VertexCount);
             Assert::AreEqual(3u, mesh->IndexCount);

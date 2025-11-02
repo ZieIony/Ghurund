@@ -5,8 +5,8 @@
 #include "core/collection/Map.h"
 #include "core/string/String.h"
 #include "TestAllocator.h"
-#include "test/MemoryGuard.h"
-#include "test/TestUtils.h"
+#include "test/utils/MemoryGuard.h"
+#include "test/utils/TestUtils.h"
 
 #include <iostream>
 #include <vector>

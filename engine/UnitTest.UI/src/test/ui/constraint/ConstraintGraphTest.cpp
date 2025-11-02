@@ -1,8 +1,8 @@
 #include "utuipch.h"
 #include "CppUnitTest.h"
-#include "test/TestUtils.h"
-#include "test/MemoryGuard.h"
-#include "test/TestLogOutput.h"
+#include "test/utils/TestUtils.h"
+#include "test/utils/MemoryGuard.h"
+#include "test/utils/TestLogOutput.h"
 
 #include "ui/control/ColorView.h"
 #include "ui/constraint/Constraint.h"

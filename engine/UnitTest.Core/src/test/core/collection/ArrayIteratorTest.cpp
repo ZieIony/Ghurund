@@ -1,7 +1,7 @@
 #include "utcpch.h"
 #include "CppUnitTest.h"
-#include "test/TestUtils.h"
-#include "test/MemoryGuard.h"
+#include "test/utils/TestUtils.h"
+#include "test/utils/MemoryGuard.h"
 #include "test/TestClass.h"
 
 #include "core/collection/iterator/ArrayIterator.h"

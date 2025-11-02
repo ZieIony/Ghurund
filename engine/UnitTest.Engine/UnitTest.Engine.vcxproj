@@ -58,8 +58,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>utepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;RES_DIR=LR"($(SolutionDir)resources\test)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\Engine.DirectX\src;..\Engine.OpenGL\src;..\UnitTest.Core\src;..\..\libs\CRCpp\inc;..\..\libs;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;RES_DIR=LR"($(solutionDir)resources\test)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\Engine.DirectX\src;..\Engine.OpenGL\src;..\UnitTest.Utils\src;..\..\libs\CRCpp\inc;..\..\libs;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -77,8 +77,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>utepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\Engine.DirectX\src;..\Engine.OpenGL\src;..\UnitTest.Core\src;..\..\libs\CRCpp\inc;..\..\libs;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;RES_DIR=LR"($(solutionDir)resources\test)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\Engine.DirectX\src;..\Engine.OpenGL\src;..\UnitTest.Utils\src;..\..\libs\CRCpp\inc;..\..\libs;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -113,6 +113,7 @@
     <ClCompile Include="src\test\net\MessageTest.cpp" />
     <ClCompile Include="src\test\opengl\shader\OglShaderCompilerTest.cpp" />
     <ClCompile Include="src\test\opengl\shader\OglShaderLoaderTest.cpp" />
+    <ClCompile Include="src\test\parameter\ParameterTest.cpp" />
     <ClCompile Include="src\utepch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -120,6 +121,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">
       <Project>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\UnitTest.Utils\UnitTest.Utils.vcxproj">
+      <Project>{64D57912-50A3-6D18-3937-DE3E25A4497D}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.vcxproj">
       <Project>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</Project>

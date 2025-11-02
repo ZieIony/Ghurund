@@ -14,7 +14,8 @@ namespace Ghurund::Engine {
 
 	public:
 		inline void put(Parameter* parameter) {
-			parameters.put(parameter->ConstantName, IntrusivePointer(parameter));
+			parameter->addReference();
+			parameters.put(parameter->Name, IntrusivePointer(parameter));
 		}
 
 		inline Parameter* get(const AString& constantName) const {
@@ -30,6 +31,11 @@ namespace Ghurund::Engine {
 
 		inline void putAll(const ParameterCollection& other) {
 			parameters.putAll(other.parameters);
+		}
+
+		inline void initDefaults(ParameterCollection& other) {
+			for (auto& entry : parameters)
+				entry.value->initDefault(other);
 		}
 	};
 }

@@ -1,6 +1,6 @@
 #include "utuipch.h"
 #include "CppUnitTest.h"
-#include "test/TestUtils.h"
+#include "test/utils/TestUtils.h"
 
 #include "core/resource/ResourceManager.h"
 #include "core/window/SystemWindow.h"

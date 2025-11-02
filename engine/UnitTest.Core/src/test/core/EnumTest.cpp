@@ -1,7 +1,7 @@
 #include "utcpch.h"
 #include "CppUnitTest.h"
 
-#include <test/MemoryGuard.h>
+#include "test/utils/MemoryGuard.h"
 #include <test/TestEnum.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

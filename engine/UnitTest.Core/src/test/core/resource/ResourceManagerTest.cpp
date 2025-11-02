@@ -3,7 +3,7 @@
 #include "TestLoader.h"
 #include "TestResource.h"
 #include "TestLibrary.h"
-#include "test/MemoryGuard.h"
+#include "test/utils/MemoryGuard.h"
 
 #include "core/resource/ResourceManager.h"
 #include "core/string/TextConversionUtils.h"

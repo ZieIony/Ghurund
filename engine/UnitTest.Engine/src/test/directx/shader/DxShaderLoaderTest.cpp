@@ -3,7 +3,7 @@
 
 #include "core/object/IntrusivePointer.h"
 
-#include <test/TestUtils.h>
+#include "test/utils/TestUtils.h"
 #include <engine/directx/shader/DxShaderLoader.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

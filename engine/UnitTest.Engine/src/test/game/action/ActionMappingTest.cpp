@@ -5,7 +5,7 @@
 #include <core/object/IntrusivePointer.h>
 
 #include "TestGameAction.h"
-#include <test/MemoryGuard.h>
+#include "test/utils/MemoryGuard.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

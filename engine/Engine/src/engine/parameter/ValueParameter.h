@@ -27,11 +27,15 @@ namespace Ghurund::Engine {
 
 	private:
 		T value;
-		IntrusivePointer<ValueParameter<T>> defaultValue;
 
 	public:
-		ValueParameter(const AString& constantName, const T value = {}):Parameter(constantName), value(value) {
+		using value_t = T;
+
+		ValueParameter(const AString& constantName):Parameter(constantName), value(T()) {}
+
+		ValueParameter(const AString& constantName, const T value):Parameter(constantName), value(value) {
 			rawValue = &this->value;
+			isEmpty = false;
 		}
 
 		inline T getValue() const {
@@ -40,37 +44,29 @@ namespace Ghurund::Engine {
 
 		inline void setValue(const T& value) {
 			this->value = value;
-			empty = false;
+			rawValue = &this->value;
+			isEmpty = false;
 		}
 
 		__declspec(property(get = getValue, put = setValue)) const T Value;
 
 		inline void clearValue() {
-			empty = true;
+			rawValue = nullptr;
+			isEmpty = true;
 		}
 
-		inline ValueParameter* getDefaultValue() {
-			return defaultValue.get();
+		virtual size_t getSize() const override {
+			return SIZE;
 		}
 
-		void setDefaultValue(ValueParameter* value) {
-			defaultValue.set(value);
-		}
-
-		__declspec(property(get = getDefaultValue, put = setDefaultValue)) ValueParameter* DefaultValue;
-
-		inline size_t getSize() const {
-			return sizeof(T);
-		}
-
-		__declspec(property(get = getSize)) size_t Size;
+		static inline size_t SIZE = sizeof(T);
 	};
 
 	typedef ValueParameter<float> FloatParameter;
 	typedef ValueParameter<::DirectX::XMFLOAT2> Float2Parameter;
 	typedef ValueParameter<::DirectX::XMFLOAT3> Float3Parameter;
 	typedef ValueParameter<::DirectX::XMFLOAT4> Float4Parameter;
-	typedef ValueParameter<uint32_t> IntParameter;
+	typedef ValueParameter<int32_t> IntParameter;
 	typedef ValueParameter<::DirectX::XMINT2> Int2Parameter;
 	typedef ValueParameter<::DirectX::XMFLOAT4X4> MatrixParameter;
 }

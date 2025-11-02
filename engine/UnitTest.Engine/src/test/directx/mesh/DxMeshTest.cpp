@@ -3,7 +3,7 @@
 
 #include "engine/graphics/mesh/MeshData.h"
 #include <engine/directx/mesh/DxMesh.h>
-#include <test/MemoryGuard.h>
+#include "test/utils/MemoryGuard.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -26,7 +26,7 @@ public:
             VertexStream posStream = VertexStream(vertices, VertexRole::POSITION);
 
             auto mesh = makeIntrusive<MeshData>();
-            mesh->init({ posStream }, vertices.Size, indices);
+            mesh->init({ posStream }, (uint32_t)vertices.Size, indices);
             auto dxMesh = makeIntrusive<DxMesh>();
             auto graphics = makeIntrusive<DxGraphics>();
             graphics->init();
