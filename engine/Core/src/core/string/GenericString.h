@@ -39,12 +39,14 @@ namespace Ghurund::Core {
 		}
 
 	public:
-		GenericString(size_t initialCapacity = 1) {   // with null terminator
+		explicit GenericString(size_t initialCapacity) {   // with null terminator
 			size = 1;
 			capacity = initial = initialCapacity;
 			v = ghnew T[capacity];
 			v[size - 1] = 0;
 		}
+
+		GenericString():GenericString(1) {}
 
 		GenericString(const T* str) {
 			initial = INITIAL_CAPACITY;

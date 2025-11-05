@@ -32,9 +32,18 @@ namespace Ghurund::Engine::DirectX {
 #endif
 		}
 
-		virtual void updateParameters() override;
-
-		inline void set(DxGraphics& graphics, CommandList& commandList) {
+		inline void set(DxGraphics& graphics, CommandList& commandList, ParameterManager& parameterManager) {
+			size_t i = 0;
+			auto it = parameters.begin();
+			while (i < variables.Size) {
+				Parameter* p = it->value.get();
+				if (p->IsEmpty)
+					p = parameterManager.Parameters.get(p->Name);
+				ConstantBufferField* v = variables[i];
+				buffer.setValue(p->RawValue, v->size, v->offset);
+				i++;
+				it++;
+			}
 			buffer.set(graphics, commandList, bindSlot);
 		}
 	};

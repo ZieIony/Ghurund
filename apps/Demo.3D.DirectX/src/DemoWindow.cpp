@@ -35,12 +35,18 @@ namespace Demo {
 		ShaderProvider shaderProvider(app.ResourceManager);
 		MaterialProvider materialProvider(parameterManager, shaderProvider, textureProvider);
 
-		basicMaterial = IntrusivePointer<Material>(materialProvider.makeBasic());
-
 		camera = makeIntrusive<Camera>();
+		camera->setPositionTargetUp({ 10,10,-10 }, { 0,0,0 });
 		camera->rebuild();
 		camera->updateParameters();
 		parameterManager.Parameters.putAll(camera->Parameters);
+		auto world = makeIntrusive<MatrixParameter>("world");
+		XMFLOAT4X4 identity;
+		XMStoreFloat4x4(&identity, XMMatrixIdentity());
+		world->setValue(identity);
+		parameterManager.Parameters.put(world.get());
+
+		basicMaterial = IntrusivePointer<Material>(materialProvider.makeBasic());
 	}
 	
 	bool DemoWindow::onKeyEvent(const KeyEventArgs& args) {
@@ -75,7 +81,7 @@ namespace Demo {
 		auto& dxContext = (DxRenderingContext&)renderingContext;
 		auto commandList = dxContext.SwapChain.CurrentFrame.CommandList;
 		DxGraphics* graphics = app.Features.get<DxGraphics>();
-		basicMaterial->set(*graphics, *commandList);
+		basicMaterial->set(*graphics, *commandList, parameterManager);
 		mesh->draw(*commandList);
 	}
 }

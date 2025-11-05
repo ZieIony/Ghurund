@@ -29,6 +29,14 @@ namespace Ghurund::Engine {
 			return get(constantName);
 		}
 
+		inline Map<AString, IntrusivePointer<Parameter>>::iterator begin() {
+			return parameters.begin();
+		}
+
+		inline Map<AString, IntrusivePointer<Parameter>>::iterator end() {
+			return parameters.end();
+		}
+
 		inline void putAll(const ParameterCollection& other) {
 			parameters.putAll(other.parameters);
 		}

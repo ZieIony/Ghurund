@@ -16,12 +16,12 @@ namespace Ghurund::Engine::DirectX {
 		return TYPE;
 	}
 
-	bool DxShader::set(DxGraphics& graphics, CommandList& commandList) {
+	bool DxShader::set(DxGraphics& graphics, CommandList& commandList, ParameterManager& parameterManager) {
 		bool rsChanged = commandList.setGraphicsRootSignature(rootSignature);
 		bool psChanged = commandList.setPipelineState(pipelineState);
 
 		for (size_t i = 0; i < constants->constantBuffers.Size; i++)
-			constants->constantBuffers[i]->set(graphics, commandList);
+			constants->constantBuffers[i]->set(graphics, commandList, parameterManager);
 
 		for (size_t i = 0; i < constants->textures.Size; i++) {
 			/*TextureParameter* parameter = (TextureParameter*)parameters->get(i + parameters->Size - textures.Size);

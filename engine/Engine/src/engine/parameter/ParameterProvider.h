@@ -24,11 +24,9 @@ namespace Ghurund::Engine {
 		void saveParameters(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
 	public:
-		Event<ParameterProvider> onParametersChanged = *this;
+		//Event<ParameterProvider> onParametersChanged = *this;
 
 		virtual ~ParameterProvider() = default;
-
-		virtual void updateParameters() {}
 
 		inline ParameterCollection& getParameters() {
 			return parameters;

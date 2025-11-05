@@ -42,12 +42,4 @@ namespace Ghurund::Engine::DirectX {
 
         buffer.init(graphics, bufferDesc.Size);
     }
-
-    void ConstantBuffer::updateParameters() {
-        for (size_t i = 0; i < variables.Size; i++) {
-            Parameter* p = Parameters.get(i);
-            ConstantBufferField* v = variables[i];
-            buffer.setValue(p->RawValue, v->size, v->offset);
-        }
-    }
 }
