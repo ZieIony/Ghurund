@@ -46,14 +46,11 @@ namespace Demo {
 		world->setValue(identity);
 		ParameterManager.Parameters.put(world.get());
 
-		sizeParameter = makeIntrusive<Float2Parameter>("size");
-		ParameterManager.Parameters.put(sizeParameter.get());
-		backgroundColorParameter = makeIntrusive<Float4Parameter>("backgroundColor");
-		ParameterManager.Parameters.put(backgroundColorParameter.get());
-		borderColorParameter = makeIntrusive<Float4Parameter>("borderColor");
-		ParameterManager.Parameters.put(borderColorParameter.get());
-
 		basicMaterial = IntrusivePointer<Material>(materialProvider.makeUi());
+
+		sizeParameter.set((Float2Parameter*)basicMaterial->Parameters.get("size"));
+		backgroundColorParameter.set((Float4Parameter*)basicMaterial->Parameters.get("backgroundColor"));
+		borderColorParameter.set((Float4Parameter*)basicMaterial->Parameters.get("borderColor"));
 	}
 
 	bool DemoWindow::onMouseButtonEvent(const MouseButtonEventArgs& args) {

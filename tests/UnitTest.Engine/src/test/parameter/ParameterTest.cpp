@@ -63,9 +63,11 @@ public:
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/defaultParams.hlsl");
 
             SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
-            ShaderConstants constants;
-            shaderCompiler->initConstants(*shaderProgram.get(), constants);
-            auto& parameters = constants.constantBuffers[0]->Parameters;
+            List<ConstantBuffer*> constantBuffers;
+            List<TextureConstant*> textures;
+            List<Sampler*> samplers;
+            shaderCompiler->initConstants(*shaderProgram.get(), constantBuffers, textures, samplers);
+            auto& parameters = constantBuffers[0]->Parameters;
 
             // not set anywhere
             auto time = parameters.get("time");
@@ -106,9 +108,12 @@ public:
         {
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/defaultParams.hlsl");
             SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
-            ShaderConstants constants;
-            shaderCompiler->initConstants(*shaderProgram.get(), constants);
-            auto& parameters = constants.constantBuffers[0]->Parameters;
+            List<ConstantBuffer*> constantBuffers;
+            List<TextureConstant*> textures;
+            List<Sampler*> samplers;
+            shaderCompiler->initConstants(*shaderProgram.get(), constantBuffers, textures, samplers);
+
+            auto& parameters = constantBuffers[0]->Parameters;
 
             auto teamColor = parameters.get(teamColorName);
             Assert::IsNull(teamColor->RawValue);

@@ -3,6 +3,9 @@
 
 #include <engine/parameter/Parameter.h>
 #include "engine/directx/parameter/DxParameter.h"
+#include "core/logging/Logger.h"
+
+#include <format>
 
 namespace Ghurund::Engine::DirectX {
 	ConstantBuffer::ConstantBuffer(
@@ -43,5 +46,29 @@ namespace Ghurund::Engine::DirectX {
 			Parameters.put(vp);
 			vp->release();
 		}
+	}
+	
+	void ConstantBuffer::set(DxGraphics& graphics, CommandList& commandList, ParameterManager& parameterManager) {
+		size_t i = 0;
+		auto it = parameters.begin();
+		while (i < variables.Size) {
+			Parameter* p = it->get();
+			if (p->IsEmpty) {
+				Parameter* global = parameterManager.Parameters.get(p->Name);
+				if (!global) {
+					auto text = std::format(_T("Parameter for variable '{}' is missing.\n"), p->Name);
+					Logger::logOnce(LogType::WARNING, text.c_str(), i);
+					i++;
+					it++;
+					continue;
+				}
+				p = global;
+			}
+			ConstantBufferField* v = variables[i];
+			buffer.setValue(p->RawValue, v->size, v->offset);
+			i++;
+			it++;
+		}
+		buffer.set(graphics, commandList, bindSlot);
 	}
 }

@@ -2,13 +2,14 @@
 
 #include "CompilationTarget.h"
 #include "CompilerInclude.h"
+#include "core/IUnknownImpl.h"
 #include "DxShader.h"
+#include "DxShaderProgram.h"
 #include "DxShaderType.h"
 #include <core/io/DirectoryPath.h>
 #include <core/string/String.h>
 #include <engine/directx/DxGraphics.h>
 #include <engine/parameter/ParameterManager.h>
-#include "core/IUnknownImpl.h"
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
@@ -45,11 +46,18 @@ namespace Ghurund::Engine::DirectX {
 			bool isTransparencyEnabled
 		);
 
-		OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> makeRootSignature(NotNull<ShaderConstants> constants);
+		OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> makeRootSignature(
+			const List<ConstantBuffer*>& constantBuffers,
+			const List<TextureConstant*>& textures,
+			const List<Sampler*>& samplers
+		);
 
-		void initConstants(const DxShaderProgram& program, NotNull<ShaderConstants> constants);
-
-		OwnedNotNull<ShaderConstants> makeConstants(const Array<SharedPointer<DxShaderProgram>>& programs);
+		void initConstants(
+			const DxShaderProgram& program,
+			List<ConstantBuffer*>& constantBuffers,
+			List<TextureConstant*>& textures,
+			List<Sampler*>& samplers
+		);
 
 		DxShaderProgram* compile(const AString& sourceCode, const DxShaderType& shaderType, CompilerInclude* include = nullptr, bool debug =
 #ifdef _DEBUG

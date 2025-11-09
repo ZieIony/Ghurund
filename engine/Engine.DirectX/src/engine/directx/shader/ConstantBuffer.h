@@ -27,20 +27,7 @@ namespace Ghurund::Engine::DirectX {
 
 		void initParameters(ID3D12ShaderReflectionConstantBuffer* constantBuffer, D3D12_SHADER_BUFFER_DESC& bufferDesc);
 
-		inline void set(DxGraphics& graphics, CommandList& commandList, ParameterManager& parameterManager) {
-			size_t i = 0;
-			auto it = parameters.begin();
-			while (i < variables.Size) {
-				Parameter* p = it->get();
-				if (p->IsEmpty)
-					p = parameterManager.Parameters.get(p->Name);
-				ConstantBufferField* v = variables[i];
-				buffer.setValue(p->RawValue, v->size, v->offset);
-				i++;
-				it++;
-			}
-			buffer.set(graphics, commandList, bindSlot);
-		}
+		void set(DxGraphics& graphics, CommandList& commandList, ParameterManager& parameterManager);
 	};
 
 }

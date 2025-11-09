@@ -57,16 +57,18 @@ public:
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/intParams.hlsl");
 
             SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
-            ShaderConstants constants;
-            shaderCompiler->initConstants(*shaderProgram.get(), constants);
+            List<ConstantBuffer*> constantBuffers;
+            List<TextureConstant*> textures;
+            List<Sampler*> samplers;
+            shaderCompiler->initConstants(*shaderProgram.get(), constantBuffers, textures, samplers);
 
-            auto alpha = constants.constantBuffers[0]->Parameters.get("alpha");
+            auto alpha = constantBuffers[0]->Parameters.get("alpha");
             verifyParameter<int32_t>(alpha, "alpha", 5);
 
-            auto size = constants.constantBuffers[0]->Parameters.get("size");
+            auto size = constantBuffers[0]->Parameters.get("size");
             verifyParameter<::DirectX::XMINT2>(size, "size", ::DirectX::XMINT2(30, 50));
 
-            auto prevSize = constants.constantBuffers[0]->Parameters.get("prevSize");
+            auto prevSize = constantBuffers[0]->Parameters.get("prevSize");
             Assert::IsNull(prevSize);
         }
     }
@@ -77,22 +79,24 @@ public:
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/floatParams.hlsl");
 
             SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
-            ShaderConstants constants;
-            shaderCompiler->initConstants(*shaderProgram.get(), constants);
+            List<ConstantBuffer*> constantBuffers;
+            List<TextureConstant*> textures;
+            List<Sampler*> samplers;
+            shaderCompiler->initConstants(*shaderProgram.get(), constantBuffers, textures, samplers);
 
-            auto alpha = constants.constantBuffers[0]->Parameters.get("alpha");
+            auto alpha = constantBuffers[0]->Parameters.get("alpha");
             verifyParameter<float>(alpha, "alpha", 0.3f);
 
-            auto size = constants.constantBuffers[0]->Parameters.get("size");
+            auto size = constantBuffers[0]->Parameters.get("size");
             verifyParameter<::DirectX::XMFLOAT2>(size, "size", ::DirectX::XMFLOAT2(0.5f, 0.5f));
 
-            auto up = constants.constantBuffers[0]->Parameters.get("up");
+            auto up = constantBuffers[0]->Parameters.get("up");
             verifyParameter<::DirectX::XMFLOAT3>(up, "up", ::DirectX::XMFLOAT3(0, 1, 0));
 
-            auto dir = constants.constantBuffers[0]->Parameters.get("dir");
+            auto dir = constantBuffers[0]->Parameters.get("dir");
             Assert::IsNull(dir);
 
-            auto teamColor = constants.constantBuffers[0]->Parameters.get("teamColor");
+            auto teamColor = constantBuffers[0]->Parameters.get("teamColor");
             verifyParameter<::DirectX::XMFLOAT4>(teamColor, "teamColor", ::DirectX::XMFLOAT4(0.5f, 0, 1, 1));
         }
     }
@@ -103,10 +107,12 @@ public:
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/matrixParams.hlsl");
 
             SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
-            ShaderConstants constants;
-            shaderCompiler->initConstants(*shaderProgram.get(), constants);
+            List<ConstantBuffer*> constantBuffers;
+            List<TextureConstant*> textures;
+            List<Sampler*> samplers;
+            shaderCompiler->initConstants(*shaderProgram.get(), constantBuffers, textures, samplers);
 
-            auto view = constants.constantBuffers[0]->Parameters.get("view");
+            auto view = constantBuffers[0]->Parameters.get("view");
             verifyParameter<::DirectX::XMFLOAT4X4>(view, "view", ::DirectX::XMFLOAT4X4());
         }
     }

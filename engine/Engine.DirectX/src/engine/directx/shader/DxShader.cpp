@@ -7,6 +7,7 @@
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 #include <core/Finally.h>
+#include <engine/directx/texture/Texture.h>
 
 namespace Ghurund::Engine::DirectX {
 	const Ghurund::Core::Type& DxShader::GET_TYPE() {
@@ -20,22 +21,18 @@ namespace Ghurund::Engine::DirectX {
 		bool rsChanged = commandList.setGraphicsRootSignature(rootSignature);
 		bool psChanged = commandList.setPipelineState(pipelineState);
 
-		for (size_t i = 0; i < constants->constantBuffers.Size; i++)
-			constants->constantBuffers[i]->set(graphics, commandList, parameterManager);
+		for (size_t i = 0; i < constantBuffers.Size; i++)
+			constantBuffers[i]->set(graphics, commandList, parameterManager);
 
-		for (size_t i = 0; i < constants->textures.Size; i++) {
-			/*TextureParameter* parameter = (TextureParameter*)parameters->get(i + parameters->Size - textures.Size);
+		for (size_t i = 0; i < textures.Size; i++) {
+			TextureParameter* parameter = (TextureParameter*)textures.get(i)->Parameter;
 			Texture* texture = (Texture*)parameter->getValue();
-#ifdef _DEBUG
 			if (!texture) {
-				if (!reported[i]) {
-					Logger::log(LogType::WARNING, _T("Parameter for variable '%hs' is missing.\n"), textures[i]->Name);
-					reported[i] = true;
-				}
+				auto text = std::format(_T("Parameter for variable '{}' is missing.\n"), textures[i]->Name);
+				Logger::logOnce(LogType::WARNING, text.c_str(), i);
 				continue;
 			}
-#endif
-			texture->set(commandList, textures[i]->BindSlot);*/
+			texture->set(commandList, textures[i]->BindSlot);
 		}
 
 		return rsChanged || psChanged;
@@ -47,12 +44,9 @@ namespace Ghurund::Engine::DirectX {
 		if (pipelineState != nullptr)
 			pipelineState->Release();
 
-		delete constants;
-		constants = nullptr;
-
-#ifdef _DEBUG
-		delete[] reported;
-#endif
+		constantBuffers.deleteItems();
+		textures.deleteItems();
+		samplers.deleteItems();
 	}
 
 	DxShader::~DxShader() {
@@ -88,10 +82,6 @@ namespace Ghurund::Engine::DirectX {
 
 		rootSignature = nullptr;
 		pipelineState = nullptr;
-
-#ifdef _DEBUG
-		reported = nullptr;
-#endif
 
 		__super::invalidate();
 	}

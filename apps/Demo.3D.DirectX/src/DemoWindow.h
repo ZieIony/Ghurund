@@ -18,11 +18,7 @@ namespace Demo {
 
 		IntrusivePointer<Float2Parameter> sizeParameter;
 		IntrusivePointer<Float4Parameter> backgroundColorParameter;
-		IntrusivePointer<Float4Parameter> backgroundColor2Parameter;
 		IntrusivePointer<Float4Parameter> borderColorParameter;
-		IntrusivePointer<Float4Parameter> borderColor2Parameter;
-		IntrusivePointer<FloatParameter> actionTimeParameter;
-		IntrusivePointer<FloatParameter> animationDurationParameter;
 
 	public:
 		DemoWindow(
