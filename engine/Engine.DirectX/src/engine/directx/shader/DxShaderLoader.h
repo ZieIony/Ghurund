@@ -15,6 +15,8 @@ namespace Ghurund::Engine::DirectX {
 		DxShader* loadHlsl(MemoryInputStream& stream);
 
     public:
+        List<DirectoryPath> includeDirs;
+
         DxShaderLoader(DxShaderCompiler& compiler):compiler(compiler) {}
 
         virtual Resource* loadInternal(

@@ -37,8 +37,7 @@ namespace Ghurund::Engine::DirectX {
 		AString sourceCode((const char*)stream.Data, stream.Size);
 
 		DirectoryPath workingDir;
-		// TODO: load any includes
-		CompilerInclude include(workingDir, DirectoryPath(L"./resources/shaders/DirectX/"));
+		CompilerInclude include(workingDir, includeDirs);
 		List<SharedPointer<DxShaderProgram>> programs;
 		for (const DxShaderType& shaderType : DxShaderType::VALUES) {
 			try {

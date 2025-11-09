@@ -71,8 +71,8 @@ public:
 
             // not set anywhere
             auto time = parameters.get("time");
-            Assert::IsNull(time->RawValue);
-            Assert::IsTrue(time->IsEmpty);
+            Assert::IsNotNull(time->RawValue, L"raw value is null");
+            Assert::IsTrue(time->IsEmpty, L"time is not empty");
 
             // set in the constant buffer
             auto playerIndex = parameters.get(playerIndexName);
@@ -81,10 +81,10 @@ public:
             Assert::IsTrue(memcmp(&expectedPlayerIndex, playerIndex->RawValue, playerIndex->Size) == 0);
             Assert::IsFalse(playerIndex->IsEmpty);
 
-            // set in parameter manager
+            // set in parameter manager (parameter manager doesn't provide defaults now)
             auto viewportSize = parameters.get(viewportSizeName);
             auto expectedViewportSize = ::DirectX::XMINT2(800, 600);
-            Assert::IsTrue(memcmp(&expectedViewportSize, viewportSize->RawValue, viewportSize->Size) == 0);
+            Assert::IsFalse(memcmp(&expectedViewportSize, viewportSize->RawValue, viewportSize->Size) == 0);
             Assert::IsTrue(viewportSize->IsEmpty);
 
             // set in both places
@@ -93,6 +93,10 @@ public:
             auto expectedTeamColor = Colors::AQUAMARINE.toVector();
             Assert::IsTrue(memcmp(&expectedTeamColor, teamColor->RawValue, teamColor->Size) == 0);
             Assert::IsFalse(teamColor->IsEmpty);
+
+            constantBuffers.deleteItems();
+            textures.deleteItems();
+            samplers.deleteItems();
         }
     }
 
@@ -116,9 +120,13 @@ public:
             auto& parameters = constantBuffers[0]->Parameters;
 
             auto teamColor = parameters.get(teamColorName);
-            Assert::IsNull(teamColor->RawValue);
+            Assert::IsNotNull(teamColor->RawValue);
             Assert::IsTrue(teamColor->IsEmpty);
             Assert::IsNull(teamColor->DefaultValue);
+
+            constantBuffers.deleteItems();
+            textures.deleteItems();
+            samplers.deleteItems();
         }
     }
     };

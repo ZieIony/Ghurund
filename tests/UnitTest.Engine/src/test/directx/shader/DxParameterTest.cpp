@@ -70,6 +70,10 @@ public:
 
             auto prevSize = constantBuffers[0]->Parameters.get("prevSize");
             Assert::IsNull(prevSize);
+
+            constantBuffers.deleteItems();
+            textures.deleteItems();
+            samplers.deleteItems();
         }
     }
 
@@ -98,6 +102,10 @@ public:
 
             auto teamColor = constantBuffers[0]->Parameters.get("teamColor");
             verifyParameter<::DirectX::XMFLOAT4>(teamColor, "teamColor", ::DirectX::XMFLOAT4(0.5f, 0, 1, 1));
+
+            constantBuffers.deleteItems();
+            textures.deleteItems();
+            samplers.deleteItems();
         }
     }
 
@@ -114,6 +122,10 @@ public:
 
             auto view = constantBuffers[0]->Parameters.get("view");
             verifyParameter<::DirectX::XMFLOAT4X4>(view, "view", ::DirectX::XMFLOAT4X4());
+
+            constantBuffers.deleteItems();
+            textures.deleteItems();
+            samplers.deleteItems();
         }
     }
     };

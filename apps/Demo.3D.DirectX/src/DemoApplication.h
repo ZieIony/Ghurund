@@ -33,6 +33,7 @@ namespace Demo {
             auto graphics = Features.get<DxGraphics>();
             shaderCompiler = makeShared<DxShaderCompiler>(*graphics);
             shaderLoader = makeIntrusive<DxShaderLoader>(*shaderCompiler.get());
+            shaderLoader->includeDirs.add(DirectoryPath(L"./resources/shaders/DirectX/"));
             ResourceManager.Loaders.set<DxShader>(*shaderLoader.get());
         }
 
