@@ -15,23 +15,23 @@ namespace Ghurund::Engine::DirectX {
         return TYPE;
     }
 
-    void SwapChain::init(DxGraphics& graphics, SystemWindow& window, uint32_t frameCount) {
+    void SwapChain::init(DxGraphics& graphics, HWND handle, IntSize size, uint32_t frameCount) {
         this->graphics = &graphics;
-        this->window = &window;
         this->frameCount = frameCount;
         this->format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        this->size = size;
 
         DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
         swapChainDesc.BufferCount = frameCount;
-        swapChainDesc.Width = window.Size.Width;
-        swapChainDesc.Height = window.Size.Height;
+        swapChainDesc.Width = size.Width;
+        swapChainDesc.Height = size.Height;
         swapChainDesc.Format = format;
         swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
         swapChainDesc.SampleDesc.Count = 1;
 
         ComPtr<IDXGISwapChain1> swapChain1;
-        if (FAILED(graphics.Factory->CreateSwapChainForHwnd(graphics.DirectQueue, window.Handle, &swapChainDesc, nullptr, nullptr, &swapChain1))) {
+        if (FAILED(graphics.Factory->CreateSwapChainForHwnd(graphics.DirectQueue, handle, &swapChainDesc, nullptr, nullptr, &swapChain1))) {
             Logger::log(LogType::ERR0R, _T("factory->CreateSwapChainForHwnd() failed\n"));
             throw CallFailedException("factory->CreateSwapChainForHwnd() failed");
         }
@@ -43,11 +43,11 @@ namespace Ghurund::Engine::DirectX {
     }
 
     void SwapChain::initBuffers() {
-        if (frames || window->Size.Width == 0 || window->Size.Height == 0)
+        if (frames || size.Width == 0 || size.Height == 0)
             throw InvalidStateException();
 
-        D3D12_VIEWPORT viewport = D3D12_VIEWPORT{ 0.0f, 0.0f, (float)window->Size.Width, (float)window->Size.Height,0,1 };
-        D3D12_RECT scissorRect = D3D12_RECT{ 0, 0, (LONG)window->Size.Width, (LONG)window->Size.Height };
+        D3D12_VIEWPORT viewport = D3D12_VIEWPORT{ 0.0f, 0.0f, (float)size.Width, (float)size.Height,0,1 };
+        D3D12_RECT scissorRect = D3D12_RECT{ 0, 0, (LONG)size.Width, (LONG)size.Height };
 
         frames = ghnew Array<Frame>(frameCount);
         for (unsigned int i = 0; i < frameCount; i++) {
@@ -57,7 +57,7 @@ namespace Ghurund::Engine::DirectX {
             renderTarget->init(*graphics, renderTargetBuffer);
 
             DepthBuffer* depthBuffer = ghnew DepthBuffer();
-            depthBuffer->init(*graphics, window->Size.Width, window->Size.Height);
+            depthBuffer->init(*graphics, size);
 
             frames->get(i).init(*graphics, viewport, scissorRect, renderTarget, depthBuffer);
             renderTargetBuffer->Release();
@@ -87,7 +87,8 @@ namespace Ghurund::Engine::DirectX {
         }
     }
 
-    void SwapChain::resize(const IntSize& size) {
+    void SwapChain::setSize(const IntSize& size) {
+        this->size = size;
         if (size.Width > 0 && size.Height > 0) {
             HRESULT hr = swapChain->ResizeBuffers(frameCount, size.Width, size.Height, format, 0);
             if (FAILED(hr)) {

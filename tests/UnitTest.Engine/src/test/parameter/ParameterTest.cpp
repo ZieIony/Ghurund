@@ -64,7 +64,7 @@ public:
 
             SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
             ShaderConstants constants;
-            shaderCompiler->initConstants(*shaderProgram.get(), constants, parameterManager);
+            shaderCompiler->initConstants(*shaderProgram.get(), constants);
             auto& parameters = constants.constantBuffers[0]->Parameters;
 
             // not set anywhere
@@ -107,7 +107,7 @@ public:
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/defaultParams.hlsl");
             SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
             ShaderConstants constants;
-            shaderCompiler->initConstants(*shaderProgram.get(), constants, parameterManager);
+            shaderCompiler->initConstants(*shaderProgram.get(), constants);
             auto& parameters = constants.constantBuffers[0]->Parameters;
 
             auto teamColor = parameters.get(teamColorName);

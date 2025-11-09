@@ -21,7 +21,7 @@ namespace Ghurund::Engine {
 #pragma endregion
 
     private:
-        bool supportsTransparency = false;
+        bool isTransparencyEnabled = false;
 
         //Array<SharedPointer<Parameter>>* parameters = nullptr;
 #ifdef _DEBUG
@@ -45,11 +45,11 @@ namespace Ghurund::Engine {
 
         //bool set(Graphics& graphics, CommandList& commandList);
 
-        bool getSupportsTransparency() {
-            return supportsTransparency;
+        bool getIsTransparencyEnabled() {
+            return isTransparencyEnabled;
         }
 
-        __declspec(property(get = getSupportsTransparency)) bool SupportsTransparency;
+        __declspec(property(get = getIsTransparencyEnabled)) bool IsTransparencyEnabled;
 
 #pragma region formats
     protected:

@@ -14,7 +14,7 @@ namespace Ghurund::Engine::DirectX {
         D3D12_CPU_DESCRIPTOR_HANDLE handle = {};
         D3D12_RESOURCE_STATES state = D3D12_RESOURCE_STATE_COMMON;
         DXGI_FORMAT format = {};
-        uint32_t width = 0, height = 0;
+        IntSize size = {};
         WString name;
 
         void captureTexture(DxGraphics& graphics, ID3D12CommandQueue* commandQueue, UINT64 srcPitch, const D3D12_RESOURCE_DESC& desc, ComPtr<ID3D12Resource>& pStaging);
@@ -26,7 +26,7 @@ namespace Ghurund::Engine::DirectX {
 
         void init(DxGraphics& graphics, ID3D12Resource* texture);
 
-        void init(DxGraphics& graphics, uint32_t width, uint32_t height, DXGI_FORMAT format);
+        void init(DxGraphics& graphics, IntSize size, DXGI_FORMAT format);
 
         void uninit();
 
@@ -47,17 +47,11 @@ namespace Ghurund::Engine::DirectX {
 
         __declspec(property(get = getFormat)) DXGI_FORMAT Format;
 
-        inline uint32_t getWidth() const {
-            return width;
+        inline const IntSize& getSize() const {
+            return size;
         }
 
-        __declspec(property(get = getWidth)) uint32_t Width;
-
-        inline uint32_t getHeight() const {
-            return height;
-        }
-
-        __declspec(property(get = getHeight)) uint32_t Height;
+        __declspec(property(get = getSize)) const IntSize& Size;
 
         ID3D12Resource* getTexture() {
             return texture;

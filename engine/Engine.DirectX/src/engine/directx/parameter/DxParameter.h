@@ -12,11 +12,9 @@ namespace Ghurund::Engine::DirectX {
 	template<typename T>
 	Parameter* makeDxParameter(
 		const AString& name,
-		void* defaultValue,
-		ParameterManager& parameterManager
+		void* defaultValue
 	) {
 		auto vp = ghnew T(name);
-		vp->initDefault(parameterManager.Parameters);
 		if (defaultValue)
 			vp->Value = *(typename T::value_t*)defaultValue;
 		return vp;
@@ -27,7 +25,6 @@ namespace Ghurund::Engine::DirectX {
 		D3D_SHADER_VARIABLE_TYPE type,
 		const AString& name,
 		uint16_t size,
-		void* defaultValue,
-		ParameterManager& parameterManager
+		void* defaultValue
 	);
 }

@@ -17,7 +17,8 @@ namespace Ghurund::Engine {
     bool GameWindow::onSizeChanged() {
         __super::onSizeChanged();
         if (renderingContext) {
-            renderingContext->setSize(Size);
+            renderingContext->Size = ClientSize;
+            viewportSizeParameter->Value = { (int32_t)ClientSize.Width, (int32_t)ClientSize.Height };
             return true;
         } else {
             return false;
@@ -26,6 +27,7 @@ namespace Ghurund::Engine {
 
     void GameWindow::update(const uint64_t time) {
         __super::update(time);
+        timeParameter->Value = time / 1000.0f;
         Input->dispatchGamepadEvents(time, *this);
         actionMapping.executeDispatches();
     }

@@ -52,15 +52,13 @@ public:
     }
 
     TEST_METHOD(DxParameter_intParams) {
-        ParameterManager parameterManager;
-
         MemoryGuard guard;
         {
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/intParams.hlsl");
 
             SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
             ShaderConstants constants;
-            shaderCompiler->initConstants(*shaderProgram.get(), constants, parameterManager);
+            shaderCompiler->initConstants(*shaderProgram.get(), constants);
 
             auto alpha = constants.constantBuffers[0]->Parameters.get("alpha");
             verifyParameter<int32_t>(alpha, "alpha", 5);
@@ -74,15 +72,13 @@ public:
     }
 
     TEST_METHOD(DxParameter_floatParams) {
-        ParameterManager parameterManager;
-
         MemoryGuard guard;
         {
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/floatParams.hlsl");
 
             SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
             ShaderConstants constants;
-            shaderCompiler->initConstants(*shaderProgram.get(), constants, parameterManager);
+            shaderCompiler->initConstants(*shaderProgram.get(), constants);
 
             auto alpha = constants.constantBuffers[0]->Parameters.get("alpha");
             verifyParameter<float>(alpha, "alpha", 0.3f);
@@ -102,15 +98,13 @@ public:
     }
 
     TEST_METHOD(DxParameter_matrixParams) {
-        ParameterManager parameterManager;
-
         MemoryGuard guard;
         {
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/matrixParams.hlsl");
 
             SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
             ShaderConstants constants;
-            shaderCompiler->initConstants(*shaderProgram.get(), constants, parameterManager);
+            shaderCompiler->initConstants(*shaderProgram.get(), constants);
 
             auto view = constants.constantBuffers[0]->Parameters.get("view");
             verifyParameter<::DirectX::XMFLOAT4X4>(view, "view", ::DirectX::XMFLOAT4X4());

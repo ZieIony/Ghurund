@@ -9,7 +9,6 @@ namespace Ghurund::Engine::DirectX {
         Material* material = nullptr;
         if (shader) {
             material = ghnew Material(shader);
-            material->initParameters(parameterManager);
         }
         return material;
     }
@@ -23,7 +22,6 @@ namespace Ghurund::Engine::DirectX {
                 TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
                 diffuse->setValue(diffuseTexture);
             }*/
-            material->initParameters(parameterManager);
         }
         return material;
     }
@@ -45,7 +43,6 @@ namespace Ghurund::Engine::DirectX {
                 TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::NORMAL_TEXTURE.ConstantName);
                 diffuse->setValue(normalTexture);
             }*/
-            material->initParameters(parameterManager);
         }
         return material;
     }
@@ -59,7 +56,6 @@ namespace Ghurund::Engine::DirectX {
                 TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
                 diffuse->setValue(diffuseTexture);
             }*/
-            material->initParameters(parameterManager);
         }
         return material;
     }
@@ -72,7 +68,6 @@ namespace Ghurund::Engine::DirectX {
             Texture* texture = textureProvider.makeChecker();
             //TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
             //diffuse->setValue(texture);
-            material->initParameters(parameterManager);
         }
         return material;
     }

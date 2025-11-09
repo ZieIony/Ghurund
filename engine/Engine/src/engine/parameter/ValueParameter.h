@@ -31,7 +31,9 @@ namespace Ghurund::Engine {
 	public:
 		using value_t = T;
 
-		ValueParameter(const AString& constantName):Parameter(constantName), value(T()) {}
+		ValueParameter(const AString& constantName):Parameter(constantName), value(T()) {
+			rawValue = &this->value;
+		}
 
 		ValueParameter(const AString& constantName, const T value):Parameter(constantName), value(value) {
 			rawValue = &this->value;
@@ -44,14 +46,12 @@ namespace Ghurund::Engine {
 
 		inline void setValue(const T& value) {
 			this->value = value;
-			rawValue = &this->value;
 			isEmpty = false;
 		}
 
 		__declspec(property(get = getValue, put = setValue)) const T Value;
 
 		inline void clearValue() {
-			rawValue = nullptr;
 			isEmpty = true;
 		}
 

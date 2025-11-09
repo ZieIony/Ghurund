@@ -4,6 +4,8 @@
 #include "core/application/ApplicationWindow.h"
 #include "engine/game/action/ActionMapping.h"
 #include "engine/graphics/Renderer.h"
+#include "engine/parameter/ParameterManager.h"
+#include "engine/parameter/ValueParameter.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
@@ -22,9 +24,14 @@ namespace Ghurund::Engine {
 #pragma endregion
 
     private:
+        ParameterManager parameterManager;
         Renderer* renderer = nullptr;
         std::unique_ptr<RenderingContext> renderingContext = nullptr;
         ActionMapping actionMapping;
+
+        IntrusivePointer<Int2Parameter> viewportSizeParameter;
+        IntrusivePointer<FloatParameter> timeParameter;
+        IntrusivePointer<Int2Parameter> mousePosParameter;
 
     protected:
         virtual bool onGamepadButtonEvent(const GamepadButtonEventArgs& event) override {
@@ -48,6 +55,7 @@ namespace Ghurund::Engine {
         }
 
         virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override {
+            mousePosParameter->Value = { event.Position.x, event.Position.y };
             return __super::onMouseMotionEvent(event) || actionMapping.onMouseMotionEvent(event);
         }
 
@@ -74,7 +82,14 @@ namespace Ghurund::Engine {
             .showOnTaskbar = true
         };
 
-		GameWindow(Ghurund::Core::Application& app, WindowStyle style = DEFAULT_WINDOW_STYLE):ApplicationWindow(app, style) {}
+		GameWindow(Ghurund::Core::Application& app, WindowStyle style = DEFAULT_WINDOW_STYLE):ApplicationWindow(app, style) {
+            viewportSizeParameter = makeIntrusive<Int2Parameter>("viewportSize");
+            parameterManager.Parameters.put(viewportSizeParameter.get());
+            timeParameter = makeIntrusive<FloatParameter>("time");
+            parameterManager.Parameters.put(timeParameter.get());
+            mousePosParameter = makeIntrusive<Int2Parameter>("mousePos");
+            ParameterManager.Parameters.put(mousePosParameter.get());
+        }
 
         Renderer* getRenderer() const {
             return renderer;
@@ -100,6 +115,12 @@ namespace Ghurund::Engine {
         }
 
         __declspec(property(get = getActionMapping)) ActionMapping& ActionMapping;
+
+        ParameterManager& getParameterManager() {
+            return parameterManager;
+        }
+
+        __declspec(property(get = getParameterManager)) ParameterManager& ParameterManager;
 
         virtual void update(const uint64_t time) override;
 

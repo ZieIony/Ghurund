@@ -4,7 +4,7 @@
 namespace Ghurund::Engine::DirectX {
 	void DxRenderingContext::onInit() {
 		swapChain = ghnew Ghurund::Engine::DirectX::SwapChain();
-		swapChain->init(graphics, window);
+		swapChain->init(graphics, window.Handle, window.Size);
 	}
 
 	void DxRenderingContext::onUninit() {
@@ -28,9 +28,8 @@ namespace Ghurund::Engine::DirectX {
 	void DxRenderingContext::setSize(Ghurund::Core::IntSize size) {
 		if (swapChain)
 			swapChain->uninitBuffers();
-		//bool result = __super::onSizeChangedEvent();
 		if (swapChain && size.Width > 0 && size.Height > 0) {
-			swapChain->resize(size);
+			swapChain->Size = size;
 			swapChain->initBuffers();
 		}
 	}

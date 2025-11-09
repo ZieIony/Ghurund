@@ -21,12 +21,12 @@ namespace Ghurund::Engine::DirectX {
 		if (stream.readBoolean())
 			setSourceCode(stream.readASCII());
 
-		supportsTransparency = stream.readBoolean();
+		isTransparencyEnabled = stream.readBoolean();
 		 Graphics& graphics = context.Graphics;
 		 initConstants(context.ParameterManager);
 		 if ((result = makeRootSignature()) != Status::OK)
 			 return result;
-		 if ((result = makePipelineState(supportsTransparency)) != Status::OK)
+		 if ((result = makePipelineState(isTransparencyEnabled)) != Status::OK)
 			 return result;*/
 
 			 // return Status::OK;
@@ -47,8 +47,8 @@ namespace Ghurund::Engine::DirectX {
 			} catch (...) {}
 		}
 		auto array = Array<SharedPointer<DxShaderProgram>>(programs);
-		auto shader = compiler.build(programs, parameterManager);
-		//bool supportsTransparency = sourceCode.find("supportsTransparency") != sourceCode.Size;
+		bool isTransparencyEnabled = sourceCode.find("#define transparencyEnabled") != sourceCode.Size;
+		auto shader = compiler.build(programs, isTransparencyEnabled);
 
 		return shader.reset();
 	}

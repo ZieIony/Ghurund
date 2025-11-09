@@ -184,5 +184,10 @@ namespace Ghurund::Core {
 			}
 			return size;
 		}
+
+		template<typename Predicate>
+		inline bool any(const Predicate& predicate) const {
+			return find(predicate) != size;
+		}
 	};
 }

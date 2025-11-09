@@ -6,7 +6,6 @@
 #include "engine/directx/material/Material.h"
 #include "Postprocess.h"
 #include <core/Color.h>
-#include <engine/parameter/ParameterManager.h>
 #include "DxRenderingContext.h"
 
 namespace Ghurund::Engine::DirectX {
@@ -33,7 +32,6 @@ namespace Ghurund::Engine::DirectX {
         //RenderTarget* postprocessRenderTarget[FRAME_COUNT] = {};
 
         DxGraphics& graphics;
-        ParameterManager& parameterManager;
 
     protected:
         virtual void onInit() override;
@@ -42,7 +40,7 @@ namespace Ghurund::Engine::DirectX {
         void uninitDxRenderer();
 
     public:
-        DxRenderer(DxGraphics& graphics, ParameterManager& parameterManager):graphics(graphics), parameterManager(parameterManager) {}
+        DxRenderer(DxGraphics& graphics):graphics(graphics) {}
 
         ~DxRenderer() {
             uninitDxRenderer();

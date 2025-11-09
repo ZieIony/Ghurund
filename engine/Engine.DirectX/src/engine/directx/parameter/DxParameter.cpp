@@ -12,34 +12,33 @@ namespace Ghurund::Engine::DirectX {
 		D3D_SHADER_VARIABLE_TYPE type,
 		const AString& name,
 		uint16_t size,
-		void* defaultValue,
-		ParameterManager& parameterManager
+		void* defaultValue
 	) {
 		if (_class == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_SCALAR) {
 			if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_INT) {
 				if (size == IntParameter::SIZE)
-					return makeDxParameter<IntParameter>(name, defaultValue, parameterManager);
+					return makeDxParameter<IntParameter>(name, defaultValue);
 			} else if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
 				if (size == FloatParameter::SIZE)
-					return makeDxParameter<FloatParameter>(name, defaultValue, parameterManager);
+					return makeDxParameter<FloatParameter>(name, defaultValue);
 			}
 		} else if (_class == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_VECTOR) {
 			if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_INT) {
 				if (size == Int2Parameter::SIZE)
-					return makeDxParameter<Int2Parameter>(name, defaultValue, parameterManager);
+					return makeDxParameter<Int2Parameter>(name, defaultValue);
 			} else if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
 				if (size == Float2Parameter::SIZE) {
-					return makeDxParameter<Float2Parameter>(name, defaultValue, parameterManager);
+					return makeDxParameter<Float2Parameter>(name, defaultValue);
 				} else if (size == Float3Parameter::SIZE) {
-					return makeDxParameter<Float3Parameter>(name, defaultValue, parameterManager);
+					return makeDxParameter<Float3Parameter>(name, defaultValue);
 				} else if (size == Float4Parameter::SIZE) {
-					return makeDxParameter<Float4Parameter>(name, defaultValue, parameterManager);
+					return makeDxParameter<Float4Parameter>(name, defaultValue);
 				}
 			}
 		} else if (_class == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_MATRIX_ROWS) {
 			if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
 				if (size == MatrixParameter::SIZE) {
-					return makeDxParameter<MatrixParameter>(name, defaultValue, parameterManager);
+					return makeDxParameter<MatrixParameter>(name, defaultValue);
 				}
 			}
 		}

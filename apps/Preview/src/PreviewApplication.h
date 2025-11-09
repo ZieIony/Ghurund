@@ -11,7 +11,6 @@ namespace Preview {
     class PreviewApplication:public Ghurund::Core::Application, public ThemeApplication {
     private:
         Ghurund::Engine::DirectX::DxRenderer* renderer = nullptr;
-        Ghurund::Engine::ParameterManager parameterManager;
         PreviewWindow* window = nullptr;
 
         SharedPointer<Theme> lightTheme;

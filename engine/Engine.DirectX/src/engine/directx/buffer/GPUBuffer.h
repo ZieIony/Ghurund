@@ -54,13 +54,13 @@ namespace Ghurund::Engine::DirectX {
             memcpy(buffer->Data, value, buffer->Size);
         }
 
-        void setValue(const void *value, size_t size, size_t offset) {
-            memcpy((BYTE*)buffer->Data+offset, value, size);
-        }
+		void setValue(const void* value, size_t size, size_t offset) {
+			memcpy((BYTE*)buffer->Data + offset, value, size);
+		}
 
-        template<class Type> void setValue(const Type &value, size_t offset) {
-            memcpy((BYTE*)buffer->Data+offset, &value, sizeof(Type));
-        }
+		template<class Type> void setValue(const Type& value, size_t offset) {
+			memcpy((BYTE*)buffer->Data + offset, &value, sizeof(Type));
+		}
 
         void set(DxGraphics& graphics, CommandList& commandList, unsigned int bindSlot);
     };

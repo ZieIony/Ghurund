@@ -4,7 +4,7 @@
 #include "core/Colors.h"
 #include "core/window/DisplayManager.h"
 
-#include <engine/graphics/mesh/CubeMesh.h>
+#include <engine/graphics/mesh/QuadMesh.h>
 #include <engine/directx/mesh/DxMesh.h>
 #include <engine/directx/texture/TextureProvider.h>
 #include <engine/directx/shader/ShaderProvider.h>
@@ -13,16 +13,15 @@
 namespace Demo {
 	DemoWindow::DemoWindow(
 		DemoApplication& app,
-		Ghurund::Engine::DirectX::DxRenderer& renderer,
-		ParameterManager& parameterManager
-	):GameWindow(app), app(app), parameterManager(parameterManager) {
+		Ghurund::Engine::DirectX::DxRenderer& renderer
+	):GameWindow(app), app(app) {
 		closed += DEFAULT_QUIT_APP_WINDOW_CLOSED_HANDLER;
 		Title = _T("Demo 3D DirectX");
 
 		Renderer = &renderer;
 		BackgroundColor = &Colors::LIGHT_SKY_BLUE;
 
-		auto meshData = makeIntrusive<CubeMesh>();
+		auto meshData = makeIntrusive<QuadMesh>();
 		meshData->init();
 		mesh = makeIntrusive<DxMesh>();
 		DxGraphics* graphics = app.Features.get<DxGraphics>();
@@ -33,20 +32,39 @@ namespace Demo {
 
 		TextureProvider textureProvider(*graphics, *commandList.get(), app.ResourceManager);
 		ShaderProvider shaderProvider(app.ResourceManager);
-		MaterialProvider materialProvider(parameterManager, shaderProvider, textureProvider);
+		MaterialProvider materialProvider(ParameterManager, shaderProvider, textureProvider);
 
 		camera = makeIntrusive<Camera>();
 		camera->setPositionTargetUp({ 10,10,-10 }, { 0,0,0 });
 		camera->rebuild();
 		camera->updateParameters();
-		parameterManager.Parameters.putAll(camera->Parameters);
+		ParameterManager.Parameters.putAll(camera->Parameters);
+
 		auto world = makeIntrusive<MatrixParameter>("world");
 		XMFLOAT4X4 identity;
 		XMStoreFloat4x4(&identity, XMMatrixIdentity());
 		world->setValue(identity);
-		parameterManager.Parameters.put(world.get());
+		ParameterManager.Parameters.put(world.get());
 
-		basicMaterial = IntrusivePointer<Material>(materialProvider.makeBasic());
+		sizeParameter = makeIntrusive<Float2Parameter>("size");
+		ParameterManager.Parameters.put(sizeParameter.get());
+		backgroundColorParameter = makeIntrusive<Float4Parameter>("backgroundColor");
+		ParameterManager.Parameters.put(backgroundColorParameter.get());
+		borderColorParameter = makeIntrusive<Float4Parameter>("borderColor");
+		ParameterManager.Parameters.put(borderColorParameter.get());
+
+		basicMaterial = IntrusivePointer<Material>(materialProvider.makeUi());
+	}
+
+	bool DemoWindow::onMouseButtonEvent(const MouseButtonEventArgs& args) {
+		if (args.Action == MouseButtonAction::PRESSED) {
+			backgroundColorParameter->Value = Colors::GRAY.toVector();
+			borderColorParameter->Value = Colors::LIGHT_GRAY.toVector();
+		} else if (args.Action == MouseButtonAction::RELEASED) {
+			backgroundColorParameter->Value = Colors::LIGHT_GRAY.toVector();
+			borderColorParameter->Value = Colors::WHITE.toVector();
+		}
+		return true;
 	}
 	
 	bool DemoWindow::onKeyEvent(const KeyEventArgs& args) {
@@ -81,7 +99,7 @@ namespace Demo {
 		auto& dxContext = (DxRenderingContext&)renderingContext;
 		auto commandList = dxContext.SwapChain.CurrentFrame.CommandList;
 		DxGraphics* graphics = app.Features.get<DxGraphics>();
-		basicMaterial->set(*graphics, *commandList, parameterManager);
+		basicMaterial->set(*graphics, *commandList, ParameterManager);
 		mesh->draw(*commandList);
 	}
 }

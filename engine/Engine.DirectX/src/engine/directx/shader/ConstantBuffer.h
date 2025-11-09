@@ -12,31 +12,26 @@ namespace Ghurund::Engine::DirectX {
 	public:
 		GPUBuffer buffer;
 		List<ConstantBufferField*> variables;
-#ifdef _DEBUG
-		bool* reported;
-#endif
 
 		ConstantBuffer(
-			DxGraphics& graphics,
-			ID3D12ShaderReflectionConstantBuffer* constantBuffer,
-			D3D12_SHADER_BUFFER_DESC& bufferDesc,
+			const AString& name,
 			uint32_t bindPoint,
-			D3D12_SHADER_VISIBILITY visibility,
-			ParameterManager& parameterManager
+			D3D12_SHADER_VISIBILITY visibility
 		);
 
 		~ConstantBuffer() {
 			variables.deleteItems();
-#ifdef _DEBUG
-			delete[] reported;
-#endif
 		}
+
+		void init(DxGraphics& graphics, D3D12_SHADER_BUFFER_DESC& bufferDesc);
+
+		void initParameters(ID3D12ShaderReflectionConstantBuffer* constantBuffer, D3D12_SHADER_BUFFER_DESC& bufferDesc);
 
 		inline void set(DxGraphics& graphics, CommandList& commandList, ParameterManager& parameterManager) {
 			size_t i = 0;
 			auto it = parameters.begin();
 			while (i < variables.Size) {
-				Parameter* p = it->value.get();
+				Parameter* p = it->get();
 				if (p->IsEmpty)
 					p = parameterManager.Parameters.get(p->Name);
 				ConstantBufferField* v = variables[i];

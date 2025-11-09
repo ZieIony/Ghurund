@@ -23,8 +23,7 @@ namespace Ghurund::Engine::DirectX {
         this->texture = texture;
         this->texture->AddRef();
         auto textureDesc = texture->GetDesc();
-        this->width = textureDesc.Width;
-        this->height = textureDesc.Height;
+        this->size = { (uint32_t)textureDesc.Width, (uint32_t)textureDesc.Height };
 
 #ifdef _DEBUG
         rtvHeap->SetName(L"rtvHeap");
@@ -32,10 +31,9 @@ namespace Ghurund::Engine::DirectX {
 #endif
     }
 
-    void RenderTarget::init(DxGraphics& graphics, uint32_t width, uint32_t height, DXGI_FORMAT format) {
+    void RenderTarget::init(DxGraphics& graphics, IntSize size, DXGI_FORMAT format) {
         this->format = format;
-        this->width = width;
-        this->height = height;
+        this->size = size;
 
         CD3DX12_HEAP_PROPERTIES heapProperty(D3D12_HEAP_TYPE_DEFAULT);
 
@@ -48,8 +46,8 @@ namespace Ghurund::Engine::DirectX {
         resourceDesc.MipLevels = 1;
 
         resourceDesc.DepthOrArraySize = 1;
-        resourceDesc.Width = width;
-        resourceDesc.Height = height;
+        resourceDesc.Width = size.Width;
+        resourceDesc.Height = size.Height;
         resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
         resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET;
 
@@ -71,8 +69,7 @@ namespace Ghurund::Engine::DirectX {
     }
 
     void RenderTarget::uninit() {
-        width = 0;
-        height = 0;
+        size = {};
         format = DXGI_FORMAT_UNKNOWN;
 
         if (rtvHeap) {

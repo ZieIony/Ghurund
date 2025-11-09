@@ -4,7 +4,6 @@
 
 #include "engine/directx/DxRenderer.h"
 #include "engine/directx/DxGraphics.h"
-#include "engine/parameter/ParameterManager.h"
 #include <engine/directx/shader/DxShaderLoader.h>
 
 namespace Demo {
@@ -17,7 +16,6 @@ namespace Demo {
     class DemoApplication:public Application {
     private:
         DxRenderer* renderer = nullptr;
-        ParameterManager parameterManager;
         DemoWindow* window = nullptr;
         IntrusivePointer<DxShaderLoader> shaderLoader;
         SharedPointer<DxShaderCompiler> shaderCompiler;
@@ -34,7 +32,7 @@ namespace Demo {
             Features.add<DxGraphics>();
             auto graphics = Features.get<DxGraphics>();
             shaderCompiler = makeShared<DxShaderCompiler>(*graphics);
-            shaderLoader = makeIntrusive<DxShaderLoader>(*shaderCompiler.get(), parameterManager);
+            shaderLoader = makeIntrusive<DxShaderLoader>(*shaderCompiler.get());
             ResourceManager.Loaders.set<DxShader>(*shaderLoader.get());
         }
 

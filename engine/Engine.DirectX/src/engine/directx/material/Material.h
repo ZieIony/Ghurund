@@ -22,7 +22,7 @@ namespace Ghurund::Engine::DirectX {
 
     private:
         DxShader* shader = nullptr;
-        bool supportsTransparency = false;
+        bool isTransparencyEnabled = false;
 
         void finalize() {
             safeRelease(shader);
@@ -53,14 +53,11 @@ namespace Ghurund::Engine::DirectX {
             return shader != nullptr && shader->Valid && __super::Valid;
         }
 
-        void initParameters(ParameterManager& parameterManager) {
-            //shader->initParameters(parameterManager);
-            //OnParametersChanged();
+        const ParameterCollection& getParameters() const {
+            return shader->Parameters;
         }
 
-        void updateParameters() {
-            //shader->updateParameters();
-        }
+        __declspec(property(get = getParameters)) const ParameterCollection& Parameters;
 
         bool set(DxGraphics& graphics, CommandList& commandList, ParameterManager& parameterManager) {
             return shader->set(graphics, commandList, parameterManager);
@@ -76,18 +73,11 @@ namespace Ghurund::Engine::DirectX {
 
         __declspec(property(get = getShader, put = setShader)) DxShader* Shader;
 
-        bool getSupportsTransparency() {
-            return supportsTransparency;
+        inline bool getIsTransparencyEnabled() const {
+            return shader->IsTransparencyEnabled;
         }
 
-        void setSupportsTransparency(bool supportsTransparency) {
-            if (this->supportsTransparency != supportsTransparency) {
-                this->supportsTransparency = supportsTransparency;
-                //shader->makePipelineState(supportsTransparency);
-            }
-        }
-
-        __declspec(property(get = getSupportsTransparency, put = setSupportsTransparency)) bool SupportsTransparency;
+        __declspec(property(get = getIsTransparencyEnabled)) bool IsTransparencyEnabled;
 
 #pragma region formats
     protected:

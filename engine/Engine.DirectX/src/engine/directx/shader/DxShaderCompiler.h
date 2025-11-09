@@ -42,14 +42,14 @@ namespace Ghurund::Engine::DirectX {
 		OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> makePipelineState(
 			const Array<SharedPointer<DxShaderProgram>>& programs,
 			ID3D12RootSignature* rootSignature,
-			bool supportsTransparency
+			bool isTransparencyEnabled
 		);
 
 		OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> makeRootSignature(NotNull<ShaderConstants> constants);
 
-		void initConstants(const DxShaderProgram& program, NotNull<ShaderConstants> constants, ParameterManager& parameterManager);
+		void initConstants(const DxShaderProgram& program, NotNull<ShaderConstants> constants);
 
-		OwnedNotNull<ShaderConstants> makeConstants(const Array<SharedPointer<DxShaderProgram>>& programs, ParameterManager& parameterManager);
+		OwnedNotNull<ShaderConstants> makeConstants(const Array<SharedPointer<DxShaderProgram>>& programs);
 
 		DxShaderProgram* compile(const AString& sourceCode, const DxShaderType& shaderType, CompilerInclude* include = nullptr, bool debug =
 #ifdef _DEBUG
@@ -59,6 +59,9 @@ namespace Ghurund::Engine::DirectX {
 #endif
 		);
 
-		OwnedNotNull<DxShader, RefCountedObjectDeleter> build(const Array<SharedPointer<DxShaderProgram>>& programs, ParameterManager& parameterManager);
+		OwnedNotNull<DxShader, RefCountedObjectDeleter> build(
+			const Array<SharedPointer<DxShaderProgram>>& programs,
+			bool isTransparencyEnabled
+		);
 	};
 }

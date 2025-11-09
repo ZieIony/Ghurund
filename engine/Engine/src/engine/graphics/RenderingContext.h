@@ -33,5 +33,7 @@ namespace Ghurund::Engine {
         virtual void clear(const Color* clearColor) = 0;
 
         virtual void setSize(IntSize size) = 0;
+
+        __declspec(property(put = setSize)) IntSize Size;
     };
 }

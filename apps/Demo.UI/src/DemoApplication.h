@@ -16,7 +16,6 @@ namespace Demo {
     class DemoApplication:public Application {
     private:
         DxRenderer* renderer = nullptr;
-        ParameterManager parameterManager;
         LightTheme* theme = nullptr;
         Ghurund::UI::DrawableFactory* drawableFactory = nullptr;
         DemoWindow* window = nullptr;

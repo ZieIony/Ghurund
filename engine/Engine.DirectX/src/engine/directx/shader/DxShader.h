@@ -61,15 +61,13 @@ namespace Ghurund::Engine::DirectX {
         ID3D12RootSignature* rootSignature = nullptr;
         ID3D12PipelineState* pipelineState = nullptr;
         ShaderConstants* constants = nullptr;
-        bool supportsTransparency = false;
+        bool isTransparencyEnabled = false;
 
-        //Array<SharedPointer<Parameter>>* parameters = nullptr;
+        ParameterCollection parameters;
+
 #ifdef _DEBUG
         bool* reported = nullptr;
 #endif
-
-        //void initConstants(ParameterManager& parameterManager);
-        //void initConstants(ParameterManager& parameterManager, DxShaderProgram& program);
 
         void finalize();
 
@@ -85,31 +83,28 @@ namespace Ghurund::Engine::DirectX {
         void init(
             OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> rootSignature,
             OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,
-            OwnedNotNull<ShaderConstants> constants
+            OwnedNotNull<ShaderConstants> constants,
+            bool isTransparencyEnabled
         ) {
             this->rootSignature = rootSignature.reset();
             this->pipelineState = pipelineState.reset();
             this->constants = constants.reset();
+            this->isTransparencyEnabled = isTransparencyEnabled;
         }
 
-        /*virtual void initParameters(ParameterManager& parameterManager) override;
-
-        virtual void updateParameters() override {
-            for (size_t i = 0; i < constantBuffers.Size; i++)
-                constantBuffers[i]->updateParameters();
+        const ParameterCollection& getParameters() const {
+            return parameters;
         }
 
-        virtual const Array<SharedPointer<Parameter>>& getParameters() const override {
-            return *parameters;
-        }*/
+        __declspec(property(get = getParameters)) const ParameterCollection& Parameters;
 
         bool set(DxGraphics& graphics, CommandList& commandList, ParameterManager& parameterManager);
 
-        bool getSupportsTransparency() {
-            return supportsTransparency;
+        bool getIsTransparencyEnabled() {
+            return isTransparencyEnabled;
         }
 
-        __declspec(property(get = getSupportsTransparency)) bool SupportsTransparency;
+        __declspec(property(get = getIsTransparencyEnabled)) bool IsTransparencyEnabled;
 
 #pragma region formats
     protected:

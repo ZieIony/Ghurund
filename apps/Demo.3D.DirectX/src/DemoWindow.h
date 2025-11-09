@@ -12,17 +12,25 @@ namespace Demo {
 	class DemoWindow:public Ghurund::Engine::GameWindow {
 	private:
 		DemoApplication& app;
-		ParameterManager& parameterManager;
 		IntrusivePointer<DxMesh> mesh;
 		IntrusivePointer<Material> basicMaterial;
 		IntrusivePointer<Camera> camera;
 
+		IntrusivePointer<Float2Parameter> sizeParameter;
+		IntrusivePointer<Float4Parameter> backgroundColorParameter;
+		IntrusivePointer<Float4Parameter> backgroundColor2Parameter;
+		IntrusivePointer<Float4Parameter> borderColorParameter;
+		IntrusivePointer<Float4Parameter> borderColor2Parameter;
+		IntrusivePointer<FloatParameter> actionTimeParameter;
+		IntrusivePointer<FloatParameter> animationDurationParameter;
+
 	public:
 		DemoWindow(
 			DemoApplication& app,
-			Ghurund::Engine::DirectX::DxRenderer& renderer,
-			ParameterManager& parameterManager
+			Ghurund::Engine::DirectX::DxRenderer& renderer
 		);
+
+		virtual bool onMouseButtonEvent(const MouseButtonEventArgs& args) override;
 
 		virtual bool onKeyEvent(const KeyEventArgs& args) override;
 

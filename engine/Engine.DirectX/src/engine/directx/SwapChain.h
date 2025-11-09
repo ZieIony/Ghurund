@@ -40,9 +40,8 @@ namespace Ghurund::Engine::DirectX {
         Array<Frame>* frames = nullptr;
         uint32_t frameCount;
         size_t currentFrame = 0;
-        // borrowed
-        SystemWindow* window = nullptr;
         DXGI_FORMAT format;
+        IntSize size;
 
     public:
         ~SwapChain() {
@@ -55,7 +54,7 @@ namespace Ghurund::Engine::DirectX {
 
         __declspec(property(get = isInitialized)) bool Initialized;
 
-        void init(DxGraphics& graphics, SystemWindow& window, uint32_t frameCount = 3);
+        void init(DxGraphics& graphics, HWND handle, IntSize size, uint32_t frameCount = 3);
 
         void initBuffers();
 
@@ -75,6 +74,12 @@ namespace Ghurund::Engine::DirectX {
 
         void present();
 
-        void resize(const IntSize& size);
+        void setSize(const IntSize& size);
+
+        const IntSize& getSize() const {
+            return size;
+        }
+
+        __declspec(property(get = getSize, put = setSize)) const IntSize& Size;
     };
 }

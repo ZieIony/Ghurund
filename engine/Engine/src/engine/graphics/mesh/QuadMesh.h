@@ -5,19 +5,13 @@
 namespace Ghurund::Engine {
 	class QuadMesh: public MeshData {
 	public:
-		void init(unsigned int detail = 0) {
+		void init() {
 			VertexStream posStream = VertexStream(List<XMFLOAT3>({
-				{-1.0f, -1.0f, 0.0f},
-				{-1.0f, 1.0f, 0.0f},
-				{1.0f, -1.0f, 0.0f},
+				{0.0f, 0.0f, 0.0f},
+				{0.0f, 1.0f, 0.0f},
+				{1.0f, 0.0f, 0.0f},
 				{1.0f, 1.0f, 0.0f},
-				}), VertexRole::POSITION);
-			VertexStream texCoordStream = VertexStream(List<XMFLOAT2>({
-				{0.0f, 0.0f},
-				{0.0f, 1.0f},
-				{1.0f, 0.0f},
-				{1.0f, 1.0f},
-				}), VertexRole::TEXCOORD);
+			}), VertexRole::POSITION);
 
 			vertexCount = 4;
 
@@ -26,10 +20,7 @@ namespace Ghurund::Engine {
 				2, 1, 3, // second triangle
 			};
 
-			//for (size_t i = 0; i < detail; i++)
-			  //  subdivide();
-
-			MeshData::init({ posStream, texCoordStream }, vertexCount, indices);
+			MeshData::init({ posStream }, vertexCount, indices);
 		}
 	};
 }

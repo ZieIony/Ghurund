@@ -26,7 +26,7 @@ namespace Preview {
         ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
         ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
 
-        renderer = ghnew DxRenderer(*Features.get<DxGraphics>(), parameterManager);
+        renderer = ghnew DxRenderer(*Features.get<DxGraphics>());
         renderer->init();
         window = ghnew PreviewWindow(*this, *renderer, *this);
 

@@ -39,7 +39,7 @@ namespace Ghurund::Engine::OpenGL {
 		auto fragmentProgram = loadShaderProgramFromXml(xml, workingDir, OglShaderType::FRAGMENT);
 		auto shader = compiler.build(*vertexProgram.get(), *fragmentProgram.get());
 		return &shader;
-		//bool supportsTransparency = sourceCode.find("supportsTransparency") != sourceCode.Size;
+		//bool isTransparencyEnabled = sourceCode.find("isTransparencyEnabled") != sourceCode.Size;
 	}
 
 	Resource* OglShaderLoader::loadInternal(

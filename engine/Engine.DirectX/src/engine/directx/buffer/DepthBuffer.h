@@ -14,8 +14,7 @@ namespace Ghurund::Engine::DirectX {
         D3D12_CPU_DESCRIPTOR_HANDLE handle;
 
     public:
-        // TODO: use uint32_t instead of unsigned int
-        void init(DxGraphics& graphics, unsigned int width, unsigned int height);
+        void init(DxGraphics& graphics, IntSize size);
 
         void clear(CommandList &commandList) {
             commandList.get()->ClearDepthStencilView(handle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);

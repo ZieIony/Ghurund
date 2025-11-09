@@ -93,20 +93,20 @@ namespace Ghurund::Engine::DirectX {
 
 	OwnedNotNull<DxShader, RefCountedObjectDeleter> DxShaderCompiler::build(
 		const Array<SharedPointer<DxShaderProgram>>& programs,
-		ParameterManager& parameterManager
+		bool isTransparencyEnabled
 	) {
-		auto constants = makeConstants(programs, parameterManager);
+		auto constants = makeConstants(programs);
 		auto rootSignature = makeRootSignature(&constants);
-		auto pipelineState = makePipelineState(programs, &rootSignature, false);
+		auto pipelineState = makePipelineState(programs, &rootSignature, isTransparencyEnabled);
 		OwnedNotNull<DxShader, RefCountedObjectDeleter> shader(ghnew DxShader());
-		shader->init(std::move(rootSignature), std::move(pipelineState), std::move(constants));
+		shader->init(std::move(rootSignature), std::move(pipelineState), std::move(constants), isTransparencyEnabled);
 		return shader;
 	}
 
 	OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> DxShaderCompiler::makePipelineState(
 		const Array<SharedPointer<DxShaderProgram>>& programs,
 		ID3D12RootSignature* rootSignature,
-		bool supportsTransparency
+		bool isTransparencyEnabled
 	) {
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 		psoDesc.pRootSignature = rootSignature;
@@ -142,7 +142,7 @@ namespace Ghurund::Engine::DirectX {
 
 		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 
-		if (supportsTransparency) {
+		if (isTransparencyEnabled) {
 			psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 			psoDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
 			psoDesc.BlendState.RenderTarget[0].BlendEnable = true;
@@ -228,14 +228,14 @@ namespace Ghurund::Engine::DirectX {
 		return OwnedNotNull<ID3D12RootSignature, IUnknownDeleter>(rootSignature);
 	}
 
-	OwnedNotNull<ShaderConstants> DxShaderCompiler::makeConstants(const Array<SharedPointer<DxShaderProgram>>& programs, ParameterManager& parameterManager) {
+	OwnedNotNull<ShaderConstants> DxShaderCompiler::makeConstants(const Array<SharedPointer<DxShaderProgram>>& programs) {
 		ShaderConstants* constants = ghnew ShaderConstants();
 		for (auto& program : programs)
-			initConstants(*program.get(), constants, parameterManager);
+			initConstants(*program.get(), constants);
 		return OwnedNotNull<ShaderConstants>(constants);
 	}
 
-	void DxShaderCompiler::initConstants(const DxShaderProgram& program, NotNull<ShaderConstants> constants, ParameterManager& parameterManager) {
+	void DxShaderCompiler::initConstants(const DxShaderProgram& program, NotNull<ShaderConstants> constants) {
 		ID3D12ShaderReflection* reflector = nullptr;
 		D3DReflect(program.ByteCode.Data, program.ByteCode.Size, IID_ID3D12ShaderReflection, (void**)&reflector);
 		D3D12_SHADER_DESC desc;
@@ -248,24 +248,22 @@ namespace Ghurund::Engine::DirectX {
 			switch (bindDesc.Type) {
 			case D3D_SIT_CBUFFER:
 			{
-				for (size_t i = 0; i < constants->constantBuffers.Size; i++) {
-					if (strcmp(bindDesc.Name, constants->constantBuffers[i]->Name.Data) == 0) {
-						constants->constantBuffers[i]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
-						goto bufferMerged;
-					}
-				}
 				ID3D12ShaderReflectionConstantBuffer* constantBuffer = reflector->GetConstantBufferByName(bindDesc.Name);
 				D3D12_SHADER_BUFFER_DESC bufferDesc;
 				constantBuffer->GetDesc(&bufferDesc);
-				ConstantBuffer* cb = ghnew ConstantBuffer(
-					graphics,
-					constantBuffer,
-					bufferDesc,
-					bindDesc.BindPoint,
-					program.getType().getVisibility(),
-					parameterManager
-				);
-				constants->constantBuffers.add(cb);
+				ConstantBuffer* cb = [&] {
+					for (size_t i = 0; i < constants->constantBuffers.Size; i++) {
+						if (strcmp(bindDesc.Name, constants->constantBuffers[i]->Name.Data) == 0) {
+							constants->constantBuffers[i]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
+							return constants->constantBuffers[i];
+						}
+					}
+					ConstantBuffer* cb = ghnew ConstantBuffer(bindDesc.Name, bindDesc.BindPoint, program.getType().getVisibility());
+					cb->init(graphics, bufferDesc);
+					constants->constantBuffers.add(cb);
+					return cb;
+				}();
+				cb->initParameters(constantBuffer, bufferDesc);
 			}
 			break;
 			case D3D_SIT_TBUFFER:

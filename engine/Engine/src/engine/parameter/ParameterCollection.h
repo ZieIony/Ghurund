@@ -8,20 +8,20 @@
 namespace Ghurund::Engine {
 	class ParameterCollection {
 	private:
-		Map<AString, IntrusivePointer<Parameter>> parameters;
+		List<IntrusivePointer<Parameter>> parameters;
 
 		ParameterCollection& operator=(const ParameterCollection& other) = delete;
 
 	public:
 		inline void put(Parameter* parameter) {
 			parameter->addReference();
-			parameters.put(parameter->Name, IntrusivePointer(parameter));
+			parameters.add(IntrusivePointer(parameter));
 		}
 
 		inline Parameter* get(const AString& constantName) const {
-			auto it = parameters.find(constantName);
-			if (it != parameters.end())
-				return it->value.get();
+			auto it = parameters.find([&](auto& item) {return item->Name == constantName; });
+			if (it != parameters.Size)
+				return parameters[it].get();
 			return nullptr;
 		}
 
@@ -29,21 +29,21 @@ namespace Ghurund::Engine {
 			return get(constantName);
 		}
 
-		inline Map<AString, IntrusivePointer<Parameter>>::iterator begin() {
+		inline List<IntrusivePointer<Parameter>>::iterator begin() {
 			return parameters.begin();
 		}
 
-		inline Map<AString, IntrusivePointer<Parameter>>::iterator end() {
+		inline List<IntrusivePointer<Parameter>>::iterator end() {
 			return parameters.end();
 		}
 
 		inline void putAll(const ParameterCollection& other) {
-			parameters.putAll(other.parameters);
+			parameters.addAll(other.parameters);
 		}
 
 		inline void initDefaults(ParameterCollection& other) {
 			for (auto& entry : parameters)
-				entry.value->initDefault(other);
+				entry->initDefault(other);
 		}
 	};
 }
