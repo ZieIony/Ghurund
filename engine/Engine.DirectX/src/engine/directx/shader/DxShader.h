@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ConstantBuffer.h"
+#include "core/collection/Array.h"
 #include "core/collection/List.h"
 #include <core/object/OwnedNotNull.h>
 #include "core/resource/Resource.h"
@@ -9,6 +10,7 @@
 #include "TextureBufferConstant.h"
 #include "TextureConstant.h"
 #include "core/IUnknownImpl.h"
+#include <engine/graphics/mesh/VertexStream.h>
 
 #pragma warning(push, 0)
 #include <d3d12.h>
@@ -17,6 +19,7 @@
 #pragma warning(pop)
 
 namespace Ghurund::Engine::DirectX {
+	using namespace Ghurund::Core;
 	using namespace Microsoft::WRL;
 
 	class DxShader:public Resource//, public ParameterProvider
@@ -36,6 +39,7 @@ namespace Ghurund::Engine::DirectX {
 	private:
 		ID3D12RootSignature* rootSignature = nullptr;
 		ID3D12PipelineState* pipelineState = nullptr;
+		Array<VertexRole> layout;
 
 		List<ConstantBuffer*> constantBuffers;
 		List<TextureConstant*> textures;
@@ -57,6 +61,7 @@ namespace Ghurund::Engine::DirectX {
 		}
 
 		void init(
+			const Array<VertexRole>& layout,
 			OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> rootSignature,
 			OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,
 			const List<ConstantBuffer*>& constantBuffers,
@@ -64,6 +69,7 @@ namespace Ghurund::Engine::DirectX {
 			const List<Sampler*>& samplers,
 			bool isTransparencyEnabled
 		) {
+			this->layout = layout;
 			this->rootSignature = rootSignature.reset();
 			this->pipelineState = pipelineState.reset();
 			this->constantBuffers = constantBuffers;
@@ -76,7 +82,7 @@ namespace Ghurund::Engine::DirectX {
 			this->isTransparencyEnabled = isTransparencyEnabled;
 		}
 
-		const ParameterCollection& getParameters() const {
+		inline const ParameterCollection& getParameters() const {
 			return parameters;
 		}
 
@@ -84,11 +90,17 @@ namespace Ghurund::Engine::DirectX {
 
 		bool set(DxGraphics& graphics, CommandList& commandList, ParameterManager& parameterManager);
 
-		bool getIsTransparencyEnabled() {
+		inline bool getIsTransparencyEnabled() {
 			return isTransparencyEnabled;
 		}
 
 		__declspec(property(get = getIsTransparencyEnabled)) bool IsTransparencyEnabled;
+
+		inline const Array<VertexRole>& getLayout() const {
+			return layout;
+		}
+
+		__declspec(property(get = getLayout)) const Array<VertexRole>& Layout;
 
 #pragma region formats
 	protected:

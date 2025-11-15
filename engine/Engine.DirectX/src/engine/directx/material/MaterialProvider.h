@@ -48,6 +48,8 @@ namespace Ghurund::Engine::DirectX {
 
         virtual Material* makeUi() override;
 
+        virtual Material* makeText() override;
+
         virtual Material* makeBasicSky() override;
 
         virtual Material* makeAdvancedSky() override;

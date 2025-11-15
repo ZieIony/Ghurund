@@ -25,6 +25,8 @@ namespace Ghurund::Engine::DirectX {
 		const CompilationTarget& target;
 		DxGraphics& graphics;
 
+		Array<VertexRole> makeLayout(const D3D12_INPUT_LAYOUT_DESC& desc);
+			
 		DXGI_FORMAT getFormat(BYTE mask, D3D_REGISTER_COMPONENT_TYPE componentType);
 
 		AString makeCompilationTarget(const DxShaderType& shaderType) {
@@ -42,6 +44,7 @@ namespace Ghurund::Engine::DirectX {
 
 		OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> makePipelineState(
 			const Array<SharedPointer<DxShaderProgram>>& programs,
+			D3D12_INPUT_LAYOUT_DESC inputLayout,
 			ID3D12RootSignature* rootSignature,
 			bool isTransparencyEnabled
 		);

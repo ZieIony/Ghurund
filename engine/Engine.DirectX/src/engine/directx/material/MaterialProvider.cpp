@@ -102,6 +102,11 @@ namespace Ghurund::Engine::DirectX {
         return makeWithShader(shader.get());
     }
 
+    Material* MaterialProvider::makeText() {
+        IntrusivePointer<DxShader> shader(shaderProvider.loadText());
+        return makeWithShader(shader.get());
+    }
+
     Material* MaterialProvider::makeBasicSky() {
         IntrusivePointer<DxShader> shader(shaderProvider.loadBasicSky());
         return makeWithShader(shader.get());

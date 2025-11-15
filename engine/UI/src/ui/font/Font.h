@@ -13,8 +13,9 @@ namespace Ghurund::UI {
 
     struct Glyph {
         IntSize shapeSize, bitmapSize;
-        int32_t originY;
-        IntPoint offset;
+        IntPoint shapeOrigin, bitmapPos;
+        float scale;
+        uint16_t width;
     };
 
     class Font:public Ghurund::Core::Resource {
@@ -31,8 +32,7 @@ namespace Ghurund::UI {
 #pragma endregion
 
     private:
-        static inline const tchar* DEFAULT_CHARACTER_SET = _T("aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPrqQRsStTuUvVwWxXyYzZ 0123456789*-+[]{};':\",.\\/<>?!@#$%^&*()`~");
-        static inline const uint32_t PADDING = 8;
+        static inline const tchar* DEFAULT_CHARACTER_SET = _T("aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPrqQRsStTuUvVwWxXyYzZ 0123456789*-+[]{};':\",.\\/<>?!@#$%^&*()`~ó¿Ÿæñ¹ê³");
         static inline const uint32_t MAX_DIST = 8;
         static inline const uint32_t BITMAP_SIZE = 64;
 

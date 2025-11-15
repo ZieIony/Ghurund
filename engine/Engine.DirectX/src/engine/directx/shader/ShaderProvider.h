@@ -54,6 +54,10 @@ namespace Ghurund::Engine::DirectX {
             return load(L"/shaders/DirectX/ui.hlsl");
         }
 
+        DxShader* loadText() {
+            return load(L"/shaders/DirectX/text.hlsl");
+        }
+
         DxShader* loadBasicSky() {
             return load(L"/shaders/DirectX/basicSky.hlsl");
         }

@@ -122,7 +122,6 @@ public:
             auto teamColor = parameters.get(teamColorName);
             Assert::IsNotNull(teamColor->RawValue);
             Assert::IsTrue(teamColor->IsEmpty);
-            Assert::IsNull(teamColor->DefaultValue);
 
             constantBuffers.deleteItems();
             textures.deleteItems();

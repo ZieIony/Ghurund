@@ -26,7 +26,6 @@ namespace Ghurund::Engine {
         const AString name;
         void* rawValue = nullptr;
         bool isEmpty = true;
-        IntrusivePointer<Parameter> defaultValue;
 
     public:
         Parameter(const AString& name):name(name) {}
@@ -38,8 +37,8 @@ namespace Ghurund::Engine {
         __declspec(property(get = getName)) const AString& Name;
 
 		inline const void* const getRawValue() const {
-			if (isEmpty && defaultValue.get())
-				return defaultValue->RawValue;
+			if (isEmpty)
+				return nullptr;
 			return rawValue;
 		}
 
@@ -54,19 +53,5 @@ namespace Ghurund::Engine {
         }
 
         __declspec(property(get = getIsEmpty)) bool IsEmpty;
-
-        inline Parameter* getDefaultValue() {
-            return defaultValue.get();
-        }
-
-        void setDefaultValue(Parameter* value) {
-            if(value)
-				value->addReference();
-            defaultValue.set(value);
-        }
-
-        __declspec(property(get = getDefaultValue, put = setDefaultValue)) Parameter* DefaultValue;
-
-        void initDefault(ParameterCollection& defaultParameterCollection);
     };
 }

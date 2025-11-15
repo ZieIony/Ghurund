@@ -79,6 +79,12 @@ namespace Ghurund::Engine::DirectX {
 
         __declspec(property(get = getIsTransparencyEnabled)) bool IsTransparencyEnabled;
 
+        inline const Array<VertexRole>& getLayout() const {
+            return shader->Layout;
+        }
+
+        __declspec(property(get = getLayout)) const Array<VertexRole>& Layout;
+
 #pragma region formats
     protected:
         virtual const Array<ResourceFormat>& getFormatsImpl() const override {

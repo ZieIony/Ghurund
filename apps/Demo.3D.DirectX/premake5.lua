@@ -5,7 +5,9 @@ project "Demo.3D.DirectX"
 	dependson {
 		"Core",
 		"Engine.DirectX",
-		"Engine"
+		"Engine",
+		"UI",
+		"UI.DirectX"
 	}
 
 	files {
@@ -18,6 +20,8 @@ project "Demo.3D.DirectX"
 		includeDir["Core"],
 		includeDir["Engine.DirectX"],
 		includeDir["Engine"],
+		includeDir["UI"],
+		includeDir["UI.DirectX"],
 		includeDir["entt"],
 		includeDir["CRC"],
 		includeDir["angelscript"],
@@ -29,7 +33,9 @@ project "Demo.3D.DirectX"
 	links {
 		"Core",
 		"Engine.DirectX",
-		"Engine"
+		"Engine",
+		"UI",
+		"UI.DirectX"
 	}
 	
 	filter "configurations:Debug"

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/image/ImageLoader.h"
-#include "ui/directx/image/Bitmap.h"
+#include "ui/directx/image/DxBitmap.h"
 #include "ui/image/BitmapFactory.h"
 
 namespace Ghurund::UI::DirectX {
@@ -28,7 +28,7 @@ namespace Ghurund::UI::DirectX {
             const ResourceFormat& format = ResourceFormat::AUTO,
             SaveOption options = SaveOption::DEFAULT
         ) const override {
-            Bitmap& bitmap = (Bitmap&)resource;
+            DxBitmap& bitmap = (DxBitmap&)resource;
             imageLoader.save(stream, workingDir, *bitmap.Image, format, options);
         }
 

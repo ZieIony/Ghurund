@@ -27,6 +27,8 @@ namespace Ghurund::Engine {
 
         virtual IMaterial* makeUi() = 0;
 
+        virtual IMaterial* makeText() = 0;
+
         virtual IMaterial* makeBasicSky() = 0;
 
         virtual IMaterial* makeAdvancedSky() = 0;

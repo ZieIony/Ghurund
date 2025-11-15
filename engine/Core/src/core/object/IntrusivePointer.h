@@ -6,7 +6,7 @@
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core {
-	template<typename T>
+	template<Derived<RefCountedObject> T>
 	class IntrusivePointer {
 	private:
 		T* pointer = nullptr;

@@ -7,7 +7,7 @@
 namespace Ghurund::UI::DirectX {
     using namespace Ghurund::Core;
 
-    class Bitmap:public Ghurund::UI::Bitmap {
+    class DxBitmap:public Ghurund::UI::Bitmap {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -24,7 +24,7 @@ namespace Ghurund::UI::DirectX {
         Image* image = nullptr;
 
     public:
-        ~Bitmap() {
+        ~DxBitmap() {
             finalize();
         }
 

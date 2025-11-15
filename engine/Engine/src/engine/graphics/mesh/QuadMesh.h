@@ -13,14 +13,12 @@ namespace Ghurund::Engine {
 				{1.0f, 1.0f, 0.0f},
 			}), VertexRole::POSITION);
 
-			vertexCount = 4;
-
 			List<uint16_t> indices = {
 				0, 1, 2, // first triangle
 				2, 1, 3, // second triangle
 			};
 
-			MeshData::init({ posStream }, vertexCount, indices);
+			MeshData::init({ posStream }, vertexCount = 4, indices);
 		}
 	};
 }

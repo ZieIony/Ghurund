@@ -40,10 +40,5 @@ namespace Ghurund::Engine {
 		inline void putAll(const ParameterCollection& other) {
 			parameters.addAll(other.parameters);
 		}
-
-		inline void initDefaults(ParameterCollection& other) {
-			for (auto& entry : parameters)
-				entry->initDefault(other);
-		}
 	};
 }

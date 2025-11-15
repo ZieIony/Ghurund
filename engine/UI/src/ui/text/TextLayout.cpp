@@ -114,17 +114,17 @@ namespace Ghurund::UI {
 		for (auto& line : lines) {
 			for (auto& character : line) {
 				FloatRect src = {
-					character.glyph.offset.x,
-					character.glyph.offset.y,
-					character.glyph.offset.x + character.glyph.bitmapSize.Width,
-					character.glyph.offset.y + character.glyph.bitmapSize.Height
+					character.glyph.bitmapPos.x,
+					character.glyph.bitmapPos.y,
+					character.glyph.bitmapPos.x + character.glyph.bitmapSize.Width,
+					character.glyph.bitmapPos.y + character.glyph.bitmapSize.Height
 				};
 				canvas.save();
 				float s = format->Size / 32;
 				canvas.scale(s, s);
 				canvas.translate(
 					character.pos.x,
-					character.pos.y + format->Font->Ascent - character.glyph.originY
+					character.pos.y + format->Font->Ascent - character.glyph.shapeOrigin.y
 				);
 				Ghurund::Core::Color color = character.color;
 				canvas.drawImage(*atlas, src);

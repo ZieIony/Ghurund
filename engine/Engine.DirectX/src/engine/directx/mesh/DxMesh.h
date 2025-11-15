@@ -40,8 +40,10 @@ namespace Ghurund::Engine::DirectX {
     protected:
         bool uploaded = false;
 
+        List<VertexRole> roles;
         List<ComPtr<ID3D12Resource>> vertexBuffers;
         List<D3D12_VERTEX_BUFFER_VIEW> vertexBuffersView;
+
         ComPtr<ID3D12Resource> indexBuffer;
         D3D12_INDEX_BUFFER_VIEW indexBufferView;
         uint32_t indexCount;
@@ -75,7 +77,7 @@ namespace Ghurund::Engine::DirectX {
 			return __super::isValid() && vertexBuffers[0].Get() && indexBuffer.Get() && uploaded;
         }
 
-        void draw(CommandList& commandList);
+        void draw(CommandList& commandList, const Array<VertexRole>& layout);
 
 #pragma region formats
     protected:

@@ -26,19 +26,12 @@ namespace Ghurund::UI {
 		return (byte)std::max(0.0f, std::min(255.0f * value, 255.0f));
 	}
 
-	msdfgen::Shape shapeFromPolygonData(uint8_t* data, DWORD size, GLYPHMETRICS& glyphMetrics, IntSize glyphSize, uint32_t padding) {
-		auto tx = [&](double x) {
-			double offset = (std::max(glyphMetrics.gmBlackBoxX, glyphMetrics.gmBlackBoxY) - glyphMetrics.gmBlackBoxX) / 2.0f;
-			return (x - glyphMetrics.gmptGlyphOrigin.x + offset) / std::max(glyphMetrics.gmBlackBoxX, glyphMetrics.gmBlackBoxY) * (glyphSize.Width - padding * 2) + padding;
-			};
-		auto ty = [&](double y) {
-			double offset = (std::max(glyphMetrics.gmBlackBoxX, glyphMetrics.gmBlackBoxY) - glyphMetrics.gmBlackBoxY) / 2.0f;
-			return (glyphMetrics.gmptGlyphOrigin.y - y - offset) / std::max(glyphMetrics.gmBlackBoxX, glyphMetrics.gmBlackBoxY) * (glyphSize.Height - padding * 2) + padding;
-			};
-
+	msdfgen::Shape shapeFromPolygonData(uint8_t* data, DWORD size, FloatPoint& topLeft) {
 		msdfgen::Shape shape;
 		uint8_t* ptr = data;
 		size_t polys = 0;
+		topLeft.x = std::numeric_limits<float>::max();
+		topLeft.y = std::numeric_limits<float>::max();
 		while (ptr < data + size) {
 			size_t leftPolys = data + size - ptr;
 			TTPOLYGONHEADER header = *(TTPOLYGONHEADER*)ptr;
@@ -47,6 +40,8 @@ namespace Ghurund::UI {
 			uint8_t* endPoly = ptr + header.cb;
 			ptr += sizeof(TTPOLYGONHEADER);
 			msdfgen::Point2 start = fromFixed(header.pfxStart);
+			topLeft.x = std::min<float>(topLeft.x, start.x);
+			topLeft.y = std::min<float>(topLeft.y, start.y);
 			msdfgen::Point2 current = start;
 
 			// read primitives of this polygon
@@ -59,7 +54,9 @@ namespace Ghurund::UI {
 				if (curve->wType == TT_PRIM_LINE) {
 					for (size_t j = 0; j < curve->cpfx; j++) {
 						msdfgen::Point2 p2 = fromFixed(curve->apfx[j]);
-						contour.addEdge(new msdfgen::LinearSegment({ tx(current.x),ty(current.y) }, { tx(p2.x),ty(p2.y) }));
+						contour.addEdge(new msdfgen::LinearSegment({ current.x, current.y }, { p2.x, p2.y }));
+						topLeft.x = std::min<float>(topLeft.x, p2.x);
+						topLeft.y = std::min<float>(topLeft.y, p2.y);
 						current = p2;
 					}
 				} else if (curve->wType == TT_PRIM_QSPLINE) {
@@ -72,7 +69,11 @@ namespace Ghurund::UI {
 						} else {
 							p3 = fromFixed(curve->apfx[j + 1]);
 						}
-						contour.addEdge(new msdfgen::QuadraticSegment({ tx(current.x),ty(current.y) }, { tx(p2.x),ty(p2.y) }, { tx(p3.x),ty(p3.y) }));
+						contour.addEdge(new msdfgen::QuadraticSegment({ current.x, current.y }, { p2.x, p2.y }, { p3.x, p3.y }));
+						topLeft.x = std::min<float>(topLeft.x, p2.x);
+						topLeft.y = std::min<float>(topLeft.y, p2.y);
+						topLeft.x = std::min<float>(topLeft.x, p3.x);
+						topLeft.y = std::min<float>(topLeft.y, p3.y);
 						current = p3;
 					}
 				} else if (curve->wType == TT_PRIM_CSPLINE) {
@@ -81,6 +82,12 @@ namespace Ghurund::UI {
 						msdfgen::Point2 p3 = fromFixed(curve->apfx[j + 1]);
 						msdfgen::Point2 p4 = fromFixed(curve->apfx[j + 2]);
 						contour.addEdge(new msdfgen::CubicSegment(current, p2, p3, p4));
+						topLeft.x = std::min<float>(topLeft.x, p2.x);
+						topLeft.y = std::min<float>(topLeft.y, p2.y);
+						topLeft.x = std::min<float>(topLeft.x, p3.x);
+						topLeft.y = std::min<float>(topLeft.y, p3.y);
+						topLeft.x = std::min<float>(topLeft.x, p4.x);
+						topLeft.y = std::min<float>(topLeft.y, p4.y);
 						current = p4;
 					}
 				} else {
@@ -93,7 +100,7 @@ namespace Ghurund::UI {
 			if (ptr != endPoly)
 				throw InvalidDataException("invalid poly size");
 			if (start != current)
-				contour.addEdge(new msdfgen::LinearSegment({ tx(current.x),ty(current.y) }, { tx(start.x),ty(start.y) }));
+				contour.addEdge(new msdfgen::LinearSegment({ current.x, current.y }, { start.x, start.y }));
 			shape.addContour(contour);
 			polys++;
 		}
@@ -114,18 +121,18 @@ namespace Ghurund::UI {
 	}
 
 	void Font::initAtlas(const String& supportedCharacters, const IBitmapFactory& bitmapFactory) {
-		HDC hdcScreen = GetDC(NULL);
+		HDC hdc = GetDC(NULL);
 
 		float size = 12.0f;
-		float lfHeight = -size * GetDeviceCaps(hdcScreen, LOGPIXELSY) / 72.0f;
+		float lfHeight = -size * GetDeviceCaps(hdc, LOGPIXELSY) / 72.0f;
 		HFONT hf = CreateFont((int)lfHeight, 0, 0, 0, weight, italic ? TRUE : FALSE, 0, 0, 0, 0, 0, CLEARTYPE_QUALITY, 0, familyName.getData());
 
 		Finally f([&] {
-			ReleaseDC(NULL, hdcScreen);
+			ReleaseDC(NULL, hdc);
 			DeleteObject(hf);
-			});
+		});
 
-		GetTextMetrics(hdcScreen, &tm);
+		GetTextMetrics(hdc, &tm);
 		initKerning(hf);
 
 		initMsdf(hf, supportedCharacters, bitmapFactory);
@@ -157,24 +164,25 @@ namespace Ghurund::UI {
 	}
 
 	void Font::initKerning(HFONT hf) {
-		HDC hdcScreen = GetDC(NULL);
-		HDC hdcBmp = CreateCompatibleDC(hdcScreen);
-		HGDIOBJ prevFont = SelectObject(hdcBmp, hf);
+		HDC hdc = GetDC(NULL);
+		HGDIOBJ prevFont = SelectObject(hdc, hf);
 
 		Finally f([&] {
-			SelectObject(hdcBmp, prevFont);
-			DeleteDC(hdcBmp);
-			ReleaseDC(NULL, hdcScreen);
-			});
+			SelectObject(hdc, prevFont);
+			ReleaseDC(NULL, hdc);
+		});
 
 		kerning.clear();
-		DWORD result = GetKerningPairs(hdcBmp, 0, nullptr);
+		DWORD result = GetKerningPairs(hdc, -1, nullptr);
 		if (result == GDI_ERROR) {
 			auto errorCode = GetLastError();
 			throw InvalidParamException();
+		} else if (result == 0) {
+			Logger::log(LogType::INFO, _T("No kerning info for this font.\n"));
+			return;
 		}
 		Array<KERNINGPAIR> kerningPairs(result);
-		result = GetKerningPairs(hdcBmp, (DWORD)kerningPairs.Size, &kerningPairs[0]);
+		result = GetKerningPairs(hdc, (DWORD)kerningPairs.Size, &kerningPairs[0]);
 		if (result == GDI_ERROR) {
 			auto errorCode = GetLastError();
 			throw InvalidParamException();
@@ -192,59 +200,60 @@ namespace Ghurund::UI {
 	}
 
 	void Font::initGlyphs(HFONT hf, const String& characters) {
-		HDC hdcScreen = GetDC(NULL);
-		HDC hdcBmp = CreateCompatibleDC(hdcScreen);
-		HGDIOBJ prevFont = SelectObject(hdcBmp, hf);
+		HDC hdc = GetDC(NULL);
+		HGDIOBJ prevFont = SelectObject(hdc, hf);
 
 		Finally f([&] {
-			SelectObject(hdcBmp, prevFont);
-			DeleteDC(hdcBmp);
-			ReleaseDC(NULL, hdcScreen);
-			});
+			SelectObject(hdc, prevFont);
+			ReleaseDC(NULL, hdc);
+		});
+
+		float scale = (BITMAP_SIZE - 2 * MAX_DIST) / (float)Height;
 
 		glyphs.clear();
 		for (size_t i = 0; i < characters.Length; i++) {
 			tchar c = characters[i];
 			GLYPHMETRICS glyphMetrics = {};
 			MAT2 mat = { { 0, 1 },{ 0, 0 },{ 0, 0 },{ 0, 1 } };
-			DWORD result = GetGlyphOutline(hdcBmp, c, GGO_METRICS, &glyphMetrics, 0, nullptr, &mat);
+			DWORD result = GetGlyphOutline(hdc, c, GGO_METRICS, &glyphMetrics, 0, nullptr, &mat);
 			if (result == GDI_ERROR)
 				throw InvalidParamException();
 
-			float scale = (BITMAP_SIZE - 2 * PADDING - 2 * MAX_DIST) / (float)Height;
 			Glyph glyph = {
 				.shapeSize = {
 					glyphMetrics.gmBlackBoxX,
 					glyphMetrics.gmBlackBoxY
 				},
 				.bitmapSize = {
-					(uint32_t)std::ceilf(glyphMetrics.gmBlackBoxX * scale),
-					(uint32_t)std::ceilf(glyphMetrics.gmBlackBoxY * scale)
+					(uint32_t)std::ceilf(glyphMetrics.gmBlackBoxX * scale) + 2 * MAX_DIST,
+					(uint32_t)std::ceilf(glyphMetrics.gmBlackBoxY * scale) + 2 * MAX_DIST
 				},
-				.originY = glyphMetrics.gmptGlyphOrigin.y,
-				.offset{
+				.shapeOrigin = {
 					glyphMetrics.gmptGlyphOrigin.x,
 					glyphMetrics.gmptGlyphOrigin.y
-				}
+				},
+				.bitmapPos = { 0, 0 },
+				.scale = scale,
+				.width = (uint16_t)glyphMetrics.gmCellIncX
 			};
 			glyphs.put(c, glyph);
 		}
 	}
 
 	bool Font::fitAllGlyphs(const List<Glyph*>& sortedGlyphs, uint32_t width, uint32_t height) {
-		uint32_t currentWidth = PADDING, currentHeight = PADDING, maxRowHeight = 0;
+		uint32_t currentWidth = 0, currentHeight = 0, maxRowHeight = 0;
 		for (Glyph* glyph : sortedGlyphs) {
-			if (currentHeight + glyph->bitmapSize.Height + PADDING > height)
+			if (currentHeight + glyph->bitmapSize.Height> height)
 				return false;
-			glyph->offset.x = currentWidth;
-			glyph->offset.y = currentHeight;
-			currentWidth += glyph->bitmapSize.Width + PADDING;
+			glyph->bitmapPos.x = currentWidth;
+			glyph->bitmapPos.y = currentHeight;
+			currentWidth += glyph->bitmapSize.Width;
 			maxRowHeight = std::max(maxRowHeight, glyph->bitmapSize.Height);
 			if (currentWidth > width) {
-				currentWidth = glyph->bitmapSize.Width + PADDING * 2;
-				currentHeight += maxRowHeight + PADDING;
-				glyph->offset.x = 0;
-				glyph->offset.y = currentHeight;
+				currentWidth = glyph->bitmapSize.Width;
+				currentHeight += maxRowHeight;
+				glyph->bitmapPos.x = 0;
+				glyph->bitmapPos.y = currentHeight;
 				maxRowHeight = 0;
 			}
 		}
@@ -257,8 +266,8 @@ namespace Ghurund::UI {
 			sortedGlyphs.add(&glyph);
 		std::sort(sortedGlyphs.begin(), sortedGlyphs.end(), [](Glyph* first, Glyph* second) {
 			return first->bitmapSize.Height > second->bitmapSize.Height;
-			});
-		uint32_t width = std::bit_ceil(PADDING * 2 + glyphs.begin()->value.bitmapSize.Width);
+		});
+		uint32_t width = std::bit_ceil(glyphs.begin()->value.bitmapSize.Width);
 		uint32_t height = width;
 		while (true) {
 			if (fitAllGlyphs(sortedGlyphs, width, height))
@@ -280,7 +289,7 @@ namespace Ghurund::UI {
 			SelectObject(hdcBmp, prevFont);
 			DeleteDC(hdcBmp);
 			ReleaseDC(NULL, hdcScreen);
-			});
+		});
 
 		initGlyphs(hf, characters);
 		IntSize atlasSize = getAtlasSize();
@@ -304,15 +313,17 @@ namespace Ghurund::UI {
 			if (result == GDI_ERROR)
 				throw InvalidParamException();
 
-			Glyph glyph = glyphs.get(c);
-			msdfgen::Shape shape = shapeFromPolygonData(glyphOutlineData.Data, (DWORD)glyphOutlineData.Size, glyphMetrics, glyph.bitmapSize, MAX_DIST + PADDING);
+			FloatPoint topLeft;
+			msdfgen::Shape shape = shapeFromPolygonData(glyphOutlineData.Data, (DWORD)glyphOutlineData.Size, topLeft);
 
 			// whitespace characters don't have any shape data
 			if (shape.contours.size() > 0) {
 				shape.normalize();
 				msdfgen::edgeColoringByDistance(shape, 3);
+				Glyph glyph = glyphs.get(c);
 				msdfgen::Bitmap<float, 4> msdf(glyph.bitmapSize.Width, glyph.bitmapSize.Height);
-				msdfgen::generateMTSDF(msdf, shape, MAX_DIST, 1.0, msdfgen::Vector2(0.0, 0.0));
+				msdfgen::Projection p(glyph.scale, { MAX_DIST / glyph.scale - std::floor(topLeft.x), MAX_DIST / glyph.scale - std::floor(topLeft.y) });
+				msdfgen::generateMTSDF(msdf, shape, p, MAX_DIST);
 
 				for (uint32_t y = 0; y < (uint32_t)msdf.height(); y++) {
 					for (uint32_t x = 0; x < (uint32_t)msdf.width(); x++) {
@@ -321,7 +332,7 @@ namespace Ghurund::UI {
 						byte g = pixelFloatToByte(pixel[1]);
 						byte b = pixelFloatToByte(pixel[2]);
 						byte a = pixelFloatToByte(pixel[3]);
-						uint32_t pixelPos = (y + glyph.offset.y) * rowPitch + (x + glyph.offset.x) * pixelSize;
+						uint32_t pixelPos = (y + glyph.bitmapPos.y) * rowPitch + (x + glyph.bitmapPos.x) * pixelSize;
 						atlasData.Data[pixelPos] = r;
 						atlasData.Data[pixelPos + 1] = g;
 						atlasData.Data[pixelPos + 2] = b;

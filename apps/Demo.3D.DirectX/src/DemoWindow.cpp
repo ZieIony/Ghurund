@@ -9,8 +9,13 @@
 #include <engine/directx/texture/TextureProvider.h>
 #include <engine/directx/shader/ShaderProvider.h>
 #include <engine/directx/material/MaterialProvider.h>
+#include <ui/font/FontLoader.h>
+#include <ui/directx/image/BitmapFactory.h>
+#include <engine/graphics/mesh/TextMesh.h>
 
 namespace Demo {
+	using namespace Ghurund::UI::DirectX;
+
 	DemoWindow::DemoWindow(
 		DemoApplication& app,
 		Ghurund::Engine::DirectX::DxRenderer& renderer
@@ -21,14 +26,9 @@ namespace Demo {
 		Renderer = &renderer;
 		BackgroundColor = &Colors::LIGHT_SKY_BLUE;
 
-		auto meshData = makeIntrusive<QuadMesh>();
-		meshData->init();
-		mesh = makeIntrusive<DxMesh>();
 		DxGraphics* graphics = app.Features.get<DxGraphics>();
 		auto commandList = makeIntrusive<CommandList>();
 		commandList->init(*graphics, graphics->DirectQueue);
-
-		mesh->init(meshData.ref(), *graphics, *commandList.get());
 
 		TextureProvider textureProvider(*graphics, *commandList.get(), app.ResourceManager);
 		ShaderProvider shaderProvider(app.ResourceManager);
@@ -40,26 +40,43 @@ namespace Demo {
 		camera->updateParameters();
 		ParameterManager.Parameters.putAll(camera->Parameters);
 
+		bitmapFactory = makeShared<BitmapFactory>();
+		fontLoader = makeIntrusive<FontLoader>(bitmapFactory.ref());
+
+		app.ResourceManager.Loaders.set<Font>(fontLoader.ref());
+		font.set(app.ResourceManager.load<Font>(ResourcePath(FilePath(L"resources/fonts/lato_regular.ttf"))));
+
+		auto meshData = makeIntrusive<TextMesh>();
+		meshData->init(L"Heylo wórld.", font.ref());
+		mesh = makeIntrusive<DxMesh>();
+		mesh->init(meshData.ref(), *graphics, commandList.ref());
+
 		auto world = makeIntrusive<MatrixParameter>("world");
 		XMFLOAT4X4 identity;
 		XMStoreFloat4x4(&identity, XMMatrixIdentity());
 		world->setValue(identity);
 		ParameterManager.Parameters.put(world.get());
 
-		basicMaterial = IntrusivePointer<Material>(materialProvider.makeUi());
+		basicMaterial = IntrusivePointer<Material>(materialProvider.makeText());
 
 		sizeParameter.set((Float2Parameter*)basicMaterial->Parameters.get("size"));
 		backgroundColorParameter.set((Float4Parameter*)basicMaterial->Parameters.get("backgroundColor"));
 		borderColorParameter.set((Float4Parameter*)basicMaterial->Parameters.get("borderColor"));
+
+		colorTextureParameter.set((TextureParameter*)basicMaterial->Parameters.get("colorTexture"));
+		Texture* texture = ghnew Texture();
+		texture->init(*graphics, commandList.ref(), *((DxBitmap*)font->Atlas)->Image);
+		colorTexture.set(texture);
+		colorTextureParameter->Value = colorTexture.get();
 	}
 
 	bool DemoWindow::onMouseButtonEvent(const MouseButtonEventArgs& args) {
 		if (args.Action == MouseButtonAction::PRESSED) {
-			backgroundColorParameter->Value = Colors::GRAY.toVector();
-			borderColorParameter->Value = Colors::LIGHT_GRAY.toVector();
+			//backgroundColorParameter->Value = Colors::GRAY.toVector();
+			//borderColorParameter->Value = Colors::LIGHT_GRAY.toVector();
 		} else if (args.Action == MouseButtonAction::RELEASED) {
-			backgroundColorParameter->Value = Colors::LIGHT_GRAY.toVector();
-			borderColorParameter->Value = Colors::WHITE.toVector();
+			//backgroundColorParameter->Value = Colors::LIGHT_GRAY.toVector();
+			//borderColorParameter->Value = Colors::WHITE.toVector();
 		}
 		return true;
 	}
@@ -97,6 +114,6 @@ namespace Demo {
 		auto commandList = dxContext.SwapChain.CurrentFrame.CommandList;
 		DxGraphics* graphics = app.Features.get<DxGraphics>();
 		basicMaterial->set(*graphics, *commandList, ParameterManager);
-		mesh->draw(*commandList);
+		mesh->draw(*commandList, basicMaterial->Layout);
 	}
 }

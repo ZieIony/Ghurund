@@ -9,28 +9,21 @@ cbuffer perCamera: register(b0) {
 }
 
 cbuffer perObject: register(b1) {
-    float2 position = float2(50, 50);
-    float2 size = float2(120, 40);
+    float2 position = float2(50, 350);
+    float2 size = float2(300, 300);
     float4 backgroundColor;
     float4 borderColor;
     float4 cornerRadius = float4(4, 4, 4, 4);
     float borderWidth = 1;
 }
 
-SamplerState linearSampler: register(s0);
-Texture2D diffuseTexture: register(t0);
-
-float2 screenToClip(float2 pos) {
-    return pos / viewportSize * 2 - 1;
-}
-
 ScreenPixel vertexMain(ScreenVertex input) {
     ScreenPixel output;
 
     float2 rectPos = float2(position.x, viewportSize.y - position.y);
-    float2 pos = screenToClip(input.position.xy * size + rectPos);
+    float2 pos = screenToClip(input.position.xy * size + rectPos, viewportSize);
     output.position = float4(pos, input.position.z, 1);
-    output.texCoord = input.position.xy;
+    output.texCoord = float2(input.position.x, 1-input.position.y);
 
     return output;
 }

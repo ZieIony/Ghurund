@@ -29,8 +29,8 @@ namespace Ghurund::Engine::DirectX {
 			inputElements[i].SemanticName = copyStr(parameterDesc.SemanticName);
 			inputElements[i].SemanticIndex = parameterDesc.SemanticIndex;
 			inputElements[i].Format = getFormat(parameterDesc.Mask, parameterDesc.ComponentType);
-			inputElements[i].InputSlot = 0;
-			inputElements[i].AlignedByteOffset = i == 0 ? 0 : D3D12_APPEND_ALIGNED_ELEMENT;
+			inputElements[i].InputSlot = i;
+			inputElements[i].AlignedByteOffset = 0;
 			inputElements[i].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
 			inputElements[i].InstanceDataStepRate = 0;
 		}
@@ -39,6 +39,21 @@ namespace Ghurund::Engine::DirectX {
 		reflector->Release();
 
 		return inputLayoutDesc;
+	}
+
+	Array<VertexRole> DxShaderCompiler::makeLayout(const D3D12_INPUT_LAYOUT_DESC& desc) {
+		Array<VertexRole> layout(desc.NumElements);
+		for (size_t i = 0; i < desc.NumElements; i++) {
+			auto& inputElement = desc.pInputElementDescs[i];
+			if (AString("POSITION") == inputElement.SemanticName) {
+				layout[i] = VertexRole::POSITION;
+			} else if (AString("TEXCOORD") == inputElement.SemanticName) {
+				layout[i] = VertexRole::TEXCOORD;
+			} else if (AString("NORMAL") == inputElement.SemanticName) {
+				layout[i] = VertexRole::NORMAL;
+			}
+		}
+		return layout;
 	}
 
 	DXGI_FORMAT DxShaderCompiler::getFormat(BYTE mask, D3D_REGISTER_COMPONENT_TYPE componentType) {
@@ -100,15 +115,31 @@ namespace Ghurund::Engine::DirectX {
 		List<Sampler*> samplers;
 		for (auto& program : programs)
 			initConstants(*program.get(), constantBuffers, textures, samplers);
+
+		D3D12_INPUT_LAYOUT_DESC inputLayout;
+		for (auto& program : programs) {
+			if (program->Type == DxShaderType::VERTEX) {
+				inputLayout = getInputLayout(program->ByteCode);
+				break;
+			}
+		}
+		Array<VertexRole> layout = makeLayout(inputLayout);
+		Finally f = [&] {
+			for (size_t i = 0; i < inputLayout.NumElements; i++)
+				delete[] inputLayout.pInputElementDescs[i].SemanticName;
+			delete[] inputLayout.pInputElementDescs;
+		};
+
 		auto rootSignature = makeRootSignature(constantBuffers, textures, samplers);
-		auto pipelineState = makePipelineState(programs, &rootSignature, isTransparencyEnabled);
+		auto pipelineState = makePipelineState(programs, inputLayout, &rootSignature, isTransparencyEnabled);
 		OwnedNotNull<DxShader, RefCountedObjectDeleter> shader(ghnew DxShader());
-		shader->init(std::move(rootSignature), std::move(pipelineState), constantBuffers, textures, samplers, isTransparencyEnabled);
+		shader->init(layout, std::move(rootSignature), std::move(pipelineState), constantBuffers, textures, samplers, isTransparencyEnabled);
 		return shader;
 	}
 
 	OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> DxShaderCompiler::makePipelineState(
 		const Array<SharedPointer<DxShaderProgram>>& programs,
+		D3D12_INPUT_LAYOUT_DESC inputLayout,
 		ID3D12RootSignature* rootSignature,
 		bool isTransparencyEnabled
 	) {
@@ -117,7 +148,7 @@ namespace Ghurund::Engine::DirectX {
 
 		for (auto& program : programs) {
 			if (program->Type == DxShaderType::VERTEX) {
-				psoDesc.InputLayout = getInputLayout(program->ByteCode);
+				psoDesc.InputLayout = inputLayout;
 				psoDesc.VS.pShaderBytecode = program->ByteCode.Data;
 				psoDesc.VS.BytecodeLength = program->ByteCode.Size;
 			} else if (program->Type == DxShaderType::PIXEL) {
@@ -173,12 +204,6 @@ namespace Ghurund::Engine::DirectX {
 			Logger::log(LogType::ERR0R, _T("device->CreateGraphicsPipelineState() failed\n"));
 			throw CallFailedException();
 		}
-
-		Finally f = [&] {
-			for (unsigned int i = 0; i < psoDesc.InputLayout.NumElements; i++)
-				delete[] psoDesc.InputLayout.pInputElementDescs[i].SemanticName;
-			delete[] psoDesc.InputLayout.pInputElementDescs;
-		};
 
 		return OwnedNotNull<ID3D12PipelineState, IUnknownDeleter>(pipelineState);
 	}

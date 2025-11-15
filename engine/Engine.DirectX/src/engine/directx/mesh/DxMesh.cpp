@@ -26,8 +26,11 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	void DxMesh::initVertexBuffers(const Array<VertexStream>& vertexStreams, uint32_t vertexCount, DxGraphics& graphics, CommandList& commandList) {
+		roles.clear();
 		vertexBuffers.clear();
-		for (size_t i = 0; i < vertexStreams.Size;i++) {
+		vertexBuffersView.clear();
+		vertexUploadHeaps.clear();
+		for (size_t i = 0; i < vertexStreams.Size; i++) {
 			const VertexStream& stream = vertexStreams[i];
 
 			unsigned int vertexBufferSize = stream.vertexSize * vertexCount;
@@ -80,13 +83,15 @@ namespace Ghurund::Engine::DirectX {
 			commandList.addResourceRef(vertexUploadHeap.Get());
 			commandList.addResourceRef(vertexBuffer.Get());
 
+			roles.add(stream.role);
 			vertexBuffers.add(vertexBuffer);
 			vertexBuffersView.add(vertexBufferView);
 			vertexUploadHeaps.add(vertexUploadHeap);
 		}
 	}
+
 	void DxMesh::initIndexBuffer(const Buffer& indices, uint32_t indexCount, DxGraphics& graphics, CommandList& commandList) {
-		unsigned int indexBufferSize = indices.Size;
+		size_t indexBufferSize = indices.Size;
 		this->indexCount = indexCount;
 
 		auto defaultHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
@@ -142,11 +147,22 @@ namespace Ghurund::Engine::DirectX {
 		commandList.addResourceRef(indexBuffer.Get());
 	}
 
-	void DxMesh::draw(CommandList& commandList) {
+	void DxMesh::draw(CommandList& commandList, const Array<VertexRole>& layout) {
 		commandList.addPointerRef(this);
 		ID3D12GraphicsCommandList* list = commandList.get();
 		list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		list->IASetVertexBuffers(0, vertexBuffersView.Size, &vertexBuffersView[0]);
+
+		Array<D3D12_VERTEX_BUFFER_VIEW> bufferViews(layout.Size);
+		for (size_t j = 0; j < layout.Size; j++) {
+			for (size_t i = 0; i < roles.Size; i++) {
+				if (roles[i] == layout[j]) {
+					bufferViews[j] = vertexBuffersView[i];
+					break;
+				}
+			}
+		}
+		list->IASetVertexBuffers(0, bufferViews.Size, &bufferViews[0]);
+
 		list->IASetIndexBuffer(&indexBufferView);
 		list->DrawIndexedInstanced(indexCount, 1, 0, 0, 0);
 	}

@@ -153,6 +153,7 @@
     <ClInclude Include="src\engine\graphics\mesh\PlaneMesh.h" />
     <ClInclude Include="src\engine\graphics\mesh\QuadMesh.h" />
     <ClInclude Include="src\engine\graphics\mesh\SphereMesh.h" />
+    <ClInclude Include="src\engine\graphics\mesh\TextMesh.h" />
     <ClInclude Include="src\engine\graphics\mesh\VertexStream.h" />
     <ClInclude Include="src\engine\graphics\shader\IShader.h" />
     <ClInclude Include="src\engine\graphics\shader\ShaderCode.h" />
@@ -208,6 +209,7 @@
     <ClCompile Include="src\engine\game\action\ActionMapping.cpp" />
     <ClCompile Include="src\engine\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\engine\graphics\IMaterial.cpp" />
+    <ClCompile Include="src\engine\graphics\mesh\TextMesh.cpp" />
     <ClCompile Include="src\engine\graphics\Renderer.cpp" />
     <ClCompile Include="src\engine\graphics\RenderingStatistics.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\ConeMesh.cpp" />

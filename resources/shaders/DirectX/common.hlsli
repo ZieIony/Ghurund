@@ -5,19 +5,24 @@ struct DefaultVertex {
     float2 texCoord : TEXCOORD0;
 };
 
-struct ScreenVertex {
-    float3 position : POSITION;
-};
-
-struct ScreenPixel {
-    float4 position : SV_POSITION;
-    float2 texCoord: TEXCOORD0;
-};
-
 struct DefaultPixel {
     float4 position : SV_POSITION;
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
+    float2 texCoord: TEXCOORD0;
+};
+
+struct ScreenVertex {
+    float3 position: POSITION;
+};
+
+struct TextVertex {
+    float3 position: POSITION;
+    float2 texCoord: TEXCOORD0;
+};
+
+struct ScreenPixel {
+    float4 position: SV_POSITION;
     float2 texCoord: TEXCOORD0;
 };
 
@@ -45,4 +50,8 @@ float3x3 getWorldToTangent(float3 normal, float3 tangent, float4x4 world){
     worldToTangentSpace[1] = mul(cross(tangent, normal), world);
     worldToTangentSpace[2] = mul(normal, world);
 	return worldToTangentSpace;
+}
+
+float2 screenToClip(float2 pos, int2 viewportSize) {
+    return pos / viewportSize * 2 - 1;
 }

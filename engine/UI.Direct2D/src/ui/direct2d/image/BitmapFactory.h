@@ -2,6 +2,7 @@
 
 #include "ui/image/BitmapFactory.h"
 #include "ui/direct2d/image/Bitmap.h"
+#include "core/object/IntrusivePointer.h"
 
 namespace Ghurund::UI::Direct2D {
 	class BitmapFactory:public IBitmapFactory {

@@ -32,7 +32,6 @@ private:
         Assert::IsNotNull(dynamic_cast<ValueParameter<T>*>(parameter));
         ValueParameter<T>* typedParameter = (ValueParameter<T>*)parameter;
         Assert::AreEqual(sizeof(T), typedParameter->Size);
-        Assert::IsNull(typedParameter->DefaultValue);
         auto paramValue = typedParameter->Value;
 		Assert::IsTrue(memcmp(&paramValue, &value, sizeof(T)) == 0);
     }
