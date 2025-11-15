@@ -209,7 +209,6 @@
     <ClCompile Include="src\engine\game\action\ActionMapping.cpp" />
     <ClCompile Include="src\engine\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\engine\graphics\IMaterial.cpp" />
-    <ClCompile Include="src\engine\graphics\mesh\TextMesh.cpp" />
     <ClCompile Include="src\engine\graphics\Renderer.cpp" />
     <ClCompile Include="src\engine\graphics\RenderingStatistics.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\ConeMesh.cpp" />
@@ -217,6 +216,7 @@
     <ClCompile Include="src\engine\graphics\mesh\MeshData.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\MeshDataLoader.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\SphereMesh.cpp" />
+    <ClCompile Include="src\engine\graphics\mesh\TextMesh.cpp" />
     <ClCompile Include="src\engine\graphics\shader\IShader.cpp" />
     <ClCompile Include="src\engine\graphics\shader\ShaderCode.cpp" />
     <ClCompile Include="src\engine\net\Client.cpp" />

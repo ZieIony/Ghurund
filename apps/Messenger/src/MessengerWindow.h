@@ -1,36 +1,36 @@
 #include "Common.h"
 #include "core/application/Application.h"
-#include "core/window/SystemWindow.h"
+#include "core/application/ApplicationWindow.h"
 #include "core/math/MathUtils.h"
-#include "ui/layout/StackLayout.h"
-#include "ui/control/PaddingContainer.h"
-#include "ui/RootView.h"
+#include "core/window/SystemWindow.h"
+#include "engine/net/Client.h"
+#include "engine/net/Server.h"
+#include "ui/directx/UIContext.h"
 #include "ui/loading/LayoutLoader.h"
-#include "ui/style/LightTheme.h"
-#include "net/Server.h"
-#include "net/Client.h"
-#include "ui/direct2d/UIContext.h"
+#include "ui/theme/LightTheme.h"
+#include <core/object/SharedPointer.h>
+#include <engine/directx/DxRenderer.h>
+#include <ui/text/TextBlock.h>
+#include <ui/theme/Theme.h>
 
-#include "application/ApplicationWindow.h"
-
-export namespace Messenger {
-    using namespace Ghurund;
+namespace Messenger {
+    using namespace Ghurund::Engine::DirectX;
     using namespace Ghurund::Core;
     using namespace Ghurund::UI;
-    using namespace Ghurund::UI::Direct2D;
+    using namespace Ghurund::UI::DirectX;
     using namespace Ghurund::Net;
 
     class MessengerWindow:public ApplicationWindow {
     private:
         Theme* theme;
-        UIContext* context;
+        UiContext* context;
         Server server;
         Client client;
         SharedPointer<TextBlock> status;
         SharedPointer<TextBlock> clientCount;
 
     public:
-        MessengerWindow(Ghurund::Core::Application& app, Renderer& renderer);
+        MessengerWindow(Ghurund::Core::Application& app);
 
         ~MessengerWindow();
 

@@ -3,7 +3,7 @@
 #include "PreviewLayout.h"
 #include "engine/application/GameWindow.h"
 #include <engine/directx/DxRenderer.h>
-#include <ui/direct2d/D2DUILayer.h>
+#include "ui/directx/DXUILayer.h"
 
 namespace Preview {
 	using namespace Ghurund;
@@ -25,7 +25,7 @@ namespace Preview {
 		FileWatcher fileWatcher;
 		std::function<void()> loadCallback;
 		ThemeApplication& themeApp;
-		Ghurund::UI::Direct2D::D2DUILayer* uiLayer = nullptr;
+		Ghurund::UI::DirectX::DXUILayer* uiLayer = nullptr;
 
 	public:
 		PreviewWindow(

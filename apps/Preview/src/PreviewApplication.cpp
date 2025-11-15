@@ -1,23 +1,18 @@
 #include "PreviewApplication.h"
 
 #include "core/io/DirectoryLibrary.h"
-#include "ui/direct2d/Graphics2DFactory.h"
-#include "ui/direct2d/UIFeatureFactory.h"
 #include "ui/theme/LightTheme.h"
 #include "ui/theme/DarkTheme.h"
 
 namespace Preview {
     PreviewApplication::PreviewApplication() {
         Features.add<DxGraphics>();
-        Features.add<Ghurund::UI::Direct2D::Graphics2D, Ghurund::UI::Direct2D::Graphics2DFactory>();
-        Features.add<Ghurund::UI::Direct2D::UIFeature, Ghurund::UI::Direct2D::UIFeatureFactory>();
     }
     
     void PreviewApplication::onInit() {
         __super::onInit();
 
-        auto uiFeature = Features.get<UIFeature>();
-        auto drawableFactory = uiFeature->DrawableFactory;
+        auto drawableFactory = ghnew Ghurund::UI::DrawableFactory(ResourceManager);
 
         lightTheme.set(ghnew LightTheme(ResourceManager, *drawableFactory));
         darkTheme.set(ghnew DarkTheme(ResourceManager, *drawableFactory));

@@ -1,10 +1,6 @@
 #include "TextMessage.h"
 #include "core/window/WindowClass.h"
 
-#include "ui/control/Space.h"
-#include "ui/layout/LinearLayout.h"
-#include "net/Networking.h"
-
 #include <ranges>
 
 #include "MessengerWindow.h"
@@ -16,14 +12,15 @@ namespace Messenger {
     using namespace Ghurund::Net;
     using namespace std::ranges;
 
-    MessengerWindow::MessengerWindow(Ghurund::Core::Application& app, Renderer& renderer):ApplicationWindow(app, renderer) {
-        Style = WindowStyle{
+    MessengerWindow::MessengerWindow(
+        Ghurund::Core::Application& app
+    ):ApplicationWindow(app, WindowStyle{
                .hasMinimizeButton = true,
                .hasMaximizeButton = true,
                .hasTitle = true,
                .borderStyle = WindowBorderStyle::RESIZE,
                .showOnTaskbar = true
-        };
+        }) {
     }
 
     MessengerWindow::~MessengerWindow() {

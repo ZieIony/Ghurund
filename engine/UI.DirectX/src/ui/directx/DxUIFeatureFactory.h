@@ -5,9 +5,9 @@
 #include "core/feature/FeatureFactory.h"
 
 namespace Ghurund::UI::DirectX {
-	class UIFeatureFactory:public FeatureFactory {
+	class DxUIFeatureFactory:public FeatureFactory {
 	public:
-		UIFeatureFactory(Application& app):FeatureFactory(app) {}
+		DxUIFeatureFactory(Application& app):FeatureFactory(app) {}
 
 		virtual OwnedNotNull<Feature> make() const override {
 			return OwnedNotNull<Feature>(ghnew DxUIFeature(app.ResourceManager));

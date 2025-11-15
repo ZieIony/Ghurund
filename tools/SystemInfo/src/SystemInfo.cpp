@@ -1,7 +1,7 @@
 #include "core/SystemInfo.h"
 #include "core/object/IntrusivePointer.h"
 #include "core/logging/Logger.h"
-#include "engine/directx/Graphics.h"
+#include "engine/directx/graphics/Graphics.h"
 #include "Ghurund.Engine.h"
 
 using namespace Ghurund::Core;

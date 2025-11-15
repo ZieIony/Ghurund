@@ -1,6 +1,6 @@
 #pragma once
 
-#include "net/ClientMessage.h"
+#include "engine/net/ClientMessage.h"
 
 namespace Messenger {
     struct TextMessage:public Ghurund::Net::ClientMessage {

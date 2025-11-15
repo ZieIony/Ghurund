@@ -1,15 +1,20 @@
-﻿#include "net/Networking.h"
-#include "graphics/Renderer.h"
-#include "ui/style/LightTheme.h"
-#include "core/application/Application.h"
-#include "ui/UIFeature.h"
+﻿#include "core/application/Application.h"
+#include "engine/graphics/Renderer.h"
+#include "engine/net/Networking.h"
+#include "MessengerWindow.h"
+#include "ui/directx/DxUIFeature.h"
+#include "ui/theme/LightTheme.h"
+#include <engine/directx/DxRenderer.h>
+#include <engine/parameter/ParameterManager.h>
+#include <ui/directx/DxUIFeatureFactory.h>
+#include "core/math/Int.h"
 
+#include <cstdint>
 #include <format>
 
-#include "MessengerWindow.h"
-
-export namespace Messenger {
-    using namespace Ghurund;
+namespace Messenger {
+    using namespace Ghurund::Engine;
+    using namespace Ghurund::Engine::DirectX;
     using namespace Ghurund::UI;
     using namespace Ghurund::Net;
 
@@ -18,20 +23,20 @@ export namespace Messenger {
         Theme* lightTheme;
 
     protected:
-        Renderer renderer;
+        DxRenderer* renderer;
         ParameterManager parameterManager;
 
     public:
         MessengerApplication() {
-            auto uiFeature = ghnew UIFeature(*this);
-            Features.add(std::unique_ptr<UIFeature>(uiFeature));
-            Ghurund::UI::Direct2D::Graphics2D& graphics2d = uiFeature->Graphics2D;
-            lightTheme = ghnew LightTheme(ResourceManager);
+            auto drawableFactory = ghnew DrawableFactory(ResourceManager);
+            Features.add<DxUIFeature, DxUIFeatureFactory>();
+            lightTheme = ghnew LightTheme(ResourceManager, *drawableFactory);
             LayoutLoader* layoutLoader = (LayoutLoader*)ResourceManager.Loaders.get<Control>();
-            layoutLoader->Theme = lightTheme;
+            //layoutLoader->Theme = lightTheme;
+            renderer = ghnew DxRenderer(*Features.get<DxGraphics>());
 
-            Features.add(std::make_unique<Graphics>());
-            Features.add(std::make_unique<Networking>());
+            Features.add<DxGraphics>();
+            Features.add<Networking>();
         }
 
         ~MessengerApplication() {
@@ -39,11 +44,10 @@ export namespace Messenger {
         }
 
         virtual void onInit() override {
-            renderer.init(Features.get<Graphics>(), parameterManager);
+            renderer->init();
 
-            auto window = ghnew MessengerWindow(*this, renderer);
-            window->Size = { Settings.get<uint32_t>("width"), Settings.get<uint32_t>("height") };
-            Windows.add(window);
+            auto window = ghnew MessengerWindow(*this);
+            window->Size = { parse<uint32_t>(Settings.get("width")), parse<uint32_t>(Settings.get("height")) };
             window->Visible = true;
             window->bringToFront();
         }

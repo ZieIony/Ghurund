@@ -5,8 +5,7 @@ project "Samples.UI.Text"
 	dependson {
 		"Core",
 		"UI",
-		"UI.GDI",
-		"UI.Direct2D",
+		"UI.DirectX",
 		"Engine"
 	}
 
@@ -21,8 +20,7 @@ project "Samples.UI.Text"
 		"generated/bindings",
 		includeDir["Core"],
 		includeDir["UI"],
-		includeDir["UI.GDI"],
-		includeDir["UI.Direct2D"],
+		includeDir["UI.DirectX"],
 		includeDir["Engine"],
 		includeDir["msdfgen"],
 		includeDir["entt"],
@@ -36,8 +34,7 @@ project "Samples.UI.Text"
 	links {
 		"Core",
 		"UI",
-		"UI.GDI",
-		"UI.Direct2D",
+		"UI.DirectX",
 		"Engine"
 	}
 	

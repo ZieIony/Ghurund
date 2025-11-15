@@ -6,7 +6,6 @@ project "Editor"
 		"Core",
 		"Engine.DirectX",
 		"UI",
-		"UI.Direct2D",
 		"Engine"
 	}
 
@@ -22,7 +21,6 @@ project "Editor"
 		includeDir["Core"],
 		includeDir["Engine.DirectX"],
 		includeDir["UI"],
-		includeDir["UI.Direct2D"],
 		includeDir["Engine"],
 		includeDir["entt"],
 		includeDir["CRC"],
@@ -36,7 +34,6 @@ project "Editor"
 		"Core",
 		"Engine.DirectX",
 		"UI",
-		"UI.Direct2D",
 		"Engine"
 	}
 	

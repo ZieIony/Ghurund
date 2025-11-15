@@ -99,10 +99,10 @@
     <ClInclude Include="src\ui\directx\DxUIFeature.h" />
     <ClInclude Include="src\ui\directx\Shape.h" />
     <ClInclude Include="src\ui\directx\UIContext.h" />
-    <ClInclude Include="src\ui\directx\UIFeatureFactory.h" />
-    <ClInclude Include="src\ui\directx\image\DxBitmap.h" />
+    <ClInclude Include="src\ui\directx\DxUIFeatureFactory.h" />
     <ClInclude Include="src\ui\directx\image\BitmapFactory.h" />
     <ClInclude Include="src\ui\directx\image\BitmapLoader.h" />
+    <ClInclude Include="src\ui\directx\image\DxBitmap.h" />
     <ClInclude Include="src\ui\directx\loading\ShapeFactory.h" />
     <ClInclude Include="src\ui\directx\loading\TextFormatFactory.h" />
   </ItemGroup>

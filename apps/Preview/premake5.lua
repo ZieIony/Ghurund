@@ -4,10 +4,10 @@ project "Preview"
 
 	dependson {
 		"Core",
+		"Engine",
 		"Engine.DirectX",
 		"UI",
-		"UI.Direct2D",
-		"Engine"
+		"UI.DirectX"
 	}
 
 	files {
@@ -21,10 +21,10 @@ project "Preview"
 		"src",
 		"generated/bindings",
 		includeDir["Core"],
+		includeDir["Engine"],
 		includeDir["Engine.DirectX"],
 		includeDir["UI"],
-		includeDir["UI.Direct2D"],
-		includeDir["Engine"],
+		includeDir["UI.DirectX"],
 		includeDir["entt"],
 		includeDir["CRC"],
 		includeDir["angelscript"],
@@ -35,10 +35,10 @@ project "Preview"
 
 	links {
 		"Core",
+		"Engine",
 		"Engine.DirectX",
 		"UI",
-		"UI.Direct2D",
-		"Engine"
+		"UI.DirectX"
 	}
 	
 	filter "configurations:Debug"
