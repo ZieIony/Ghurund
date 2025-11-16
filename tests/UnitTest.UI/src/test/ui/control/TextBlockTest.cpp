@@ -11,7 +11,6 @@
 #include "ui/RootView.h"
 #include "test/ui/text/TextLayout.h"
 #include "test/ui/TestUIContext.h"
-#include "test/ui/TestBitmapFactory.h"
 
 #include <format>
 
@@ -30,13 +29,12 @@ private:
     IUIContext* context;
     TextFormat* textFormat;
     FontLoader* fontLoader;
-    TestBitmapFactory bitmapFactory;
 
 public:
     TextBlockTest() {
         window = ghnew SystemWindow(timer);
         context = ghnew TestUIContext(*window);
-        fontLoader = ghnew FontLoader(bitmapFactory);
+        fontLoader = ghnew FontLoader();
         resourceManager.Loaders.set<Font>(*fontLoader);
         ResourcePath path = Ghurund::Core::FilePath(L"../../resources/fonts\\lato_medium.ttf");
         Ghurund::Core::IntrusivePointer<Font> latoMediumFont(resourceManager.load<Font>(path, DirectoryPath()));

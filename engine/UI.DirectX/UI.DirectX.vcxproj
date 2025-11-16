@@ -100,9 +100,6 @@
     <ClInclude Include="src\ui\directx\Shape.h" />
     <ClInclude Include="src\ui\directx\UIContext.h" />
     <ClInclude Include="src\ui\directx\DxUIFeatureFactory.h" />
-    <ClInclude Include="src\ui\directx\image\BitmapFactory.h" />
-    <ClInclude Include="src\ui\directx\image\BitmapLoader.h" />
-    <ClInclude Include="src\ui\directx\image\DxBitmap.h" />
     <ClInclude Include="src\ui\directx\loading\ShapeFactory.h" />
     <ClInclude Include="src\ui\directx\loading\TextFormatFactory.h" />
   </ItemGroup>
@@ -114,7 +111,6 @@
     <ClCompile Include="src\ui\directx\DxUIFeature.cpp" />
     <ClCompile Include="src\ui\directx\Shape.cpp" />
     <ClCompile Include="src\ui\directx\UIContext.cpp" />
-    <ClCompile Include="src\ui\directx\image\DxBitmap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">

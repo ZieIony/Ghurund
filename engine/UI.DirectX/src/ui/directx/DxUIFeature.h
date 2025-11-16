@@ -30,7 +30,6 @@ namespace Ghurund::UI::DirectX {
         Ghurund::UI::IDrawableFactory* drawableFactory = nullptr;
         Ghurund::UI::DirectX::TextFormatFactory* textFormatFactory = nullptr;
         Ghurund::UI::ConstraintFactory* constraintFactory = nullptr;
-        Ghurund::UI::IBitmapFactory* bitmapFactory = nullptr;
         IntrusivePointer<Ghurund::UI::LayoutLoader> layoutLoader;
 
     public:
@@ -54,10 +53,6 @@ namespace Ghurund::UI::DirectX {
 
         virtual Ghurund::UI::ConstraintFactory* getConstraintFactory() override {
             return constraintFactory;
-        }
-
-        virtual IBitmapFactory* getBitmapFactory() override {
-            return bitmapFactory;
         }
 
         virtual Ghurund::UI::LayoutLoader* getLayoutLoader() {

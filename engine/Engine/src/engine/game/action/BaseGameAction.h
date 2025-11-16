@@ -35,7 +35,7 @@ namespace Ghurund::Engine {
 		T value;
 
 	protected:
-		virtual bool getShouldBeInProgress(T value) const = 0;
+		virtual bool getShouldBeInProgress(const T& value) const = 0;
 
 	public:
 		inline T getValue() const {

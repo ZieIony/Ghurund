@@ -47,7 +47,7 @@ namespace UnitTest {
 		TestFloatAction(float threshold = 0.01f):GameAction(threshold) {}
 	};
 
-	class TestFloatPointAction:public GameAction<FloatPoint> {
+	class TestFloatPointAction:public GameAction<XMFLOAT2> {
 	protected:
 		virtual void onStarted() override {
 			state = TestActionState::STARTED;

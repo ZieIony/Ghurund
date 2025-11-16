@@ -6,7 +6,7 @@
 namespace Ghurund::UI {
 	class LayoutManager {
 	protected:
-		FloatPoint scroll = { 0, 0 };
+		XMFLOAT2 scroll = { 0, 0 };
 
 	public:
 		virtual ~LayoutManager() = 0 {}
@@ -17,11 +17,11 @@ namespace Ghurund::UI {
 			return false;
 		}
 
-		inline const FloatPoint& getScroll() const {
+		inline const XMFLOAT2& getScroll() const {
 			return scroll;
 		}
 
-		__declspec(property(get = getScroll)) const FloatPoint& Scroll;
+		__declspec(property(get = getScroll)) const XMFLOAT2& Scroll;
 
 		virtual bool onScroll(float dx, float dy) {
 			return false;

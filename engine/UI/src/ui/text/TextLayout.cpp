@@ -15,8 +15,8 @@ namespace Ghurund::UI {
 			if (!format)
 				format = this->format;
 			auto color = getColor(i);
-			auto it = format->Font->Glyphs.find(c);
-			if (it != format->Font->Glyphs.end()) {
+			auto it = format->Font->Atlas->Glyphs.find(c);
+			if (it != format->Font->Atlas->Glyphs.end()) {
 				auto glyph = it->value;
 				line.add(CharacterInfo(c, i, { prevX, y }, glyph, color, format));
 				int kerning = format->Font->getKerning(prevC, c);
@@ -110,7 +110,6 @@ namespace Ghurund::UI {
 			return;
 		if (!valid)
 			refresh();
-		Bitmap* atlas = format->Font->Atlas;
 		for (auto& line : lines) {
 			for (auto& character : line) {
 				FloatRect src = {
@@ -127,7 +126,7 @@ namespace Ghurund::UI {
 					character.pos.y + format->Font->Ascent - character.glyph.shapeOrigin.y
 				);
 				Ghurund::Core::Color color = character.color;
-				canvas.drawImage(*atlas, src);
+				//canvas.drawImage(*atlas, src);
 				canvas.Color = Ghurund::Core::Color(0xffff0000);
 				canvas.drawRect(0, 0, character.glyph.bitmapSize.Width, character.glyph.bitmapSize.Height, 1.0f);
 				canvas.Color = Ghurund::Core::Color(0xff00ff00);

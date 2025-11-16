@@ -108,8 +108,6 @@
     <ClInclude Include="src\ui\opengl\effects\ShadowEffect.h" />
     <ClInclude Include="src\ui\opengl\effects\TintEffect.h" />
     <ClInclude Include="src\ui\opengl\font\Font.h" />
-    <ClInclude Include="src\ui\opengl\image\Bitmap.h" />
-    <ClInclude Include="src\ui\opengl\image\BitmapLoader.h" />
     <ClInclude Include="src\ui\opengl\loading\ShapeFactory.h" />
     <ClInclude Include="src\ui\opengl\loading\TextFormatFactory.h" />
   </ItemGroup>
@@ -121,7 +119,6 @@
     <ClCompile Include="src\ui\opengl\OglUiLayer.cpp" />
     <ClCompile Include="src\ui\opengl\Shape.cpp" />
     <ClCompile Include="src\ui\opengl\font\Font.cpp" />
-    <ClCompile Include="src\ui\opengl\image\Bitmap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">

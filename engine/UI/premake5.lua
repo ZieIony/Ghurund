@@ -3,6 +3,7 @@ project "UI"
 	pchheader "ghuipch.h"
 	pchsource "src/ghuipch.cpp"
 	staticruntime "on"
+	buildoptions { "/Zc:__cplusplus" }
 
 	dependson { "Core" }
 

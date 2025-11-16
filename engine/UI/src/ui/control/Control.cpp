@@ -18,17 +18,17 @@ namespace Ghurund::UI {
 		static auto PROPERTY_FOCUSABLE = Property<Control, bool>("Focusable", (bool(Control::*)()) & isFocusable, (void(Control::*)(bool)) & setFocusable);
 		static auto PROPERTY_FOCUS = Property<Control, Control*>("Focus", &getFocus);
 		static auto PROPERTY_FOCUSED = Property<Control, bool>("Focused", (bool(Control::*)()) & isFocused);
-		static auto PROPERTY_POSITION = Property<Control, const FloatPoint&>("Position", (FloatPoint & (Control::*)()) & getPosition, (void(Control::*)(const FloatPoint&)) & setPosition);
+		static auto PROPERTY_POSITION = Property<Control, const XMFLOAT2&>("Position", (XMFLOAT2 & (Control::*)()) & getPosition, (void(Control::*)(const XMFLOAT2&)) & setPosition);
 		static auto PROPERTY_ROTATION = Property<Control, float>("Rotation", (float(Control::*)()) & getRotation, (void(Control::*)(float)) & setRotation);
-		static auto PROPERTY_SCALE = Property<Control, const FloatPoint&>("Scale", (FloatPoint & (Control::*)()) & getScale, (void(Control::*)(const FloatPoint&)) & setScale);
+		static auto PROPERTY_SCALE = Property<Control, const XMFLOAT2&>("Scale", (XMFLOAT2 & (Control::*)()) & getScale, (void(Control::*)(const XMFLOAT2&)) & setScale);
 		static auto PROPERTY_TRANSFORMATION = Property<Control, const Matrix3x2&>("Transformation", (Matrix3x2 & (Control::*)()) & getTransformation);
 		static auto PROPERTY_SIZE = Property<Control, FloatSize&>("Size", (FloatSize & (Control::*)()) & getSize);
 		static auto PROPERTY_PARENT = Property<Control, ControlParent*>("Parent", (ControlParent * (Control::*)()) & getParent, (void(Control::*)(ControlParent*)) & setParent);
 		static auto PROPERTY_CURSOR = Property<Control, const Ghurund::UI::Cursor*>("Cursor", (Ghurund::UI::Cursor * (Control::*)()) & getCursor, (void(Control::*)(const Ghurund::UI::Cursor*)) & setCursor);
 		static auto PROPERTY_THEME = Property<Control, Ghurund::UI::Theme*>("Theme", (Ghurund::UI::Theme * (Control::*)()) & getTheme, (void(Control::*)(Ghurund::UI::Theme*)) & setTheme);
 		static auto PROPERTY_CONTEXT = Property<Control, IUIContext*>("Context", &getContext);
-		static auto PROPERTY_POSITIONINWINDOW = Property<Control, FloatPoint>("PositionInWindow", &getPositionInWindow);
-		static auto PROPERTY_POSITIONONSCREEN = Property<Control, FloatPoint>("PositionOnScreen", &getPositionOnScreen);
+		static auto PROPERTY_POSITIONINWINDOW = Property<Control, XMFLOAT2>("PositionInWindow", &getPositionInWindow);
+		static auto PROPERTY_POSITIONONSCREEN = Property<Control, XMFLOAT2>("PositionOnScreen", &getPositionOnScreen);
 
 		static const Ghurund::Core::Type TYPE = TypeBuilder<Control>()
 			.withProperty(PROPERTY_NAME)
@@ -110,8 +110,8 @@ namespace Ghurund::UI {
 		return cursor == c.cursor &&
 			size == c.size &&
 			visible == c.visible && enabled == c.enabled && focusable == c.focusable && roundToPixels == c.roundToPixels &&
-			name == c.name &&
-			position == c.position, rotation == c.rotation && transformation == c.transformation &&
+			*name == *c.name &&
+			position == c.position && rotation == c.rotation && transformation == c.transformation &&
 			needsLayout == c.needsLayout &&
 			localTheme == c.localTheme;
 	}
@@ -315,7 +315,7 @@ namespace Ghurund::UI {
 		}
 	}
 
-	FloatPoint Control::getPositionInWindow() {
+	XMFLOAT2 Control::getPositionInWindow() {
 		Control* control = this;
 		while (control) {
 			//matrix = matrix * control->Transformation;
@@ -323,10 +323,10 @@ namespace Ghurund::UI {
 		}
 		//D2D1_POINT_2F p = { 0,0 };
 		//matrix.TransformPoint(p);
-		return FloatPoint{ 0, 0 };
+		return XMFLOAT2{ 0, 0 };
 	}
 
-	FloatPoint Control::getPositionOnScreen() {
+	XMFLOAT2 Control::getPositionOnScreen() {
 		auto pos = PositionInWindow;
 		IUIContext* context = Context;
 		if (!context)
@@ -334,7 +334,7 @@ namespace Ghurund::UI {
 		Window& window = context->Window;
 		POINT p = { (LONG)pos.x, (LONG)pos.y };
 		//ClientToScreen(window.Handle, &p);
-		return FloatPoint{ (float)p.x, (float)p.y };
+		return XMFLOAT2{ (float)p.x, (float)p.y };
 	}
 
 	bool Control::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {

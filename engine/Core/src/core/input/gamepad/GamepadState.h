@@ -2,20 +2,19 @@
 
 #include <cstdint>
 
-#include <core/math/Point.h>
 #include "GamepadButton.h"
 
 namespace Ghurund::Core {
 	class GamepadState {
 	private:
 		uint16_t buttons;
-		FloatPoint leftStick, rightStick;
+		XMFLOAT2 leftStick, rightStick;
 		float leftTrigger, rightTrigger;
 
 	public:
 		GamepadState(
 			uint16_t buttons,
-			FloatPoint leftStick, FloatPoint rightStick,
+			const XMFLOAT2& leftStick, const XMFLOAT2& rightStick,
 			float leftTrigger, float rightTrigger
 		):
 			buttons(buttons),
@@ -27,17 +26,17 @@ namespace Ghurund::Core {
 			return buttons & button.Bitmask;
 		}
 
-		inline FloatPoint getLeftStick() const {
+		inline const XMFLOAT2& getLeftStick() const {
 			return leftStick;
 		}
 
-		__declspec(property(get = getLeftStick)) FloatPoint LeftStick;
+		__declspec(property(get = getLeftStick)) const XMFLOAT2& LeftStick;
 
-		inline FloatPoint getRightStick() const {
+		inline const XMFLOAT2& getRightStick() const {
 			return rightStick;
 		}
 
-		__declspec(property(get = getRightStick)) FloatPoint RightStick;
+		__declspec(property(get = getRightStick)) const XMFLOAT2& RightStick;
 
 		inline float getLeftTrigger() const {
 			return leftTrigger;

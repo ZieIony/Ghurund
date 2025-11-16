@@ -222,7 +222,7 @@ namespace Ghurund::Core {
         }
 
         image = makeResource<Image>();
-        image->init(imageData, width, height, giFormat);
+        image->init(imageData, { width, height }, giFormat);
 
         return image;
     }
@@ -243,7 +243,7 @@ namespace Ghurund::Core {
 
         GUID guidContainerFormat = (format == ResourceFormat::AUTO || format == Image::FORMAT_PNG) ? GUID_ContainerFormatPng : GUID_ContainerFormatJpeg;
 
-        UINT64 dstRowPitch = image.Data.Size / image.Height;// (fpRowPitch + 255) & ~0xFF;
+        UINT64 dstRowPitch = image.Data.Size / image.Size.Height;// (fpRowPitch + 255) & ~0xFF;
 
         bool sRGB = false;
         WICPixelFormatGUID pfGuid = getWICFormatFromDXGIFormat(image.Format, &sRGB);
@@ -277,7 +277,7 @@ namespace Ghurund::Core {
         if (FAILED(hr))
             throw std::bad_function_call();
 
-        hr = frame->SetSize(image.Width, image.Height);
+        hr = frame->SetSize(image.Size.Width, image.Size.Height);
         if (FAILED(hr))
             throw std::bad_function_call();
 
@@ -317,7 +317,7 @@ namespace Ghurund::Core {
         if (memcmp(&targetGuid, &pfGuid, sizeof(WICPixelFormatGUID)) != 0) {
             // Conversion required to write
             Microsoft::WRL::ComPtr<IWICBitmap> source;
-            hr = imageFactory->CreateBitmapFromMemory(image.Width, image.Height, pfGuid,
+            hr = imageFactory->CreateBitmapFromMemory(image.Size.Width, image.Size.Height, pfGuid,
                 static_cast<UINT>(dstRowPitch), (UINT)image.Data.Size,
                 image.Data.Data, source.GetAddressOf());
             if (FAILED(hr))
@@ -338,12 +338,12 @@ namespace Ghurund::Core {
             if (FAILED(hr))
                 throw std::bad_function_call();
 
-            WICRect rect = { 0, 0, (int)image.Width, (int)image.Height };
+            WICRect rect = { 0, 0, (int)image.Size.Width, (int)image.Size.Height };
             hr = frame->WriteSource(FC.Get(), &rect);
             if (FAILED(hr))
                 throw std::bad_function_call();
         } else {
-            hr = frame->WritePixels(image.Height, static_cast<UINT>(dstRowPitch), (UINT)image.Data.Size, image.Data.Data);
+            hr = frame->WritePixels(image.Size.Height, static_cast<UINT>(dstRowPitch), (UINT)image.Data.Size, image.Data.Data);
             if (FAILED(hr))
                 throw std::bad_function_call();
         }

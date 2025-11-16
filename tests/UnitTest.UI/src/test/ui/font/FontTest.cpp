@@ -8,7 +8,6 @@
 #include "ui/font/FontLoader.h"
 
 #include <format>
-#include <test/ui/TestBitmapFactory.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -28,10 +27,9 @@ public:
 
     TEST_METHOD(Font_init) {
         ResourceManager resourceManager;
-        TestBitmapFactory testBitmapFactory;
         IntrusivePointer<FontLoader> fontLoader;
         IntrusivePointer<ImageLoader> imageLoader;
-        fontLoader.set(ghnew FontLoader(testBitmapFactory));
+        fontLoader.set(ghnew FontLoader());
         imageLoader.set(ghnew ImageLoader());
         resourceManager.Loaders.set<Font>(*fontLoader.get());
         resourceManager.Loaders.set<Image>(*imageLoader.get());

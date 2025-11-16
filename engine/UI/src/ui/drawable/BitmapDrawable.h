@@ -3,9 +3,11 @@
 #include "ui/Canvas.h"
 #include "ui/drawable/Drawable.h"
 
-namespace Ghurund::UI {
-    class Bitmap;
+namespace Ghurund::Core {
+    class Image;
+}
 
+namespace Ghurund::UI {
     class BitmapDrawable:public Drawable {
 #pragma region reflection
     protected:
@@ -20,10 +22,10 @@ namespace Ghurund::UI {
 #pragma endregion
 
     private:
-        Bitmap* image;
+        Image* image;
 
     public:
-        BitmapDrawable(Bitmap* image);
+        BitmapDrawable(Image* image);
 
         ~BitmapDrawable();
 

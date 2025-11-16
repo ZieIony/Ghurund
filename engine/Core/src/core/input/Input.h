@@ -12,7 +12,7 @@ namespace Ghurund::Core {
     class Input {
     private:
         MouseButtonState mouseButtonLeft = {}, mouseButtonMiddle = {}, mouseButtonRight = {};
-        IntPoint prevMousePos = {};
+        XMINT2 prevMousePos = {};
         Array<KeyState> keys = 256;
         List<WindowMessage> events;
         GamepadInput gamepadInput;

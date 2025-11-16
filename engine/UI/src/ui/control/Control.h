@@ -59,7 +59,7 @@ namespace Ghurund::UI {
 		ContentSize contentSize = Ghurund::UI::ContentSize(makeIntrusive<WrapWidthConstraint>().get(), makeIntrusive<WrapHeightConstraint>().get());
 		Ghurund::Core::FloatSize minSize = { 0, 0 };
 		Ghurund::Core::FloatSize maxSize = { std::numeric_limits<float>::max(), std::numeric_limits<float>::max() };
-		FloatPoint position = { 0,0 }, scale = { 1,1 };
+		XMFLOAT2 position = { 0,0 }, scale = { 1,1 };
 		float rotation = 0;
 		Ghurund::Core::Matrix3x2 transformation = {};
 
@@ -208,11 +208,11 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = isRoundToPixelsEnabled, put = setRoundToPixelsEnabled)) bool RoundToPixelsEnabled;
 
-		inline const FloatPoint& getPosition() const {
+		inline const XMFLOAT2& getPosition() const {
 			return position;
 		}
 
-		inline void setPosition(const FloatPoint& position) {
+		inline void setPosition(const XMFLOAT2& position) {
 			this->position = position;
 		}
 
@@ -221,7 +221,7 @@ namespace Ghurund::UI {
 			position.y = y;
 		}
 
-		__declspec(property(get = getPosition, put = setPosition)) const FloatPoint& Position;
+		__declspec(property(get = getPosition, put = setPosition)) const XMFLOAT2& Position;
 
 		inline float getRotation() const {
 			return rotation;
@@ -233,11 +233,11 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = getRotation, put = setRotation)) float Rotation;
 
-		inline const FloatPoint& getScale() const {
+		inline const XMFLOAT2& getScale() const {
 			return scale;
 		}
 
-		inline void setScale(const FloatPoint& scale) {
+		inline void setScale(const XMFLOAT2& scale) {
 			this->scale = scale;
 		}
 
@@ -246,7 +246,7 @@ namespace Ghurund::UI {
 			position.y = y;
 		}
 
-		__declspec(property(get = getScale, put = setScale)) const FloatPoint& Scale;
+		__declspec(property(get = getScale, put = setScale)) const XMFLOAT2& Scale;
 
 		inline const Ghurund::Core::Matrix3x2& getTransformation() const {
 			return transformation;
@@ -362,13 +362,13 @@ namespace Ghurund::UI {
 
 		virtual void bind();
 
-		virtual FloatPoint getPositionInWindow();
+		virtual XMFLOAT2 getPositionInWindow();
 
-		__declspec(property(get = getPositionInWindow)) FloatPoint PositionInWindow;
+		__declspec(property(get = getPositionInWindow)) XMFLOAT2 PositionInWindow;
 
-		FloatPoint getPositionOnScreen();
+		XMFLOAT2 getPositionOnScreen();
 
-		__declspec(property(get = getPositionOnScreen)) FloatPoint PositionOnScreen;
+		__declspec(property(get = getPositionOnScreen)) XMFLOAT2 PositionOnScreen;
 
 		virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
 

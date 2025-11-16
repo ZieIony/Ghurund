@@ -23,7 +23,12 @@ namespace Microsoft::VisualStudio::CppUnitTestFramework {
 	}
 
 	template<>
-	static std::wstring ToString<Ghurund::Core::IntPoint>(const Ghurund::Core::IntPoint& t) {
+	static std::wstring ToString<::DirectX::XMFLOAT2>(const ::DirectX::XMFLOAT2& t) {
+		return std::format(L"{}", t);
+	}
+
+	template<>
+	static std::wstring ToString<::DirectX::XMINT2>(const ::DirectX::XMINT2& t) {
 		return std::format(L"{}", t);
 	}
 

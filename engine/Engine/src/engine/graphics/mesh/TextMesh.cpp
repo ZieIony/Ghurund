@@ -7,8 +7,8 @@ namespace Ghurund::Engine {
 		List<XMFLOAT2> texCoords;
 		List<uint16_t> indices;
 
-		auto& glyphs = font.Glyphs;
-		auto atlas = font.Atlas;
+		auto imageSize = font.Atlas->Image->Size;
+		auto& glyphs = font.Atlas->Glyphs;
 		float x = 0;
 		tchar prevC = '\0';
 		for (wchar_t c : text) {
@@ -54,20 +54,20 @@ namespace Ghurund::Engine {
 				});
 			texCoords.addAll({
 				{
-					(float)(glyph.bitmapPos.x + PAD) / atlas->Size.Width,
-					(float)(glyph.bitmapPos.y + PAD) / atlas->Size.Height
+					(float)(glyph.bitmapPos.x + PAD) / imageSize.Width,
+					(float)(glyph.bitmapPos.y + PAD) / imageSize.Height
 				},
 				{
-					(float)(glyph.bitmapPos.x + PAD) / atlas->Size.Width,
-					(float)(glyph.bitmapPos.y - PAD + glyph.bitmapSize.Height) / atlas->Size.Height
+					(float)(glyph.bitmapPos.x + PAD) / imageSize.Width,
+					(float)(glyph.bitmapPos.y - PAD + glyph.bitmapSize.Height) / imageSize.Height
 				},
 				{
-					(float)(glyph.bitmapPos.x - PAD + glyph.bitmapSize.Width) / atlas->Size.Width,
-					(float)(glyph.bitmapPos.y + PAD) / atlas->Size.Height
+					(float)(glyph.bitmapPos.x - PAD + glyph.bitmapSize.Width) / imageSize.Width,
+					(float)(glyph.bitmapPos.y + PAD) / imageSize.Height
 				},
 				{
-					(float)(glyph.bitmapPos.x - PAD + glyph.bitmapSize.Width) / atlas->Size.Width,
-					(float)(glyph.bitmapPos.y - PAD + glyph.bitmapSize.Height) / atlas->Size.Height
+					(float)(glyph.bitmapPos.x - PAD + glyph.bitmapSize.Width) / imageSize.Width,
+					(float)(glyph.bitmapPos.y - PAD + glyph.bitmapSize.Height) / imageSize.Height
 				}
 				});
 			prevC = c;

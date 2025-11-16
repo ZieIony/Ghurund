@@ -1,163 +1,34 @@
 #include "ghuipch.h"
 #include "Ttf.h"
 
-#include "core/string/TextConversionUtils.h"
-
-namespace Ghurund::Core {
-	bool TtfFile::findTable(TT_TABLE_DIRECTORY* tables, size_t numOfTables, const AString& name, TT_TABLE_DIRECTORY& tblDir) {
-		for (size_t i = 0; i < numOfTables; i++) {
-			tblDir = *tables;
-
-			//table's tag cannot exceed 4 characters
-			AString tableName = AString(tblDir.szTag, 4);
-			if (tableName == name) {
-				//we found our table. Rearrange order and quit the loop
-				tblDir.uLength = SWAPLONG(tblDir.uLength);
-				tblDir.uOffset = SWAPLONG(tblDir.uOffset);
-				return true;
-			}
-
-			tables++;
-		}
-
-		return false;
+namespace Ghurund::UI {
+	TT_OFFSET_TABLE TT_OFFSET_TABLE::make(const void* pointer) {
+		TT_OFFSET_TABLE table = *(TT_OFFSET_TABLE*)pointer;
+		table.uMajorVersion = swap16(table.uMajorVersion);
+		table.uMinorVersion = swap16(table.uMinorVersion);
+		table.uNumOfTables = swap16(table.uNumOfTables);
+		table.uSearchRange = swap16(table.uSearchRange);
+		table.uEntrySelector = swap16(table.uEntrySelector);
+		table.uRangeShift = swap16(table.uRangeShift);
+		return table;
 	}
-
-	void TtfFile::init(const void* data, size_t size) {
-		this->data = data;
-		this->size = size;
-
-		// see: https://www.codeproject.com/Articles/2293/Retrieving-Font-Name-from-TTF-File
-		//define and read file header
-		ttOffsetTable = TT_OFFSET_TABLE::make(data);
-
-		//check is this is a true type font and the version is 1.0
-		if (ttOffsetTable.uMajorVersion != 1 || ttOffsetTable.uMinorVersion != 0)
-			throw FontFormatNotSupportedException();
-
-		readFontFamilyName();
+	
+	TT_NAME_TABLE_HEADER TT_NAME_TABLE_HEADER::make(const void* pointer) {
+		TT_NAME_TABLE_HEADER header = *(TT_NAME_TABLE_HEADER*)pointer;
+		header.uFSelector = swap16(header.uFSelector);
+		header.uNRCount = swap16(header.uNRCount);
+		header.uStorageOffset = swap16(header.uStorageOffset);
+		return header;
 	}
-
-	void TtfFile::readFontFamilyName() {
-		TT_TABLE_DIRECTORY tblDir;
-		const uint8_t* pointer = (const uint8_t*)data + sizeof(TT_OFFSET_TABLE);
-		bool found = findTable((TT_TABLE_DIRECTORY*)pointer, ttOffsetTable.uNumOfTables, "name", tblDir);
-
-		if (found) {
-			//move to offset we got from Offsets Table
-			pointer = (const uint8_t*)data + tblDir.uOffset;
-			TT_NAME_TABLE_HEADER ttNTHeader = TT_NAME_TABLE_HEADER::make(pointer);
-			pointer += sizeof(TT_NAME_TABLE_HEADER);
-
-			found = false;
-
-			for (size_t i = 0; i < ttNTHeader.uNRCount; i++) {
-				TT_NAME_RECORD ttRecord = TT_NAME_RECORD::make(pointer);
-				pointer += sizeof(TT_NAME_RECORD);
-
-				if (ttRecord.uNameID == (uint8_t)NameId::FAMILY) {
-					uint8_t* namePointer = (uint8_t*)data + tblDir.uOffset + ttRecord.uStringOffset + ttNTHeader.uStorageOffset;
-					this->familyName = readString(namePointer, ttRecord.uStringLength);
-				} else if (ttRecord.uNameID == (uint8_t)NameId::SUBFAMILY) {
-					uint8_t* namePointer = (uint8_t*)data + tblDir.uOffset + ttRecord.uStringOffset + ttNTHeader.uStorageOffset;
-					this->subfamilyName = readString(namePointer, ttRecord.uStringLength);
-				} else if (ttRecord.uNameID == (uint8_t)NameId::FULL_NAME) {
-					uint8_t* namePointer = (uint8_t*)data + tblDir.uOffset + ttRecord.uStringOffset + ttNTHeader.uStorageOffset;
-					this->fullName = readString(namePointer, ttRecord.uStringLength);
-				}
-			}
-		}
-	}
-
-	String TtfFile::readString(uint8_t* data, size_t length) {
-		AString str = [&] {
-			if (data[0] == 0) {
-				AString familyName(length / 2);
-				for (size_t i = 0; i < length / 2; i++) {
-					familyName.add(data[i * 2 + 1]);
-				}
-				return familyName;
-			} else {
-				return AString((char*)data, length);
-			}
-		}();
-		if (strlen((char*)str.Data) > 0)
-			return convertText<char, tchar>(str);
-		return String();
-	}
-
-	uint16_t TtfFile::readFontWeight() {
-		TT_TABLE_DIRECTORY tblDir;
-		const uint8_t* pointer = (const uint8_t*)data + sizeof(TT_OFFSET_TABLE);
-		bool found = findTable((TT_TABLE_DIRECTORY*)pointer, ttOffsetTable.uNumOfTables, "OS/2", tblDir);
-		if (found) {
-			//move to offset we got from Offsets Table
-			pointer = (const uint8_t*)data + tblDir.uOffset;
-			uint16_t version = *(uint16_t*)pointer;
-			version = SWAPWORD(version);
-			if (version == 0) {
-				TT_OS2_RECORD_0 record = *(TT_OS2_RECORD_0*)pointer;
-				return SWAPWORD(record.usWeightClass);
-			} else if (version == 1) {
-				TT_OS2_RECORD_1 record = *(TT_OS2_RECORD_1*)pointer;
-				return SWAPWORD(record.usWeightClass);
-			} else if (version == 2 || version == 3 || version == 4) {
-				TT_OS2_RECORD_234 record = *(TT_OS2_RECORD_234*)pointer;
-				return SWAPWORD(record.usWeightClass);
-			} else if (version == 5) {
-				TT_OS2_RECORD_5 record = *(TT_OS2_RECORD_5*)pointer;
-				return SWAPWORD(record.usWeightClass);
-			}
-		}
-
-		found = findTable((TT_TABLE_DIRECTORY*)pointer, ttOffsetTable.uNumOfTables, "fvar", tblDir);
-
-		if (found) {
-			//move to offset we got from Offsets Table
-			pointer = (const uint8_t*)data + tblDir.uOffset;
-			TT_FVAR_TABLE_HEADER ttFTHeader = *(TT_FVAR_TABLE_HEADER*)pointer;
-			pointer += sizeof(TT_FVAR_TABLE_HEADER);
-
-			//again, don't forget to swap bytes!
-			ttFTHeader.axisCount = SWAPWORD(ttFTHeader.axisCount);
-			found = false;
-
-			for (size_t i = 0; i < ttFTHeader.axisCount; i++) {
-				TT_FVAR_RECORD ttRecord = *(TT_FVAR_RECORD*)pointer;
-				pointer += sizeof(TT_FVAR_RECORD);
-
-				if (AString(ttRecord.axisTag, 4) == "wght")
-					return ttRecord.defaultValue.value;
-			}
-		}
-
-		return 400;
-	}
-
-	bool TtfFile::readFontItalic() {
-		TT_TABLE_DIRECTORY tblDir;
-		const uint8_t* pointer = (const uint8_t*)data + sizeof(TT_OFFSET_TABLE);
-		bool found = findTable((TT_TABLE_DIRECTORY*)pointer, ttOffsetTable.uNumOfTables, "OS/2", tblDir);
-		if (found) {
-			//move to offset we got from Offsets Table
-			pointer = (const uint8_t*)data + tblDir.uOffset;
-			uint16_t version = *(uint16_t*)pointer;
-			version = SWAPWORD(version);
-			if (version == 0) {
-				TT_OS2_RECORD_0 record = *(TT_OS2_RECORD_0*)pointer;
-				return SWAPWORD(record.fsSelection) & 0x1;
-			} else if (version == 1) {
-				TT_OS2_RECORD_1 record = *(TT_OS2_RECORD_1*)pointer;
-				return SWAPWORD(record.fsSelection) & 0x1;
-			} else if (version == 2 || version == 3 || version == 4) {
-				TT_OS2_RECORD_234 record = *(TT_OS2_RECORD_234*)pointer;
-				return SWAPWORD(record.fsSelection) & 0x1;
-			} else if (version == 5) {
-				TT_OS2_RECORD_5 record = *(TT_OS2_RECORD_5*)pointer;
-				return SWAPWORD(record.fsSelection) & 0x1;
-			}
-		}
-
-		return false;
+	
+	TT_NAME_RECORD TT_NAME_RECORD::make(const void* pointer) {
+		TT_NAME_RECORD record = *(TT_NAME_RECORD*)pointer;
+		record.uPlatformID = swap16(record.uPlatformID);
+		record.uEncodingID = swap16(record.uEncodingID);
+		record.uLanguageID = swap16(record.uLanguageID);
+		record.uNameID = swap16(record.uNameID);
+		record.uStringLength = swap16(record.uStringLength);
+		record.uStringOffset = swap16(record.uStringOffset);
+		return record;
 	}
 }

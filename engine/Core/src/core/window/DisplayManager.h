@@ -9,7 +9,7 @@ namespace Ghurund::Core {
 		IntSize size;
 		uint32_t flags;
 		uint32_t displayFrequency;
-		IntPoint position;
+		XMINT2 position;
 	};
 
 	struct DisplayDevice {

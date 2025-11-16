@@ -3,14 +3,14 @@
 
 #include "core/logging/Logger.h"
 #include "ui/drawable/BitmapDrawable.h"
-#include "ui/image/Bitmap.h"
 #include "ui/image/VectorImage.h"
 #include "ui/drawable/Drawable.h"
+#include <core/image/Image.h>
 
 namespace Ghurund::UI {
     Drawable* DrawableFactory::makeDrawable(const ResourcePath& path) {
         try {
-            IntrusivePointer<Bitmap> bitmap(resourceManager.load<Bitmap>(path, DirectoryPath()));
+            IntrusivePointer<Image> bitmap(resourceManager.load<Image>(path, DirectoryPath()));
             return ghnew BitmapDrawable(bitmap.get());
         } catch (...) {
             /*try {

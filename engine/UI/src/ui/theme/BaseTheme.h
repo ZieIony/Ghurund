@@ -5,7 +5,6 @@
 #include "core/object/NotNull.h"
 #include "core/resource/ResourceManager.h"
 #include "ui/loading/IDrawableFactory.h"
-#include "ui/image/BitmapFactory.h"
 
 namespace Ghurund::UI {
 	class BaseTheme:public Ghurund::UI::Theme {

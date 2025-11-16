@@ -14,8 +14,8 @@ namespace Ghurund::Core {
             auto gamepad = state.Gamepad;
             return ghnew GamepadState(
                 (uint16_t)gamepad.wButtons,
-                FloatPoint{ shortToFloat(gamepad.sThumbLX), shortToFloat(gamepad.sThumbLY) },
-                FloatPoint{ shortToFloat(gamepad.sThumbRX), shortToFloat(gamepad.sThumbRY) },
+				XMFLOAT2{ shortToFloat(gamepad.sThumbLX), shortToFloat(gamepad.sThumbLY) },
+				XMFLOAT2{ shortToFloat(gamepad.sThumbRX), shortToFloat(gamepad.sThumbRY) },
                 gamepad.bLeftTrigger / 255.0f,
                 gamepad.bRightTrigger / 255.0f
             );

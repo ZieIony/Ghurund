@@ -3,6 +3,7 @@ project "UnitTest.Core"
 	pchheader "utcpch.h"
 	pchsource "src/utcpch.cpp"
 	staticruntime "on"
+	buildoptions { "/Zc:__cplusplus" }
 
 	dependson {
 		"Core",

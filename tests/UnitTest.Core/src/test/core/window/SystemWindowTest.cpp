@@ -31,7 +31,7 @@ public:
             window.Position = { 0, 0 };
             window.Size = { 100, 100 };
             window.Title = _T("test");
-            Assert::AreEqual(IntPoint{0,0}, window.Position);
+            Assert::AreEqual(XMINT2{0,0}, window.Position);
             Assert::AreEqual(IntSize{100,100}, window.Size);
             Assert::AreEqual(String(_T("test")), window.Title);
         }

@@ -11,7 +11,7 @@ namespace Demo {
 	private:
 		DemoApplication& app;
 		IntrusivePointer<GameAction<bool>> closeWindow;
-		IntrusivePointer<GameAction<FloatPoint>> moveWindow;
+		IntrusivePointer<GameAction<XMFLOAT2>> moveWindow;
 
 	public:
 		DemoWindow(DemoApplication& app, Ghurund::Engine::OpenGL::OglRenderer& renderer);

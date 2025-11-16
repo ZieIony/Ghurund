@@ -2,21 +2,13 @@
 
 #include "core/collection/Map.h"
 #include "core/math/Size.h"
-#include "core/math/Point.h"
+#include "core/object/IntrusivePointer.h"
 #include "core/resource/Resource.h"
 #include "core/reflection/Type.h"
-#include "core/image/Image.h"
-#include "ui/image/BitmapFactory.h"
+#include "FontAtlas.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
-
-    struct Glyph {
-        IntSize shapeSize, bitmapSize;
-        IntPoint shapeOrigin, bitmapPos;
-        float scale;
-        uint16_t width;
-    };
 
     class Font:public Ghurund::Core::Resource {
 #pragma region reflection
@@ -32,10 +24,6 @@ namespace Ghurund::UI {
 #pragma endregion
 
     private:
-        static inline const tchar* DEFAULT_CHARACTER_SET = _T("aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPrqQRsStTuUvVwWxXyYzZ 0123456789*-+[]{};':\",.\\/<>?!@#$%^&*()`~ó¿Ÿæñ¹ê³");
-        static inline const uint32_t MAX_DIST = 8;
-        static inline const uint32_t BITMAP_SIZE = 64;
-
         String familyName;
         bool italic = false;
         uint32_t weight = 400;
@@ -43,23 +31,14 @@ namespace Ghurund::UI {
         TEXTMETRIC tm;
         HANDLE handle = INVALID_HANDLE_VALUE;
 
-        Map<tchar, Glyph> glyphs;
         Map<tchar, Map<tchar, int>> kerning;
-        Ghurund::UI::Bitmap* atlas = nullptr;
+        IntrusivePointer<FontAtlas> atlas;
 
-        void initAtlas(const String& supportedCharacters, const IBitmapFactory& bitmapFactory);
+        void initMetrics(HDC hdc);
 
-        void initKerning(HFONT hf);
+        void initKerning(HDC hdc);
 
-        void initGlyphs(HFONT hf, const String& characters);
-
-        bool fitAllGlyphs(const List<Glyph*>& sortedGlyphs, uint32_t width, uint32_t height);
-
-        IntSize getAtlasSize();
-
-        void initMsdf(HFONT hf, const String& characters, const IBitmapFactory& bitmapFactory);
-
-        HBITMAP makeDIB(HDC context, BITMAPINFO& bmi, unsigned int width, unsigned int height, int32_t** pixels);
+        void initAtlas(HDC hdc, const String& characters);
 
     protected:
         ~Font() {
@@ -73,14 +52,9 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getFamilyName)) const Ghurund::Core::String& FamilyName;
 
-        void init(const IBitmapFactory& bitmapFactory, const String& family, uint32_t weight = 400, bool italic = false, const String& supportedCharacters = DEFAULT_CHARACTER_SET) {
-            this->familyName = family;
-            this->weight = weight;
-            this->italic = italic;
-            initAtlas(supportedCharacters, bitmapFactory);
-        }
+        void init(const String& family, uint32_t weight = 400, bool italic = false, const String& supportedCharacters = FontAtlas::DEFAULT_CHARACTER_SET);
 
-        void init(const IBitmapFactory& bitmapFactory, const void* data, size_t size, const String& supportedCharacters = DEFAULT_CHARACTER_SET);
+        void init(const void* data, size_t size, const String& supportedCharacters = FontAtlas::DEFAULT_CHARACTER_SET);
 
         void uninit();
 
@@ -120,19 +94,13 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getWeight)) uint32_t Weight;
 
-        Ghurund::UI::Bitmap* getAtlas() const {
-            return atlas;
+        FontAtlas* getAtlas() const {
+            return atlas.get();
         }
 
-        __declspec(property(get = getAtlas)) const Ghurund::UI::Bitmap* Atlas;
+        __declspec(property(get = getAtlas)) FontAtlas* Atlas;
 
         FloatSize measureText(const String& text) const;
-
-        inline const Map<tchar, Glyph>& getGlyphs() const {
-            return glyphs;
-        }
-
-        __declspec(property(get = getGlyphs)) const Map<tchar, Glyph>& Glyphs;
 
         inline int getKerning(tchar c1, tchar c2) const {
             auto it = kerning.find(c1);

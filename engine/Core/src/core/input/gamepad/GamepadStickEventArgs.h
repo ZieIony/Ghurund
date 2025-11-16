@@ -14,13 +14,13 @@ namespace Ghurund::Core {
 	private:
 		uint8_t gamepad;
 		GamepadStick stick;
-		FloatPoint point;
+		XMFLOAT2 point;
 
 	public:
 		GamepadStickEventArgs(
 			uint8_t gamepad,
 			GamepadStick stick,
-			FloatPoint point,
+			XMFLOAT2 point,
 			uint64_t time
 		):InputEventArgs(time), gamepad(gamepad), stick(stick), point(point) {
 		}
@@ -37,10 +37,10 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = getStick)) GamepadStick Stick;
 
-		inline FloatPoint getPoint() const {
+		inline const XMFLOAT2& getPoint() const {
 			return point;
 		}
 
-		__declspec(property(get = getPoint)) FloatPoint Point;
+		__declspec(property(get = getPoint)) const XMFLOAT2& Point;
 	};
 }

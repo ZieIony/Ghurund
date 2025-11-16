@@ -30,15 +30,17 @@ namespace Ghurund::Core {
 
 	private:
 		DXGI_FORMAT format = {};
-		uint32_t width = 0, height = 0, pixelSize = 0, rowPitch = 0;
+		IntSize size;
+		uint32_t pixelSize = 0, rowPitch = 0;
 		Buffer imageData;
 
 	public:
-		void init(const Buffer& data, uint32_t width, uint32_t height, DXGI_FORMAT format);
+		void init(const Buffer& data, const IntSize& size, DXGI_FORMAT format);
 
 		virtual void invalidate() override {
 			format = {};
-			width = 0, height = 0, pixelSize = 0, rowPitch = 0;
+			size = {};
+			pixelSize = 0, rowPitch = 0;
 			imageData.resize(0);
 		}
 
@@ -58,17 +60,11 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = getFormat)) DXGI_FORMAT Format;
 
-		uint32_t getWidth() {
-			return width;
+		const IntSize& getSize() const {
+			return size;
 		}
 
-		__declspec(property(get = getWidth)) uint32_t Width;
-
-		uint32_t getHeight() {
-			return height;
-		}
-
-		__declspec(property(get = getHeight)) uint32_t Height;
+		__declspec(property(get = getSize)) const IntSize& Size;
 
 		uint32_t getPixelSize() {
 			return pixelSize;

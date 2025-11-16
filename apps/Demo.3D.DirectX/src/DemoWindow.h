@@ -5,19 +5,16 @@
 #include "ui/font/Font.h"
 #include <engine/directx/mesh/DxMesh.h>
 #include <engine/entity/camera/Camera.h>
-#include <ui/directx/image/BitmapFactory.h>
 #include <ui/font/FontLoader.h>
 
 namespace Demo {
 	using namespace Ghurund;
 	using namespace Ghurund::Core;
 	using namespace Ghurund::UI;
-	using namespace Ghurund::UI::DirectX;
 
 	class DemoWindow:public Ghurund::Engine::GameWindow {
 	private:
 		DemoApplication& app;
-		SharedPointer<BitmapFactory> bitmapFactory;
 		IntrusivePointer<FontLoader> fontLoader;
 
 		IntrusivePointer<DxMesh> mesh;

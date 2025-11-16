@@ -13,7 +13,7 @@ namespace Ghurund::Engine {
 	template<>
 	class GameAction<bool>:public BaseTypedGameAction<bool> {
 	protected:
-		virtual bool getShouldBeInProgress(bool value) const override {
+		virtual bool getShouldBeInProgress(const bool& value) const override {
 			return value;
 		}
 	};
@@ -24,7 +24,7 @@ namespace Ghurund::Engine {
 		float threshold;
 
 	protected:
-		virtual bool getShouldBeInProgress(float value) const override {
+		virtual bool getShouldBeInProgress(const float& value) const override {
 			return value >= threshold;
 		}
 
@@ -45,12 +45,12 @@ namespace Ghurund::Engine {
 	};
 
 	template<>
-	class GameAction<FloatPoint>:public BaseTypedGameAction<FloatPoint> {
+	class GameAction<XMFLOAT2>:public BaseTypedGameAction<XMFLOAT2> {
 	private:
 		float threshold;
 
 	protected:
-		virtual bool getShouldBeInProgress(FloatPoint value) const override {
+		virtual bool getShouldBeInProgress(const XMFLOAT2& value) const override {
 			return sqrtf(powf(value.x, 2) + powf(value.y, 2)) >= threshold;
 		}
 
@@ -69,12 +69,12 @@ namespace Ghurund::Engine {
 	};
 
 	template<>
-	class GameAction<IntPoint>:public BaseTypedGameAction<IntPoint> {
+	class GameAction<XMINT2>:public BaseTypedGameAction<XMINT2> {
 	private:
 		float threshold;
 
 	protected:
-		virtual bool getShouldBeInProgress(IntPoint value) const override {
+		virtual bool getShouldBeInProgress(const XMINT2& value) const override {
 			return sqrtf((float)(pow(value.x, 2) + pow(value.y, 2))) >= threshold;
 		}
 

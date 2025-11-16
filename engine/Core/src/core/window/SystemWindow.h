@@ -91,15 +91,15 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getHandle)) HWND Handle;
 
-        inline void setClientPosition(const IntPoint& pos) {
+        inline void setClientPosition(const XMINT2& pos) {
             setPosition(pos.x - DecorationMetrics.Left, pos.y - DecorationMetrics.Top);
         }
 
-        inline IntPoint getClientPosition() {
+        inline const XMINT2& getClientPosition() {
             return { Position.x + (int32_t)DecorationMetrics.Left, Position.y + (int32_t)DecorationMetrics.Top };
         }
 
-        __declspec(property(get = getClientPosition, put = setClientPosition)) IntPoint ClientPosition;
+        __declspec(property(get = getClientPosition, put = setClientPosition)) const XMINT2& ClientPosition;
 
         inline void setClientSize(const IntSize& size) {
             setSize(size.Width + DecorationMetrics.Horizontal, size.Height + DecorationMetrics.Vertical);

@@ -50,7 +50,7 @@ namespace Ghurund::UI {
         MouseButton button;
 
     public:
-        MousePressedEventArgs(const Ghurund::Core::IntPoint& pos, MouseButton button, uint64_t time):MouseEventArgs(pos, time, true) {
+        MousePressedEventArgs(const XMINT2& pos, MouseButton button, uint64_t time):MouseEventArgs(pos, time, true) {
             this->button = button;
         }
 
@@ -66,7 +66,7 @@ namespace Ghurund::UI {
         MouseButton button;
 
     public:
-        MouseClickedEventArgs(const Ghurund::Core::IntPoint& pos, MouseButton button, uint64_t time, bool inside):MouseEventArgs(pos, time, inside) {
+        MouseClickedEventArgs(const XMINT2& pos, MouseButton button, uint64_t time, bool inside):MouseEventArgs(pos, time, inside) {
             this->button = button;
         }
 

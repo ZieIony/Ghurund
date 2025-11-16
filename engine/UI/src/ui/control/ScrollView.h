@@ -19,8 +19,8 @@ namespace Ghurund::UI {
 #pragma endregion
 
     private:
-        FloatPoint scroll = { 0.0f, 0.0f };
-        FloatPoint maxScroll = { 0.0f, 0.0f };
+        XMFLOAT2 scroll = { 0.0f, 0.0f };
+        XMFLOAT2 maxScroll = { 0.0f, 0.0f };
 
     protected:
         virtual void onDraw(ICanvas& canvas) override;
@@ -30,11 +30,11 @@ namespace Ghurund::UI {
     public:
         Event<Control> onScrolled = *this;
 
-        inline const FloatPoint& getScroll() const {
+        inline const XMFLOAT2& getScroll() const {
             return scroll;
         }
 
-        inline void setScroll(const FloatPoint& scroll) {
+        inline void setScroll(const XMFLOAT2& scroll) {
             setScroll(scroll.x, scroll.y);
         }
 
@@ -49,13 +49,13 @@ namespace Ghurund::UI {
             }
         }
 
-        __declspec(property(get = getScroll, put = setScroll)) const FloatPoint& Scroll;
+        __declspec(property(get = getScroll, put = setScroll)) const XMFLOAT2& Scroll;
 
-        inline const FloatPoint& getMaxScroll() const {
+        inline const XMFLOAT2& getMaxScroll() const {
             return maxScroll;
         }
 
-        __declspec(property(get = getMaxScroll)) const FloatPoint& MaxScroll;
+        __declspec(property(get = getMaxScroll)) const XMFLOAT2& MaxScroll;
 
         virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
 

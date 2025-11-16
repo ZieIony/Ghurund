@@ -40,8 +40,8 @@ namespace Ghurund::Engine::DirectX {
             D3D12_RESOURCE_DESC textureDesc = {};
             textureDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
             textureDesc.Alignment = 0;  // let the driver choose
-            textureDesc.Width = image.Width;
-            textureDesc.Height = image.Height;
+            textureDesc.Width = image.Size.Width;
+            textureDesc.Height = image.Size.Height;
             textureDesc.DepthOrArraySize = 1;
             textureDesc.MipLevels = 1;
             textureDesc.Format = image.Format;
@@ -79,8 +79,8 @@ namespace Ghurund::Engine::DirectX {
 
             D3D12_SUBRESOURCE_DATA textureData = {};
             textureData.pData = image.Data.Data;
-            textureData.RowPitch = image.Width * image.PixelSize;
-            textureData.SlicePitch = textureData.RowPitch * image.Height;
+            textureData.RowPitch = image.Size.Width * image.PixelSize;
+            textureData.SlicePitch = textureData.RowPitch * image.Size.Height;
 
             UpdateSubresources(commandList.get(), textureResource.Get(), textureUploadHeap.Get(), 0, 0, 1, &textureData);
             auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(textureResource.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);

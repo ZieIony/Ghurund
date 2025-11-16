@@ -1,6 +1,8 @@
 #include "ghuipch.h"
 #include "FontLoader.h"
 
+#include "Font.h"
+
 namespace Ghurund::UI {
 
     Resource* FontLoader::loadInternal(
@@ -10,7 +12,7 @@ namespace Ghurund::UI {
         LoadOption options
     ) {
         Font* font = makeResource<Ghurund::UI::Font>();
-        font->init(bitmapFactory, stream.Data, stream.Size);
+        font->init(stream.Data, stream.Size);
         return font;
     }
 

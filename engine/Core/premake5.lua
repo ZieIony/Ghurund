@@ -3,6 +3,7 @@ project "Core"
 	pchheader "ghcpch.h"
 	pchsource "src/ghcpch.cpp"
 	staticruntime "on"
+	buildoptions { "/Zc:__cplusplus" }
 
 	files {
 		"src/**.h",

@@ -29,7 +29,7 @@ namespace Ghurund::Core {
 					consumer.dispatchKeyEvent(KeyEventArgs(KeyAction::CHAR, (uint8_t)wm.wParam, 0, time));
 				}
 			} else if (msg >= WM_MOUSEFIRST && msg <= WM_MOUSELAST) {
-				IntPoint p = { GET_X_LPARAM(wm.lParam), GET_Y_LPARAM(wm.lParam) };
+				XMINT2 p = { GET_X_LPARAM(wm.lParam), GET_Y_LPARAM(wm.lParam) };
 				if (msg == WM_LBUTTONDOWN) {
 					mouseButtonLeft.isDown = true;
 					mouseButtonLeft.pressedTime = time;

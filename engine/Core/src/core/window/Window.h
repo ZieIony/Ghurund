@@ -31,7 +31,7 @@ namespace Ghurund::Core {
 
     private:
         IntSize size = {};
-        IntPoint position = {};
+        XMINT2 position = {};
         bool focused = false, visible = false;
         String title = {};
         std::unique_ptr<Color> backgroundColor;
@@ -41,7 +41,7 @@ namespace Ghurund::Core {
         Array<SharedPointer<Parameter>> parameters;
         ValueParameter* parameterViewportSize = nullptr;
         */
-        IntPoint prevMousePos = { -1, -1 };
+        XMINT2 prevMousePos = { -1, -1 };
 
         Window* parent;
 
@@ -159,12 +159,12 @@ namespace Ghurund::Core {
 
         __declspec(property(put = setVisible, get = isVisible)) bool Visible;
 
-        inline const IntPoint& getPosition() const {
+        inline const XMINT2& getPosition() const {
             return position;
         }
 
-        virtual void setPosition(const IntPoint& position) {
-            if (this->position != position) {
+        virtual void setPosition(const XMINT2& position) {
+			if (this->position.x != position.x || this->position.y != position.y) {
                 this->position = position;
                 dispatchPositionChangedEvent();
             }
@@ -174,7 +174,7 @@ namespace Ghurund::Core {
             setPosition({ x, y });
         }
 
-        __declspec(property(get = getPosition, put = setPosition)) IntPoint& Position;
+        __declspec(property(get = getPosition, put = setPosition)) const XMINT2& Position;
 
         inline bool dispatchPositionChangedEvent() {
             bool result = onPositionChanged();

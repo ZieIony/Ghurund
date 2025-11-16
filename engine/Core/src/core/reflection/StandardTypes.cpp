@@ -75,18 +75,6 @@ namespace Ghurund::Core {
     }
 
     template<>
-    const Type& getType<IntPoint>() {
-        static Type TYPE = TypeBuilder<IntPoint>();
-        return TYPE;
-    }
-
-    template<>
-    const Type& getType<FloatPoint>() {
-        static Type TYPE = TypeBuilder<FloatPoint>();
-        return TYPE;
-    }
-
-    template<>
     const Type& getType<Matrix3x2>() {
         static Type TYPE = TypeBuilder<Matrix3x2>();
         return TYPE;

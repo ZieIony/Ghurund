@@ -10,12 +10,9 @@
 #include <engine/directx/shader/ShaderProvider.h>
 #include <engine/directx/material/MaterialProvider.h>
 #include <ui/font/FontLoader.h>
-#include <ui/directx/image/BitmapFactory.h>
 #include <engine/graphics/mesh/TextMesh.h>
 
 namespace Demo {
-	using namespace Ghurund::UI::DirectX;
-
 	DemoWindow::DemoWindow(
 		DemoApplication& app,
 		Ghurund::Engine::DirectX::DxRenderer& renderer
@@ -40,8 +37,7 @@ namespace Demo {
 		camera->updateParameters();
 		ParameterManager.Parameters.putAll(camera->Parameters);
 
-		bitmapFactory = makeShared<BitmapFactory>();
-		fontLoader = makeIntrusive<FontLoader>(bitmapFactory.ref());
+		fontLoader = makeIntrusive<FontLoader>();
 
 		app.ResourceManager.Loaders.set<Font>(fontLoader.ref());
 		font.set(app.ResourceManager.load<Font>(ResourcePath(FilePath(L"resources/fonts/lato_regular.ttf"))));
@@ -65,7 +61,7 @@ namespace Demo {
 
 		colorTextureParameter.set((TextureParameter*)basicMaterial->Parameters.get("colorTexture"));
 		Texture* texture = ghnew Texture();
-		texture->init(*graphics, commandList.ref(), *((DxBitmap*)font->Atlas)->Image);
+		texture->init(*graphics, commandList.ref(), *font->Atlas->Image);
 		colorTexture.set(texture);
 		colorTextureParameter->Value = colorTexture.get();
 	}

@@ -18,14 +18,14 @@ namespace Ghurund::Engine {
         Set<IntrusivePointer<BaseGameAction>> currentActions;
         List<OwnedNotNull<BaseDispatchInputTask>> dispatchTasks;
 
-        BaseInputDispatcher<IntPoint>* mouseMotionAction = nullptr;
+        BaseInputDispatcher<XMINT2>* mouseMotionAction = nullptr;
 
         ActionMapping& operator=(const ActionMapping& other) = delete;
 
     public:
         GamepadGameActionCollection<GamepadButton, bool> gamepadButtonActions;
         GamepadGameActionCollection<GamepadTrigger, float> gamepadTriggerActions;
-        GamepadGameActionCollection<GamepadStick, FloatPoint> gamepadStickActions;
+        GamepadGameActionCollection<GamepadStick, XMFLOAT2> gamepadStickActions;
         GameActionCollection<KeyboardKey, bool> keyActions;
         GameActionCollection<MouseButton, bool> mouseButtonActions;
         GameActionCollection<MouseWheel, float> mouseWheelActions;

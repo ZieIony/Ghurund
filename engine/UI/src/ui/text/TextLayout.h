@@ -11,8 +11,8 @@ namespace Ghurund::UI {
     struct CharacterInfo {
         wchar_t c;
         size_t index;
-        FloatPoint pos;
-        Glyph glyph;
+        XMFLOAT2 pos;
+        GlyphMetrics glyph;
         Color color;
         TextFormat* format;
     };

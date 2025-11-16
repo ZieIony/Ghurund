@@ -96,7 +96,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\test\ui\TestBitmapFactory.h" />
     <ClInclude Include="src\test\ui\TestControlContainer.h" />
     <ClInclude Include="src\test\ui\TestDrawableFactory.h" />
     <ClInclude Include="src\test\ui\TestShapeFactory.h" />

@@ -43,10 +43,6 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getConstraintFactory)) Ghurund::UI::ConstraintFactory* ConstraintFactory;
 
-        virtual IBitmapFactory* getBitmapFactory() = 0;
-
-        __declspec(property(get = getBitmapFactory)) IBitmapFactory* BitmapFactory;
-
         virtual LayoutLoader* getLayoutLoader() = 0;
 
         __declspec(property(get = getLayoutLoader)) LayoutLoader* LayoutLoader;

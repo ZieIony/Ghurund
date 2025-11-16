@@ -6,21 +6,21 @@
 namespace Ghurund::Core {
     class MouseMotionEventArgs:public MouseEventArgs {
     private:
-        IntPoint delta;
+        XMINT2 delta;
 
     public:
-        MouseMotionEventArgs(const IntPoint& pos, const IntPoint& delta, uint64_t time, bool inside):MouseEventArgs(pos, time, inside) {
+        MouseMotionEventArgs(const XMINT2& pos, const XMINT2& delta, uint64_t time, bool inside):MouseEventArgs(pos, time, inside) {
             this->delta = delta;
         }
 
-        inline const IntPoint& getDelta() const {
+        inline const XMINT2& getDelta() const {
             return delta;
         }
 
-        __declspec(property(get = getDelta)) IntPoint& Delta;
+        __declspec(property(get = getDelta)) const XMINT2& Delta;
 
         inline MouseMotionEventArgs translate(float x, float y, bool inside) const {
-            IntPoint childEventPos = { (int32_t)(Position.x + x), (int32_t)(Position.y + y) };
+            XMINT2 childEventPos = { (int32_t)(Position.x + x), (int32_t)(Position.y + y) };
             return MouseMotionEventArgs(childEventPos, delta, TimeMs, inside);
         }
     };
