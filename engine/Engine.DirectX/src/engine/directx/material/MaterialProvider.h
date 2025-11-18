@@ -2,7 +2,7 @@
 
 #include "engine/directx/texture/Texture.h"
 #include "engine/graphics/IMaterialProvider.h"
-#include "Material.h"
+#include "DxMaterial.h"
 #include "engine/directx/shader/ShaderProvider.h"
 #include "engine/directx/texture/TextureProvider.h"
 
@@ -14,7 +14,7 @@ namespace Ghurund::Engine::DirectX {
         ShaderProvider& shaderProvider;
         TextureProvider& textureProvider;
 
-        Material* makeWithShader(DxShader *shader);
+        DxMaterial* makeWithShader(DxShader *shader);
 
     public:
         MaterialProvider(
@@ -24,34 +24,34 @@ namespace Ghurund::Engine::DirectX {
 		):parameterManager(parameterManager), shaderProvider(shaderProvider), textureProvider(textureProvider) {
 		}
 
-        virtual Material* makeBasic(ITexture* texture = nullptr) override;
+        virtual DxMaterial* makeBasic(ITexture* texture = nullptr) override;
 
-        virtual Material* makeBasicLight(
+        virtual DxMaterial* makeBasicLight(
             ITexture* diffuseTexture = nullptr,
             ITexture* specularTexture = nullptr,
             ITexture* normalTexture = nullptr
         ) override;
 
-        virtual Material* makeToon(ITexture* texture = nullptr) override;
+        virtual DxMaterial* makeToon(ITexture* texture = nullptr) override;
 
-        virtual Material* makeChecker() override;
+        virtual DxMaterial* makeChecker() override;
 
-        virtual Material* makeWireframe() override;
+        virtual DxMaterial* makeWireframe() override;
 
-        virtual Material* makeOutline() override;
+        virtual DxMaterial* makeOutline() override;
 
-        virtual Material* makeNormals() override;
+        virtual DxMaterial* makeNormals() override;
 
-        virtual Material* makeInvalid() override;
+        virtual DxMaterial* makeInvalid() override;
 
-        virtual Material* makeLightPass() override;
+        virtual DxMaterial* makeLightPass() override;
 
-        virtual Material* makeUi() override;
+        virtual DxMaterial* makeUi() override;
 
-        virtual Material* makeText() override;
+        virtual DxMaterial* makeText() override;
 
-        virtual Material* makeBasicSky() override;
+        virtual DxMaterial* makeBasicSky() override;
 
-        virtual Material* makeAdvancedSky() override;
+        virtual DxMaterial* makeAdvancedSky() override;
 	};
 }

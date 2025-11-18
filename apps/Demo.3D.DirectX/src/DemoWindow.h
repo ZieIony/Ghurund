@@ -17,8 +17,10 @@ namespace Demo {
 		DemoApplication& app;
 		IntrusivePointer<FontLoader> fontLoader;
 
+		Set<RenderGroup> renderGroups;
+
 		IntrusivePointer<DxMesh> mesh;
-		IntrusivePointer<Material> basicMaterial;
+		IntrusivePointer<DxMaterial> basicMaterial;
 		IntrusivePointer<Camera> camera;
 		IntrusivePointer<Font> font;
 

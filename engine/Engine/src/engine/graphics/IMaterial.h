@@ -19,5 +19,9 @@ namespace Ghurund::Engine {
 
     public:
         ~IMaterial() = 0 {}
+
+        virtual bool getIsTransparencyEnabled() const = 0;
+
+        __declspec(property(get = getIsTransparencyEnabled)) bool IsTransparencyEnabled;
     };
 }

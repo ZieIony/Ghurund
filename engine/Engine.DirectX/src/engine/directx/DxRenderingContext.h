@@ -3,6 +3,8 @@
 #include "buffer/RenderTarget.h"
 #include "engine/directx/SwapChain.h"
 #include <engine/graphics/RenderingContext.h>
+#include "mesh/DxMesh.h"
+#include "material/DxMaterial.h"
 
 namespace Ghurund::Engine::DirectX {
 	class DxRenderingContext: public RenderingContext {
@@ -38,22 +40,21 @@ namespace Ghurund::Engine::DirectX {
 
 		virtual void setSize(Ghurund::Core::IntSize size) override;
 
-		inline SwapChain& getSwapChain() {
-			return *swapChain;
-		}
-
-		__declspec(property(get = getSwapChain)) Ghurund::Engine::DirectX::SwapChain& SwapChain;
-
-		void paint() {
-			startFrame();
+		virtual void draw(Set<RenderGroup>& renderGroups, ParameterManager& parameterManager) override {
 			Ghurund::Engine::DirectX::CommandList* commandList = swapChain->CurrentFrame.CommandList;
-			Color clearColor = { 0xff1f1f1f };
-			clear(&clearColor);
-			//levelManager.draw(commandList);
-			swapChain->CurrentFrame.flush();
-			//auto drawingContext = DirectXDrawingContext(frame.RenderTarget);
-			//Layers.draw(drawingContext);
-			finishFrame();
+			for (auto& group : renderGroups) {
+				// TODO: sort on insertion
+				group.objects.sort([&](const DrawPacket& first, const DrawPacket& second) {
+					return (first.position.z - second.position.z) * group.DrawOrder;
+				});
+				for (auto& packet : group.objects) {
+					auto mesh = (DxMesh*)packet.mesh.get();
+					auto material = (DxMaterial*)packet.material.get();
+					// TODO: setup parameters
+					material->set(*commandList, parameterManager);
+					mesh->draw(*commandList, material->Layout);
+				}
+			}
 		}
 	};
 }

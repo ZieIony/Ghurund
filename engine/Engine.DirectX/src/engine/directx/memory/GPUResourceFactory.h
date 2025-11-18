@@ -1,14 +1,11 @@
 #pragma once
 
 #include "core/collection/Map.h"
-#include "core/object/RefCountedObject.h"
 #include "HeapAllocator.h"
 #include "GPUResourcePointer.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
-#include <dxgi1_4.h>
-#include <DirectXMath.h>
 #include "d3dx12.h"
 #pragma warning(pop)
 

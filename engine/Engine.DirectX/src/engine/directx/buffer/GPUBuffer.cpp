@@ -4,9 +4,8 @@
 #include "core/logging/Logger.h"
 
 namespace Ghurund::Engine::DirectX {
-    void GPUBuffer::set(DxGraphics& graphics, CommandList& commandList, unsigned int bindSlot) {
-        ID3D12Resource* constantBufferUploadHeap = nullptr; // this is the memory on the gpu where our constant buffer will be placed.
-        RefCountedObject* resourcePointer = graphics.ResourceFactory.create(D3D12_HEAP_TYPE_UPLOAD, CD3DX12_RESOURCE_DESC::Buffer(align<size_t>(buffer->Size, 1024 * 64)), D3D12_RESOURCE_STATE_GENERIC_READ, &constantBufferUploadHeap);
+    void GPUBuffer::init(DxGraphics& graphics, size_t size) {
+        resourcePointer = graphics.ResourceFactory.create(D3D12_HEAP_TYPE_UPLOAD, CD3DX12_RESOURCE_DESC::Buffer(align<size_t>(size, 64_KB)), D3D12_RESOURCE_STATE_GENERIC_READ, &constantBufferUploadHeap);
 
 #ifdef _DEBUG
         if (resourcePointer == nullptr) {
@@ -15,6 +14,23 @@ namespace Ghurund::Engine::DirectX {
         }
 #endif
 
+        buffer = ghnew Buffer(size);
+    }
+
+    void GPUBuffer::uninit() {
+        // constantBufferUploadHeap and resourcePointer are basically the same resource in the same memory block
+        if (constantBufferUploadHeap) {
+            constantBufferUploadHeap->Release();
+            constantBufferUploadHeap = nullptr;
+        }
+        if (resourcePointer) {
+            resourcePointer->release();
+            resourcePointer = nullptr;
+        }
+        delete buffer;
+    }
+
+    void GPUBuffer::set(CommandList & commandList, unsigned int bindSlot) {
         CD3DX12_RANGE readRange(0, 0);
         constantBufferUploadHeap->Map(0, &readRange, (void**)& gpuAddress);
 
@@ -24,6 +40,5 @@ namespace Ghurund::Engine::DirectX {
 
         commandList.get()->SetGraphicsRootConstantBufferView(bindSlot, constantBufferUploadHeap->GetGPUVirtualAddress());
         commandList.addPointerRef(resourcePointer);
-        resourcePointer->release();
     }
 }

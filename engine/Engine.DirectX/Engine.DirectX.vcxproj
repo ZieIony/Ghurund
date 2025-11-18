@@ -95,7 +95,6 @@
     <ClInclude Include="src\Ghurund.Engine.DirectX.h" />
     <ClInclude Include="src\engine\directx\CommandList.h" />
     <ClInclude Include="src\engine\directx\DirectXTypes.h" />
-    <ClInclude Include="src\engine\directx\DrawPacket.h" />
     <ClInclude Include="src\engine\directx\DxGraphics.h" />
     <ClInclude Include="src\engine\directx\DxRenderer.h" />
     <ClInclude Include="src\engine\directx\DxRenderingContext.h" />
@@ -114,7 +113,7 @@
     <ClInclude Include="src\engine\directx\buffer\DynamicBuffer.h" />
     <ClInclude Include="src\engine\directx\buffer\GPUBuffer.h" />
     <ClInclude Include="src\engine\directx\buffer\RenderTarget.h" />
-    <ClInclude Include="src\engine\directx\material\Material.h" />
+    <ClInclude Include="src\engine\directx\material\DxMaterial.h" />
     <ClInclude Include="src\engine\directx\material\MaterialProvider.h" />
     <ClInclude Include="src\engine\directx\memory\GPUResourceFactory.h" />
     <ClInclude Include="src\engine\directx\memory\GPUResourcePointer.h" />
@@ -159,7 +158,7 @@
     <ClCompile Include="src\engine\directx\buffer\DescriptorHeap.cpp" />
     <ClCompile Include="src\engine\directx\buffer\GPUBuffer.cpp" />
     <ClCompile Include="src\engine\directx\buffer\RenderTarget.cpp" />
-    <ClCompile Include="src\engine\directx\material\Material.cpp" />
+    <ClCompile Include="src\engine\directx\material\DxMaterial.cpp" />
     <ClCompile Include="src\engine\directx\material\MaterialProvider.cpp" />
     <ClCompile Include="src\engine\directx\memory\GPUResourceFactory.cpp" />
     <ClCompile Include="src\engine\directx\memory\GPUResourcePointer.cpp" />

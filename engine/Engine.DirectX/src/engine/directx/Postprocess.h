@@ -1,14 +1,14 @@
 #pragma once
 
 #include "engine/directx/buffer/RenderTarget.h"
-#include "engine/directx/material/Material.h"
+#include "engine/directx/material/DxMaterial.h"
 #include "texture/Texture.h"
 
 namespace Ghurund::Engine::DirectX {
     class Postprocess: public Resource {
     private:
         //Model* fullScreenQuad = nullptr;
-        Material* material = nullptr;
+        DxMaterial* material = nullptr;
 
     public:
         ~Postprocess() {
@@ -18,7 +18,7 @@ namespace Ghurund::Engine::DirectX {
                 material->release();
         }
 
-        void init(Material& material) {
+        void init(DxMaterial& material) {
             setPointer(this->material, &material);
             //fullScreenQuad = Models::makeQuad(resourceContext, *this->material);
         }

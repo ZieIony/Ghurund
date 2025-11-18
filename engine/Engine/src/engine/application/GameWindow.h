@@ -129,7 +129,6 @@ namespace Ghurund::Engine {
                 return;
 
             renderingContext->startFrame();
-            renderingContext->clear(BackgroundColor);
             onPaint(*renderingContext);
             renderingContext->finishFrame();
         }

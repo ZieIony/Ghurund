@@ -10,4 +10,9 @@ namespace Ghurund::Engine::DirectX {
 
         return TYPE;
     }
+    
+    GPUResourcePointer::~GPUResourcePointer() {
+        resource->Release();
+        allocator->deallocate(address);
+    }
 }

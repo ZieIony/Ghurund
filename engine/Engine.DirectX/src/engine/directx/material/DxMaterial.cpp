@@ -1,6 +1,5 @@
 #include "ghedxpch.h"
-
-#include "Material.h"
+#include "DxMaterial.h"
 
 #include "engine/directx/DxGraphics.h"
 #include "core/resource/ResourceManager.h"
@@ -8,14 +7,14 @@
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Engine::DirectX {
-    const Ghurund::Core::Type& Material::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Material>()
+    const Ghurund::Core::Type& DxMaterial::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<DxMaterial>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }
 
-    void Material::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+    void DxMaterial::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         /*Status result;
         shader = context.ResourceManager.load<Ghurund::Shader>(context, workingDir, stream, &result, options);
         if (filterStatus(result, options) != Status::OK)
@@ -27,7 +26,7 @@ namespace Ghurund::Engine::DirectX {
         throw NotImplementedException();
     }
 
-    void Material::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    void DxMaterial::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         /*if (shader == nullptr)
             return Logger::log(LogType::ERR0R, Status::INV_STATE, _T("Shader cannot be empty\n"));
 

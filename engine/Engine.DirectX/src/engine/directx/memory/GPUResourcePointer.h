@@ -5,8 +5,6 @@
 
 #pragma warning(push, 0)
 #include <d3d12.h>
-#include <dxgi1_4.h>
-#include <DirectXMath.h>
 #pragma warning(pop)
 
 namespace Ghurund::Engine::DirectX {
@@ -31,15 +29,11 @@ namespace Ghurund::Engine::DirectX {
         ID3D12Resource *resource;
 
     public:
-        GPUResourcePointer(HeapAllocator *allocator, void* address, ID3D12Resource *resource){
-            this->allocator = allocator;
-            this->address = address;
-            this->resource = resource;
+		GPUResourcePointer(HeapAllocator* allocator, void* address, ID3D12Resource* resource):
+			allocator(allocator), address(address), resource(resource) {
+            resource->AddRef();
         }
 
-        ~GPUResourcePointer() {
-            resource->Release();
-            allocator->deallocate(address);
-        }
+        ~GPUResourcePointer();
     };
 }

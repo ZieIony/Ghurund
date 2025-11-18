@@ -7,7 +7,7 @@
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Engine::DirectX;
 
-    class Material:public IMaterial {
+    class DxMaterial:public IMaterial {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -17,7 +17,7 @@ namespace Ghurund::Engine::DirectX {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = Material::GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = DxMaterial::GET_TYPE();
 #pragma endregion
 
     private:
@@ -34,13 +34,13 @@ namespace Ghurund::Engine::DirectX {
 
     public:
 
-        Material() {}
+        DxMaterial() {}
 
-        Material(DxShader* shader) {
+        DxMaterial(DxShader* shader) {
             setPointer(this->shader, shader);
         }
 
-        ~Material() {
+        ~DxMaterial() {
             finalize();
         }
 
@@ -59,8 +59,8 @@ namespace Ghurund::Engine::DirectX {
 
         __declspec(property(get = getParameters)) const ParameterCollection& Parameters;
 
-        bool set(DxGraphics& graphics, CommandList& commandList, ParameterManager& parameterManager) {
-            return shader->set(graphics, commandList, parameterManager);
+        bool set(CommandList& commandList, ParameterManager& parameterManager) {
+            return shader->set(commandList, parameterManager);
         }
 
         DxShader* getShader() {
@@ -73,11 +73,9 @@ namespace Ghurund::Engine::DirectX {
 
         __declspec(property(get = getShader, put = setShader)) DxShader* Shader;
 
-        inline bool getIsTransparencyEnabled() const {
+        virtual bool getIsTransparencyEnabled() const override {
             return shader->IsTransparencyEnabled;
         }
-
-        __declspec(property(get = getIsTransparencyEnabled)) bool IsTransparencyEnabled;
 
         inline const Array<VertexRole>& getLayout() const {
             return shader->Layout;
@@ -88,7 +86,7 @@ namespace Ghurund::Engine::DirectX {
 #pragma region formats
     protected:
         virtual const Array<ResourceFormat>& getFormatsImpl() const override {
-            return Material::FORMATS;
+            return DxMaterial::FORMATS;
         }
 
     public:

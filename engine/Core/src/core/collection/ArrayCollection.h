@@ -5,6 +5,8 @@
 #include "CollectionWithCapacity.h"
 #include "core/allocation/SimpleAllocator.h"
 
+#include <algorithm>
+
 namespace Ghurund::Core {
 	template<typename Value, typename AllocatorType = SimpleAllocator>
 	class ArrayCollection:public CollectionWithCapacity {
@@ -188,6 +190,11 @@ namespace Ghurund::Core {
 		template<typename Predicate>
 		inline bool any(const Predicate& predicate) const {
 			return find(predicate) != size;
+		}
+
+		template<typename Comparator>
+		inline void sort(const Comparator& comparator) {
+			std::sort(begin(), end(), comparator);
 		}
 	};
 }

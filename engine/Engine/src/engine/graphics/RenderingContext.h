@@ -6,7 +6,11 @@
 #include "core/object/Noncopyable.h"
 #include "core/object/NotNull.h"
 #include "core/window/SystemWindow.h"
+#include "DrawPacket.h"
+#include "engine/parameter/ParameterManager.h"
 #include "RenderingStatistics.h"
+#include <core/collection/Set.h>
+#include "RenderGroup.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
@@ -31,6 +35,8 @@ namespace Ghurund::Engine {
         virtual void finishFrame() = 0;
 
         virtual void clear(const Color* clearColor) = 0;
+
+        virtual void draw(Set<RenderGroup>& renderGroups, ParameterManager& parameterManager) = 0;
 
         virtual void setSize(IntSize size) = 0;
 

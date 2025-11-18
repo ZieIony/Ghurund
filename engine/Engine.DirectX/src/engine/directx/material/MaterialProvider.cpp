@@ -5,19 +5,19 @@
 #include "engine/directx/shader/ShaderProvider.h"
 
 namespace Ghurund::Engine::DirectX {
-    Material* MaterialProvider::makeWithShader(DxShader* shader) {
-        Material* material = nullptr;
+    DxMaterial* MaterialProvider::makeWithShader(DxShader* shader) {
+        DxMaterial* material = nullptr;
         if (shader) {
-            material = ghnew Material(shader);
+            material = ghnew DxMaterial(shader);
         }
         return material;
     }
 
-    Material* MaterialProvider::makeBasic(ITexture* diffuseTexture) {
-        Material* material = nullptr;
+    DxMaterial* MaterialProvider::makeBasic(ITexture* diffuseTexture) {
+        DxMaterial* material = nullptr;
         IntrusivePointer<DxShader> shader(shaderProvider.loadBasic());
         if (shader!=nullptr) {
-            material = ghnew Material(shader.get());
+            material = ghnew DxMaterial(shader.get());
             /*if (diffuseTexture) {
                 TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
                 diffuse->setValue(diffuseTexture);
@@ -26,11 +26,11 @@ namespace Ghurund::Engine::DirectX {
         return material;
     }
 
-    Material* MaterialProvider::makeBasicLight(ITexture* diffuseTexture, ITexture* specularTexture, ITexture* normalTexture) {
-        Material* material = nullptr;
+    DxMaterial* MaterialProvider::makeBasicLight(ITexture* diffuseTexture, ITexture* specularTexture, ITexture* normalTexture) {
+        DxMaterial* material = nullptr;
         IntrusivePointer<DxShader> shader(shaderProvider.loadBasicLight());
         if (shader!=nullptr) {
-            material = ghnew Material(shader.get());
+            material = ghnew DxMaterial(shader.get());
             /*if (diffuseTexture) {
                 TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
                 diffuse->setValue(diffuseTexture);
@@ -47,11 +47,11 @@ namespace Ghurund::Engine::DirectX {
         return material;
     }
 
-    Material* MaterialProvider::makeToon(ITexture* diffuseTexture) {
-        Material* material = nullptr;
+    DxMaterial* MaterialProvider::makeToon(ITexture* diffuseTexture) {
+        DxMaterial* material = nullptr;
         IntrusivePointer<DxShader> shader(shaderProvider.loadToon());
         if (shader!=nullptr) {
-            material = ghnew Material(shader.get());
+            material = ghnew DxMaterial(shader.get());
             /*if (diffuseTexture) {
                 TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
                 diffuse->setValue(diffuseTexture);
@@ -60,11 +60,11 @@ namespace Ghurund::Engine::DirectX {
         return material;
     }
 
-    Material* MaterialProvider::makeChecker() {
-        Material* material = nullptr;
+    DxMaterial* MaterialProvider::makeChecker() {
+        DxMaterial* material = nullptr;
         IntrusivePointer<DxShader> shader(shaderProvider.loadBasic());
         if (shader!=nullptr) {
-            material = ghnew Material(shader.get());
+            material = ghnew DxMaterial(shader.get());
             Texture* texture = textureProvider.makeChecker();
             //TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
             //diffuse->setValue(texture);
@@ -72,47 +72,47 @@ namespace Ghurund::Engine::DirectX {
         return material;
     }
 
-    Material* MaterialProvider::makeWireframe() {
+    DxMaterial* MaterialProvider::makeWireframe() {
         IntrusivePointer<DxShader> shader(shaderProvider.loadWireframe());
         return makeWithShader(shader.get());
     }
 
-    Material* MaterialProvider::makeOutline() {
+    DxMaterial* MaterialProvider::makeOutline() {
         IntrusivePointer<DxShader> shader(shaderProvider.loadOutline());
         return makeWithShader(shader.get());
     }
 
-    Material* MaterialProvider::makeNormals() {
+    DxMaterial* MaterialProvider::makeNormals() {
         IntrusivePointer<DxShader> shader(shaderProvider.loadNormals());
         return makeWithShader(shader.get());
     }
 
-    Material* MaterialProvider::makeInvalid() {
+    DxMaterial* MaterialProvider::makeInvalid() {
         IntrusivePointer<DxShader> shader(shaderProvider.loadInvalid());
         return makeWithShader(shader.get());
     }
 
-    Material* MaterialProvider::makeLightPass() {
+    DxMaterial* MaterialProvider::makeLightPass() {
         IntrusivePointer<DxShader> shader(shaderProvider.loadLightPass());
         return makeWithShader(shader.get());
     }
 
-    Material* MaterialProvider::makeUi() {
+    DxMaterial* MaterialProvider::makeUi() {
         IntrusivePointer<DxShader> shader(shaderProvider.loadUi());
         return makeWithShader(shader.get());
     }
 
-    Material* MaterialProvider::makeText() {
+    DxMaterial* MaterialProvider::makeText() {
         IntrusivePointer<DxShader> shader(shaderProvider.loadText());
         return makeWithShader(shader.get());
     }
 
-    Material* MaterialProvider::makeBasicSky() {
+    DxMaterial* MaterialProvider::makeBasicSky() {
         IntrusivePointer<DxShader> shader(shaderProvider.loadBasicSky());
         return makeWithShader(shader.get());
     }
 
-    Material* MaterialProvider::makeAdvancedSky() {
+    DxMaterial* MaterialProvider::makeAdvancedSky() {
         IntrusivePointer<DxShader> shader(shaderProvider.loadAdvancedSky());
         return makeWithShader(shader.get());
     }

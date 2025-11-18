@@ -32,20 +32,27 @@ namespace Ghurund::Engine::OpenGL {
 		
 		virtual void clear(const Color* color) override;
 
-		void draw() {
-			/*renderingContext.startFrame();
-	 Color clearColor = { 0xff1f1f1f };
-	 renderer->clear(&clearColor);
-	 OpenGLDrawingContext context;
-	 Layers.draw(context);
+		virtual void draw(Set<RenderGroup>& renderGroups, ParameterManager& parameterManager) override {
+			for (auto& group : renderGroups) {
+				group.objects.sort([&](const DrawPacket& first, const DrawPacket& second) {
+					return (first.position.z - second.position.z) * group.DrawOrder;
+				});
+				for (auto& packet : group.objects) {
+					/*renderingContext.startFrame();
+			 Color clearColor = { 0xff1f1f1f };
+			 renderer->clear(&clearColor);
+			 OpenGLDrawingContext context;
+			 Layers.draw(context);
 
-	 glDrawArrays(GL_TRIANGLES, 0, 3);
-	 //glFlush();
-	 renderingContext.finishFrame();
+			 glDrawArrays(GL_TRIANGLES, 0, 3);
+			 //glFlush();
+			 renderingContext.finishFrame();
 
-	 PAINTSTRUCT ps;
-	 BeginPaint(Handle, &ps);
-	 EndPaint(Handle, &ps);*/
+			 PAINTSTRUCT ps;
+			 BeginPaint(Handle, &ps);
+			 EndPaint(Handle, &ps);*/
+				}
+			}
 		}
 
         virtual void setSize(Ghurund::Core::IntSize size) override;

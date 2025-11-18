@@ -53,7 +53,7 @@ namespace Demo {
 		world->setValue(identity);
 		ParameterManager.Parameters.put(world.get());
 
-		basicMaterial = IntrusivePointer<Material>(materialProvider.makeText());
+		basicMaterial = IntrusivePointer<DxMaterial>(materialProvider.makeText());
 
 		sizeParameter.set((Float2Parameter*)basicMaterial->Parameters.get("size"));
 		backgroundColorParameter.set((Float4Parameter*)basicMaterial->Parameters.get("backgroundColor"));
@@ -64,6 +64,10 @@ namespace Demo {
 		texture->init(*graphics, commandList.ref(), *font->Atlas->Image);
 		colorTexture.set(texture);
 		colorTextureParameter->Value = colorTexture.get();
+
+		RenderGroup uiGroup(0, false);
+		uiGroup.objects.add(DrawPacket{ mesh, basicMaterial });
+		renderGroups.put(uiGroup);
 	}
 
 	bool DemoWindow::onMouseButtonEvent(const MouseButtonEventArgs& args) {
@@ -106,10 +110,7 @@ namespace Demo {
 	}
 	
 	void DemoWindow::onPaint(RenderingContext& renderingContext) {
-		auto& dxContext = (DxRenderingContext&)renderingContext;
-		auto commandList = dxContext.SwapChain.CurrentFrame.CommandList;
-		DxGraphics* graphics = app.Features.get<DxGraphics>();
-		basicMaterial->set(*graphics, *commandList, ParameterManager);
-		mesh->draw(*commandList, basicMaterial->Layout);
+		renderingContext.clear(BackgroundColor);
+		renderingContext.draw(renderGroups, ParameterManager);
 	}
 }

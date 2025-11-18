@@ -1,9 +1,8 @@
 #pragma once
 
 #include "DxGraphics.h"
-#include "engine/directx/SwapChain.h"
 #include "engine/graphics/Renderer.h"
-#include "engine/directx/material/Material.h"
+#include "engine/directx/material/DxMaterial.h"
 #include "Postprocess.h"
 #include <core/Color.h>
 #include "DxRenderingContext.h"
@@ -27,7 +26,7 @@ namespace Ghurund::Engine::DirectX {
 
     private:
 		//Model* fullScreenQuad = nullptr;
-        Material* lightPassMaterial = nullptr;
+        DxMaterial* lightPassMaterial = nullptr;
         Postprocess* postprocess = nullptr;
         //RenderTarget* postprocessRenderTarget[FRAME_COUNT] = {};
 

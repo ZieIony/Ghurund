@@ -88,7 +88,7 @@ namespace Ghurund::Engine::DirectX {
 
 		__declspec(property(get = getParameters)) const ParameterCollection& Parameters;
 
-		bool set(DxGraphics& graphics, CommandList& commandList, ParameterManager& parameterManager);
+		bool set(CommandList& commandList, ParameterManager& parameterManager);
 
 		inline bool getIsTransparencyEnabled() {
 			return isTransparencyEnabled;

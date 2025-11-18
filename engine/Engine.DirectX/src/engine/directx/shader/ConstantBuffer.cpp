@@ -48,7 +48,7 @@ namespace Ghurund::Engine::DirectX {
 		}
 	}
 	
-	void ConstantBuffer::set(DxGraphics& graphics, CommandList& commandList, ParameterManager& parameterManager) {
+	void ConstantBuffer::set(CommandList& commandList, ParameterManager& parameterManager) {
 		size_t i = 0;
 		auto it = parameters.begin();
 		while (i < variables.Size) {
@@ -69,6 +69,6 @@ namespace Ghurund::Engine::DirectX {
 			i++;
 			it++;
 		}
-		buffer.set(graphics, commandList, bindSlot);
+		buffer.set(commandList, bindSlot);
 	}
 }

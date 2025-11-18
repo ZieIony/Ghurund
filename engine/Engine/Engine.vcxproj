@@ -98,6 +98,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\graphics\DrawPacket.h" />
+    <ClInclude Include="src\engine\graphics\RenderGroup.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />
