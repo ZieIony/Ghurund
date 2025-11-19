@@ -53,11 +53,9 @@ namespace Ghurund::Engine::DirectX {
             return shader != nullptr && shader->Valid && __super::Valid;
         }
 
-        const ParameterCollection& getParameters() const {
+        virtual const ParameterCollection& getParameters() const override {
             return shader->Parameters;
         }
-
-        __declspec(property(get = getParameters)) const ParameterCollection& Parameters;
 
         bool set(CommandList& commandList, ParameterManager& parameterManager) {
             return shader->set(commandList, parameterManager);

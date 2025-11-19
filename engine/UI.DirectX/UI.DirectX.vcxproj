@@ -97,9 +97,9 @@
     <ClInclude Include="src\ui\directx\DXUILayer.h" />
     <ClInclude Include="src\ui\directx\DxCanvas.h" />
     <ClInclude Include="src\ui\directx\DxUIFeature.h" />
+    <ClInclude Include="src\ui\directx\DxUIFeatureFactory.h" />
     <ClInclude Include="src\ui\directx\Shape.h" />
     <ClInclude Include="src\ui\directx\UIContext.h" />
-    <ClInclude Include="src\ui\directx\DxUIFeatureFactory.h" />
     <ClInclude Include="src\ui\directx\loading\ShapeFactory.h" />
     <ClInclude Include="src\ui\directx\loading\TextFormatFactory.h" />
   </ItemGroup>

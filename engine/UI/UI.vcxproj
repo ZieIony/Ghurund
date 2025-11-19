@@ -61,9 +61,9 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -86,6 +86,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -108,9 +109,6 @@
     <ClInclude Include="src\ui\Alignment.h" />
     <ClInclude Include="src\ui\Binding.h" />
     <ClInclude Include="src\ui\Canvas.h" />
-    <ClInclude Include="src\ui\font\FontAtlas.h" />
-    <ClInclude Include="src\ui\font\GlyphMetrics.h" />
-    <ClInclude Include="src\ui\font\TtfFile.h" />
     <ClInclude Include="src\ui\Orientation.h" />
     <ClInclude Include="src\ui\RootView.h" />
     <ClInclude Include="src\ui\Shape.h" />
@@ -183,8 +181,11 @@
     <ClInclude Include="src\ui\effects\ShadowEffect.h" />
     <ClInclude Include="src\ui\effects\TintEffect.h" />
     <ClInclude Include="src\ui\font\Font.h" />
+    <ClInclude Include="src\ui\font\FontAtlas.h" />
     <ClInclude Include="src\ui\font\FontLoader.h" />
+    <ClInclude Include="src\ui\font\GlyphMetrics.h" />
     <ClInclude Include="src\ui\font\Ttf.h" />
+    <ClInclude Include="src\ui\font\TtfFile.h" />
     <ClInclude Include="src\ui\image\VectorImage.h" />
     <ClInclude Include="src\ui\layout\ControlWithConstraints.h" />
     <ClInclude Include="src\ui\layout\HorizontalLayout.h" />
@@ -281,8 +282,6 @@
     </ClCompile>
     <ClCompile Include="src\ui\Alignment.cpp" />
     <ClCompile Include="src\ui\Binding.cpp" />
-    <ClCompile Include="src\ui\font\FontAtlas.cpp" />
-    <ClCompile Include="src\ui\font\TtfFile.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\Shape.cpp" />
     <ClCompile Include="src\ui\UIContext.cpp" />
@@ -327,8 +326,10 @@
     <ClCompile Include="src\ui\drawable\Drawable.cpp" />
     <ClCompile Include="src\ui\drawable\InvalidImageDrawable.cpp" />
     <ClCompile Include="src\ui\font\Font.cpp" />
+    <ClCompile Include="src\ui\font\FontAtlas.cpp" />
     <ClCompile Include="src\ui\font\FontLoader.cpp" />
     <ClCompile Include="src\ui\font\Ttf.cpp" />
+    <ClCompile Include="src\ui\font\TtfFile.cpp" />
     <ClCompile Include="src\ui\image\VectorImage.cpp" />
     <ClCompile Include="src\ui\layout\HorizontalLayout.cpp" />
     <ClCompile Include="src\ui\layout\HorizontalLayoutManager.cpp" />

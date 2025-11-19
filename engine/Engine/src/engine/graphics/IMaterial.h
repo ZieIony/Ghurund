@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/resource/Resource.h"
+#include "engine/parameter/ParameterCollection.h"
 
 namespace Ghurund::Engine {
 
@@ -23,5 +24,9 @@ namespace Ghurund::Engine {
         virtual bool getIsTransparencyEnabled() const = 0;
 
         __declspec(property(get = getIsTransparencyEnabled)) bool IsTransparencyEnabled;
+
+        virtual const ParameterCollection& getParameters() const = 0;
+
+        __declspec(property(get = getParameters)) const ParameterCollection& Parameters;
     };
 }

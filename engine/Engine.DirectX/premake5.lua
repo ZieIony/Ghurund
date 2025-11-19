@@ -6,7 +6,8 @@ project "Engine.DirectX"
 
 	dependson {
 		"Engine",
-		"Core"
+		"Core",
+		"UI"
 	}
 
 	files {
@@ -19,11 +20,13 @@ project "Engine.DirectX"
 		"src",
 		includeDir["Core"],
 		includeDir["Engine"],
-		includeDir["DirectX"]
+		includeDir["DirectX"],
+		includeDir["UI"]
 	}
 
 	links {
 		"Engine",
-		"Core"
+		"Core",
+		"UI"
 	}
 	

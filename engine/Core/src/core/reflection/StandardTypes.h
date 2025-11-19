@@ -2,9 +2,8 @@
 
 #include "Type.h"
 #include "core/Buffer.h"
-#include "core/math/Point.h"
 #include "core/math/Size.h"
-#include "core/math/Matrix3x2.h"
+#include "core/math/Matrix.h"
 #include "core/string/String.h"
 
 #include <DirectXMath.h>

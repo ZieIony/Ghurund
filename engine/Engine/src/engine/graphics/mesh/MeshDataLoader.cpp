@@ -3,6 +3,7 @@
 
 #include "core/logging/Logger.h"
 #include "core/object/IntrusivePointer.h"
+#include "core/exception/Exceptions.h"
 
 #include <cstdlib>
 

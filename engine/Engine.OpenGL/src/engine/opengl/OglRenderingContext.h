@@ -35,7 +35,7 @@ namespace Ghurund::Engine::OpenGL {
 		virtual void draw(Set<RenderGroup>& renderGroups, ParameterManager& parameterManager) override {
 			for (auto& group : renderGroups) {
 				group.objects.sort([&](const DrawPacket& first, const DrawPacket& second) {
-					return (first.position.z - second.position.z) * group.DrawOrder;
+					return (first.position.z - second.position.z) * (int8_t)group.DrawOrder;
 				});
 				for (auto& packet : group.objects) {
 					/*renderingContext.startFrame();

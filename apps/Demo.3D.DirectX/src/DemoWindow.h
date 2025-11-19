@@ -15,19 +15,18 @@ namespace Demo {
 	class DemoWindow:public Ghurund::Engine::GameWindow {
 	private:
 		DemoApplication& app;
-		IntrusivePointer<FontLoader> fontLoader;
 
 		Set<RenderGroup> renderGroups;
 
-		IntrusivePointer<DxMesh> mesh;
-		IntrusivePointer<DxMaterial> basicMaterial;
+		IntrusivePointer<Resource> mesh;
+		IntrusivePointer<IMaterial> basicMaterial;
 		IntrusivePointer<Camera> camera;
 		IntrusivePointer<Font> font;
 
-		IntrusivePointer<Float2Parameter> sizeParameter;
-		IntrusivePointer<Float4Parameter> backgroundColorParameter;
-		IntrusivePointer<Float4Parameter> borderColorParameter;
-		IntrusivePointer<TextureParameter> colorTextureParameter;
+		Float2Parameter* sizeParameter;
+		Float4Parameter* backgroundColorParameter;
+		Float4Parameter* borderColorParameter;
+		TextureParameter* colorTextureParameter;
 		IntrusivePointer<Texture> colorTexture;
 
 	public:

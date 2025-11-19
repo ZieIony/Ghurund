@@ -98,8 +98,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\graphics\DrawPacket.h" />
-    <ClInclude Include="src\engine\graphics\RenderGroup.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />
@@ -135,6 +133,7 @@
     <ClInclude Include="src\engine\game\sky\AdvancedSky.h" />
     <ClInclude Include="src\engine\game\sky\BasicSky.h" />
     <ClInclude Include="src\engine\game\sky\Sky.h" />
+    <ClInclude Include="src\engine\graphics\DrawPacket.h" />
     <ClInclude Include="src\engine\graphics\Drawable.h" />
     <ClInclude Include="src\engine\graphics\DrawableComponent.h" />
     <ClInclude Include="src\engine\graphics\DrawableComponents.h" />
@@ -144,11 +143,13 @@
     <ClInclude Include="src\engine\graphics\ITexture.h" />
     <ClInclude Include="src\engine\graphics\ITextureProvider.h" />
     <ClInclude Include="src\engine\graphics\LightSystem.h" />
+    <ClInclude Include="src\engine\graphics\RenderGroup.h" />
     <ClInclude Include="src\engine\graphics\Renderer.h" />
     <ClInclude Include="src\engine\graphics\RenderingContext.h" />
     <ClInclude Include="src\engine\graphics\RenderingStatistics.h" />
     <ClInclude Include="src\engine\graphics\mesh\ConeMesh.h" />
     <ClInclude Include="src\engine\graphics\mesh\CubeMesh.h" />
+    <ClInclude Include="src\engine\graphics\mesh\ITextMeshFactory.h" />
     <ClInclude Include="src\engine\graphics\mesh\MeshData.h" />
     <ClInclude Include="src\engine\graphics\mesh\MeshDataLoader.h" />
     <ClInclude Include="src\engine\graphics\mesh\MeshProcessor.h" />

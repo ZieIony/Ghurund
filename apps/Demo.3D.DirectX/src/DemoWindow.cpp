@@ -11,6 +11,8 @@
 #include <engine/directx/material/MaterialProvider.h>
 #include <ui/font/FontLoader.h>
 #include <engine/graphics/mesh/TextMesh.h>
+#include <core/math/Matrix.h>
+#include <engine/directx/mesh/DxTextMeshFactory.h>
 
 namespace Demo {
 	DemoWindow::DemoWindow(
@@ -37,35 +39,27 @@ namespace Demo {
 		camera->updateParameters();
 		ParameterManager.Parameters.putAll(camera->Parameters);
 
-		fontLoader = makeIntrusive<FontLoader>();
-
-		app.ResourceManager.Loaders.set<Font>(fontLoader.ref());
 		font.set(app.ResourceManager.load<Font>(ResourcePath(FilePath(L"resources/fonts/lato_regular.ttf"))));
 
-		auto meshData = makeIntrusive<TextMesh>();
-		meshData->init(L"Heylo wórld.", font.ref());
-		mesh = makeIntrusive<DxMesh>();
-		mesh->init(meshData.ref(), *graphics, commandList.ref());
+		DxTextMeshFactory factory(*graphics, commandList.ref());
 
-		auto world = makeIntrusive<MatrixParameter>("world");
-		XMFLOAT4X4 identity;
-		XMStoreFloat4x4(&identity, XMMatrixIdentity());
-		world->setValue(identity);
+		mesh = IntrusivePointer<Resource>(factory.makeMesh(L"Heylo wórld.", font.ref()));
+
+		auto world = makeIntrusive<MatrixParameter>("world", MATRIX_IDENTITY);
 		ParameterManager.Parameters.put(world.get());
 
-		basicMaterial = IntrusivePointer<DxMaterial>(materialProvider.makeText());
+		basicMaterial = IntrusivePointer<IMaterial>(materialProvider.makeText());
 
-		sizeParameter.set((Float2Parameter*)basicMaterial->Parameters.get("size"));
-		backgroundColorParameter.set((Float4Parameter*)basicMaterial->Parameters.get("backgroundColor"));
-		borderColorParameter.set((Float4Parameter*)basicMaterial->Parameters.get("borderColor"));
+		sizeParameter = (Float2Parameter*)basicMaterial->Parameters.get("size");
+		backgroundColorParameter = (Float4Parameter*)basicMaterial->Parameters.get("backgroundColor");
+		borderColorParameter = (Float4Parameter*)basicMaterial->Parameters.get("borderColor");
 
-		colorTextureParameter.set((TextureParameter*)basicMaterial->Parameters.get("colorTexture"));
-		Texture* texture = ghnew Texture();
-		texture->init(*graphics, commandList.ref(), *font->Atlas->Image);
-		colorTexture.set(texture);
+		colorTexture = makeIntrusive<Texture>();
+		colorTexture->init(*graphics, commandList.ref(), *font->Atlas->Image);
+		colorTextureParameter = (TextureParameter*)basicMaterial->Parameters.get("colorTexture");
 		colorTextureParameter->Value = colorTexture.get();
 
-		RenderGroup uiGroup(0, false);
+		RenderGroup uiGroup(0, DrawOrder::BACK_TO_FRONT);
 		uiGroup.objects.add(DrawPacket{ mesh, basicMaterial });
 		renderGroups.put(uiGroup);
 	}

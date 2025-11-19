@@ -2,7 +2,6 @@
 
 #include "MeshData.h"
 #include "core/resource/Loader.h"
-#include "core/exception/Exceptions.h"
 
 namespace Ghurund::Engine {
     class MeshDataLoader:public Loader {

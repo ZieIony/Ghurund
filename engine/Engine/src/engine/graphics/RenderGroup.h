@@ -6,28 +6,32 @@
 #include <cstdint>
 
 namespace Ghurund::Engine {
-    using namespace Ghurund::Core;
+	using namespace Ghurund::Core;
 
-    class RenderGroup {
-    private:
-        uint32_t order;
-        int8_t drawOrder;
+	enum class DrawOrder:int8_t {
+		BACK_TO_FRONT = -1, FRONT_TO_BACK = 1
+	};
 
-    public:
-        List<DrawPacket> objects;
+	class RenderGroup {
+	private:
+		uint32_t order;
+		DrawOrder drawOrder;
 
-        // TODO: is this draw order correct?
-        RenderGroup(uint32_t order, bool frontToBack = true):order(order), drawOrder(frontToBack ? 1 : -1) {}
+	public:
+		List<DrawPacket> objects;
 
-        // TODO: get sorted objects from here
-        inline int8_t getDrawOrder() const {
-            return drawOrder;
-        }
+		// TODO: is this draw order correct?
+		RenderGroup(uint32_t order, DrawOrder drawOrder = DrawOrder::FRONT_TO_BACK):order(order), drawOrder(drawOrder) {}
 
-        __declspec(property(get = getDrawOrder)) int8_t DrawOrder;
+		// TODO: get sorted objects from here
+		inline DrawOrder getDrawOrder() const {
+			return drawOrder;
+		}
 
-        inline auto operator<=>(const RenderGroup& other) const {
-            return order <=> other.order;
-        }
-    };
+		__declspec(property(get = getDrawOrder)) DrawOrder DrawOrder;
+
+		inline auto operator<=>(const RenderGroup& other) const {
+			return order <=> other.order;
+		}
+	};
 }
