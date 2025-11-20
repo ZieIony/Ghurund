@@ -5,7 +5,6 @@
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/loading/DrawableFactory.h"
-#include "ui/directx/loading/ShapeFactory.h"
 #include "ui/directx/loading/TextFormatFactory.h"
 
 namespace Ghurund::UI::DirectX {
@@ -26,7 +25,6 @@ namespace Ghurund::UI::DirectX {
 
     private:
         ResourceManager& resourceManager;
-        Ghurund::UI::DirectX::ShapeFactory* shapeFactory = nullptr;
         Ghurund::UI::IDrawableFactory* drawableFactory = nullptr;
         Ghurund::UI::DirectX::TextFormatFactory* textFormatFactory = nullptr;
         Ghurund::UI::ConstraintFactory* constraintFactory = nullptr;
@@ -38,10 +36,6 @@ namespace Ghurund::UI::DirectX {
         virtual void onInit() override;
 
         virtual void onUninit() override;
-
-        virtual Ghurund::UI::ShapeFactory* getShapeFactory() override {
-            return shapeFactory;
-        }
 
         virtual Ghurund::UI::IDrawableFactory* getDrawableFactory() override {
             return drawableFactory;

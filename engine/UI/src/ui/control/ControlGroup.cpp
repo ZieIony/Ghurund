@@ -6,7 +6,6 @@
 #include "ui/constraint/ContentConstraint.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/layout/LayoutManager.h"
-#include "ui/UIDebugTools.h"
 
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& ControlGroup::GET_TYPE() {
@@ -134,15 +133,11 @@ namespace Ghurund::UI {
 			c.control->onUpdate(time);
 	}
 
-	void ControlGroup::onDraw(ICanvas& canvas) {
+	void ControlGroup::onDraw(RenderGroup& group) {
 		for (ControlWithConstraints& c : children) {
 			if (!c.control->Visible)
 				continue;
-			c.control->draw(canvas);
-#ifdef _DEBUG
-			if(UIDebugTools::drawConstraints)
-				c.Constraints.draw(canvas);
-#endif
+			c.control->draw(group);
 		}
 	}
 

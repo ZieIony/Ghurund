@@ -4,8 +4,6 @@
 #include "ui/constraint/ConstraintGraph.h"
 #include "ui/control/Control.h"
 #include "ui/control/ControlParent.h"
-#include "ui/Canvas.h"
-#include "ui/UIDebugTools.h"
 
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& SelfWidthConstraint::GET_TYPE() {
@@ -60,18 +58,6 @@ namespace Ghurund::UI {
 		right->resolve(control, graph);
 	}
 
-#ifdef _DEBUG
-	void CenterLeftConstraint::draw(ICanvas& canvas, float x, float y, float width, float height) const {
-		if (left->Value != value) {
-			canvas.Color = UIDebugTools::colorConstraints;
-			canvas.drawLine(left->Value, y + height / 2, value, y + height / 2, 1, UIDebugTools::getStrokeStyle2());
-			canvas.drawLine(left->Value, y + height / 2, left->Value + 5, y + height / 2 - 3, 1);
-			canvas.drawLine(left->Value, y + height / 2, left->Value + 5, y + height / 2 + 3, 1);
-		}
-		__super::draw(canvas, x, y, width, height);
-	}
-#endif
-
 	const Ghurund::Core::Type& CenterRightConstraint::GET_TYPE() {
 		static const Ghurund::Core::Type TYPE = TypeBuilder<CenterRightConstraint>()
 			.withSupertype(__super::GET_TYPE());
@@ -93,18 +79,6 @@ namespace Ghurund::UI {
 		width->resolve(control, graph);
 		right->resolve(control, graph);
 	}
-
-#ifdef _DEBUG
-	void CenterRightConstraint::draw(ICanvas& canvas, float x, float y, float width, float height) const {
-		if (right->Value != value) {
-			canvas.Color = UIDebugTools::colorConstraints;
-			canvas.drawLine(value, y + height / 2, right->Value, y + height / 2, 1, UIDebugTools::getStrokeStyle2());
-			canvas.drawLine(right->Value - 5, y + height / 2 - 3, right->Value, y + height / 2, 1);
-			canvas.drawLine(right->Value - 5, y + height / 2 + 3, right->Value, y + height / 2, 1);
-		}
-		__super::draw(canvas, x, y, width, height);
-	}
-#endif
 
 	const Ghurund::Core::Type& CenterTopConstraint::GET_TYPE() {
 		static const Ghurund::Core::Type TYPE = TypeBuilder<CenterTopConstraint>()
@@ -128,18 +102,6 @@ namespace Ghurund::UI {
 		bottom->resolve(control, graph);
 	}
 
-#ifdef _DEBUG
-	void CenterTopConstraint::draw(ICanvas& canvas, float x, float y, float width, float height) const {
-		if (top->Value != value) {
-			canvas.Color = UIDebugTools::colorConstraints;
-			canvas.drawLine(x + width / 2, top->Value, x + width / 2, value, 1, UIDebugTools::getStrokeStyle2());
-			canvas.drawLine(x + width / 2, top->Value, x + width / 2 - 3, top->Value + 5, 1);
-			canvas.drawLine(x + width / 2, top->Value, x + width / 2 + 3, top->Value + 5, 1);
-		}
-		__super::draw(canvas, x, y, width, height);
-	}
-#endif
-
 	const Ghurund::Core::Type& CenterBottomConstraint::GET_TYPE() {
 		static const Ghurund::Core::Type TYPE = TypeBuilder<CenterBottomConstraint>()
 			.withSupertype(__super::GET_TYPE());
@@ -161,18 +123,6 @@ namespace Ghurund::UI {
 		height->resolve(control, graph);
 		bottom->resolve(control, graph);
 	}
-
-#ifdef _DEBUG
-	void CenterBottomConstraint::draw(ICanvas& canvas, float x, float y, float width, float height) const {
-		if (bottom->Value != value) {
-			canvas.Color = UIDebugTools::colorConstraints;
-			canvas.drawLine(x + width / 2, value, x + width / 2, bottom->Value, 1, UIDebugTools::getStrokeStyle2());
-			canvas.drawLine(x + width / 2 - 3, bottom->Value - 5, x + width / 2, bottom->Value, 1);
-			canvas.drawLine(x + width / 2 + 3, bottom->Value - 5, x + width / 2, bottom->Value, 1);
-		}
-		__super::draw(canvas, x, y, width, height);
-	}
-#endif
 
 	const Ghurund::Core::Type& LeftWidthConstraint::GET_TYPE() {
 		static const Ghurund::Core::Type TYPE = TypeBuilder<LeftWidthConstraint>()

@@ -1,14 +1,15 @@
 #pragma once
 
-#include "Canvas.h"
 #include "core/application/Layer.h"
 #include "ui/constraint/ConstraintGraph.h"
 #include "ui/constraint/WindowConstraint.h"
 #include "ui/RootView.h"
 #include "ui/UIContext.h"
+#include <engine/graphics/RenderGroup.h>
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
+    using namespace Ghurund::Engine;
 
     class UILayer:public Layer {
 #pragma region reflection
@@ -98,6 +99,6 @@ namespace Ghurund::UI {
 
         virtual void update(const uint64_t time) override;
 
-        void draw(ICanvas& canvas);
+        void draw(RenderGroup& group);
     };
 }

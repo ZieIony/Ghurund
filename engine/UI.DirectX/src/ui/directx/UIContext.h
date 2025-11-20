@@ -15,18 +15,6 @@ namespace Ghurund::UI::DirectX {
         UiContext(
             Ghurund::Core::Window& window
         ):IUIContext(window) {}
-
-        virtual IStrokeStyle* makeStrokeStyle(Array<float>& dashes) override {
-            return nullptr;
-        }
-
-        virtual ShadowEffect* makeShadowEffect() override {
-            return nullptr;
-        }
-
-        virtual TintEffect* makeTintEffect() override {
-            return nullptr;
-        }
     };
 }
 

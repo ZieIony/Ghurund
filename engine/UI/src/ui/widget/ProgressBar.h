@@ -31,7 +31,7 @@ namespace Ghurund::UI {
 
         virtual void onStateChanged() override;
 
-        virtual void onDraw(ICanvas& canvas) override;
+        virtual void onDraw(RenderGroup& group) override;
 
     public:
         ProgressBar(

@@ -4,11 +4,15 @@
 #include "core/object/RefCountedObject.h"
 #include "core/math/Size.h"
 
+namespace Ghurund::Engine {
+    class RenderGroup;
+}
+
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
+    using namespace Ghurund::Engine;
 
     class Control;
-    class ICanvas;
 
     class Drawable:public RefCountedObject {
 #pragma region reflection
@@ -42,6 +46,6 @@ namespace Ghurund::UI {
 
         virtual void update(const uint64_t time) {}
 
-        virtual void draw(ICanvas& canvas, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const = 0;
+        virtual void draw(RenderGroup& group, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const = 0;
     };
 }

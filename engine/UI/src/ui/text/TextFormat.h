@@ -7,7 +7,6 @@
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
-    class ICanvas;
     class Control;
 
     class TextFormat:public RefCountedObject {

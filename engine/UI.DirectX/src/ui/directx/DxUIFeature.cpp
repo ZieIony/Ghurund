@@ -20,7 +20,6 @@ namespace Ghurund::UI::DirectX {
     }
 
     void DxUIFeature::onInit() {
-        shapeFactory = ghnew Ghurund::UI::DirectX::ShapeFactory();
         drawableFactory = ghnew Ghurund::UI::DrawableFactory(resourceManager);
         textFormatFactory = ghnew Ghurund::UI::DirectX::TextFormatFactory();
         constraintFactory = ghnew Ghurund::UI::ConstraintFactory();
@@ -29,7 +28,7 @@ namespace Ghurund::UI::DirectX {
 
         resourceManager.Loaders.set<Ghurund::UI::Font>(*fontLoader.get());
 
-        layoutLoader = makeIntrusive<Ghurund::UI::LayoutLoader>(resourceManager, *shapeFactory, *drawableFactory, *textFormatFactory, *constraintFactory);
+        layoutLoader = makeIntrusive<Ghurund::UI::LayoutLoader>(resourceManager, *drawableFactory, *textFormatFactory, *constraintFactory);
         resourceManager.Loaders.set<Control>(*layoutLoader.get());
     }
     
@@ -37,8 +36,6 @@ namespace Ghurund::UI::DirectX {
         resourceManager.Loaders.remove<Control>();
         resourceManager.Loaders.remove<Ghurund::UI::Font>();
         layoutLoader.set(nullptr);
-        delete shapeFactory;
-        shapeFactory = nullptr;
         delete drawableFactory;
         drawableFactory = nullptr;
         delete textFormatFactory;

@@ -51,7 +51,7 @@ namespace Ghurund::UI {
 
 		virtual void onThemeChanged() override;
 
-		virtual void onDraw(ICanvas& canvas) override;
+		virtual void onDraw(RenderGroup& group) override;
 
 	public:
 		Color idleColor = 0;

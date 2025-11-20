@@ -41,11 +41,7 @@ namespace Ghurund::UI {
         rootView->layout(0, 0, rootViewWidth->Value, rootViewHeight->Value);
     }
     
-    void UILayer::draw(ICanvas& canvas) {
-        try {
-            canvas.beginPaint();
-            rootView->draw(canvas);
-            canvas.endPaint();
-        } catch (...) {}
+    void UILayer::draw(RenderGroup& group) {
+        rootView->draw(group);
     }
 }

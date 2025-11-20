@@ -1,7 +1,6 @@
 #include "ghuipch.h"
 #include "ColorView.h"
 
-#include "ui/Canvas.h"
 #include "ui/theme/Theme.h"
 #include "core/reflection/Property.h"
 
@@ -22,11 +21,11 @@ namespace Ghurund::UI {
             color.resolve(*theme);
     }
 
-    void ColorView::onDraw(ICanvas& canvas) {
+    void ColorView::onDraw(RenderGroup& group) {
         const Ghurund::UI::Color* c = color.get();
         if (c && c->A > 0.0f) {
-            canvas.Color = *c;
-            canvas.fillRect(0, 0, Size.Width, Size.Height);
+            //canvas.Color = *c;
+            //canvas.fillRect(0, 0, Size.Width, Size.Height);
         }
     }
 }

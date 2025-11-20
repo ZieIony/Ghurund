@@ -138,10 +138,6 @@ namespace Ghurund::UI {
 		virtual CenterLeftConstraint* clone() const {
 			return ghnew CenterLeftConstraint(*this);
 		}
-
-#ifdef _DEBUG
-		void draw(ICanvas& canvas, float x, float y, float width, float height) const;
-#endif
 	};
 
 	class LeftRightConstraint:public Constraint {
@@ -223,10 +219,6 @@ namespace Ghurund::UI {
 		virtual CenterRightConstraint* clone() const {
 			return ghnew CenterRightConstraint(*this);
 		}
-
-#ifdef _DEBUG
-		void draw(ICanvas& canvas, float x, float y, float width, float height) const;
-#endif
 	};
 
 	class WidthRightConstraint:public Constraint {
@@ -348,10 +340,6 @@ namespace Ghurund::UI {
 		virtual CenterTopConstraint* clone() const {
 			return ghnew CenterTopConstraint(*this);
 		}
-
-#ifdef _DEBUG
-		void draw(ICanvas& canvas, float x, float y, float width, float height) const;
-#endif
 	};
 
 	class TopBottomConstraint:public Constraint {
@@ -433,10 +421,6 @@ namespace Ghurund::UI {
 		virtual CenterBottomConstraint* clone() const {
 			return ghnew CenterBottomConstraint(*this);
 		}
-
-#ifdef _DEBUG
-		void draw(ICanvas& canvas, float x, float y, float width, float height) const;
-#endif
 	};
 
 	class HeightBottomConstraint:public Constraint {

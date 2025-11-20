@@ -6,7 +6,6 @@
 #include "ui/widget/toolbar/ToolbarItemAdapter.h"
 #include <ColorListAdapter.h>
 #include <engine/directx/DxRenderer.h>
-#include <ui/UIDebugTools.h>
 
 namespace Demo {
 	using namespace Ghurund;
@@ -35,7 +34,6 @@ namespace Demo {
 			delete adapter2;
 			delete toolbarItemAdapter;
 			delete menuBarItemAdapter;
-			UIDebugTools::uninit();
 		}
 
 		void init();

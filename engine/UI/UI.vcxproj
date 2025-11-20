@@ -57,7 +57,7 @@
       <PrecompiledHeaderFile>ghuipch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\..\libs\msdfgen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\..\libs\msdfgen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -79,7 +79,7 @@
       <PrecompiledHeaderFile>ghuipch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\..\libs\msdfgen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\..\libs\msdfgen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -108,13 +108,9 @@
     <ClInclude Include="src\ghuipch.h" />
     <ClInclude Include="src\ui\Alignment.h" />
     <ClInclude Include="src\ui\Binding.h" />
-    <ClInclude Include="src\ui\Canvas.h" />
     <ClInclude Include="src\ui\Orientation.h" />
     <ClInclude Include="src\ui\RootView.h" />
-    <ClInclude Include="src\ui\Shape.h" />
-    <ClInclude Include="src\ui\StrokeStyle.h" />
     <ClInclude Include="src\ui\UIContext.h" />
-    <ClInclude Include="src\ui\UIDebugTools.h" />
     <ClInclude Include="src\ui\UIFeature.h" />
     <ClInclude Include="src\ui\UILayer.h" />
     <ClInclude Include="src\ui\adapter\AdapterLayout.h" />
@@ -153,9 +149,7 @@
     <ClInclude Include="src\ui\constraint\WrapConstraint.h" />
     <ClInclude Include="src\ui\constraint\spring\PreviousSpringConstraint.h" />
     <ClInclude Include="src\ui\constraint\spring\SpringSizeConstraint.h" />
-    <ClInclude Include="src\ui\control\Border.h" />
     <ClInclude Include="src\ui\control\ChildrenProvider.h" />
-    <ClInclude Include="src\ui\control\Clip.h" />
     <ClInclude Include="src\ui\control\ColorView.h" />
     <ClInclude Include="src\ui\control\Control.h" />
     <ClInclude Include="src\ui\control\ControlCollection.h" />
@@ -172,14 +166,10 @@
     <ClInclude Include="src\ui\control\ListControlProvider.h" />
     <ClInclude Include="src\ui\control\MouseEvents.h" />
     <ClInclude Include="src\ui\control\ScrollView.h" />
-    <ClInclude Include="src\ui\control\Shadow.h" />
     <ClInclude Include="src\ui\drawable\BitmapDrawable.h" />
     <ClInclude Include="src\ui\drawable\CursorDrawable.h" />
     <ClInclude Include="src\ui\drawable\Drawable.h" />
     <ClInclude Include="src\ui\drawable\InvalidImageDrawable.h" />
-    <ClInclude Include="src\ui\effects\DrawingEffect.h" />
-    <ClInclude Include="src\ui\effects\ShadowEffect.h" />
-    <ClInclude Include="src\ui\effects\TintEffect.h" />
     <ClInclude Include="src\ui\font\Font.h" />
     <ClInclude Include="src\ui\font\FontAtlas.h" />
     <ClInclude Include="src\ui\font\FontLoader.h" />
@@ -203,8 +193,6 @@
     <ClInclude Include="src\ui\loading\PrimitivePropertyLoaders.h" />
     <ClInclude Include="src\ui\loading\PropertyLoader.h" />
     <ClInclude Include="src\ui\loading\PropertyLoaderCollection.h" />
-    <ClInclude Include="src\ui\loading\ShapeFactory.h" />
-    <ClInclude Include="src\ui\loading\ShapePropertyLoader.h" />
     <ClInclude Include="src\ui\loading\StringPropertyLoader.h" />
     <ClInclude Include="src\ui\loading\TextDocumentPropertyLoader.h" />
     <ClInclude Include="src\ui\loading\TextFormatFactory.h" />
@@ -215,6 +203,7 @@
     <ClInclude Include="src\ui\style\PointerAttrProperty.h" />
     <ClInclude Include="src\ui\style\TextFormatAttr.h" />
     <ClInclude Include="src\ui\text\DocumentElement.h" />
+    <ClInclude Include="src\ui\text\ITextMeshFactory.h" />
     <ClInclude Include="src\ui\text\Selection.h" />
     <ClInclude Include="src\ui\text\SetSelectionMode.h" />
     <ClInclude Include="src\ui\text\TextBlock.h" />
@@ -223,6 +212,7 @@
     <ClInclude Include="src\ui\text\TextFormat.h" />
     <ClInclude Include="src\ui\text\TextLayout.h" />
     <ClInclude Include="src\ui\text\TextLayoutConstraint.h" />
+    <ClInclude Include="src\ui\text\TextMesh.h" />
     <ClInclude Include="src\ui\text\TextMetrics.h" />
     <ClInclude Include="src\ui\text\TextView.h" />
     <ClInclude Include="src\ui\theme\AttributeKey.h" />
@@ -283,7 +273,6 @@
     <ClCompile Include="src\ui\Alignment.cpp" />
     <ClCompile Include="src\ui\Binding.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
-    <ClCompile Include="src\ui\Shape.cpp" />
     <ClCompile Include="src\ui\UIContext.cpp" />
     <ClCompile Include="src\ui\UILayer.cpp" />
     <ClCompile Include="src\ui\adapter\AdapterLayout.cpp" />
@@ -306,8 +295,6 @@
     <ClCompile Include="src\ui\constraint\WrapConstraint.cpp" />
     <ClCompile Include="src\ui\constraint\spring\PreviousSpringConstraint.cpp" />
     <ClCompile Include="src\ui\constraint\spring\SpringSizeConstraint.cpp" />
-    <ClCompile Include="src\ui\control\Border.cpp" />
-    <ClCompile Include="src\ui\control\Clip.cpp" />
     <ClCompile Include="src\ui\control\ColorView.cpp" />
     <ClCompile Include="src\ui\control\Control.cpp" />
     <ClCompile Include="src\ui\control\ControlContainer.cpp" />
@@ -320,7 +307,6 @@
     <ClCompile Include="src\ui\control\InteractionHandler.cpp" />
     <ClCompile Include="src\ui\control\InvalidControl.cpp" />
     <ClCompile Include="src\ui\control\ScrollView.cpp" />
-    <ClCompile Include="src\ui\control\Shadow.cpp" />
     <ClCompile Include="src\ui\drawable\BitmapDrawable.cpp" />
     <ClCompile Include="src\ui\drawable\CursorDrawable.cpp" />
     <ClCompile Include="src\ui\drawable\Drawable.cpp" />
@@ -351,6 +337,7 @@
     <ClCompile Include="src\ui\text\TextFormat.cpp" />
     <ClCompile Include="src\ui\text\TextLayout.cpp" />
     <ClCompile Include="src\ui\text\TextLayoutConstraint.cpp" />
+    <ClCompile Include="src\ui\text\TextMesh.cpp" />
     <ClCompile Include="src\ui\text\TextView.cpp" />
     <ClCompile Include="src\ui\theme\BaseTheme.cpp" />
     <ClCompile Include="src\ui\theme\Theme.cpp" />
@@ -377,6 +364,14 @@
     <ClCompile Include="src\ui\widget\toolbar\ToolbarItemAdapter.cpp" />
     <ClCompile Include="src\ui\widget\tree\TreeView.cpp" />
     <ClCompile Include="src\ui\window\WindowFrame.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.vcxproj">
+      <Project>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.vcxproj">
+      <Project>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

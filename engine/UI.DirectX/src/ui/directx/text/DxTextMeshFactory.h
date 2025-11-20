@@ -1,10 +1,12 @@
 #pragma once
 
-#include "engine/graphics/mesh/ITextMeshFactory.h"
-#include <engine/graphics/mesh/TextMesh.h>
-#include "DxMesh.h"
+#include "ui/text/ITextMeshFactory.h"
+#include <ui/text/TextMesh.h>
+#include "engine/directx/mesh/DxMesh.h"
 
-namespace Ghurund::Engine::DirectX {
+namespace Ghurund::UI::DirectX {
+	using namespace Ghurund::Engine::DirectX;
+
 	class DxTextMeshFactory:public ITextMeshFactory {
 	private:
 		DxGraphics& graphics;
@@ -15,7 +17,7 @@ namespace Ghurund::Engine::DirectX {
 
 		virtual Resource* makeMesh(const WString& text, const Ghurund::UI::Font& font) const {
 			auto meshData = makeIntrusive<TextMesh>();
-			meshData->init(L"Heylo wórld.", font);
+			meshData->init(text, font);
 			auto mesh = makeIntrusive<DxMesh>();
 			mesh->init(meshData.ref(), graphics, commandList);
 			mesh->addReference();

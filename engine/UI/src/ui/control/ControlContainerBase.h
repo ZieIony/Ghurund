@@ -95,7 +95,7 @@ namespace Ghurund::UI {
 				child->onUpdate(time);
 		}
 
-		virtual void onDraw(ICanvas& canvas) override;
+		virtual void onDraw(RenderGroup& group) override;
 
 		virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
 

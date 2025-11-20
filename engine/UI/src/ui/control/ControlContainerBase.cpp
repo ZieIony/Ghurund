@@ -4,7 +4,6 @@
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
 #include "ui/constraint/ConstraintGraph.h"
-#include "ui/UIDebugTools.h"
 
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& ControlContainerBase::GET_TYPE() {
@@ -113,13 +112,9 @@ namespace Ghurund::UI {
 		}
 	}
 
-	void ControlContainerBase::onDraw(ICanvas& canvas) {
+	void ControlContainerBase::onDraw(RenderGroup& group) {
 		if (child)
-			child->draw(canvas);
-#ifdef _DEBUG
-		if (UIDebugTools::drawConstraints)
-			constraints.draw(canvas);
-#endif
+			child->draw(group);
 	}
 
 	bool ControlContainerBase::dispatchKeyEvent(const KeyEventArgs& event) {

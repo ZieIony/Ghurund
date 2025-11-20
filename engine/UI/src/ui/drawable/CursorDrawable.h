@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Drawable.h"
-#include "core/Timer.h"
-#include "ui/Canvas.h"
 
 namespace Ghurund::UI {
     class CursorDrawable: public Drawable {
@@ -26,6 +24,6 @@ namespace Ghurund::UI {
             visible = fmod(time, blinkTimeMs) < blinkTimeMs / 2.0f;
         }
 
-        virtual void draw(ICanvas& canvas, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const override;
+        virtual void draw(RenderGroup& group, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const override;
     };
 }

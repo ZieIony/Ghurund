@@ -2,7 +2,6 @@
 #include "InvalidImageDrawable.h"
 
 #include "core/math/Rect.h"
-#include "ui/Canvas.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::UI {
@@ -17,12 +16,12 @@ namespace Ghurund::UI {
         preferredSize = { 18, 18 };
     }
 
-    void InvalidImageDrawable::draw(ICanvas& canvas, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const {
-        canvas.Color = backgroundColor;
+    void InvalidImageDrawable::draw(RenderGroup& group, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const {
+        /*canvas.Color = backgroundColor;
         canvas.fillRect(0, 0, size.Width, size.Height);
         canvas.Color = borderColor;
         canvas.drawRect(1, 1, size.Width - 2, size.Height - 2, 2);
         canvas.drawLine(size.Width / 2 - 6, size.Height / 2 - 6, size.Width / 2 + 6, size.Height / 2 + 6, 1.5);
-        canvas.drawLine(size.Width / 2 - 6, size.Height / 2 + 6, size.Width / 2 + 6, size.Height / 2 - 6, 1.5);
+        canvas.drawLine(size.Width / 2 - 6, size.Height / 2 + 6, size.Width / 2 + 6, size.Height / 2 - 6, 1.5);*/
     }
 }

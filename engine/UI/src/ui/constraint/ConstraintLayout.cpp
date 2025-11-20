@@ -4,9 +4,7 @@
 #include <tinyxml2.h>
 
 #include "Guide.h"
-#include "ui/Canvas.h"
 #include "ConstraintGraph.h"
-#include "ui/UIDebugTools.h"
 
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& ConstraintLayout::GET_TYPE() {
@@ -28,8 +26,8 @@ namespace Ghurund::UI {
 		}*/
 	}
 
-    void ConstraintLayout::onDraw(ICanvas& canvas) {
-        __super::onDraw(canvas);
+    void ConstraintLayout::onDraw(RenderGroup& group) {
+        __super::onDraw(group);
 #ifdef _DEBUG
         /*for (Guide& guide : guides) {
             float position = guide.Value;

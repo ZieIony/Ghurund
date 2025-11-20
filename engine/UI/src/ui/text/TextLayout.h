@@ -124,7 +124,7 @@ namespace Ghurund::UI {
 
         virtual void removeTextAt(uint32_t position, uint32_t lengthToRemove);
 
-        virtual void draw(ICanvas& canvas);
+        virtual void draw(RenderGroup& group);
 
         uint32_t measureWidth();
 

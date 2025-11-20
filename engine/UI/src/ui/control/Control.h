@@ -20,14 +20,18 @@ namespace Ghurund::Core {
 	class ResourceManager;
 }
 
+namespace Ghurund::Engine {
+	class RenderGroup;
+}
+
 namespace Ghurund::UI {
 	class ControlParent;
 	class Theme;
 	class LayoutLoader;
-	class ICanvas;
 	class ConstraintGraph;
 
 	using namespace Ghurund::Core;
+	using namespace Ghurund::Engine;
 
 	class Control:public Resource, public EventConsumer {
 #pragma region reflection
@@ -96,7 +100,7 @@ namespace Ghurund::UI {
 
 		virtual void onLayout(float x, float y, float width, float height) {}
 
-		virtual void onDraw(ICanvas& canvas) {}
+		virtual void onDraw(RenderGroup& group) {}
 
 		virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
@@ -340,7 +344,7 @@ namespace Ghurund::UI {
 
 		virtual void onUpdate(const uint64_t time) {}
 
-		void draw(ICanvas& canvas);
+		void draw(RenderGroup& group);
 
 		virtual Control* find(const Ghurund::Core::AString& name) {
 			return (this->name && this->name->operator==(name)) ? this : nullptr;

@@ -23,7 +23,7 @@ namespace Ghurund::UI {
     public:
         InvalidImageDrawable();
 
-        virtual void draw(ICanvas& canvas, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const override;
+        virtual void draw(RenderGroup& group, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const override;
 
         virtual InvalidImageDrawable* clone() const override {
             return ghnew InvalidImageDrawable();

@@ -2,7 +2,6 @@
 #include "ProgressBar.h"
 
 #include "ui/theme/Theme.h"
-#include "ui/Canvas.h"
 
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& ProgressBar::GET_TYPE() {
@@ -30,17 +29,17 @@ namespace Ghurund::UI {
 		}
 	}
 
-	void ProgressBar::onDraw(ICanvas& canvas) {
+	void ProgressBar::onDraw(RenderGroup& group) {
 		if (indeterminate) {
 			const Color* bgColor = backgroundColor.get();
 			if (bgColor) {
-				canvas.Color = *bgColor;
-				canvas.fillRect(0, 0, Size.Width, Size.Height);
+				//canvas.Color = *bgColor;
+				//canvas.fillRect(0, 0, Size.Width, Size.Height);
 			}
 			const Color* prColor = progressColor.get();
 			if (prColor) {
-				canvas.Color = *prColor;
-				canvas.fillRect(Size.Width * progress, 0, Size.Width * cos(progress * 6.28f) / 2 + 0.5f, Size.Height);
+				//canvas.Color = *prColor;
+				//canvas.fillRect(Size.Width * progress, 0, Size.Width * cos(progress * 6.28f) / 2 + 0.5f, Size.Height);
 			}
 			progress += 0.01f;
 			if (progress > 1.0f)
@@ -49,13 +48,13 @@ namespace Ghurund::UI {
 		} else {
 			const Color* bgColor = backgroundColor.get();
 			if (bgColor) {
-				canvas.Color = *bgColor;
-				canvas.fillRect(Size.Width * progress, 0, Size.Width, Size.Height);
+				//canvas.Color = *bgColor;
+				//canvas.fillRect(Size.Width * progress, 0, Size.Width, Size.Height);
 			}
 			const Color* prColor = progressColor.get();
 			if (prColor) {
-				canvas.Color = *prColor;
-				canvas.fillRect(0, 0, Size.Width * progress, Size.Height);
+				//canvas.Color = *prColor;
+				//canvas.fillRect(0, 0, Size.Width * progress, Size.Height);
 			}
 		}
 	}

@@ -7,7 +7,6 @@
 namespace Ghurund::UI {
 	class Control;
 	class ConstraintGraph;
-	class ICanvas;
 
 	using namespace Ghurund::Core;
 
@@ -99,14 +98,5 @@ namespace Ghurund::UI {
 		__declspec(property(get = isEvaluated)) bool Evaluated;
 
 		virtual String toString() const override;
-
-#ifdef _DEBUG
-		virtual void draw(ICanvas& canvas, float x, float y, float width, float height) const {
-			if (skipDependencies)
-				return;
-			for (Constraint* constraint : dependencies)
-				constraint->draw(canvas, x, y, width, height);
-		}
-#endif
 	};
 }

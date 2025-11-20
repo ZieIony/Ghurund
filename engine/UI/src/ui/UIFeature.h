@@ -27,10 +27,6 @@ namespace Ghurund::UI {
 #pragma endregion
 
     public:
-        virtual Ghurund::UI::ShapeFactory* getShapeFactory() = 0;
-
-        __declspec(property(get = getShapeFactory)) Ghurund::UI::ShapeFactory* ShapeFactory;
-
         virtual Ghurund::UI::IDrawableFactory* getDrawableFactory() = 0;
 
         __declspec(property(get = getDrawableFactory)) Ghurund::UI::IDrawableFactory* DrawableFactory;

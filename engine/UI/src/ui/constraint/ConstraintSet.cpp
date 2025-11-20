@@ -1,7 +1,6 @@
 #include "ghuipch.h"
 #include "ConstraintSet.h"
 
-#include "ui/Canvas.h"
 #include "ui/constraint/ContentConstraint.h"
 #include "ui/constraint/ParentConstraint.h"
 #include "ui/constraint/SelfConstraint.h"
@@ -105,18 +104,6 @@ namespace Ghurund::UI {
 		height->resolve(control, graph);
 		bottom->resolve(control, graph);
 	}
-
-#ifdef _DEBUG
-	void ConstraintSet::draw(ICanvas& canvas) {
-		float x = left->Value, y = top->Value, w = right->Value - x, h = bottom->Value - y;
-		left->draw(canvas, x, y, w, h);
-		width->draw(canvas, x, y, w, h);
-		right->draw(canvas, x, y, w, h);
-		top->draw(canvas, x, y, w, h);
-		height->draw(canvas, x, y, w, h);
-		bottom->draw(canvas, x, y, w, h);
-	}
-#endif
 
 	ConstraintSet::ConstraintSet(const PartialConstraintSet& set) {
 		if (set.left != nullptr && set.width != nullptr && set.right != nullptr) {

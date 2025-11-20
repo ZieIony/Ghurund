@@ -2,7 +2,6 @@
 
 #include "core/Color.h"
 #include "core/math/Size.h"
-#include "ui/Canvas.h"
 #include "ui/text/TextLayout.h"
 #include "ui/text/TextMetrics.h"
 #include "ui/text/TextFormat.h"
@@ -51,6 +50,6 @@ namespace UnitTest {
             //size = { typeName.Length * 10.0f, format->Size };
         }
 
-        void draw(ICanvas& canvas) {}
+        void draw(RenderGroup& group) {}
     };
 }

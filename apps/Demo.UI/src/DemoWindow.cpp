@@ -19,9 +19,6 @@ namespace Demo {
 	}
 	
 	void DemoWindow::init() {
-		//UIDebugTools::init(UILayer.Context);
-		UIDebugTools::drawConstraints = true;
-
 		demoLayout.set(Application.ResourceManager.load<Control>(
 			FilePath(L"apps/Demo.UI/res/layout.xml"),
 			DirectoryPath(),

@@ -4,8 +4,6 @@
 #include "ui/constraint/ConstraintGraph.h"
 #include "ui/control/ControlContainer.h"
 #include "ui/control/ControlGroup.h"
-#include "ui/Canvas.h"
-#include "ui/UIDebugTools.h"
 
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& WrapWidthConstraint::GET_TYPE() {

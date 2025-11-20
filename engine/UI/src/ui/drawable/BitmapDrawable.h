@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ui/Canvas.h"
 #include "ui/drawable/Drawable.h"
 
 namespace Ghurund::Core {
@@ -29,7 +28,7 @@ namespace Ghurund::UI {
 
         ~BitmapDrawable();
 
-        virtual void draw(ICanvas& canvas, const FloatSize& size, const Ghurund::UI::Color& tint) const override;
+        virtual void draw(RenderGroup& group, const FloatSize& size, const Ghurund::UI::Color& tint) const override;
 
         virtual BitmapDrawable* clone() const override {
             return ghnew BitmapDrawable(image);

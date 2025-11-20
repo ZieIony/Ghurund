@@ -5,8 +5,7 @@ project "Engine"
 	staticruntime "on"
 
 	dependson {
-		"Core",
-		"UI"
+		"Core"
 	}
 
 	files {
@@ -18,7 +17,6 @@ project "Engine"
 	includedirs {
 		"src",
 		includeDir["Core"],
-		includeDir["UI"],
 		includeDir["entt"],
 		includeDir["CRC"],
 		includeDir["angelscript"],
@@ -28,8 +26,7 @@ project "Engine"
 	}
 
 	links {
-		"Core",
-		"UI"
+		"Core"
 	}
 	
 	filter "configurations:Debug"

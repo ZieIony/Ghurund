@@ -10,11 +10,12 @@
 #include <engine/directx/shader/ShaderProvider.h>
 #include <engine/directx/material/MaterialProvider.h>
 #include <ui/font/FontLoader.h>
-#include <engine/graphics/mesh/TextMesh.h>
 #include <core/math/Matrix.h>
-#include <engine/directx/mesh/DxTextMeshFactory.h>
+#include <ui/directx/text/DxTextMeshFactory.h>
 
 namespace Demo {
+	using namespace Ghurund::UI::DirectX;
+
 	DemoWindow::DemoWindow(
 		DemoApplication& app,
 		Ghurund::Engine::DirectX::DxRenderer& renderer

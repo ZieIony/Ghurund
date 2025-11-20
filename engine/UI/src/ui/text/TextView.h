@@ -6,6 +6,7 @@
 #include "ui/drawable/CursorDrawable.h"
 #include "ui/text/TextBlock.h"
 #include "ui/theme/Theme.h"
+#include <core/math/Rect.h>
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
@@ -53,7 +54,7 @@ namespace Ghurund::UI {
                 cursorDrawable->update(time);
         }
 
-        virtual void onDraw(ICanvas& canvas) override;
+        virtual void onDraw(RenderGroup& group) override;
 
         virtual void onThemeChanged() override;
 

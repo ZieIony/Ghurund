@@ -21,16 +21,12 @@ namespace Ghurund::UI::DirectX {
         this->commandList = &commandList;
         context = ghnew UiContext(window);
         __super::init(*context);
-        canvas = ghnew DxCanvas();
-        canvas->init(window.Size);
     }
 
     void DXUILayer::uninit() {
         if (!swapChain)
             return;
         swapChain = nullptr;
-        delete canvas;
-        canvas = nullptr;
         delete context;
         context = nullptr;
     }

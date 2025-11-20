@@ -1,9 +1,9 @@
 #include "ghuipch.h"
 #include "DrawableView.h"
 
-#include "ui/Canvas.h"
 #include "core/reflection/Property.h"
 #include "core/reflection/UniqueProperty.h"
+#include "core/math/Rect.h"
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& DrawableView::GET_TYPE() {
@@ -24,7 +24,7 @@ namespace Ghurund::UI {
         updateProperties();
     }
 
-    void DrawableView::onDraw(ICanvas& canvas) {
+    void DrawableView::onDraw(RenderGroup& group) {
         auto drawable = this->drawable.get();
         if (!drawable)
             return;
@@ -88,7 +88,7 @@ namespace Ghurund::UI {
             dst.bottom = dst.top + height;
         }
 
-        canvas.clipRect(0, 0, Size.Width, Size.Height);
+        /*canvas.clipRect(0, 0, Size.Width, Size.Height);
         canvas.save();
         canvas.translate(dst.left, dst.top);
         if (tint.get()) {
@@ -97,6 +97,6 @@ namespace Ghurund::UI {
             drawable->draw(canvas, { dst.right - dst.left, dst.bottom - dst.top }, Color(0));
         }
         canvas.restore();
-        canvas.restoreClipRect();
+        canvas.restoreClipRect();*/
     }
 }

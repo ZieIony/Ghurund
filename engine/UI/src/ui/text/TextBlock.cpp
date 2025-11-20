@@ -2,7 +2,6 @@
 #include "TextBlock.h"
 
 #include "core/reflection/Property.h"
-#include "ui/Canvas.h"
 #include "ui/loading/LayoutLoader.h"
 
 namespace Ghurund::UI {
@@ -53,9 +52,9 @@ namespace Ghurund::UI {
         }* /
     }*/
 
-    void TextBlock::onDraw(ICanvas& canvas) {
+    void TextBlock::onDraw(RenderGroup& group) {
         textLayout.Size = Size;
-		textLayout.draw(canvas);
+		textLayout.draw(group);
     }
 
     const Ghurund::Core::Type& TextBlock::GET_TYPE() {

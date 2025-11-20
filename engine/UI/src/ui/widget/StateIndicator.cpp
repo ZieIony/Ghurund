@@ -1,7 +1,6 @@
 #include "ghuipch.h"
 #include "StateIndicator.h"
 
-#include "ui/Canvas.h"
 #include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
@@ -14,10 +13,10 @@ namespace Ghurund::UI {
         idleColor = focusedColor & 0xffffff;
     }
 
-    void StateIndicator::onDraw(ICanvas& canvas) {
+    void StateIndicator::onDraw(RenderGroup& group) {
         if (color.A > 0.0f) {
-            canvas.Color = color;
-            canvas.fillRect(0, 0, Size.Width, Size.Height);
+            //canvas.Color = color;
+            //canvas.fillRect(0, 0, Size.Width, Size.Height);
         }
     }
 

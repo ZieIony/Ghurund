@@ -2,8 +2,6 @@
 #include "ScrollView.h"
 #include "core/reflection/TypeBuilder.h"
 
-#include "ui/Canvas.h"
-
 namespace Ghurund::UI {
     const Ghurund::Core::Type& ScrollView::GET_TYPE() {
         static const auto CONSTRUCTOR = Constructor<ScrollView>();
@@ -14,13 +12,13 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    void ScrollView::onDraw(ICanvas& canvas) {
-        canvas.save();
-        canvas.clipRect(0, 0, Size.Width, Size.Height);
-        canvas.translate(-scroll.x, -scroll.y);
-        __super::onDraw(canvas);
-        canvas.restoreClipRect();
-        canvas.restore();
+    void ScrollView::onDraw(RenderGroup& group) {
+        //canvas.save();
+        //canvas.clipRect(0, 0, Size.Width, Size.Height);
+        //canvas.translate(-scroll.x, -scroll.y);
+        __super::onDraw(group);
+        //canvas.restoreClipRect();
+        //canvas.restore();
     }
     
     void ScrollView::onLayout(float x, float y, float width, float height) {

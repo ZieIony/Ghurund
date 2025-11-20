@@ -363,11 +363,11 @@ namespace Ghurund::UI {
         return __super::dispatchMouseMotionEvent(event);
     }
 
-    void TextView::onDraw(ICanvas& canvas) {
+    void TextView::onDraw(RenderGroup& group) {
         if (Enabled) {
             Selection caretRange = getSelectionRange();
 
-            if (caretRange.length > 0) {
+            /*if (caretRange.length > 0) {
                 Array<HitTestMetrics> hitTestMetrics = textLayout.hitTestTextRange(caretRange.start, caretRange.length, 0, 0);
 
                 if (hitTestMetrics.Size > 0) {
@@ -390,10 +390,10 @@ namespace Ghurund::UI {
                 cursorDrawable->draw(canvas, { caretRect.right - caretRect.left, caretRect.bottom - caretRect.top }, Color(0));
                 canvas.restore();
                 canvas.AntialiasingEnabled = true;
-            }
+            }*/
         }
 
-        textLayout.draw(canvas);
+        textLayout.draw(group);
     }
 
     const Ghurund::Core::Type& TextView::GET_TYPE() {

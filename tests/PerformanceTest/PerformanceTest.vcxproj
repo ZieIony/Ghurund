@@ -98,7 +98,6 @@
   <ItemGroup>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\test\ui\ImageDrawableFactory.h" />
-    <ClInclude Include="src\test\ui\ShapeFactory.h" />
     <ClInclude Include="src\test\ui\TextFormatFactory.h" />
     <ClInclude Include="src\test\ui\UIContext.h" />
   </ItemGroup>

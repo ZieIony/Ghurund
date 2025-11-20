@@ -100,15 +100,8 @@
   <ItemGroup>
     <ClInclude Include="src\Ghurund.UI.OGL.h" />
     <ClInclude Include="src\ghuioglpch.h" />
-    <ClInclude Include="src\ui\opengl\OGLCanvas.h" />
     <ClInclude Include="src\ui\opengl\OglUiContext.h" />
     <ClInclude Include="src\ui\opengl\OglUiLayer.h" />
-    <ClInclude Include="src\ui\opengl\Shape.h" />
-    <ClInclude Include="src\ui\opengl\StrokeStyle.h" />
-    <ClInclude Include="src\ui\opengl\effects\ShadowEffect.h" />
-    <ClInclude Include="src\ui\opengl\effects\TintEffect.h" />
-    <ClInclude Include="src\ui\opengl\font\Font.h" />
-    <ClInclude Include="src\ui\opengl\loading\ShapeFactory.h" />
     <ClInclude Include="src\ui\opengl\loading\TextFormatFactory.h" />
   </ItemGroup>
   <ItemGroup>
@@ -117,8 +110,6 @@
     </ClCompile>
     <ClCompile Include="src\ui\opengl\OglUiContext.cpp" />
     <ClCompile Include="src\ui\opengl\OglUiLayer.cpp" />
-    <ClCompile Include="src\ui\opengl\Shape.cpp" />
-    <ClCompile Include="src\ui\opengl\font\Font.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">

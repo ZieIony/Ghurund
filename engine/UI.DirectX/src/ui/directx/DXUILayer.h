@@ -3,11 +3,8 @@
 #include "core/application/Layer.h"
 #include "engine/directx/SwapChain.h"
 #include "engine/directx/buffer/RenderTarget.h"
-#include "ui/directx/DxCanvas.h"
 #include "ui/directx/UIContext.h"
-#include "ui/RootView.h"
 #include "ui/UILayer.h"
-#include "DxCanvas.h"
 
 namespace Ghurund::UI::DirectX {
     using namespace ::Ghurund::Engine::DirectX;
@@ -28,7 +25,6 @@ namespace Ghurund::UI::DirectX {
     private:
         SwapChain* swapChain = nullptr;
         CommandList* commandList = nullptr;
-        DxCanvas* canvas;
         IUIContext* context;
 
     public:

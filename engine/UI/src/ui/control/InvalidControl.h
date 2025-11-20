@@ -3,7 +3,6 @@
 #include "core/Color.h"
 
 #include "Control.h"
-#include "ui/StrokeStyle.h"
 #include "ui/constraint/ParentConstraint.h"
 
 namespace Ghurund::UI {
@@ -23,15 +22,6 @@ namespace Ghurund::UI {
 	protected:
 		Color backgroundColor = Color(0.2f, 1, 0, 0);
 		Color borderColor = Color(1.0f, 1, 0, 0);
-		std::unique_ptr<IStrokeStyle> strokeStyle;
-
-		virtual void onContextChanged() {
-			__super::onContextChanged();
-			if (Context) {
-				Array<float> dashes = { 3.0f, 4.0f };
-				strokeStyle.reset(Context->makeStrokeStyle(dashes));
-			}
-		}
 
 	public:
 		InvalidControl() {
@@ -49,6 +39,6 @@ namespace Ghurund::UI {
 				});*/
 		}
 
-		virtual void onDraw(ICanvas& canvas) override;
+		virtual void onDraw(RenderGroup& group) override;
 	};
 }

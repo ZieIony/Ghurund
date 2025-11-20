@@ -28,6 +28,6 @@ namespace UnitTest {
             preferredSize = size;
         }
 
-        virtual void draw(ICanvas& canvas, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const {}
+        virtual void draw(RenderGroup& group, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const {}
     };
 }

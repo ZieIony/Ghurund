@@ -28,7 +28,7 @@ namespace Ghurund::UI {
 	protected:
 		virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
 
-		virtual void onDraw(ICanvas& canvas) override;
+		virtual void onDraw(RenderGroup& group) override;
 
 	public:
 		/*inline List<Guide>& getGuides() {

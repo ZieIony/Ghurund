@@ -3,9 +3,6 @@
 #include "core/object/NotNull.h"
 #include "core/collection/Array.h"
 #include "core/reflection/Type.h"
-#include "StrokeStyle.h"
-#include "ui/effects/ShadowEffect.h"
-#include "ui/effects/TintEffect.h"
 
 namespace Ghurund::Core {
     class ResourceManager;
@@ -25,12 +22,6 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getWindow)) Ghurund::Core::Window& Window;
-
-        virtual IStrokeStyle* makeStrokeStyle(Ghurund::Core::Array<float>& dashes) = 0;
-
-        virtual ShadowEffect* makeShadowEffect() = 0;
-
-        virtual TintEffect* makeTintEffect() = 0;
     };
 }
 

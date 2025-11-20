@@ -1,7 +1,9 @@
-#include "ghepch.h"
+#include "ghuipch.h"
 #include "TextMesh.h"
 
-namespace Ghurund::Engine {
+namespace Ghurund::UI {
+	using namespace Ghurund::Engine;
+
 	void TextMesh::init(const WString& text, const Ghurund::UI::Font& font) {
 		List<XMFLOAT3> positions;
 		List<XMFLOAT2> texCoords;

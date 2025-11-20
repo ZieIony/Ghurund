@@ -98,7 +98,6 @@
   <ItemGroup>
     <ClInclude Include="src\test\ui\TestControlContainer.h" />
     <ClInclude Include="src\test\ui\TestDrawableFactory.h" />
-    <ClInclude Include="src\test\ui\TestShapeFactory.h" />
     <ClInclude Include="src\test\ui\TestUIContext.h" />
     <ClInclude Include="src\test\ui\TextFormatFactory.h" />
     <ClInclude Include="src\test\ui\UITestUtils.h" />

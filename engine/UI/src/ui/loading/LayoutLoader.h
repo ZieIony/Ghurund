@@ -10,7 +10,6 @@
 #include "ui/control/Control.h"
 #include "ui/layout/ControlWithConstraints.h"
 #include "ui/loading/DrawableFactory.h"
-#include "ui/loading/ShapeFactory.h"
 #include "ui/loading/TextFormatFactory.h"
 #include "ui/style/TextFormatAttr.h"
 #include "ui/text/DocumentElement.h"
@@ -22,12 +21,10 @@ namespace Ghurund::UI {
 
 	class TextFormat;
 	class Theme;
-	class Shape;
 
 	class LayoutLoader :public Ghurund::Core::Loader {
 	private:
 		Ghurund::Core::ResourceManager& resourceManager;
-		ShapeFactory& shapeFactory;
 		IDrawableFactory& drawableFactory;
 		TextFormatFactory& textFormatFactory;
 		ConstraintFactory& constraintFactory;
@@ -50,7 +47,6 @@ namespace Ghurund::UI {
 
 		LayoutLoader(
 			Ghurund::Core::ResourceManager& resourceManager,
-			ShapeFactory& shapeFactory,
 			IDrawableFactory& drawableFactory,
 			TextFormatFactory& textFormatFactory,
 			ConstraintFactory& constraintFactory

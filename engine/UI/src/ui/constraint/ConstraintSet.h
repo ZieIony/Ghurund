@@ -8,7 +8,6 @@ namespace tinyxml2 {
 
 namespace Ghurund::UI {
 	class LayoutLoader;
-	class ICanvas;
 
 	// doesn't require all constraints to be set
 	class PartialConstraintSet {
@@ -102,10 +101,6 @@ namespace Ghurund::UI {
 			return left == other.left && width == other.width && right == other.right &&
 				top == other.top && height == other.height && bottom == other.bottom;
 		}
-
-#ifdef _DEBUG
-		void draw(ICanvas& canvas);
-#endif
 	};
 
 	inline ConstraintSet makeConstraints(const ConstraintSetInitializer& initializer) {

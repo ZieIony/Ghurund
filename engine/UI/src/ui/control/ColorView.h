@@ -35,7 +35,7 @@ namespace Ghurund::UI {
 
 		virtual void onThemeChanged() override;
 
-		virtual void onDraw(ICanvas& canvas);
+		virtual void onDraw(RenderGroup& group);
 
 	public:
 		ColorView(const ColorAttr& color = DEFAULT_COLOR):color(color) {}

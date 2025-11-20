@@ -1,11 +1,6 @@
 #pragma once
 
 #include "ui/UIContext.h"
-#include "ui/opengl/StrokeStyle.h"
-#include "ui/opengl/effects/ShadowEffect.h"
-#include "ui/opengl/effects/TintEffect.h"
-
-#include <gdiplus.h>
 
 namespace Ghurund::Core {
     class ResourceManager;
@@ -20,20 +15,6 @@ namespace Ghurund::UI::OpenGL {
         OglUiContext(
             Ghurund::Core::Window& window
         ):IUIContext(window) {}
-
-        virtual StrokeStyle* makeStrokeStyle(Array<float>& dashes) override {
-            OpenGL::StrokeStyle* strokeStyle = ghnew OpenGL::StrokeStyle();
-            strokeStyle->init(Gdiplus::DashStyle::DashStyleDashDot);    // TODO: use custom style
-            return strokeStyle;
-        }
-
-        virtual ShadowEffect* makeShadowEffect() override {
-            return ghnew Ghurund::UI::OpenGL::ShadowEffect();
-        }
-
-        virtual TintEffect* makeTintEffect() override {
-            return ghnew Ghurund::UI::OpenGL::TintEffect();
-        }
     };
 }
 

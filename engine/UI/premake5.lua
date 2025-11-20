@@ -5,7 +5,10 @@ project "UI"
 	staticruntime "on"
 	buildoptions { "/Zc:__cplusplus" }
 
-	dependson { "Core" }
+	dependson {
+		"Core",
+		"Engine"
+	}
 
 	files {
 		"src/**.h",
@@ -14,9 +17,15 @@ project "UI"
 	}
 
 	includedirs {
-		includeDir["UI"],
+		"src",
 		includeDir["Core"],
+		includeDir["Engine"],
 		includeDir["msdfgen"]
+	}
+	
+	links {
+		"Core",
+		"Engine"
 	}
 
 	filter "configurations:Debug"

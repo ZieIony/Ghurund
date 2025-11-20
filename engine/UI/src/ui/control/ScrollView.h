@@ -23,7 +23,7 @@ namespace Ghurund::UI {
         XMFLOAT2 maxScroll = { 0.0f, 0.0f };
 
     protected:
-        virtual void onDraw(ICanvas& canvas) override;
+        virtual void onDraw(RenderGroup& group) override;
 
         virtual void onLayout(float x, float y, float width, float height) override;
 

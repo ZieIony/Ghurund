@@ -32,10 +32,6 @@ namespace Ghurund::UI {
 		virtual ParentLeftConstraint* clone() const {
 			return ghnew ParentLeftConstraint(*this);
 		}
-
-#ifdef _DEBUG
-		virtual void draw(ICanvas& canvas, float x, float y, float width, float height) const;
-#endif
 	};
 
 	class ParentRightConstraint:public OffsetConstraint {
@@ -59,10 +55,6 @@ namespace Ghurund::UI {
 		virtual ParentRightConstraint* clone() const {
 			return ghnew ParentRightConstraint(*this);
 		}
-
-#ifdef _DEBUG
-		virtual void draw(ICanvas& canvas, float x, float y, float width, float height) const;
-#endif
 	};
 
 	class ParentTopConstraint:public OffsetConstraint {
@@ -91,10 +83,6 @@ namespace Ghurund::UI {
 		virtual ParentTopConstraint* clone() const {
 			return ghnew ParentTopConstraint(*this);
 		}
-
-#ifdef _DEBUG
-		virtual void draw(ICanvas& canvas, float x, float y, float width, float height) const;
-#endif
 	};
 
 	class ParentBottomConstraint:public OffsetConstraint {
@@ -118,10 +106,6 @@ namespace Ghurund::UI {
 		virtual ParentBottomConstraint* clone() const {
 			return ghnew ParentBottomConstraint(*this);
 		}
-
-#ifdef _DEBUG
-		virtual void draw(ICanvas& canvas, float x, float y, float width, float height) const;
-#endif
 	};
 
 	class ParentWidthConstraint:public MinMaxConstraint {

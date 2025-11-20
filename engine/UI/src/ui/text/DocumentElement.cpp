@@ -1,7 +1,6 @@
 #include "ghuipch.h"
 #include "DocumentElement.h"
 
-#include "ui/Canvas.h"
 #include "ui/loading/LayoutLoader.h"
 
 namespace Ghurund::UI {

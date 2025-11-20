@@ -52,7 +52,7 @@ namespace Ghurund::UI {
 	protected:
 		virtual void onThemeChanged() override;
 
-		virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
+		virtual void onDraw(RenderGroup& group) override;
 
 	public:
 		DrawableView() {

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ui/UILayer.h"
-#include "OglCanvas.h"
 
 namespace Ghurund::UI::OpenGL {
     class OglUiLayer:public Ghurund::UI::UILayer {
@@ -19,7 +18,6 @@ namespace Ghurund::UI::OpenGL {
 
     private:
         IUIContext* context = nullptr;
-        OglCanvas* canvas = nullptr;
 
     protected:
         virtual bool onSizeChanged() override {

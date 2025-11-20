@@ -6,7 +6,6 @@
 
 #include "core/reflection/StandardTypes.h"
 #include "test/ui/TestDrawableFactory.h"
-#include "test/ui/TestShapeFactory.h"
 #include "test/ui/TextFormatFactory.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/constraint/ConstraintGraph.h"
@@ -114,19 +113,16 @@ public:
 		Ghurund::Core::getType<const ColorAttr&>();
 		Ghurund::Core::getType<std::unique_ptr<ColorAttr>>();
 		Ghurund::Core::getType<Ghurund::UI::ImageScaleMode>();
-		Ghurund::Core::getType<Shape>();
 		Ghurund::Core::getType<ColorView>();
-		Ghurund::Core::getType<std::unique_ptr<Shape>>();
 		Ghurund::Core::getType<std::unique_ptr<Ghurund::UI::DrawableAttr>>();
 		Ghurund::Core::getType<std::unique_ptr<TextDocument>>();
 		Ghurund::Core::getType<std::unique_ptr<LayoutAttr>>();
 
 		ResourceManager resourceManager;
-		TestShapeFactory shapeFactory;
 		TestDrawableFactory drawableFactory;
 		TextFormatFactory textFormatFactory;
 		ConstraintFactory constraintFactory;
-		auto layoutLoader = makeIntrusive<LayoutLoader>(resourceManager, shapeFactory, drawableFactory, textFormatFactory, constraintFactory);
+		auto layoutLoader = makeIntrusive<LayoutLoader>(resourceManager, drawableFactory, textFormatFactory, constraintFactory);
 		resourceManager.Loaders.set<Control>(*layoutLoader.get());
 
 #ifdef _DEBUG

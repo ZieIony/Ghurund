@@ -2,7 +2,6 @@
 #include "AdapterLayout.h"
 
 #include "core/reflection/TypeBuilder.h"
-#include "ui/Canvas.h"
 #include "ui/constraint/ConstraintGraph.h"
 #include "ui/layout/LayoutManager.h"
 
@@ -24,17 +23,17 @@ namespace Ghurund::UI {
         }
     }
 
-    void AdapterLayout::onDraw(ICanvas& canvas) {
+    void AdapterLayout::onDraw(RenderGroup& group) {
         if (!layoutManager)
             return;
 
-        canvas.save();
-        canvas.clipRect(0, 0, Size.Width, Size.Height);
+        //canvas.save();
+        //canvas.clipRect(0, 0, Size.Width, Size.Height);
         auto& scroll = layoutManager->Scroll;
-        canvas.translate(scroll.x, scroll.y);
-        __super::onDraw(canvas);
-        canvas.restoreClipRect();
-        canvas.restore();
+        //canvas.translate(scroll.x, scroll.y);
+        __super::onDraw(group);
+        //canvas.restoreClipRect();
+        //canvas.restore();
     }
     
     void AdapterLayout::resolveConstraints(ConstraintGraph& graph, const Constraint& width, const Constraint& height) {

@@ -1,7 +1,8 @@
 #include "ghuipch.h"
 #include "TextLayout.h"
 
-#include "ui/Canvas.h"
+#include <core/math/Rect.h>
+#include <engine/graphics/RenderGroup.h>
 
 namespace Ghurund::UI {
 	void TextLayout::refresh() {
@@ -105,7 +106,7 @@ namespace Ghurund::UI {
 		return {};
 	}
 
-	void TextLayout::draw(ICanvas& canvas) {
+	void TextLayout::draw(RenderGroup& group) {
 		if (!format || !format->Font)
 			return;
 		if (!valid)
@@ -118,16 +119,16 @@ namespace Ghurund::UI {
 					character.glyph.bitmapPos.x + character.glyph.bitmapSize.Width,
 					character.glyph.bitmapPos.y + character.glyph.bitmapSize.Height
 				};
-				canvas.save();
+				//canvas.save();
 				float s = format->Size / 32;
-				canvas.scale(s, s);
-				canvas.translate(
+				//canvas.scale(s, s);
+				/*canvas.translate(
 					character.pos.x,
 					character.pos.y + format->Font->Ascent - character.glyph.shapeOrigin.y
-				);
+				);*/
 				Ghurund::Core::Color color = character.color;
 				//canvas.drawImage(*atlas, src);
-				canvas.Color = Ghurund::Core::Color(0xffff0000);
+				/*canvas.Color = Ghurund::Core::Color(0xffff0000);
 				canvas.drawRect(0, 0, character.glyph.bitmapSize.Width, character.glyph.bitmapSize.Height, 1.0f);
 				canvas.Color = Ghurund::Core::Color(0xff00ff00);
 				canvas.drawLine(
@@ -137,11 +138,11 @@ namespace Ghurund::UI {
 					format->Font->Ascent,
 					1.0f
 				);
-				canvas.restore();
+				canvas.restore();*/
 			}
 		}
-		canvas.Color = Ghurund::Core::Color(0xff0000ff);
-		canvas.drawRect(0, 0, Size.Width, Size.Height, 1.0f);
+		//canvas.Color = Ghurund::Core::Color(0xff0000ff);
+		//canvas.drawRect(0, 0, Size.Width, Size.Height, 1.0f);
 	}
 
 	uint32_t TextLayout::measureWidth() {

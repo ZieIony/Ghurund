@@ -5,7 +5,6 @@
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/window/Cursor.h"
-#include "ui/Canvas.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/theme/Theme.h"
 
@@ -294,7 +293,7 @@ namespace Ghurund::UI {
 		}
 	}
 
-	void Control::draw(ICanvas& canvas) {
+	void Control::draw(RenderGroup& group) {
 		if (size.Width == 0 || size.Height == 0)
 			return;
 #ifdef _DEBUG
@@ -303,10 +302,8 @@ namespace Ghurund::UI {
 					return;
 				}*/
 #endif
-		canvas.save();
-		canvas.translate(position.x, position.y);
-		onDraw(canvas);
-		canvas.restore();
+		//canvas.translate(position.x, position.y);
+		onDraw(group);
 	}
 
 	void Control::bind() {

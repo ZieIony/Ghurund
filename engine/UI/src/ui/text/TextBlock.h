@@ -30,7 +30,7 @@ namespace Ghurund::UI {
 
 		//virtual void onMeasure() override;
 
-		virtual void onDraw(ICanvas& canvas) override;
+		virtual void onDraw(RenderGroup& group) override;
 
 	public:
 		TextBlock():color(ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND)) {

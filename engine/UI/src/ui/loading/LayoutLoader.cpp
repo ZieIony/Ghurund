@@ -4,7 +4,6 @@
 #include "StringPropertyLoader.h"
 #include "PrimitivePropertyLoaders.h"
 #include "ColorPropertyLoaders.h"
-#include "ShapePropertyLoader.h"
 #include "DrawablePropertyLoader.h"
 #include "ImageScaleModePropertyLoader.h"
 #include "TextDocumentPropertyLoader.h"
@@ -14,9 +13,6 @@
 // control types to register
 #include "ui/adapter/AdapterLayout.h"
 #include "ui/constraint/ConstraintLayout.h"
-#include "ui/control/Shadow.h"
-#include "ui/control/Border.h"
-#include "ui/control/Clip.h"
 #include "ui/control/ScrollView.h"
 #include "ui/layout/VerticalLayout.h"
 #include "ui/layout/HorizontalLayout.h"
@@ -34,11 +30,10 @@ namespace Ghurund::UI {
 
     LayoutLoader::LayoutLoader(
         Ghurund::Core::ResourceManager& resourceManager,
-        ShapeFactory& shapeFactory,
         IDrawableFactory& drawableFactory,
         TextFormatFactory& textFormatFactory,
         ConstraintFactory& constraintFactory
-    ):resourceManager(resourceManager), shapeFactory(shapeFactory), drawableFactory(drawableFactory),
+    ):resourceManager(resourceManager), drawableFactory(drawableFactory),
         textFormatFactory(textFormatFactory), constraintFactory(constraintFactory)
     {
         propertyLoaders.add(std::make_unique<BoolPropertyLoader>());
@@ -50,7 +45,6 @@ namespace Ghurund::UI {
         propertyLoaders.add(std::make_unique<ColorPropertyLoader>());
         propertyLoaders.add(std::make_unique<NullableColorPropertyLoader>());
 		propertyLoaders.add(std::make_unique<ImageScaleModePropertyLoader>());
-		propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew ShapePropertyLoader(shapeFactory)));
 		propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew DrawablePropertyLoader(drawableFactory)));
 		propertyLoaders.add(std::make_unique<TextDocumentPropertyLoader>());
 		propertyLoaders.add(std::unique_ptr<LayoutPropertyLoader>(ghnew LayoutPropertyLoader(resourceManager, *this)));
