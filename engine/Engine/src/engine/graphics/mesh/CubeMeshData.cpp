@@ -1,9 +1,9 @@
 #include "ghepch.h"
-#include "CubeMesh.h"
+#include "CubeMeshData.h"
 #include "core/collection/Array.h"
 
 namespace Ghurund::Engine {
-    void CubeMesh::init(unsigned int detail) {
+    void CubeMeshData::init(unsigned int detail) {
 		auto positions = Array<XMFLOAT3>({
 			{-1.0f,  1.0f, -1.0f},
 			{1.0f, -1.0f, -1.0f},

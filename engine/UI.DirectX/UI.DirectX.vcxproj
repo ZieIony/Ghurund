@@ -97,6 +97,8 @@
     <ClInclude Include="src\ui\directx\DXUILayer.h" />
     <ClInclude Include="src\ui\directx\DxUIFeature.h" />
     <ClInclude Include="src\ui\directx\DxUIFeatureFactory.h" />
+    <ClInclude Include="src\ui\directx\material\DxUIMaterialProvider.h" />
+    <ClInclude Include="src\ui\directx\material\DxUIShaderProvider.h" />
     <ClInclude Include="src\ui\directx\UIContext.h" />
     <ClInclude Include="src\ui\directx\loading\TextFormatFactory.h" />
     <ClInclude Include="src\ui\directx\text\DxTextMeshFactory.h" />
@@ -107,6 +109,7 @@
     </ClCompile>
     <ClCompile Include="src\ui\directx\DXUILayer.cpp" />
     <ClCompile Include="src\ui\directx\DxUIFeature.cpp" />
+    <ClCompile Include="src\ui\directx\material\DxUIMaterialProvider.cpp" />
     <ClCompile Include="src\ui\directx\UIContext.cpp" />
   </ItemGroup>
   <ItemGroup>

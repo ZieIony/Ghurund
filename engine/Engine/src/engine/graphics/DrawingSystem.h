@@ -4,7 +4,7 @@
 #include "engine/entity/camera/Camera.h"
 #include "engine/entity/TransformComponent.h"
 #include "engine/parameter/ValueParameter.h"
-#include "IMaterial.h"
+#include "material/IMaterial.h"
 
 namespace Ghurund::Engine {
     class DrawingSystem {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine/directx/texture/Texture.h"
-#include "engine/graphics/IMaterialProvider.h"
+#include "engine/graphics/material/IMaterialProvider.h"
 #include "DxMaterial.h"
 #include "engine/directx/shader/ShaderProvider.h"
 #include "engine/directx/texture/TextureProvider.h"
@@ -45,10 +45,6 @@ namespace Ghurund::Engine::DirectX {
         virtual DxMaterial* makeInvalid() override;
 
         virtual DxMaterial* makeLightPass() override;
-
-        virtual DxMaterial* makeUi() override;
-
-        virtual DxMaterial* makeText() override;
 
         virtual DxMaterial* makeBasicSky() override;
 

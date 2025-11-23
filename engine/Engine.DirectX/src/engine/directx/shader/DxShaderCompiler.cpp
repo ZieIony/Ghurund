@@ -93,7 +93,7 @@ namespace Ghurund::Engine::DirectX {
 				AString errorMessages((char*)errorBlob->GetBufferPointer(), errorBlob->GetBufferSize());
 				errorBlob->Release();
 				if (errorMessages.contains("entrypoint not found")) {
-					throw DxEntrypointNotFoundException(shaderType);
+					return nullptr;
 				} else {
 					auto text = std::format(_T("Error while compiling shader:\n%s\n"), errorMessages);
 					Logger::log(LogType::ERR0R, text.c_str());
@@ -108,6 +108,7 @@ namespace Ghurund::Engine::DirectX {
 
 	OwnedNotNull<DxShader, RefCountedObjectDeleter> DxShaderCompiler::build(
 		const Array<SharedPointer<DxShaderProgram>>& programs,
+		D3D12_CULL_MODE cullMode,
 		bool isTransparencyEnabled
 	) {
 		List<ConstantBuffer*> constantBuffers;
@@ -131,7 +132,7 @@ namespace Ghurund::Engine::DirectX {
 		};
 
 		auto rootSignature = makeRootSignature(constantBuffers, textures, samplers);
-		auto pipelineState = makePipelineState(programs, inputLayout, &rootSignature, isTransparencyEnabled);
+		auto pipelineState = makePipelineState(programs, inputLayout, &rootSignature, cullMode, isTransparencyEnabled);
 		OwnedNotNull<DxShader, RefCountedObjectDeleter> shader(ghnew DxShader());
 		shader->init(layout, std::move(rootSignature), std::move(pipelineState), constantBuffers, textures, samplers, isTransparencyEnabled);
 		return shader;
@@ -141,10 +142,13 @@ namespace Ghurund::Engine::DirectX {
 		const Array<SharedPointer<DxShaderProgram>>& programs,
 		D3D12_INPUT_LAYOUT_DESC inputLayout,
 		ID3D12RootSignature* rootSignature,
+		D3D12_CULL_MODE cullMode,
 		bool isTransparencyEnabled
 	) {
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 		psoDesc.pRootSignature = rootSignature;
+		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+		psoDesc.RasterizerState.CullMode = cullMode;
 
 		for (auto& program : programs) {
 			if (program->Type == DxShaderType::VERTEX) {
@@ -167,15 +171,13 @@ namespace Ghurund::Engine::DirectX {
 		}
 
 		if (psoDesc.VS.BytecodeLength == 0) {
-			Logger::log(LogType::ERR0R, _T("vertex shader program is required\n"));
-			throw InvalidStateException("vertex shader program is required");
+			Logger::log(LogType::ERR0R, _T("Vertex shader program is required.\n"));
+			throw InvalidStateException("Vertex shader program is required.");
 		}
 		if (psoDesc.PS.BytecodeLength == 0) {
-			Logger::log(LogType::ERR0R, _T("pixel shader program is required\n"));
-			throw InvalidStateException("pixel shader program is required");
+			Logger::log(LogType::ERR0R, _T("Pixel shader program is required.\n"));
+			throw InvalidStateException("Pixel shader program is required.");
 		}
-
-		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 
 		if (isTransparencyEnabled) {
 			psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);

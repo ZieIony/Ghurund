@@ -1,8 +1,8 @@
 #include "ghepch.h"
-#include "ConeMesh.h"
+#include "ConeMeshData.h"
 
 namespace Ghurund::Engine {
-    void ConeMesh::init(unsigned int detail) {
+    void ConeMeshData::init(unsigned int detail) {
         /*detail = std::max<unsigned int>(detail, 3);
 
         List<Vertex3D> triangleVertices;

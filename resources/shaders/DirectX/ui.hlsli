@@ -1,0 +1,24 @@
+#ifndef UI_HLSLI
+#define UI_HLSLI
+
+#include <common.hlsli>
+#include <sdf.hlsli>
+
+#define transparencyEnabled
+#define cull_none
+
+struct UIVertex {
+    float3 position: POSITION;
+};
+
+struct TextVertex {
+    float3 position: POSITION;
+    float2 texCoord: TEXCOORD0;
+};
+
+struct UIPixel {
+    float4 position: SV_POSITION;
+    float2 texCoord: TEXCOORD0;
+};
+
+#endif

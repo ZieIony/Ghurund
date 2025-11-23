@@ -46,6 +46,7 @@ namespace Ghurund::Engine::DirectX {
 			const Array<SharedPointer<DxShaderProgram>>& programs,
 			D3D12_INPUT_LAYOUT_DESC inputLayout,
 			ID3D12RootSignature* rootSignature,
+			D3D12_CULL_MODE cullMode,
 			bool isTransparencyEnabled
 		);
 
@@ -72,6 +73,7 @@ namespace Ghurund::Engine::DirectX {
 
 		OwnedNotNull<DxShader, RefCountedObjectDeleter> build(
 			const Array<SharedPointer<DxShaderProgram>>& programs,
+			D3D12_CULL_MODE cullMode,
 			bool isTransparencyEnabled
 		);
 	};

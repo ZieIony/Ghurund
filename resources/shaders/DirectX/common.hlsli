@@ -1,3 +1,6 @@
+#ifndef COMMON_HLSLI
+#define COMMON_HLSLI
+
 struct DefaultVertex {
     float3 position : POSITION;
     float3 normal : NORMAL;
@@ -9,20 +12,6 @@ struct DefaultPixel {
     float4 position : SV_POSITION;
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
-    float2 texCoord: TEXCOORD0;
-};
-
-struct ScreenVertex {
-    float3 position: POSITION;
-};
-
-struct TextVertex {
-    float3 position: POSITION;
-    float2 texCoord: TEXCOORD0;
-};
-
-struct ScreenPixel {
-    float4 position: SV_POSITION;
     float2 texCoord: TEXCOORD0;
 };
 
@@ -52,6 +41,9 @@ float3x3 getWorldToTangent(float3 normal, float3 tangent, float4x4 world){
 	return worldToTangentSpace;
 }
 
-float2 screenToClip(float2 pos, int2 viewportSize) {
-    return pos / viewportSize * 2 - 1;
+float2 screenToClip(float2 screenPos, int2 viewportSize) {
+    float2 pos = screenPos / viewportSize * 2 - 1;
+    return float2(pos.x, -pos.y);
 }
+
+#endif

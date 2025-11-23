@@ -2,7 +2,7 @@
 
 #include "core/resource/ResourceManager.h"
 #include "engine/directx/texture/Texture.h"
-#include "engine/graphics/ITextureProvider.h"
+#include "engine/graphics/texture/ITextureProvider.h"
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Engine::DirectX;

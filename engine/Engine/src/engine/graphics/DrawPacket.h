@@ -2,7 +2,7 @@
 
 #include "core/object/IntrusivePointer.h"
 #include <core/resource/Resource.h>
-#include <engine/graphics/IMaterial.h>
+#include <engine/graphics/material/IMaterial.h>
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;

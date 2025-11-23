@@ -1,16 +1,16 @@
 #include <common.hlsli>
+#include <ui.hlsli>
 #include <sdf.hlsli>
 
 #define transparencyEnabled
 
 cbuffer perCamera: register(b0) {
-    int2 mousePos;
     int2 viewportSize;
 }
 
 cbuffer perObject: register(b1) {
     float2 position = float2(50, 350);
-    float2 size = float2(10, 10);
+    float2 size = float2(300, 300);
     float4 backgroundColor = float4(0,0,0,0.15f);
     float4 borderColor;
     float4 cornerRadius = float4(4, 4, 4, 4);
@@ -20,8 +20,8 @@ cbuffer perObject: register(b1) {
 SamplerState linearSampler: register(s0);
 Texture2D colorTexture: register(t0);
 
-ScreenPixel vertexMain(TextVertex input) {
-    ScreenPixel output;
+UIPixel vertexMain(TextVertex input) {
+    UIPixel output;
 
     float2 rectPos = float2(position.x, viewportSize.y - position.y);
     float2 pos = screenToClip(input.position.xy * size + rectPos, viewportSize);
@@ -52,7 +52,7 @@ float msdfText(float3 msd, float2 texCoord) {
     return clamp(screenPxDistance + 0.5, 0.0, 1.0);
 }
 
-float4 pixelMain(ScreenPixel input): SV_Target {
+float4 pixelMain(UIPixel input): SV_Target {
     float3 msd = colorTexture.Sample(linearSampler, input.texCoord).rgb;
     float opacity = msdfText(msd, input.texCoord);
     return lerp(backgroundColor, black, opacity);

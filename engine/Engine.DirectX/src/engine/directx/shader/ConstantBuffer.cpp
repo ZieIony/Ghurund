@@ -63,6 +63,13 @@ namespace Ghurund::Engine::DirectX {
 					continue;
 				}
 				p = global;
+				if (p->IsEmpty) {
+					auto text = std::format(_T("Parameter for variable '{}' is empty.\n"), p->Name);
+					Logger::logOnce(LogType::WARNING, text.c_str(), i);
+					i++;
+					it++;
+					continue;
+				}
 			}
 			ConstantBufferField* v = variables[i];
 			buffer.setValue(p->RawValue, v->size, v->offset);

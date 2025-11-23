@@ -1,10 +1,9 @@
 #pragma once
 
 #include "engine/directx/DxGraphics.h"
-#include "engine/directx/Fence.h"
 #include "engine/directx/CommandList.h"
 #include "core/image/Image.h"
-#include "engine/graphics/ITexture.h"
+#include "engine/graphics/texture/ITexture.h"
 
 namespace Ghurund::Engine::DirectX {
     class Texture:public ITexture {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine/directx/shader/DxShader.h"
-#include "engine/graphics/IMaterial.h"
+#include "engine/graphics/material/IMaterial.h"
 #include "engine/parameter/ParameterManager.h"
 
 namespace Ghurund::Engine::DirectX {

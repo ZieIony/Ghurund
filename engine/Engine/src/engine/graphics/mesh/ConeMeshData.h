@@ -3,7 +3,7 @@
 #include "MeshData.h"
 
 namespace Ghurund::Engine {
-    class ConeMesh: public MeshData {
+    class ConeMeshData: public MeshData {
     public:
         void init(unsigned int detail = 2);
     };

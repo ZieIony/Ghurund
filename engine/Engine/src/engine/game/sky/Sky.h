@@ -30,7 +30,7 @@ namespace Ghurund {
 		}
 
 		void init(Camera* camera) {
-			mesh = ghnew SphereMesh();
+			mesh = ghnew SphereMeshData();
 			mesh->init(context.Graphics, context.CommandList, 3);
 
 			CullingEnabled = false;

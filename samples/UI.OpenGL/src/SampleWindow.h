@@ -7,7 +7,7 @@
 #include <engine/opengl/OGlRenderer.h>
 #include <engine/opengl/shader/OglShader.h>
 #include <engine/opengl/shader/OglShaderLoader.h>
-#include <engine/graphics/mesh/QuadMesh.h>
+#include <engine/graphics/mesh/QuadMeshData.h>
 
 namespace Samples {
     using namespace Ghurund::Engine;
@@ -19,7 +19,7 @@ namespace Samples {
         IntrusivePointer<OglShaderLoader> shaderLoader = makeIntrusive<OglShaderLoader>(shaderCompiler);
         IntrusivePointer<OglShader> shader;
         IntrusivePointer<OglMesh> mesh = makeIntrusive<OglMesh>();
-        IntrusivePointer<QuadMesh> quadMesh = makeIntrusive<QuadMesh>();
+        IntrusivePointer<QuadMeshData> quadMesh = makeIntrusive<QuadMeshData>();
 
     public:
         SampleWindow(Ghurund::Core::Application& app, OglRenderer& renderer):GameWindow(app) {

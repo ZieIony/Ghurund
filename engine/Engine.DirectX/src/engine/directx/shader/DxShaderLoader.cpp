@@ -1,6 +1,7 @@
 #include "ghedxpch.h"
 #include "DxShaderLoader.h"
 #include "CompilerInclude.h"
+#include "DxEntrypointNotFoundException.h"
 
 namespace Ghurund::Engine::DirectX {
 	DxShader* DxShaderLoader::loadShd(MemoryInputStream& stream) {
@@ -40,14 +41,31 @@ namespace Ghurund::Engine::DirectX {
 		CompilerInclude include(workingDir, includeDirs);
 		List<SharedPointer<DxShaderProgram>> programs;
 		for (const DxShaderType& shaderType : DxShaderType::VALUES) {
-			try {
-				auto program = SharedPointer<DxShaderProgram>(compiler.compile(sourceCode, shaderType, &include));
+			auto program = SharedPointer<DxShaderProgram>(compiler.compile(sourceCode, shaderType, &include));
+			if (program == nullptr) {
+				if (shaderType == DxShaderType::VERTEX) {
+					Logger::log(LogType::ERR0R, _T("Vertex shader program is required.\n"));
+					throw DxEntrypointNotFoundException(DxShaderType::VERTEX);
+				} else if (shaderType == DxShaderType::PIXEL) {
+					Logger::log(LogType::ERR0R, _T("Pixel shader program is required.\n"));
+					throw DxEntrypointNotFoundException(DxShaderType::PIXEL);
+				}
+			} else {
 				programs.add(program);
-			} catch (...) {}
+			}
 		}
 		auto array = Array<SharedPointer<DxShaderProgram>>(programs);
 		bool isTransparencyEnabled = sourceCode.find("#define transparencyEnabled") != sourceCode.Size;
-		auto shader = compiler.build(programs, isTransparencyEnabled);
+		D3D12_CULL_MODE cullMode = [&] {
+			if (sourceCode.find("#define cull_none") != sourceCode.Size) {
+				return D3D12_CULL_MODE_NONE;
+			} else if (sourceCode.find("#define cull_front") != sourceCode.Size) {
+				return D3D12_CULL_MODE_FRONT;
+			} else {
+				return D3D12_CULL_MODE_BACK;
+			}
+		}();
+		auto shader = compiler.build(programs, cullMode, isTransparencyEnabled);
 
 		return shader.reset();
 	}

@@ -1,7 +1,22 @@
-#include <common.hlsli>
+#include <../common.hlsli>
 #include <sdf.hlsli>
 
 #define transparencyEnabled
+#define cull_none
+
+struct UiVertex {
+    float3 position: POSITION;
+};
+
+struct TextVertex {
+    float3 position: POSITION;
+    float2 texCoord: TEXCOORD0;
+};
+
+struct UiPixel {
+    float4 position: SV_POSITION;
+    float2 texCoord: TEXCOORD0;
+};
 
 cbuffer perCamera: register(b0) {
     int2 mousePos;

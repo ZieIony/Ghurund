@@ -1,0 +1,49 @@
+#pragma once
+
+#include "engine/graphics/material/IMaterial.h"
+#include <engine/parameter/ValueParameter.h>
+#include <core/Color.h>
+
+namespace Demo {
+    using namespace Ghurund::Engine;
+    using namespace ::DirectX;
+
+    class ShadowMaterialParameters {
+    private:
+        IntrusivePointer<Float4Parameter> colorParameter, cornerRadiusParameter;
+        IntrusivePointer<Float2Parameter> sizeParameter;
+        IntrusivePointer<FloatParameter> elevationParameter;
+
+    public:
+        ShadowMaterialParameters(Ghurund::Engine::IMaterial& material) {
+            colorParameter.set((Float4Parameter*)material.Parameters.get("color"));
+            cornerRadiusParameter.set((Float4Parameter*)material.Parameters.get("cornerRadius"));
+            sizeParameter.set((Float2Parameter*)material.Parameters.get("size"));
+            elevationParameter.set((FloatParameter*)material.Parameters.get("elevation"));
+        }
+
+        inline void setColor(const Color& color) {
+            colorParameter->Value = color.toVector();
+        }
+
+        __declspec(property(put = setColor)) const Color& Color;
+
+        inline void setSize(const XMFLOAT2& size) {
+            sizeParameter->Value = size;
+        }
+
+        __declspec(property(put = setSize)) const XMFLOAT2& Size;
+
+        inline void setElevation(float elevation) {
+            elevationParameter->Value = elevation;
+        }
+
+        __declspec(property(put = setElevation)) float Elevation;
+
+        inline void setCornerRadius(const XMFLOAT4& cornerRadius) {
+            cornerRadiusParameter->Value = cornerRadius;
+        }
+
+        __declspec(property(put = setCornerRadius)) const XMFLOAT4& CornerRadius;
+    };
+}

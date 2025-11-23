@@ -3,7 +3,7 @@
 #include "MeshData.h"
 
 namespace Ghurund::Engine {
-    class PlaneMesh: public MeshData {
+    class PlaneMeshData: public MeshData {
     public:
         void init(unsigned int detail = 0) {
             VertexStream posStream = VertexStream(List<XMFLOAT3>({

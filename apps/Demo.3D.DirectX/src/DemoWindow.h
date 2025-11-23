@@ -18,14 +18,12 @@ namespace Demo {
 
 		Set<RenderGroup> renderGroups;
 
-		IntrusivePointer<Resource> mesh;
-		IntrusivePointer<IMaterial> basicMaterial;
+		IntrusivePointer<Resource> textMesh, shadowMesh;
+		IntrusivePointer<IMaterial> basicMaterial, shadowMaterial;
 		IntrusivePointer<Camera> camera;
 		IntrusivePointer<Font> font;
 
 		Float2Parameter* sizeParameter;
-		Float4Parameter* backgroundColorParameter;
-		Float4Parameter* borderColorParameter;
 		TextureParameter* colorTextureParameter;
 		IntrusivePointer<Texture> colorTexture;
 

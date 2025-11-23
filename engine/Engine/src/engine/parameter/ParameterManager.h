@@ -4,7 +4,7 @@
 #include "core/string/String.h"
 #include "core/object/Object.h"
 #include "ParameterCollection.h"
-#include "engine/graphics/ITextureProvider.h"
+#include "engine/graphics/texture/ITextureProvider.h"
 #include "TextureParameter.h"
 
 namespace Ghurund::Engine {

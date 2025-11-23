@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ITexture.h"
+#include "engine/graphics/texture/ITexture.h"
 #include "IMaterial.h"
 
 namespace Ghurund::Engine {
@@ -24,10 +24,6 @@ namespace Ghurund::Engine {
         virtual IMaterial* makeInvalid() = 0;
 
         virtual IMaterial* makeLightPass() = 0;
-
-        virtual IMaterial* makeUi() = 0;
-
-        virtual IMaterial* makeText() = 0;
 
         virtual IMaterial* makeBasicSky() = 0;
 

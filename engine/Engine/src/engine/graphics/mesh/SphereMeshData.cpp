@@ -1,8 +1,8 @@
 #include "ghepch.h"
-#include "SphereMesh.h"
+#include "SphereMeshData.h"
 
 namespace Ghurund::Engine {
-    void SphereMesh::init(unsigned int detail) {
+    void SphereMeshData::init(unsigned int detail) {
         /*float t = (1.0f + sqrtf(5.0f)) / 2.0f;
 
         Vertex3D triangleVertices[] = {

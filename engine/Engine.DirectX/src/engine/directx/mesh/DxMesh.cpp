@@ -13,6 +13,8 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	void DxMesh::init(const MeshData& mesh, DxGraphics& graphics, CommandList& commandList) {
+		if (!mesh.Valid)
+			throw InvalidParamException("Mesh is not valid.\n");
 		if (commandList.State == CommandListState::FINISHED)
 			commandList.reset();
 

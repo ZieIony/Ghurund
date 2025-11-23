@@ -4,7 +4,7 @@
 #include "core/Colors.h"
 #include "core/window/DisplayManager.h"
 
-#include <engine/graphics/mesh/QuadMesh.h>
+#include <engine/graphics/mesh/QuadMeshData.h>
 #include <engine/directx/mesh/DxMesh.h>
 #include <engine/directx/texture/TextureProvider.h>
 #include <engine/directx/shader/ShaderProvider.h>
@@ -12,6 +12,8 @@
 #include <ui/font/FontLoader.h>
 #include <core/math/Matrix.h>
 #include <ui/directx/text/DxTextMeshFactory.h>
+#include <ui/directx/material/DxUIMaterialProvider.h>
+#include <ui/material/ShadowMaterialParameters.h>
 
 namespace Demo {
 	using namespace Ghurund::UI::DirectX;
@@ -30,9 +32,8 @@ namespace Demo {
 		auto commandList = makeIntrusive<CommandList>();
 		commandList->init(*graphics, graphics->DirectQueue);
 
-		TextureProvider textureProvider(*graphics, *commandList.get(), app.ResourceManager);
-		ShaderProvider shaderProvider(app.ResourceManager);
-		MaterialProvider materialProvider(ParameterManager, shaderProvider, textureProvider);
+		DxUIShaderProvider shaderProvider(app.ResourceManager);
+		DxUIMaterialProvider materialProvider(ParameterManager, shaderProvider);
 
 		camera = makeIntrusive<Camera>();
 		camera->setPositionTargetUp({ 10,10,-10 }, { 0,0,0 });
@@ -40,28 +41,40 @@ namespace Demo {
 		camera->updateParameters();
 		ParameterManager.Parameters.putAll(camera->Parameters);
 
-		font.set(app.ResourceManager.load<Font>(ResourcePath(FilePath(L"resources/fonts/lato_regular.ttf"))));
-
-		DxTextMeshFactory factory(*graphics, commandList.ref());
-
-		mesh = IntrusivePointer<Resource>(factory.makeMesh(L"Heylo wórld.", font.ref()));
-
 		auto world = makeIntrusive<MatrixParameter>("world", MATRIX_IDENTITY);
 		ParameterManager.Parameters.put(world.get());
 
-		basicMaterial = IntrusivePointer<IMaterial>(materialProvider.makeText());
+		//font.set(app.ResourceManager.load<Font>(ResourcePath(FilePath(L"resources/fonts/lato_regular.ttf"))));
 
-		sizeParameter = (Float2Parameter*)basicMaterial->Parameters.get("size");
-		backgroundColorParameter = (Float4Parameter*)basicMaterial->Parameters.get("backgroundColor");
-		borderColorParameter = (Float4Parameter*)basicMaterial->Parameters.get("borderColor");
-
-		colorTexture = makeIntrusive<Texture>();
-		colorTexture->init(*graphics, commandList.ref(), *font->Atlas->Image);
-		colorTextureParameter = (TextureParameter*)basicMaterial->Parameters.get("colorTexture");
-		colorTextureParameter->Value = colorTexture.get();
+		DxTextMeshFactory factory(*graphics, commandList.ref());
 
 		RenderGroup uiGroup(0, DrawOrder::BACK_TO_FRONT);
-		uiGroup.objects.add(DrawPacket{ mesh, basicMaterial });
+		{
+			/*textMesh = IntrusivePointer<Resource>(factory.makeMesh(L"Heylo wórld.", font.ref()));
+
+			basicMaterial = IntrusivePointer<IMaterial>(materialProvider.makeText());
+
+			sizeParameter = (Float2Parameter*)basicMaterial->Parameters.get("size");
+
+			colorTexture = makeIntrusive<Texture>();
+			colorTexture->init(*graphics, commandList.ref(), *font->Atlas->Image);
+			colorTextureParameter = (TextureParameter*)basicMaterial->Parameters.get("colorTexture");
+			colorTextureParameter->Value = colorTexture.get();
+
+			//uiGroup.objects.add(DrawPacket{ textMesh, basicMaterial });*/
+		}
+		{
+			auto mesh = ghnew DxMesh();
+			auto meshData = makeIntrusive<QuadMeshData>();
+			meshData->init();
+			shadowMesh = IntrusivePointer<Resource>(mesh);
+			mesh->init(meshData.ref(), *graphics, commandList.ref());
+
+			shadowMaterial = IntrusivePointer<IMaterial>(materialProvider.makeShadow());
+			ShadowMaterialParameters parameters(shadowMaterial.ref());
+
+			uiGroup.objects.add(DrawPacket{ shadowMesh, shadowMaterial });
+		}
 		renderGroups.put(uiGroup);
 	}
 
