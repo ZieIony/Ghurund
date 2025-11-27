@@ -27,13 +27,9 @@ typedef unsigned __int64 address_t;
 typedef unsigned long address_t;
 #endif
 
-#define GH_STRINGIFY(t) #t
-
 #pragma comment(lib, "Dbghelp.lib")
 
 namespace Ghurund::Core {
-    inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund::Core);
-
     /**
      * @brief Modifies a value to be in range (alignment*N) <= value < (alignment*(N+1)).
      * @tparam Type type of value, alignment and aligned value.

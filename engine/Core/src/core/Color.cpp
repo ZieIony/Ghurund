@@ -29,7 +29,7 @@ namespace Ghurund::Core {
 
     template<>
     const Type& getType<Color>() {
-        static Type TYPE = Type(NAMESPACE_NAME, "Color", sizeof(Color));
+        static Type TYPE = TypeBuilder<Color>();
         return TYPE;
     }
 

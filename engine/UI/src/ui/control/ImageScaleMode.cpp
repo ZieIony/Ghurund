@@ -6,7 +6,7 @@
 namespace Ghurund::Core {
     template<>
     const Type& getType<Ghurund::UI::ImageScaleMode>() {
-        static Type TYPE = Type("ImageScaleMode", sizeof(Ghurund::UI::ImageScaleMode));
+        static Type TYPE = TypeBuilder<Ghurund::UI::ImageScaleMode>();
         return TYPE;
     }
 }

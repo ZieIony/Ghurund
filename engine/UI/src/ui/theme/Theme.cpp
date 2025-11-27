@@ -23,7 +23,7 @@ namespace Ghurund::UI {
 namespace Ghurund::Core {
     template<>
     const Type& getType<Ghurund::UI::Theme>() {
-        static Type TYPE = Type(Ghurund::UI::NAMESPACE_NAME, "Theme", sizeof(Ghurund::UI::Theme));
+        static Type TYPE = TypeBuilder<Ghurund::UI::Theme>();
         return TYPE;
     }
 }

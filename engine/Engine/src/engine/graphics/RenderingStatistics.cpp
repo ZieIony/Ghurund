@@ -7,7 +7,7 @@
 namespace Ghurund::Core {
     template<>
     const Type& getType<RenderingStatistics>() {
-        static Type TYPE = Type(Ghurund::Engine::NAMESPACE_NAME, "RenderingStatistics", sizeof(RenderingStatistics));
+        static Type TYPE = TypeBuilder<RenderingStatistics>();
         return TYPE;
     }
 }

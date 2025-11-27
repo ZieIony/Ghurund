@@ -4,7 +4,7 @@
 namespace Ghurund::Core {
     template<>
     const Type& getType<Ghurund::UI::TextDocument>() {
-        static Type TYPE = Type(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(TextDocument), sizeof(Ghurund::UI::TextDocument));
+        static Type TYPE = TypeBuilder<Ghurund::UI::TextDocument>();
         return TYPE;
     }
 }

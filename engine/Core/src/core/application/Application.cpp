@@ -89,7 +89,7 @@ namespace Ghurund::Core {
 
     template<>
     const Type& getType<Application>() {
-        static Type TYPE = Type(Ghurund::Core::NAMESPACE_NAME, "Application", sizeof(Application));
+        static Type TYPE = TypeBuilder<Application>();
         return TYPE;
     }
 }

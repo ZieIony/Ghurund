@@ -23,6 +23,18 @@ namespace Ghurund::UI {
 	class Theme;
 
 	class LayoutLoader :public Ghurund::Core::Loader {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = LayoutLoader::GET_TYPE();
+#pragma endregion
+
 	private:
 		Ghurund::Core::ResourceManager& resourceManager;
 		IDrawableFactory& drawableFactory;
@@ -30,6 +42,8 @@ namespace Ghurund::UI {
 		ConstraintFactory& constraintFactory;
 		PropertyLoaderCollection propertyLoaders;
 		Map<AString, const BaseConstructor*> types;
+
+		static inline const AString DEFAULT_CONTROL_NAMESPACE = LayoutLoader::TYPE.Namespace;
 
 	protected:
 		virtual Resource* loadInternal(

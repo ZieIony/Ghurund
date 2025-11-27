@@ -4,7 +4,7 @@
 namespace Ghurund::Core {
     template<>
     const Type& getType<Ghurund::UI::IUIContext>() {
-        static Type TYPE = Type(Ghurund::UI::NAMESPACE_NAME, "IUIContext", sizeof(Ghurund::UI::IUIContext));
+        static Type TYPE = TypeBuilder<Ghurund::UI::IUIContext>();
         return TYPE;
     }
 }

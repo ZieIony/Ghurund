@@ -17,7 +17,7 @@ namespace Ghurund::Core {
 
     template<>
     const Type& getType<DXGI_FORMAT>() {
-        static Type TYPE = Type("", "DXGI_FORMAT", sizeof(DXGI_FORMAT));
+        static Type TYPE = TypeBuilder<DXGI_FORMAT>();
         return TYPE;
     }
 

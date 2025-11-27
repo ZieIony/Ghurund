@@ -6,13 +6,11 @@
 namespace Ghurund::Editor {
     using namespace Ghurund::UI;
 
-    inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund::Editor);
-
     class SearchField:public Widget<SearchFieldLayout> {
     protected:
         static const Ghurund::Type& GET_TYPE() {
             static const auto CONSTRUCTOR = Constructor<SearchField>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SearchField))
+            static const Ghurund::Type TYPE = TypeBuilder<SearchField>()
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());
 
