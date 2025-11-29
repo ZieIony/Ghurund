@@ -6,7 +6,6 @@
 		<ControlContainer width="Parent.Width" top="Parent.Top" bottom="'controls'.Top"
 						  name="container">
 			<ControlGroup>
-				<Border width="200" height="200"/>
 				<DrawableView width="200" height="200" scaleMode="fit"
 						   drawable="images\buttons.png"/>
 			</ControlGroup>

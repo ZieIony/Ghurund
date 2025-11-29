@@ -24,7 +24,7 @@ namespace Ghurund::UI {
         updateProperties();
     }
 
-    void DrawableView::onDraw(RenderGroup& group) {
+    void DrawableView::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
         auto drawable = this->drawable.get();
         if (!drawable)
             return;

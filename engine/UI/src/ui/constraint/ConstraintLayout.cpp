@@ -26,8 +26,8 @@ namespace Ghurund::UI {
 		}*/
 	}
 
-    void ConstraintLayout::onDraw(RenderGroup& group) {
-        __super::onDraw(group);
+    void ConstraintLayout::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
+        __super::onDraw(group, parentPosition);
 #ifdef _DEBUG
         /*for (Guide& guide : guides) {
             float position = guide.Value;

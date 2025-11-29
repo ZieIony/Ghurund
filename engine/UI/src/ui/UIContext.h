@@ -1,8 +1,7 @@
 #pragma once
 
-#include "core/object/NotNull.h"
-#include "core/collection/Array.h"
 #include "core/reflection/Type.h"
+#include "font/Font.h"
 
 namespace Ghurund::Core {
     class ResourceManager;
@@ -10,22 +9,26 @@ namespace Ghurund::Core {
 }
 
 namespace Ghurund::UI {
-    class IUIContext {
+    class UIContext {
     private:
         Ghurund::Core::Window& window;
 
     public:
-        IUIContext(Ghurund::Core::Window& window):window(window) {}
+        UIContext(Ghurund::Core::Window& window):window(window) {}
 
         inline Ghurund::Core::Window& getWindow() {
             return window;
         }
 
         __declspec(property(get = getWindow)) Ghurund::Core::Window& Window;
+
+        virtual Resource* makeControlMesh() = 0;
+
+        virtual Resource* makeTextMesh(const WString& text, const Font& font) = 0;
     };
 }
 
 namespace Ghurund::Core {
     template<>
-    const Type& getType<Ghurund::UI::IUIContext>();
+    const Type& getType<Ghurund::UI::UIContext>();
 }

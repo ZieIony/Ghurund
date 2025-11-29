@@ -54,7 +54,7 @@ namespace Ghurund::UI {
                 cursorDrawable->update(time);
         }
 
-        virtual void onDraw(RenderGroup& group) override;
+        virtual void onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
 
         virtual void onThemeChanged() override;
 

@@ -26,7 +26,7 @@ namespace Ghurund::UI {
 	protected:
 		virtual bool onMouseWheelEvent(const MouseWheelEventArgs& event);
 
-		virtual void onDraw(RenderGroup& group) override;
+		virtual void onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
 
 	public:
 		Event<Control> onScrolled = Event<Control>(*this);

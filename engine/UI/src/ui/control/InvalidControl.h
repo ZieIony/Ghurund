@@ -39,6 +39,6 @@ namespace Ghurund::UI {
 				});*/
 		}
 
-		virtual void onDraw(RenderGroup& group) override;
+		virtual void onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
 	};
 }

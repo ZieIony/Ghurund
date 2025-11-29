@@ -133,11 +133,12 @@ namespace Ghurund::UI {
 			c.control->onUpdate(time);
 	}
 
-	void ControlGroup::onDraw(RenderGroup& group) {
+	void ControlGroup::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
+		__super::onDraw(group, parentPosition);
 		for (ControlWithConstraints& c : children) {
 			if (!c.control->Visible)
 				continue;
-			c.control->draw(group);
+			c.control->draw(group, position + parentPosition);
 		}
 	}
 

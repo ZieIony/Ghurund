@@ -1,18 +1,33 @@
 #include "PreviewApplication.h"
 
 #include "core/io/DirectoryLibrary.h"
-#include "ui/theme/LightTheme.h"
 #include "ui/theme/DarkTheme.h"
+#include "ui/theme/LightTheme.h"
+#include <engine/directx/shader/DxShaderCompiler.h>
+#include <engine/directx/shader/DxShaderLoader.h>
+#include <ui/directx/DxUIFeature.h>
+#include <ui/directx/DxUIFeatureFactory.h>
 
 namespace Preview {
+    using namespace Ghurund::UI::DirectX;
+
     PreviewApplication::PreviewApplication() {
         Features.add<DxGraphics>();
+        auto graphics = Features.get<DxGraphics>();
+
+        shaderCompiler = makeShared<DxShaderCompiler>(*graphics);
+        auto shaderLoader = makeIntrusive<DxShaderLoader>(shaderCompiler.ref());
+        shaderLoader->includeDirs.add(DirectoryPath(L"./resources/shaders/DirectX/"));
+        ResourceManager.Loaders.set<DxShader>(shaderLoader.ref());
+
+        Features.add<DxUIFeature, DxUIFeatureFactory>();
     }
     
     void PreviewApplication::onInit() {
         __super::onInit();
 
-        auto drawableFactory = ghnew Ghurund::UI::DrawableFactory(ResourceManager);
+        auto ui = Features.get<DxUIFeature>();
+        auto drawableFactory = ui->DrawableFactory;
 
         lightTheme.set(ghnew LightTheme(ResourceManager, *drawableFactory));
         darkTheme.set(ghnew DarkTheme(ResourceManager, *drawableFactory));

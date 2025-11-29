@@ -112,9 +112,10 @@ namespace Ghurund::UI {
 		}
 	}
 
-	void ControlContainerBase::onDraw(RenderGroup& group) {
+	void ControlContainerBase::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
+		__super::onDraw(group, parentPosition);
 		if (child)
-			child->draw(group);
+			child->draw(group, position + parentPosition);
 	}
 
 	bool ControlContainerBase::dispatchKeyEvent(const KeyEventArgs& event) {

@@ -12,11 +12,11 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    void ScrollView::onDraw(RenderGroup& group) {
+    void ScrollView::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
         //canvas.save();
         //canvas.clipRect(0, 0, Size.Width, Size.Height);
         //canvas.translate(-scroll.x, -scroll.y);
-        __super::onDraw(group);
+        __super::onDraw(group, parentPosition);
         //canvas.restoreClipRect();
         //canvas.restore();
     }

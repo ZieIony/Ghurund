@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/application/Layer.h"
+#include "engine/application/Layer.h"
 #include "ui/constraint/ConstraintGraph.h"
 #include "ui/constraint/WindowConstraint.h"
 #include "ui/RootView.h"
@@ -25,7 +25,7 @@ namespace Ghurund::UI {
 #pragma endregion
 
     protected:
-        IUIContext* context;
+        UIContext* context;
         RootView* rootView;
         IntrusivePointer<Constraint> rootViewWidth, rootViewHeight;
         ConstraintGraph graph;
@@ -45,7 +45,7 @@ namespace Ghurund::UI {
             uninit();
         }
 
-        void init(IUIContext& context);
+        void init(UIContext& context);
 
         void uninit();
 
@@ -75,11 +75,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getContent, put = setContent)) Ghurund::UI::Control* Content;
 
-        inline IUIContext& getContext() {
+        inline UIContext& getContext() {
             return *context;
         }
 
-        __declspec(property(get = getContext)) IUIContext& Context;
+        __declspec(property(get = getContext)) UIContext& Context;
 
         virtual bool dispatchKeyEvent(const KeyEventArgs& args) {
             return rootView->dispatchKeyEvent(args);
@@ -99,6 +99,6 @@ namespace Ghurund::UI {
 
         virtual void update(const uint64_t time) override;
 
-        void draw(RenderGroup& group);
+        virtual void draw(RenderingContext& renderingContext, ParameterManager& parameterManager) override;
     };
 }

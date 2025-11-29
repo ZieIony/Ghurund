@@ -363,7 +363,7 @@ namespace Ghurund::UI {
         return __super::dispatchMouseMotionEvent(event);
     }
 
-    void TextView::onDraw(RenderGroup& group) {
+    void TextView::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
         if (Enabled) {
             Selection caretRange = getSelectionRange();
 

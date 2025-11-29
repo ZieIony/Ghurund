@@ -1,25 +1,41 @@
 #include "PreviewWindow.h"
 
 #include "ThemeApplication.h"
+#include <ui/directx/material/DxUIShaderProvider.h>
+#include <ui/directx/material/DxUIMaterialProvider.h>
+#include <ui/material/ControlMaterialParameters.h>
+#include "core/Colors.h"
 
 namespace Preview {
 	PreviewWindow::PreviewWindow(
 		Ghurund::Core::Application& app,
 		DxRenderer& renderer,
 		ThemeApplication& themeApp
-	):GameWindow(app, PREVIEW_WINDOW_STYLE), themeApp(themeApp) {
+	):GameWindow(app), themeApp(themeApp) {
 		Renderer = &renderer;
+		BackgroundColor = &Colors::LIGHT_SKY_BLUE;
 	}
 
 	void PreviewWindow::init() {
 		previewLayout.set(Application.ResourceManager.load<PreviewLayout>(FilePath(L"apps/Preview/res/layout.xml"), DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
 
-		/*Ghurund::UI::Direct2D::Graphics2D* graphics2d = Application->Features->get<Ghurund::UI::Direct2D::Graphics2D>();
-		uiLayer = ghnew Ghurund::UI::Direct2D::D2DUILayer();
-		uiLayer->init(graphics2d, *this, SwapChain);
+		DxGraphics* graphics = Application.Features.get<DxGraphics>();
+		auto commandList = makeIntrusive<CommandList>();
+		commandList->init(*graphics, graphics->DirectQueue);
+
+		uiContext = makeShared<DxUIContext>(*this, *graphics, commandList.ref());
+		uiLayer = ghnew UILayer();
+		uiLayer->init(uiContext.ref());
 		uiLayer->Theme = &themeApp.CurrentTheme;
 		uiLayer->Content = previewLayout.get();
-		Layers.add(uiLayer);*/
+		Layers.add(uiLayer);
+
+		DxUIShaderProvider shaderProvider(Application.ResourceManager);
+		DxUIMaterialProvider materialProvider(ParameterManager, shaderProvider);
+		basicMaterial = IntrusivePointer<IMaterial>(materialProvider.makeControl());
+		ControlMaterialParameters params(basicMaterial.ref());
+		params.BackgroundColor = Colors::ALICE_BLUE;
+		previewLayout->Material = basicMaterial.get();
 
 		previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
 			Application.FunctionQueue.post([&, type] {

@@ -20,7 +20,7 @@ namespace Ghurund::UI::DirectX {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = UIFeature::GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = DxUIFeature::GET_TYPE();
 #pragma endregion
 
     private:

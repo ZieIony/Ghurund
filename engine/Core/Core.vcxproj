@@ -132,8 +132,6 @@
     <ClInclude Include="src\core\application\Application.h" />
     <ClInclude Include="src\core\application\ApplicationWindow.h" />
     <ClInclude Include="src\core\application\CommandLine.h" />
-    <ClInclude Include="src\core\application\Layer.h" />
-    <ClInclude Include="src\core\application\LayerList.h" />
     <ClInclude Include="src\core\application\Settings.h" />
     <ClInclude Include="src\core\application\WindowCloseAction.h" />
     <ClInclude Include="src\core\application\WindowCollection.h" />
@@ -293,7 +291,6 @@
     <ClCompile Include="src\core\allocation\SimpleBufferStrategy.cpp" />
     <ClCompile Include="src\core\application\Application.cpp" />
     <ClCompile Include="src\core\application\ApplicationWindow.cpp" />
-    <ClCompile Include="src\core\application\LayerList.cpp" />
     <ClCompile Include="src\core\application\Settings.cpp" />
     <ClCompile Include="src\core\feature\Feature.cpp" />
     <ClCompile Include="src\core\image\Image.cpp" />

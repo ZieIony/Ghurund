@@ -51,15 +51,18 @@ namespace Ghurund::Core {
 		inline T* get() {
 			const Type& type = getType<T>();
 			IntrusivePointer<Feature> feature = [&] {
-				auto it = features.find(&type);
-				if (it != features.end())
-					return it->value;
-				auto it2 = factories.find(&type);
-				if (it2 == factories.end())
-					throw FeatureNotAvailableException(std::format("feature '{}' is not available", T::TYPE.Name).c_str());
-				auto feature = IntrusivePointer<Feature>(&it2->value->make());
-				features.put(&type, feature);
-				return feature;
+				for (auto& entry : features) {
+					if (entry.key->isOrExtends(type))
+						return entry.value;
+				}
+				for (auto& entry : factories) {
+					if (entry.key->isOrExtends(type)) {
+						auto feature = IntrusivePointer<Feature>(&entry.value->make());
+						features.put(&type, feature);
+						return feature;
+					}
+				}
+				throw FeatureNotAvailableException(std::format("feature '{}' is not available", T::TYPE.Name).c_str());
 			}();
 
 			init(feature);
@@ -76,7 +79,7 @@ namespace Ghurund::Core {
 		void init() {
 			for (auto& f : factories) {
 				if (!features.contains(f.key))
-					features.put(f.key, IntrusivePointer<Feature>(&f.value->make()));
+					features.put(f.key, IntrusivePointer<Feature>(f.value->make().reset()));
 			}
 			for (auto& f : features)
 				init(f.value);

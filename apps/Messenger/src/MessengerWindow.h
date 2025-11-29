@@ -5,7 +5,7 @@
 #include "core/window/SystemWindow.h"
 #include "engine/net/Client.h"
 #include "engine/net/Server.h"
-#include "ui/directx/UIContext.h"
+#include "ui/directx/DxUIContext.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/theme/LightTheme.h"
 #include <core/object/SharedPointer.h>
@@ -23,7 +23,7 @@ namespace Messenger {
     class MessengerWindow:public ApplicationWindow {
     private:
         Theme* theme;
-        UiContext* context;
+        UIContext* context;
         Server server;
         Client client;
         SharedPointer<TextBlock> status;

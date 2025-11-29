@@ -10,6 +10,8 @@
 #include "ui/constraint/ContentSize.h"
 #include "ui/constraint/WrapConstraint.h"
 #include "ui/UIContext.h"
+#include "engine/graphics/material/IMaterial.h"
+#include "engine/parameter/ValueParameter.h"
 
 namespace tinyxml2 {
 	class XMLElement;
@@ -63,9 +65,11 @@ namespace Ghurund::UI {
 		ContentSize contentSize = Ghurund::UI::ContentSize(makeIntrusive<WrapWidthConstraint>().get(), makeIntrusive<WrapHeightConstraint>().get());
 		Ghurund::Core::FloatSize minSize = { 0, 0 };
 		Ghurund::Core::FloatSize maxSize = { std::numeric_limits<float>::max(), std::numeric_limits<float>::max() };
-		XMFLOAT2 position = { 0,0 }, scale = { 1,1 };
-		float rotation = 0;
-		Ghurund::Core::Matrix3x2 transformation = {};
+		XMFLOAT2 position = { 0,0 };
+
+		IntrusivePointer<IMaterial> material;
+		IntrusivePointer<Resource> mesh;
+		Float2Parameter* positionParameter = nullptr, * sizeParameter = nullptr;
 
 		bool needsLayout = true;
 
@@ -80,7 +84,7 @@ namespace Ghurund::UI {
 			size(other.size),
 			visible(other.visible), enabled(other.enabled), focusable(other.focusable), roundToPixels(other.roundToPixels),
 			name(other.name ? ghnew AString(*other.name) : nullptr),
-			position(other.position), rotation(other.rotation), transformation(other.transformation),
+			position(other.position),
 			needsLayout(other.needsLayout),
 			localTheme(other.localTheme) {}
 
@@ -95,12 +99,16 @@ namespace Ghurund::UI {
 		virtual void onThemeChanged() {}
 
 		virtual void onContextChanged() {
+			auto context = Context;
+			if (context) {
+				mesh.set(context->makeControlMesh());
+			}
 			contextChanged();
 		}
 
 		virtual void onLayout(float x, float y, float width, float height) {}
 
-		virtual void onDraw(RenderGroup& group) {}
+		virtual void onDraw(RenderGroup& group, const XMFLOAT2& parentPosition);
 
 		virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
@@ -212,6 +220,24 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = isRoundToPixelsEnabled, put = setRoundToPixelsEnabled)) bool RoundToPixelsEnabled;
 
+		inline void setMaterial(IMaterial* material) {
+			this->material.set(material);
+			if (material) {
+				material->addReference();
+				positionParameter = (Float2Parameter*)material->Parameters.get("position");
+				sizeParameter = (Float2Parameter*)material->Parameters.get("size");
+			} else {
+				positionParameter = nullptr;
+				sizeParameter = nullptr;
+			}
+		}
+
+		inline IMaterial* getMaterial() const {
+			return material.get();
+		}
+
+		__declspec(property(get = getMaterial, put = setMaterial)) IMaterial* Material;
+
 		inline const XMFLOAT2& getPosition() const {
 			return position;
 		}
@@ -226,37 +252,6 @@ namespace Ghurund::UI {
 		}
 
 		__declspec(property(get = getPosition, put = setPosition)) const XMFLOAT2& Position;
-
-		inline float getRotation() const {
-			return rotation;
-		}
-
-		inline void setRotation(float rotation) {
-			this->rotation = rotation;
-		}
-
-		__declspec(property(get = getRotation, put = setRotation)) float Rotation;
-
-		inline const XMFLOAT2& getScale() const {
-			return scale;
-		}
-
-		inline void setScale(const XMFLOAT2& scale) {
-			this->scale = scale;
-		}
-
-		inline void setScale(float x, float y) {
-			position.x = x;
-			position.y = y;
-		}
-
-		__declspec(property(get = getScale, put = setScale)) const XMFLOAT2& Scale;
-
-		inline const Ghurund::Core::Matrix3x2& getTransformation() const {
-			return transformation;
-		}
-
-		__declspec(property(get = getTransformation)) const Ghurund::Core::Matrix3x2& Transformation;
 
 		inline ContentSize& getContentSize() {
 			return contentSize;
@@ -319,9 +314,9 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = getTheme, put = setTheme)) const Ghurund::UI::Theme* Theme;
 
-		virtual IUIContext* getContext();
+		virtual UIContext* getContext();
 
-		__declspec(property(get = getContext)) IUIContext* Context;
+		__declspec(property(get = getContext)) UIContext* Context;
 
 		virtual void dispatchStateChanged() {
 			stateChanged();
@@ -344,7 +339,7 @@ namespace Ghurund::UI {
 
 		virtual void onUpdate(const uint64_t time) {}
 
-		void draw(RenderGroup& group);
+		void draw(RenderGroup& group, const XMFLOAT2& parentPosition);
 
 		virtual Control* find(const Ghurund::Core::AString& name) {
 			return (this->name && this->name->operator==(name)) ? this : nullptr;

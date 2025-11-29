@@ -29,7 +29,7 @@ namespace Ghurund::UI {
 		}
 	}
 
-	void ProgressBar::onDraw(RenderGroup& group) {
+	void ProgressBar::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
 		if (indeterminate) {
 			const Color* bgColor = backgroundColor.get();
 			if (bgColor) {

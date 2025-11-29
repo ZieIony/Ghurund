@@ -98,6 +98,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\application\Layer.h" />
+    <ClInclude Include="src\engine\application\LayerList.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />
@@ -138,15 +140,13 @@
     <ClInclude Include="src\engine\graphics\DrawableComponent.h" />
     <ClInclude Include="src\engine\graphics\DrawableComponents.h" />
     <ClInclude Include="src\engine\graphics\DrawingSystem.h" />
-    <ClInclude Include="src\engine\graphics\material\IMaterial.h" />
-    <ClInclude Include="src\engine\graphics\material\IMaterialProvider.h" />
-    <ClInclude Include="src\engine\graphics\texture\ITexture.h" />
-    <ClInclude Include="src\engine\graphics\texture\ITextureProvider.h" />
     <ClInclude Include="src\engine\graphics\LightSystem.h" />
     <ClInclude Include="src\engine\graphics\RenderGroup.h" />
     <ClInclude Include="src\engine\graphics\Renderer.h" />
     <ClInclude Include="src\engine\graphics\RenderingContext.h" />
     <ClInclude Include="src\engine\graphics\RenderingStatistics.h" />
+    <ClInclude Include="src\engine\graphics\material\IMaterial.h" />
+    <ClInclude Include="src\engine\graphics\material\IMaterialProvider.h" />
     <ClInclude Include="src\engine\graphics\mesh\ConeMeshData.h" />
     <ClInclude Include="src\engine\graphics\mesh\CubeMeshData.h" />
     <ClInclude Include="src\engine\graphics\mesh\MeshData.h" />
@@ -158,6 +158,8 @@
     <ClInclude Include="src\engine\graphics\mesh\VertexStream.h" />
     <ClInclude Include="src\engine\graphics\shader\IShader.h" />
     <ClInclude Include="src\engine\graphics\shader\ShaderCode.h" />
+    <ClInclude Include="src\engine\graphics\texture\ITexture.h" />
+    <ClInclude Include="src\engine\graphics\texture\ITextureProvider.h" />
     <ClInclude Include="src\engine\net\Client.h" />
     <ClInclude Include="src\engine\net\ClientMessage.h" />
     <ClInclude Include="src\engine\net\Connection.h" />
@@ -199,6 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\application\GameWindow.cpp" />
+    <ClCompile Include="src\engine\application\LayerList.cpp" />
     <ClCompile Include="src\engine\audio\Audio.cpp" />
     <ClCompile Include="src\engine\audio\Sound.cpp" />
     <ClCompile Include="src\engine\audio\SoundLoader.cpp" />
@@ -209,9 +212,9 @@
     <ClCompile Include="src\engine\entity\light\Light.cpp" />
     <ClCompile Include="src\engine\game\action\ActionMapping.cpp" />
     <ClCompile Include="src\engine\graphics\DrawableComponents.cpp" />
-    <ClCompile Include="src\engine\graphics\material\IMaterial.cpp" />
     <ClCompile Include="src\engine\graphics\Renderer.cpp" />
     <ClCompile Include="src\engine\graphics\RenderingStatistics.cpp" />
+    <ClCompile Include="src\engine\graphics\material\IMaterial.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\ConeMeshData.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\CubeMeshData.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\MeshData.cpp" />

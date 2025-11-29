@@ -5,7 +5,7 @@
 #include "ui/constraint/WindowConstraint.h"
 
 namespace Ghurund::UI {
-	RootView::RootView(IUIContext& context):context(context) {
+	RootView::RootView(UIContext& context):context(context) {
 		Cursor = &Cursor::ARROW;
 		Name = "root";
 	}
@@ -85,13 +85,6 @@ namespace Ghurund::UI {
 		}
 
 		return __super::dispatchMouseMotionEvent(event);
-	}
-
-	PartialConstraintSet RootView::makeDefaultConstraints() const {
-		return ConstraintSetInitializer{
-			.width = makeIntrusive<WindowWidthConstraint>(context.Window),
-			.height = makeIntrusive<WindowHeightConstraint>(context.Window)
-		};
 	}
 
 };

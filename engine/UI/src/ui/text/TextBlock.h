@@ -30,7 +30,7 @@ namespace Ghurund::UI {
 
 		//virtual void onMeasure() override;
 
-		virtual void onDraw(RenderGroup& group) override;
+		virtual void onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
 
 	public:
 		TextBlock():color(ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND)) {

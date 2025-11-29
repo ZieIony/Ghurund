@@ -9,7 +9,7 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    void UILayer::init(IUIContext& context) {
+    void UILayer::init(UIContext& context) {
         if (rootView)
             return;
         this->context = &context;
@@ -41,7 +41,10 @@ namespace Ghurund::UI {
         rootView->layout(0, 0, rootViewWidth->Value, rootViewHeight->Value);
     }
     
-    void UILayer::draw(RenderGroup& group) {
-        rootView->draw(group);
+    void UILayer::draw(RenderingContext& renderingContext, ParameterManager& parameterManager) {
+        RenderGroup group(0, DrawOrder::BACK_TO_FRONT);
+		rootView->draw(group, { 0, 0 });
+        Set<RenderGroup> groups = { group };
+        renderingContext.draw(groups, parameterManager);
     }
 }

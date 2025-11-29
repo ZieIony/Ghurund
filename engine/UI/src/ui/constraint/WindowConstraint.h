@@ -27,7 +27,7 @@ namespace Ghurund::UI {
         virtual bool equalsImpl(const Object& other) const override;
 
     public:
-        WindowWidthConstraint(Window& window):Constraint(ConstraintOptions::IS_CONSTANT), window(window) {}
+        WindowWidthConstraint(Window& window):Constraint(), window(window) {}
 
         virtual void resolve(Control& control, ConstraintGraph& graph) override {
             evaluated = false;
@@ -65,7 +65,7 @@ namespace Ghurund::UI {
         virtual bool equalsImpl(const Object& other) const override;
 
     public:
-        WindowHeightConstraint(Window& window):Constraint(ConstraintOptions::IS_CONSTANT), window(window) {}
+        WindowHeightConstraint(Window& window):Constraint(), window(window) {}
 
         virtual void resolve(Control& control, ConstraintGraph& graph) override {
             evaluated = false;

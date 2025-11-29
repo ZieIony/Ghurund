@@ -32,7 +32,7 @@ namespace Ghurund::UI {
 	}
 
 	inline uint32_t swap32(uint32_t a) {
-		return make32(low16(a), hi16(a));
+		return make32(swap16(low16(a)), swap16(hi16(a)));
 	}
 
 	//This is TTF file header

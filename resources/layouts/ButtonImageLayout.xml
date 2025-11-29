@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Clip shape="roundRect, 2" xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
-	<ConstraintLayout>
-		<ControlContainer name="container"/>
-		<StateIndicatorOnAccent name="state" width="Parent.Width" height="Parent.Height"/>
-	</ConstraintLayout>
-</Clip>
+<ConstraintLayout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<ControlContainer name="container"/>
+	<StateIndicatorOnAccent name="state" width="Parent.Width" height="Parent.Height"/>
+</ConstraintLayout>

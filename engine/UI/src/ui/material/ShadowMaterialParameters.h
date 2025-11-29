@@ -4,7 +4,7 @@
 #include <engine/parameter/ValueParameter.h>
 #include <core/Color.h>
 
-namespace Demo {
+namespace Ghurund::UI {
     using namespace Ghurund::Engine;
     using namespace ::DirectX;
 
@@ -17,9 +17,13 @@ namespace Demo {
     public:
         ShadowMaterialParameters(Ghurund::Engine::IMaterial& material) {
             colorParameter.set((Float4Parameter*)material.Parameters.get("color"));
+            colorParameter->addReference();
             cornerRadiusParameter.set((Float4Parameter*)material.Parameters.get("cornerRadius"));
+            cornerRadiusParameter->addReference();
             sizeParameter.set((Float2Parameter*)material.Parameters.get("size"));
+            sizeParameter->addReference();
             elevationParameter.set((FloatParameter*)material.Parameters.get("elevation"));
+            elevationParameter->addReference();
         }
 
         inline void setColor(const Color& color) {

@@ -7,10 +7,16 @@ namespace Ghurund::Core {
 }
 
 namespace UnitTest {
-    class TestUIContext:public Ghurund::UI::IUIContext {
+    using namespace Ghurund::UI;
+
+    class TestUIContext:public Ghurund::UI::UIContext {
     public:
         TestUIContext(
             Ghurund::Core::Window& window
-        ):IUIContext(window) {}
+        ):UIContext(window) {}
+
+        virtual Resource* makeControlMesh() override;
+
+        virtual Resource* makeTextMesh(const WString& text, const Font& font) override;
     };
 }

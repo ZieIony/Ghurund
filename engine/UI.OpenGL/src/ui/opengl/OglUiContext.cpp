@@ -8,3 +8,13 @@ namespace Ghurund::Core {
         return TYPE;
     }
 }
+
+namespace Ghurund::UI::OpenGL {
+    Resource* OglUiContext::makeControlMesh() {
+        return nullptr;
+    }
+
+    Resource* OglUiContext::makeTextMesh(const WString& text, const Font& font) {
+        return nullptr;
+    }
+}

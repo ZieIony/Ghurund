@@ -6,6 +6,7 @@
 #include "engine/graphics/Renderer.h"
 #include "engine/parameter/ParameterManager.h"
 #include "engine/parameter/ValueParameter.h"
+#include "LayerList.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
@@ -25,6 +26,7 @@ namespace Ghurund::Engine {
 
     private:
         ParameterManager parameterManager;
+        LayerList layers;
         Renderer* renderer = nullptr;
         std::unique_ptr<RenderingContext> renderingContext = nullptr;
         ActionMapping actionMapping;
@@ -50,9 +52,7 @@ namespace Ghurund::Engine {
             return __super::onKeyEvent(event) || actionMapping.onKeyEvent(event);
         }
 
-        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override {
-            return __super::onMouseButtonEvent(event) || actionMapping.onMouseButtonEvent(event);
-        }
+        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& args) override;
 
         virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override {
             mousePosParameter->Value = { event.Position.x, event.Position.y };
@@ -65,24 +65,12 @@ namespace Ghurund::Engine {
         
         virtual bool onSizeChanged() override;
 
-        virtual bool onFocusedChanged() override {
-            if (!Focused)
-                actionMapping.cancelAll();
-            return __super::onFocusedChanged();
-        }
+        virtual bool onFocusedChanged() override;
 
         virtual void onPaint(RenderingContext& renderingContext) {}
 
     public:
-		static inline const WindowStyle DEFAULT_WINDOW_STYLE = WindowStyle{
-            .hasMinimizeButton = true,
-            .hasMaximizeButton = true,
-            .hasTitle = true,
-            .borderStyle = WindowBorderStyle::RESIZE,
-            .showOnTaskbar = true
-        };
-
-		GameWindow(Ghurund::Core::Application& app, WindowStyle style = DEFAULT_WINDOW_STYLE):ApplicationWindow(app, style) {
+		GameWindow(Ghurund::Core::Application& app, WindowStyle style = SystemWindow::DEFAULT_WINDOW_STYLE):ApplicationWindow(app, style) {
             viewportSizeParameter = makeIntrusive<Int2Parameter>("viewportSize");
             parameterManager.Parameters.put(viewportSizeParameter.get());
             timeParameter = makeIntrusive<FloatParameter>("time");
@@ -90,6 +78,12 @@ namespace Ghurund::Engine {
             mousePosParameter = makeIntrusive<Int2Parameter>("mousePos");
             ParameterManager.Parameters.put(mousePosParameter.get());
         }
+
+        inline LayerList& getLayers() {
+            return layers;
+        }
+
+        __declspec(property(get = getLayers)) LayerList& Layers;
 
         Renderer* getRenderer() const {
             return renderer;
@@ -129,7 +123,10 @@ namespace Ghurund::Engine {
                 return;
 
             renderingContext->startFrame();
+            renderingContext->clear(BackgroundColor);
+            __super::paint();
             onPaint(*renderingContext);
+            layers.draw(*renderingContext, parameterManager);
             renderingContext->finishFrame();
         }
     };

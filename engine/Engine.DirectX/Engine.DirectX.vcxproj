@@ -101,7 +101,6 @@
     <ClInclude Include="src\engine\directx\Exceptions.h" />
     <ClInclude Include="src\engine\directx\Fence.h" />
     <ClInclude Include="src\engine\directx\Frame.h" />
-    <ClInclude Include="src\engine\directx\GraphicsFactory.h" />
     <ClInclude Include="src\engine\directx\MathTypes.h" />
     <ClInclude Include="src\engine\directx\Postprocess.h" />
     <ClInclude Include="src\engine\directx\SwapChain.h" />

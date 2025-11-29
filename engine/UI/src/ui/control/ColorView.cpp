@@ -21,7 +21,7 @@ namespace Ghurund::UI {
             color.resolve(*theme);
     }
 
-    void ColorView::onDraw(RenderGroup& group) {
+    void ColorView::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
         const Ghurund::UI::Color* c = color.get();
         if (c && c->A > 0.0f) {
             //canvas.Color = *c;

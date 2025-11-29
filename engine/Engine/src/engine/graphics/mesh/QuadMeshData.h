@@ -8,9 +8,9 @@ namespace Ghurund::Engine {
 		void init() {
 			VertexStream posStream = VertexStream(List<XMFLOAT3>({
 				{0.0f, 0.0f, 0.0f},
-				{0.0f, -1.0f, 0.0f},
+				{0.0f, 1.0f, 0.0f},
 				{1.0f, 0.0f, 0.0f},
-				{1.0f, -1.0f, 0.0f},
+				{1.0f, 1.0f, 0.0f},
 			}), VertexRole::POSITION);
 
 			List<uint16_t> indices = {

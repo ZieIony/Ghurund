@@ -7,11 +7,11 @@ namespace Ghurund::UI {
     class RootView: public ControlContainer {
     private:
         Control* prevFocusedChild = nullptr;
-        IUIContext& context;
+        UIContext& context;
         bool focused = false;
 
     public:
-        RootView(IUIContext& context);
+        RootView(UIContext& context);
 
         ~RootView() {
             if (prevFocusedChild)
@@ -43,7 +43,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = isFocused, put = setFocused)) bool Focused;
 
-        virtual IUIContext* getContext() override {
+        virtual UIContext* getContext() override {
             return &context;
         }
 
@@ -58,7 +58,5 @@ namespace Ghurund::UI {
         virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
         virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
-
-        virtual PartialConstraintSet makeDefaultConstraints() const override;
     };
 }

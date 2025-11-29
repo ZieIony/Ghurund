@@ -23,7 +23,7 @@ namespace Ghurund::UI {
         }
     }
 
-    void AdapterLayout::onDraw(RenderGroup& group) {
+    void AdapterLayout::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
         if (!layoutManager)
             return;
 
@@ -31,7 +31,7 @@ namespace Ghurund::UI {
         //canvas.clipRect(0, 0, Size.Width, Size.Height);
         auto& scroll = layoutManager->Scroll;
         //canvas.translate(scroll.x, scroll.y);
-        __super::onDraw(group);
+        __super::onDraw(group, parentPosition);
         //canvas.restoreClipRect();
         //canvas.restore();
     }

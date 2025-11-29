@@ -52,7 +52,7 @@ namespace Ghurund::UI {
         }* /
     }*/
 
-    void TextBlock::onDraw(RenderGroup& group) {
+    void TextBlock::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
         textLayout.Size = Size;
 		textLayout.draw(group);
     }

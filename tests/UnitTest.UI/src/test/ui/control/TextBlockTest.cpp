@@ -26,7 +26,7 @@ private:
     ResourceManager resourceManager;
     Timer timer;
     Window* window;
-    IUIContext* context;
+    UIContext* context;
     TextFormat* textFormat;
     FontLoader* fontLoader;
 

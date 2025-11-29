@@ -10,11 +10,15 @@ namespace Ghurund::Core {
 namespace Ghurund::UI::OpenGL {
     using namespace Ghurund::Core;
 
-    class OglUiContext:public IUIContext {
+    class OglUiContext:public UIContext {
     public:
         OglUiContext(
             Ghurund::Core::Window& window
-        ):IUIContext(window) {}
+        ):UIContext(window) {}
+
+        virtual Resource* makeControlMesh() override;
+        
+        virtual Resource* makeTextMesh(const WString& text, const Font& font) override;
     };
 }
 

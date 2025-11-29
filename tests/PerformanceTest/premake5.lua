@@ -6,7 +6,8 @@ project "PerformanceTest"
 
 	dependson {
 		"Core",
-		"UI"
+		"UI",
+		"Engine"
 	}
 
 	files {
@@ -17,10 +18,12 @@ project "PerformanceTest"
 	includedirs {
 		"src",
 		includeDir["Core"],
-		includeDir["UI"]
+		includeDir["UI"],
+		includeDir["Engine"]
 	}
 
 	links {
 		"Core",
-		"UI"
+		"UI",
+		"Engine"
 	}

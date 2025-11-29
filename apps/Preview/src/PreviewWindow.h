@@ -3,29 +3,25 @@
 #include "PreviewLayout.h"
 #include "engine/application/GameWindow.h"
 #include <engine/directx/DxRenderer.h>
-#include "ui/directx/DXUILayer.h"
+#include <ui/UILayer.h>
+#include <ui/directx/DxUIContext.h>
 
 namespace Preview {
 	using namespace Ghurund;
 	using namespace Ghurund::Core;
 	using namespace Ghurund::UI;
+	using namespace Ghurund::UI::DirectX;
 	using namespace Ghurund::Engine::DirectX;
 
 	class PreviewWindow :public Ghurund::Engine::GameWindow {
 	private:
-		WindowStyle PREVIEW_WINDOW_STYLE = WindowStyle{
-			.hasMinimizeButton = true,
-			.hasMaximizeButton = false,
-			.hasTitle = true,
-			.borderStyle = WindowBorderStyle::RESIZE,
-			.showOnTaskbar = true,
-		};
-
 		IntrusivePointer<PreviewLayout> previewLayout;
 		FileWatcher fileWatcher;
 		std::function<void()> loadCallback;
 		ThemeApplication& themeApp;
-		Ghurund::UI::DirectX::DXUILayer* uiLayer = nullptr;
+		SharedPointer<DxUIContext> uiContext;
+		UILayer* uiLayer = nullptr;
+		IntrusivePointer<IMaterial> basicMaterial;
 
 	public:
 		PreviewWindow(

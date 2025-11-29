@@ -11,7 +11,7 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    void InvalidControl::onDraw(RenderGroup& group) {
+    void InvalidControl::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
         /*canvas.Color = backgroundColor;
         canvas.fillRect(0, 0, Size.Width, Size.Height);
         canvas.Color = borderColor;

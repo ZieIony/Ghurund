@@ -3,8 +3,8 @@
 
 namespace Ghurund::Core {
     template<>
-    const Type& getType<Ghurund::UI::IUIContext>() {
-        static Type TYPE = TypeBuilder<Ghurund::UI::IUIContext>();
+    const Type& getType<Ghurund::UI::UIContext>() {
+        static Type TYPE = TypeBuilder<Ghurund::UI::UIContext>();
         return TYPE;
     }
 }

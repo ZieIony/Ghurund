@@ -13,7 +13,7 @@ namespace Ghurund::UI {
         idleColor = focusedColor & 0xffffff;
     }
 
-    void StateIndicator::onDraw(RenderGroup& group) {
+    void StateIndicator::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
         if (color.A > 0.0f) {
             //canvas.Color = color;
             //canvas.fillRect(0, 0, Size.Width, Size.Height);

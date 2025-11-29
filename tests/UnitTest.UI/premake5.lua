@@ -7,6 +7,7 @@ project "UnitTest.UI"
 	dependson {
 		"Core",
 		"UI",
+		"Engine",
 		"UnitTest.Utils"
 	}
 
@@ -20,11 +21,13 @@ project "UnitTest.UI"
 		includeDir["UnitTest.Utils"],
 		includeDir["Core"],
 		includeDir["UI"],
-		includeDir["DirectX"]
+		includeDir["DirectX"],
+		includeDir["Engine"]
 	}
 
 	links {
 		"Core",
 		"UnitTest.Utils",
-		"UI"
+		"UI",
+		"Engine"
 	}

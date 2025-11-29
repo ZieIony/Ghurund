@@ -7,6 +7,8 @@
 #include "core/window/Cursor.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/theme/Theme.h"
+#include "engine/graphics/RenderGroup.h"
+#include <ui/material/ControlMaterialParameters.h>
 
 namespace Ghurund::UI {
 
@@ -18,14 +20,11 @@ namespace Ghurund::UI {
 		static auto PROPERTY_FOCUS = Property<Control, Control*>("Focus", &getFocus);
 		static auto PROPERTY_FOCUSED = Property<Control, bool>("Focused", (bool(Control::*)()) & isFocused);
 		static auto PROPERTY_POSITION = Property<Control, const XMFLOAT2&>("Position", (XMFLOAT2 & (Control::*)()) & getPosition, (void(Control::*)(const XMFLOAT2&)) & setPosition);
-		static auto PROPERTY_ROTATION = Property<Control, float>("Rotation", (float(Control::*)()) & getRotation, (void(Control::*)(float)) & setRotation);
-		static auto PROPERTY_SCALE = Property<Control, const XMFLOAT2&>("Scale", (XMFLOAT2 & (Control::*)()) & getScale, (void(Control::*)(const XMFLOAT2&)) & setScale);
-		static auto PROPERTY_TRANSFORMATION = Property<Control, const Matrix3x2&>("Transformation", (Matrix3x2 & (Control::*)()) & getTransformation);
 		static auto PROPERTY_SIZE = Property<Control, FloatSize&>("Size", (FloatSize & (Control::*)()) & getSize);
 		static auto PROPERTY_PARENT = Property<Control, ControlParent*>("Parent", (ControlParent * (Control::*)()) & getParent, (void(Control::*)(ControlParent*)) & setParent);
 		static auto PROPERTY_CURSOR = Property<Control, const Ghurund::UI::Cursor*>("Cursor", (Ghurund::UI::Cursor * (Control::*)()) & getCursor, (void(Control::*)(const Ghurund::UI::Cursor*)) & setCursor);
 		static auto PROPERTY_THEME = Property<Control, Ghurund::UI::Theme*>("Theme", (Ghurund::UI::Theme * (Control::*)()) & getTheme, (void(Control::*)(Ghurund::UI::Theme*)) & setTheme);
-		static auto PROPERTY_CONTEXT = Property<Control, IUIContext*>("Context", &getContext);
+		static auto PROPERTY_CONTEXT = Property<Control, UIContext*>("Context", &getContext);
 		static auto PROPERTY_POSITIONINWINDOW = Property<Control, XMFLOAT2>("PositionInWindow", &getPositionInWindow);
 		static auto PROPERTY_POSITIONONSCREEN = Property<Control, XMFLOAT2>("PositionOnScreen", &getPositionOnScreen);
 
@@ -37,9 +36,6 @@ namespace Ghurund::UI {
 			.withProperty(PROPERTY_FOCUS)
 			.withProperty(PROPERTY_FOCUSED)
 			.withProperty(PROPERTY_POSITION)
-			.withProperty(PROPERTY_ROTATION)
-			.withProperty(PROPERTY_SCALE)
-			.withProperty(PROPERTY_TRANSFORMATION)
 			.withProperty(PROPERTY_SIZE)
 			.withProperty(PROPERTY_PARENT)
 			.withProperty(PROPERTY_CURSOR)
@@ -72,6 +68,19 @@ namespace Ghurund::UI {
 	void Control::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
 		loader.loadProperties(*this, workingDir, xml);
 		//loader.loadBindings()
+	}
+
+	void Control::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
+		if (material != nullptr) {
+			ControlMaterialParameters params(material.ref());
+			params.Position = parentPosition + position;
+			params.Size = { Size.Width, Size.Height };
+			group.objects.add(DrawPacket{
+				mesh,
+				material,
+				XMFLOAT3(parentPosition.x + position.x, parentPosition.y + position.y, 0)
+			});
+		}
 	}
 
 	bool Control::onMouseButtonEvent(const MouseButtonEventArgs& event) {
@@ -110,7 +119,7 @@ namespace Ghurund::UI {
 			size == c.size &&
 			visible == c.visible && enabled == c.enabled && focusable == c.focusable && roundToPixels == c.roundToPixels &&
 			*name == *c.name &&
-			position == c.position && rotation == c.rotation && transformation == c.transformation &&
+			position == c.position &&
 			needsLayout == c.needsLayout &&
 			localTheme == c.localTheme;
 	}
@@ -251,7 +260,7 @@ namespace Ghurund::UI {
 		return nullptr;
 	}
 
-	IUIContext* Control::getContext() {
+	UIContext* Control::getContext() {
 		if (parent)
 			return parent->Context;
 		return nullptr;
@@ -293,7 +302,7 @@ namespace Ghurund::UI {
 		}
 	}
 
-	void Control::draw(RenderGroup& group) {
+	void Control::draw(RenderGroup& group, const XMFLOAT2& parentPosition) {
 		if (size.Width == 0 || size.Height == 0)
 			return;
 #ifdef _DEBUG
@@ -303,7 +312,7 @@ namespace Ghurund::UI {
 				}*/
 #endif
 		//canvas.translate(position.x, position.y);
-		onDraw(group);
+		onDraw(group, parentPosition);
 	}
 
 	void Control::bind() {
@@ -325,7 +334,7 @@ namespace Ghurund::UI {
 
 	XMFLOAT2 Control::getPositionOnScreen() {
 		auto pos = PositionInWindow;
-		IUIContext* context = Context;
+		UIContext* context = Context;
 		if (!context)
 			return pos;
 		Window& window = context->Window;
@@ -359,16 +368,25 @@ namespace Ghurund::UI {
 			state.add(_T('F'));
 		if (Visible)
 			state.add(_T('v'));
-		auto& constraints = Parent->getConstraints(*this);
-		auto s = std::format(
-			_T("[{}: {}, {}: {}]"),
-			constraints.Width.Type.Name, constraints.Width.Value,
-			constraints.Height.Type.Name, constraints.Height.Value
-		);
-		if (Name) {
-			return String(std::format(_T("{} '{}' size: {}, state: {}\n"), Type.Name, *Name, s, state).c_str());
+
+		if (Parent) {
+			auto& constraints = Parent->getConstraints(*this);
+			auto s = std::format(
+				_T("[{}: {}, {}: {}]"),
+				constraints.Width.Type.Name, constraints.Width.Value,
+				constraints.Height.Type.Name, constraints.Height.Value
+			);
+			if (Name) {
+				return String(std::format(_T("{} '{}' size: {}, state: {}\n"), Type.Name, *Name, s, state).c_str());
+			} else {
+				return String(std::format(_T("{} size: {}, state: {}\n"), Type.Name, s, state).c_str());
+			}
 		} else {
-			return String(std::format(_T("{} size: {}, state: {}\n"), Type.Name, s, state).c_str());
+			if (Name) {
+				return String(std::format(_T("{} '{}', state: {}\n"), Type.Name, *Name, state).c_str());
+			} else {
+				return String(std::format(_T("{}, state: {}\n"), Type.Name, state).c_str());
+			}
 		}
 	}
 #endif

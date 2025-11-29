@@ -1,8 +1,6 @@
 #pragma once
 
-#include "core/object/NotNull.h"
 #include "core/application/Application.h"
-#include "core/application/LayerList.h"
 #include "core/window/SystemWindow.h"
 
 namespace Ghurund::Core {
@@ -20,8 +18,6 @@ namespace Ghurund::Core {
 #pragma endregion
 
     private:
-        LayerList layers;
-        // borrowed
         Application& app;
 
     protected:
@@ -31,12 +27,11 @@ namespace Ghurund::Core {
             return true;
         };
 
-        virtual bool onSizeChanged() override;
-
-        virtual bool onFocusedChanged() override;
-
     public:
-        ApplicationWindow(Application& app, WindowStyle style):SystemWindow(app.Timer, style), app(app) {
+		ApplicationWindow(
+            Application& app,
+            WindowStyle style = SystemWindow::DEFAULT_WINDOW_STYLE
+        ):SystemWindow(app.Timer, style), app(app) {
             app.Windows.add(*this);
         }
 
@@ -44,35 +39,10 @@ namespace Ghurund::Core {
             app.Windows.remove(*this);
         }
 
-        inline LayerList& getLayers() {
-            return layers;
-        }
-
-        __declspec(property(get = getLayers)) LayerList& Layers;
-
         inline Application& getApplication() {
             return app;
         }
 
         __declspec(property(get = getApplication)) Ghurund::Core::Application& Application;
-
-        virtual bool onKeyEvent(const KeyEventArgs& args) override {
-            return layers.dispatchKeyEvent(args);
-        }
-
-        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& args) override;
-
-        virtual bool onMouseMotionEvent(const MouseMotionEventArgs& args) override {
-            return layers.dispatchMouseMotionEvent(args);
-        }
-
-        virtual bool onMouseWheelEvent(const MouseWheelEventArgs& args) override {
-            return layers.dispatchMouseWheelEvent(args);
-        }
-
-        virtual void update(const uint64_t time) override {
-            __super::update(time);
-            layers.update(time);
-        }
     };
 }
