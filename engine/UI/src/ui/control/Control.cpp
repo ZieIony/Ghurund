@@ -23,6 +23,7 @@ namespace Ghurund::UI {
 		static auto PROPERTY_SIZE = Property<Control, FloatSize&>("Size", (FloatSize & (Control::*)()) & getSize);
 		static auto PROPERTY_PARENT = Property<Control, ControlParent*>("Parent", (ControlParent * (Control::*)()) & getParent, (void(Control::*)(ControlParent*)) & setParent);
 		static auto PROPERTY_CURSOR = Property<Control, const Ghurund::UI::Cursor*>("Cursor", (Ghurund::UI::Cursor * (Control::*)()) & getCursor, (void(Control::*)(const Ghurund::UI::Cursor*)) & setCursor);
+		static auto PROPERTY_MATERIAL = Property<Control, Ghurund::Engine::IMaterial*>("Material", & getMaterial, & setMaterial);
 		static auto PROPERTY_THEME = Property<Control, Ghurund::UI::Theme*>("Theme", (Ghurund::UI::Theme * (Control::*)()) & getTheme, (void(Control::*)(Ghurund::UI::Theme*)) & setTheme);
 		static auto PROPERTY_CONTEXT = Property<Control, UIContext*>("Context", &getContext);
 		static auto PROPERTY_POSITIONINWINDOW = Property<Control, XMFLOAT2>("PositionInWindow", &getPositionInWindow);
@@ -39,6 +40,7 @@ namespace Ghurund::UI {
 			.withProperty(PROPERTY_SIZE)
 			.withProperty(PROPERTY_PARENT)
 			.withProperty(PROPERTY_CURSOR)
+			.withProperty(PROPERTY_MATERIAL)
 			.withProperty(PROPERTY_THEME)
 			.withProperty(PROPERTY_CONTEXT)
 			.withProperty(PROPERTY_POSITIONINWINDOW)

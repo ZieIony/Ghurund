@@ -29,7 +29,7 @@ namespace Ghurund::Core {
         Path& operator=(Path&& other) noexcept {
             if (this == &other)
                 return *this;
-            path = other.path;
+            path = std::move(other.path);
             return *this;
         }
 

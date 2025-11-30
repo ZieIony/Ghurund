@@ -20,6 +20,12 @@ namespace Ghurund::Engine::DirectX {
 		uint32_t errorCode;
 	};
 
+	struct ShaderSettings {
+		bool isTransparencyEnabled;
+		D3D12_CULL_MODE cullMode;
+		bool isDepthTestEnabled;
+	};
+
 	class DxShaderCompiler {
 	private:
 		const CompilationTarget& target;
@@ -46,8 +52,7 @@ namespace Ghurund::Engine::DirectX {
 			const Array<SharedPointer<DxShaderProgram>>& programs,
 			D3D12_INPUT_LAYOUT_DESC inputLayout,
 			ID3D12RootSignature* rootSignature,
-			D3D12_CULL_MODE cullMode,
-			bool isTransparencyEnabled
+			ShaderSettings shaderSettings
 		);
 
 		OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> makeRootSignature(
@@ -73,8 +78,7 @@ namespace Ghurund::Engine::DirectX {
 
 		OwnedNotNull<DxShader, RefCountedObjectDeleter> build(
 			const Array<SharedPointer<DxShaderProgram>>& programs,
-			D3D12_CULL_MODE cullMode,
-			bool isTransparencyEnabled
+			ShaderSettings shaderSettings
 		);
 	};
 }

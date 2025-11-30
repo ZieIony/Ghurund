@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ConstraintLayout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
-	<Shadow width="Parent.Width" height="Parent.Height"
-			name="shadow"
-			shape="roundRect, 2"/>
-	<Clip shape="roundRect, 2">
-		<ConstraintLayout>
-			<ConstraintLayout.Width path="content" offset="8"/>
-			<ConstraintLayout.Height path="content" offset="4"/>
-			<ColorView width="Parent.Width" height="Parent.Height"/>
-			<StateIndicator name="state" width="Parent.Width" height="Parent.Height"/>
-			<ControlContainer name="container">
-				<ControlContainer.Left path="Parent.Left" offset="8"/>
-				<ControlContainer.Top path="Parent.Top" offset="4"/>
-			</ControlContainer>
-		</ConstraintLayout>
-	</Clip>
+	<ConstraintLayout.Width path="content" offset="8"/>
+	<ConstraintLayout.Height path="content" offset="4"/>
+	<ColorView width="Parent.Width" height="Parent.Height"/>
+	<StateIndicator name="state" width="Parent.Width" height="Parent.Height"/>
+	<ControlContainer name="container">
+		<ControlContainer.Left path="Parent.Left" offset="8"/>
+		<ControlContainer.Top path="Parent.Top" offset="4"/>
+	</ControlContainer>
 </ConstraintLayout>

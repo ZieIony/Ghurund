@@ -1,6 +1,10 @@
 #ifndef COMMON_HLSLI
 #define COMMON_HLSLI
 
+#define CULL_MODE_NONE 1
+#define CULL_MODE_FRONT 2
+#define CULL_MODE_BACK 3
+
 struct DefaultVertex {
     float3 position : POSITION;
     float3 normal : NORMAL;

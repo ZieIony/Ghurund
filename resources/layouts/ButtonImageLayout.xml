@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ConstraintLayout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+<ConstraintLayout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" material="lib://Ghurund/shaders/DirectX/ui/controlWithShadow.hlsl">
 	<ControlContainer name="container"/>
 	<StateIndicatorOnAccent name="state" width="Parent.Width" height="Parent.Height"/>
 </ConstraintLayout>

@@ -74,6 +74,12 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = getResourceManager)) Ghurund::Core::ResourceManager& ResourceManager;
 
+		inline PropertyLoaderCollection& getPropertyLoaders() {
+			return propertyLoaders;
+		}
+
+		__declspec(property(get = getPropertyLoaders)) PropertyLoaderCollection& PropertyLoaders;
+
 		template<Derived<Control> T>
 		inline void registerType() {
 			const Core::Type& type = T::TYPE;

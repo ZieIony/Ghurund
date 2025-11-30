@@ -48,7 +48,7 @@ namespace Ghurund::Core {
         FilePath& operator=(FilePath&& other) noexcept {
             if (this == &other)
                 return *this;
-            Path::operator=(other);
+            Path::operator=(std::move(other));
             fileName = std::move(other.fileName);
             extension = std::move(other.extension);
             return *this;

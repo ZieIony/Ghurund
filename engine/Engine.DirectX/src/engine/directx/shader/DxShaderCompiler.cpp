@@ -108,8 +108,7 @@ namespace Ghurund::Engine::DirectX {
 
 	OwnedNotNull<DxShader, RefCountedObjectDeleter> DxShaderCompiler::build(
 		const Array<SharedPointer<DxShaderProgram>>& programs,
-		D3D12_CULL_MODE cullMode,
-		bool isTransparencyEnabled
+		ShaderSettings shaderSettings
 	) {
 		List<ConstantBuffer*> constantBuffers;
 		List<TextureConstant*> textures;
@@ -132,9 +131,17 @@ namespace Ghurund::Engine::DirectX {
 		};
 
 		auto rootSignature = makeRootSignature(constantBuffers, textures, samplers);
-		auto pipelineState = makePipelineState(programs, inputLayout, &rootSignature, cullMode, isTransparencyEnabled);
+		auto pipelineState = makePipelineState(programs, inputLayout, &rootSignature, shaderSettings);
 		OwnedNotNull<DxShader, RefCountedObjectDeleter> shader(ghnew DxShader());
-		shader->init(layout, std::move(rootSignature), std::move(pipelineState), constantBuffers, textures, samplers, isTransparencyEnabled);
+		shader->init(
+			layout,
+			std::move(rootSignature),
+			std::move(pipelineState),
+			constantBuffers,
+			textures,
+			samplers,
+			shaderSettings.isTransparencyEnabled
+		);
 		return shader;
 	}
 
@@ -142,13 +149,13 @@ namespace Ghurund::Engine::DirectX {
 		const Array<SharedPointer<DxShaderProgram>>& programs,
 		D3D12_INPUT_LAYOUT_DESC inputLayout,
 		ID3D12RootSignature* rootSignature,
-		D3D12_CULL_MODE cullMode,
-		bool isTransparencyEnabled
+		ShaderSettings shaderSettings
 	) {
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
+		psoDesc.DepthStencilState.DepthEnable = shaderSettings.isDepthTestEnabled;
 		psoDesc.pRootSignature = rootSignature;
 		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-		psoDesc.RasterizerState.CullMode = cullMode;
+		psoDesc.RasterizerState.CullMode = shaderSettings.cullMode;
 
 		for (auto& program : programs) {
 			if (program->Type == DxShaderType::VERTEX) {
@@ -179,7 +186,7 @@ namespace Ghurund::Engine::DirectX {
 			throw InvalidStateException("Pixel shader program is required.");
 		}
 
-		if (isTransparencyEnabled) {
+		if (shaderSettings.isTransparencyEnabled) {
 			psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 			psoDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
 			psoDesc.BlendState.RenderTarget[0].BlendEnable = true;

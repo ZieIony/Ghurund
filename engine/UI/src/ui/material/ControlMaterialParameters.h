@@ -19,16 +19,16 @@ namespace Ghurund::UI {
         ControlMaterialParameters(Ghurund::Engine::IMaterial& material) {
             backgroundColorParameter.set((Float4Parameter*)material.Parameters.get("backgroundColor"));
             backgroundColorParameter->addReference();
-            borderColorParameter.set((Float4Parameter*)material.Parameters.get("borderColor"));
-            borderColorParameter->addReference();
+            //borderColorParameter.set((Float4Parameter*)material.Parameters.get("borderColor"));
+            //borderColorParameter->addReference();
             cornerRadiusParameter.set((Float4Parameter*)material.Parameters.get("cornerRadius"));
             cornerRadiusParameter->addReference();
             sizeParameter.set((Float2Parameter*)material.Parameters.get("size"));
             sizeParameter->addReference();
             positionParameter.set((Float2Parameter*)material.Parameters.get("position"));
             positionParameter->addReference();
-            borderWidthParameter.set((FloatParameter*)material.Parameters.get("borderWidth"));
-            borderWidthParameter->addReference();
+            //borderWidthParameter.set((FloatParameter*)material.Parameters.get("borderWidth"));
+            //borderWidthParameter->addReference();
         }
 
         inline void setBackgroundColor(const Color& color) {

@@ -4,8 +4,9 @@
 #include <common.hlsli>
 #include <sdf.hlsli>
 
-#define transparencyEnabled
-#define cull_none
+#define transparencyEnabled true
+#define cullMode CULL_MODE_NONE
+#define depthTestEnabled false
 
 struct UIVertex {
     float3 position: POSITION;

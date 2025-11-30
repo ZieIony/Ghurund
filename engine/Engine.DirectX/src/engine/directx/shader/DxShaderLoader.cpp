@@ -55,17 +55,18 @@ namespace Ghurund::Engine::DirectX {
 			}
 		}
 		auto array = Array<SharedPointer<DxShaderProgram>>(programs);
-		bool isTransparencyEnabled = sourceCode.find("#define transparencyEnabled") != sourceCode.Size;
+		bool isTransparencyEnabled = sourceCode.find("#define transparencyEnabled true") != sourceCode.Size;
+		bool isDepthTestEnabled = sourceCode.find("#define depthTestEnabled false") == sourceCode.Size;
 		D3D12_CULL_MODE cullMode = [&] {
-			if (sourceCode.find("#define cull_none") != sourceCode.Size) {
+			if (sourceCode.find("#define cullMode CULL_MODE_NONE") != sourceCode.Size) {
 				return D3D12_CULL_MODE_NONE;
-			} else if (sourceCode.find("#define cull_front") != sourceCode.Size) {
+			} else if (sourceCode.find("#define cullMode CULL_MODE_FRONT") != sourceCode.Size) {
 				return D3D12_CULL_MODE_FRONT;
 			} else {
 				return D3D12_CULL_MODE_BACK;
 			}
 		}();
-		auto shader = compiler.build(programs, cullMode, isTransparencyEnabled);
+		auto shader = compiler.build(programs, { isTransparencyEnabled, cullMode, isDepthTestEnabled });
 
 		return shader.reset();
 	}

@@ -7,6 +7,7 @@
 #include <engine/directx/shader/DxShaderLoader.h>
 #include <ui/directx/DxUIFeature.h>
 #include <ui/directx/DxUIFeatureFactory.h>
+#include <engine/directx/material/DxMaterialLoader.h>
 
 namespace Preview {
     using namespace Ghurund::UI::DirectX;
@@ -19,6 +20,8 @@ namespace Preview {
         auto shaderLoader = makeIntrusive<DxShaderLoader>(shaderCompiler.ref());
         shaderLoader->includeDirs.add(DirectoryPath(L"./resources/shaders/DirectX/"));
         ResourceManager.Loaders.set<DxShader>(shaderLoader.ref());
+        auto materialLoader = makeIntrusive<DxMaterialLoader>(shaderLoader.ref());
+        ResourceManager.Loaders.set<IMaterial>(materialLoader.ref());
 
         Features.add<DxUIFeature, DxUIFeatureFactory>();
     }

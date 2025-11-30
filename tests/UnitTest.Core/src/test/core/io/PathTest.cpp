@@ -43,10 +43,14 @@ public:
             auto dir = DirectoryPath(L"dir");
             auto path = dir / FilePath(L"file.png");
             Assert::AreEqual(L"dir\\file.png", path.toString().Data);
+            Assert::AreEqual(L"file.png", path.FileName.Data);
+            Assert::AreEqual(L"png", path.Extension.Data);
 
             auto dir2 = DirectoryPath(L".");
             auto path2 = dir2 / FilePath(L"dir\\file.png");
             Assert::AreEqual(L"dir\\file.png", path2.toString().Data);
+            Assert::AreEqual(L"file.png", path.FileName.Data);
+            Assert::AreEqual(L"png", path2.Extension.Data);
         }
     }
 
