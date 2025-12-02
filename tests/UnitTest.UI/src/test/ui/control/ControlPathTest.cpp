@@ -2,7 +2,6 @@
 #include "CppUnitTest.h"
 #include "test/utils/TestUtils.h"
 
-#include "ui/control/ColorView.h"
 #include "ui/control/ControlGroup.h"
 #include "ui/control/ControlPath.h"
 
@@ -26,7 +25,7 @@ public:
 
     TEST_METHOD(resolveParentGroup) {
         auto layout = makeIntrusive<ConstraintLayout>();
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         layout->Children.add(content.get());
         ControlPath path = ControlPath::parse("Parent");
         Control* result = path.resolve(*content.get());
@@ -36,7 +35,7 @@ public:
 
     TEST_METHOD(resolveParentContainer) {
         auto layout = makeIntrusive<ControlContainer>();
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("Parent");
         Control* result = path.resolve(*content.get());
@@ -45,7 +44,7 @@ public:
     }
 
     TEST_METHOD(resolveEmptyParent) {
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         ControlPath path = ControlPath::parse("Parent");
         Control* result = path.resolve(*content.get());
         Assert::IsNull(result);
@@ -53,7 +52,7 @@ public:
 
     TEST_METHOD(resolveNameGroup) {
         auto layout = makeIntrusive<ConstraintLayout>();
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         content->Name = "color";
         layout->Children.add(content.get());
         ControlPath path = ControlPath::parse("'color'");
@@ -64,7 +63,7 @@ public:
 
     TEST_METHOD(resolveNameContainer) {
         auto layout = makeIntrusive<ControlContainer>();
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         content->Name = "color";
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("'color'");
@@ -89,8 +88,8 @@ public:
 
     TEST_METHOD(resolveIndexGroup) {
         auto layout = makeIntrusive<ConstraintLayout>();
-        auto content = makeIntrusive<ColorView>();
-        auto content2 = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
+        auto content2 = makeIntrusive<Control>();
         layout->Children = { content.get(), content2.get() };
         ControlPath path = ControlPath::parse("[1]");
         Control* result = path.resolve(*layout.get());
@@ -100,8 +99,8 @@ public:
 
     TEST_METHOD(resolveNegativeIndexGroup) {
         auto layout = makeIntrusive<ConstraintLayout>();
-        auto content = makeIntrusive<ColorView>();
-        auto content2 = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
+        auto content2 = makeIntrusive<Control>();
         layout->Children = { content.get(), content2.get() };
         ControlPath path = ControlPath::parse("[-1]");
         Control* result = path.resolve(*layout.get());
@@ -111,8 +110,8 @@ public:
 
     TEST_METHOD(resolveIndexMissingGroup) {
         auto layout = makeIntrusive<ConstraintLayout>();
-        auto content = makeIntrusive<ColorView>();
-        auto content2 = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
+        auto content2 = makeIntrusive<Control>();
         layout->Children = { content.get(), content2.get() };
         ControlPath path = ControlPath::parse("[2]");
         Control* result = path.resolve(*layout.get());
@@ -121,8 +120,8 @@ public:
 
     TEST_METHOD(resolveNegativeIndexMissingGroup) {
         auto layout = makeIntrusive<ConstraintLayout>();
-        auto content = makeIntrusive<ColorView>();
-        auto content2 = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
+        auto content2 = makeIntrusive<Control>();
         layout->Children = { content.get(), content2.get() };
         ControlPath path = ControlPath::parse("[-3]");
         Control* result = path.resolve(*layout.get());
@@ -131,7 +130,7 @@ public:
 
     TEST_METHOD(resolveIndexContainer) {
         auto layout = makeIntrusive<ControlContainer>();
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         content->Name = "color";
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("[0]");
@@ -143,7 +142,7 @@ public:
     // [0] is the only valid index for containers
     TEST_METHOD(resolveNegativeIndexContainer) {
         auto layout = makeIntrusive<ControlContainer>();
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         content->Name = "color";
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("[-1]");
@@ -153,7 +152,7 @@ public:
 
     TEST_METHOD(resolveIndexMissingContainer) {
         auto layout = makeIntrusive<ControlContainer>();
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         content->Name = "color";
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("[1]");
@@ -163,7 +162,7 @@ public:
 
     TEST_METHOD(resolveNegativeIndexMissingContainer) {
         auto layout = makeIntrusive<ControlContainer>();
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         content->Name = "color";
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("[-2]");
@@ -173,7 +172,7 @@ public:
 
     TEST_METHOD(resolveParentNameGroup) {
         auto layout = makeIntrusive<ConstraintLayout>();
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         content->Name = "color";
         layout->Children.add(content.get());
         ControlPath path = ControlPath::parse("Parent.'color'");
@@ -184,7 +183,7 @@ public:
 
     TEST_METHOD(resolveParentNameContainer) {
         auto layout = makeIntrusive<ControlContainer>();
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         content->Name = "color";
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("Parent.'color'");
@@ -195,7 +194,7 @@ public:
 
     TEST_METHOD(resolveParentIndexGroup) {
         auto layout = makeIntrusive<ConstraintLayout>();
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         layout->Children.add(content.get());
         ControlPath path = ControlPath::parse("Parent[0]");
         Control* result = path.resolve(*content.get());
@@ -205,7 +204,7 @@ public:
 
     TEST_METHOD(resolveParentIndexContainer) {
         auto layout = makeIntrusive<ControlContainer>();
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("Parent[0]");
         Control* result = path.resolve(*content.get());
@@ -218,7 +217,7 @@ public:
         auto mid = makeIntrusive<ConstraintLayout>();
         mid->Name = "container";
         layout->Children = { mid.get() };
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         mid->Children = { content.get() };
         ControlPath path = ControlPath::parse("'container'[0]");
         Control* result = path.resolve(*layout.get());
@@ -231,7 +230,7 @@ public:
         auto mid = makeIntrusive<ControlContainer>();
         mid->Name = "container";
         layout->Child = mid.get();
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         mid->Child = content.get();
         ControlPath path = ControlPath::parse("'container'[0]");
         Control* result = path.resolve(*layout.get());
@@ -255,7 +254,7 @@ public:
         auto mid = makeIntrusive<ControlContainer>();
         mid->Name = "container";
         layout->Child = mid.get();
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         content->Name = "color";
         mid->Child = content.get();
         ControlPath path = ControlPath::parse("'container'.'color'");
@@ -268,7 +267,7 @@ public:
         auto layout = makeIntrusive<ControlContainer>();
         auto mid = makeIntrusive<ControlContainer>();
         layout->Child = mid.get();
-        auto content = makeIntrusive<ColorView>();
+        auto content = makeIntrusive<Control>();
         mid->Child = content.get();
         ControlPath path = ControlPath::parse("Parent.Parent");
         Control* result = path.resolve(*content.get());

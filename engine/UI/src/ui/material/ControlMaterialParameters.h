@@ -17,12 +17,13 @@ namespace Ghurund::UI {
 
     public:
         ControlMaterialParameters(Ghurund::Engine::IMaterial& material) {
-            backgroundColorParameter.set((Float4Parameter*)material.Parameters.get("backgroundColor"));
-            backgroundColorParameter->addReference();
-            //borderColorParameter.set((Float4Parameter*)material.Parameters.get("borderColor"));
+			backgroundColorParameter.set((Float4Parameter*)material.Parameters.get("backgroundColor"));
+			if (backgroundColorParameter != nullptr)
+				backgroundColorParameter->addReference();
+			//borderColorParameter.set((Float4Parameter*)material.Parameters.get("borderColor"));
             //borderColorParameter->addReference();
-            cornerRadiusParameter.set((Float4Parameter*)material.Parameters.get("cornerRadius"));
-            cornerRadiusParameter->addReference();
+            //cornerRadiusParameter.set((Float4Parameter*)material.Parameters.get("cornerRadius"));
+            //cornerRadiusParameter->addReference();
             sizeParameter.set((Float2Parameter*)material.Parameters.get("size"));
             sizeParameter->addReference();
             positionParameter.set((Float2Parameter*)material.Parameters.get("position"));

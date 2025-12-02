@@ -3,7 +3,6 @@
 #include "core/state/StateMachine.h"
 #include "ui/animation/Animator.h"
 #include "ui/animation/Animation.h"
-#include "ui/control/ColorView.h"
 #include "ui/control/InteractionHandler.h"
 
 namespace Ghurund::UI {

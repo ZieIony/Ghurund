@@ -12,8 +12,8 @@ namespace Ghurund::UI {
     }
 
     Separator::Separator() {
-        colorView = ghnew ColorView();
-        Child = colorView;
+        //colorView = ghnew ColorView();
+        //Child = colorView;
     }
 
     void Separator::onStateChanged() {

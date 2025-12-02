@@ -17,7 +17,7 @@ namespace Preview {
 	}
 
 	void PreviewWindow::init() {
-		previewLayout.set(Application.ResourceManager.load<PreviewLayout>(FilePath(L"apps/Preview/res/layout.xml"), DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
+		previewLayout.set(Application.ResourceManager.load<Control>(FilePath(L"apps/Preview/res/layout.xml"), DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
 
 		DxGraphics* graphics = Application.Features.get<DxGraphics>();
 		auto commandList = makeIntrusive<CommandList>();
@@ -37,7 +37,7 @@ namespace Preview {
 		params.BackgroundColor = Colors::ALICE_BLUE;
 		previewLayout->Material = basicMaterial.get();
 
-		previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
+		/*previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
 			Application.FunctionQueue.post([&, type] {
 				themeApp.ThemeType = type;
 				previewLayout.Theme = &themeApp.CurrentTheme;
@@ -51,7 +51,7 @@ namespace Preview {
 				previewLayout.dispatchThemeChanged();
 			});
 			return true;
-		};
+		};*/
 
 #ifdef _DEBUG
 		sizeChanged += [&](Window& window) {

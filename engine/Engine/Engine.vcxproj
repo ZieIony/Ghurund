@@ -100,6 +100,7 @@
   <ItemGroup>
     <ClInclude Include="src\engine\application\Layer.h" />
     <ClInclude Include="src\engine\application\LayerList.h" />
+    <ClInclude Include="src\engine\graphics\material\IMaterialFactory.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialLoader.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />

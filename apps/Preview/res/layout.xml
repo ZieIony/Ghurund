@@ -2,40 +2,45 @@
 <PreviewLayout width="Parent.Width" height="Parent.Height"
 			   xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Preview">
 	<ControlGroup width="Parent.Width" height="Parent.Height">
-		<ColorView width="Parent.Width" height="Parent.Height" color="theme://color/background" material="lib://Ghurund/shaders/DirectX/ui/color.hlsl"/>
+		<ControlGroup.Material color="theme://color/background" shader="lib://Ghurund/shaders/DirectX/ui/control.hlsl"/>
 		<ControlContainer width="Parent.Width" top="Parent.Top" bottom="'controls'.Top"
 						  name="container">
 			<ControlGroup>
-				<DrawableView width="200" height="200" scaleMode="fit"
-						   drawable="images\buttons.png" material="lib://Ghurund/shaders/DirectX/ui/image.hlsl"/>
+				<Control width="200" height="200" scaleMode="fit">
+					<Control.Material drawable="images\buttons.png" shader="lib://Ghurund/shaders/DirectX/ui/image.hlsl"/>
+				</Control>
 			</ControlGroup>
 		</ControlContainer>
 		<ControlGroup left="10" width="Parent.Width" name="controls">
 			<ControlGroup.Bottom path="Parent.Bottom" offset="-10"/>
-			<Button name="color1" layout="lib://Ghurund\layouts\ButtonImageLayout.xml">
-				<ColorView width="24" height="24"
-						   color="#ffd32f2f" name="c1" material="lib://Ghurund/shaders/DirectX/ui/color.hlsl"/>
+			<Button name="color1" layout="lib://Ghurund\layouts\ButtonImageLayout.xml" width="24" height="24">
+				<Button.Material shader="lib://Ghurund/shaders/DirectX/ui/controlWithShadow.hlsl">
+					<Parameter name="backgroundColor" value="#ffd32f2f"/>
+				</Button.Material>
 			</Button>
-			<Button name="color2" layout="lib://Ghurund\layouts\ButtonImageLayout.xml">
+			<Button name="color2" layout="lib://Ghurund\layouts\ButtonImageLayout.xml" width="24" height="24">
 				<Button.Left path="'color1'.Right" offset="10"/>
-				<ColorView width="24" height="24"
-						   color="#ff1976d2" name="c2" material="lib://Ghurund/shaders/DirectX/ui/color.hlsl"/>
+				<Button.Material shader="lib://Ghurund/shaders/DirectX/ui/controlWithShadow.hlsl">
+					<Parameter name="backgroundColor" value="#ff1976d2"/>
+				</Button.Material>
 			</Button>
-			<Button name="color3" layout="lib://Ghurund\layouts\ButtonImageLayout.xml">
+			<Button name="color3" layout="lib://Ghurund\layouts\ButtonImageLayout.xml" width="24" height="24">
 				<Button.Left path="'color2'.Right" offset="10"/>
-				<ColorView width="24" height="24" name="c3" material="lib://Ghurund/shaders/DirectX/ui/color.hlsl">
-					<ColorView.Color>#ffffa000</ColorView.Color>
-				</ColorView>
+				<Button.Material shader="lib://Ghurund/shaders/DirectX/ui/controlWithShadow.hlsl">
+					<Parameter name="backgroundColor" value="#ffffa000"/>
+				</Button.Material>
 			</Button>
-			<Button name="color4" layout="lib://Ghurund\layouts\ButtonImageLayout.xml">
+			<Button name="color4" layout="lib://Ghurund\layouts\ButtonImageLayout.xml" width="24" height="24">
 				<Button.Left path="'color3'.Right" offset="10"/>
-				<ColorView width="24" height="24" visible="false"
-						   color="#ff388e3c" name="c4" material="lib://Ghurund/shaders/DirectX/ui/color.hlsl"/>
+				<Button.Material shader="lib://Ghurund/shaders/DirectX/ui/controlWithShadow.hlsl">
+					<Parameter name="backgroundColor" value="#ff388e3c"/>
+				</Button.Material>
 			</Button>
-			<Button name="colorTheme" layout="lib://Ghurund\layouts\ButtonImageLayout.xml">
+			<Button name="colorTheme" layout="lib://Ghurund\layouts\ButtonImageLayout.xml" width="24" height="24">
 				<Button.Left path="'color4'.Right" offset="10"/>
-				<ColorView width="24" height="24"
-						   color="#ffff0000" name="theme" material="lib://Ghurund/shaders/DirectX/ui/color.hlsl"/>
+				<Button.Material shader="lib://Ghurund/shaders/DirectX/ui/controlWithShadow.hlsl">
+					<Parameter name="backgroundColor" value="#ffff0000"/>
+				</Button.Material>
 			</Button>
 			<CheckBox left="'colorTheme'.Right" name="enabledCheckBox">
 				<TextBlock width="Parent.Width" height="Parent.Height">enabled</TextBlock>

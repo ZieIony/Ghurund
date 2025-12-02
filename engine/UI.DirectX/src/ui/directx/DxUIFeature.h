@@ -6,9 +6,11 @@
 #include "ui/loading/LayoutLoader.h"
 #include "ui/loading/DrawableFactory.h"
 #include "ui/directx/loading/TextFormatFactory.h"
+#include <engine/directx/material/DxMaterialFactory.h>
 
 namespace Ghurund::UI::DirectX {
     using namespace Ghurund::Core;
+    using namespace Ghurund::Engine::DirectX;
 
     class DxUIFeature:public UIFeature {
 #pragma region reflection
@@ -28,6 +30,7 @@ namespace Ghurund::UI::DirectX {
         Ghurund::UI::IDrawableFactory* drawableFactory = nullptr;
         Ghurund::UI::DirectX::TextFormatFactory* textFormatFactory = nullptr;
         Ghurund::UI::ConstraintFactory* constraintFactory = nullptr;
+        DxMaterialFactory materialFactory;
         IntrusivePointer<Ghurund::UI::LayoutLoader> layoutLoader;
 
     public:

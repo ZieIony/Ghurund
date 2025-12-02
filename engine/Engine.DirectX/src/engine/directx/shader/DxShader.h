@@ -4,13 +4,13 @@
 #include "core/collection/Array.h"
 #include "core/collection/List.h"
 #include <core/object/OwnedNotNull.h>
-#include "core/resource/Resource.h"
 #include "core/resource/ResourceManager.h"
 #include "Sampler.h"
 #include "TextureBufferConstant.h"
 #include "TextureConstant.h"
 #include "core/IUnknownImpl.h"
 #include <engine/graphics/mesh/VertexStream.h>
+#include "engine/graphics/shader/IShader.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
@@ -22,8 +22,7 @@ namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
 	using namespace Microsoft::WRL;
 
-	class DxShader:public Resource//, public ParameterProvider
-	{
+	class DxShader:public IShader {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -44,8 +43,6 @@ namespace Ghurund::Engine::DirectX {
 		List<ConstantBuffer*> constantBuffers;
 		List<TextureConstant*> textures;
 		List<Sampler*> samplers;
-
-		bool isTransparencyEnabled = false;
 
 		ParameterCollection parameters;
 
@@ -89,12 +86,6 @@ namespace Ghurund::Engine::DirectX {
 		__declspec(property(get = getParameters)) const ParameterCollection& Parameters;
 
 		bool set(CommandList& commandList, ParameterManager& parameterManager);
-
-		inline bool getIsTransparencyEnabled() {
-			return isTransparencyEnabled;
-		}
-
-		__declspec(property(get = getIsTransparencyEnabled)) bool IsTransparencyEnabled;
 
 		inline const Array<VertexRole>& getLayout() const {
 			return layout;

@@ -152,7 +152,6 @@
     <ClInclude Include="src\ui\constraint\spring\PreviousSpringConstraint.h" />
     <ClInclude Include="src\ui\constraint\spring\SpringSizeConstraint.h" />
     <ClInclude Include="src\ui\control\ChildrenProvider.h" />
-    <ClInclude Include="src\ui\control\ColorView.h" />
     <ClInclude Include="src\ui\control\Control.h" />
     <ClInclude Include="src\ui\control\ControlCollection.h" />
     <ClInclude Include="src\ui\control\ControlContainer.h" />
@@ -161,7 +160,6 @@
     <ClInclude Include="src\ui\control\ControlParent.h" />
     <ClInclude Include="src\ui\control\ControlPath.h" />
     <ClInclude Include="src\ui\control\ControlPool.h" />
-    <ClInclude Include="src\ui\control\DrawableView.h" />
     <ClInclude Include="src\ui\control\ImageScaleMode.h" />
     <ClInclude Include="src\ui\control\InteractionHandler.h" />
     <ClInclude Include="src\ui\control\InvalidControl.h" />
@@ -300,14 +298,12 @@
     <ClCompile Include="src\ui\constraint\WrapConstraint.cpp" />
     <ClCompile Include="src\ui\constraint\spring\PreviousSpringConstraint.cpp" />
     <ClCompile Include="src\ui\constraint\spring\SpringSizeConstraint.cpp" />
-    <ClCompile Include="src\ui\control\ColorView.cpp" />
     <ClCompile Include="src\ui\control\Control.cpp" />
     <ClCompile Include="src\ui\control\ControlContainer.cpp" />
     <ClCompile Include="src\ui\control\ControlContainerBase.cpp" />
     <ClCompile Include="src\ui\control\ControlGroup.cpp" />
     <ClCompile Include="src\ui\control\ControlParent.cpp" />
     <ClCompile Include="src\ui\control\ControlPath.cpp" />
-    <ClCompile Include="src\ui\control\DrawableView.cpp" />
     <ClCompile Include="src\ui\control\ImageScaleMode.cpp" />
     <ClCompile Include="src\ui\control\InteractionHandler.cpp" />
     <ClCompile Include="src\ui\control\InvalidControl.cpp" />

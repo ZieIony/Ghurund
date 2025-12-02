@@ -12,7 +12,6 @@
 #include "ui/constraint/SiblingConstraint.h"
 #include "ui/constraint/ParentConstraint.h"
 #include <ui/control/ControlContainer.h>
-#include <ui/control/ColorView.h>
 #include <ui/constraint/ConstraintLayout.h>
 
 using namespace Ghurund::UI;
@@ -86,7 +85,7 @@ public:
 	TEST_METHOD(wrapChild) {
 		MemoryGuard guard;
 		{
-			auto child = makeIntrusive<ColorView>();
+			auto child = makeIntrusive<Control>();
 			auto group = makeIntrusive<ControlContainer>();
 			group->Child = child.get();
 			group->setConstraints(*child.get(), makeConstraints({
@@ -111,7 +110,7 @@ public:
 	TEST_METHOD(wrapChildFillMinRatioOffset) {
 		MemoryGuard guard;
 		{
-			auto child = makeIntrusive<ColorView>();
+			auto child = makeIntrusive<Control>();
 
 			auto group = makeIntrusive<ControlContainer>();
 			group->setChild(child.get(), makeConstraints({

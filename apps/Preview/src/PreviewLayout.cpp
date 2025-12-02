@@ -39,7 +39,7 @@ namespace Preview {
 			};
 
 		WindowsTheme::init();
-		binding.Theme.Color = ColorValue(WindowsTheme::getAccentColor());
+		//binding.Theme.Color = ColorValue(WindowsTheme::getAccentColor());
 		binding.ColorTheme.clicked += [this](Button& button, const MouseClickedEventArgs& args) {
 			return onColorClicked(args, WindowsTheme::getAccentColor());
 			};

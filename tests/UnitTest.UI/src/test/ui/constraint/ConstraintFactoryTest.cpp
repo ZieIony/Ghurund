@@ -9,14 +9,15 @@
 #include "test/ui/TextFormatFactory.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/constraint/ConstraintGraph.h"
-#include "ui/control/DrawableView.h"
 #include "ui/loading/LayoutLoader.h"
 #include <ui/constraint/ParentConstraint.h>
 #include <ui/constraint/SiblingConstraint.h>
-#include <ui/control/ColorView.h>
 #include <ui/control/ControlGroup.h>
 #include <ui/style/LayoutAttr.h>
 #include <ui/text/TextDocument.h>
+#include <ui/style/ColorAttr.h>
+#include <ui/control/ImageScaleMode.h>
+#include <ui/style/DrawableAttr.h>
 
 using namespace Ghurund::UI;
 using namespace UnitTest::Utils;
@@ -113,7 +114,6 @@ public:
 		Ghurund::Core::getType<const ColorAttr&>();
 		Ghurund::Core::getType<std::unique_ptr<ColorAttr>>();
 		Ghurund::Core::getType<Ghurund::UI::ImageScaleMode>();
-		Ghurund::Core::getType<ColorView>();
 		Ghurund::Core::getType<std::unique_ptr<Ghurund::UI::DrawableAttr>>();
 		Ghurund::Core::getType<std::unique_ptr<TextDocument>>();
 		Ghurund::Core::getType<std::unique_ptr<LayoutAttr>>();
@@ -133,15 +133,15 @@ public:
 		{
 			AString xml = R"(<?xml version="1.0" encoding="utf-8"?>
 <ControlGroup>
-    <ColorView left="5.0" height="100">
-        <ColorView.Top offset="3.0"/>
-        <ColorView.Width path="Height" ratio="0.5" offset="-16"/>
-    </ColorView>
+    <Control left="5.0" height="100">
+        <Control.Top offset="3.0"/>
+        <Control.Width path="Height" ratio="0.5" offset="-16"/>
+    </Control>
 </ControlGroup>)";
 			Buffer buffer(xml.Data, xml.Length);
 
 			IntrusivePointer<ControlGroup> controlGroup(resourceManager.load<ControlGroup>(buffer, DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
-			Control* control = controlGroup->find<ColorView>();
+			Control* control = controlGroup->find<Control>();
 
 			ConstraintSet& constraints = controlGroup->getConstraints(*control);
 			AssertIsType<ValueConstraint>(constraints.Left);

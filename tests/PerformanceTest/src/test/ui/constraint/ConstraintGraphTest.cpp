@@ -5,7 +5,6 @@
 #include "ui/constraint/ConstraintGraph.h"
 #include "ui/constraint/ValueConstraint.h"
 #include "ui/constraint/WrapConstraint.h"
-#include "ui/control/ColorView.h"
 
 #include <format>
 

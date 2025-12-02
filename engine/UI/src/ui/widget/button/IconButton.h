@@ -1,9 +1,11 @@
 #pragma once
 
-#include "ui/control/DrawableView.h"
 #include "ui/control/InteractionHandler.h"
-#include "ui/widget/Widget.h"
+#include "ui/style/ColorAttr.h"
+#include "ui/style/DrawableAttr.h"
 #include "ui/widget/StateIndicator.h"
+#include "ui/widget/Widget.h"
+#include <ui/style/AttrProperty.h>
 
 namespace Ghurund::UI {
 	class IconButton:public Widget {
@@ -24,13 +26,12 @@ namespace Ghurund::UI {
 		Ghurund::UI::StateIndicator* state = nullptr;
 		PointerAttrProperty<DrawableAttr, Drawable> drawable;
 		NullableAttrProperty<ColorAttr, Color> tint;
-		DrawableView* drawableView = nullptr;
 
 		inline void updateProperties() {
-			if (drawableView) {
+			/*if (drawableView) {
 				drawableView->Drawable = drawable;
 				drawableView->Tint = tint;
-			}
+			}*/
 		}
 
 	protected:
@@ -51,8 +52,6 @@ namespace Ghurund::UI {
 		~IconButton() {
 			if (state)
 				state->release();
-			if (drawableView)
-				drawableView->release();
 		}
 
 		inline void setDrawable(std::unique_ptr<DrawableAttr> drawable) {

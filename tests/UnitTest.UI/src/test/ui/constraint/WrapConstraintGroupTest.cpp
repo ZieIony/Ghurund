@@ -11,7 +11,6 @@
 #include "ui/constraint/SiblingConstraint.h"
 #include "ui/constraint/ParentConstraint.h"
 #include "ui/control/ControlGroup.h"
-#include <ui/control/ColorView.h>
 
 using namespace Ghurund::UI;
 using namespace UnitTest::Utils;

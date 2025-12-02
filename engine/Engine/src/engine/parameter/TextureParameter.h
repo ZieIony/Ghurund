@@ -5,6 +5,23 @@
 
 namespace Ghurund::Engine {
     class TextureParameter:public Parameter {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE() {
+            static const Ghurund::Core::Type TYPE = TypeBuilder<TextureParameter>()
+                .withSupertype(__super::GET_TYPE());
+
+            return TYPE;
+        }
+
+        inline static const Ghurund::Core::Type& TYPE = TextureParameter::GET_TYPE();
+#pragma endregion
+
     private:
         ITexture* value;
 

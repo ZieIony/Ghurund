@@ -77,8 +77,6 @@ namespace Ghurund::UI {
 
 		List<Binding> bindings;
 
-		Control() {}
-
 		Control(const Control& other):Resource(other),
 			cursor(other.cursor),
 			size(other.size),
@@ -88,7 +86,7 @@ namespace Ghurund::UI {
 			needsLayout(other.needsLayout),
 			localTheme(other.localTheme) {}
 
-		virtual ~Control() = 0;
+		virtual ~Control();
 
 		virtual void loadInternal(Ghurund::UI::LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
 
@@ -121,6 +119,8 @@ namespace Ghurund::UI {
 		Event<Control> stateChanged = *this;
 		Event<Control> themeChanged = *this;
 		Event<Control> contextChanged = *this;
+
+		Control() {}
 
 		inline const Ghurund::Core::AString* getName() const {
 			return name;

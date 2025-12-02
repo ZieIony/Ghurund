@@ -1,7 +1,6 @@
 #include "ghuipch.h"
 #include "RadioButton.h"
 
-#include "ui/control/DrawableView.h"
 #include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
@@ -13,7 +12,7 @@ namespace Ghurund::UI {
 	}
 
 	void RadioButton::onStateChanged() {
-		if (drawable) {
+		/*if (drawable) {
 			if (checked) {
 				drawable->Drawable = Theme::DRAWABLE_RADIOBUTTON_CHECKED;
 			} else {
@@ -40,6 +39,6 @@ namespace Ghurund::UI {
 					drawable->Tint = Theme::COLOR_SECONDARY_ONBACKGROUND;
 				}
 			}
-		}
+		}*/
 	}
 }

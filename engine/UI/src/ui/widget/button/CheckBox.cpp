@@ -1,12 +1,11 @@
 #include "ghuipch.h"
 #include "CheckBox.h"
 
-#include "ui/control/DrawableView.h"
 #include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
 	void CheckBox::onStateChanged() {
-		if (drawable) {
+		/*if (drawable) {
 			if (checked) {
 				drawable->Drawable = Theme::DRAWABLE_CHECKBOX_CHECKED;
 			} else {
@@ -33,7 +32,7 @@ namespace Ghurund::UI {
 					drawable->Tint = Theme::COLOR_SECONDARY_ONBACKGROUND;
 				}
 			}
-		}
+		}*/
 	}
 
 	const Ghurund::Core::Type& CheckBox::GET_TYPE() {

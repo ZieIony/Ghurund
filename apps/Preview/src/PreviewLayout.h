@@ -1,4 +1,3 @@
-#include <ui/control/ColorView.h>
 #include "ui/widget/ContentWidget.h"
 #include <ui/widget/button/Button.h>
 #include <ui/widget/button/CheckBox.h>
@@ -20,7 +19,7 @@ namespace Preview {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = ControlGroup::GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = PreviewLayout::GET_TYPE();
 #pragma endregion
 
     private:

@@ -2,7 +2,7 @@
 
 #include "ui/constraint/ContentConstraint.h"
 #include "ui/control/ControlContainer.h"
-#include "ui/control/ColorView.h"
+#include <ui/style/ColorAttr.h>
 
 namespace Ghurund::UI {
 	class Separator:public ControlContainer {
@@ -18,9 +18,6 @@ namespace Ghurund::UI {
 		inline static const Ghurund::Core::Type& TYPE = Separator::GET_TYPE();
 #pragma endregion
 
-	private:
-		ColorView* colorView;
-
 	protected:
 		virtual void onThemeChanged() override;
 
@@ -29,18 +26,13 @@ namespace Ghurund::UI {
 	public:
 		Separator();
 
-		~Separator() {
-			colorView->release();
-		}
-
 		inline void setColor(const ColorAttr& color) {
-			colorView->Color = color;
 		}
 
 		__declspec(property(put = setColor)) const ColorAttr& Color;
 
 		inline float getThickness() const {
-			return colorView->Size.Width;
+			return 0;
 		}
 
 		inline void setThickness(float thickness) {

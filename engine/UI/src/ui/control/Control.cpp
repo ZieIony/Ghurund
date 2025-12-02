@@ -13,6 +13,7 @@
 namespace Ghurund::UI {
 
 	const Ghurund::Core::Type& Control::GET_TYPE() {
+		static const auto CONSTRUCTOR = Constructor<Control>();
 		static auto PROPERTY_NAME = Property<Control, const AString*>("Name", (const AString * (Control::*)()) & getName, (void(Control::*)(const AString*)) & setName);
 		static auto PROPERTY_VISIBLE = Property<Control, bool>("Visible", (bool(Control::*)()) & isVisible, (void(Control::*)(bool)) & setVisible);
 		static auto PROPERTY_ENABLED = Property<Control, bool>("Enabled", (bool(Control::*)()) & isEnabled, (void(Control::*)(bool)) & setEnabled);
@@ -30,6 +31,7 @@ namespace Ghurund::UI {
 		static auto PROPERTY_POSITIONONSCREEN = Property<Control, XMFLOAT2>("PositionOnScreen", &getPositionOnScreen);
 
 		static const Ghurund::Core::Type TYPE = TypeBuilder<Control>()
+			.withConstructor(CONSTRUCTOR)
 			.withProperty(PROPERTY_NAME)
 			.withProperty(PROPERTY_VISIBLE)
 			.withProperty(PROPERTY_ENABLED)

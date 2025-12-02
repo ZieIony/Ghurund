@@ -4,7 +4,6 @@
 #include "test/utils/MemoryGuard.h"
 #include "test/utils/TestLogOutput.h"
 
-#include <ui/control/ColorView.h>
 #include <ui/control/ControlGroup.h>
 
 using namespace Ghurund::UI;
@@ -33,17 +32,17 @@ public:
         MemoryGuard guard;
         {
             auto container = makeIntrusive<ControlGroup>();
-            auto colorView = makeIntrusive<ColorView>();
+            auto control = makeIntrusive<Control>();
 
-            container->Children.add(colorView.get(), makeConstraints({
+            container->Children.add(control.get(), makeConstraints({
                 .width = makeIntrusive<WrapWidthConstraint>(),
                 .height = makeIntrusive<WrapHeightConstraint>()
             }));
 
             layoutControl(container, 100.0f, 100.0f);
 
-            Assert::AreEqual(0.0f, colorView->Size.Width);
-            Assert::AreEqual(0.0f, colorView->Size.Height);
+            Assert::AreEqual(0.0f, control->Size.Width);
+            Assert::AreEqual(0.0f, control->Size.Height);
         }
     }
 
@@ -51,8 +50,8 @@ public:
         MemoryGuard guard;
         {
             auto container = makeIntrusive<ControlGroup>();
-            auto colorView = makeIntrusive<ColorView>();
-            container->Children.add(colorView.get(), makeConstraints({
+            auto control = makeIntrusive<Control>();
+            container->Children.add(control.get(), makeConstraints({
                 .width = [] {
                     auto c = makeIntrusive<WrapWidthConstraint>();
                     c->Min = 100;
@@ -71,8 +70,8 @@ public:
 
             layoutControl(container, 100, 100);
 
-            Assert::AreEqual(100.0f, colorView->Size.Width);
-            Assert::AreEqual(75.0f, colorView->Size.Height);
+            Assert::AreEqual(100.0f, control->Size.Width);
+            Assert::AreEqual(75.0f, control->Size.Height);
         }
     }
     };

@@ -30,7 +30,7 @@ namespace Ghurund::UI::DirectX {
         resourceManager.Loaders.set<Ghurund::UI::Font>(*fontLoader.get());
 
         layoutLoader = makeIntrusive<Ghurund::UI::LayoutLoader>(resourceManager, *drawableFactory, *textFormatFactory, *constraintFactory);
-        layoutLoader->PropertyLoaders.add(std::make_unique<MaterialPropertyLoader>(resourceManager));
+        layoutLoader->PropertyLoaders.add(std::make_unique<MaterialPropertyLoader>(resourceManager, materialFactory));
         resourceManager.Loaders.set<Control>(*layoutLoader.get());
     }
     

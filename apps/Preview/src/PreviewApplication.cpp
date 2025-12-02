@@ -30,6 +30,7 @@ namespace Preview {
         __super::onInit();
 
         auto ui = Features.get<DxUIFeature>();
+        ui->LayoutLoader->registerType<PreviewLayout>();
         auto drawableFactory = ui->DrawableFactory;
 
         lightTheme.set(ghnew LightTheme(ResourceManager, *drawableFactory));

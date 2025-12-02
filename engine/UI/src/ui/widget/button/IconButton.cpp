@@ -16,7 +16,7 @@ namespace Ghurund::UI {
             setPointer(state, (Ghurund::UI::StateIndicator*)layoutControl->find("state"));
             if (state)
                 state->InteractionHandler = &interactionHandler;
-            setPointer(drawableView, (Ghurund::UI::DrawableView*)layoutControl->find("drawableView"));
+            //setPointer(drawableView, (Ghurund::UI::DrawableView*)layoutControl->find("drawableView"));
             updateProperties();
         }
     }

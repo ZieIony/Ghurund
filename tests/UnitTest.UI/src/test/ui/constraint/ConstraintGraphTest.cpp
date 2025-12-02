@@ -4,7 +4,6 @@
 #include "test/utils/MemoryGuard.h"
 #include "test/utils/TestLogOutput.h"
 
-#include "ui/control/ColorView.h"
 #include "ui/constraint/Constraint.h"
 #include "ui/constraint/ConstraintGraph.h"
 #include "ui/constraint/ValueConstraint.h"
@@ -138,10 +137,10 @@ public:
 	TEST_METHOD(wrapCenterHorizontal) {
 		MemoryGuard guard;
 		{
-			auto colorView = makeIntrusive<ColorView>();
+			auto control = makeIntrusive<Control>();
 
 			auto controlGroup = makeIntrusive<ConstraintLayout>();
-			controlGroup->Children.add(colorView.get(), makeConstraints({
+			controlGroup->Children.add(control.get(), makeConstraints({
 				.left = 0.0f,
 				.width = 50.0f,
 				.right = 100.0f

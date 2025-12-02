@@ -3,7 +3,6 @@
 #include "test/utils/MemoryGuard.h"
 #include "test/utils/TestUtils.h"
 
-#include "ui/control/ColorView.h"
 #include <ui/constraint/ConstraintLayout.h>
 #include <ui/control/ControlGroup.h>
 #include <ui/constraint/SelfConstraint.h>
@@ -31,7 +30,7 @@ public:
 #endif
 		MemoryGuard memoryGuard;
 		{
-			auto control = makeIntrusive<ColorView>();
+			auto control = makeIntrusive<Control>();
 			auto left = makeIntrusive<ValueConstraint>(0.0f);
 			auto width = makeIntrusive<ValueConstraint>(0.0f);
 			auto right = makeIntrusive<ValueConstraint>(0.0f);
@@ -48,7 +47,7 @@ public:
 	TEST_METHOD(setAllWidth) {
 		MemoryGuard memoryGuard;
 		{
-			auto control = makeIntrusive<ColorView>();
+			auto control = makeIntrusive<Control>();
 			auto left = makeIntrusive<ValueConstraint>(0.0f);
 			auto width = makeIntrusive<ValueConstraint>(0.0f);
 			auto right = makeIntrusive<ValueConstraint>(0.0f);
@@ -80,7 +79,7 @@ public:
 	TEST_METHOD(setAllHeight) {
 		MemoryGuard memoryGuard;
 		{
-			auto control = makeIntrusive<ColorView>();
+			auto control = makeIntrusive<Control>();
 			auto top = makeIntrusive<ValueConstraint>(0.0f);
 			auto height = makeIntrusive<ValueConstraint>(0.0f);
 			auto bottom = makeIntrusive<ValueConstraint>(0.0f);
@@ -115,7 +114,7 @@ public:
 #endif
 		MemoryGuard memoryGuard;
 		{
-			auto control = makeIntrusive<ColorView>();
+			auto control = makeIntrusive<Control>();
 			auto left = makeIntrusive<ValueConstraint>(0.0f);
 			auto width = makeIntrusive<ValueConstraint>(0.0f);
 			auto top = makeIntrusive<ValueConstraint>(0.0f);
@@ -152,7 +151,7 @@ public:
 #endif
 		MemoryGuard memoryGuard;
 		{
-			auto control = makeIntrusive<ColorView>();
+			auto control = makeIntrusive<Control>();
 			auto left = makeIntrusive<ValueConstraint>(0.0f);
 			auto right = makeIntrusive<ValueConstraint>(0.0f);
 			auto top = makeIntrusive<ValueConstraint>(0.0f);
@@ -189,7 +188,7 @@ public:
 #endif
 		MemoryGuard memoryGuard;
 		{
-			auto control = makeIntrusive<ColorView>();
+			auto control = makeIntrusive<Control>();
 			auto width = makeIntrusive<ValueConstraint>(0.0f);
 			auto right = makeIntrusive<ValueConstraint>(0.0f);
 			auto height = makeIntrusive<ValueConstraint>(0.0f);

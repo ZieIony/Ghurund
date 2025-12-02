@@ -15,7 +15,7 @@ namespace Preview {
 
 	class PreviewWindow :public Ghurund::Engine::GameWindow {
 	private:
-		IntrusivePointer<PreviewLayout> previewLayout;
+		IntrusivePointer<Control> previewLayout;
 		FileWatcher fileWatcher;
 		std::function<void()> loadCallback;
 		ThemeApplication& themeApp;

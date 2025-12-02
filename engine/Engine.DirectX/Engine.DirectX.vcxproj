@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\directx\material\DxMaterialFactory.h" />
     <ClInclude Include="src\engine\directx\material\DxMaterialLoader.h" />
     <ClInclude Include="src\Ghurund.Engine.DirectX.h" />
     <ClInclude Include="src\engine\directx\CommandList.h" />

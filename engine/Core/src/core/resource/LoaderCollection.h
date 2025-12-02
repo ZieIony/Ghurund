@@ -21,7 +21,7 @@ namespace Ghurund::Core {
 
         inline Loader* get(const Type& t) const {
             for (auto& [type, loader] : loaders) {
-                if (t.isOrExtends(*type))
+                if (type->isOrExtends(t))
                     return loader.get();
             }
             return nullptr;

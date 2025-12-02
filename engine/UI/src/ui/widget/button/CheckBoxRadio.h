@@ -1,10 +1,7 @@
 #pragma once
 
-#include "ui/control/DrawableView.h"
 #include "ui/widget/ContentWidget.h"
 #include "ui/widget/StateIndicator.h"
-
-#include <tinyxml2.h>
 
 namespace Ghurund::UI {
 	class CheckBoxRadio:public ContentWidget {
@@ -30,7 +27,6 @@ namespace Ghurund::UI {
 		InteractionHandler interactionHandler = *this;
 
 		Ghurund::UI::StateIndicator* state = nullptr;
-		Ghurund::UI::DrawableView* drawable = nullptr;
 
 		virtual void onLayoutChanged() override {
 			if (state) {
@@ -38,22 +34,20 @@ namespace Ghurund::UI {
 				state->release();
 				state = nullptr;
 			}
-			safeRelease(drawable);
+			//safeRelease(drawable);
 			__super::onLayoutChanged();
 			Control* layoutControl = layout.get();
 			if (layoutControl) {
 				setPointer(state, (Ghurund::UI::StateIndicator*)layoutControl->find("state"));
 				if (state)
 					state->InteractionHandler = &interactionHandler;
-				setPointer(drawable, (Ghurund::UI::DrawableView*)layoutControl->find("drawable"));
+				//setPointer(drawable, (Ghurund::UI::DrawableView*)layoutControl->find("drawable"));
 			}
 		}
 
 		~CheckBoxRadio() {
 			if (state)
 				state->release();
-			if (drawable)
-				drawable->release();
 		}
 	};
 }
