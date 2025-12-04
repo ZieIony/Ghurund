@@ -1,7 +1,7 @@
 #pragma once
 
-#include <core/collection/List.h>
-#include <core/string/String.h>
+#include "core/collection/List.h"
+#include "core/string/String.h"
 
 namespace Ghurund::Core {
 	struct DisplayMode {

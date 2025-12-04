@@ -1,10 +1,12 @@
 #pragma once
 
 #include "BaseGameAction.h"
-#include <core/math/Point.h>
+
+#include <DirectXMath.h>
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
+	using namespace ::DirectX;
 
 	template<typename T>
 	class GameAction:public BaseTypedGameAction<T> {

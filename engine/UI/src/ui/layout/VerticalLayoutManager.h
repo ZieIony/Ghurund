@@ -1,8 +1,9 @@
 #pragma once
 
-#include "ui/control/ControlGroup.h"
 #include "LayoutManager.h"
-#include <ui/adapter/AdapterLayout.h>
+
+#include "ui/adapter/AdapterLayout.h"
+#include "ui/control/ControlGroup.h"
 
 namespace Ghurund::UI {
 	class VerticalLayoutManager:public LayoutManager {

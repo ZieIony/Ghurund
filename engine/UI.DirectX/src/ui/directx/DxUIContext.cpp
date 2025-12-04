@@ -1,9 +1,10 @@
 #include "ghuidxpch.h"
 #include "DxUIContext.h"
-#include <engine/directx/mesh/DxMesh.h>
+
+#include "engine/directx/CommandList.h"
+#include "engine/directx/DxGraphics.h"
+#include "engine/directx/mesh/DxMesh.h"
 #include "engine/graphics/mesh/QuadMeshData.h"
-#include <engine/directx/DxGraphics.h>
-#include <engine/directx/CommandList.h>
 
 namespace Ghurund::Core {
     template<>

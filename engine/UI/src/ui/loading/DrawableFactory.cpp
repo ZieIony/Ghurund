@@ -1,11 +1,10 @@
 #include "ghuipch.h"
 #include "DrawableFactory.h"
 
+#include "core/image/Image.h"
 #include "core/logging/Logger.h"
 #include "ui/drawable/BitmapDrawable.h"
-#include "ui/image/VectorImage.h"
 #include "ui/drawable/Drawable.h"
-#include <core/image/Image.h>
 
 namespace Ghurund::UI {
     Drawable* DrawableFactory::makeDrawable(const ResourcePath& path) {

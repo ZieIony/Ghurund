@@ -1,9 +1,10 @@
 #pragma once
 
-#include "ui/material/IUIMaterialProvider.h"
-#include <engine/parameter/ParameterManager.h>
-#include <engine/directx/material/DxMaterial.h>
 #include "DxUIShaderProvider.h"
+
+#include "engine/directx/material/DxMaterial.h"
+#include "engine/parameter/ParameterManager.h"
+#include "ui/material/IUIMaterialProvider.h"
 
 namespace Ghurund::UI::DirectX {
     using namespace Ghurund::UI;

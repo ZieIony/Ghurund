@@ -1,14 +1,8 @@
 #pragma once
 
-#include "Common.h"
-
-#include <xaudio2.h>
-#include <x3daudio.h>
-
-#include <mfapi.h>
-#include <mfidl.h>
-
 #include "Sound.h"
+
+#include <x3daudio.h>
 
 namespace Ghurund {
     using namespace ::DirectX;

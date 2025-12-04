@@ -1,8 +1,8 @@
 #pragma once
 
+#include "core/collection/List.h"
+#include "core/io/DirectoryPath.h"
 #include "core/string/String.h"
-#include <core/io/DirectoryPath.h>
-#include <core/collection/List.h>
 
 #pragma warning(push, 0)
 #include <d3dcommon.h>

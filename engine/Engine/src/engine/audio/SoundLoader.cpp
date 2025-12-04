@@ -1,6 +1,8 @@
 #include "ghepch.h"
 #include "SoundLoader.h"
 
+#include "Sound.h"
+
 namespace Ghurund {
     Resource* SoundLoader::loadInternal(
         MemoryInputStream& stream,

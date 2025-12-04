@@ -2,12 +2,11 @@
 
 #include "ObjectProperty.h"
 
-#include "ui/style/Theme.h"
+#include "core/string/TextConversionUtils.h"
 #include "ui/adapter/ItemAdapter.h"
-#include "ui/control/TextBlock.h"
-#include "ui/layout/LinearLayout.h"
+#include "ui/text/TextBlock.h"
+#include "ui/theme/Theme.h"
 #include "ui/widget/Separator.h"
-#include <core/string/TextConversionUtils.h>
 
 namespace Ghurund::UI {
     class PropertyRow: public HorizontalLayout {

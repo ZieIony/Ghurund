@@ -1,16 +1,15 @@
 #include "ghepch.h"
-
 #include "Audio.h"
 
 #include "core/exception/Exceptions.h"
-#include "core/reflection/TypeBuilder.h"
+#include "core/logging/Logger.h"
 #include "core/reflection/Property.h"
 #include "core/reflection/StandardTypes.h"
-#include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
 
-#include <xaudio2.h>
 #include <mfapi.h>
 #include <x3daudio.h>
+#include <xaudio2.h>
 
 namespace Ghurund {
     using namespace ::DirectX;

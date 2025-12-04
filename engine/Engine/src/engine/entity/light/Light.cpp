@@ -1,8 +1,6 @@
 #include "ghepch.h"
-
 #include "Light.h"
 
-#include "Ghurund.Engine.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Engine {

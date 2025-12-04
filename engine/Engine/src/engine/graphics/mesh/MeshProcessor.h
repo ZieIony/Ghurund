@@ -1,13 +1,14 @@
 #pragma once
 
 #include "VertexStream.h"
-#include <core/Buffer.h>
-#include <core/collection/Array.h>
+
+#include "core/Buffer.h"
+#include "core/collection/Array.h"
+#include "core/collection/List.h"
+#include "core/object/NotNull.h"
+
 #include <DirectXCollision.h>
 #include <DirectXMath.h>
-#include "core/object/NotNull.h"
-#include <core/collection/List.h>
-#include <core/math/Vector.h>
 
 namespace Ghurund::Engine {
     using namespace ::DirectX;

@@ -1,7 +1,8 @@
 #pragma once
 
-#include <core/string/String.h>
 #include "Ttf.h"
+
+#include "core/string/String.h"
 
 namespace Ghurund::UI {
 	using namespace Ghurund::Core;

@@ -1,7 +1,8 @@
 #pragma once
 
 #include "ui/constraint/ConstraintSet.h"
-#include <core/math/Point.h>
+
+#include <DirectXMath.h>
 
 namespace Ghurund::UI {
 	class LayoutManager {

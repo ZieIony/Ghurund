@@ -1,8 +1,8 @@
 #pragma once
 
 #include "engine/graphics/material/IMaterial.h"
-#include <engine/parameter/ValueParameter.h>
-#include <core/Color.h>
+#include "engine/parameter/ValueParameter.h"
+#include "core/Color.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Engine;

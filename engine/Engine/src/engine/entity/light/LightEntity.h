@@ -1,9 +1,10 @@
 #pragma once
 
-//#include <entt.hpp>
-
 #include "LightComponent.h"
-#include "entity/Entity.h"
+
+#include "engine/entity/Entity.h"
+
+//#include <entt.hpp>
 
 namespace Ghurund::Engine {
     class LightEntity:public Entity {

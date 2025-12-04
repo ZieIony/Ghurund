@@ -1,7 +1,8 @@
 #pragma once
 
 #include "PropertyLoader.h"
-#include <ui/control/ImageScaleMode.h>
+
+#include "ui/control/ImageScaleMode.h"
 
 namespace Ghurund::UI {
 

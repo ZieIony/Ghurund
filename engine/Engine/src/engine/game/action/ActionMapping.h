@@ -1,14 +1,14 @@
 #pragma once
 
-#include "core/input/EventConsumer.h"
-#include "core/reflection/StandardTypes.h"
 #include "GameActionCollection.h"
-#include "DispatchInputTask.h"
-#include <core/collection/List.h>
-#include <core/collection/Set.h>
 #include "GamepadGameActionCollection.h"
-#include <core/input/keyboard/KeyboardKey.h>
-#include <core/object/IntrusivePointer.h>
+
+#include "core/collection/List.h"
+#include "core/collection/Set.h"
+#include "core/input/EventConsumer.h"
+#include "core/input/keyboard/KeyboardKey.h"
+#include "core/object/IntrusivePointer.h"
+#include "core/reflection/StandardTypes.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;

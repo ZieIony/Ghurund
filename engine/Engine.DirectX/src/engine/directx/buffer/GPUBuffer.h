@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/Buffer.h"
+#include "core/object/RefCountedObject.h"
 #include "engine/directx/CommandList.h"
 
 namespace Ghurund::Engine::DirectX {

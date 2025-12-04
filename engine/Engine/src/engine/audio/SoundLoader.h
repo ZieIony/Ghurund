@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Sound.h"
+#include "Audio.h"
+
 #include "core/resource/Loader.h"
 
 namespace Ghurund {

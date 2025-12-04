@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/resource/Resource.h>
+#include "core/resource/Resource.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;

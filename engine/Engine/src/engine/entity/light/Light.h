@@ -1,8 +1,5 @@
 #pragma once
 
-#include "core/resource/ResourceFormat.h"
-#include "engine/entity/Entity.h"
-#include "engine/parameter/Parameter.h"
 #include "engine/parameter/ParameterProvider.h"
 
 namespace Ghurund::Engine {

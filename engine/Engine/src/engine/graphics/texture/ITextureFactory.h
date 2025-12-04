@@ -1,8 +1,9 @@
 #pragma once
 
-#include "core/object/Noncopyable.h"
 #include "ITexture.h"
-#include <core/image/Image.h>
+
+#include "core/image/Image.h"
+#include "core/object/Noncopyable.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;

@@ -1,18 +1,20 @@
 #pragma once
 
-#include "core/allocation/Allocator.h"
-#include "core/exception/FormatNotSupportedException.h"
-#include "core/io/MemoryInputStream.h"
-#include "core/io/MemoryOutputStream.h"
-#include "core/object/RefCountedObject.h"
-#include "core/reflection/Type.h"
 #include "LoadOption.h"
 #include "ResourceFormat.h"
 #include "SaveOption.h"
-#include <core/concepts/Concepts.h>
-#include <cstdint>
-#include "core/resource/Resource.h"
+
+#include "core/allocation/Allocator.h"
+#include "core/concepts/Concepts.h"
+#include "core/exception/FormatNotSupportedException.h"
+#include "core/io/MemoryInputStream.h"
+#include "core/io/MemoryOutputStream.h"
 #include "core/logging/Logger.h"
+#include "core/object/RefCountedObject.h"
+#include "core/reflection/Type.h"
+#include "core/resource/Resource.h"
+
+#include <cstdint>
 
 namespace Ghurund::Core {
 	class ResourceManager;

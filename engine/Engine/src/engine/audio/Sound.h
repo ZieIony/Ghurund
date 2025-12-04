@@ -1,11 +1,10 @@
 #pragma once
 
-#include "Common.h"
-#include <Windows.h>
 #include "core/collection/Array.h"
 #include "core/collection/List.h"
 #include "core/resource/Resource.h"
 
+#include <Windows.h>
 #include <wrl\client.h>
 
 #include <xaudio2.h>
@@ -13,9 +12,6 @@
 #include <mfapi.h>
 #include <mfidl.h>
 #include <mfreadwrite.h>
-#include <DirectXMath.h>
-
-#include "Audio.h"
 
 namespace Ghurund {
     using namespace Ghurund::Core;

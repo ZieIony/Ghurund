@@ -1,9 +1,10 @@
 #pragma once
 
 #include "OglShader.h"
-#include <core/io/DirectoryPath.h>
-#include <core/string/String.h>
+
+#include "core/io/DirectoryPath.h"
 #include "core/object/OwnedNotNull.h"
+#include "core/string/String.h"
 
 namespace Ghurund::Engine::OpenGL {
 	using namespace Ghurund::Core;

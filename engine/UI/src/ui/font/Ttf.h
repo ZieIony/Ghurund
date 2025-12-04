@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/string/String.h>
+#include "core/string/String.h"
 
 namespace Ghurund::UI {
 	inline uint16_t make16(uint8_t a, uint8_t b) {

@@ -1,11 +1,12 @@
 #pragma once
 
 #include "DxGraphics.h"
-#include "engine/graphics/Renderer.h"
-#include "engine/directx/material/DxMaterial.h"
-#include "Postprocess.h"
-#include <core/Color.h>
 #include "DxRenderingContext.h"
+#include "Postprocess.h"
+
+#include "core/Color.h"
+#include "engine/directx/material/DxMaterial.h"
+#include "engine/graphics/Renderer.h"
 
 namespace Ghurund::Engine::DirectX {
     using namespace ::DirectX;

@@ -1,7 +1,8 @@
 #pragma once
 
 #include "GameActionCollection.h"
-#include <core/input/gamepad/GamepadInput.h>
+
+#include "core/input/gamepad/GamepadInput.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;

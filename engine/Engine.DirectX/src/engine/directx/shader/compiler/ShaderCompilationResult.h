@@ -1,7 +1,7 @@
 #pragma once
 
-#include <core/Buffer.h>
-#include <core/string/String.h>
+#include "core/Buffer.h"
+#include "core/string/String.h"
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;

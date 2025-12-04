@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ui/text/ITextMeshFactory.h"
-#include <ui/text/TextMesh.h>
 #include "engine/directx/mesh/DxMesh.h"
+#include "ui/text/ITextMeshFactory.h"
+#include "ui/text/TextMesh.h"
 
 namespace Ghurund::UI::DirectX {
 	using namespace Ghurund::Engine::DirectX;

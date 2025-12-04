@@ -1,15 +1,16 @@
 #pragma once
 
 #include "ConstantBuffer.h"
-#include "core/collection/Array.h"
-#include "core/collection/List.h"
-#include <core/object/OwnedNotNull.h>
-#include "core/resource/ResourceManager.h"
 #include "Sampler.h"
 #include "TextureBufferConstant.h"
 #include "TextureConstant.h"
+
+#include "core/collection/Array.h"
+#include "core/collection/List.h"
 #include "core/IUnknownImpl.h"
-#include <engine/graphics/mesh/VertexStream.h>
+#include "core/object/OwnedNotNull.h"
+#include "core/resource/ResourceManager.h"
+#include "engine/graphics/mesh/VertexStream.h"
 #include "engine/graphics/shader/IShader.h"
 
 #pragma warning(push, 0)

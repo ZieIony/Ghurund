@@ -1,10 +1,13 @@
 #pragma once
 
-#include <cstdint>
-
 #include "GamepadButton.h"
 
+#include <cstdint>
+#include <DirectXMath.h>
+
 namespace Ghurund::Core {
+	using namespace ::DirectX;
+
 	class GamepadState {
 	private:
 		uint16_t buttons;

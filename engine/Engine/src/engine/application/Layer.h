@@ -7,7 +7,7 @@
 #include "core/math/Size.h"
 #include "core/object/RefCountedObject.h"
 #include "core/reflection/TypeBuilder.h"
-#include <engine/graphics/RenderingContext.h>
+#include "engine/graphics/RenderingContext.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;

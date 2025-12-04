@@ -1,8 +1,9 @@
 #pragma once
 
 #include "PropertyLoader.h"
+
 #include "engine/graphics/material/IMaterial.h"
-#include <engine/graphics/material/MaterialLoader.h>
+#include "engine/graphics/material/MaterialLoader.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Engine;

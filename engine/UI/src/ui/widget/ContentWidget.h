@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Widget.h"
-#include "core/Observable.h"
-#include <ui/control/ControlContainer.h>
+
+#include "ui/control/ControlContainer.h"
 
 namespace Ghurund::UI {
 	using namespace Ghurund::Core;

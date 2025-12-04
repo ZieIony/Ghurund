@@ -1,9 +1,9 @@
 #include "ghedxpch.h"
 #include "ConstantBuffer.h"
 
-#include <engine/parameter/Parameter.h>
-#include "engine/directx/parameter/DxParameter.h"
 #include "core/logging/Logger.h"
+#include "engine/directx/parameter/DxParameter.h"
+#include "engine/parameter/Parameter.h"
 
 #include <format>
 

@@ -3,7 +3,7 @@
 
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
-#include <engine/directx/texture/DxTexture.h>
+#include "engine/directx/texture/DxTexture.h"
 
 namespace Ghurund::Engine::DirectX {
 	const Ghurund::Core::Type& DxShader::GET_TYPE() {

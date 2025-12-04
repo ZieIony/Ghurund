@@ -1,12 +1,13 @@
 #pragma once
 
-#include "SetSelectionMode.h"
 #include "Selection.h"
+#include "SetSelectionMode.h"
+
 #include "core/input/Input.h"
+#include "core/math/Rect.h"
 #include "ui/drawable/CursorDrawable.h"
 #include "ui/text/TextBlock.h"
 #include "ui/theme/Theme.h"
-#include <core/math/Rect.h>
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;

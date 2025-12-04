@@ -1,10 +1,9 @@
 #pragma once
 
-#include "core/collection/List.h"
-#include "core/window/WindowMessage.h"
 #include "GamepadButtonState.h"
 #include "GamepadState.h"
-#include <core/object/NotNull.h>
+
+#include "core/input/EventConsumer.h"
 
 namespace Ghurund::Core {
     class GamepadInput {

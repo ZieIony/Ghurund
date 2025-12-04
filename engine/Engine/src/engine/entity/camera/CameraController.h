@@ -1,4 +1,7 @@
+#pragma once
+
 #include "CameraEntity.h"
+
 #include "core/input/EventConsumer.h"
 #include "core/input/Input.h"
 #include "core/window/SystemWindow.h"

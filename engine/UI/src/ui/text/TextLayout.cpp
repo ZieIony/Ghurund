@@ -1,8 +1,8 @@
 #include "ghuipch.h"
 #include "TextLayout.h"
 
-#include <core/math/Rect.h>
-#include <engine/graphics/RenderGroup.h>
+#include "core/math/Rect.h"
+#include "engine/graphics/RenderGroup.h"
 
 namespace Ghurund::UI {
 	void TextLayout::refresh() {

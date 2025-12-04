@@ -1,9 +1,10 @@
 #pragma once
 
-#include "core/collection/BufferedValue.h"
-#include "engine/directx/DxGraphics.h"
 #include "GPUBuffer.h"
-#include <engine/directx/CommandList.h>
+
+#include "core/collection/BufferedValue.h"
+#include "engine/directx/CommandList.h"
+#include "engine/directx/DxGraphics.h"
 
 namespace Ghurund::Engine::DirectX {
     class DynamicBuffer {

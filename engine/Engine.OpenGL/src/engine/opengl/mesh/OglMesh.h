@@ -1,7 +1,8 @@
 #pragma once
 
-#include "GL/glew.h"
-#include <engine/graphics/mesh/MeshData.h>
+#include "engine/graphics/mesh/MeshData.h"
+
+#include <GL/glew.h>
 
 namespace Ghurund::Engine::OpenGL {
     class OglMesh:public Resource {

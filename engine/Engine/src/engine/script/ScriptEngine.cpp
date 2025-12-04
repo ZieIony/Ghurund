@@ -1,13 +1,6 @@
 #include "ghepch.h"
 #include "ScriptEngine.h"
 
-#include "core/exception/Exceptions.h"
-#include "core/logging/Logger.h"
-#include "core/reflection/TypeBuilder.h"
-
-#include <angelscript.h>
-#include <engine/script/angelscript/scriptmath.h>
-
 #include "bindings\CameraScriptBindings.h"
 #include "bindings\CollectionScriptBindings.h"
 #include "bindings\EntityScriptBindings.h"
@@ -17,6 +10,12 @@
 #include "bindings\SceneScriptBindings.h"
 #include "bindings\ScriptBindings.h"
 #include "bindings\TimerScriptBindings.h"
+#include "core/exception/Exceptions.h"
+#include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
+#include "engine/script/angelscript/scriptmath.h"
+
+#include <angelscript.h>
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;

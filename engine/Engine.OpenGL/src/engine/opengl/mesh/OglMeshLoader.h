@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/resource/Loader.h"
-#include <engine/graphics/mesh/MeshDataLoader.h>
+#include "engine/graphics/mesh/MeshDataLoader.h"
 
 namespace Ghurund::Engine::OpenGL {
     using namespace Ghurund::Core;

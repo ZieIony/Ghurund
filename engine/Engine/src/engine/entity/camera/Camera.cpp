@@ -1,5 +1,4 @@
 #include "ghepch.h"
-
 #include "Camera.h"
 
 #include "core/io/MemoryInputStream.h"

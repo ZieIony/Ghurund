@@ -2,7 +2,7 @@
 #include "NextConstraint.h"
 
 #include "ui/constraint/ConstraintGraph.h"
-#include <ui/control/ControlGroup.h>
+#include "ui/control/ControlGroup.h"
 
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& NextLeftConstraint::GET_TYPE() {

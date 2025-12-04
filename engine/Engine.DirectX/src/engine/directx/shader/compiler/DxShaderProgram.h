@@ -1,9 +1,8 @@
 #pragma once
 
 #include "core/Buffer.h"
-#include <core/string/String.h>
+#include "core/string/String.h"
 #include "engine/directx/shader/DxShaderType.h"
-#include "DxShaderProgram.h"
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;

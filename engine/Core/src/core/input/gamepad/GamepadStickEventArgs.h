@@ -1,11 +1,13 @@
 #pragma once
 
-#include <cstdint>
-
 #include "core/input/InputEventArgs.h"
-#include <core/math/Point.h>
+
+#include <cstdint>
+#include <DirectXMath.h>
 
 namespace Ghurund::Core {
+	using namespace ::DirectX;
+
 	enum class GamepadStick {
 		LEFT, RIGHT
 	};

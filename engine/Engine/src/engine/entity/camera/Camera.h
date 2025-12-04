@@ -1,8 +1,6 @@
 #pragma once
 
-#include "core/object/IntrusivePointer.h"
 #include "core/math/Size.h"
-#include "core/resource/ResourceFormat.h"
 #include "engine/parameter/ParameterProvider.h"
 #include "engine/parameter/ValueParameter.h"
 

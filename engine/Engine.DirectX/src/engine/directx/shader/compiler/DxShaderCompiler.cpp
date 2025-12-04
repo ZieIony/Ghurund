@@ -1,10 +1,10 @@
 #include "ghedxpch.h"
 #include "DxShaderCompiler.h"
 
-#include <core/Finally.h>
-#include "DxShaderProgram.h"
-#include "DxEntrypointNotFoundException.h"
 #include "DxCompilationException.h"
+#include "DxShaderProgram.h"
+
+#include "core/Finally.h"
 #include "engine/directx/DxGraphics.h"
 
 #pragma warning(push, 0)

@@ -1,11 +1,11 @@
 #include "ghepch.h"
 #include "MaterialLoader.h"
 
-#include <engine/parameter/TextureParameter.h>
-#include <engine/parameter/ValueParameter.h>
+#include "core/image/Image.h"
+#include "engine/parameter/TextureParameter.h"
+#include "engine/parameter/ValueParameter.h"
 
 #include <tinyxml2.h>
-#include <core/image/Image.h>
 
 namespace Ghurund::Engine {
 
