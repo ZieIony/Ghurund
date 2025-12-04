@@ -1,9 +1,10 @@
 #pragma once
 
 #include "Fence.h"
-#include "DxGraphics.h"
 
 namespace Ghurund::Engine::DirectX {
+    class DxGraphics;
+
     enum class CommandListState {
         INVALID,
         RECORDING,  // can be closed

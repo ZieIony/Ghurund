@@ -5,6 +5,7 @@
 #include "core/image/Image.h"
 
 #include <d3d12.h>
+#include <d3dx12.h>
 
 namespace Ghurund::Engine::DirectX {
     class RenderTarget {
@@ -57,7 +58,7 @@ namespace Ghurund::Engine::DirectX {
             return texture;
         }
 
-        __declspec(property(get = getTexture)) ID3D12Resource* Texture;
+        __declspec(property(get = getTexture)) ID3D12Resource* DxTexture;
 
         inline void start(CommandList& commandList) {
             D3D12_RESOURCE_STATES newState = D3D12_RESOURCE_STATE_RENDER_TARGET;

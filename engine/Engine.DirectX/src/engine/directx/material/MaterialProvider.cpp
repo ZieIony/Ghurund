@@ -65,7 +65,7 @@ namespace Ghurund::Engine::DirectX {
         IntrusivePointer<DxShader> shader(shaderProvider.loadBasic());
         if (shader!=nullptr) {
             material = ghnew DxMaterial(shader.get());
-            Texture* texture = textureProvider.makeChecker();
+            DxTexture* texture = textureProvider.makeChecker();
             //TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
             //diffuse->setValue(texture);
         }

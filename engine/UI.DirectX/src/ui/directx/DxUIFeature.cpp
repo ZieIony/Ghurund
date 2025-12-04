@@ -2,11 +2,8 @@
 #include "DxUIFeature.h"
 
 #include "core/reflection/TypeBuilder.h"
-#include "engine/directx/DxGraphics.h"
 #include <ui/control/Control.h>
-#include <core/image/Image.h>
 #include "ui/font/FontLoader.h"
-#include "core/image/ImageLoader.h"
 #include "ui/loading/LayoutLoader.h"
 #include <ui/loading/MaterialPropertyLoader.h>
 
@@ -30,7 +27,7 @@ namespace Ghurund::UI::DirectX {
         resourceManager.Loaders.set<Ghurund::UI::Font>(*fontLoader.get());
 
         layoutLoader = makeIntrusive<Ghurund::UI::LayoutLoader>(resourceManager, *drawableFactory, *textFormatFactory, *constraintFactory);
-        layoutLoader->PropertyLoaders.add(std::make_unique<MaterialPropertyLoader>(resourceManager, materialFactory));
+        layoutLoader->PropertyLoaders.add(std::make_unique<MaterialPropertyLoader>(resourceManager, *(MaterialLoader*)resourceManager.Loaders.get<IMaterial>()));
         resourceManager.Loaders.set<Control>(*layoutLoader.get());
     }
     

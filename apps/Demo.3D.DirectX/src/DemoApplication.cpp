@@ -13,7 +13,7 @@ namespace Demo {
     void DemoApplication::onInit() {
         __super::onInit();
 
-        renderer = ghnew DxRenderer(*Features.get<DxGraphics>());
+        renderer = ghnew DxRenderer(Features.get<DxGraphicsFeature>()->Graphics);
         renderer->init();
 
         window = ghnew DemoWindow(*this, *renderer);

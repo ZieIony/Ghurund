@@ -1,8 +1,8 @@
-﻿#include "core/application/Application.h"
-#include "DemoWindow.h"
+﻿#include "DemoWindow.h"
+
+#include "core/application/Application.h"
+#include "engine/directx/DxGraphicsFeatureFactory.h"
 #include "engine/directx/DxRenderer.h"
-#include "engine/parameter/ParameterManager.h"
-#include "ui/directx/DxUIFeature.h"
 #include "ui/directx/DxUIFeatureFactory.h"
 #include "ui/loading/DrawableFactory.h"
 #include "ui/theme/LightTheme.h"
@@ -29,7 +29,7 @@ namespace Demo {
 
     public:
         DemoApplication() {
-            Features.add<DxGraphics>();
+            Features.add<DxGraphicsFeature, DxGraphicsFeatureFactory>();
             Features.add<UIFeature, DxUIFeatureFactory>();
         }
 

@@ -6,6 +6,7 @@
 #include "core/exception/Exceptions.h"
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
+#include "engine/directx/DxGraphics.h"
 
 namespace Ghurund::Engine::DirectX {
     void RenderTarget::init(DxGraphics& graphics, ID3D12Resource* texture) {

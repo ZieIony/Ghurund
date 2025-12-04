@@ -2,6 +2,7 @@
 #include "DepthBuffer.h"
 
 #include "core/logging/Logger.h"
+#include "engine/directx/DxGraphics.h"
 
 namespace Ghurund::Engine::DirectX {
     void DepthBuffer::init(DxGraphics& graphics, IntSize size) {

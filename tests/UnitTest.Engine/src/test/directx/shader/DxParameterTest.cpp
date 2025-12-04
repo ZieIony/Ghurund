@@ -2,12 +2,12 @@
 #include "CppUnitTest.h"
 
 #include "core/object/IntrusivePointer.h"
-
-#include "test/utils/TestUtils.h"
-#include <engine/directx/shader/DxShaderLoader.h>
-#include "test/utils/MemoryGuard.h"
-#include <engine/parameter/ValueParameter.h>
 #include "core/reflection/StandardTypes.h"
+#include "engine/directx/DxGraphics.h"
+#include "engine/directx/shader/DxShaderLoader.h"
+#include "engine/parameter/ValueParameter.h"
+#include "test/utils/MemoryGuard.h"
+#include "test/utils/TestUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -22,7 +22,7 @@ namespace UnitTest {
 private:
     WString resDir = RES_DIR;
 
-    IntrusivePointer<DxGraphics> graphics;
+    DxGraphics graphics;
     SharedPointer<DxShaderCompiler> shaderCompiler;
 
     template<typename T>
@@ -45,9 +45,8 @@ private:
 
 public:
     DxParameterTest() {
-        graphics = makeIntrusive<DxGraphics>();
-        graphics->init();
-        shaderCompiler = makeShared<DxShaderCompiler>(graphics.ref());
+        graphics.init();
+        shaderCompiler = makeShared<DxShaderCompiler>(graphics);
     }
 
     TEST_METHOD(DxParameter_intParams) {

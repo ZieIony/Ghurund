@@ -2,6 +2,7 @@
 #include "GPUBuffer.h"
 
 #include "core/logging/Logger.h"
+#include "engine/directx/DxGraphics.h"
 
 namespace Ghurund::Engine::DirectX {
     void GPUBuffer::init(DxGraphics& graphics, size_t size) {

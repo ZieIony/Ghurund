@@ -14,8 +14,6 @@
 
 #pragma warning(push, 0)
 #include <d3d12.h>
-#include <D3Dcompiler.h>
-#include "d3dx12.h"
 #pragma warning(pop)
 
 namespace Ghurund::Engine::DirectX {

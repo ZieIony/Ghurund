@@ -92,8 +92,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\directx\DxGraphicsFeature.h" />
+    <ClInclude Include="src\engine\directx\DxGraphicsFeatureFactory.h" />
     <ClInclude Include="src\engine\directx\material\DxMaterialFactory.h" />
     <ClInclude Include="src\engine\directx\material\DxMaterialLoader.h" />
+    <ClInclude Include="src\engine\directx\shader\compiler\ShaderCompilationResult.h" />
+    <ClInclude Include="src\engine\directx\shader\compiler\ShaderSettings.h" />
+    <ClInclude Include="src\engine\directx\texture\DxTextureFactory.h" />
     <ClInclude Include="src\Ghurund.Engine.DirectX.h" />
     <ClInclude Include="src\engine\directx\CommandList.h" />
     <ClInclude Include="src\engine\directx\DirectXTypes.h" />
@@ -122,23 +127,23 @@
     <ClInclude Include="src\engine\directx\mesh\DxMesh.h" />
     <ClInclude Include="src\engine\directx\mesh\MeshLoader.h" />
     <ClInclude Include="src\engine\directx\parameter\DxParameter.h" />
-    <ClInclude Include="src\engine\directx\shader\CompilationTarget.h" />
-    <ClInclude Include="src\engine\directx\shader\CompilerInclude.h" />
+    <ClInclude Include="src\engine\directx\shader\compiler\CompilationTarget.h" />
+    <ClInclude Include="src\engine\directx\shader\compiler\CompilerInclude.h" />
     <ClInclude Include="src\engine\directx\shader\ConstantBuffer.h" />
     <ClInclude Include="src\engine\directx\shader\ConstantBufferField.h" />
-    <ClInclude Include="src\engine\directx\shader\DxCompilationException.h" />
-    <ClInclude Include="src\engine\directx\shader\DxEntrypointNotFoundException.h" />
+    <ClInclude Include="src\engine\directx\shader\compiler\DxCompilationException.h" />
+    <ClInclude Include="src\engine\directx\shader\compiler\DxEntrypointNotFoundException.h" />
     <ClInclude Include="src\engine\directx\shader\DxShader.h" />
-    <ClInclude Include="src\engine\directx\shader\DxShaderCompiler.h" />
+    <ClInclude Include="src\engine\directx\shader\compiler\DxShaderCompiler.h" />
     <ClInclude Include="src\engine\directx\shader\DxShaderLoader.h" />
-    <ClInclude Include="src\engine\directx\shader\DxShaderProgram.h" />
+    <ClInclude Include="src\engine\directx\shader\compiler\DxShaderProgram.h" />
     <ClInclude Include="src\engine\directx\shader\DxShaderType.h" />
     <ClInclude Include="src\engine\directx\shader\Sampler.h" />
     <ClInclude Include="src\engine\directx\shader\ShaderConstant.h" />
     <ClInclude Include="src\engine\directx\shader\ShaderProvider.h" />
     <ClInclude Include="src\engine\directx\shader\TextureBufferConstant.h" />
     <ClInclude Include="src\engine\directx\shader\TextureConstant.h" />
-    <ClInclude Include="src\engine\directx\texture\Texture.h" />
+    <ClInclude Include="src\engine\directx\texture\DxTexture.h" />
     <ClInclude Include="src\engine\directx\texture\TextureProvider.h" />
     <ClInclude Include="src\ghedxpch.h" />
   </ItemGroup>
@@ -146,6 +151,7 @@
     <ClCompile Include="src\engine\directx\CommandList.cpp" />
     <ClCompile Include="src\engine\directx\DirectXTypes.cpp" />
     <ClCompile Include="src\engine\directx\DxGraphics.cpp" />
+    <ClCompile Include="src\engine\directx\DxGraphicsFeature.cpp" />
     <ClCompile Include="src\engine\directx\DxRenderer.cpp" />
     <ClCompile Include="src\engine\directx\DxRenderingContext.cpp" />
     <ClCompile Include="src\engine\directx\Fence.cpp" />
@@ -168,14 +174,14 @@
     <ClCompile Include="src\engine\directx\mesh\DxMesh.cpp" />
     <ClCompile Include="src\engine\directx\mesh\MeshLoader.cpp" />
     <ClCompile Include="src\engine\directx\parameter\DxParameter.cpp" />
-    <ClCompile Include="src\engine\directx\shader\CompilationTarget.cpp" />
-    <ClCompile Include="src\engine\directx\shader\CompilerInclude.cpp" />
+    <ClCompile Include="src\engine\directx\shader\compiler\CompilationTarget.cpp" />
+    <ClCompile Include="src\engine\directx\shader\compiler\CompilerInclude.cpp" />
     <ClCompile Include="src\engine\directx\shader\ConstantBuffer.cpp" />
     <ClCompile Include="src\engine\directx\shader\DxShader.cpp" />
-    <ClCompile Include="src\engine\directx\shader\DxShaderCompiler.cpp" />
+    <ClCompile Include="src\engine\directx\shader\compiler\DxShaderCompiler.cpp" />
     <ClCompile Include="src\engine\directx\shader\DxShaderLoader.cpp" />
     <ClCompile Include="src\engine\directx\shader\DxShaderType.cpp" />
-    <ClCompile Include="src\engine\directx\texture\Texture.cpp" />
+    <ClCompile Include="src\engine\directx\texture\DxTexture.cpp" />
     <ClCompile Include="src\ghedxpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

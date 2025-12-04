@@ -2,29 +2,22 @@
 
 #include "CompilationTarget.h"
 #include "CompilerInclude.h"
-#include "core/IUnknownImpl.h"
-#include "DxShader.h"
 #include "DxShaderProgram.h"
-#include "DxShaderType.h"
-#include <core/io/DirectoryPath.h>
-#include <core/string/String.h>
-#include <engine/directx/DxGraphics.h>
-#include <engine/parameter/ParameterManager.h>
+#include "ShaderSettings.h"
+
+#include "core/IUnknownImpl.h"
+#include "core/string/String.h"
+#include "engine/directx/shader/ConstantBuffer.h"
+#include "engine/directx/shader/DxShader.h"
+#include "engine/directx/shader/DxShaderType.h"
+#include "engine/directx/shader/Sampler.h"
+#include "engine/directx/shader/TextureConstant.h"
+#include "engine/graphics/mesh/VertexStream.h"
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
 
-	struct ShaderCompilationResult {
-		Buffer data;
-		AString logs;
-		uint32_t errorCode;
-	};
-
-	struct ShaderSettings {
-		bool isTransparencyEnabled;
-		D3D12_CULL_MODE cullMode;
-		bool isDepthTestEnabled;
-	};
+	class DxGraphics;
 
 	class DxShaderCompiler {
 	private:

@@ -2,7 +2,7 @@
 
 #include "PropertyLoader.h"
 #include "engine/graphics/material/IMaterial.h"
-#include <engine/graphics/material/IMaterialFactory.h>
+#include <engine/graphics/material/MaterialLoader.h>
 
 namespace Ghurund::UI {
     using namespace Ghurund::Engine;
@@ -10,13 +10,13 @@ namespace Ghurund::UI {
     class MaterialPropertyLoader:public PropertyLoader {
     private:
         ResourceManager& resourceManager;
-        IMaterialFactory& materialFactory;
+        MaterialLoader& materialLoader;
 
     public:
-        MaterialPropertyLoader(
+		MaterialPropertyLoader(
             ResourceManager& resourceManager,
-            IMaterialFactory& materialFactory
-		):resourceManager(resourceManager), materialFactory(materialFactory) {
+            MaterialLoader& materialLoader
+		):resourceManager(resourceManager), materialLoader(materialLoader) {
 		}
 
         virtual const Type& getType() const override {

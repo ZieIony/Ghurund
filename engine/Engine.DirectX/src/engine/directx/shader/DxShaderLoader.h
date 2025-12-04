@@ -1,8 +1,8 @@
 #pragma once
 
 #include "DxShader.h"
-#include "DxShaderCompiler.h"
 #include "core/resource/Loader.h"
+#include "compiler/DxShaderCompiler.h"
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;

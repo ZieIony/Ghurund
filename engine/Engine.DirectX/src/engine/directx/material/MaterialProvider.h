@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/directx/texture/Texture.h"
+#include "engine/directx/texture/DxTexture.h"
 #include "engine/graphics/material/IMaterialProvider.h"
 #include "DxMaterial.h"
 #include "engine/directx/shader/ShaderProvider.h"

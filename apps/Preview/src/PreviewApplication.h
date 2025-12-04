@@ -3,15 +3,12 @@
 
 #include "PreviewWindow.h"
 #include "ThemeApplication.h"
-#include "ui/loading/DrawableFactory.h"
-#include <engine/directx/shader/DxShaderCompiler.h>
 
 namespace Preview {
     using namespace Ghurund::Engine;
 
     class PreviewApplication:public Ghurund::Core::Application, public ThemeApplication {
     private:
-        SharedPointer<DxShaderCompiler> shaderCompiler;
         Ghurund::Engine::DirectX::DxRenderer* renderer = nullptr;
         PreviewWindow* window = nullptr;
 

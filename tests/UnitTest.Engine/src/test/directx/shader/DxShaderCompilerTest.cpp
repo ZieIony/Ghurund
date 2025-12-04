@@ -3,10 +3,8 @@
 
 #include "engine/graphics/mesh/MeshData.h"
 #include <engine/directx/mesh/DxMesh.h>
-#include <engine/directx/shader/CompilerInclude.h>
-#include <engine/directx/shader/DxShaderCompiler.h>
-#include <engine/graphics/mesh/MeshDataLoader.h>
 #include "test/utils/MemoryGuard.h"
+#include <engine/directx/shader/compiler/DxShaderCompiler.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -63,14 +61,14 @@ float4 pixelMain(DefaultPixel input): SV_Target{
 }
 )";
 
-    IntrusivePointer<DxGraphics> graphics;
+    ResourceManager resourceManager;
+    DxGraphics graphics;
     SharedPointer<DxShaderCompiler> shaderCompiler;
 
 public:
     DxShaderCompilerTest() {
-        graphics = makeIntrusive<DxGraphics>();
-        graphics->init();
-        shaderCompiler = makeShared<DxShaderCompiler>(graphics.ref());
+        graphics.init();
+        shaderCompiler = makeShared<DxShaderCompiler>(graphics);
     }
 
     TEST_METHOD(DxShaderCompiler_compileVertex) {

@@ -1,12 +1,12 @@
 ﻿#pragma once
 
 #include "core/application/Application.h"
-
-#include "engine/directx/DxGraphics.h"
+#include "engine/directx/DxGraphicsFeature.h"
+#include "engine/directx/DxGraphicsFeatureFactory.h"
 #include "engine/directx/DxRenderer.h"
-#include <engine/directx/shader/DxShaderLoader.h>
-#include <ui/font/Font.h>
-#include <ui/font/FontLoader.h>
+#include "engine/directx/shader/DxShaderLoader.h"
+#include "ui/font/Font.h"
+#include "ui/font/FontLoader.h"
 
 namespace Demo {
     using namespace Ghurund::Engine;
@@ -33,10 +33,10 @@ namespace Demo {
 
     public:
         DemoApplication() {
-            Features.add<DxGraphics>();
-            auto graphics = Features.get<DxGraphics>();
+            Features.add<DxGraphicsFeature, DxGraphicsFeatureFactory>();
+            auto graphicsFeature = Features.get<DxGraphicsFeature>();
 
-            shaderCompiler = makeShared<DxShaderCompiler>(*graphics);
+            shaderCompiler = makeShared<DxShaderCompiler>(graphicsFeature->Graphics);
             shaderLoader = makeIntrusive<DxShaderLoader>(shaderCompiler.ref());
             shaderLoader->includeDirs.add(DirectoryPath(L"./resources/shaders/DirectX/"));
             ResourceManager.Loaders.set<DxShader>(shaderLoader.ref());

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "engine/directx/buffer/DynamicBuffer.h"
 #include "engine/directx/shader/ConstantBufferField.h"
 #include "engine/directx/shader/ShaderConstant.h"
 #include "engine/parameter/ParameterProvider.h"
+#include <engine/directx/buffer/GPUBuffer.h>
 
 #include <d3dcompiler.h>
 

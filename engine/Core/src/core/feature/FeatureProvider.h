@@ -2,11 +2,12 @@
 
 #include "Feature.h"
 #include "FeatureFactory.h"
-#include "core/object/IntrusivePointer.h"
-#include "core/object/SharedPointer.h"
+
 #include "core/collection/Map.h"
 #include "core/concepts/Concepts.h"
 #include "core/logging/Formatter.h"
+#include "core/object/IntrusivePointer.h"
+#include "core/object/SharedPointer.h"
 
 namespace Ghurund::Core {
 	class FeatureNotAvailableException:public std::exception {

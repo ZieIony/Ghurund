@@ -1,6 +1,7 @@
 #include "ghedxpch.h"
 #include "CommandList.h"
 
+#include "DxGraphics.h"
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 

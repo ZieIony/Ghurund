@@ -11,6 +11,7 @@
 
 #include <cstdint>
 #include <format>
+#include <engine/directx/DxGraphicsFeatureFactory.h>
 
 namespace Messenger {
     using namespace Ghurund::Engine;
@@ -28,15 +29,15 @@ namespace Messenger {
 
     public:
         MessengerApplication() {
+            Features.add<DxGraphicsFeature, DxGraphicsFeatureFactory>();
+            Features.add<Networking>();
+
             auto drawableFactory = ghnew DrawableFactory(ResourceManager);
             Features.add<DxUIFeature, DxUIFeatureFactory>();
             lightTheme = ghnew LightTheme(ResourceManager, *drawableFactory);
             LayoutLoader* layoutLoader = (LayoutLoader*)ResourceManager.Loaders.get<Control>();
             //layoutLoader->Theme = lightTheme;
-            renderer = ghnew DxRenderer(*Features.get<DxGraphics>());
-
-            Features.add<DxGraphics>();
-            Features.add<Networking>();
+            renderer = ghnew DxRenderer(Features.get<DxGraphicsFeature>()->Graphics);
         }
 
         ~MessengerApplication() {

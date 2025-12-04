@@ -3,6 +3,8 @@
 #include "core/string/String.h"
 
 namespace Ghurund::Engine::DirectX {
+    using namespace Ghurund::Core;
+
     struct ConstantBufferField {
         AString name;
         size_t size, offset;

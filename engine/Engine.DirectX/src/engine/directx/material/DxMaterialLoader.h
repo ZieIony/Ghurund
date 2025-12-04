@@ -1,15 +1,11 @@
 #pragma once
 
 #include "engine/graphics/material/MaterialLoader.h"
-#include <engine/directx/shader/DxShaderLoader.h>
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
 
 	class DxMaterialLoader:public MaterialLoader {
-	private:
-        DxShaderLoader& shaderLoader;
-
 	protected:
         virtual Resource* loadInternal(
             MemoryInputStream& stream,
@@ -27,6 +23,11 @@ namespace Ghurund::Engine::DirectX {
         ) const override;
 
     public:
-        DxMaterialLoader(DxShaderLoader& shaderLoader):shaderLoader(shaderLoader) {}
-	};
+        DxMaterialLoader(
+            ResourceManager& resourceManager,
+            IMaterialFactory& materialFactory,
+            ITextureFactory& textureFactory
+        ):MaterialLoader(resourceManager, materialFactory, textureFactory) {
+        }
+    };
 }

@@ -12,7 +12,8 @@ namespace Demo {
     }
     
     void DemoApplication::onInit() {
-        renderer = ghnew DxRenderer(*Features.get<DxGraphics>());
+        auto graphicsFeature = Features.get<DxGraphicsFeature>();
+        renderer = ghnew DxRenderer(graphicsFeature->Graphics);
         renderer->init();
 
         drawableFactory = ghnew Ghurund::UI::DrawableFactory(ResourceManager);

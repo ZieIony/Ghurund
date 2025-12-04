@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DxShaderType.h"
+#include "engine/directx/shader/DxShaderType.h"
 
 #include <exception>
 

@@ -1,5 +1,5 @@
 #include "ghedxpch.h"
-#include "Texture.h"
+#include "DxTexture.h"
 
 #include "core/io/File.h"
 #include "core/io/MemoryInputStream.h"
@@ -8,7 +8,7 @@
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Engine::DirectX {
-	void Texture::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+	void DxTexture::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         /*Status result;
         image = (Ghurund::Image*)context.ResourceManager.load(context, workingDir, stream, &result, options);
         if (filterStatus(result, options) != Status::OK)
@@ -17,19 +17,19 @@ namespace Ghurund::Engine::DirectX {
         throw NotImplementedException();
     }
 
-    void Texture::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    void DxTexture::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         //return context.ResourceManager.save(*image, context, workingDir, stream, options);
         throw NotImplementedException();
     }
 
-    const Ghurund::Core::Type& Texture::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Texture>()
+    const Ghurund::Core::Type& DxTexture::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<DxTexture>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }
 
-    void Texture::init(DxGraphics& graphics, CommandList& commandList, Ghurund::Core::Image& image) {
+    void DxTexture::init(DxGraphics& graphics, CommandList& commandList, Ghurund::Core::Image& image) {
 		if (commandList.State == CommandListState::FINISHED)
             commandList.reset();
 

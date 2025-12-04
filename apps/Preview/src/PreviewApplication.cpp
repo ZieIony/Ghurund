@@ -1,28 +1,16 @@
 #include "PreviewApplication.h"
 
 #include "core/io/DirectoryLibrary.h"
+#include "engine/directx/DxGraphicsFeatureFactory.h"
+#include "ui/directx/DxUIFeatureFactory.h"
 #include "ui/theme/DarkTheme.h"
 #include "ui/theme/LightTheme.h"
-#include <engine/directx/shader/DxShaderCompiler.h>
-#include <engine/directx/shader/DxShaderLoader.h>
-#include <ui/directx/DxUIFeature.h>
-#include <ui/directx/DxUIFeatureFactory.h>
-#include <engine/directx/material/DxMaterialLoader.h>
 
 namespace Preview {
     using namespace Ghurund::UI::DirectX;
 
     PreviewApplication::PreviewApplication() {
-        Features.add<DxGraphics>();
-        auto graphics = Features.get<DxGraphics>();
-
-        shaderCompiler = makeShared<DxShaderCompiler>(*graphics);
-        auto shaderLoader = makeIntrusive<DxShaderLoader>(shaderCompiler.ref());
-        shaderLoader->includeDirs.add(DirectoryPath(L"./resources/shaders/DirectX/"));
-        ResourceManager.Loaders.set<DxShader>(shaderLoader.ref());
-        auto materialLoader = makeIntrusive<DxMaterialLoader>(shaderLoader.ref());
-        ResourceManager.Loaders.set<IMaterial>(materialLoader.ref());
-
+        Features.add<DxGraphicsFeature, DxGraphicsFeatureFactory>();
         Features.add<DxUIFeature, DxUIFeatureFactory>();
     }
     
@@ -40,7 +28,7 @@ namespace Preview {
         ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
         ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
 
-        renderer = ghnew DxRenderer(*Features.get<DxGraphics>());
+        renderer = ghnew DxRenderer(Features.get<DxGraphicsFeature>()->Graphics);
         renderer->init();
         window = ghnew PreviewWindow(*this, *renderer, *this);
 

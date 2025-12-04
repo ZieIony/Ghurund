@@ -1,8 +1,11 @@
 #pragma once
 
 #include "ITexture.h"
+#include "core/object/Noncopyable.h"
 
 namespace Ghurund::Engine {
+    using namespace Ghurund::Core;
+
     class ITextureProvider:public Noncopyable {
     public:
         virtual ITexture* makeDefaultDiffuse() const = 0;

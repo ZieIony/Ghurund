@@ -2,9 +2,10 @@
 #include "CppUnitTest.h"
 
 #include "core/object/IntrusivePointer.h"
+#include <engine/directx/DxGraphics.h>
+#include <engine/directx/shader/DxShaderLoader.h>
 
 #include "test/utils/TestUtils.h"
-#include <engine/directx/shader/DxShaderLoader.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -59,13 +60,15 @@ float4 pixelMain(DefaultPixel input): SV_Target{
 }
 )";
 
+    ResourceManager resourceManager;
+
     public:
 
         TEST_METHOD(DxShaderLoader_loadUnknownFormat) {
-            auto graphics = makeIntrusive<DxGraphics>();
-            graphics->init();
+            DxGraphics graphics;
+            graphics.init();
 
-            DxShaderCompiler compiler(graphics.ref());
+            DxShaderCompiler compiler(graphics);
             auto loader = makeIntrusive<DxShaderLoader>(compiler);
             Buffer data;
             MemoryInputStream stream(data.Data, data.Size);
@@ -76,10 +79,10 @@ float4 pixelMain(DefaultPixel input): SV_Target{
         }
 
         TEST_METHOD(DxShaderLoader_loadHlsl) {
-            auto graphics = makeIntrusive<DxGraphics>();
-            graphics->init();
+            DxGraphics graphics;
+            graphics.init();
 
-            DxShaderCompiler compiler(graphics.ref());
+            DxShaderCompiler compiler(graphics);
             IntrusivePointer<DxShaderLoader> loader(ghnew DxShaderLoader(compiler));
             MemoryInputStream stream(testShaderSource.Data, testShaderSource.Size);
             IntrusivePointer<DxShader> shader((DxShader*)loader->load(stream, DirectoryPath()));

@@ -2,10 +2,10 @@
 #include "DxShaderCompiler.h"
 
 #include <core/Finally.h>
-#include "ConstantBuffer.h"
 #include "DxShaderProgram.h"
 #include "DxEntrypointNotFoundException.h"
 #include "DxCompilationException.h"
+#include "engine/directx/DxGraphics.h"
 
 #pragma warning(push, 0)
 #include <d3dcompiler.h>

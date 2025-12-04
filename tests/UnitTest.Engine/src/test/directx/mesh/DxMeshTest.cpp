@@ -1,8 +1,9 @@
 #include "utepch.h"
 #include "CppUnitTest.h"
 
+#include "engine/directx/DxGraphics.h"
+#include "engine/directx/mesh/DxMesh.h"
 #include "engine/graphics/mesh/MeshData.h"
-#include <engine/directx/mesh/DxMesh.h>
 #include "test/utils/MemoryGuard.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -28,11 +29,12 @@ public:
             auto mesh = makeIntrusive<MeshData>();
             mesh->init({ posStream }, (uint32_t)vertices.Size, indices);
             auto dxMesh = makeIntrusive<DxMesh>();
-            auto graphics = makeIntrusive<DxGraphics>();
-            graphics->init();
+            ResourceManager resourceManager;
+            DxGraphics graphics;
+            graphics.init();
             auto commandList = makeIntrusive<CommandList>();
-            commandList->init(*graphics.get(), graphics->CopyQueue);
-            dxMesh->init(*mesh.get(), *graphics.get(), *commandList.get());
+            commandList->init(graphics, graphics.CopyQueue);
+            dxMesh->init(*mesh.get(), graphics, *commandList.get());
 
             Assert::IsTrue(mesh->Valid);
         }

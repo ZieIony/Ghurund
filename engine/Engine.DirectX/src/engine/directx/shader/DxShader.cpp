@@ -1,13 +1,9 @@
 #include "ghedxpch.h"
 #include "DxShader.h"
 
-#include "core/object/IntrusivePointer.h"
-#include "core/io/MemoryInputStream.h"
-#include "core/io/MemoryOutputStream.h"
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
-#include <core/Finally.h>
-#include <engine/directx/texture/Texture.h>
+#include <engine/directx/texture/DxTexture.h>
 
 namespace Ghurund::Engine::DirectX {
 	const Ghurund::Core::Type& DxShader::GET_TYPE() {
@@ -26,7 +22,7 @@ namespace Ghurund::Engine::DirectX {
 
 		for (size_t i = 0; i < textures.Size; i++) {
 			TextureParameter* parameter = (TextureParameter*)textures.get(i)->Parameter;
-			Texture* texture = (Texture*)parameter->getValue();
+			DxTexture* texture = (DxTexture*)parameter->getValue();
 			if (!texture) {
 				auto text = std::format(_T("Parameter for variable '{}' is missing.\n"), textures[i]->Name);
 				Logger::logOnce(LogType::WARNING, text.c_str(), i);

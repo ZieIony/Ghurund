@@ -6,8 +6,10 @@
 		<ControlContainer width="Parent.Width" top="Parent.Top" bottom="'controls'.Top"
 						  name="container">
 			<ControlGroup>
-				<Control width="200" height="200" scaleMode="fit">
-					<Control.Material drawable="images\buttons.png" shader="lib://Ghurund/shaders/DirectX/ui/image.hlsl"/>
+				<Control width="433" height="200" scaleMode="fit">
+					<Control.Material shader="lib://Ghurund/shaders/DirectX/ui/image.hlsl">
+						<Parameter name="image" value="images\buttons.png"/>
+					</Control.Material>
 				</Control>
 			</ControlGroup>
 		</ControlContainer>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/resource/ResourceManager.h"
-#include "engine/directx/texture/Texture.h"
+#include "engine/directx/texture/DxTexture.h"
 #include "engine/graphics/texture/ITextureProvider.h"
 
 namespace Ghurund::Engine::DirectX {
@@ -13,7 +13,7 @@ namespace Ghurund::Engine::DirectX {
 		CommandList& commandList;
 		ResourceManager& manager;
 
-		Texture* make(const WString& fileName) const {
+		DxTexture* make(const WString& fileName) const {
 			return makeFromImage(ResourcePath(ResourceManager::ENGINE_LIB_NAME, fileName));
 		}
 
@@ -24,27 +24,27 @@ namespace Ghurund::Engine::DirectX {
 			ResourceManager& manager
 		):graphics(graphics), commandList(commandList), manager(manager) {}
 
-		virtual Texture* makeDefaultDiffuse() const override {
+		virtual DxTexture* makeDefaultDiffuse() const override {
 			return make(L"/textures/diffuse.png");
 		}
 
-		virtual Texture* makeDefaultSpecular() const override {
+		virtual DxTexture* makeDefaultSpecular() const override {
 			return make(L"/textures/specular.png");
 		}
 
-		virtual Texture* makeDefaultNormal() const override {
+		virtual DxTexture* makeDefaultNormal() const override {
 			return make(L"/textures/normal.png");
 		}
 
-		virtual Texture* makeChecker() const override {
+		virtual DxTexture* makeChecker() const override {
 			return make(L"/textures/checker.png");
 		}
 
-		virtual Texture* makeFromImage(const ResourcePath& imagePath) const override {
+		virtual DxTexture* makeFromImage(const ResourcePath& imagePath) const override {
 			Ghurund::Core::Image* image = manager.load<Ghurund::Core::Image>(imagePath, DirectoryPath());
 			if (image == nullptr)
 				return nullptr;
-			Texture* texture = ghnew Texture();
+			DxTexture* texture = ghnew DxTexture();
 			texture->init(graphics, commandList, *image);
 			image->release();
 			return texture;

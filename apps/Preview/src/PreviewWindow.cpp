@@ -5,6 +5,7 @@
 #include <ui/directx/material/DxUIMaterialProvider.h>
 #include <ui/material/ControlMaterialParameters.h>
 #include "core/Colors.h"
+#include <engine/directx/DxGraphicsFeature.h>
 
 namespace Preview {
 	PreviewWindow::PreviewWindow(
@@ -19,11 +20,11 @@ namespace Preview {
 	void PreviewWindow::init() {
 		previewLayout.set(Application.ResourceManager.load<Control>(FilePath(L"apps/Preview/res/layout.xml"), DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
 
-		DxGraphics* graphics = Application.Features.get<DxGraphics>();
+		DxGraphicsFeature* graphicsFeature = Application.Features.get<DxGraphicsFeature>();
 		auto commandList = makeIntrusive<CommandList>();
-		commandList->init(*graphics, graphics->DirectQueue);
+		commandList->init(graphicsFeature->Graphics, graphicsFeature->Graphics.DirectQueue);
 
-		uiContext = makeShared<DxUIContext>(*this, *graphics, commandList.ref());
+		uiContext = makeShared<DxUIContext>(*this, graphicsFeature->Graphics, commandList.ref());
 		uiLayer = ghnew UILayer();
 		uiLayer->init(uiContext.ref());
 		uiLayer->Theme = &themeApp.CurrentTheme;

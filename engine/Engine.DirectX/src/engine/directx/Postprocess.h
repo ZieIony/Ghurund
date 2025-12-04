@@ -2,7 +2,7 @@
 
 #include "engine/directx/buffer/RenderTarget.h"
 #include "engine/directx/material/DxMaterial.h"
-#include "texture/Texture.h"
+#include "texture/DxTexture.h"
 
 namespace Ghurund::Engine::DirectX {
     class Postprocess: public Resource {
@@ -31,6 +31,6 @@ namespace Ghurund::Engine::DirectX {
             return __super::isValid();
         }
 
-        void process(Texture* texture, RenderTarget* renderTarget) {}
+        void process(DxTexture* texture, RenderTarget* renderTarget) {}
     };
 }

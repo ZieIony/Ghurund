@@ -2,7 +2,6 @@
 
 #include "core/Buffer.h"
 #include "engine/directx/CommandList.h"
-#include "engine/directx/DxGraphics.h"
 
 namespace Ghurund::Engine::DirectX {
     class GPUBuffer {

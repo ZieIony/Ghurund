@@ -102,6 +102,7 @@
     <ClInclude Include="src\engine\application\LayerList.h" />
     <ClInclude Include="src\engine\graphics\material\IMaterialFactory.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialLoader.h" />
+    <ClInclude Include="src\engine\graphics\texture\ITextureFactory.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="src\engine\entity\light\Light.cpp" />
     <ClCompile Include="src\engine\game\action\ActionMapping.cpp" />
     <ClCompile Include="src\engine\graphics\DrawableComponents.cpp" />
+    <ClCompile Include="src\engine\graphics\material\MaterialLoader.cpp" />
     <ClCompile Include="src\engine\graphics\Renderer.cpp" />
     <ClCompile Include="src\engine\graphics\RenderingStatistics.cpp" />
     <ClCompile Include="src\engine\graphics\material\IMaterial.cpp" />
@@ -224,6 +226,7 @@
     <ClCompile Include="src\engine\graphics\mesh\SphereMeshData.cpp" />
     <ClCompile Include="src\engine\graphics\shader\IShader.cpp" />
     <ClCompile Include="src\engine\graphics\shader\ShaderCode.cpp" />
+    <ClCompile Include="src\engine\graphics\texture\ITexture.cpp" />
     <ClCompile Include="src\engine\net\Client.cpp" />
     <ClCompile Include="src\engine\net\Message.cpp" />
     <ClCompile Include="src\engine\net\MessageType.cpp" />

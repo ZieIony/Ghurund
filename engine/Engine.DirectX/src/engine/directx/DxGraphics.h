@@ -1,12 +1,13 @@
 #pragma once
 
-#include "core/object/Object.h"
 #include "core/collection/List.h"
+#include "core/object/Object.h"
 #include "core/reflection/Type.h"
 #include "engine/directx/adapter/GraphicsAdapter.h"
 #include "engine/directx/buffer/DescriptorHeap.h"
 #include "engine/directx/memory/GPUResourceFactory.h"
-#include "core/feature/Feature.h"
+#include <core/object/Initializable.h>
+#include <core/object/Noncopyable.h>
 
 namespace Ghurund::Engine::DirectX {
     using namespace DirectX;
@@ -15,7 +16,7 @@ namespace Ghurund::Engine::DirectX {
 
     class CommandList;
 
-    class DxGraphics: public Ghurund::Core::Feature {
+    class DxGraphics: public Noncopyable, public Object, public Initializable {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -39,8 +40,10 @@ namespace Ghurund::Engine::DirectX {
         List<GraphicsAdapter*> adapters;
 
         void initAdapters();
+        void initDevice(GraphicsAdapter& adapter);
 
         void uninitGraphics();
+        void uninitDevice();
 
     public:
         ~DxGraphics() {
@@ -49,10 +52,8 @@ namespace Ghurund::Engine::DirectX {
         }
 
         virtual void onInit() override;
-        void initDevice(GraphicsAdapter& adapter);
 
         virtual void onUninit() override;
-        void uninitDevice();
 
         ID3D12Device* getDevice() {
             return device;

@@ -1,7 +1,9 @@
 #include "ghedxpch.h"
 #include "DxShaderLoader.h"
-#include "CompilerInclude.h"
-#include "DxEntrypointNotFoundException.h"
+
+#include "compiler/CompilerInclude.h"
+#include "compiler/DxShaderProgram.h"
+#include "compiler/DxEntrypointNotFoundException.h"
 
 namespace Ghurund::Engine::DirectX {
 	DxShader* DxShaderLoader::loadShd(MemoryInputStream& stream) {

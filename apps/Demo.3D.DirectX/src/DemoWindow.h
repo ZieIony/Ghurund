@@ -25,7 +25,7 @@ namespace Demo {
 
 		Float2Parameter* sizeParameter;
 		TextureParameter* colorTextureParameter;
-		IntrusivePointer<Texture> colorTexture;
+		IntrusivePointer<DxTexture> colorTexture;
 
 	public:
 		DemoWindow(

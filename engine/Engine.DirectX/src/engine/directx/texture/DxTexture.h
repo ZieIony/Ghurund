@@ -6,7 +6,7 @@
 #include "engine/graphics/texture/ITexture.h"
 
 namespace Ghurund::Engine::DirectX {
-    class Texture:public ITexture {
+    class DxTexture:public ITexture {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -16,7 +16,7 @@ namespace Ghurund::Engine::DirectX {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = Texture::GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = DxTexture::GET_TYPE();
 #pragma endregion
 
     private:
@@ -34,7 +34,7 @@ namespace Ghurund::Engine::DirectX {
     public:
         DescriptorHandle descHandle;
 
-        ~Texture() {
+        ~DxTexture() {
             finalize();
         }
 
@@ -74,7 +74,7 @@ namespace Ghurund::Engine::DirectX {
 #pragma region formats
     protected:
         virtual const Array<ResourceFormat>& getFormatsImpl() const override {
-            return Texture::FORMATS;
+            return DxTexture::FORMATS;
         }
 
     public:

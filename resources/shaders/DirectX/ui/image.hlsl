@@ -19,7 +19,7 @@ UIPixel vertexMain(UIVertex input) {
 
     float2 pos = screenToClip(input.position.xy * size + position, viewportSize);
     output.position = float4(pos.xy, input.position.z, 1);
-    output.texCoord = output.position.xy;
+    output.texCoord = input.position.xy;
 
     return output;
 }

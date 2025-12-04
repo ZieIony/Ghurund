@@ -28,9 +28,9 @@ namespace Demo {
 		Renderer = &renderer;
 		BackgroundColor = &Colors::LIGHT_SKY_BLUE;
 
-		DxGraphics* graphics = app.Features.get<DxGraphics>();
+		DxGraphicsFeature* graphicsFeature = app.Features.get<DxGraphicsFeature>();
 		auto commandList = makeIntrusive<CommandList>();
-		commandList->init(*graphics, graphics->DirectQueue);
+		commandList->init(graphicsFeature->Graphics, graphicsFeature->Graphics.DirectQueue);
 
 		DxUIShaderProvider shaderProvider(app.ResourceManager);
 		DxUIMaterialProvider materialProvider(ParameterManager, shaderProvider);
@@ -46,7 +46,7 @@ namespace Demo {
 
 		//font.set(app.ResourceManager.load<Font>(ResourcePath(FilePath(L"resources/fonts/lato_regular.ttf"))));
 
-		DxTextMeshFactory factory(*graphics, commandList.ref());
+		DxTextMeshFactory factory(graphicsFeature->Graphics, commandList.ref());
 
 		RenderGroup uiGroup(0, DrawOrder::BACK_TO_FRONT);
 		{
@@ -68,7 +68,7 @@ namespace Demo {
 			auto meshData = makeIntrusive<QuadMeshData>();
 			meshData->init();
 			shadowMesh = IntrusivePointer<Resource>(mesh);
-			mesh->init(meshData.ref(), *graphics, commandList.ref());
+			mesh->init(meshData.ref(), graphicsFeature->Graphics, commandList.ref());
 
 			shadowMaterial = IntrusivePointer<IMaterial>(materialProvider.makeShadow());
 			ShadowMaterialParameters parameters(shadowMaterial.ref());
