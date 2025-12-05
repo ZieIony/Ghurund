@@ -205,6 +205,26 @@ namespace Ghurund::Core {
             return result || result2;
         }
 
+        virtual void setClientPosition(const XMINT2& pos) {
+            setPosition(pos.x, pos.y);
+        }
+
+        virtual const XMINT2& getClientPosition() {
+            return Position;
+        }
+
+        __declspec(property(get = getClientPosition, put = setClientPosition)) const XMINT2& ClientPosition;
+
+        virtual void setClientSize(const IntSize& size) {
+            setSize(size);
+        }
+
+        virtual IntSize getClientSize() {
+            return Size;
+        }
+
+        __declspec(property(get = getClientSize, put = setClientSize)) IntSize ClientSize;
+
         virtual bool isFocused() const {
             return false;
         }

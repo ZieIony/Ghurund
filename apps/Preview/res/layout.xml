@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreviewLayout width="Parent.Width" height="Parent.Height"
-			   xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Preview">
+<PreviewLayout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Preview">
+	<PreviewLayout.Material shader="lib://Ghurund/shaders/DirectX/ui/color.hlsl">
+		<Parameter name="backgroundColor" value="#ffcccccc"/>
+	</PreviewLayout.Material>
 	<ControlGroup width="Parent.Width" height="Parent.Height">
 		<ControlGroup.Material color="theme://color/background" shader="lib://Ghurund/shaders/DirectX/ui/control.hlsl"/>
 		<ControlContainer width="Parent.Width" top="Parent.Top" bottom="'controls'.Top"
 						  name="container">
 			<ControlGroup>
-				<Control width="433" height="200" scaleMode="fit">
+				<Control width="433" height="56" scaleMode="fit">
 					<Control.Material shader="lib://Ghurund/shaders/DirectX/ui/image.hlsl">
 						<Parameter name="image" value="images\buttons.png"/>
 					</Control.Material>

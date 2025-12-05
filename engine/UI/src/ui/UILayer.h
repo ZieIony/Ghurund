@@ -73,6 +73,10 @@ namespace Ghurund::UI {
             rootView->Child = content;
         }
 
+        inline void setContent(Ghurund::UI::Control* content, const ConstraintSet& set) {
+            rootView->setChild(content, set);
+        }
+
         __declspec(property(get = getContent, put = setContent)) Ghurund::UI::Control* Content;
 
         inline UIContext& getContext() {

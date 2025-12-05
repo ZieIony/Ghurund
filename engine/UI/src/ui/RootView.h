@@ -58,5 +58,7 @@ namespace Ghurund::UI {
         virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
         virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
+
+        virtual PartialConstraintSet makeDefaultConstraints() const override;
     };
 }

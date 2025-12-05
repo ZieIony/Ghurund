@@ -34,7 +34,7 @@ namespace Ghurund::UI {
         }
 
         virtual void evaluate() override {
-            value = (float)window.Size.Width;
+            value = (float)window.ClientSize.Width;
             evaluated = true;
         }
 
@@ -72,7 +72,7 @@ namespace Ghurund::UI {
         }
 
         virtual void evaluate() override {
-            value = (float)window.Size.Height;
+            value = (float)window.ClientSize.Height;
             evaluated = true;
         }
 

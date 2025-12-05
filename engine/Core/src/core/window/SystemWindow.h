@@ -91,25 +91,21 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getHandle)) HWND Handle;
 
-        inline void setClientPosition(const XMINT2& pos) {
+        virtual void setClientPosition(const XMINT2& pos) override {
             setPosition(pos.x - DecorationMetrics.Left, pos.y - DecorationMetrics.Top);
         }
 
-        inline const XMINT2& getClientPosition() {
+        virtual const XMINT2& getClientPosition() override {
             return { Position.x + (int32_t)DecorationMetrics.Left, Position.y + (int32_t)DecorationMetrics.Top };
         }
 
-        __declspec(property(get = getClientPosition, put = setClientPosition)) const XMINT2& ClientPosition;
-
-        inline void setClientSize(const IntSize& size) {
+        virtual void setClientSize(const IntSize& size) override {
             setSize(size.Width + DecorationMetrics.Horizontal, size.Height + DecorationMetrics.Vertical);
         }
 
-        inline IntSize getClientSize() {
+        virtual IntSize getClientSize() override {
             return { Size.Width - DecorationMetrics.Horizontal, Size.Height - DecorationMetrics.Vertical };
         }
-
-        __declspec(property(get = getClientSize, put = setClientSize)) IntSize ClientSize;
 
         virtual Ghurund::Core::Input* getInput() override {
             return &input;

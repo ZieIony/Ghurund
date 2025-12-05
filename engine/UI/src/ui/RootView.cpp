@@ -87,4 +87,11 @@ namespace Ghurund::UI {
 		return __super::dispatchMouseMotionEvent(event);
 	}
 
+	PartialConstraintSet RootView::makeDefaultConstraints() const {
+		return ConstraintSetInitializer{
+			.width = makeIntrusive<WindowWidthConstraint>(context.Window),
+			.height = makeIntrusive<WindowHeightConstraint>(context.Window)
+		};
+	}
+
 };
