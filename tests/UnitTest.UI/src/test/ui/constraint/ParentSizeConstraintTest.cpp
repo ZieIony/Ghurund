@@ -8,8 +8,8 @@
 #include "ui/constraint/ParentConstraint.h"
 #include "ui/control/ControlGroup.h"
 #include <ui/control/ControlContainer.h>
-#include <test/ui/image/TestImage.h>
-#include <test/ui/TestDrawableFactory.h>
+//#include <test/ui/image/TestImage.h>
+//#include <test/ui/TestDrawableFactory.h>
 
 using namespace Ghurund::UI;
 using namespace UnitTest::Utils;

@@ -7,9 +7,9 @@ namespace Ghurund::UI {
 	void CheckBox::onStateChanged() {
 		/*if (drawable) {
 			if (checked) {
-				drawable->Drawable = Theme::DRAWABLE_CHECKBOX_CHECKED;
+				drawable->Drawable = Theme::TEXTURE_CHECKBOX_CHECKED;
 			} else {
-				drawable->Drawable = Theme::DRAWABLE_CHECKBOX_UNCHECKED;
+				drawable->Drawable = Theme::TEXTURE_CHECKBOX_UNCHECKED;
 			}
 			if (!Enabled) {
 				drawable->Tint = Theme::COLOR_DISABLED_ONBACKGROUND;

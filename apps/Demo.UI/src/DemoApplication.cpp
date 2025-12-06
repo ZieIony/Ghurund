@@ -7,8 +7,9 @@ namespace Demo {
         delete window;
         window = nullptr;
 
-        delete drawableFactory;
+        delete textureFactory;
         delete theme;
+        commandList.set(nullptr);
     }
     
     void DemoApplication::onInit() {
@@ -16,10 +17,12 @@ namespace Demo {
         renderer = ghnew DxRenderer(graphicsFeature->Graphics);
         renderer->init();
 
-        drawableFactory = ghnew Ghurund::UI::DrawableFactory(ResourceManager);
-        theme = ghnew LightTheme(ResourceManager, *drawableFactory);
+        commandList = makeIntrusive<CommandList>();
+        commandList->init(graphicsFeature->Graphics, *graphicsFeature->Graphics.CopyQueue);
+        textureFactory = ghnew DxTextureFactory(graphicsFeature->Graphics, commandList.ref());
+        theme = ghnew LightTheme(ResourceManager, *textureFactory);
 
-        window = ghnew DemoWindow(*this, *renderer, *drawableFactory);
+        window = ghnew DemoWindow(*this, *renderer, *textureFactory);
         window->init();
 
         window->ClientSize = { 800, 600 };

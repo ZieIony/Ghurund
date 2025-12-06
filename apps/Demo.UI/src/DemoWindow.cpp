@@ -11,8 +11,8 @@ namespace Demo {
 	DemoWindow::DemoWindow(
 		DemoApplication& app,
 		Ghurund::Engine::DirectX::DxRenderer& renderer,
-		Ghurund::UI::DrawableFactory& drawableFactory
-	):GameWindow(app), drawableFactory(&drawableFactory) {
+		ITextureFactory& textureFactory
+	):GameWindow(app), textureFactory(textureFactory) {
 		closed += DEFAULT_QUIT_APP_WINDOW_CLOSED_HANDLER;
 		Title = _T("Demo UI");
 		Renderer = &renderer;
@@ -51,23 +51,25 @@ namespace Demo {
 			Color(0xff0000ff)
 			});
 
-		auto pasteIcon = IntrusivePointer<Drawable>(drawableFactory->makeDrawable(ResourcePath(FilePath(_T("resources/icons/paste 18.png")))));
-		auto buttonImage = IntrusivePointer<Drawable>(drawableFactory->makeDrawable(ResourcePath(FilePath(_T("resources/button.png")))));
+		auto pasteImage = IntrusivePointer<Image>(Application.ResourceManager.load<Image>(ResourcePath(FilePath(_T("resources/icons/paste 18.png")))));
+		auto pasteIcon = IntrusivePointer<ITexture>(textureFactory.makeTexture(pasteImage.ref()));
+		auto buttonImage = IntrusivePointer<Image>(Application.ResourceManager.load<Image>(ResourcePath(FilePath(_T("resources/button.png")))));
+		auto buttonIcon = IntrusivePointer<ITexture>(textureFactory.makeTexture(buttonImage.ref()));
 
 		Toolbar* toolbar = (Toolbar*)demoLayout->find("toolbar");
 		toolbarItemAdapter = ghnew ToolbarItemAdapter(Application.ResourceManager);
-		toolbarItemAdapter->Items = {
+/*		toolbarItemAdapter->Items = {
 			SharedPointer<MenuItem>(ghnew ButtonMenuItem(pasteIcon.get(),{})),
 			SharedPointer<MenuItem>(ghnew SeparatorMenuItem())
-		};
+		};*/
 		toolbar->ItemAdapter = *toolbarItemAdapter;
 
 		MenuBar* menuBar = (MenuBar*)demoLayout->find("menuBar");
 		menuBarItemAdapter = ghnew MenuBarItemAdapter(Application.ResourceManager);
-		menuBarItemAdapter->Items = {
+		/*menuBarItemAdapter->Items = {
 			SharedPointer<MenuItem>(ghnew ButtonMenuItem(buttonImage.get(),{})),
 			SharedPointer<MenuItem>(ghnew SeparatorMenuItem())
-		};
+		};*/
 		menuBar->ItemAdapter = *menuBarItemAdapter;
 
 		AdapterLayout* adapterLayout = (AdapterLayout*)demoLayout->find("adapterLayout");

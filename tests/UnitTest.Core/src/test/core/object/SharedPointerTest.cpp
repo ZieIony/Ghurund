@@ -119,5 +119,20 @@ public:
             Assert::IsTrue(ptr2 == nullptr);
         }
     }
+
+    TEST_METHOD(SharedPointer_set) {
+        MemoryGuard guard;
+        {
+            bool* b = ghnew bool(false);
+            SharedPointer<bool> ptr(b);
+            SharedPointer<bool> ptr2(ptr);
+            SharedPointer<bool> ptr3(ptr);
+            SharedPointer<bool> ptr4(ptr);
+            bool* b2 = ghnew bool(true);
+            ptr4.set(b2);
+            Assert::AreEqual(3u, ptr.ReferenceCount);
+            Assert::AreEqual(1u, ptr4.ReferenceCount);
+        }
+    }
     };
 }

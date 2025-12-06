@@ -1,9 +1,7 @@
 #pragma once
 
-#include "Drawable.h"
-
 namespace Ghurund::UI {
-    class CursorDrawable: public Drawable {
+    /*class CursorDrawable: public Drawable {
     private:
         Color color;
         uint64_t blinkTimeMs;
@@ -25,5 +23,5 @@ namespace Ghurund::UI {
         }
 
         virtual void draw(RenderGroup& group, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const override;
-    };
+    };*/
 }

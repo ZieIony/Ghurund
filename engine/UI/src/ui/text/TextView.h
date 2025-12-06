@@ -30,7 +30,7 @@ namespace Ghurund::UI {
         Color imageSelectionEffect = 0;
         Color caretBackgroundEffect = 0;
 
-        CursorDrawable* cursorDrawable = nullptr;
+        //CursorDrawable* cursorDrawable = nullptr;
 
     protected:
         uint32_t caretAnchor = 0;
@@ -51,8 +51,8 @@ namespace Ghurund::UI {
         bool setSelectionFromPoint(float x, float y, bool extendSelection);
 
         virtual void onUpdate(const uint64_t time) override {
-            if (cursorDrawable)
-                cursorDrawable->update(time);
+            //if (cursorDrawable)
+          //      cursorDrawable->update(time);
         }
 
         virtual void onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
@@ -60,18 +60,18 @@ namespace Ghurund::UI {
         virtual void onThemeChanged() override;
 
         ~TextView() {
-            if (cursorDrawable)
-                cursorDrawable->release();
+         //   if (cursorDrawable)
+         //       cursorDrawable->release();
         }
 
     public:
         TextView();
 
-        inline void setCursorDrawable(CursorDrawable* drawable) {
+       /* inline void setCursorDrawable(CursorDrawable* drawable) {
             setPointer(cursorDrawable, drawable);
         }
 
-        __declspec(property(put = setCursorDrawable)) CursorDrawable* CursorDrawable;
+        __declspec(property(put = setCursorDrawable)) CursorDrawable* CursorDrawable;*/
 
         bool setSelection(SetSelectionMode moveMode, uint32_t advance, bool extendSelection, bool updateCaretFormat = true);
 

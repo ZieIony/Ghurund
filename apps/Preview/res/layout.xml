@@ -8,11 +8,9 @@
 		<ControlContainer width="Parent.Width" top="Parent.Top" bottom="'controls'.Top"
 						  name="container">
 			<ControlGroup>
-				<Control width="433" height="56" scaleMode="fit">
-					<Control.Material shader="lib://Ghurund/shaders/DirectX/ui/image.hlsl">
-						<Parameter name="image" value="images\buttons.png"/>
-					</Control.Material>
-				</Control>
+				<ImageView width="433" height="56" scaleMode="fit" image="images\buttons.png">
+					<ImageView.Material shader="lib://Ghurund/shaders/DirectX/ui/image.hlsl"/>
+				</ImageView>
 			</ControlGroup>
 		</ControlContainer>
 		<ControlGroup left="10" width="Parent.Width" name="controls">
@@ -23,33 +21,35 @@
 				</Button.Material>
 			</Button>
 			<Button name="color2" layout="lib://Ghurund\layouts\ButtonImageLayout.xml" width="24" height="24">
-				<Button.Left path="'color1'.Right" offset="10"/>
+				<Button.Left path="Previous.Right" offset="10"/>
 				<Button.Material shader="lib://Ghurund/shaders/DirectX/ui/controlWithShadow.hlsl">
 					<Parameter name="backgroundColor" value="#ff1976d2"/>
 				</Button.Material>
 			</Button>
 			<Button name="color3" layout="lib://Ghurund\layouts\ButtonImageLayout.xml" width="24" height="24">
-				<Button.Left path="'color2'.Right" offset="10"/>
+				<Button.Left path="Previous.Right" offset="10"/>
 				<Button.Material shader="lib://Ghurund/shaders/DirectX/ui/controlWithShadow.hlsl">
 					<Parameter name="backgroundColor" value="#ffffa000"/>
 				</Button.Material>
 			</Button>
 			<Button name="color4" layout="lib://Ghurund\layouts\ButtonImageLayout.xml" width="24" height="24">
-				<Button.Left path="'color3'.Right" offset="10"/>
+				<Button.Left path="Previous.Right" offset="10"/>
 				<Button.Material shader="lib://Ghurund/shaders/DirectX/ui/controlWithShadow.hlsl">
 					<Parameter name="backgroundColor" value="#ff388e3c"/>
 				</Button.Material>
 			</Button>
 			<Button name="colorTheme" layout="lib://Ghurund\layouts\ButtonImageLayout.xml" width="24" height="24">
-				<Button.Left path="'color4'.Right" offset="10"/>
+				<Button.Left path="Previous.Right" offset="10"/>
 				<Button.Material shader="lib://Ghurund/shaders/DirectX/ui/controlWithShadow.hlsl">
 					<Parameter name="backgroundColor" value="#ffff0000"/>
 				</Button.Material>
 			</Button>
-			<CheckBox left="'colorTheme'.Right" name="enabledCheckBox">
+			<CheckBox name="enabledCheckBox">
+				<CheckBox.Left path="Previous.Right" offset="10"/>
 				<TextBlock width="Parent.Width" height="Parent.Height">enabled</TextBlock>
 			</CheckBox>
-			<CheckBox left="'enabledCheckBox'.Right" name="themeCheckBox">
+			<CheckBox name="themeCheckBox">
+				<CheckBox.Left path="Previous.Right" offset="10"/>
 				<TextBlock width="Parent.Width" height="Parent.Height">theme</TextBlock>
 			</CheckBox>
 		</ControlGroup>

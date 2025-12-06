@@ -41,6 +41,12 @@ namespace Ghurund::Core {
 			other.pointer = nullptr;
 		}
 
+		template<Derived<T> R>
+		IntrusivePointer(IntrusivePointer<R>&& other) noexcept {
+			pointer = other.pointer;
+			other.pointer = nullptr;
+		}
+
 		explicit IntrusivePointer(T* p) {
 			pointer = p;
 		}

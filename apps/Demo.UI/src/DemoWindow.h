@@ -1,11 +1,11 @@
 #pragma once
 
 #include "engine/application/GameWindow.h"
-#include "ui/loading/DrawableFactory.h"
 #include "ui/widget/menu/MenuBarItemAdapter.h"
 #include "ui/widget/toolbar/ToolbarItemAdapter.h"
 #include <ColorListAdapter.h>
 #include <engine/directx/DxRenderer.h>
+#include <engine/graphics/texture/ITextureFactory.h>
 
 namespace Demo {
 	using namespace Ghurund;
@@ -19,14 +19,13 @@ namespace Demo {
 		ColorListAdapter* adapter1 = nullptr, * adapter2 = nullptr;
 		ToolbarItemAdapter* toolbarItemAdapter = nullptr;
 		MenuBarItemAdapter* menuBarItemAdapter = nullptr;
-		// borrowed
-		Ghurund::UI::DrawableFactory* drawableFactory;
+		ITextureFactory& textureFactory;
 
 	public:
 		DemoWindow(
 			DemoApplication& app,
 			Ghurund::Engine::DirectX::DxRenderer& renderer,
-			Ghurund::UI::DrawableFactory& drawableFactory
+			ITextureFactory& textureFactory
 		);
 
 		~DemoWindow() {

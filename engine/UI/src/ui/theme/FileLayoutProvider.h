@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LayoutProvider.h"
+
 #include "core/resource/ResourceManager.h"
 #include "ui/control/Control.h"
 

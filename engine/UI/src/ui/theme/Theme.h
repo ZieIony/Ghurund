@@ -5,40 +5,22 @@
 #include "core/collection/Map.h"
 #include "core/Color.h"
 
-#include "ui/drawable/Drawable.h"
 #include "ui/text/TextFormat.h"
-#include "DrawableProvider.h"
+#include "TextureProvider.h"
 #include "LayoutProvider.h"
+#include <engine/graphics/texture/ITexture.h>
+#include "MaterialProvider.h"
 
 namespace Ghurund::UI {
 
     typedef AttributeKey<Color> ColorKey;
-    typedef AttributeKey<Drawable> DrawableKey;
+    typedef AttributeKey<ITexture> TextureKey;
+    typedef AttributeKey<IMaterial> MaterialKey;
     typedef AttributeKey<Ghurund::UI::TextFormat> TextFormatKey;
     typedef AttributeKey<Control> LayoutKey;
 
     class Theme {
     private:
-        struct ColorMapTraits {
-            using key_t = ColorKey;
-            using value_t = Color;
-            using data_t = KeyValuePair<key_t, value_t>;
-
-            Color defaultValue = Color(0);
-
-            inline const key_t& getKey(const data_t& data) const {
-                return data.key;
-            }
-
-            inline data_t makeData(const key_t& key) const {
-                return { key, defaultValue };
-            }
-
-            inline data_t makeData(const key_t& key, const value_t& value) const {
-                return { key, value };
-            }
-        };
-
         static const inline float emphasis_high = 0.87f;
         static const inline float emphasis_medium = 0.6f;
         static const inline float emphasis_disabled = 0.38f;
@@ -50,18 +32,19 @@ namespace Ghurund::UI {
         //static const inline float state_disabled = 0.08f;
 
         Ghurund::Core::Map<TextFormatKey, Ghurund::Core::IntrusivePointer<Ghurund::UI::TextFormat>> textFormats;
-        Ghurund::Core::Map<ColorKey, Color, SimpleAllocator, ColorMapTraits> colors;
-        Ghurund::Core::Map<DrawableKey, std::shared_ptr<DrawableProvider>> drawables;
-        Ghurund::Core::Map<LayoutKey, std::shared_ptr<LayoutProvider>> layouts;
+        Ghurund::Core::Map<ColorKey, Color> colors;
+        Ghurund::Core::Map<TextureKey, SharedPointer<TextureProvider>> textures;
+        Ghurund::Core::Map<MaterialKey, SharedPointer<MaterialProvider>> materials;
+        Ghurund::Core::Map<LayoutKey, SharedPointer<LayoutProvider>> layouts;
 
     public:
-        static inline const DrawableKey DRAWABLE_CHECKBOX_CHECKED = DrawableKey("checkBox_checked");
-        static inline const DrawableKey DRAWABLE_CHECKBOX_UNCHECKED = DrawableKey("checkBox_unchecked");
-        static inline const DrawableKey DRAWABLE_RADIOBUTTON_CHECKED = DrawableKey("radioButton_checked");
-        static inline const DrawableKey DRAWABLE_RADIOBUTTON_UNCHECKED = DrawableKey("radioButton_unchecked");
-        static inline const DrawableKey DRAWABLE_ARROWUP = DrawableKey("arrowUp");
-        static inline const DrawableKey DRAWABLE_ARROWDOWN = DrawableKey("arrowDown");
-        static inline const DrawableKey DRAWABLE_ARROWRIGHT = DrawableKey("arrowRight");
+        static inline const TextureKey TEXTURE_CHECKBOX_CHECKED = TextureKey("checkBox_checked");
+        static inline const TextureKey TEXTURE_CHECKBOX_UNCHECKED = TextureKey("checkBox_unchecked");
+        static inline const TextureKey TEXTURE_RADIOBUTTON_CHECKED = TextureKey("radioButton_checked");
+        static inline const TextureKey TEXTURE_RADIOBUTTON_UNCHECKED = TextureKey("radioButton_unchecked");
+        static inline const TextureKey TEXTURE_ARROWUP = TextureKey("arrowUp");
+        static inline const TextureKey TEXTURE_ARROWDOWN = TextureKey("arrowDown");
+        static inline const TextureKey TEXTURE_ARROWRIGHT = TextureKey("arrowRight");
 
         static inline const TextFormatKey TEXTFORMAT_BUTTON = TextFormatKey("button");
         static inline const TextFormatKey TEXTFORMAT_LIST_HEADER = TextFormatKey("listHeader");
@@ -99,35 +82,45 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTextFormats)) Map<TextFormatKey, IntrusivePointer<Ghurund::UI::TextFormat>>& TextFormats;
 
-        inline Ghurund::Core::Map<ColorKey, Color, SimpleAllocator, ColorMapTraits>& getColors() {
+        inline Ghurund::Core::Map<ColorKey, Color>& getColors() {
             return colors;
         }
 
-        inline const Ghurund::Core::Map<ColorKey, Color, SimpleAllocator, ColorMapTraits>& getColors() const {
+        inline const Ghurund::Core::Map<ColorKey, Color>& getColors() const {
             return colors;
         }
 
-        __declspec(property(get = getColors)) Ghurund::Core::Map<ColorKey, Color, SimpleAllocator, ColorMapTraits>& Colors;
+        __declspec(property(get = getColors)) Ghurund::Core::Map<ColorKey, Color>& Colors;
 
-        inline Map<DrawableKey, std::shared_ptr<DrawableProvider>>& getDrawables() {
-            return drawables;
+        inline Map<TextureKey, SharedPointer<TextureProvider>>& getTextures() {
+            return textures;
         }
 
-        inline const Map<DrawableKey, std::shared_ptr<DrawableProvider>>& getDrawables() const {
-            return drawables;
+        inline const Map<TextureKey, SharedPointer<TextureProvider>>& getTextures() const {
+            return textures;
         }
 
-        __declspec(property(get = getDrawables)) Map<DrawableKey, std::shared_ptr<DrawableProvider>>& Drawables;
+        __declspec(property(get = getTextures)) Map<TextureKey, SharedPointer<TextureProvider>>& Textures;
 
-        inline Ghurund::Core::Map<LayoutKey, std::shared_ptr<LayoutProvider>>& getLayouts() {
+        inline Map<MaterialKey, SharedPointer<MaterialProvider>>& getMaterials() {
+            return materials;
+        }
+
+        inline const Map<MaterialKey, SharedPointer<MaterialProvider>>& getMaterials() const {
+            return materials;
+        }
+
+        __declspec(property(get = getMaterials)) Map<MaterialKey, SharedPointer<MaterialProvider>>& Materials;
+
+        inline Ghurund::Core::Map<LayoutKey, SharedPointer<LayoutProvider>>& getLayouts() {
             return layouts;
         }
 
-        inline const Ghurund::Core::Map<LayoutKey, std::shared_ptr<LayoutProvider>>& getLayouts() const {
+        inline const Ghurund::Core::Map<LayoutKey, SharedPointer<LayoutProvider>>& getLayouts() const {
             return layouts;
         }
 
-        __declspec(property(get = getLayouts)) Ghurund::Core::Map<LayoutKey, std::shared_ptr<LayoutProvider>>& Layouts;
+        __declspec(property(get = getLayouts)) Ghurund::Core::Map<LayoutKey, SharedPointer<LayoutProvider>>& Layouts;
     };
 }
 

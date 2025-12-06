@@ -6,9 +6,11 @@
 #include "ui/font/FontLoader.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/loading/MaterialPropertyLoader.h"
+#include "engine/directx/texture/DxTextureFactory.h"
 
 namespace Ghurund::UI::DirectX {
     using namespace Ghurund::Core;
+    using namespace Ghurund::Engine::DirectX;
 
     const Ghurund::Core::Type& DxUIFeature::GET_TYPE() {
         static const Ghurund::Core::Type TYPE = TypeBuilder<UIFeature>()
@@ -18,7 +20,10 @@ namespace Ghurund::UI::DirectX {
     }
 
     void DxUIFeature::onInit() {
-        drawableFactory = ghnew Ghurund::UI::DrawableFactory(resourceManager);
+        commandList = makeIntrusive<CommandList>();
+        // TODO: use CopyQueue, but first implement CommandList compatible with copy queue
+		commandList->init(graphics, *graphics.DirectQueue);
+        textureFactory = ghnew DxTextureFactory(graphics, commandList.ref());
         textFormatFactory = ghnew Ghurund::UI::DirectX::TextFormatFactory();
         constraintFactory = ghnew Ghurund::UI::ConstraintFactory();
 
@@ -26,7 +31,7 @@ namespace Ghurund::UI::DirectX {
 
         resourceManager.Loaders.set<Ghurund::UI::Font>(*fontLoader.get());
 
-        layoutLoader = makeIntrusive<Ghurund::UI::LayoutLoader>(resourceManager, *drawableFactory, *textFormatFactory, *constraintFactory);
+        layoutLoader = makeIntrusive<Ghurund::UI::LayoutLoader>(resourceManager, *textureFactory, *textFormatFactory, *constraintFactory);
         layoutLoader->PropertyLoaders.add(std::make_unique<MaterialPropertyLoader>(resourceManager, *(MaterialLoader*)resourceManager.Loaders.get<IMaterial>()));
         resourceManager.Loaders.set<Control>(*layoutLoader.get());
     }
@@ -35,8 +40,8 @@ namespace Ghurund::UI::DirectX {
         resourceManager.Loaders.remove<Control>();
         resourceManager.Loaders.remove<Ghurund::UI::Font>();
         layoutLoader.set(nullptr);
-        delete drawableFactory;
-        drawableFactory = nullptr;
+        delete textureFactory;
+        textureFactory = nullptr;
         delete textFormatFactory;
         textFormatFactory = nullptr;
         delete constraintFactory;

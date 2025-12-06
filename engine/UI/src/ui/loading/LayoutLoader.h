@@ -1,15 +1,16 @@
 #pragma once
 
+#include "PropertyLoaderCollection.h"
+
 #include "core/object/NotNull.h"
 #include "core/exception/Exceptions.h"
 #include "core/resource/Loader.h"
 #include "core/resource/ResourceManager.h"
-#include "PropertyLoaderCollection.h"
+#include "engine/graphics/texture/ITextureFactory.h"
 #include "ui/Alignment.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/control/Control.h"
 #include "ui/layout/ControlWithConstraints.h"
-#include "ui/loading/DrawableFactory.h"
 #include "ui/loading/TextFormatFactory.h"
 #include "ui/style/TextFormatAttr.h"
 #include "ui/text/DocumentElement.h"
@@ -37,7 +38,7 @@ namespace Ghurund::UI {
 
 	private:
 		Ghurund::Core::ResourceManager& resourceManager;
-		IDrawableFactory& drawableFactory;
+		ITextureFactory& textureFactory;
 		TextFormatFactory& textFormatFactory;
 		ConstraintFactory& constraintFactory;
 		PropertyLoaderCollection propertyLoaders;
@@ -55,13 +56,11 @@ namespace Ghurund::UI {
 
 	public:
 		static inline const char* FILE_PROTOCOL = "file://";
-		static inline const char* THEME_COLOR = "theme://color/";
-		static inline const char* THEME_DRAWABLE = "theme://drawable/";
 		static inline const char* THEME_TEXTFORMAT = "theme://textFormat/";
 
 		LayoutLoader(
 			Ghurund::Core::ResourceManager& resourceManager,
-			IDrawableFactory& drawableFactory,
+			ITextureFactory& textureFactory,
 			TextFormatFactory& textFormatFactory,
 			ConstraintFactory& constraintFactory
 		);

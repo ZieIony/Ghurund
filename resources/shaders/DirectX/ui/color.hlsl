@@ -12,7 +12,7 @@ cbuffer perObject: register(b1) {
     float4 backgroundColor = float4(0.5, 0, 0, 1);
     float4 borderColor;
     float4 cornerRadius = float4(4, 4, 4, 4);
-    float borderWidth = 0;
+    float borderWidth = 0, alpha = 1.0f;
 }
 
 UIPixel vertexMain(UIVertex input) {
@@ -30,7 +30,8 @@ float4 pixelMain(UIPixel input): SV_Target {
     float2 rectCenter = input.position.xy - sizeDiv2 - position;
     float dist = sdRoundedRect(rectCenter, sizeDiv2, cornerRadius);
     if (dist <= 0.0) {
-        return lerp(backgroundColor, borderColor, smoothstep(-borderWidth - 0.1f, -borderWidth, dist));
+        float4 color = lerp(backgroundColor, borderColor, smoothstep(-borderWidth - 0.1f, -borderWidth, dist));
+        return float4(color.rgb, color.a * alpha);
     } else {
         return 0;
     }

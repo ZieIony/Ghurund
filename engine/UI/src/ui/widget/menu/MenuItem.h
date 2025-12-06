@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ui/adapter/ItemAdapter.h"
-#include "ui/drawable/Drawable.h"
 #include "ui/widget/Separator.h"
 #include "core/EventHandler.h"
 #include "core/reflection/Type.h"
@@ -21,7 +20,7 @@ namespace Ghurund::UI {
 	typedef EventHandler<Control> ClickEventHandler;
 
 	class ButtonMenuItem:public MenuItem {
-	private:
+	/*private:
 		Drawable* drawable = nullptr;
 		WString text;
 		ClickEventHandler clickEventHandler;
@@ -83,7 +82,7 @@ namespace Ghurund::UI {
 			this->clickEventHandler = clickEventHandler;
 		}
 
-		__declspec(property(get = getClickEventHandler, put = setClickEventHandler)) ClickEventHandler ClickEventHandler;
+		__declspec(property(get = getClickEventHandler, put = setClickEventHandler)) ClickEventHandler ClickEventHandler;*/
 	};
 
 	class SeparatorMenuItem:public MenuItem {

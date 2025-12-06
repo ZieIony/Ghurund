@@ -5,6 +5,15 @@
 #define CULL_MODE_FRONT 2
 #define CULL_MODE_BACK 3
 
+const float PI = 3.14159265f;
+
+const matrix MATRIX_IDENTITY = {
+    { 1, 0, 0, 0 },
+    { 0, 1, 0, 0 },
+    { 0, 0, 1, 0 },
+    { 0, 0, 0, 1 }
+};
+
 struct DefaultVertex {
     float3 position : POSITION;
     float3 normal : NORMAL;

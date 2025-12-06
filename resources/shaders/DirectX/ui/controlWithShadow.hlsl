@@ -12,7 +12,7 @@ cbuffer perObject: register(b1) {
     float4 backgroundColor = float4(0.5, 0, 0, 1);
     float4 borderColor;
     float4 cornerRadius = float4(4, 4, 4, 4);
-    float borderWidth = 0;
+    float borderWidth = 0, alpha = 1.0f;
 }
 
 cbuffer shadowParams: register(b2) {
@@ -40,8 +40,8 @@ float4 pixelMain(UIPixel input): SV_Target {
         float shadowDist = sdRoundedRect(shadowRectCenter, sizeDiv2 - elevation / 3, cornerRadius);
         float shadowIntensity = smoothstep(0, 1, (elevation - shadowDist) / elevation);
         float ambientShadowIntensity = smoothstep(0, 1, (elevation / 2 - dist) / elevation / 2);
-        return float4(shadowColor.rgb, backgroundColor.a * shadowColor.a * (shadowIntensity + ambientShadowIntensity) / 2);
+        return float4(shadowColor.rgb, backgroundColor.a * shadowColor.a * (shadowIntensity + ambientShadowIntensity) / 2 * alpha);
     } else {
-        return float4(backgroundColor.rgb, backgroundColor.a);
+        return float4(backgroundColor.rgb, backgroundColor.a * alpha);
     }
 }

@@ -327,11 +327,11 @@ namespace Ghurund::UI {
         textSelectionEffect = Theme->Colors[Theme::COLOR_HIGHLIGHT_ONBACKGROUND];
         imageSelectionEffect = Theme->Colors[Theme::COLOR_HIGHLIGHT_ONBACKGROUND];
         caretBackgroundEffect = Theme->Colors[Theme::COLOR_PRIMARY_ONBACKGROUND];
-        if (!cursorDrawable) {
+       /* if (!cursorDrawable) {
             auto drawable = ghnew Ghurund::UI::CursorDrawable();
             CursorDrawable = drawable;
             drawable->release();
-        }
+        }*/
     }
 
     bool TextView::dispatchKeyEvent(const KeyEventArgs& event) {

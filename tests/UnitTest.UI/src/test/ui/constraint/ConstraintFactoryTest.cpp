@@ -5,7 +5,6 @@
 #include "test/utils/TestUtils.h"
 
 #include "core/reflection/StandardTypes.h"
-#include "test/ui/TestDrawableFactory.h"
 #include "test/ui/TextFormatFactory.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/constraint/ConstraintGraph.h"
@@ -17,7 +16,6 @@
 #include <ui/text/TextDocument.h>
 #include <ui/style/ColorAttr.h>
 #include <ui/control/ImageScaleMode.h>
-#include <ui/style/DrawableAttr.h>
 
 using namespace Ghurund::UI;
 using namespace UnitTest::Utils;
@@ -114,16 +112,16 @@ public:
 		Ghurund::Core::getType<const ColorAttr&>();
 		Ghurund::Core::getType<std::unique_ptr<ColorAttr>>();
 		Ghurund::Core::getType<Ghurund::UI::ImageScaleMode>();
-		Ghurund::Core::getType<std::unique_ptr<Ghurund::UI::DrawableAttr>>();
+		//Ghurund::Core::getType<std::unique_ptr<Ghurund::UI::DrawableAttr>>();
 		Ghurund::Core::getType<std::unique_ptr<TextDocument>>();
 		Ghurund::Core::getType<std::unique_ptr<LayoutAttr>>();
 
 		ResourceManager resourceManager;
-		TestDrawableFactory drawableFactory;
+		//TestDrawableFactory drawableFactory;
 		TextFormatFactory textFormatFactory;
 		ConstraintFactory constraintFactory;
-		auto layoutLoader = makeIntrusive<LayoutLoader>(resourceManager, drawableFactory, textFormatFactory, constraintFactory);
-		resourceManager.Loaders.set<Control>(*layoutLoader.get());
+		//auto layoutLoader = makeIntrusive<LayoutLoader>(resourceManager, drawableFactory, textFormatFactory, constraintFactory);
+		//resourceManager.Loaders.set<Control>(*layoutLoader.get());
 
 #ifdef _DEBUG
 		RefCountedObject::reservePointers(1500);

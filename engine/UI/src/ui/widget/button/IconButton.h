@@ -3,7 +3,6 @@
 #include "ui/control/InteractionHandler.h"
 #include "ui/style/AttrProperty.h"
 #include "ui/style/ColorAttr.h"
-#include "ui/style/DrawableAttr.h"
 #include "ui/widget/StateIndicator.h"
 #include "ui/widget/Widget.h"
 
@@ -24,7 +23,7 @@ namespace Ghurund::UI {
 	private:
 		InteractionHandler interactionHandler = *this;
 		Ghurund::UI::StateIndicator* state = nullptr;
-		PointerAttrProperty<DrawableAttr, Drawable> drawable;
+		//PointerAttrProperty<DrawableAttr, Drawable> drawable;
 		NullableAttrProperty<ColorAttr, Color> tint;
 
 		inline void updateProperties() {
@@ -54,12 +53,12 @@ namespace Ghurund::UI {
 				state->release();
 		}
 
-		inline void setDrawable(std::unique_ptr<DrawableAttr> drawable) {
+		/*inline void setDrawable(std::unique_ptr<DrawableAttr> drawable) {
 			this->drawable.set(std::move(drawable));
 			updateProperties();
 		}
 
-		inline void setDrawable(const DrawableKey& key) {
+		inline void setDrawable(const TextureKey& key) {
 			this->drawable.set(std::make_unique<DrawableRef>(key));
 			updateProperties();
 		}
@@ -74,7 +73,7 @@ namespace Ghurund::UI {
 			updateProperties();
 		}
 
-		__declspec(property(put = setDrawable)) std::unique_ptr<DrawableAttr>& Drawable;
+		__declspec(property(put = setDrawable)) std::unique_ptr<DrawableAttr>& Drawable;*/
 
 		inline void setTint(std::unique_ptr<ColorAttr> tint) {
 			this->tint.set(std::move(tint));

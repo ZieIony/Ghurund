@@ -66,10 +66,12 @@ namespace Ghurund::UI {
 		Ghurund::Core::FloatSize minSize = { 0, 0 };
 		Ghurund::Core::FloatSize maxSize = { std::numeric_limits<float>::max(), std::numeric_limits<float>::max() };
 		XMFLOAT2 position = { 0,0 };
+		float alpha = 1.0f;
 
 		IntrusivePointer<IMaterial> material;
 		IntrusivePointer<Resource> mesh;
 		Float2Parameter* positionParameter = nullptr, * sizeParameter = nullptr;
+		FloatParameter* alphaParameter = nullptr;
 
 		bool needsLayout = true;
 
@@ -94,6 +96,8 @@ namespace Ghurund::UI {
 
 		virtual void onStateChanged() {}
 
+		virtual void onMaterialChanged() {}
+
 		virtual void onThemeChanged() {}
 
 		virtual void onContextChanged() {
@@ -117,6 +121,7 @@ namespace Ghurund::UI {
 	public:
 		Event<Control> sizeChanged = *this;
 		Event<Control> stateChanged = *this;
+		Event<Control> materialChanged = *this;
 		Event<Control> themeChanged = *this;
 		Event<Control> contextChanged = *this;
 
@@ -221,15 +226,20 @@ namespace Ghurund::UI {
 		__declspec(property(get = isRoundToPixelsEnabled, put = setRoundToPixelsEnabled)) bool RoundToPixelsEnabled;
 
 		inline void setMaterial(IMaterial* material) {
+			if (this->material.get() == material)
+				return;
 			this->material.set(material);
 			if (material) {
 				material->addReference();
 				positionParameter = (Float2Parameter*)material->Parameters.get("position");
 				sizeParameter = (Float2Parameter*)material->Parameters.get("size");
+				alphaParameter = (FloatParameter*)material->Parameters.get("alpha");
 			} else {
 				positionParameter = nullptr;
 				sizeParameter = nullptr;
+				alphaParameter = nullptr;
 			}
+			dispatchMaterialChanged();
 		}
 
 		inline IMaterial* getMaterial() const {
@@ -321,6 +331,11 @@ namespace Ghurund::UI {
 		virtual void dispatchStateChanged() {
 			stateChanged();
 			onStateChanged();
+		}
+
+		virtual void dispatchMaterialChanged() {
+			materialChanged();
+			onMaterialChanged();
 		}
 
 		virtual void dispatchThemeChanged() {

@@ -4,7 +4,6 @@
 #include "engine/directx/DxGraphicsFeatureFactory.h"
 #include "engine/directx/DxRenderer.h"
 #include "ui/directx/DxUIFeatureFactory.h"
-#include "ui/loading/DrawableFactory.h"
 #include "ui/theme/LightTheme.h"
 
 namespace Demo {
@@ -17,8 +16,9 @@ namespace Demo {
     private:
         DxRenderer* renderer = nullptr;
         LightTheme* theme = nullptr;
-        Ghurund::UI::DrawableFactory* drawableFactory = nullptr;
         DemoWindow* window = nullptr;
+        IntrusivePointer<CommandList> commandList;
+        DxTextureFactory* textureFactory = nullptr;
 
         void uninitDemoApplication();
 

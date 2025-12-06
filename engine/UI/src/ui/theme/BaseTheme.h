@@ -4,7 +4,7 @@
 
 #include "core/object/NotNull.h"
 #include "core/resource/ResourceManager.h"
-#include "ui/loading/IDrawableFactory.h"
+#include "engine/graphics/texture/ITextureFactory.h"
 
 namespace Ghurund::UI {
 	class BaseTheme:public Ghurund::UI::Theme {
@@ -14,7 +14,7 @@ namespace Ghurund::UI {
 	public:
 		BaseTheme(
 			Ghurund::Core::ResourceManager& resourceManager,
-			Ghurund::UI::IDrawableFactory& drawableFactory
+			ITextureFactory& textureFactory
 		);
 	};
 }

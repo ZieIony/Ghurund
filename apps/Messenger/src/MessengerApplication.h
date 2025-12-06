@@ -26,18 +26,22 @@ namespace Messenger {
     protected:
         DxRenderer* renderer;
         ParameterManager parameterManager;
+        IntrusivePointer<CommandList> commandList;
 
     public:
         MessengerApplication() {
             Features.add<DxGraphicsFeature, DxGraphicsFeatureFactory>();
             Features.add<Networking>();
 
-            auto drawableFactory = ghnew DrawableFactory(ResourceManager);
+            auto& graphics = Features.get<DxGraphicsFeature>()->Graphics;
+            commandList = makeIntrusive<CommandList>();
+            commandList->init(graphics, graphics.CopyQueue);
+            auto textureFactory = ghnew DxTextureFactory(graphics, commandList.ref());
             Features.add<DxUIFeature, DxUIFeatureFactory>();
-            lightTheme = ghnew LightTheme(ResourceManager, *drawableFactory);
+            lightTheme = ghnew LightTheme(ResourceManager, *textureFactory);
             LayoutLoader* layoutLoader = (LayoutLoader*)ResourceManager.Loaders.get<Control>();
             //layoutLoader->Theme = lightTheme;
-            renderer = ghnew DxRenderer(Features.get<DxGraphicsFeature>()->Graphics);
+            renderer = ghnew DxRenderer(graphics);
         }
 
         ~MessengerApplication() {

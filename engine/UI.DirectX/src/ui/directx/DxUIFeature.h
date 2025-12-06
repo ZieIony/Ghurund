@@ -4,7 +4,6 @@
 #include "engine/directx/material/DxMaterialFactory.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/directx/loading/TextFormatFactory.h"
-#include "ui/loading/DrawableFactory.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/UIFeature.h"
 
@@ -27,21 +26,23 @@ namespace Ghurund::UI::DirectX {
 
     private:
         ResourceManager& resourceManager;
-        Ghurund::UI::IDrawableFactory* drawableFactory = nullptr;
+        DxGraphics& graphics;
+        IntrusivePointer<CommandList> commandList;
+        ITextureFactory* textureFactory = nullptr;
         Ghurund::UI::DirectX::TextFormatFactory* textFormatFactory = nullptr;
         Ghurund::UI::ConstraintFactory* constraintFactory = nullptr;
         DxMaterialFactory materialFactory;
         IntrusivePointer<Ghurund::UI::LayoutLoader> layoutLoader;
 
     public:
-        DxUIFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
+        DxUIFeature(ResourceManager& resourceManager, DxGraphics& graphics):resourceManager(resourceManager), graphics(graphics) {}
 
         virtual void onInit() override;
 
         virtual void onUninit() override;
 
-        virtual Ghurund::UI::IDrawableFactory* getDrawableFactory() override {
-            return drawableFactory;
+        virtual ITextureFactory* getTextureFactory() override {
+            return textureFactory;
         }
 
         virtual Ghurund::UI::TextFormatFactory* getTextFormatFactory() override {

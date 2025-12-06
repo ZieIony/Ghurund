@@ -49,6 +49,7 @@ namespace Ghurund::Engine::DirectX {
 			throw CallFailedException();
 		}
 
+		// TODO: D3D12_COMMAND_LIST_TYPE_COPY
 		if (FAILED(graphics.Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAllocator.Get(), nullptr, IID_PPV_ARGS(&commandList)))) {
 			Logger::log(LogType::ERR0R, _T("CreateCommandList() failed\n"));
 			throw CallFailedException();

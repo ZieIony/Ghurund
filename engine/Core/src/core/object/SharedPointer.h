@@ -24,6 +24,13 @@ namespace Ghurund::Core {
 			pointer = p;
 		}
 
+		template<Derived<T> R>
+		SharedPointer(const SharedPointer<R>& other) {
+			pointer = other.get();
+			referenceCount = ((const SharedPointer<T>*)&other)->referenceCount;	// a little hack
+			(*referenceCount)++;
+		}
+
 		~SharedPointer() {
 			if (*referenceCount > 1) {
 				(*referenceCount)--;

@@ -23,4 +23,25 @@ namespace Ghurund::Core {
 			return memcmp(m, other.m, sizeof(float) * 6) == 0;
 		}
 	};
+
+	inline ::DirectX::XMFLOAT4X4 makeSaturationMatrix(float sat) {
+		::DirectX::XMFLOAT4X4 m = MATRIX_IDENTITY;
+
+		float invSat = 1 - sat;
+		float R = 0.213f * invSat;
+		float G = 0.715f * invSat;
+		float B = 0.072f * invSat;
+
+		m.m[0][0] = R + sat;
+		m.m[1][0] = G;
+		m.m[2][0] = B;
+		m.m[0][1] = R;
+		m.m[1][1] = G + sat;
+		m.m[2][1] = B;
+		m.m[0][2] = R;
+		m.m[1][2] = G;
+		m.m[2][2] = B + sat;
+
+		return m;
+	}
 }

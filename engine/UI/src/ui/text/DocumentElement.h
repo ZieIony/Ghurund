@@ -1,14 +1,17 @@
 #pragma once
 
 #include "TextFormat.h"
+
 #include "core/Color.h"
 #include "core/object/IntrusivePointer.h"
 #include "core/string/TextConversionUtils.h"
-#include "ui/drawable/Drawable.h"
+#include "engine/graphics/RenderGroup.h"
 
 #include <tinyxml2.h>
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Engine;
+
     class LayoutLoader;
 
     struct DocumentElement {
@@ -60,7 +63,7 @@ namespace Ghurund::UI {
     };
 
     struct DrawableElement:public DocumentElement {
-        Drawable* drawable;
+        //Drawable* drawable;
 
         virtual size_t getLength() const override {
             return 1;

@@ -5,11 +5,11 @@
 #include "ui/control/Control.h"
 
 namespace Ghurund::UI {
-    void CursorDrawable::draw(RenderGroup& group, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const {
+    /*void CursorDrawable::draw(RenderGroup& group, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const {
         if (visible) {
             //canvas.Color = lerp(tint, color, tint.A);
             //canvas.fillRect(0, 0, size.Width, size.Height);
         }
         owner->repaint();
-    }
+    }*/
 }

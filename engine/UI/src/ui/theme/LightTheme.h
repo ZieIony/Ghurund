@@ -13,8 +13,8 @@ namespace Ghurund::UI {
         static constexpr uint32_t color_foreground_onBackground = 0xff000000;
         static constexpr uint32_t color_foreground_onAccent = 0xffffffff;
 
-        LightTheme(Ghurund::Core::ResourceManager& resourceManager, Ghurund::UI::IDrawableFactory& drawableFactory, const Color& accent = 0xff0078D7)
-            :BaseTheme(resourceManager, drawableFactory), color_accent(accent)
+        LightTheme(Ghurund::Core::ResourceManager& resourceManager, ITextureFactory& textureFactory, const Color& accent = 0xff0078D7)
+            :BaseTheme(resourceManager, textureFactory), color_accent(accent)
         {
             Colors.put(COLOR_BACKGR0UND, color_background);
             Colors.put(COLOR_ACCENT, color_accent);

@@ -14,9 +14,9 @@ namespace Ghurund::UI {
 	void RadioButton::onStateChanged() {
 		/*if (drawable) {
 			if (checked) {
-				drawable->Drawable = Theme::DRAWABLE_RADIOBUTTON_CHECKED;
+				drawable->Drawable = Theme::TEXTURE_RADIOBUTTON_CHECKED;
 			} else {
-				drawable->Drawable = Theme::DRAWABLE_RADIOBUTTON_UNCHECKED;
+				drawable->Drawable = Theme::TEXTURE_RADIOBUTTON_UNCHECKED;
 			}
 			if (!Enabled) {
 				drawable->Tint = Theme::COLOR_DISABLED_ONBACKGROUND;

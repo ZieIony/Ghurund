@@ -21,11 +21,11 @@ namespace Ghurund::UI {
         Button& button = (Button&)control;
         //DrawableView* drawableView = (DrawableView*)control.find("drawableView");
         auto& menuItem = (SharedPointer<ButtonMenuItem>&)Items[position];
-        button.Name = convertText<wchar_t, char>(menuItem->Text);
+        //button.Name = convertText<wchar_t, char>(menuItem->Text);
         //drawableView->Drawable = menuItem->Image;
         button.clicked.clear();
         button.clicked.add([&](Control& sender, const MouseClickedEventArgs& args) {
-            menuItem->ClickEventHandler(sender);
+            //menuItem->ClickEventHandler(sender);
             return true;
         });
     }

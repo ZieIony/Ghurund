@@ -19,10 +19,10 @@ namespace Preview {
 
         auto ui = Features.get<DxUIFeature>();
         ui->LayoutLoader->registerType<PreviewLayout>();
-        auto drawableFactory = ui->DrawableFactory;
+        auto textureFactory = ui->TextureFactory;
 
-        lightTheme.set(ghnew LightTheme(ResourceManager, *drawableFactory));
-        darkTheme.set(ghnew DarkTheme(ResourceManager, *drawableFactory));
+        lightTheme.set(ghnew LightTheme(ResourceManager, *textureFactory));
+        darkTheme.set(ghnew DarkTheme(ResourceManager, *textureFactory));
         ThemeType = ThemeType::LIGHT;
 
         ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));

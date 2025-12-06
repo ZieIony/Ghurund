@@ -76,16 +76,16 @@ namespace Ghurund::UI {
 	}
 
 	void Control::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
-		if (material != nullptr) {
-			ControlMaterialParameters params(material.ref());
-			params.Position = parentPosition + position;
-			params.Size = { Size.Width, Size.Height };
-			group.objects.add(DrawPacket{
-				mesh,
-				material,
-				XMFLOAT3(parentPosition.x + position.x, parentPosition.y + position.y, 0)
-			});
-		}
+		if (material == nullptr)
+			return;
+		positionParameter->Value = parentPosition + position;
+		sizeParameter->Value = { Size.Width, Size.Height };
+		alphaParameter->Value = alpha;
+		group.objects.add(DrawPacket{
+			mesh,
+			material,
+			XMFLOAT3(parentPosition.x + position.x, parentPosition.y + position.y, 0)
+		});
 	}
 
 	bool Control::onMouseButtonEvent(const MouseButtonEventArgs& event) {

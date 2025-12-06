@@ -1,14 +1,16 @@
 #include <common.hlsli>
 #include <ui.hlsli>
-#include <sdf.hlsli>
 
 cbuffer perCamera: register(b0) {
     int2 viewportSize;
+    float time;
 }
 
 cbuffer perObject: register(b1) {
     float2 position = float2(50, 350);
     float2 size = float2(300, 300);
+    float alpha = 1.0f;
+    float4 tint = float4(1, 1, 1, 1);
 }
 
 SamplerState linearSampler: register(s0);
@@ -25,5 +27,6 @@ UIPixel vertexMain(UIVertex input) {
 }
 
 float4 pixelMain(UIPixel input): SV_Target {
-    return image.Sample(linearSampler, input.texCoord);
+    float4 color = image.Sample(linearSampler, input.texCoord) * tint;
+    return float4(color.rgb, color.a * alpha);
 }

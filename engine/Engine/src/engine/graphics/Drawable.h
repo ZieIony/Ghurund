@@ -1,9 +1,10 @@
 #pragma once
 
-#include "IMaterial.h"
-#include <cstdint>
-#include <DirectXMath.h>
 #include "mesh/MeshData.h"
+#include "material/IMaterial.h"
+
+#include <DirectXMath.h>
+#include <cstdint>
 
 namespace Ghurund::Engine {
 	struct Drawable {

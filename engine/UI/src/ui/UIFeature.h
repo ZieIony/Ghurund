@@ -3,7 +3,6 @@
 #include "core/feature/Feature.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/loading/LayoutLoader.h"
-#include "ui/loading/IDrawableFactory.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
@@ -27,9 +26,9 @@ namespace Ghurund::UI {
 #pragma endregion
 
     public:
-        virtual Ghurund::UI::IDrawableFactory* getDrawableFactory() = 0;
+        virtual ITextureFactory* getTextureFactory() = 0;
 
-        __declspec(property(get = getDrawableFactory)) Ghurund::UI::IDrawableFactory* DrawableFactory;
+        __declspec(property(get = getTextureFactory)) ITextureFactory* TextureFactory;
 
         virtual Ghurund::UI::TextFormatFactory* getTextFormatFactory() = 0;
 
