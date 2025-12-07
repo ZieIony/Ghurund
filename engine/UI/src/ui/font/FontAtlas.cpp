@@ -161,7 +161,7 @@ namespace Ghurund::UI {
 				},
 				.bitmapPos = { 0, 0 },
 				.scale = scale,
-				.width = (uint16_t)glyphMetrics.gmCellIncX
+				.increment = (uint16_t)glyphMetrics.gmCellIncX
 			};
 			glyphs.put(c, glyph);
 		}
@@ -237,12 +237,16 @@ namespace Ghurund::UI {
 				msdfgen::edgeColoringByDistance(shape, 3);
 				GlyphMetrics glyph = glyphs.get(c);
 				msdfgen::Bitmap<float, 4> msdf(glyph.bitmapSize.Width, glyph.bitmapSize.Height);
-				msdfgen::Projection p(glyph.scale, { MAX_DIST / glyph.scale - std::floor(topLeft.x), MAX_DIST / glyph.scale - std::floor(topLeft.y) });
+				msdfgen::Projection p(
+					glyph.scale,
+					{ MAX_DIST / glyph.scale - std::floor(topLeft.x), MAX_DIST / glyph.scale - std::floor(topLeft.y) }
+				);
 				msdfgen::generateMTSDF(msdf, shape, p, MAX_DIST);
 
-				for (uint32_t y = 0; y < (uint32_t)msdf.height(); y++) {
+				uint32_t height = (uint32_t)msdf.height();
+				for (uint32_t y = 0; y < height; y++) {
 					for (uint32_t x = 0; x < (uint32_t)msdf.width(); x++) {
-						float* pixel = msdf(x, y);
+						float* pixel = msdf(x, height - y - 1);
 						uint8_t r = pixelFloatToByte(pixel[0]);
 						uint8_t g = pixelFloatToByte(pixel[1]);
 						uint8_t b = pixelFloatToByte(pixel[2]);

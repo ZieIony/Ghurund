@@ -13,6 +13,6 @@ namespace Ghurund::UI {
         IntSize shapeSize, bitmapSize;
         XMINT2 shapeOrigin, bitmapPos;
         float scale;
-        uint16_t width;
+        uint16_t increment;
     };
 }

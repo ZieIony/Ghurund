@@ -209,11 +209,11 @@ namespace Ghurund::Core {
             setPosition(pos.x, pos.y);
         }
 
-        virtual const XMINT2& getClientPosition() {
+        virtual XMINT2 getClientPosition() {
             return Position;
         }
 
-        __declspec(property(get = getClientPosition, put = setClientPosition)) const XMINT2& ClientPosition;
+        __declspec(property(get = getClientPosition, put = setClientPosition)) XMINT2 ClientPosition;
 
         virtual void setClientSize(const IntSize& size) {
             setSize(size);

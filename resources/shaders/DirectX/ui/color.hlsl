@@ -7,12 +7,12 @@ cbuffer perCamera: register(b0) {
 }
 
 cbuffer perObject: register(b1) {
-    float2 position = float2(50, 350);
+    float2 position = float2(50, 100);
     float2 size = float2(300, 300);
-    float4 backgroundColor = float4(0.5, 0, 0, 1);
-    float4 borderColor;
+    float4 backgroundColor = float4(0, 0, 0, 0.15f);
+    float4 borderColor = float4(0, 0, 0, 0.25f);
     float4 cornerRadius = float4(4, 4, 4, 4);
-    float borderWidth = 0, alpha = 1.0f;
+    float borderWidth = 1, alpha = 1.0f;
 }
 
 UIPixel vertexMain(UIVertex input) {

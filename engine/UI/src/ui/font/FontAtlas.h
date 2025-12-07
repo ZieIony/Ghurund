@@ -43,7 +43,7 @@ namespace Ghurund::UI {
         }
 
     public:
-        static inline const tchar* DEFAULT_CHARACTER_SET = _T("aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPrqQRsStTuUvVwWxXyYzZ 0123456789*-+[]{};':\",.\\/<>?!@#$%^&*()`~ó¿Ÿæñ¹ê³");
+        static inline const tchar* DEFAULT_CHARACTER_SET = _T("aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPrqQRsStTuUvVwWxXyYzZ 0123456789*-+[]{};'`:\",.\\/<>?!@#$%^&*()`~ó¿Ÿæñ¹ê³");
 
         void init(HDC hdc, const String& supportedCharacters);
 
@@ -60,6 +60,12 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getGlyphs)) const Map<tchar, GlyphMetrics>& Glyphs;
+
+        inline uint32_t getPadding() const {
+            return MAX_DIST;
+        }
+
+        __declspec(property(get = getPadding)) uint32_t Padding;
 
 #pragma region formats
     protected:

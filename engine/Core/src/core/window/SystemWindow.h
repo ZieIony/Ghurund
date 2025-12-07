@@ -95,7 +95,7 @@ namespace Ghurund::Core {
             setPosition(pos.x - DecorationMetrics.Left, pos.y - DecorationMetrics.Top);
         }
 
-        virtual const XMINT2& getClientPosition() override {
+        virtual XMINT2 getClientPosition() override {
             return { Position.x + (int32_t)DecorationMetrics.Left, Position.y + (int32_t)DecorationMetrics.Top };
         }
 

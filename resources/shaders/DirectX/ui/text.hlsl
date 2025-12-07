@@ -9,12 +9,8 @@ cbuffer perCamera: register(b0) {
 }
 
 cbuffer perObject: register(b1) {
-    float2 position = float2(50, 350);
-    float2 size = float2(300, 300);
-    float4 backgroundColor = float4(0,0,0,0.15f);
-    float4 borderColor;
-    float4 cornerRadius = float4(4, 4, 4, 4);
-    float borderWidth = 1;
+    float2 position = float2(50, 100);
+    float2 size = float2(3, 3);
 }
 
 SamplerState linearSampler: register(s0);
@@ -23,8 +19,7 @@ Texture2D colorTexture: register(t0);
 UIPixel vertexMain(TextVertex input) {
     UIPixel output;
 
-    float2 rectPos = float2(position.x, viewportSize.y - position.y);
-    float2 pos = screenToClip(input.position.xy * size + rectPos, viewportSize);
+    float2 pos = screenToClip(input.position.xy * size + position, viewportSize);
     output.position = float4(pos, input.position.z, 1);
     output.texCoord = input.texCoord;
 
@@ -37,6 +32,7 @@ float median(float r, float g, float b) {
 
 uniform float pxRange = 8; // set to distance field's pixel range
 uniform float4 black = float4(0, 0, 0, 1);
+uniform float4 transparent = float4(0, 0, 0, 0);
 
 float screenPxRange(float2 texCoord) {
     int2 textureSize;
@@ -55,5 +51,5 @@ float msdfText(float3 msd, float2 texCoord) {
 float4 pixelMain(UIPixel input): SV_Target {
     float3 msd = colorTexture.Sample(linearSampler, input.texCoord).rgb;
     float opacity = msdfText(msd, input.texCoord);
-    return lerp(backgroundColor, black, opacity);
+    return lerp(transparent, black, opacity);
 }

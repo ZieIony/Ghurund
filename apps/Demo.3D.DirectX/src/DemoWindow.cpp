@@ -14,6 +14,7 @@
 #include <ui/directx/text/DxTextMeshFactory.h>
 #include <ui/directx/material/DxUIMaterialProvider.h>
 #include <ui/material/ShadowMaterialParameters.h>
+#include <ui/material/ControlMaterialParameters.h>
 
 namespace Demo {
 	using namespace Ghurund::UI::DirectX;
@@ -44,24 +45,24 @@ namespace Demo {
 		auto world = makeIntrusive<MatrixParameter>("world", MATRIX_IDENTITY);
 		ParameterManager.Parameters.put(world.get());
 
-		//font.set(app.ResourceManager.load<Font>(ResourcePath(FilePath(L"resources/fonts/lato_regular.ttf"))));
+		font.set(app.ResourceManager.load<Font>(ResourcePath(FilePath(L"resources/fonts/lato_regular.ttf"))));
 
 		DxTextMeshFactory factory(graphicsFeature->Graphics, commandList.ref());
 
 		RenderGroup uiGroup(0, DrawOrder::BACK_TO_FRONT);
 		{
-			/*textMesh = IntrusivePointer<Resource>(factory.makeMesh(L"Heylo wórld.", font.ref()));
+			textMesh = IntrusivePointer<Resource>(factory.makeMesh(L"What does graphing parabola’s and\nlimits illustrate in real world application?", font.ref()));
 
 			basicMaterial = IntrusivePointer<IMaterial>(materialProvider.makeText());
 
 			sizeParameter = (Float2Parameter*)basicMaterial->Parameters.get("size");
 
-			colorTexture = makeIntrusive<Texture>();
-			colorTexture->init(*graphics, commandList.ref(), *font->Atlas->Image);
+			colorTexture = makeIntrusive<DxTexture>();
+			colorTexture->init(graphicsFeature->Graphics, commandList.ref(), *font->Atlas->Image);
 			colorTextureParameter = (TextureParameter*)basicMaterial->Parameters.get("colorTexture");
 			colorTextureParameter->Value = colorTexture.get();
 
-			//uiGroup.objects.add(DrawPacket{ textMesh, basicMaterial });*/
+			uiGroup.objects.add(DrawPacket{ textMesh, basicMaterial });
 		}
 		{
 			auto mesh = ghnew DxMesh();
@@ -70,10 +71,10 @@ namespace Demo {
 			shadowMesh = IntrusivePointer<Resource>(mesh);
 			mesh->init(meshData.ref(), graphicsFeature->Graphics, commandList.ref());
 
-			shadowMaterial = IntrusivePointer<IMaterial>(materialProvider.makeShadow());
-			ShadowMaterialParameters parameters(shadowMaterial.ref());
+			controlMaterial = IntrusivePointer<IMaterial>(materialProvider.makeControl());
+			ControlMaterialParameters parameters(controlMaterial.ref());
 
-			uiGroup.objects.add(DrawPacket{ shadowMesh, shadowMaterial });
+			uiGroup.objects.add(DrawPacket{ shadowMesh, controlMaterial });
 		}
 		renderGroups.put(uiGroup);
 	}

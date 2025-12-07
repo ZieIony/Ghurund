@@ -11,15 +11,20 @@ namespace Ghurund::UI {
 
 		auto imageSize = font.Atlas->Image->Size;
 		auto& glyphs = font.Atlas->Glyphs;
-		float x = 0;
+		float x = 0, y = 0;
 		tchar prevC = '\0';
 		for (wchar_t c : text) {
+			if (c == '\n') {
+				x = 0;
+				y += font.Height;
+				continue;
+			}
 			if (!glyphs.contains(c)) {
 				Logger::log(LogType::WARNING, std::format(_T("Font doesn't contain glyph definition for character '{}'.\n"), c).c_str());
 				continue;
 			}
 			auto& glyph = glyphs[c];
-			float nextX = x + glyph.width;
+			float nextX = x + glyph.increment;
 			if (isSpace(c)) {
 				prevC = c;
 				x = nextX;
@@ -29,30 +34,16 @@ namespace Ghurund::UI {
 				(uint16_t)positions.Size, (uint16_t)(positions.Size + 1), (uint16_t)(positions.Size + 2),
 				(uint16_t)(positions.Size + 2), (uint16_t)(positions.Size + 1), (uint16_t)(positions.Size + 3)
 				});
-			float PAD = 8 / 2;	// TODO: this should be Font::MAX_DIST
+			float PAD = font.Atlas->Padding / 2;
 			float PAD_S = PAD / glyph.scale;
 			int kerning = font.getKerning(prevC, c);
+			FloatSize frameSize = { glyph.shapeSize.Width + PAD_S * 2, glyph.shapeSize.Height + PAD_S * 2 };
+			XMFLOAT2 framePos = { x - PAD_S + glyph.shapeOrigin.x, y - PAD_S - glyph.shapeOrigin.y };
 			positions.addAll({
-				{
-					x - PAD_S - glyph.shapeOrigin.x,
-					-PAD_S - glyph.shapeOrigin.y,
-					0.0f
-				},
-				{
-					x - PAD_S - glyph.shapeOrigin.x,
-					(float)(glyph.shapeSize.Height + PAD_S - glyph.shapeOrigin.y),
-					0.0f
-				},
-				{
-					x + glyph.shapeSize.Width + PAD_S - glyph.shapeOrigin.x,
-					-PAD_S - glyph.shapeOrigin.y,
-					0.0f
-				},
-				{
-					x + glyph.shapeSize.Width + PAD_S - glyph.shapeOrigin.x,
-					(float)(glyph.shapeSize.Height + PAD_S - glyph.shapeOrigin.y),
-					0.0f
-				}
+				{ framePos.x, framePos.y, 0.0f },
+				{ framePos.x, framePos.y + frameSize.Height, 0.0f },
+				{ framePos.x + frameSize.Width, framePos.y, 0.0f },
+				{ framePos.x + frameSize.Width, framePos.y + frameSize.Height, 0.0f },
 				});
 			texCoords.addAll({
 				{

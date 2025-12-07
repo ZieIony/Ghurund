@@ -58,7 +58,7 @@ namespace Ghurund::Core {
 				}
 				for (auto& entry : factories) {
 					if (entry.key->isOrExtends(type)) {
-						auto feature = IntrusivePointer<Feature>(&entry.value->make());
+						auto feature = IntrusivePointer<Feature>(entry.value->make().reset());
 						features.put(&type, feature);
 						return feature;
 					}
