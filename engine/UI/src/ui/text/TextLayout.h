@@ -1,100 +1,80 @@
 #pragma once
 
+#include "TextMetrics.h"
+#include "TextDocument.h"
+
 #include "core/Color.h"
 #include "core/math/Size.h"
 #include "core/string/String.h"
-#include "TextMetrics.h"
-#include "TextFormat.h"
-#include "TextDocument.h"
+#include "ui/font/Font.h"
+#include "TextLine.h"
+#include "ITextMeshFactory.h"
 
 namespace Ghurund::UI {
-    struct CharacterInfo {
-        wchar_t c;
-        size_t index;
-        XMFLOAT2 pos;
-        GlyphMetrics glyph;
-        Color color;
-        TextFormat* format;
-    };
-
     class TextLayout {
     protected:
-        Ghurund::Core::FloatSize size;
-        Color color;
-        Ghurund::UI::TextDocument text = Ghurund::UI::TextDocument(L"");
-        TextFormat* format = nullptr;
-        List<List<CharacterInfo>> lines;
+        Ghurund::Core::IntSize size, preferredSize;
+        Ghurund::UI::TextDocument* document = nullptr;
+        List<TextLine> lines;
+        List<DrawPacket> textMeshes;
 
         bool valid = false;
 
-        void breakLine(List<CharacterInfo>& line);
-
     public:
+        bool breakWords = true;
+
         TextLayout() {}
 
-        TextLayout(const Ghurund::Core::WString& text, const Color& color, TextFormat* format)
-            :text(Ghurund::UI::TextDocument(text)), color(color) {
-            Format = format;
+        TextLayout(const Ghurund::Core::WString& text, NotNull<Font> font, const Color& color)
+            :document(ghnew Ghurund::UI::TextDocument(text, font, color)) {
         }
 
-        virtual ~TextLayout() {
-            if (format)
-                format->release();
+        ~TextLayout() {
+            if (document)
+                document->release();
         }
 
-        inline const Ghurund::UI::TextDocument& getText() const {
-            return text;
+        inline Ghurund::UI::TextDocument* getDocument() {
+            return document;
         }
 
-        inline void setText(const Ghurund::UI::TextDocument& text) {
-            if (this->text != text) {
-                this->text = text;
+        inline void setDocument(Ghurund::UI::TextDocument* document) {
+            if (this->document != document) {
+                setPointer(this->document, document);
                 valid = false;
             }
         }
 
-        __declspec(property(get = getText, put = setText)) const Ghurund::UI::TextDocument& TextDocument;
+        __declspec(property(get = getDocument, put = setDocument)) Ghurund::UI::TextDocument* Document;
 
-        inline Ghurund::UI::TextFormat* getFormat() {
-            return format;
+        inline const Ghurund::Core::IntSize& getPreferredSize() const {
+            return preferredSize;
         }
 
-        inline void setFormat(const Ghurund::UI::TextFormat* textFormat) {
-            setPointer(this->format, (Ghurund::UI::TextFormat*)textFormat);
+        inline void setPreferredSize(const Ghurund::Core::IntSize& size) {
+            setPreferredSize(size.Width, size.Height);
         }
 
-        virtual Ghurund::UI::TextFormat* getFormat(uint32_t position);
-
-        __declspec(property(get = getFormat, put = setFormat)) TextFormat* Format;
-
-        inline void setColor(const Ghurund::UI::Color& color) {
-            this->color = color;
+        inline void setPreferredSize(uint32_t w, uint32_t h) {
+            if (preferredSize.Width != w || preferredSize.Height != h) {
+                preferredSize = { w, h };
+                valid = false;
+            }
         }
 
-        inline const Ghurund::Core::Color& getColor() const {
-            return color;
-        }
+        __declspec(property(get = getPreferredSize, put = setPreferredSize)) const Ghurund::Core::IntSize& PreferredSize;
 
-        virtual Ghurund::Core::Color getColor(uint32_t pos);
-
-        __declspec(property(get = getColor, put = setColor)) const Color& Color;
-
-        inline const Ghurund::Core::FloatSize& getSize() const {
+        inline const Ghurund::Core::IntSize& getSize() const {
             return size;
         }
 
-        inline void setSize(const Ghurund::Core::FloatSize& size) {
-            setSize(size.Width, size.Height);
+        __declspec(property(get = getSize)) const Ghurund::Core::IntSize& Size;
+
+        inline const List<TextLine>& getLines() const {
+            return lines;
         }
 
-        inline void setSize(float w, float h) {
-            if (size.Width != w || size.Height != h) {
-                size = { w, h };
-                valid = false;
-            }
-        }
-
-        __declspec(property(get = getSize, put = setSize)) const Ghurund::Core::FloatSize& Size;
+        __declspec(property(get = getLines)) const List<TextLine>& Lines;
 
         virtual TextMetrics getMetrics();
 
@@ -120,6 +100,8 @@ namespace Ghurund::UI {
 
         virtual void refresh();
 
+        void initMeshes(ITextMeshFactory& textMeshFactory, IMaterial* material);
+
         virtual void insertTextAt(uint32_t position, const Ghurund::Core::WString& textToInsert);
 
         virtual void removeTextAt(uint32_t position, uint32_t lengthToRemove);
@@ -129,5 +111,9 @@ namespace Ghurund::UI {
         uint32_t measureWidth();
 
         uint32_t measureHeight();
+
+#ifdef _DEBUG
+        bool validate() const;
+#endif
     };
 }

@@ -51,18 +51,23 @@ namespace Demo {
 
 		RenderGroup uiGroup(0, DrawOrder::BACK_TO_FRONT);
 		{
-			textMesh = IntrusivePointer<Resource>(factory.makeMesh(L"What does graphing parabola’s and\nlimits illustrate in real world application?", font.ref()));
-
 			basicMaterial = IntrusivePointer<IMaterial>(materialProvider.makeText());
-
-			sizeParameter = (Float2Parameter*)basicMaterial->Parameters.get("size");
-
 			colorTexture = makeIntrusive<DxTexture>();
 			colorTexture->init(graphicsFeature->Graphics, commandList.ref(), *font->Atlas->Image);
 			colorTextureParameter = (TextureParameter*)basicMaterial->Parameters.get("colorTexture");
 			colorTextureParameter->Value = colorTexture.get();
 
-			uiGroup.objects.add(DrawPacket{ textMesh, basicMaterial });
+			textLayout.Document = makeIntrusive<TextDocument>(L"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", font.ref(), Colors::BLACK).get();
+			textLayout.PreferredSize = { 200, 200 };
+			textLayout.refresh();
+			textLayout.initMeshes(factory, basicMaterial.get());
+
+			/*sizeParameter = (Float2Parameter*)basicMaterial->Parameters.get("size");
+
+
+			uiGroup.objects.add(DrawPacket{ textMesh, basicMaterial });*/
+
+			textLayout.draw(uiGroup);
 		}
 		{
 			auto mesh = ghnew DxMesh();

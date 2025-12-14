@@ -421,6 +421,32 @@ public:
 		}
 	}
 
+	TEST_METHOD(List_sublist_toSize) {
+		MemoryGuard guard;
+		{
+			List<uint32_t> list = { 1, 2, 3, 4, 5, 6 };
+			List<uint32_t> list2 = list.sublist(4, 6);
+
+			Assert::AreEqual((size_t)6, list.Size);
+			Assert::AreEqual(true, list.Capacity >= list.Size);
+			Assert::AreEqual(false, list.Empty);
+
+			Assert::AreEqual((size_t)2, list2.Size);
+			Assert::AreEqual(true, list2.Capacity >= list2.Size);
+			Assert::AreEqual(false, list2.Empty);
+
+			List<uint32_t> testList = { 1, 2, 3, 4, 5, 6 };
+			size_t i = 0;
+			for (auto& item : list)
+				Assert::AreEqual(item, testList[i++]);
+
+			List<uint32_t> testList2 = { 5, 6 };
+			size_t j = 0;
+			for (auto& item : list2)
+				Assert::AreEqual(item, testList2[j++]);
+		}
+	}
+
 	TEST_METHOD(List_iterator) {
 		MemoryGuard guard;
 		{

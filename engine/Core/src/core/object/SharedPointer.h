@@ -51,11 +51,11 @@ namespace Ghurund::Core {
 		inline void set(T* p) {
 			if (*referenceCount > 1) {
 				(*referenceCount)--;
+				referenceCount = ghnew uint32_t(1);
 			} else {
 				delete pointer;
 			}
 			pointer = p;
-			*referenceCount = 1;
 		}
 
 		uint32_t getReferenceCount() const {
@@ -83,9 +83,8 @@ namespace Ghurund::Core {
 			}
 			pointer = other.pointer;
 			referenceCount = other.referenceCount;
-			if (pointer) {
+			if (pointer)
 				(*referenceCount)++;
-			}
 			return *this;
 		}
 
@@ -101,9 +100,8 @@ namespace Ghurund::Core {
 			}
 			pointer = other.pointer;
 			referenceCount = other.referenceCount;
-			if (pointer) {
+			if (pointer)
 				(*referenceCount)++;
-			}
 			return *this;
 		}
 

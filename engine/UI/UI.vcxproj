@@ -114,6 +114,9 @@
     <ClInclude Include="src\ui\material\ControlMaterialParameters.h" />
     <ClInclude Include="src\ui\Orientation.h" />
     <ClInclude Include="src\ui\RootView.h" />
+    <ClInclude Include="src\ui\text\CharacterInfo.h" />
+    <ClInclude Include="src\ui\text\TextLine.h" />
+    <ClInclude Include="src\ui\text\TextSpan.h" />
     <ClInclude Include="src\ui\theme\FileMaterialProvider.h" />
     <ClInclude Include="src\ui\theme\MaterialProvider.h" />
     <ClInclude Include="src\ui\theme\TextureProvider.h" />
@@ -195,7 +198,6 @@
     <ClInclude Include="src\ui\loading\PropertyLoaderCollection.h" />
     <ClInclude Include="src\ui\loading\StringPropertyLoader.h" />
     <ClInclude Include="src\ui\loading\TextDocumentPropertyLoader.h" />
-    <ClInclude Include="src\ui\loading\TextFormatFactory.h" />
     <ClInclude Include="src\ui\material\IUIMaterialProvider.h" />
     <ClInclude Include="src\ui\material\ShadowMaterialParameters.h" />
     <ClInclude Include="src\ui\style\AttrProperty.h" />
@@ -203,7 +205,7 @@
     <ClInclude Include="src\ui\style\TextureAttr.h" />
     <ClInclude Include="src\ui\style\LayoutAttr.h" />
     <ClInclude Include="src\ui\style\PointerAttrProperty.h" />
-    <ClInclude Include="src\ui\style\TextFormatAttr.h" />
+    <ClInclude Include="src\ui\style\FontAttr.h" />
     <ClInclude Include="src\ui\text\DocumentElement.h" />
     <ClInclude Include="src\ui\text\ITextMeshFactory.h" />
     <ClInclude Include="src\ui\text\Selection.h" />
@@ -211,7 +213,6 @@
     <ClInclude Include="src\ui\text\TextBlock.h" />
     <ClInclude Include="src\ui\text\TextDocument.h" />
     <ClInclude Include="src\ui\text\TextField.h" />
-    <ClInclude Include="src\ui\text\TextFormat.h" />
     <ClInclude Include="src\ui\text\TextLayout.h" />
     <ClInclude Include="src\ui\text\TextLayoutConstraint.h" />
     <ClInclude Include="src\ui\text\TextMesh.h" />
@@ -276,6 +277,7 @@
     <ClCompile Include="src\ui\loading\TexturePropertyLoader.cpp" />
     <ClCompile Include="src\ui\loading\MaterialPropertyLoader.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
+    <ClCompile Include="src\ui\text\TextLine.cpp" />
     <ClCompile Include="src\ui\UIContext.cpp" />
     <ClCompile Include="src\ui\UILayer.cpp" />
     <ClCompile Include="src\ui\adapter\AdapterLayout.cpp" />
@@ -325,12 +327,11 @@
     <ClCompile Include="src\ui\style\ColorAttr.cpp" />
     <ClCompile Include="src\ui\style\TextureAttr.cpp" />
     <ClCompile Include="src\ui\style\LayoutAttr.cpp" />
-    <ClCompile Include="src\ui\style\TextFormatAttr.cpp" />
+    <ClCompile Include="src\ui\style\FontAttr.cpp" />
     <ClCompile Include="src\ui\text\DocumentElement.cpp" />
     <ClCompile Include="src\ui\text\TextBlock.cpp" />
     <ClCompile Include="src\ui\text\TextDocument.cpp" />
     <ClCompile Include="src\ui\text\TextField.cpp" />
-    <ClCompile Include="src\ui\text\TextFormat.cpp" />
     <ClCompile Include="src\ui\text\TextLayout.cpp" />
     <ClCompile Include="src\ui\text\TextLayoutConstraint.cpp" />
     <ClCompile Include="src\ui\text\TextMesh.cpp" />

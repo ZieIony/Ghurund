@@ -5,7 +5,7 @@
 #include "core/collection/Map.h"
 #include "core/Color.h"
 
-#include "ui/text/TextFormat.h"
+#include "ui/font/Font.h"
 #include "TextureProvider.h"
 #include "LayoutProvider.h"
 #include <engine/graphics/texture/ITexture.h>
@@ -16,7 +16,7 @@ namespace Ghurund::UI {
     typedef AttributeKey<Color> ColorKey;
     typedef AttributeKey<ITexture> TextureKey;
     typedef AttributeKey<IMaterial> MaterialKey;
-    typedef AttributeKey<Ghurund::UI::TextFormat> TextFormatKey;
+    typedef AttributeKey<Ghurund::UI::Font> FontKey;
     typedef AttributeKey<Control> LayoutKey;
 
     class Theme {
@@ -31,7 +31,7 @@ namespace Ghurund::UI {
         //static const inline float state_activated = 0.4f;
         //static const inline float state_disabled = 0.08f;
 
-        Ghurund::Core::Map<TextFormatKey, Ghurund::Core::IntrusivePointer<Ghurund::UI::TextFormat>> textFormats;
+        Ghurund::Core::Map<FontKey, Ghurund::Core::IntrusivePointer<Ghurund::UI::Font>> fonts;
         Ghurund::Core::Map<ColorKey, Color> colors;
         Ghurund::Core::Map<TextureKey, SharedPointer<TextureProvider>> textures;
         Ghurund::Core::Map<MaterialKey, SharedPointer<MaterialProvider>> materials;
@@ -46,10 +46,10 @@ namespace Ghurund::UI {
         static inline const TextureKey TEXTURE_ARROWDOWN = TextureKey("arrowDown");
         static inline const TextureKey TEXTURE_ARROWRIGHT = TextureKey("arrowRight");
 
-        static inline const TextFormatKey TEXTFORMAT_BUTTON = TextFormatKey("button");
-        static inline const TextFormatKey TEXTFORMAT_LIST_HEADER = TextFormatKey("listHeader");
-        static inline const TextFormatKey TEXTFORMAT_TEXT_PRIMARY = TextFormatKey("textPrimary");
-        static inline const TextFormatKey TEXTFORMAT_TEXT_SECONDARY = TextFormatKey("textSecondary");
+        static inline const FontKey FONT_BUTTON = FontKey("button");
+        static inline const FontKey FONT_LIST_HEADER = FontKey("listHeader");
+        static inline const FontKey FONT_TEXT_PRIMARY = FontKey("textPrimary");
+        static inline const FontKey FONT_TEXT_SECONDARY = FontKey("textSecondary");
 
         // base
         static inline const ColorKey COLOR_BACKGR0UND = ColorKey("background");
@@ -72,15 +72,15 @@ namespace Ghurund::UI {
 
         void updateColors();
 
-        inline Map<TextFormatKey, IntrusivePointer<Ghurund::UI::TextFormat>>& getTextFormats() {
-            return textFormats;
+        inline Map<FontKey, IntrusivePointer<Ghurund::UI::Font>>& getTextFormats() {
+            return fonts;
         }
 
-        inline const Map<TextFormatKey, IntrusivePointer<Ghurund::UI::TextFormat>>& getTextFormats() const {
-            return textFormats;
+        inline const Map<FontKey, IntrusivePointer<Ghurund::UI::Font>>& getTextFormats() const {
+            return fonts;
         }
 
-        __declspec(property(get = getTextFormats)) Map<TextFormatKey, IntrusivePointer<Ghurund::UI::TextFormat>>& TextFormats;
+        __declspec(property(get = getTextFormats)) Map<FontKey, IntrusivePointer<Ghurund::UI::Font>>& Fonts;
 
         inline Ghurund::Core::Map<ColorKey, Color>& getColors() {
             return colors;

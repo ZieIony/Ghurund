@@ -10,7 +10,7 @@ cbuffer perCamera: register(b0) {
 
 cbuffer perObject: register(b1) {
     float2 position = float2(50, 100);
-    float2 size = float2(3, 3);
+    float2 size = float2(1, 1);
 }
 
 SamplerState linearSampler: register(s0);

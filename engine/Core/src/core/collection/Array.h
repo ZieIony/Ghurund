@@ -201,9 +201,9 @@ namespace Ghurund::Core {
         }
 
         inline Array subarray(size_t from, size_t to) {
-            _ASSERT_EXPR(from < size, "Index out of bounds.\n");
-            _ASSERT_EXPR(to < size, "Index out of bounds.\n");
-            _ASSERT_EXPR(to > from, "Incorrect range.\n");
+            _____________________check(from < size, "Index out of bounds.\n");
+            _____________________check(to <= size, "Index out of bounds.\n");
+            _____________________check(to > from, "Incorrect range.\n");
             return Array(v, to - from, from);
         }
     };

@@ -9,7 +9,6 @@
 #include "ui/text/TextBlock.h"
 #include "ui/font/FontLoader.h"
 #include "ui/RootView.h"
-#include "test/ui/text/TextLayout.h"
 #include "test/ui/TestUIContext.h"
 
 #include <format>
@@ -27,8 +26,8 @@ private:
     Timer timer;
     Window* window;
     UIContext* context;
-    TextFormat* textFormat;
     FontLoader* fontLoader;
+    Ghurund::Core::IntrusivePointer<Font> latoMediumFont;
 
 public:
     TextBlockTest() {
@@ -37,15 +36,13 @@ public:
         fontLoader = ghnew FontLoader();
         resourceManager.Loaders.set<Font>(*fontLoader);
         ResourcePath path = Ghurund::Core::FilePath(L"../../resources/fonts\\lato_medium.ttf");
-        Ghurund::Core::IntrusivePointer<Font> latoMediumFont(resourceManager.load<Font>(path, DirectoryPath()));
-        textFormat = ghnew TextFormat(latoMediumFont.get(), 10);
+        latoMediumFont = Ghurund::Core::IntrusivePointer<Font>(resourceManager.load<Font>(path, DirectoryPath()));
     }
 
     ~TextBlockTest() {
         fontLoader->release();
         delete window;
         delete context;
-        delete textFormat;
     }
     /*
     TEST_METHOD(textBlock_measureEmptyWrap) {

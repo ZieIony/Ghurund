@@ -38,11 +38,8 @@ namespace Ghurund::UI {
     LayoutLoader::LayoutLoader(
         Ghurund::Core::ResourceManager& resourceManager,
         ITextureFactory& textureFactory,
-        TextFormatFactory& textFormatFactory,
         ConstraintFactory& constraintFactory
-    ):resourceManager(resourceManager), textureFactory(textureFactory),
-        textFormatFactory(textFormatFactory), constraintFactory(constraintFactory)
-    {
+	):resourceManager(resourceManager), textureFactory(textureFactory), constraintFactory(constraintFactory) {
         propertyLoaders.add(std::make_unique<BoolPropertyLoader>());
         propertyLoaders.add(std::make_unique<UInt32PropertyLoader>());
         propertyLoaders.add(std::make_unique<FloatPropertyLoader>());
@@ -53,7 +50,7 @@ namespace Ghurund::UI {
         propertyLoaders.add(std::make_unique<NullableColorPropertyLoader>());
 		propertyLoaders.add(std::make_unique<ImageScaleModePropertyLoader>());
 		propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew TexturePropertyLoader(resourceManager, textureFactory)));
-		propertyLoaders.add(std::make_unique<TextDocumentPropertyLoader>());
+		//propertyLoaders.add(std::make_unique<TextDocumentPropertyLoader>());
 		propertyLoaders.add(std::unique_ptr<LayoutPropertyLoader>(ghnew LayoutPropertyLoader(resourceManager, *this)));
 
 		for (const Core::Type& type : Type::TYPES) {
@@ -225,14 +222,14 @@ namespace Ghurund::UI {
         return constraintFactory.parseConstraint(str, orientation);
     }
 
-    TextFormatRef* LayoutLoader::loadTextFormat(const char* str) {
+    FontRef* LayoutLoader::loadFont(const char* str) {
         AString s = str;
         s.replace('\\', '/');
         if (s.startsWith(FILE_PROTOCOL)) {
-            //auto textFormat = ghnew TextFormat()
+            //auto font = ghnew Font()
         } else if (s.startsWith(THEME_TEXTFORMAT)) {
-            TextFormatKey textFormatKey = s.substring(lengthOf(THEME_TEXTFORMAT));
-            return ghnew TextFormatRef(textFormatKey);
+            FontKey textFormatKey = s.substring(lengthOf(THEME_TEXTFORMAT));
+            return ghnew FontRef(textFormatKey);
         }
         return nullptr;
     }

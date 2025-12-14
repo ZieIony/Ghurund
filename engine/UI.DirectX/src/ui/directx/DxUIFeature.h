@@ -3,7 +3,6 @@
 #include "engine/directx/DxGraphics.h"
 #include "engine/directx/material/DxMaterialFactory.h"
 #include "ui/constraint/ConstraintFactory.h"
-#include "ui/directx/loading/TextFormatFactory.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/UIFeature.h"
 
@@ -29,7 +28,6 @@ namespace Ghurund::UI::DirectX {
         DxGraphics& graphics;
         IntrusivePointer<CommandList> commandList;
         ITextureFactory* textureFactory = nullptr;
-        Ghurund::UI::DirectX::TextFormatFactory* textFormatFactory = nullptr;
         Ghurund::UI::ConstraintFactory* constraintFactory = nullptr;
         DxMaterialFactory materialFactory;
         IntrusivePointer<Ghurund::UI::LayoutLoader> layoutLoader;
@@ -43,10 +41,6 @@ namespace Ghurund::UI::DirectX {
 
         virtual ITextureFactory* getTextureFactory() override {
             return textureFactory;
-        }
-
-        virtual Ghurund::UI::TextFormatFactory* getTextFormatFactory() override {
-            return textFormatFactory;
         }
 
         virtual Ghurund::UI::ConstraintFactory* getConstraintFactory() override {

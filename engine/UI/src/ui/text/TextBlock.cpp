@@ -9,16 +9,16 @@ namespace Ghurund::UI {
 
     void TextBlock::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
         __super::loadInternal(loader, workingDir, xml);
-        auto textFormatAttr = xml.FindAttribute("textFormat");
+        auto textFormatAttr = xml.FindAttribute("font");
         if (textFormatAttr) {
-            Ghurund::UI::TextFormatRef* format = loader.loadTextFormat(textFormatAttr->Value());
+            Ghurund::UI::FontRef* format = loader.loadFont(textFormatAttr->Value());
             if (format) {
-                TextFormat = format;
+                Font = format;
                 delete format;
             }
 		} else {
-            Ghurund::UI::TextFormatRef format = Theme::TEXTFORMAT_TEXT_SECONDARY;
-            TextFormat = &format;
+            Ghurund::UI::FontRef format = Theme::FONT_TEXT_SECONDARY;
+            Font = &format;
         }
     }
 
@@ -53,12 +53,11 @@ namespace Ghurund::UI {
     }*/
 
     void TextBlock::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
-        textLayout.Size = Size;
 		textLayout.draw(group);
     }
 
     const Ghurund::Core::Type& TextBlock::GET_TYPE() {
-        static auto PROPERTY_TEXT = Property<TextBlock, const TextDocument&>("Text", &getText, (void(TextBlock::*)(const TextDocument&)) &setText);
+        static auto PROPERTY_TEXT = Property<TextBlock, TextDocument*>("Document", &getDocument, &setDocument);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<TextBlock>()
             .withProperty(PROPERTY_TEXT)
@@ -67,20 +66,20 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    void TextBlock::setTextFormat(Ghurund::UI::TextFormatAttr* textFormat) {
-        if (this->textFormat)
-            delete this->textFormat;
-        if (textFormat) {
-            this->textFormat = (Ghurund::UI::TextFormatAttr*)textFormat->clone();
+    void TextBlock::setFont(Ghurund::UI::FontAttr* font) {
+        if (this->font)
+            delete this->font;
+        if (font) {
+            this->font = (Ghurund::UI::FontAttr*)font->clone();
             auto theme = Theme;
             if (theme) {
-                textLayout.Format = textFormat->resolve(*theme);
+                textLayout.Document->Font = font->resolve(*theme);
             } else {
-                textLayout.Format = nullptr;
+                //textLayout.Document->Font = nullptr;
 			}
         } else {
-            this->textFormat = nullptr;
-            textLayout.Format = nullptr;
+            this->font = nullptr;
+            //textLayout.Document->Font = nullptr;
         }
     }
 
@@ -89,13 +88,13 @@ namespace Ghurund::UI {
         auto theme = Theme;
         if (!theme)
             return;
-        if (TextFormat)
-            textLayout.Format = TextFormat->resolve(*theme);
-        if (Size.Width > 0 && Size.Height > 0)
-            textLayout.Size = { Size.Width, Size.Height };
+        //if (Font)
+            //textLayout.Document->Font = Font->resolve(*theme);
+        //if (Size.Width > 0 && Size.Height > 0)
+          //  textLayout.Size = { Size.Width, Size.Height };
         color.resolve(*theme);
         const UI::Color* c = color.get();
-        if (c)
-            textLayout.Color = *c;
+        //if (c)
+            //textLayout.Document->TextColor = *c;
 	}
 }

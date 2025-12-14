@@ -6,6 +6,7 @@
 #include <engine/directx/mesh/DxMesh.h>
 #include <engine/entity/camera/Camera.h>
 #include <ui/font/FontLoader.h>
+#include <ui/text/TextLayout.h>
 
 namespace Demo {
 	using namespace Ghurund;
@@ -26,6 +27,8 @@ namespace Demo {
 		Float2Parameter* sizeParameter;
 		TextureParameter* colorTextureParameter;
 		IntrusivePointer<DxTexture> colorTexture;
+
+		TextLayout textLayout;
 
 	public:
 		DemoWindow(

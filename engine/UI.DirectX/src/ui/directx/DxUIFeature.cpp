@@ -24,14 +24,13 @@ namespace Ghurund::UI::DirectX {
         // TODO: use CopyQueue, but first implement CommandList compatible with copy queue
 		commandList->init(graphics, *graphics.DirectQueue);
         textureFactory = ghnew DxTextureFactory(graphics, commandList.ref());
-        textFormatFactory = ghnew Ghurund::UI::DirectX::TextFormatFactory();
         constraintFactory = ghnew Ghurund::UI::ConstraintFactory();
 
         auto fontLoader = makeIntrusive<FontLoader>();
 
         resourceManager.Loaders.set<Ghurund::UI::Font>(*fontLoader.get());
 
-        layoutLoader = makeIntrusive<Ghurund::UI::LayoutLoader>(resourceManager, *textureFactory, *textFormatFactory, *constraintFactory);
+        layoutLoader = makeIntrusive<Ghurund::UI::LayoutLoader>(resourceManager, *textureFactory, *constraintFactory);
         layoutLoader->PropertyLoaders.add(std::make_unique<MaterialPropertyLoader>(resourceManager, *(MaterialLoader*)resourceManager.Loaders.get<IMaterial>()));
         resourceManager.Loaders.set<Control>(*layoutLoader.get());
     }
@@ -42,8 +41,6 @@ namespace Ghurund::UI::DirectX {
         layoutLoader.set(nullptr);
         delete textureFactory;
         textureFactory = nullptr;
-        delete textFormatFactory;
-        textFormatFactory = nullptr;
         delete constraintFactory;
         constraintFactory = nullptr;
     }

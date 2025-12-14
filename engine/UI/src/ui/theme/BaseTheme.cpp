@@ -36,17 +36,20 @@ namespace Ghurund::UI {
 		//auto latoLightPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/fonts\\lato_light.ttf");
 		//Ghurund::Core::IntrusivePointer<Ghurund::UI::Font> latoLightFont(resourceManager.load<Ghurund::UI::Font>(latoLightPath, DirectoryPath()));
 
-		auto buttonFont = Ghurund::Core::makeIntrusive<TextFormat>(latoMediumFont.get(), 10.0f, FW_MEDIUM);    // TODO: should medium font use FW_MEDIUM or FW_REGULAR?
-		TextFormats.put(Theme::TEXTFORMAT_BUTTON, buttonFont);
+		//auto buttonFont = Ghurund::Core::makeIntrusive<Font>();
+		//buttonFont->init(latoMediumFont.get()->FamilyName, FW_MEDIUM);    // TODO: should medium font use FW_MEDIUM or FW_REGULAR?
+		//Fonts.put(Theme::FONT_BUTTON, buttonFont);
 
 		//auto listHeaderFont = Ghurund::Core::makeIntrusive<TextFormat>(latoLightFont.get(), 14.0f, FW_LIGHT);
 		//TextFormats.put(Theme::TEXTFORMAT_LIST_HEADER, listHeaderFont);
 
-		auto textPrimaryFont = Ghurund::Core::makeIntrusive<TextFormat>(latoMediumFont.get(), 11.0f, FW_REGULAR);
-		TextFormats.put(Theme::TEXTFORMAT_TEXT_PRIMARY, textPrimaryFont);
+		//auto textPrimaryFont = Ghurund::Core::makeIntrusive<Font>();
+		//textPrimaryFont->init(latoMediumFont.get()->FamilyName, FW_REGULAR);
+		//Fonts.put(Theme::FONT_TEXT_PRIMARY, textPrimaryFont);
 
-		auto textSecondaryFont = Ghurund::Core::makeIntrusive<TextFormat>(latoMediumFont.get(), 50.0f, FW_REGULAR);
-		TextFormats.put(Theme::TEXTFORMAT_TEXT_SECONDARY, textSecondaryFont);
+		//auto textSecondaryFont = Ghurund::Core::makeIntrusive<Font>();
+		//textSecondaryFont->init(latoMediumFont.get()->FamilyName, FW_REGULAR);
+		//Fonts.put(Theme::FONT_TEXT_SECONDARY, textSecondaryFont);
 
 		auto checkboxCheckedPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/icons\\checkbox checked 18.png");
 		Textures.put(Theme::TEXTURE_CHECKBOX_CHECKED, makeShared<FileTextureProvider>(resourceManager, textureFactory, checkboxCheckedPath));

@@ -9,6 +9,7 @@
 #pragma warning (disable : 4238)	// nonstandard extension used : class rvalue used as lvalue
 
 #ifdef _DEBUG
+#include <exception>
 #include <crtdbg.h>
 #define ghnew new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #else
@@ -51,4 +52,11 @@ namespace Ghurund::Core {
         _ASSERTE(_CrtCheckMemory());
     }
 #endif
+
+    inline void _____________________check(bool ok, const char* message) {
+#ifdef _DEBUG
+        if (!ok)
+            throw std::exception(message);
+#endif
+    }
 }

@@ -78,7 +78,7 @@ namespace Ghurund::Core {
         }
 
         inline void insert(size_t i, const Value& item) {
-            _ASSERT_EXPR(i <= A::size, "Index out of bounds.\n");
+            _____________________check(i <= A::size, "Index out of bounds.\n");
             if (A::size == A::capacity)
                 A::resize((size_t)(A::capacity * 1.6));
             if (i < A::size) {
@@ -92,23 +92,23 @@ namespace Ghurund::Core {
         }
 
         inline Value& get(size_t i) const {
-            _ASSERT_EXPR(i < A::size, "Index out of bounds.\n");
+            _____________________check(i < A::size, "Index out of bounds.\n");
             return A::v[i];
         }
 
         inline Value& operator[](size_t i) const {
-            _ASSERT_EXPR(i < A::size, "Index out of bounds.\n");
+            _____________________check(i < A::size, "Index out of bounds.\n");
             return A::v[i];
         }
 
         inline void set(size_t i, const Value& item) {
-            _ASSERT_EXPR(i < A::size, "Index out of bounds.\n");
+            _____________________check(i < A::size, "Index out of bounds.\n");
             new(A::v + i) Value(item);
             A::v[i].~Value();
         }
 
         inline void set(size_t i, Value&& item) {
-            _ASSERT_EXPR(i < A::size, "Index out of bounds.\n");
+            _____________________check(i < A::size, "Index out of bounds.\n");
             new(A::v + i) Value(std::move(item));
             A::v[i].~Value();
         }
@@ -121,7 +121,7 @@ namespace Ghurund::Core {
         }
 
         inline void removeAt(size_t i) {
-            _ASSERT_EXPR(i < A::size, "Index out of bounds.\n");
+            _____________________check(i < A::size, "Index out of bounds.\n");
             for (size_t j = i; j < A::size - 1; j++)
                 A::v[j] = std::move(A::v[j + 1]);
             A::v[A::size - 1].~Value();
@@ -133,9 +133,9 @@ namespace Ghurund::Core {
 		to remove all use removeRange(0, Size);
 		 */
 		inline void removeRange(size_t from, size_t to) {
-			_ASSERT_EXPR(from < A::size, "Index out of bounds.\n");
-			_ASSERT_EXPR(to < A::size, "Index out of bounds.\n");
-            _ASSERT_EXPR(to > from, "Incorrect range.\n");
+            _____________________check(from < A::size, "Index out of bounds.\n");
+            _____________________check(to <= A::size, "Index out of bounds.\n");
+            _____________________check(to > from, "Incorrect range.\n");
             size_t i = from;
             for (size_t j = to; j < A::size; i++, j++)
 				A::v[i] = std::move(A::v[j]);
@@ -146,7 +146,7 @@ namespace Ghurund::Core {
 
         inline void remove(const Value& item) {
             size_t i = indexOf(item);
-            _ASSERT_EXPR(i < A::size, "Index out of bounds.\n");
+            _____________________check(i < A::size, "Index out of bounds.\n");
             for (size_t j = i; j < A::size - 1; j++)
                 A::v[j] = std::move(A::v[j + 1]);
             A::v[A::size - 1].~Value();
@@ -179,9 +179,9 @@ namespace Ghurund::Core {
         }
 
         inline List sublist(size_t from, size_t to) {
-            _ASSERT_EXPR(from < A::size, "Index out of bounds.\n");
-            _ASSERT_EXPR(to < A::size, "Index out of bounds.\n");
-            _ASSERT_EXPR(to > from, "Incorrect range.\n");
+            _____________________check(from < A::size, "Index out of bounds.\n");
+            _____________________check(to <= A::size, "Index out of bounds.\n");
+            _____________________check(to > from, "Incorrect range.\n");
             List list;
             for (size_t i = from; i < to; i++)
                 list.add(A::v[i]);

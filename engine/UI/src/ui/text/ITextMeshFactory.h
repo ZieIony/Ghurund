@@ -1,11 +1,15 @@
 #pragma once
 
-#include "engine/graphics/mesh/MeshData.h"
-#include "ui/font/Font.h"
+#include "CharacterInfo.h"
+#include "TextSpan.h"
+
+#include "core/collection/List.h"
+#include "core/object/Noncopyable.h"
+#include "core/resource/Resource.h"
 
 namespace Ghurund::UI {
 	class ITextMeshFactory:public Noncopyable {
 	public:
-		virtual Resource* makeMesh(const WString& text, const Ghurund::UI::Font& font) const = 0;
+		virtual Resource* makeMesh(const List<CharacterInfo>& characters, const TextSpan& span) const = 0;
 	};
 }

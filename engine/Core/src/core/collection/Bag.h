@@ -64,7 +64,7 @@ namespace Ghurund::Core {
                 if (A::v[i] == item)
                     break;
             }
-            _ASSERT_EXPR(i < A::size, "Index out of bounds.\n");
+            _____________________check(i < A::size, "Index out of bounds.\n");
             A::v[i] = std::move(A::v[A::size - 1]);
             A::v[A::size - 1].~Value();
             A::size--;

@@ -5,7 +5,6 @@
 #include "test/utils/TestUtils.h"
 
 #include "core/reflection/StandardTypes.h"
-#include "test/ui/TextFormatFactory.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/constraint/ConstraintGraph.h"
 #include "ui/loading/LayoutLoader.h"
@@ -118,7 +117,6 @@ public:
 
 		ResourceManager resourceManager;
 		//TestDrawableFactory drawableFactory;
-		TextFormatFactory textFormatFactory;
 		ConstraintFactory constraintFactory;
 		//auto layoutLoader = makeIntrusive<LayoutLoader>(resourceManager, drawableFactory, textFormatFactory, constraintFactory);
 		//resourceManager.Loaders.set<Control>(*layoutLoader.get());

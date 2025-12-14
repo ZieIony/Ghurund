@@ -206,6 +206,30 @@ public:
 		}
 	}
 
+	TEST_METHOD(Array_subarray_toSize) {
+		MemoryGuard guard;
+		{
+			Array<uint32_t> array = { 1, 2, 3, 4, 5, 6 };
+			Array<uint32_t> array2 = array.subarray(4, 6);
+
+			Assert::AreEqual((size_t)6, array.Size);
+			Assert::AreEqual(false, array.Empty);
+
+			Assert::AreEqual((size_t)2, array2.Size);
+			Assert::AreEqual(false, array2.Empty);
+
+			Array<uint32_t> testArray = { 1, 2, 3, 4, 5, 6 };
+			size_t i = 0;
+			for (auto& item : array)
+				Assert::AreEqual(item, testArray[i++]);
+
+			Array<uint32_t> testArray2 = { 5, 6 };
+			size_t j = 0;
+			for (auto& item : array2)
+				Assert::AreEqual(item, testArray2[j++]);
+		}
+	}
+
 	TEST_METHOD(Array_iterator) {
 		MemoryGuard guard;
 		{

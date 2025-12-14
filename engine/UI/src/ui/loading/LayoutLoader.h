@@ -11,8 +11,7 @@
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/control/Control.h"
 #include "ui/layout/ControlWithConstraints.h"
-#include "ui/loading/TextFormatFactory.h"
-#include "ui/style/TextFormatAttr.h"
+#include "ui/style/FontAttr.h"
 #include "ui/text/DocumentElement.h"
 
 #include <tinyxml2.h>
@@ -39,7 +38,6 @@ namespace Ghurund::UI {
 	private:
 		Ghurund::Core::ResourceManager& resourceManager;
 		ITextureFactory& textureFactory;
-		TextFormatFactory& textFormatFactory;
 		ConstraintFactory& constraintFactory;
 		PropertyLoaderCollection propertyLoaders;
 		Map<AString, const BaseConstructor*> types;
@@ -56,12 +54,11 @@ namespace Ghurund::UI {
 
 	public:
 		static inline const char* FILE_PROTOCOL = "file://";
-		static inline const char* THEME_TEXTFORMAT = "theme://textFormat/";
+		static inline const char* THEME_TEXTFORMAT = "theme://font/";
 
 		LayoutLoader(
 			Ghurund::Core::ResourceManager& resourceManager,
 			ITextureFactory& textureFactory,
-			TextFormatFactory& textFormatFactory,
 			ConstraintFactory& constraintFactory
 		);
 
@@ -100,7 +97,7 @@ namespace Ghurund::UI {
 
 		Constraint* loadConstraint(const char* str, Orientation orientation);
 
-		TextFormatRef* loadTextFormat(const char* str);
+		FontRef* loadFont(const char* str);
 
         void loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment);
 

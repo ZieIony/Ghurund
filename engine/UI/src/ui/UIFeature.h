@@ -30,10 +30,6 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTextureFactory)) ITextureFactory* TextureFactory;
 
-        virtual Ghurund::UI::TextFormatFactory* getTextFormatFactory() = 0;
-
-        __declspec(property(get = getTextFormatFactory)) Ghurund::UI::TextFormatFactory* TextFormatFactory;
-
         virtual Ghurund::UI::ConstraintFactory* getConstraintFactory() = 0;
 
         __declspec(property(get = getConstraintFactory)) Ghurund::UI::ConstraintFactory* ConstraintFactory;

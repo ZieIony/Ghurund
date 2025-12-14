@@ -97,7 +97,6 @@
     <ClInclude Include="src\ui\directx\DxUIContext.h" />
     <ClInclude Include="src\ui\directx\DxUIFeature.h" />
     <ClInclude Include="src\ui\directx\DxUIFeatureFactory.h" />
-    <ClInclude Include="src\ui\directx\loading\TextFormatFactory.h" />
     <ClInclude Include="src\ui\directx\material\DxUIMaterialProvider.h" />
     <ClInclude Include="src\ui\directx\material\DxUIShaderProvider.h" />
     <ClInclude Include="src\ui\directx\text\DxTextMeshFactory.h" />

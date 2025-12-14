@@ -4,41 +4,30 @@
 namespace Ghurund::UI {
 	using namespace Ghurund::Engine;
 
-	void TextMesh::init(const WString& text, const Ghurund::UI::Font& font) {
+	void TextMesh::init(const List<CharacterInfo>& characters, const TextSpan& span) {
 		List<XMFLOAT3> positions;
 		List<XMFLOAT2> texCoords;
 		List<uint16_t> indices;
 
+		const Ghurund::UI::Font& font = *span.font;
+
 		auto imageSize = font.Atlas->Image->Size;
 		auto& glyphs = font.Atlas->Glyphs;
-		float x = 0, y = 0;
 		tchar prevC = '\0';
-		for (wchar_t c : text) {
-			if (c == '\n') {
-				x = 0;
-				y += font.Height;
+		for (size_t i = span.start; i < span.finish; i++) {
+			CharacterInfo& info = characters[i];
+			if (isSpace(info.c))
 				continue;
-			}
-			if (!glyphs.contains(c)) {
-				Logger::log(LogType::WARNING, std::format(_T("Font doesn't contain glyph definition for character '{}'.\n"), c).c_str());
-				continue;
-			}
-			auto& glyph = glyphs[c];
-			float nextX = x + glyph.increment;
-			if (isSpace(c)) {
-				prevC = c;
-				x = nextX;
-				continue;
-			}
 			indices.addAll({
 				(uint16_t)positions.Size, (uint16_t)(positions.Size + 1), (uint16_t)(positions.Size + 2),
 				(uint16_t)(positions.Size + 2), (uint16_t)(positions.Size + 1), (uint16_t)(positions.Size + 3)
 				});
+			auto& glyph = info.glyph;
 			float PAD = font.Atlas->Padding / 2;
 			float PAD_S = PAD / glyph.scale;
-			int kerning = font.getKerning(prevC, c);
+			int kerning = font.getKerning(prevC, info.c);
 			FloatSize frameSize = { glyph.shapeSize.Width + PAD_S * 2, glyph.shapeSize.Height + PAD_S * 2 };
-			XMFLOAT2 framePos = { x - PAD_S + glyph.shapeOrigin.x, y - PAD_S - glyph.shapeOrigin.y };
+			XMFLOAT2 framePos = { info.pos.x - PAD_S + glyph.shapeOrigin.x, info.pos.y - PAD_S - glyph.shapeOrigin.y };
 			positions.addAll({
 				{ framePos.x, framePos.y, 0.0f },
 				{ framePos.x, framePos.y + frameSize.Height, 0.0f },
@@ -63,8 +52,7 @@ namespace Ghurund::UI {
 					(float)(glyph.bitmapPos.y - PAD + glyph.bitmapSize.Height) / imageSize.Height
 				}
 				});
-			prevC = c;
-			x = nextX + kerning;
+			prevC = info.c;
 		}
 		VertexStream posStream = VertexStream(positions, VertexRole::POSITION);
 		VertexStream texCoordStream = VertexStream(texCoords, VertexRole::TEXCOORD);

@@ -7,10 +7,16 @@
 		<ControlGroup.Material color="theme://color/background" shader="lib://Ghurund/shaders/DirectX/ui/control.hlsl"/>
 		<ControlContainer width="Parent.Width" top="Parent.Top" bottom="'controls'.Top"
 						  name="container">
-			<ControlGroup>
-				<ImageView width="433" height="56" scaleMode="fit" image="images\buttons.png">
+			<ControlGroup width="Parent.Width" height="Parent.Height">
+				<ImageView top="Parent.Top" width="433" height="56" scaleMode="fit" image="images\buttons.png">
 					<ImageView.Material shader="lib://Ghurund/shaders/DirectX/ui/image.hlsl"/>
 				</ImageView>
+				<Control top="Parent.Top" bottom="Parent.Bottom" left="Parent.Left" right="Parent.Right"
+						 width="300" height="5">
+					<Control.Material shader="lib://Ghurund/shaders/DirectX/ui/progressLinearInfinite.hlsl">
+						<Parameter name="progressColor" value="#ffff0000"/>
+					</Control.Material>
+				</Control>
 			</ControlGroup>
 		</ControlContainer>
 		<ControlGroup left="10" width="Parent.Width" name="controls">

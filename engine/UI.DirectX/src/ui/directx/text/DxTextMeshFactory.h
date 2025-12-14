@@ -15,9 +15,9 @@ namespace Ghurund::UI::DirectX {
 	public:
 		DxTextMeshFactory(DxGraphics& graphics, CommandList& commandList):graphics(graphics), commandList(commandList) {}
 
-		virtual Resource* makeMesh(const WString& text, const Ghurund::UI::Font& font) const {
+		virtual Resource* makeMesh(const List<CharacterInfo>& characters, const TextSpan& span) const {
 			auto meshData = makeIntrusive<TextMesh>();
-			meshData->init(text, font);
+			meshData->init(characters, span);
 			auto mesh = makeIntrusive<DxMesh>();
 			mesh->init(meshData.ref(), graphics, commandList);
 			mesh->addReference();

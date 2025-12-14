@@ -5,7 +5,6 @@
 #include "test/utils/TestLogOutput.h"
 
 #include "ui/constraint/ConstraintFactory.h"
-#include "test/ui/TextFormatFactory.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/constraint/ConstraintGraph.h"
 #include "ui/constraint/SiblingConstraint.h"

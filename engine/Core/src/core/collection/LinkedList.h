@@ -1,10 +1,11 @@
 #pragma once
 
+#include "Common.h"
+
 #include "core/allocation/SimpleAllocator.h"
 #include "core/collection/iterator/ListNodeIterator.h"
 #include "core/collection/iterator/ReverseListNodeIterator.h"
 
-#include <cassert>
 #include <iterator>
 
 namespace Ghurund::Core {
@@ -145,7 +146,7 @@ namespace Ghurund::Core {
         }
 
         inline void insert(size_t i, const Value& item) {
-            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
+            _____________________check(i < size, "Index out of bounds.\n");
             void* mem = a.allocate(sizeof(Node<Value>));
             Node<Value>* node = new (mem)Node<Value>(item);
             Node<Value>* prev = nullptr;
@@ -170,7 +171,7 @@ namespace Ghurund::Core {
         }
 
         inline Value& get(size_t i) const {
-            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
+            _____________________check(i < size, "Index out of bounds.\n");
             Node<Value>* temp = first;
             for (size_t j = 0; j < i; j++)
                 temp = temp->next;
@@ -178,7 +179,7 @@ namespace Ghurund::Core {
         }
 
         inline Value& operator[](size_t i) const {
-            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
+            _____________________check(i < size, "Index out of bounds.\n");
             Node<Value>* temp = first;
             for (size_t j = 0; j < i; j++)
                 temp = temp->next;
@@ -186,7 +187,7 @@ namespace Ghurund::Core {
         }
 
         inline void set(size_t i, const Value& item) {
-            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
+            _____________________check(i < size, "Index out of bounds.\n");
             Node<Value>* temp = first;
             for (size_t j = 0; j < i; j++)
                 temp = temp->next;
@@ -204,7 +205,7 @@ namespace Ghurund::Core {
         }
 
         inline void removeAt(size_t i) {
-            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
+            _____________________check(i < size, "Index out of bounds.\n");
             Node<Value>* node = first;
             for (size_t j = 0; j < i; j++)
                 node = node->next;

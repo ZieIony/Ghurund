@@ -5,7 +5,7 @@
 #include "ui/control/Control.h"
 #include "ui/style/AttrProperty.h"
 #include "ui/style/ColorAttr.h"
-#include "ui/style/TextFormatAttr.h"
+#include "ui/style/FontAttr.h"
 
 namespace Ghurund::UI {
 	class TextBlock:public Control {
@@ -23,7 +23,7 @@ namespace Ghurund::UI {
 
 	protected:
 		AttrProperty<ColorAttr, Color> color;
-		Ghurund::UI::TextFormatAttr* textFormat = nullptr;
+		Ghurund::UI::FontAttr* font = nullptr;
 		Ghurund::UI::TextLayout textLayout;
 
 		virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
@@ -43,29 +43,25 @@ namespace Ghurund::UI {
 		/*TextBlock(
 			const Ghurund::Core::WString& typeName,
 			const ColorAttr& color = ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND),
-			TextFormat* textFormat = nullptr
-		):textLayout(typeName, 0xdd000000, textFormat) {
+			Font* font = nullptr
+		):textLayout(typeName, 0xdd000000, font) {
 			TextColor = color;
 		}*/
 
 		~TextBlock() {
-			if (textFormat)
-				delete textFormat;
+			if (font)
+				delete font;
 		}
 
-		const TextDocument& getText() {
-			return textLayout.TextDocument;
+		TextDocument* getDocument() {
+			return textLayout.Document;
 		}
 
-		inline void setText(const Ghurund::Core::WString& text) {
-			textLayout.TextDocument = text;
+		inline void setDocument(TextDocument* textDocument) {
+			textLayout.Document = textDocument;
 		}
 
-		inline void setText(const TextDocument& textDocument) {
-			textLayout.TextDocument = textDocument;
-		}
-
-		__declspec(property(get = getText, put = setText)) const TextDocument& Text;
+		__declspec(property(get = getDocument, put = setDocument)) TextDocument* Document;
 
 		inline void setTextColor(const ColorAttr& color) {
 			this->color.set(color);
@@ -73,13 +69,13 @@ namespace Ghurund::UI {
 
 		__declspec(property(put = setTextColor)) const ColorAttr& TextColor;
 
-		inline Ghurund::UI::TextFormatAttr* getTextFormat() {
-			return textFormat;
+		inline Ghurund::UI::FontAttr* getFont() {
+			return font;
 		}
 
-		void setTextFormat(Ghurund::UI::TextFormatAttr* textFormat);
+		void setFont(Ghurund::UI::FontAttr* font);
 
-		__declspec(property(get = getTextFormat, put = setTextFormat)) Ghurund::UI::TextFormatAttr* TextFormat;
+		__declspec(property(get = getFont, put = setFont)) Ghurund::UI::FontAttr* Font;
 
 		void dispatchContextChanged();
 	};
