@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/graphics/material/IMaterial.h"
+#include "engine/graphics/material/Material.h"
 #include "engine/parameter/ValueParameter.h"
 #include "core/Color.h"
 
@@ -16,7 +16,7 @@ namespace Ghurund::UI {
         IntrusivePointer<FloatParameter> borderWidthParameter;
 
     public:
-        ControlMaterialParameters(Ghurund::Engine::IMaterial& material) {
+        ControlMaterialParameters(Ghurund::Engine::Material& material) {
 			backgroundColorParameter.set((Float4Parameter*)material.Parameters.get("backgroundColor"));
 			if (backgroundColorParameter != nullptr)
 				backgroundColorParameter->addReference();

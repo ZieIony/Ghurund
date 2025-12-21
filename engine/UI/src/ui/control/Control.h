@@ -9,7 +9,7 @@
 #include "ui/constraint/ContentSize.h"
 #include "ui/constraint/WrapConstraint.h"
 #include "ui/UIContext.h"
-#include "engine/graphics/material/IMaterial.h"
+#include "engine/graphics/material/Material.h"
 #include "engine/parameter/ValueParameter.h"
 
 namespace tinyxml2 {
@@ -67,7 +67,7 @@ namespace Ghurund::UI {
 		XMFLOAT2 position = { 0,0 };
 		float alpha = 1.0f;
 
-		IntrusivePointer<IMaterial> material;
+		IntrusivePointer<Material> material;
 		IntrusivePointer<Resource> mesh;
 		Float2Parameter* positionParameter = nullptr, * sizeParameter = nullptr;
 		FloatParameter* alphaParameter = nullptr;
@@ -224,7 +224,7 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = isRoundToPixelsEnabled, put = setRoundToPixelsEnabled)) bool RoundToPixelsEnabled;
 
-		inline void setMaterial(IMaterial* material) {
+		inline void setMaterial(Material* material) {
 			if (this->material.get() == material)
 				return;
 			this->material.set(material);
@@ -241,11 +241,11 @@ namespace Ghurund::UI {
 			dispatchMaterialChanged();
 		}
 
-		inline IMaterial* getMaterial() const {
+		inline Material* getMaterial() const {
 			return material.get();
 		}
 
-		__declspec(property(get = getMaterial, put = setMaterial)) IMaterial* Material;
+		__declspec(property(get = getMaterial, put = setMaterial)) Material* Material;
 
 		inline const XMFLOAT2& getPosition() const {
 			return position;

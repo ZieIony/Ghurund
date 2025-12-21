@@ -36,7 +36,7 @@ namespace Ghurund::UI::DirectX {
         resourceManager.Loaders.set<TextStyle>(textStyleLoader.ref());
 
         layoutLoader = makeIntrusive<Ghurund::UI::LayoutLoader>(resourceManager, *textureFactory, *constraintFactory);
-        layoutLoader->PropertyLoaders.add(std::make_unique<MaterialPropertyLoader>(resourceManager, *(MaterialLoader*)resourceManager.Loaders.get<IMaterial>()));
+        layoutLoader->PropertyLoaders.add(std::make_unique<MaterialPropertyLoader>(resourceManager, *(MaterialLoader*)resourceManager.Loaders.get<Material>()));
         resourceManager.Loaders.set<Control>(*layoutLoader.get());
     }
     

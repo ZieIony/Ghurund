@@ -5,30 +5,30 @@
 #include "engine/directx/shader/ShaderProvider.h"
 
 namespace Ghurund::UI::DirectX {
-    DxMaterial* DxUIMaterialProvider::makeWithShader(DxShader* shader) {
-        DxMaterial* material = nullptr;
+    Material* DxUMaterialProvider::makeWithShader(DxShader* shader) {
+        Material* material = nullptr;
         if (shader) {
-            material = ghnew DxMaterial(shader);
+            material = ghnew Material(shader);
         }
         return material;
     }
 
-    IMaterial* DxUIMaterialProvider::makeInvalid() {
+    Material* DxUMaterialProvider::makeInvalid() {
         IntrusivePointer<DxShader> shader(shaderProvider.loadInvalid());
         return makeWithShader(shader.get());
     }
 
-    IMaterial* DxUIMaterialProvider::makeControl() {
+    Material* DxUMaterialProvider::makeControl() {
         IntrusivePointer<DxShader> shader(shaderProvider.loadControl());
         return makeWithShader(shader.get());
     }
 
-    IMaterial* DxUIMaterialProvider::makeText() {
+    Material* DxUMaterialProvider::makeText() {
         IntrusivePointer<DxShader> shader(shaderProvider.loadText());
         return makeWithShader(shader.get());
     }
 
-    IMaterial* DxUIMaterialProvider::makeShadow() {
+    Material* DxUMaterialProvider::makeShadow() {
         IntrusivePointer<DxShader> shader(shaderProvider.loadShadow());
         return makeWithShader(shader.get());
     }

@@ -36,8 +36,8 @@ namespace Preview {
 		Layers.add(uiLayer.get());
 
 		DxUIShaderProvider shaderProvider(Application.ResourceManager);
-		DxUIMaterialProvider materialProvider(ParameterManager, shaderProvider);
-		basicMaterial = IntrusivePointer<IMaterial>(materialProvider.makeControl());
+		DxUMaterialProvider materialProvider(ParameterManager, shaderProvider);
+		basicMaterial = IntrusivePointer<Material>(materialProvider.makeControl());
 		ControlMaterialParameters params(basicMaterial.ref());
 		params.BackgroundColor = Colors::ALICE_BLUE;
 		previewLayout->Material = basicMaterial.get();

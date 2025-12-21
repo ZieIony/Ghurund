@@ -1,11 +1,12 @@
 #pragma once
 
 #include "core/resource/Resource.h"
+#include "engine/parameter/ParameterProvider.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
 
-    class IShader:public Resource {
+    class IShader:public Resource, public ParameterProvider {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {

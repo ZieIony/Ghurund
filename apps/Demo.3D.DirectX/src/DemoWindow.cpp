@@ -8,7 +8,7 @@
 #include <engine/directx/mesh/DxMesh.h>
 #include <engine/directx/texture/TextureProvider.h>
 #include <engine/directx/shader/ShaderProvider.h>
-#include <engine/directx/material/MaterialProvider.h>
+#include <engine/directx/material/DxMaterialProvider.h>
 #include <ui/font/FontLoader.h>
 #include <core/math/Matrix.h>
 #include <ui/directx/text/DxTextMeshFactory.h>
@@ -34,7 +34,7 @@ namespace Demo {
 		commandList->init(graphicsFeature->Graphics, graphicsFeature->Graphics.DirectQueue);
 
 		DxUIShaderProvider shaderProvider(app.ResourceManager);
-		DxUIMaterialProvider materialProvider(ParameterManager, shaderProvider);
+		DxUMaterialProvider materialProvider(ParameterManager, shaderProvider);
 
 		camera = makeIntrusive<Camera>();
 		camera->setPositionTargetUp({ 10,10,-10 }, { 0,0,0 });
@@ -62,7 +62,7 @@ namespace Demo {
 
 		RenderGroup uiGroup(0, DrawOrder::BACK_TO_FRONT);
 		{
-			basicMaterial = IntrusivePointer<IMaterial>(materialProvider.makeText());
+			basicMaterial = IntrusivePointer<Material>(materialProvider.makeText());
 			colorTexture = makeIntrusive<DxTexture>();
 			colorTexture->init(graphicsFeature->Graphics, commandList.ref(), *textStyle->Atlas->Image);
 			colorTextureParameter = (TextureParameter*)basicMaterial->Parameters.get("colorTexture");
@@ -84,7 +84,7 @@ namespace Demo {
 			shadowMesh = IntrusivePointer<Resource>(mesh);
 			mesh->init(meshData.ref(), graphicsFeature->Graphics, commandList.ref());
 
-			controlMaterial = IntrusivePointer<IMaterial>(materialProvider.makeControl());
+			controlMaterial = IntrusivePointer<Material>(materialProvider.makeControl());
 			ControlMaterialParameters parameters(controlMaterial.ref());
 			parameters.Size = { (float)textLayout.Size.Width, (float)textLayout.Size.Height };
 			parameters.BackgroundColor = Colors::WHITE;

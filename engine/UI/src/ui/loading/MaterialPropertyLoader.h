@@ -2,7 +2,7 @@
 
 #include "PropertyLoader.h"
 
-#include "engine/graphics/material/IMaterial.h"
+#include "engine/graphics/material/Material.h"
 #include "engine/graphics/material/MaterialLoader.h"
 
 namespace Ghurund::UI {
@@ -21,7 +21,7 @@ namespace Ghurund::UI {
 		}
 
         virtual const Type& getType() const override {
-            return Ghurund::Core::getType<IMaterial*>();
+            return Ghurund::Core::getType<Material*>();
         }
 
         virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override;

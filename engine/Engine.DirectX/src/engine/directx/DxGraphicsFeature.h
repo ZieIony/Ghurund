@@ -4,7 +4,6 @@
 
 #include "core/reflection/Type.h"
 #include "core/feature/Feature.h"
-#include "material/DxMaterialFactory.h"
 #include "shader/compiler/DxShaderCompiler.h"
 #include "texture/DxTextureFactory.h"
 
@@ -29,12 +28,8 @@ namespace Ghurund::Engine::DirectX {
         IntrusivePointer<CommandList> commandList;
         ResourceManager& resourceManager;
         SharedPointer<DxShaderCompiler> shaderCompiler;
-        SharedPointer<DxMaterialFactory> materialFactory;
         SharedPointer<DxTextureFactory> textureFactory;
 
-        void initLoaders();
-
-        void uninitLoaders();
         void uninitGraphicsFeature();
 
     public:

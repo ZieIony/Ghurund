@@ -2,7 +2,6 @@
 
 #include "DxUIShaderProvider.h"
 
-#include "engine/directx/material/DxMaterial.h"
 #include "engine/parameter/ParameterManager.h"
 #include "ui/material/IUIMaterialProvider.h"
 
@@ -10,26 +9,26 @@ namespace Ghurund::UI::DirectX {
     using namespace Ghurund::UI;
     using namespace Ghurund::Engine::DirectX;
 
-    class DxUIMaterialProvider:public IUIMaterialProvider {
+    class DxUMaterialProvider:public IUMaterialProvider {
     private:
         ParameterManager& parameterManager;
         DxUIShaderProvider& shaderProvider;
 
-        DxMaterial* makeWithShader(DxShader* shader);
+        Material* makeWithShader(DxShader* shader);
 
     public:
-        DxUIMaterialProvider(
+        DxUMaterialProvider(
             ParameterManager& parameterManager,
             DxUIShaderProvider& shaderProvider
         ):parameterManager(parameterManager), shaderProvider(shaderProvider) {
         }
 
-        virtual IMaterial* makeInvalid() override;
+        virtual Material* makeInvalid() override;
 
-        virtual IMaterial* makeControl() override;
+        virtual Material* makeControl() override;
 
-        virtual IMaterial* makeText() override;
+        virtual Material* makeText() override;
 
-        virtual IMaterial* makeShadow() override;
+        virtual Material* makeShadow() override;
     };
 }

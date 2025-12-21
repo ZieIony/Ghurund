@@ -80,7 +80,7 @@ namespace Ghurund::UI {
 	void TextLayout::initMeshes(
 		ITextMeshFactory& textMeshFactory,
 		ITextureFactory& textureFactory,
-		NotNull<IMaterial> material
+		NotNull<Material> material
 	) {
 		textMeshes.clear();
 		for (auto& line : lines) {
@@ -92,7 +92,7 @@ namespace Ghurund::UI {
 				colorTextureParameter->Value = textureFactory.makeTexture(*span.textStyle->Atlas->Image);
 				textMeshes.add(DrawPacket{
 					mesh,
-					IntrusivePointer<IMaterial>(&material),
+					IntrusivePointer<Material>(&material),
 					pos
 				});
 			}

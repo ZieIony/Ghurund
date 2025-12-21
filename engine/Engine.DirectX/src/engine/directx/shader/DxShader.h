@@ -43,8 +43,6 @@ namespace Ghurund::Engine::DirectX {
 		List<TextureConstant*> textures;
 		List<Sampler*> samplers;
 
-		ParameterCollection parameters;
-
 		void finalize();
 
 	public:
@@ -77,12 +75,6 @@ namespace Ghurund::Engine::DirectX {
 			this->samplers = samplers;
 			this->isTransparencyEnabled = isTransparencyEnabled;
 		}
-
-		inline const ParameterCollection& getParameters() const {
-			return parameters;
-		}
-
-		__declspec(property(get = getParameters)) const ParameterCollection& Parameters;
 
 		bool set(CommandList& commandList, ParameterManager& parameterManager);
 

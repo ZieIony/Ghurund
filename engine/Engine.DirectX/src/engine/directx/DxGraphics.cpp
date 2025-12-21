@@ -6,8 +6,6 @@
 #include "core/reflection/Property.h"
 #include "core/logging/Logger.h"
 #include "DirectXTypes.h"
-#include "shader/DxShaderLoader.h"
-#include "material/DxMaterialLoader.h"
 
 namespace Ghurund::Engine::DirectX {
     const Ghurund::Core::Type& DxGraphics::GET_TYPE() {

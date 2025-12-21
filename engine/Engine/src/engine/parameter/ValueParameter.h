@@ -28,6 +28,9 @@ namespace Ghurund::Engine {
 	private:
 		T value;
 
+	protected:
+		ValueParameter(const ValueParameter<T>& other):Parameter(other), value(other.value) {}
+
 	public:
 		using value_t = T;
 
@@ -60,6 +63,10 @@ namespace Ghurund::Engine {
 		}
 
 		static inline size_t SIZE = sizeof(T);
+
+		virtual ValueParameter<T>* clone() const override {
+			return ghnew ValueParameter<T>(*this);
+		}
 	};
 
 	typedef ValueParameter<float> FloatParameter;

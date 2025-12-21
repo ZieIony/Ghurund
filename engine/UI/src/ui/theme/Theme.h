@@ -15,7 +15,7 @@ namespace Ghurund::UI {
 
     typedef AttributeKey<Color> ColorKey;
     typedef AttributeKey<ITexture> TextureKey;
-    typedef AttributeKey<IMaterial> MaterialKey;
+    typedef AttributeKey<Material> MaterialKey;
     typedef AttributeKey<Ghurund::UI::TextStyle> TextStyleKey;
     typedef AttributeKey<Control> LayoutKey;
 

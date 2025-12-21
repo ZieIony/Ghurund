@@ -1,8 +1,8 @@
 #include "ghedxpch.h"
 #include "DxGraphicsFeature.h"
 
+#include "engine/graphics/material/MaterialLoader.h"
 #include "shader/DxShaderLoader.h"
-#include "material/DxMaterialLoader.h"
 
 namespace Ghurund::Engine::DirectX {
     const Ghurund::Core::Type& DxGraphicsFeature::GET_TYPE() {
@@ -13,9 +13,8 @@ namespace Ghurund::Engine::DirectX {
     }
 
     void DxGraphicsFeature::uninitGraphicsFeature() {
-        resourceManager.Loaders.remove<IMaterial>();
+        resourceManager.Loaders.remove<Material>();
         resourceManager.Loaders.remove<DxShader>();
-        materialFactory.set(nullptr);
         shaderCompiler.set(nullptr);
         graphics.uninit();
     }
@@ -26,12 +25,11 @@ namespace Ghurund::Engine::DirectX {
         auto shaderLoader = makeIntrusive<DxShaderLoader>(shaderCompiler.ref());
         shaderLoader->includeDirs.add(DirectoryPath(L"./resources/shaders/DirectX/"));
         resourceManager.Loaders.set<DxShader>(shaderLoader.ref());
-        materialFactory = makeShared<DxMaterialFactory>();
         commandList = makeIntrusive<CommandList>();
         commandList->init(graphics, graphics.DirectQueue);
         textureFactory = makeShared<DxTextureFactory>(graphics, commandList.ref());
-        auto materialLoader = makeIntrusive<DxMaterialLoader>(resourceManager, materialFactory.ref(), textureFactory.ref());
-        resourceManager.Loaders.set<IMaterial>(materialLoader.ref());
+        auto materialLoader = makeIntrusive<MaterialLoader>(resourceManager, textureFactory.ref());
+        resourceManager.Loaders.set<Material>(materialLoader.ref());
     }
 
     void DxGraphicsFeature::onUninit() {

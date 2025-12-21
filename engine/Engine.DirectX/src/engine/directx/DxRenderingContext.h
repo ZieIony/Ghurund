@@ -3,8 +3,8 @@
 #include "buffer/RenderTarget.h"
 #include "engine/directx/SwapChain.h"
 #include "engine/graphics/RenderingContext.h"
-#include "material/DxMaterial.h"
 #include "mesh/DxMesh.h"
+#include "shader/DxShader.h"
 
 namespace Ghurund::Engine::DirectX {
 	class DxRenderingContext: public RenderingContext {
@@ -49,10 +49,11 @@ namespace Ghurund::Engine::DirectX {
 				});
 				for (auto& packet : group.objects) {
 					auto mesh = (DxMesh*)packet.mesh.get();
-					auto material = (DxMaterial*)packet.material.get();
+					auto material = packet.material.get();
 					// TODO: setup parameters
-					material->set(*commandList, parameterManager);
-					mesh->draw(*commandList, material->Layout);
+					auto shader = (DxShader*)material->Shader;
+					shader->set(*commandList, parameterManager);
+					mesh->draw(*commandList, shader->Layout);
 				}
 			}
 		}

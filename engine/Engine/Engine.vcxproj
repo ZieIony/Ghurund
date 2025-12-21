@@ -100,7 +100,7 @@
   <ItemGroup>
     <ClInclude Include="src\engine\application\Layer.h" />
     <ClInclude Include="src\engine\application\LayerList.h" />
-    <ClInclude Include="src\engine\graphics\material\IMaterialFactory.h" />
+    <ClInclude Include="src\engine\graphics\material\MaterialProvider.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialLoader.h" />
     <ClInclude Include="src\engine\graphics\texture\ITextureFactory.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
@@ -148,8 +148,7 @@
     <ClInclude Include="src\engine\graphics\Renderer.h" />
     <ClInclude Include="src\engine\graphics\RenderingContext.h" />
     <ClInclude Include="src\engine\graphics\RenderingStatistics.h" />
-    <ClInclude Include="src\engine\graphics\material\IMaterial.h" />
-    <ClInclude Include="src\engine\graphics\material\IMaterialProvider.h" />
+    <ClInclude Include="src\engine\graphics\material\Material.h" />
     <ClInclude Include="src\engine\graphics\mesh\ConeMeshData.h" />
     <ClInclude Include="src\engine\graphics\mesh\CubeMeshData.h" />
     <ClInclude Include="src\engine\graphics\mesh\MeshData.h" />
@@ -218,7 +217,7 @@
     <ClCompile Include="src\engine\graphics\material\MaterialLoader.cpp" />
     <ClCompile Include="src\engine\graphics\Renderer.cpp" />
     <ClCompile Include="src\engine\graphics\RenderingStatistics.cpp" />
-    <ClCompile Include="src\engine\graphics\material\IMaterial.cpp" />
+    <ClCompile Include="src\engine\graphics\material\Material.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\ConeMeshData.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\CubeMeshData.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\MeshData.cpp" />

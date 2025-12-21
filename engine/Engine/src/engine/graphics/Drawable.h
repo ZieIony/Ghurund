@@ -1,7 +1,7 @@
 #pragma once
 
 #include "mesh/MeshData.h"
-#include "material/IMaterial.h"
+#include "material/Material.h"
 
 #include <DirectXMath.h>
 #include <cstdint>
@@ -9,7 +9,7 @@
 namespace Ghurund::Engine {
 	struct Drawable {
 		uint32_t priority;
-		IMaterial* material;
+		Material* material;
 		XMFLOAT4X4 transform;
 		MeshData* mesh;
 	};

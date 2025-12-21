@@ -94,8 +94,7 @@
   <ItemGroup>
     <ClInclude Include="src\engine\directx\DxGraphicsFeature.h" />
     <ClInclude Include="src\engine\directx\DxGraphicsFeatureFactory.h" />
-    <ClInclude Include="src\engine\directx\material\DxMaterialFactory.h" />
-    <ClInclude Include="src\engine\directx\material\DxMaterialLoader.h" />
+    <ClInclude Include="src\engine\directx\material\DxMaterialProvider.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\ShaderCompilationResult.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\ShaderSettings.h" />
     <ClInclude Include="src\engine\directx\texture\DxTextureFactory.h" />
@@ -119,8 +118,6 @@
     <ClInclude Include="src\engine\directx\buffer\DynamicBuffer.h" />
     <ClInclude Include="src\engine\directx\buffer\GPUBuffer.h" />
     <ClInclude Include="src\engine\directx\buffer\RenderTarget.h" />
-    <ClInclude Include="src\engine\directx\material\DxMaterial.h" />
-    <ClInclude Include="src\engine\directx\material\MaterialProvider.h" />
     <ClInclude Include="src\engine\directx\memory\GPUResourceFactory.h" />
     <ClInclude Include="src\engine\directx\memory\GPUResourcePointer.h" />
     <ClInclude Include="src\engine\directx\memory\HeapAllocator.h" />
@@ -156,7 +153,7 @@
     <ClCompile Include="src\engine\directx\DxRenderingContext.cpp" />
     <ClCompile Include="src\engine\directx\Fence.cpp" />
     <ClCompile Include="src\engine\directx\Frame.cpp" />
-    <ClCompile Include="src\engine\directx\material\DxMaterialLoader.cpp" />
+    <ClCompile Include="src\engine\directx\material\DxMaterialProvider.cpp" />
     <ClCompile Include="src\engine\directx\MathTypes.cpp" />
     <ClCompile Include="src\engine\directx\SwapChain.cpp" />
     <ClCompile Include="src\engine\directx\adapter\AdapterOutput.cpp" />
@@ -166,8 +163,6 @@
     <ClCompile Include="src\engine\directx\buffer\DescriptorHeap.cpp" />
     <ClCompile Include="src\engine\directx\buffer\GPUBuffer.cpp" />
     <ClCompile Include="src\engine\directx\buffer\RenderTarget.cpp" />
-    <ClCompile Include="src\engine\directx\material\DxMaterial.cpp" />
-    <ClCompile Include="src\engine\directx\material\MaterialProvider.cpp" />
     <ClCompile Include="src\engine\directx\memory\GPUResourceFactory.cpp" />
     <ClCompile Include="src\engine\directx\memory\GPUResourcePointer.cpp" />
     <ClCompile Include="src\engine\directx\memory\HeapAllocator.cpp" />

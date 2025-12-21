@@ -104,7 +104,7 @@ namespace Ghurund::UI {
         void initMeshes(
             ITextMeshFactory& textMeshFactory,
             ITextureFactory& textureFactory,
-            NotNull<IMaterial> material
+            NotNull<Material> material
         );
 
         void insertTextAt(uint32_t position, const Ghurund::Core::WString& textToInsert);

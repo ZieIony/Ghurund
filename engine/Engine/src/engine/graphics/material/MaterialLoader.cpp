@@ -9,12 +9,12 @@
 
 namespace Ghurund::Engine {
 
-	IMaterial* MaterialLoader::loadFromXml(const tinyxml2::XMLElement& xml, const DirectoryPath& workingDir) {
+	Material* MaterialLoader::loadFromXml(const tinyxml2::XMLElement& xml, const DirectoryPath& workingDir) {
 		AString s = xml.FindAttribute("shader")->Value();
 		s.replace(L'\\', L'/');
 		ResourcePath path = ResourcePath::parse(convertText<char, wchar_t>(s));
 		auto shader = IntrusivePointer<IShader>(resourceManager.load<IShader>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE));
-		auto material = IntrusivePointer<IMaterial>(materialFactory.makeMaterial(shader.get()));
+		auto material = makeIntrusive<Material>(shader.ref());
 		const tinyxml2::XMLElement* child = xml.FirstChildElement();
 		while (child) {
 			if (child->Name() == AString("Parameter")) {
@@ -40,5 +40,31 @@ namespace Ghurund::Engine {
 		}
 		material->addReference();
 		return material.get();
+	}
+
+	Resource* MaterialLoader::loadInternal(
+		MemoryInputStream& stream,
+		const DirectoryPath& workingDir,
+		const ResourceFormat& format,
+		LoadOption options
+	) {
+		tinyxml2::XMLDocument doc;
+		doc.Parse((const char*)stream.Data, stream.Size);
+		tinyxml2::XMLElement* xml = doc.RootElement();
+		if (AString("Material") != xml->Name())
+			throw InvalidFormatException();
+
+		return loadFromXml(*xml, workingDir);
+	}
+
+	void MaterialLoader::saveInternal(
+		MemoryOutputStream& stream,
+		const DirectoryPath& workingDir,
+		Resource& resource,
+		const ResourceFormat& format,
+		SaveOption options
+	) const {
+		auto& material = castResource<Material>(resource);
+		//shaderLoader.save(stream, workingDir, *material.Shader, format, options);
 	}
 }

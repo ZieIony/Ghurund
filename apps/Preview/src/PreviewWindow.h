@@ -25,7 +25,7 @@ namespace Preview {
 		SharedPointer<DxTextureFactory> textureFactory;
 		SharedPointer<DxUIContext> uiContext;
 		IntrusivePointer<UILayer> uiLayer;
-		IntrusivePointer<IMaterial> basicMaterial;
+		IntrusivePointer<Material> basicMaterial;
 
 	public:
 		PreviewWindow(

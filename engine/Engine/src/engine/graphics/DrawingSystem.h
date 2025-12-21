@@ -4,14 +4,14 @@
 #include "engine/entity/camera/Camera.h"
 #include "engine/entity/TransformComponent.h"
 #include "engine/parameter/ValueParameter.h"
-#include "material/IMaterial.h"
+#include "material/Material.h"
 
 namespace Ghurund::Engine {
     class DrawingSystem {
     private:
         Camera* camera = nullptr;
-        IMaterial* material = nullptr;
-        IMaterial* invalidMaterial = nullptr;
+        Material* material = nullptr;
+        Material* invalidMaterial = nullptr;
         MatrixParameter* parameterWorld = nullptr;
         MatrixParameter* parameterWorldIT = nullptr;
         RenderingStatistics stats;
@@ -47,17 +47,17 @@ namespace Ghurund::Engine {
 
         __declspec(property(put = setCamera, get = getCamera)) Camera* Camera;
 
-        inline void setOverrideMaterial(IMaterial* material) {
+        inline void setOverrideMaterial(Material* material) {
             setPointer(this->material, material);
         }
 
-        __declspec(property(put = setOverrideMaterial)) IMaterial* OverrideMaterial;
+        __declspec(property(put = setOverrideMaterial)) Material* OverrideMaterial;
 
-        void setInvalidMaterial(IMaterial* invalidMaterial) {
+        void setInvalidMaterial(Material* invalidMaterial) {
             setPointer(this->invalidMaterial, invalidMaterial);
         }
 
-        __declspec(property(put = setInvalidMaterial)) IMaterial* InvalidMaterial;
+        __declspec(property(put = setInvalidMaterial)) Material* InvalidMaterial;
 
         void cull() {
             XMMATRIX view = XMLoadFloat4x4(&camera->View);

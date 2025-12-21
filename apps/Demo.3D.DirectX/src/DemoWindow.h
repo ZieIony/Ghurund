@@ -20,7 +20,7 @@ namespace Demo {
 		Set<RenderGroup> renderGroups;
 
 		IntrusivePointer<Resource> textMesh, shadowMesh;
-		IntrusivePointer<IMaterial> basicMaterial, controlMaterial;
+		IntrusivePointer<Material> basicMaterial, controlMaterial;
 		IntrusivePointer<Camera> camera;
 		IntrusivePointer<TextStyle> textStyle;
 

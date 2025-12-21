@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/graphics/material/IMaterial.h"
+#include "engine/graphics/material/Material.h"
 #include "engine/parameter/ValueParameter.h"
 #include "core/Color.h"
 
@@ -15,7 +15,7 @@ namespace Ghurund::UI {
         IntrusivePointer<FloatParameter> elevationParameter;
 
     public:
-        ShadowMaterialParameters(Ghurund::Engine::IMaterial& material) {
+        ShadowMaterialParameters(Ghurund::Engine::Material& material) {
             colorParameter.set((Float4Parameter*)material.Parameters.get("color"));
             colorParameter->addReference();
             cornerRadiusParameter.set((Float4Parameter*)material.Parameters.get("cornerRadius"));

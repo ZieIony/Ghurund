@@ -11,7 +11,7 @@ namespace Ghurund::UI {
 	private:
 		ResourceManager& resourceManager;
 		ResourcePath resourcePath;
-		IntrusivePointer<IMaterial> cached;
+		IntrusivePointer<Material> cached;
 
 	public:
 		FileMaterialProvider(
@@ -20,10 +20,10 @@ namespace Ghurund::UI {
 		): resourceManager(resourceManager), resourcePath(resourcePath) {
 		}
 
-		virtual IntrusivePointer<IMaterial> get() override {
+		virtual IntrusivePointer<Material> get() override {
 			if (cached != nullptr)
-				return IntrusivePointer<IMaterial>((IMaterial*)cached->clone());
-			cached = IntrusivePointer<IMaterial>(resourceManager.load<IMaterial>(resourcePath));
+				return IntrusivePointer<Material>((Material*)cached->clone());
+			cached = IntrusivePointer<Material>(resourceManager.load<Material>(resourcePath));
 			return cached;
 		}
 	};

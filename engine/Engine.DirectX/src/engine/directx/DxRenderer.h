@@ -5,7 +5,6 @@
 #include "Postprocess.h"
 
 #include "core/Color.h"
-#include "engine/directx/material/DxMaterial.h"
 #include "engine/graphics/Renderer.h"
 
 namespace Ghurund::Engine::DirectX {
@@ -27,7 +26,7 @@ namespace Ghurund::Engine::DirectX {
 
     private:
 		//Model* fullScreenQuad = nullptr;
-        DxMaterial* lightPassMaterial = nullptr;
+        Material* lightPassMaterial = nullptr;
         Postprocess* postprocess = nullptr;
         //RenderTarget* postprocessRenderTarget[FRAME_COUNT] = {};
 

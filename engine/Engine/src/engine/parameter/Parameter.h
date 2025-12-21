@@ -27,6 +27,9 @@ namespace Ghurund::Engine {
         void* rawValue = nullptr;
         bool isEmpty = true;
 
+        // TODO: rawValue is here, but initialization is done by ValueParameter and TextureParameter
+        Parameter(const Parameter& other):name(other.name), isEmpty(false), rawValue(nullptr) {}
+
     public:
         Parameter(const AString& name):name(name) {}
 
