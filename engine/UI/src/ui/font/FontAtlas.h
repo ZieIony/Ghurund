@@ -25,7 +25,7 @@ namespace Ghurund::UI {
 #pragma endregion
 
     private:
-        static inline const uint32_t MAX_DIST = 8;
+        static inline const uint32_t MAX_DIST = 2;
         static inline const uint32_t BITMAP_SIZE = 64;
 
         Map<tchar, GlyphMetrics> glyphs;
@@ -44,6 +44,12 @@ namespace Ghurund::UI {
 
     public:
         static inline const tchar* DEFAULT_CHARACTER_SET = _T("aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPrqQRsStTuUvVwWxXyYzZ 0123456789*-+[]{};'`:\",.\\/<>?!@#$%^&*()`~ó¿Ÿæñ¹ê³");
+
+        inline void init(NotNull<Image> image, Map<tchar, GlyphMetrics> glyphs) {
+            atlas.set(image.get());
+            atlas->addReference();
+            this->glyphs = glyphs;
+        }
 
         void init(HDC hdc, const String& supportedCharacters);
 
@@ -74,9 +80,10 @@ namespace Ghurund::UI {
         }
 
     public:
-        static const inline ResourceFormat FORMAT_ATLAS = ResourceFormat(L"fontatlas", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
+        static const inline ResourceFormat FORMAT_XML = ResourceFormat(L"xml", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
+        static const inline ResourceFormat FORMAT_BIN = ResourceFormat(L"bin", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
 
-        inline static const Array<ResourceFormat>& FORMATS = { FORMAT_ATLAS };
+        inline static const Array<ResourceFormat>& FORMATS = { FORMAT_XML, FORMAT_BIN };
 #pragma endregion
     };
 }

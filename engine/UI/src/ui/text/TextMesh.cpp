@@ -9,10 +9,10 @@ namespace Ghurund::UI {
 		List<XMFLOAT2> texCoords;
 		List<uint16_t> indices;
 
-		const Ghurund::UI::Font& font = *span.font;
+		const Ghurund::UI::TextStyle& textStyle = *span.textStyle;
 
-		auto imageSize = font.Atlas->Image->Size;
-		auto& glyphs = font.Atlas->Glyphs;
+		auto imageSize = textStyle.Atlas->Image->Size;
+		auto& glyphs = textStyle.Atlas->Glyphs;
 		tchar prevC = '\0';
 		for (size_t i = span.start; i < span.finish; i++) {
 			CharacterInfo& info = characters[i];
@@ -23,9 +23,9 @@ namespace Ghurund::UI {
 				(uint16_t)(positions.Size + 2), (uint16_t)(positions.Size + 1), (uint16_t)(positions.Size + 3)
 				});
 			auto& glyph = info.glyph;
-			float PAD = font.Atlas->Padding / 2;
+			float PAD = textStyle.Atlas->Padding / 2;
 			float PAD_S = PAD / glyph.scale;
-			int kerning = font.getKerning(prevC, info.c);
+			int kerning = textStyle.Kerning.get(prevC, info.c);
 			FloatSize frameSize = { glyph.shapeSize.Width + PAD_S * 2, glyph.shapeSize.Height + PAD_S * 2 };
 			XMFLOAT2 framePos = { info.pos.x - PAD_S + glyph.shapeOrigin.x, info.pos.y - PAD_S - glyph.shapeOrigin.y };
 			positions.addAll({

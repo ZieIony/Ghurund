@@ -109,12 +109,18 @@
     <ClInclude Include="src\ui\Alignment.h" />
     <ClInclude Include="src\ui\Binding.h" />
     <ClInclude Include="src\ui\control\ImageView.h" />
+    <ClInclude Include="src\ui\font\FontAtlasLoader.h" />
+    <ClInclude Include="src\ui\font\FontMetrics.h" />
+    <ClInclude Include="src\ui\font\KerningPairs.h" />
+    <ClInclude Include="src\ui\font\TextStyle.h" />
+    <ClInclude Include="src\ui\font\TextStyleLoader.h" />
     <ClInclude Include="src\ui\loading\TexturePropertyLoader.h" />
     <ClInclude Include="src\ui\loading\MaterialPropertyLoader.h" />
     <ClInclude Include="src\ui\material\ControlMaterialParameters.h" />
     <ClInclude Include="src\ui\Orientation.h" />
     <ClInclude Include="src\ui\RootView.h" />
     <ClInclude Include="src\ui\text\CharacterInfo.h" />
+    <ClInclude Include="src\ui\text\TextAlignment.h" />
     <ClInclude Include="src\ui\text\TextLine.h" />
     <ClInclude Include="src\ui\text\TextSpan.h" />
     <ClInclude Include="src\ui\theme\FileMaterialProvider.h" />
@@ -205,7 +211,7 @@
     <ClInclude Include="src\ui\style\TextureAttr.h" />
     <ClInclude Include="src\ui\style\LayoutAttr.h" />
     <ClInclude Include="src\ui\style\PointerAttrProperty.h" />
-    <ClInclude Include="src\ui\style\FontAttr.h" />
+    <ClInclude Include="src\ui\style\TextStyleAttr.h" />
     <ClInclude Include="src\ui\text\DocumentElement.h" />
     <ClInclude Include="src\ui\text\ITextMeshFactory.h" />
     <ClInclude Include="src\ui\text\Selection.h" />
@@ -274,6 +280,10 @@
     <ClCompile Include="src\ui\Alignment.cpp" />
     <ClCompile Include="src\ui\Binding.cpp" />
     <ClCompile Include="src\ui\control\ImageView.cpp" />
+    <ClCompile Include="src\ui\font\FontAtlasLoader.cpp" />
+    <ClCompile Include="src\ui\font\KerningPairs.cpp" />
+    <ClCompile Include="src\ui\font\TextStyle.cpp" />
+    <ClCompile Include="src\ui\font\TextStyleLoader.cpp" />
     <ClCompile Include="src\ui\loading\TexturePropertyLoader.cpp" />
     <ClCompile Include="src\ui\loading\MaterialPropertyLoader.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
@@ -327,7 +337,7 @@
     <ClCompile Include="src\ui\style\ColorAttr.cpp" />
     <ClCompile Include="src\ui\style\TextureAttr.cpp" />
     <ClCompile Include="src\ui\style\LayoutAttr.cpp" />
-    <ClCompile Include="src\ui\style\FontAttr.cpp" />
+    <ClCompile Include="src\ui\style\TextStyleAttr.cpp" />
     <ClCompile Include="src\ui\text\DocumentElement.cpp" />
     <ClCompile Include="src\ui\text\TextBlock.cpp" />
     <ClCompile Include="src\ui\text\TextDocument.cpp" />

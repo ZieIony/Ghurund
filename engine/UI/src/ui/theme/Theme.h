@@ -5,7 +5,7 @@
 #include "core/collection/Map.h"
 #include "core/Color.h"
 
-#include "ui/font/Font.h"
+#include "ui/font/TextStyle.h"
 #include "TextureProvider.h"
 #include "LayoutProvider.h"
 #include <engine/graphics/texture/ITexture.h>
@@ -16,7 +16,7 @@ namespace Ghurund::UI {
     typedef AttributeKey<Color> ColorKey;
     typedef AttributeKey<ITexture> TextureKey;
     typedef AttributeKey<IMaterial> MaterialKey;
-    typedef AttributeKey<Ghurund::UI::Font> FontKey;
+    typedef AttributeKey<Ghurund::UI::TextStyle> TextStyleKey;
     typedef AttributeKey<Control> LayoutKey;
 
     class Theme {
@@ -31,7 +31,7 @@ namespace Ghurund::UI {
         //static const inline float state_activated = 0.4f;
         //static const inline float state_disabled = 0.08f;
 
-        Ghurund::Core::Map<FontKey, Ghurund::Core::IntrusivePointer<Ghurund::UI::Font>> fonts;
+        Ghurund::Core::Map<TextStyleKey, Ghurund::Core::IntrusivePointer<Ghurund::UI::TextStyle>> fonts;
         Ghurund::Core::Map<ColorKey, Color> colors;
         Ghurund::Core::Map<TextureKey, SharedPointer<TextureProvider>> textures;
         Ghurund::Core::Map<MaterialKey, SharedPointer<MaterialProvider>> materials;
@@ -46,10 +46,10 @@ namespace Ghurund::UI {
         static inline const TextureKey TEXTURE_ARROWDOWN = TextureKey("arrowDown");
         static inline const TextureKey TEXTURE_ARROWRIGHT = TextureKey("arrowRight");
 
-        static inline const FontKey FONT_BUTTON = FontKey("button");
-        static inline const FontKey FONT_LIST_HEADER = FontKey("listHeader");
-        static inline const FontKey FONT_TEXT_PRIMARY = FontKey("textPrimary");
-        static inline const FontKey FONT_TEXT_SECONDARY = FontKey("textSecondary");
+        static inline const TextStyleKey TEXT_STYLE_BUTTON = TextStyleKey("button");
+        static inline const TextStyleKey TEXT_STYLE_LIST_HEADER = TextStyleKey("listHeader");
+        static inline const TextStyleKey TEXT_STYLE_TEXT_PRIMARY = TextStyleKey("textPrimary");
+        static inline const TextStyleKey TEXT_STYLE_TEXT_SECONDARY = TextStyleKey("textSecondary");
 
         // base
         static inline const ColorKey COLOR_BACKGR0UND = ColorKey("background");
@@ -68,19 +68,21 @@ namespace Ghurund::UI {
         static inline const ColorKey COLOR_DISABLED_ONACCENT = ColorKey("disabled_onAccent");
         static inline const ColorKey COLOR_HIGHLIGHT_ONACCENT = ColorKey("highlight_onAccent");
 
+        static inline const MaterialKey MATERIAL_TEXT = MaterialKey("text");
+
         virtual ~Theme() {}
 
         void updateColors();
 
-        inline Map<FontKey, IntrusivePointer<Ghurund::UI::Font>>& getTextFormats() {
+        inline Map<TextStyleKey, IntrusivePointer<Ghurund::UI::TextStyle>>& getTextFormats() {
             return fonts;
         }
 
-        inline const Map<FontKey, IntrusivePointer<Ghurund::UI::Font>>& getTextFormats() const {
+        inline const Map<TextStyleKey, IntrusivePointer<Ghurund::UI::TextStyle>>& getTextFormats() const {
             return fonts;
         }
 
-        __declspec(property(get = getTextFormats)) Map<FontKey, IntrusivePointer<Ghurund::UI::Font>>& Fonts;
+        __declspec(property(get = getTextFormats)) Map<TextStyleKey, IntrusivePointer<Ghurund::UI::TextStyle>>& TextStyles;
 
         inline Ghurund::Core::Map<ColorKey, Color>& getColors() {
             return colors;

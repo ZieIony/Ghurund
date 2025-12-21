@@ -44,7 +44,7 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = getBytesWritten)) size_t BytesWritten;
 
-		inline void writeInt(int32_t i) {
+		inline void writeInt32(int32_t i) {
 			resize(sizeof(int32_t));
 			*(int32_t*)(data + pointer) = i;
 			pointer += sizeof(int32_t);
@@ -56,13 +56,13 @@ namespace Ghurund::Core {
 			pointer += sizeof(uint32_t);
 		}
 
-		inline void writeLong(int64_t i) {
+		inline void writeInt64(int64_t i) {
 			resize(sizeof(int64_t));
 			*(int64_t*)(data + pointer) = i;
 			pointer += sizeof(int64_t);
 		}
 
-		inline void writeULong(uint64_t i) {
+		inline void writeUInt64(uint64_t i) {
 			resize(sizeof(uint64_t));
 			*(uint64_t*)(data + pointer) = i;
 			pointer += sizeof(uint64_t);
@@ -92,11 +92,13 @@ namespace Ghurund::Core {
 		}
 
 		inline void writeASCII(const AString& str) {
-			writeBytes(str.Data, str.Length);
+			writeBytes(str.Data, str.Size);
 		}
 
 		inline void writeASCII(const AStringView& str) {
 			writeBytes(str.Data, str.Length);
+			char nullTerminator = 0;
+			writeBytes(&nullTerminator, sizeof(char));
 		}
 
 		inline void writeUnicode(const wchar_t* str) {
@@ -105,11 +107,13 @@ namespace Ghurund::Core {
 		}
 
 		inline void writeUnicode(const WString& str) {
-			writeBytes(str.Data, str.Length*sizeof(wchar_t));
+			writeBytes(str.Data, str.Size*sizeof(wchar_t));
 		}
 
 		inline void writeUnicode(const WStringView& str) {
 			writeBytes(str.Data, str.Length * sizeof(wchar_t));
+			wchar_t nullTerminator = 0;
+			writeBytes(&nullTerminator, sizeof(wchar_t));
 		}
 
 		inline void writeBytes(const void* bytes, size_t length) {

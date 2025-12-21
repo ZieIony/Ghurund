@@ -33,8 +33,7 @@ namespace Ghurund::Core {
         return TYPE;
     }
 
-    template<>
-    String toString(const Color& obj) {
-        return String(std::format(_T("{:#010x}"), obj.Value).c_str());
+    String Color::toString() const {
+        return String(std::format(_T("{:#010x}"), value).c_str());
     }
 }

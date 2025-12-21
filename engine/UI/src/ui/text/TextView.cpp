@@ -393,7 +393,7 @@ namespace Ghurund::UI {
             }*/
         }
 
-        textLayout.draw(group);
+		textLayout.draw(group, parentPosition + Position);
     }
 
     const Ghurund::Core::Type& TextView::GET_TYPE() {

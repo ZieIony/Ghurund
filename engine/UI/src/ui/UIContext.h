@@ -1,7 +1,8 @@
 #pragma once
 
 #include "core/reflection/Type.h"
-#include "font/Font.h"
+#include "engine/graphics/texture/ITextureFactory.h"
+#include "text/ITextMeshFactory.h"
 
 namespace Ghurund::Core {
     class ResourceManager;
@@ -9,12 +10,20 @@ namespace Ghurund::Core {
 }
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Engine;
+
     class UIContext {
     private:
         Ghurund::Core::Window& window;
+        ITextMeshFactory& textMeshFactory;
+        ITextureFactory& textureFactory;
 
     public:
-        UIContext(Ghurund::Core::Window& window):window(window) {}
+        UIContext(
+            Ghurund::Core::Window& window,
+            ITextMeshFactory& textMeshFactory,
+            ITextureFactory& textureFactory
+        ):window(window), textMeshFactory(textMeshFactory), textureFactory(textureFactory) {}
 
         inline Ghurund::Core::Window& getWindow() {
             return window;
@@ -24,7 +33,17 @@ namespace Ghurund::UI {
 
         virtual Resource* makeControlMesh() = 0;
 
-        virtual Resource* makeTextMesh(const WString& text, const Font& font) = 0;
+        inline ITextMeshFactory& getTextMeshFactory() const {
+            return textMeshFactory;
+        }
+
+        __declspec(property(get = getTextMeshFactory)) ITextMeshFactory& TextMeshFactory;
+
+        inline ITextureFactory& getTextureFactory() const {
+            return textureFactory;
+        }
+
+        __declspec(property(get = getTextureFactory)) ITextureFactory& TextureFactory;
     };
 }
 

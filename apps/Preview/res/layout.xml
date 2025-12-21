@@ -5,20 +5,20 @@
 	</PreviewLayout.Material>
 	<ControlGroup width="Parent.Width" height="Parent.Height">
 		<ControlGroup.Material color="theme://color/background" shader="lib://Ghurund/shaders/DirectX/ui/control.hlsl"/>
-		<ControlContainer width="Parent.Width" top="Parent.Top" bottom="'controls'.Top"
+		<ControlContainer width="Parent.Width" top="Parent.Top" bottom="'progress'.Top"
 						  name="container">
 			<ControlGroup width="Parent.Width" height="Parent.Height">
 				<ImageView top="Parent.Top" width="433" height="56" scaleMode="fit" image="images\buttons.png">
 					<ImageView.Material shader="lib://Ghurund/shaders/DirectX/ui/image.hlsl"/>
 				</ImageView>
-				<Control top="Parent.Top" bottom="Parent.Bottom" left="Parent.Left" right="Parent.Right"
-						 width="300" height="5">
-					<Control.Material shader="lib://Ghurund/shaders/DirectX/ui/progressLinearInfinite.hlsl">
-						<Parameter name="progressColor" value="#ffff0000"/>
-					</Control.Material>
-				</Control>
 			</ControlGroup>
 		</ControlContainer>
+		<Control bottom="'controls'.Top" left="Parent.Left" right="Parent.Right" width="300" height="2"
+				 name="progress">
+			<Control.Material shader="lib://Ghurund/shaders/DirectX/ui/progressLinearInfinite.hlsl">
+				<Parameter name="progressColor" value="#ffff0000"/>
+			</Control.Material>
+		</Control>
 		<ControlGroup left="10" width="Parent.Width" name="controls">
 			<ControlGroup.Bottom path="Parent.Bottom" offset="-10"/>
 			<Button name="color1" layout="lib://Ghurund\layouts\ButtonImageLayout.xml" width="24" height="24">
@@ -52,11 +52,11 @@
 			</Button>
 			<CheckBox name="enabledCheckBox">
 				<CheckBox.Left path="Previous.Right" offset="10"/>
-				<TextBlock width="Parent.Width" height="Parent.Height">enabled</TextBlock>
+				<TextBlock width="content" height="content" text="enabled"/>
 			</CheckBox>
 			<CheckBox name="themeCheckBox">
 				<CheckBox.Left path="Previous.Right" offset="10"/>
-				<TextBlock width="Parent.Width" height="Parent.Height">theme</TextBlock>
+				<TextBlock width="content" height="content" text="theme"/>
 			</CheckBox>
 		</ControlGroup>
 	</ControlGroup>

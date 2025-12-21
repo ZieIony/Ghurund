@@ -48,7 +48,7 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = getAvailable)) size_t Available;
 
-		inline int32_t readInt() {
+		inline int32_t readInt32() {
 			assertAvailable<int32_t>();
 			int32_t i = *(int32_t*)(data + pointer);
 			pointer += sizeof(int32_t);
@@ -60,13 +60,13 @@ namespace Ghurund::Core {
 			pointer += sizeof(uint32_t);
 			return i;
 		}
-		inline int64_t readLong() {
+		inline int64_t readInt64() {
 			assertAvailable<int64_t>();
 			int64_t i = *(int64_t*)(data + pointer);
 			pointer += sizeof(int64_t);
 			return i;
 		}
-		inline uint64_t readULong() {
+		inline uint64_t readUInt64() {
 			assertAvailable<uint64_t>();
 			uint64_t i = *(uint64_t*)(data + pointer);
 			pointer += sizeof(uint64_t);

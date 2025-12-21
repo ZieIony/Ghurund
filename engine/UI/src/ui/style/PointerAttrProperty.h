@@ -34,8 +34,11 @@ namespace Ghurund::UI {
 		inline void set(std::unique_ptr<AttrType> attr) {
 			delete this->attr;
 			safeRelease(value);
-			if (attr)
+			if (attr) {
 				this->attr = attr.release();
+			} else {
+				this->attr = nullptr;
+			}
 		}
 
 		inline ValueType* get() const {

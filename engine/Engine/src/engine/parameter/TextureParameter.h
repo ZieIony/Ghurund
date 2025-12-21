@@ -23,7 +23,7 @@ namespace Ghurund::Engine {
 #pragma endregion
 
     private:
-        ITexture* value;
+        const ITexture* value;
 
     public:
         TextureParameter(const AString& constantName):Parameter(constantName), value(nullptr) {}
@@ -38,11 +38,11 @@ namespace Ghurund::Engine {
                 value->release();
         }
 
-        inline ITexture* getValue() {
+        inline const ITexture* getValue() {
             return value;
         }
 
-        void setValue(ITexture* value) {
+        void setValue(const ITexture* value) {
             setPointer(this->value, value);
             isEmpty = false;
         }
@@ -55,7 +55,7 @@ namespace Ghurund::Engine {
             isEmpty = true;
         }
 
-        __declspec(property(get = getValue, put = setValue)) ITexture* Value;
+        __declspec(property(get = getValue, put = setValue)) const ITexture* Value;
 
         virtual size_t getSize() const override {
             // TODO: this class shouldn't have this method

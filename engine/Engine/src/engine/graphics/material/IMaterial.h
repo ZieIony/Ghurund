@@ -18,6 +18,11 @@ namespace Ghurund::Engine {
         inline static const Ghurund::Core::Type& TYPE = IMaterial::GET_TYPE();
 #pragma endregion
 
+    protected:
+        IMaterial() {}
+
+        IMaterial(const IMaterial& other):Resource(other) {}
+
     public:
         ~IMaterial() = 0 {}
 

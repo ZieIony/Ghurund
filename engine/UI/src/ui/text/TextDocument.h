@@ -3,24 +3,28 @@
 #include "DocumentElement.h"
 
 #include "core/resource/Resource.h"
-#include "ui/font/Font.h"
+#include "ui/font/TextStyle.h"
 
 namespace Ghurund::UI {
 	class TextDocument:public Resource {
 	private:
 		//DocumentElement* root;
 		WString text;
-		const Font* font = nullptr;
+		const TextStyle* textStyle = nullptr;
 		Color color;
 
 	public:
-		TextDocument(const WString& text, NotNull<Font> font, Color color):text(text), font(&font), color(color) {
-			font->addReference();
+		TextDocument(
+			const WString& text,
+			NotNull<TextStyle> textStyle,
+			Color color
+		):text(text), textStyle(&textStyle), color(color) {
+			textStyle->addReference();
 		}
 
 		~TextDocument() {
-			if (font)
-				font->release();
+			if (textStyle)
+				textStyle->release();
 		}
 
 		inline size_t getLength() const {
@@ -33,19 +37,19 @@ namespace Ghurund::UI {
 			return text[position];
 		}
 
-		inline const Font* getFont(size_t position) const {
-			return font;
+		inline const TextStyle* getTextStyle(size_t position) const {
+			return textStyle;
 		}
 
-		inline const Font* getFont() const {
-			return font;
+		inline const TextStyle* getTextStyle() const {
+			return textStyle;
 		}
 
-		inline void setFont(NotNull<const Font> font) {
-			setPointer(this->font, &font);
+		inline void setTextStyle(NotNull<const TextStyle> textStyle) {
+			setPointer(this->textStyle, &textStyle);
 		}
 
-		__declspec(property(get = getFont, put = setFont)) Font* Font;
+		__declspec(property(get = getTextStyle, put = setTextStyle)) TextStyle* TextStyle;
 
 		inline const Color& getTextColor(size_t position) const {
 			return color;

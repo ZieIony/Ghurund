@@ -5,6 +5,8 @@
 #include <engine/directx/DxRenderer.h>
 #include <ui/UILayer.h>
 #include <ui/directx/DxUIContext.h>
+#include <ui/directx/text/DxTextMeshFactory.h>
+#include <engine/directx/texture/DxTextureFactory.h>
 
 namespace Preview {
 	using namespace Ghurund;
@@ -19,8 +21,10 @@ namespace Preview {
 		FileWatcher fileWatcher;
 		std::function<void()> loadCallback;
 		ThemeApplication& themeApp;
+		SharedPointer<DxTextMeshFactory> textMeshFactory;
+		SharedPointer<DxTextureFactory> textureFactory;
 		SharedPointer<DxUIContext> uiContext;
-		UILayer* uiLayer = nullptr;
+		IntrusivePointer<UILayer> uiLayer;
 		IntrusivePointer<IMaterial> basicMaterial;
 
 	public:
@@ -33,10 +37,7 @@ namespace Preview {
 		void init();
 
 		void uninit() {
-			if (uiLayer) {
-				uiLayer->release();
-				uiLayer = nullptr;
-			}
+			uiLayer.set(nullptr);
 		}
 
 		void postLoadCallback(const FilePath& path);

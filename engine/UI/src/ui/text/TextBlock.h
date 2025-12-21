@@ -5,7 +5,8 @@
 #include "ui/control/Control.h"
 #include "ui/style/AttrProperty.h"
 #include "ui/style/ColorAttr.h"
-#include "ui/style/FontAttr.h"
+#include "ui/style/TextStyleAttr.h"
+#include "ui/style/PointerAttrProperty.h"
 
 namespace Ghurund::UI {
 	class TextBlock:public Control {
@@ -21,14 +22,13 @@ namespace Ghurund::UI {
 		inline static const Ghurund::Core::Type& TYPE = TextBlock::GET_TYPE();
 #pragma endregion
 
-	protected:
+	private:
+		WString text;
 		AttrProperty<ColorAttr, Color> color;
-		Ghurund::UI::FontAttr* font = nullptr;
-		Ghurund::UI::TextLayout textLayout;
+		PointerAttrProperty<TextStyleAttr, TextStyle> textStyle;
+		TextLayout textLayout;
 
-		virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
-
-		//virtual void onMeasure() override;
+		void refreshLayout();
 
 		virtual void onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
 
@@ -38,44 +38,27 @@ namespace Ghurund::UI {
 				makeIntrusive<TextLayoutWidthConstraint>(textLayout).get(),
 				makeIntrusive<TextLayoutHeightConstraint>(textLayout).get()
 			);
+			setTextStyle(std::make_unique<TextStyleRef>(Theme::TEXT_STYLE_TEXT_SECONDARY));
 		}
 
-		/*TextBlock(
-			const Ghurund::Core::WString& typeName,
-			const ColorAttr& color = ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND),
-			Font* font = nullptr
-		):textLayout(typeName, 0xdd000000, font) {
-			TextColor = color;
-		}*/
-
-		~TextBlock() {
-			if (font)
-				delete font;
+		const WString& getText() {
+			return text;
 		}
 
-		TextDocument* getDocument() {
-			return textLayout.Document;
+		inline void setText(const WString& text) {
+			this->text = text;
+			refreshLayout();
 		}
 
-		inline void setDocument(TextDocument* textDocument) {
-			textLayout.Document = textDocument;
-		}
+		__declspec(property(get = getText, put = setText)) const WString& Text;
 
-		__declspec(property(get = getDocument, put = setDocument)) TextDocument* Document;
-
-		inline void setTextColor(const ColorAttr& color) {
-			this->color.set(color);
-		}
+		inline void setTextColor(const ColorAttr& color);
 
 		__declspec(property(put = setTextColor)) const ColorAttr& TextColor;
 
-		inline Ghurund::UI::FontAttr* getFont() {
-			return font;
-		}
+		void setTextStyle(std::unique_ptr<Ghurund::UI::TextStyleAttr> textStyle);
 
-		void setFont(Ghurund::UI::FontAttr* font);
-
-		__declspec(property(get = getFont, put = setFont)) Ghurund::UI::FontAttr* Font;
+		__declspec(property(put = setTextStyle)) std::unique_ptr<Ghurund::UI::TextStyleAttr> TextStyle;
 
 		void dispatchContextChanged();
 	};

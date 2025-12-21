@@ -32,16 +32,21 @@ namespace Ghurund::Engine::DirectX {
         virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
         virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
-    public:
-
-        DxMaterial() {}
-
-        DxMaterial(DxShader* shader) {
-            setPointer(this->shader, shader);
+		DxMaterial(const DxMaterial& other):IMaterial(other) {
+            // TODO: clone parameters, reuse shader
+            setPointer(this->shader, other.shader);
+            isTransparencyEnabled = other.IsTransparencyEnabled;
         }
 
         ~DxMaterial() {
             finalize();
+        }
+
+    public:
+        DxMaterial() {}
+
+        DxMaterial(DxShader* shader) {
+            setPointer(this->shader, shader);
         }
 
         virtual void invalidate() {
@@ -80,6 +85,10 @@ namespace Ghurund::Engine::DirectX {
         }
 
         __declspec(property(get = getLayout)) const Array<VertexRole>& Layout;
+
+        virtual DxMaterial* clone() const {
+            return ghnew DxMaterial(*this);
+        }
 
 #pragma region formats
     protected:

@@ -108,6 +108,7 @@
     <ClInclude Include="src\utcpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\test\core\io\MemoryStreamTest.cpp" />
     <ClCompile Include="src\test\TestEnum.cpp" />
     <ClCompile Include="src\test\core\BufferTest.cpp" />
     <ClCompile Include="src\test\core\ColorTest.cpp" />

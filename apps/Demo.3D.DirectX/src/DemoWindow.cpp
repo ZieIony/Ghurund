@@ -45,29 +45,37 @@ namespace Demo {
 		auto world = makeIntrusive<MatrixParameter>("world", MATRIX_IDENTITY);
 		ParameterManager.Parameters.put(world.get());
 
-		font.set(app.ResourceManager.load<Font>(ResourcePath(FilePath(L"resources/fonts/lato_regular.ttf"))));
+		auto textStylePath = ResourcePath(FilePath(L"resources/textStyles/lato_regular_12.bin"));
+		if (textStylePath.exists(DirectoryPath(), app.ResourceManager.Libraries)) {
+			textStyle.set(app.ResourceManager.load<TextStyle>(textStylePath, DirectoryPath(), TextStyle::FORMAT_BIN));
+		} else {
+			auto font = IntrusivePointer<Font>(app.ResourceManager.load<Font>(ResourcePath(FilePath(L"resources/fonts/lato_regular.ttf"))));
+			textStyle.set(ghnew TextStyle());
+			textStyle->init(font.ref(), 12);
+			auto atlasPath = ResourcePath(FilePath(L"resources/textStyles/lato_regular_12.png"));
+			app.ResourceManager.save(*textStyle->Atlas->Image, atlasPath, DirectoryPath(), Image::FORMAT_PNG);
+			app.ResourceManager.save(textStyle.ref(), textStylePath, DirectoryPath(), TextStyle::FORMAT_BIN);
+		}
 
-		DxTextMeshFactory factory(graphicsFeature->Graphics, commandList.ref());
+		DxTextMeshFactory textMeshfactory(graphicsFeature->Graphics, commandList.ref());
+		DxTextureFactory textureFactory(graphicsFeature->Graphics, commandList.ref());
 
 		RenderGroup uiGroup(0, DrawOrder::BACK_TO_FRONT);
 		{
 			basicMaterial = IntrusivePointer<IMaterial>(materialProvider.makeText());
 			colorTexture = makeIntrusive<DxTexture>();
-			colorTexture->init(graphicsFeature->Graphics, commandList.ref(), *font->Atlas->Image);
+			colorTexture->init(graphicsFeature->Graphics, commandList.ref(), *textStyle->Atlas->Image);
 			colorTextureParameter = (TextureParameter*)basicMaterial->Parameters.get("colorTexture");
 			colorTextureParameter->Value = colorTexture.get();
 
-			textLayout.Document = makeIntrusive<TextDocument>(L"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", font.ref(), Colors::BLACK).get();
+			textLayout.Document = makeIntrusive<TextDocument>(
+				L"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+				textStyle.ref(),
+				Colors::BLACK
+			).get();
 			textLayout.PreferredSize = { 200, 200 };
 			textLayout.refresh();
-			textLayout.initMeshes(factory, basicMaterial.get());
-
-			/*sizeParameter = (Float2Parameter*)basicMaterial->Parameters.get("size");
-
-
-			uiGroup.objects.add(DrawPacket{ textMesh, basicMaterial });*/
-
-			textLayout.draw(uiGroup);
+			textLayout.initMeshes(textMeshfactory, textureFactory, basicMaterial.get());
 		}
 		{
 			auto mesh = ghnew DxMesh();
@@ -78,9 +86,12 @@ namespace Demo {
 
 			controlMaterial = IntrusivePointer<IMaterial>(materialProvider.makeControl());
 			ControlMaterialParameters parameters(controlMaterial.ref());
+			parameters.Size = { (float)textLayout.Size.Width, (float)textLayout.Size.Height };
+			parameters.BackgroundColor = Colors::WHITE;
 
-			uiGroup.objects.add(DrawPacket{ shadowMesh, controlMaterial });
 		}
+		uiGroup.objects.add(DrawPacket{ shadowMesh, controlMaterial });
+		textLayout.draw(uiGroup, { 200, 200 });
 		renderGroups.put(uiGroup);
 	}
 

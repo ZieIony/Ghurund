@@ -126,6 +126,8 @@ namespace Ghurund::Core {
 		}
 
 		static Color parse(const AString& color);
+
+		String toString() const;
 	};
 
 	constexpr uint32_t colorWithAlpha(float alpha, uint32_t color) {
@@ -148,7 +150,4 @@ namespace Ghurund::Core {
 	inline Color lerp(Color val1, Color val2, float fact) {
 		return Color(lerpColors(val1, val2, fact));
 	}
-
-	template<>
-	String toString(const Color& obj);
 }

@@ -2,11 +2,13 @@
 #include "DxUIFeature.h"
 
 #include "core/reflection/TypeBuilder.h"
+#include "engine/directx/texture/DxTextureFactory.h"
 #include "ui/control/Control.h"
+#include "ui/font/FontAtlasLoader.h"
 #include "ui/font/FontLoader.h"
+#include "ui/font/TextStyleLoader.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/loading/MaterialPropertyLoader.h"
-#include "engine/directx/texture/DxTextureFactory.h"
 
 namespace Ghurund::UI::DirectX {
     using namespace Ghurund::Core;
@@ -27,8 +29,11 @@ namespace Ghurund::UI::DirectX {
         constraintFactory = ghnew Ghurund::UI::ConstraintFactory();
 
         auto fontLoader = makeIntrusive<FontLoader>();
-
         resourceManager.Loaders.set<Ghurund::UI::Font>(*fontLoader.get());
+        auto fontAtlasLoader = makeIntrusive<FontAtlasLoader>(resourceManager);
+        resourceManager.Loaders.set<FontAtlas>(fontAtlasLoader.ref());
+        auto textStyleLoader = makeIntrusive<TextStyleLoader>(resourceManager, fontAtlasLoader.ref());
+        resourceManager.Loaders.set<TextStyle>(textStyleLoader.ref());
 
         layoutLoader = makeIntrusive<Ghurund::UI::LayoutLoader>(resourceManager, *textureFactory, *constraintFactory);
         layoutLoader->PropertyLoaders.add(std::make_unique<MaterialPropertyLoader>(resourceManager, *(MaterialLoader*)resourceManager.Loaders.get<IMaterial>()));

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "core/collection/Map.h"
 #include "core/math/Size.h"
 
 #include <DirectXMath.h>

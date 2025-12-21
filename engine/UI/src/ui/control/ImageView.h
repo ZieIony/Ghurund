@@ -52,20 +52,20 @@ namespace Ghurund::UI {
             }
         }
 
-    public:
-        inline void setImage(std::unique_ptr<TextureAttr> image) {
-            this->image.set(std::move(image));
-            if (imageParameter)
-                imageParameter->Value = this->image.get();
-        }
+	public:
+		inline void setImage(std::unique_ptr<TextureAttr> image) {
+			this->image.set(std::move(image));
+			if (imageParameter)
+				imageParameter->Value = this->image.get();
+		}
 
-        __declspec(property(put = setImage)) std::unique_ptr<TextureAttr> Image;
+		__declspec(property(put = setImage)) std::unique_ptr<TextureAttr> Image;
 
-        inline void setTint(const Color& tint) {
-            this->tint = tint;
-            if(tintParameter)
-                tintParameter->Value = tint.toVector();
-        }
+		inline void setTint(const Color& tint) {
+			this->tint = tint;
+			if (tintParameter)
+				tintParameter->Value = tint.toVector();
+		}
 
         inline const Color& getTint() const {
             return tint;

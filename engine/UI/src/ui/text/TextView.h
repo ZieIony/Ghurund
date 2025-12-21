@@ -12,7 +12,7 @@
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
-    class TextView:public TextBlock {
+    class TextView:public Control {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -33,6 +33,8 @@ namespace Ghurund::UI {
         //CursorDrawable* cursorDrawable = nullptr;
 
     protected:
+        TextLayout textLayout;
+
         uint32_t caretAnchor = 0;
         uint32_t caretPosition = 0;
         uint32_t caretPositionOffset = 0;
@@ -72,6 +74,16 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(put = setCursorDrawable)) CursorDrawable* CursorDrawable;*/
+
+        TextDocument* getDocument() {
+            return textLayout.Document;
+        }
+
+        inline void setDocument(TextDocument* textDocument) {
+            textLayout.Document = textDocument;
+        }
+
+        __declspec(property(get = getDocument, put = setDocument)) TextDocument* Document;
 
         bool setSelection(SetSelectionMode moveMode, uint32_t advance, bool extendSelection, bool updateCaretFormat = true);
 

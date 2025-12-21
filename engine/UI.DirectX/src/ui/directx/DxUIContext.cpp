@@ -20,8 +20,10 @@ namespace Ghurund::UI::DirectX {
     DxUIContext::DxUIContext(
         ::Ghurund::Core::Window& window,
         DxGraphics& graphics,
-        CommandList& commandList
-    ):UIContext(window), graphics(graphics), commandList(commandList) {
+        CommandList& commandList,
+        ITextMeshFactory& textMeshFactory,
+        ITextureFactory& textureFactory
+    ):UIContext(window, textMeshFactory, textureFactory), graphics(graphics), commandList(commandList) {
         auto mesh = ghnew DxMesh();
         auto meshData = ghnew QuadMeshData();
         meshData->init();
@@ -32,9 +34,5 @@ namespace Ghurund::UI::DirectX {
 
     Resource* DxUIContext::makeControlMesh() {
         return mesh.get();
-    }
-
-    Resource* DxUIContext::makeTextMesh(const WString& text, const Font& font) {
-        return nullptr;
     }
 }

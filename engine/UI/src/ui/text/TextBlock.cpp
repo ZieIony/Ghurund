@@ -2,99 +2,57 @@
 #include "TextBlock.h"
 
 #include "core/reflection/Property.h"
-#include "ui/loading/LayoutLoader.h"
+#include "core/reflection/UniqueProperty.h"
 
 namespace Ghurund::UI {
-    using namespace Ghurund::Core;
+	using namespace Ghurund::Core;
 
-    void TextBlock::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
-        __super::loadInternal(loader, workingDir, xml);
-        auto textFormatAttr = xml.FindAttribute("font");
-        if (textFormatAttr) {
-            Ghurund::UI::FontRef* format = loader.loadFont(textFormatAttr->Value());
-            if (format) {
-                Font = format;
-                delete format;
-            }
-		} else {
-            Ghurund::UI::FontRef format = Theme::FONT_TEXT_SECONDARY;
-            Font = &format;
-        }
-    }
+	void TextBlock::refreshLayout() {
+		auto theme = Theme;
+		auto context = Context;
+		if (theme && context) {
+			this->textStyle.resolve(*theme);
+			this->color.resolve(*theme);
+			textLayout.Document = ghnew Ghurund::UI::TextDocument(text, textStyle.get(), *color.get());
+			textLayout.PreferredSize = { std::numeric_limits<uint32_t>::max(), std::numeric_limits<uint32_t>::max() };
+			textLayout.refresh();
 
-    /*void TextBlock::onMeasure() {
-        const float MAX_LAYOUT_SIZE = 32768.0f;
+			auto materialProvider = theme->Materials.get(Theme::MATERIAL_TEXT);
+			auto material = materialProvider->get();
+			textLayout.initMeshes(context->TextMeshFactory, context->TextureFactory, material.ref());
+		}
+	}
 
-        if (!Context || !textLayout->Format) {
-            //auto typeName = std::format(_T("TextBlock ({}) was not measured, because its textLayout is invalid\n"), Text);
-            //Logger::log(LogType::WARNING, typeName.c_str());
-            return;
-        }
+	void TextBlock::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
+		textLayout.draw(group, parentPosition + Position);
+	}
 
-        /*if (contentSize.width == ContentSize::Width::WRAP) {
-            textLayout->Size = { MAX_LAYOUT_SIZE, MAX_LAYOUT_SIZE };
-            if (textLayout->refresh() != Status::OK) {
-                Logger::log(LogType::WARNING, _T("TextBlock ({}) was not measured, because its textLayout is invalid\n"), Text);
-                return;
-            }
-            TextMetrics textMetrics = textLayout->TextMetrics;
-            measuredSize.Width = std::max(minSize.width.resolve(parentWidth), std::ceil(textMetrics.width));
-            measuredSize.Height = resolveHeight(std::ceil(textMetrics.height), parentWidth, parentHeight);
-        } else {
-            measuredSize.Width = resolveWidth(0, parentWidth, parentHeight);
-            textLayout->Size = { measuredSize.Width, MAX_LAYOUT_SIZE };
-            if (textLayout->refresh() != Status::OK) {
-                Logger::log(LogType::WARNING, _T("TextBlock ({}) was not measured, because its textLayout is invalid\n"), Text);
-                return;
-            }
-            TextMetrics textMetrics = textLayout->TextMetrics;
-            measuredSize.Height = resolveHeight(std::ceil(textMetrics.height), parentWidth, parentHeight);
-        }* /
-    }*/
+	const Ghurund::Core::Type& TextBlock::GET_TYPE() {
+		static auto PROPERTY_TEXT = Property<TextBlock, const WString&>("Text", &getText, &setText);
+		static auto PROPERTY_TEXT_STYLE = UniqueProperty<TextBlock, std::unique_ptr<TextStyleAttr>>("TextStyle", &setTextStyle);
+		static auto PROPERTY_COLOR = Property<TextBlock, const ColorAttr&>("TextColor", &setTextColor);
 
-    void TextBlock::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
-		textLayout.draw(group);
-    }
+		static const Ghurund::Core::Type TYPE = TypeBuilder<TextBlock>()
+			.withProperty(PROPERTY_TEXT)
+			.withProperty(PROPERTY_TEXT_STYLE)
+			.withProperty(PROPERTY_COLOR)
+			.withSupertype(__super::GET_TYPE());
 
-    const Ghurund::Core::Type& TextBlock::GET_TYPE() {
-        static auto PROPERTY_TEXT = Property<TextBlock, TextDocument*>("Document", &getDocument, &setDocument);
+		return TYPE;
+	}
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<TextBlock>()
-            .withProperty(PROPERTY_TEXT)
-            .withSupertype(__super::GET_TYPE());
+	void TextBlock::setTextColor(const ColorAttr& color) {
+		this->color.set(color);
+		refreshLayout();
+	}
 
-        return TYPE;
-    }
+	void TextBlock::setTextStyle(std::unique_ptr<Ghurund::UI::TextStyleAttr> textStyle) {
+		this->textStyle.set(std::move(textStyle));
+		refreshLayout();
+	}
 
-    void TextBlock::setFont(Ghurund::UI::FontAttr* font) {
-        if (this->font)
-            delete this->font;
-        if (font) {
-            this->font = (Ghurund::UI::FontAttr*)font->clone();
-            auto theme = Theme;
-            if (theme) {
-                textLayout.Document->Font = font->resolve(*theme);
-            } else {
-                //textLayout.Document->Font = nullptr;
-			}
-        } else {
-            this->font = nullptr;
-            //textLayout.Document->Font = nullptr;
-        }
-    }
-
-    void TextBlock::dispatchContextChanged() {
-        __super::dispatchContextChanged();
-        auto theme = Theme;
-        if (!theme)
-            return;
-        //if (Font)
-            //textLayout.Document->Font = Font->resolve(*theme);
-        //if (Size.Width > 0 && Size.Height > 0)
-          //  textLayout.Size = { Size.Width, Size.Height };
-        color.resolve(*theme);
-        const UI::Color* c = color.get();
-        //if (c)
-            //textLayout.Document->TextColor = *c;
+	void TextBlock::dispatchContextChanged() {
+		__super::dispatchContextChanged();
+		refreshLayout();
 	}
 }

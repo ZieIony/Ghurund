@@ -228,7 +228,7 @@ namespace Ghurund::Core {
 		) const {
 			const Loader* loader = getLoader(Ghurund::Core::getType<T>());
 			Buffer buffer;
-			saveInternal(resource, *loader, buffer, format, options);
+			saveInternal(resource, *loader, workingDir, buffer, format, options);
 		}
 
 		template<Derived<Resource> T>

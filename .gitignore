@@ -169,3 +169,4 @@ paket-files/
 
 # MSBuild Binary and Structured Log
 *.binlog
+/resources/textStyles

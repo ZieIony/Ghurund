@@ -6,6 +6,7 @@
 #include <ui/material/ControlMaterialParameters.h>
 #include "core/Colors.h"
 #include <engine/directx/DxGraphicsFeature.h>
+#include <ui/directx/text/DxTextMeshFactory.h>
 
 namespace Preview {
 	PreviewWindow::PreviewWindow(
@@ -13,6 +14,7 @@ namespace Preview {
 		DxRenderer& renderer,
 		ThemeApplication& themeApp
 	):GameWindow(app), themeApp(themeApp) {
+		closed += DEFAULT_QUIT_APP_WINDOW_CLOSED_HANDLER;
 		Renderer = &renderer;
 		BackgroundColor = &Colors::LIGHT_SKY_BLUE;
 	}
@@ -24,12 +26,14 @@ namespace Preview {
 		auto commandList = makeIntrusive<CommandList>();
 		commandList->init(graphicsFeature->Graphics, graphicsFeature->Graphics.DirectQueue);
 
-		uiContext = makeShared<DxUIContext>(*this, graphicsFeature->Graphics, commandList.ref());
-		uiLayer = ghnew UILayer();
+		textMeshFactory = makeShared<DxTextMeshFactory>(graphicsFeature->Graphics, commandList.ref());
+		textureFactory = makeShared<DxTextureFactory>(graphicsFeature->Graphics, commandList.ref());
+		uiContext = makeShared<DxUIContext>(*this, graphicsFeature->Graphics, commandList.ref(), textMeshFactory.ref(), textureFactory.ref());
+		uiLayer.set(ghnew UILayer());
 		uiLayer->init(uiContext.ref());
 		uiLayer->Theme = &themeApp.CurrentTheme;
 		uiLayer->Content = previewLayout.get();
-		Layers.add(uiLayer);
+		Layers.add(uiLayer.get());
 
 		DxUIShaderProvider shaderProvider(Application.ResourceManager);
 		DxUIMaterialProvider materialProvider(ParameterManager, shaderProvider);

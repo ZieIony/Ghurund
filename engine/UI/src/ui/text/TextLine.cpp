@@ -2,19 +2,20 @@
 #include "TextLine.h"
 
 namespace Ghurund::UI {
-	void TextLine::add(const CharacterInfo& info, const Font* font, const Color& color) {
+	void TextLine::add(const CharacterInfo& info, const TextStyle* textStyle, const Color& color) {
 		characters.add(info);
-		if (heights.Empty) {
-			heights.add(font->Height);
+		if (metrics.Empty) {
+			metrics.add({ textStyle->FontMetrics.ascent, textStyle->FontMetrics.descent });
 			WString text;
 			text.add(info.c);
-			spans.add({ 0, 1, font, color });
+			spans.add({ 0, 1, textStyle, color });
 		} else {
 			auto& currentSpan = spans[spans.Size - 1];
-			if (currentSpan.font != font || currentSpan.color != color) {
-				uint32_t h = std::max(heights[heights.Size - 1], font->Height);
-				heights.add(h);
-				spans.add({ characters.Size - 1, characters.Size, font, color });
+			if (currentSpan.textStyle != textStyle || currentSpan.color != color) {
+				uint16_t a = std::max(metrics[metrics.Size - 1].ascent, textStyle->FontMetrics.ascent);
+				uint16_t d = std::max(metrics[metrics.Size - 1].descent, textStyle->FontMetrics.descent);
+				metrics.add({ a, d });
+				spans.add({ characters.Size - 1, characters.Size, textStyle, color });
 			} else {
 				currentSpan.finish++;
 			}
@@ -43,7 +44,7 @@ namespace Ghurund::UI {
 					}
 					CharacterInfo& c = characters[k];
 					c.pos.x -= zero;
-					nextLine.add(c, currentSpan->font, currentSpan->color);
+					nextLine.add(c, currentSpan->textStyle, currentSpan->color);
 				}
 
 				size_t toRemove = characters.Size - i;
@@ -54,7 +55,7 @@ namespace Ghurund::UI {
 					if (currentSpan.finish - currentSpan.start <= toRemove) {
 						toRemove -= currentSpan.finish - currentSpan.start;
 						spans.removeAt(spans.Size - 1);
-						heights.removeAt(heights.Size - 1);
+						metrics.removeAt(metrics.Size - 1);
 					} else {
 						currentSpan.finish -= toRemove;
 						break;
@@ -71,13 +72,13 @@ namespace Ghurund::UI {
 			if (breakWords) {
 				CharacterInfo& c = characters[characters.Size - 1];
 				auto& span = spans[spans.Size - 1];
-				nextLine.add(c, span.font, span.color);
+				nextLine.add(c, span.textStyle, span.color);
 				characters.removeAt(characters.Size - 1);
 				if (span.finish - span.start > 1) {
 					span.finish--;
 				} else {
 					spans.removeAt(spans.Size - 1);
-					heights.removeAt(heights.Size - 1);
+					metrics.removeAt(metrics.Size - 1);
 				}
 				nextLine.Characters[0].pos.x = 0;
 				nextLine.Characters[0].pos.y += Height;
@@ -86,5 +87,9 @@ namespace Ghurund::UI {
 		} else {
 			return TextLine();
 		}
+	}
+
+	void TextLine::align(TextAlignment alignment) {
+
 	}
 }

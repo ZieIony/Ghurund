@@ -30,7 +30,7 @@ float median(float r, float g, float b) {
     return max(min(r, g), min(max(r, g), b));
 }
 
-uniform float pxRange = 8; // set to distance field's pixel range
+uniform float pxRange = 2; // set to distance field's pixel range
 uniform float4 black = float4(0, 0, 0, 1);
 uniform float4 transparent = float4(0, 0, 0, 0);
 

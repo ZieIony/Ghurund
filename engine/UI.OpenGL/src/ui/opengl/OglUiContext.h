@@ -13,12 +13,12 @@ namespace Ghurund::UI::OpenGL {
     class OglUiContext:public UIContext {
     public:
         OglUiContext(
-            Ghurund::Core::Window& window
-        ):UIContext(window) {}
+            Ghurund::Core::Window& window,
+            ITextMeshFactory& textMeshFactory,
+            ITextureFactory& textureFactory
+        ):UIContext(window, textMeshFactory, textureFactory) {}
 
         virtual Resource* makeControlMesh() override;
-        
-        virtual Resource* makeTextMesh(const WString& text, const Font& font) override;
     };
 }
 

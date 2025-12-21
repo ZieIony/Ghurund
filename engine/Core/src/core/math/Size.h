@@ -1,13 +1,13 @@
 #pragma once
 
+#include "Int.h"
+
 #include "core/string/String.h"
 #include "core/DataParsing.h"
 
-#include <stdint.h>
-#include <compare>
 #include <regex>
-#include <concepts>
 #include <format>
+#include <DirectXMath.h>
 
 namespace Ghurund::Core {
 	template<typename T>
@@ -59,25 +59,47 @@ namespace Ghurund::Core {
 			std::smatch m;
 			std::string s = text.Data;
 			if (std::regex_match(s, m, regex)) {
-				T width = Ghurund::Core::parse<T>(m[1].str());
-				T height = Ghurund::Core::parse<T>(m[2].str());
+				T width = Ghurund::Core::parse<T>(m[1].str().c_str());
+				T height = Ghurund::Core::parse<T>(m[2].str().c_str());
 				return { width, height };
 			} else {
 				throw std::invalid_argument("invalid alignment string");
 			}
 		}
 
+		inline String toString() const {
+			return String(std::format(_T("{}, {}"), width, height).c_str());
+		}
 	};
 
 	typedef BaseSize<uint32_t> IntSize;
 	typedef BaseSize<float> FloatSize;
+
+	template<>
+	inline String toString(const ::DirectX::XMINT2& value) {
+		return String(std::format(_T("{}, {}"), value.x, value.y).c_str());
+	}
+
+	template<>
+	inline ::DirectX::XMINT2 parse(const AString& text) {
+		std::regex regex(" *(d+) *, *(d+) *");
+		std::smatch m;
+		std::string s = text.Data;
+		if (std::regex_match(s, m, regex)) {
+			int32_t width = Ghurund::Core::parse<int32_t>(m[1].str().c_str());
+			int32_t height = Ghurund::Core::parse<int32_t>(m[2].str().c_str());
+			return { width, height };
+		} else {
+			throw std::invalid_argument("invalid alignment string");
+		}
+	}
 }
 
 template <typename T>
 struct std::formatter<Ghurund::Core::BaseSize<T>, char>:std::formatter<const char*, char> {
 	template <typename FormatContext>
 	auto format(const Ghurund::Core::BaseSize<T>& obj, FormatContext& ctx) const {
-		return format_to(ctx.out(), "[{}, {}]", obj.Width, obj.Height);
+		return format_to(ctx.out(), "{}", obj.toString());
 	}
 };
 
@@ -85,6 +107,6 @@ template <typename T>
 struct std::formatter<Ghurund::Core::BaseSize<T>, wchar_t>:std::formatter<const wchar_t*, wchar_t> {
 	template <typename FormatContext>
 	auto format(const Ghurund::Core::BaseSize<T>& obj, FormatContext& ctx) const {
-		return format_to(ctx.out(), L"[{}, {}]", obj.Width, obj.Height);
+		return format_to(ctx.out(), L"{}", obj.toString());
 	}
 };

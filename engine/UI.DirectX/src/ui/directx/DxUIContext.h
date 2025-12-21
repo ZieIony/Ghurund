@@ -26,12 +26,12 @@ namespace Ghurund::UI::DirectX {
         DxUIContext(
             ::Ghurund::Core::Window& window,
             DxGraphics& graphics,
-            CommandList& commandList
+            CommandList& commandList,
+            ITextMeshFactory& textMeshFactory,
+            ITextureFactory& textureFactory
         );
 
         virtual Resource* makeControlMesh() override;
-
-        virtual Resource* makeTextMesh(const WString& text, const Font& font) override;
     };
 }
 

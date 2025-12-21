@@ -48,6 +48,6 @@ public:
 namespace Microsoft::VisualStudio::CppUnitTestFramework {
     template<>
     static std::wstring ToString(const Ghurund::UI::Color& t) {
-        return std::wstring(Ghurund::UI::toString(t).Data);
+        return std::wstring(t.toString().Data);
     }
 }

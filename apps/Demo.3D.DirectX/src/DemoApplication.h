@@ -7,6 +7,7 @@
 #include "engine/directx/shader/DxShaderLoader.h"
 #include "ui/font/Font.h"
 #include "ui/font/FontLoader.h"
+#include <ui/font/TextStyleLoader.h>
 
 namespace Demo {
     using namespace Ghurund::Engine;
@@ -23,6 +24,8 @@ namespace Demo {
         IntrusivePointer<DxShaderLoader> shaderLoader;
         SharedPointer<DxShaderCompiler> shaderCompiler;
         IntrusivePointer<FontLoader> fontLoader;
+        IntrusivePointer<TextStyleLoader> textStyleLoader;
+        IntrusivePointer<FontAtlasLoader> fontAtlasLoader;
 
         void uninitDemoApplication();
 
@@ -43,6 +46,10 @@ namespace Demo {
 
             fontLoader = makeIntrusive<FontLoader>();
             ResourceManager.Loaders.set<Font>(fontLoader.ref());
+            fontAtlasLoader = makeIntrusive<FontAtlasLoader>(ResourceManager);
+            ResourceManager.Loaders.set<FontAtlas>(fontAtlasLoader.ref());
+            textStyleLoader = makeIntrusive<TextStyleLoader>(ResourceManager, fontAtlasLoader.ref());
+            ResourceManager.Loaders.set<TextStyle>(textStyleLoader.ref());
         }
 
         ~DemoApplication() {

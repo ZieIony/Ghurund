@@ -2,7 +2,6 @@
 
 #include "core/Event.h"
 #include "core/input/EventConsumer.h"
-#include "core/math/Matrix.h"
 #include "core/math/Size.h"
 #include "core/resource/Resource.h"
 #include "ui/Binding.h"

@@ -33,7 +33,7 @@ namespace Ghurund::UI {
         }
 
         virtual void evaluate() override {
-            value = (float)textLayout.measureWidth();
+            value = (float)textLayout.Size.Width;
             evaluated = true;
         }
 
@@ -71,7 +71,7 @@ namespace Ghurund::UI {
         }
 
         virtual void evaluate() override {
-            value = (float)textLayout.measureHeight();
+            value = (float)textLayout.Size.Height;
             evaluated = true;
         }
 

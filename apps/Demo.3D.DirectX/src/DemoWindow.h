@@ -22,7 +22,7 @@ namespace Demo {
 		IntrusivePointer<Resource> textMesh, shadowMesh;
 		IntrusivePointer<IMaterial> basicMaterial, controlMaterial;
 		IntrusivePointer<Camera> camera;
-		IntrusivePointer<Font> font;
+		IntrusivePointer<TextStyle> textStyle;
 
 		Float2Parameter* sizeParameter;
 		TextureParameter* colorTextureParameter;

@@ -7,12 +7,15 @@ namespace Ghurund::UI {
 
     class TextDocumentPropertyLoader:public PropertyLoader {
     private:
-        Font* defaultFont;
+        TextStyle* defaultTextStyle;
         Color defaultColor;
 
     public:
-        TextDocumentPropertyLoader(NotNull<Font> defaultFont, Color defaultColor):defaultFont(&defaultFont), defaultColor(defaultColor) {
-            defaultFont->addReference();
+        TextDocumentPropertyLoader(
+            NotNull<TextStyle> defaultTextStyle,
+            Color defaultColor
+        ):defaultTextStyle(&defaultTextStyle), defaultColor(defaultColor) {
+            defaultTextStyle->addReference();
         }
 
         virtual const Type& getType() const override {
@@ -20,7 +23,7 @@ namespace Ghurund::UI {
         }
 
         virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override {
-            TextDocument t = TextDocument(convertText<char, wchar_t>(text), defaultFont, defaultColor);
+            TextDocument t = TextDocument(convertText<char, wchar_t>(text), defaultTextStyle, defaultColor);
             property.setRaw(&obj, &t);
         }
     };
