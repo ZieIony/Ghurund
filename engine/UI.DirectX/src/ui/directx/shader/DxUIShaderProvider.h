@@ -1,15 +1,17 @@
 #pragma once
 
 #include "engine/directx/shader/DxShader.h"
+#include "ui/shader/IUIShaderProvider.h"
 
 namespace Ghurund::Engine::DirectX {
+    using namespace Ghurund::UI;
     using namespace Ghurund::Engine::DirectX;
 
-    class DxUIShaderProvider {
+    class DxUIShaderProvider:public IUIShaderProvider {
     private:
         ResourceManager& manager;
 
-        inline DxShader* load(const WString& fileName) {
+        inline DxShader* load(const WString& fileName) const {
             return manager.load<DxShader>(ResourcePath(ResourceManager::ENGINE_LIB_NAME, fileName), DirectoryPath());
         }
 
@@ -18,19 +20,19 @@ namespace Ghurund::Engine::DirectX {
     public:
         DxUIShaderProvider(ResourceManager& manager):manager(manager) {}
 
-        DxShader* loadInvalid() {
+        virtual DxShader* loadInvalid() const override {
             return load(L"/shaders/DirectX/ui/invalid.hlsl");
         }
 
-        DxShader* loadControl() {
+        virtual DxShader* loadControl() const override {
             return load(L"/shaders/DirectX/ui/control.hlsl");
         }
 
-        DxShader* loadText() {
+        virtual DxShader* loadText() const override {
             return load(L"/shaders/DirectX/ui/text.hlsl");
         }
 
-        DxShader* loadShadow() {
+        virtual DxShader* loadShadow() const override {
             return load(L"/shaders/DirectX/ui/shadow.hlsl");
         }
     };

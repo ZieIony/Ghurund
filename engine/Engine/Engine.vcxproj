@@ -102,6 +102,7 @@
     <ClInclude Include="src\engine\application\LayerList.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialProvider.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialLoader.h" />
+    <ClInclude Include="src\engine\graphics\shader\IShaderProvider.h" />
     <ClInclude Include="src\engine\graphics\texture\ITextureFactory.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
@@ -161,7 +162,7 @@
     <ClInclude Include="src\engine\graphics\shader\IShader.h" />
     <ClInclude Include="src\engine\graphics\shader\ShaderCode.h" />
     <ClInclude Include="src\engine\graphics\texture\ITexture.h" />
-    <ClInclude Include="src\engine\graphics\texture\ITextureProvider.h" />
+    <ClInclude Include="src\engine\graphics\texture\TextureProvider.h" />
     <ClInclude Include="src\engine\net\Client.h" />
     <ClInclude Include="src\engine\net\ClientMessage.h" />
     <ClInclude Include="src\engine\net\Connection.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="src\engine\entity\light\Light.cpp" />
     <ClCompile Include="src\engine\game\action\ActionMapping.cpp" />
     <ClCompile Include="src\engine\graphics\DrawableComponents.cpp" />
+    <ClCompile Include="src\engine\graphics\material\MaterialProvider.cpp" />
     <ClCompile Include="src\engine\graphics\material\MaterialLoader.cpp" />
     <ClCompile Include="src\engine\graphics\Renderer.cpp" />
     <ClCompile Include="src\engine\graphics\RenderingStatistics.cpp" />

@@ -97,8 +97,7 @@
     <ClInclude Include="src\ui\directx\DxUIContext.h" />
     <ClInclude Include="src\ui\directx\DxUIFeature.h" />
     <ClInclude Include="src\ui\directx\DxUIFeatureFactory.h" />
-    <ClInclude Include="src\ui\directx\material\DxUIMaterialProvider.h" />
-    <ClInclude Include="src\ui\directx\material\DxUIShaderProvider.h" />
+    <ClInclude Include="src\ui\directx\shader\DxUIShaderProvider.h" />
     <ClInclude Include="src\ui\directx\text\DxTextMeshFactory.h" />
   </ItemGroup>
   <ItemGroup>
@@ -107,7 +106,6 @@
     </ClCompile>
     <ClCompile Include="src\ui\directx\DxUIContext.cpp" />
     <ClCompile Include="src\ui\directx\DxUIFeature.cpp" />
-    <ClCompile Include="src\ui\directx\material\DxUIMaterialProvider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">

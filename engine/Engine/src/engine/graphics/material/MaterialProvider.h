@@ -2,33 +2,49 @@
 
 #include "Material.h"
 
-#include "core/object/Noncopyable.h"
-#include "engine/graphics/texture/ITexture.h"
+#include "engine/graphics/shader/IShaderProvider.h"
+#include "engine/graphics/texture/TextureProvider.h"
 
 namespace Ghurund::Engine {
 
-	class MaterialProvider:public Noncopyable {
+    class MaterialProvider: public Noncopyable {
+    private:
+        ParameterManager& parameterManager;
+        IShaderProvider& shaderProvider;
+        TextureProvider& textureProvider;
+
+        Material* makeWithShader(IShader *shader) const;
+
     public:
-        virtual Material* makeBasic(ITexture* texture = nullptr) = 0;
+        MaterialProvider(
+            ParameterManager& parameterManager,
+            IShaderProvider& shaderProvider,
+            TextureProvider& textureProvider
+		):parameterManager(parameterManager), shaderProvider(shaderProvider), textureProvider(textureProvider) {
+		}
 
-        virtual Material* makeBasicLight(ITexture* diffuseTexture = nullptr, ITexture* specularTexture = nullptr, ITexture* normalTexture = nullptr) = 0;
+        Material* makeBasic(ITexture* texture = nullptr) const;
 
-        virtual Material* makeToon(ITexture* texture = nullptr) = 0;
+        Material* makeBasicLight(
+            ITexture* diffuseTexture = nullptr,
+            ITexture* specularTexture = nullptr,
+            ITexture* normalTexture = nullptr
+        ) const;
 
-        virtual Material* makeChecker() = 0;
+        Material* makeChecker() const;
 
-        virtual Material* makeWireframe() = 0;
+        Material* makeWireframe() const;
 
-        virtual Material* makeOutline() = 0;
+        Material* makeOutline() const;
 
-        virtual Material* makeNormals() = 0;
+        Material* makeNormals() const;
 
-        virtual Material* makeInvalid() = 0;
+        Material* makeInvalid() const;
 
-        virtual Material* makeLightPass() = 0;
+        Material* makeLightPass() const;
 
-        virtual Material* makeBasicSky() = 0;
+        Material* makeBasicSky() const;
 
-        virtual Material* makeAdvancedSky() = 0;
-    };
+        Material* makeAdvancedSky() const;
+	};
 }

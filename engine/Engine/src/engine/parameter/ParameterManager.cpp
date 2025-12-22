@@ -52,7 +52,7 @@ namespace Ghurund::Engine {
         parameters.add(normalTextureParameter);*/
     }
 
-    void ParameterManager::initDefaultTextures(ITextureProvider& textureProvider) {
+    void ParameterManager::initDefaultTextures(TextureProvider& textureProvider) {
         IntrusivePointer<ITexture> diffuseTexture(textureProvider.makeDefaultDiffuse());
         parameterDiffuse->Value = diffuseTexture.get();
 

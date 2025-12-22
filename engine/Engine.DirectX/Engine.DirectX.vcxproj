@@ -94,7 +94,6 @@
   <ItemGroup>
     <ClInclude Include="src\engine\directx\DxGraphicsFeature.h" />
     <ClInclude Include="src\engine\directx\DxGraphicsFeatureFactory.h" />
-    <ClInclude Include="src\engine\directx\material\DxMaterialProvider.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\ShaderCompilationResult.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\ShaderSettings.h" />
     <ClInclude Include="src\engine\directx\texture\DxTextureFactory.h" />
@@ -137,11 +136,11 @@
     <ClInclude Include="src\engine\directx\shader\DxShaderType.h" />
     <ClInclude Include="src\engine\directx\shader\Sampler.h" />
     <ClInclude Include="src\engine\directx\shader\ShaderConstant.h" />
-    <ClInclude Include="src\engine\directx\shader\ShaderProvider.h" />
+    <ClInclude Include="src\engine\directx\shader\DxShaderProvider.h" />
     <ClInclude Include="src\engine\directx\shader\TextureBufferConstant.h" />
     <ClInclude Include="src\engine\directx\shader\TextureConstant.h" />
     <ClInclude Include="src\engine\directx\texture\DxTexture.h" />
-    <ClInclude Include="src\engine\directx\texture\TextureProvider.h" />
+    <ClInclude Include="src\engine\directx\texture\DxTextureProvider.h" />
     <ClInclude Include="src\ghedxpch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -153,7 +152,6 @@
     <ClCompile Include="src\engine\directx\DxRenderingContext.cpp" />
     <ClCompile Include="src\engine\directx\Fence.cpp" />
     <ClCompile Include="src\engine\directx\Frame.cpp" />
-    <ClCompile Include="src\engine\directx\material\DxMaterialProvider.cpp" />
     <ClCompile Include="src\engine\directx\MathTypes.cpp" />
     <ClCompile Include="src\engine\directx\SwapChain.cpp" />
     <ClCompile Include="src\engine\directx\adapter\AdapterOutput.cpp" />

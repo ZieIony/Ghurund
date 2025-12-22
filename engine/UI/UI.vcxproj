@@ -117,8 +117,10 @@
     <ClInclude Include="src\ui\loading\TexturePropertyLoader.h" />
     <ClInclude Include="src\ui\loading\MaterialPropertyLoader.h" />
     <ClInclude Include="src\ui\material\ControlMaterialParameters.h" />
+    <ClInclude Include="src\ui\material\UIMaterialProvider.h" />
     <ClInclude Include="src\ui\Orientation.h" />
     <ClInclude Include="src\ui\RootView.h" />
+    <ClInclude Include="src\ui\shader\IUIShaderProvider.h" />
     <ClInclude Include="src\ui\text\CharacterInfo.h" />
     <ClInclude Include="src\ui\text\TextAlignment.h" />
     <ClInclude Include="src\ui\text\TextLine.h" />
@@ -204,7 +206,6 @@
     <ClInclude Include="src\ui\loading\PropertyLoaderCollection.h" />
     <ClInclude Include="src\ui\loading\StringPropertyLoader.h" />
     <ClInclude Include="src\ui\loading\TextDocumentPropertyLoader.h" />
-    <ClInclude Include="src\ui\material\IUIMaterialProvider.h" />
     <ClInclude Include="src\ui\material\ShadowMaterialParameters.h" />
     <ClInclude Include="src\ui\style\AttrProperty.h" />
     <ClInclude Include="src\ui\style\ColorAttr.h" />

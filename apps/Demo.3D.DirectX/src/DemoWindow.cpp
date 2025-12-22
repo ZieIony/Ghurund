@@ -6,15 +6,13 @@
 
 #include <engine/graphics/mesh/QuadMeshData.h>
 #include <engine/directx/mesh/DxMesh.h>
-#include <engine/directx/texture/TextureProvider.h>
-#include <engine/directx/shader/ShaderProvider.h>
-#include <engine/directx/material/DxMaterialProvider.h>
 #include <ui/font/FontLoader.h>
 #include <core/math/Matrix.h>
 #include <ui/directx/text/DxTextMeshFactory.h>
-#include <ui/directx/material/DxUIMaterialProvider.h>
 #include <ui/material/ShadowMaterialParameters.h>
 #include <ui/material/ControlMaterialParameters.h>
+#include <ui/directx/shader/DxUIShaderProvider.h>
+#include <ui/material/UIMaterialProvider.h>
 
 namespace Demo {
 	using namespace Ghurund::UI::DirectX;
@@ -34,7 +32,7 @@ namespace Demo {
 		commandList->init(graphicsFeature->Graphics, graphicsFeature->Graphics.DirectQueue);
 
 		DxUIShaderProvider shaderProvider(app.ResourceManager);
-		DxUMaterialProvider materialProvider(ParameterManager, shaderProvider);
+		UIMaterialProvider materialProvider(shaderProvider);
 
 		camera = makeIntrusive<Camera>();
 		camera->setPositionTargetUp({ 10,10,-10 }, { 0,0,0 });

@@ -4,7 +4,7 @@
 #include "core/string/String.h"
 #include "core/object/Object.h"
 #include "ParameterCollection.h"
-#include "engine/graphics/texture/ITextureProvider.h"
+#include "engine/graphics/texture/TextureProvider.h"
 #include "TextureParameter.h"
 
 namespace Ghurund::Engine {
@@ -39,7 +39,7 @@ namespace Ghurund::Engine {
 	public:
 		ParameterManager();
 
-		void initDefaultTextures(ITextureProvider& textureProvider);
+		void initDefaultTextures(TextureProvider& textureProvider);
 
 		ParameterCollection& getParameters() {
 			return parameters;
