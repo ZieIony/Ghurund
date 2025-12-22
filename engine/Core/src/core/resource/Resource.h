@@ -68,6 +68,8 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = getSize)) const DataSize& Size;*/
 
+		virtual String toString() const override;
+
 	protected:
 		virtual const Array<ResourceFormat>& getFormatsImpl() const {
 			return FORMATS;

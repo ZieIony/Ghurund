@@ -1,10 +1,10 @@
 #include "ghcpch.h"
 #include "Resource.h"
 
-#include "core/io/MemoryInputStream.h"
-#include "core/io/MemoryOutputStream.h"
 #include "core/logging/Formatter.h"
 #include "core/reflection/TypeBuilder.h"
+
+#include <format>
 
 namespace Ghurund::Core {
 	const Ghurund::Core::Type& Resource::GET_TYPE() {
@@ -25,5 +25,13 @@ namespace Ghurund::Core {
         } else {
             this->path = nullptr;
         }
+	}
+
+	String Resource::toString() const {
+		if (path) {
+			return String(std::format(_T("{}, path: {}"), __super::toString(), path->toString()).c_str());
+		} else {
+			return __super::toString();
+		}
 	}
 }

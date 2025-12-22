@@ -89,7 +89,7 @@ namespace Ghurund::UI {
 				material->addReference();
 				XMFLOAT3 pos = { line.Characters[0].pos.x, line.Characters[0].pos.y, 0 };
 				TextureParameter* colorTextureParameter = (TextureParameter*)material->Parameters.get("colorTexture");
-				colorTextureParameter->Value = textureFactory.makeTexture(*span.textStyle->Atlas->Image);
+				colorTextureParameter->Value = IntrusivePointer<ITexture>(textureFactory.makeTexture(*span.textStyle->Atlas->Image)).get();
 				textMeshes.add(DrawPacket{
 					mesh,
 					IntrusivePointer<Material>(&material),

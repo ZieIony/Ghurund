@@ -23,6 +23,7 @@ namespace Preview {
             renderer = nullptr;
             darkTheme.set(nullptr);
             lightTheme.set(nullptr);
+            currentTheme.set(nullptr);
         }
 
     protected:

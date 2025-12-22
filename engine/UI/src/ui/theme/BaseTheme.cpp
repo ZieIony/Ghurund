@@ -28,7 +28,6 @@ namespace Ghurund::UI {
 			resourceManager.save(*textStyle->Atlas->Image, atlasPath, DirectoryPath(), Image::FORMAT_PNG);
 			resourceManager.save(textStyle.ref(), textStylePath, DirectoryPath(), TextStyle::FORMAT_BIN);
 		}
-		textStyle->addReference();
 		return textStyle;
 	};
 

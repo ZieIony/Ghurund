@@ -90,7 +90,7 @@ namespace Ghurund::Core {
             Logger::log(LogType::INFO, std::format(_T("allocated pointers ({}):\n"), pointers.Size).c_str());
             for (RefCountedObject* p : pointers) {
                 const auto& info = typeid(*p);
-                auto text = std::format(_T("\n[{:#x}] {} ({}) refCount={}\n"), (address_t)p, p->toString(), AString(info.name()), p->ReferenceCount);
+                auto text = std::format(_T("\n[{:#x}] {}\n"), (address_t)p, p->toString());
                 Logger::print(LogType::INFO, text.c_str());
                 for (StackTrace::Entry& e : p->stacktrace) {
                     if (e.fileName.Empty || !e.address || e.name.Empty)

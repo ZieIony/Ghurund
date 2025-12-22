@@ -13,7 +13,7 @@ namespace Ghurund::UI {
 		if (theme && context) {
 			this->textStyle.resolve(*theme);
 			this->color.resolve(*theme);
-			textLayout.Document = ghnew Ghurund::UI::TextDocument(text, textStyle.get(), *color.get());
+			textLayout.Document = makeIntrusive<Ghurund::UI::TextDocument>(text, textStyle.get(), *color.get()).get();
 			textLayout.PreferredSize = { std::numeric_limits<uint32_t>::max(), std::numeric_limits<uint32_t>::max() };
 			textLayout.refresh();
 
