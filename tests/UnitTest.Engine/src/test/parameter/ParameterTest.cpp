@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 
 #include "core/Colors.h"
+#include "core/io/File.h"
 #include "core/object/IntrusivePointer.h"
 #include "core/reflection/StandardTypes.h"
 #include "engine/directx/DxGraphics.h"

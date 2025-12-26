@@ -129,25 +129,22 @@ namespace Ghurund::Core {
 				return;
 			size_t len = lengthOf(str);
 			fit(size + len);
-			memcpy(v + size - 1, str, len * sizeof(T));
+			memcpy(v + size - 1, str, (len + 1) * sizeof(T));
 			size += len;
-			v[size - 1] = 0;
 		}
 
 		inline void add(const T* str, size_t len) {
 			if (!str)
 				return;
 			fit(size + len);
-			memcpy(v + size - 1, str, len * sizeof(T));
+			memcpy(v + size - 1, str, (len + 1) * sizeof(T));
 			size += len;
-			v[size - 1] = 0;
 		}
 
 		inline void add(const GenericString<T>& str) {
 			fit(size + str.Length);
-			memcpy(v + size - 1, str.Data, str.Length * sizeof(T));
+			memcpy(v + size - 1, str.Data, str.Size * sizeof(T));
 			size += str.Length;
-			v[size - 1] = 0;
 		}
 
 		inline void set(size_t i, T c) {
@@ -230,6 +227,29 @@ namespace Ghurund::Core {
 		inline void remove(size_t pos, size_t length) {
 			memcpy(v + pos, v + pos + length, (size - pos - length) * sizeof(T));
 			size -= length;
+		}
+
+		inline void removeAll(const T* str) {
+			size_t len = lengthOf(str);
+			size_t start = 0;
+			while (true) {
+				auto result = find(str, start);
+				if (result == size - 1)
+					break;
+				remove(result, len);
+				start = result;
+			}
+		}
+
+		inline void removeAll(const GenericString<T>& str) {
+			size_t start = 0;
+			while (true) {
+				auto result = find(str, start);
+				if (result == size - 1)
+					break;
+				remove(result, str.Length);
+				start = result;
+			}
 		}
 
 		inline void clear() {
@@ -324,6 +344,14 @@ namespace Ghurund::Core {
 			return str;
 		}
 
+		size_t find(T c, size_t start = 0) const {
+			for (size_t i = start; i < size; i++) {
+				if (v[i] == c)
+					return i;
+			}
+			return Length;
+		}
+
 		size_t find(const T* str, size_t start = 0) const {
 			size_t strSize = lengthOf(str);
 			if (strSize + start > size)
@@ -343,6 +371,17 @@ namespace Ghurund::Core {
 				if (memcmp(&v[i], str.v, strSize * sizeof(T)) == 0)
 					return i;
 			}
+			return Length;
+		}
+
+		size_t findLast(T c, size_t start = std::numeric_limits<size_t>::max()) const {
+			for (size_t i = std::min(size - 1, start); i > 0; i--) {
+				if (v[i] == c)
+					return i;
+			}
+
+			if (v[0] == c)
+				return 0;
 			return Length;
 		}
 
@@ -368,6 +407,10 @@ namespace Ghurund::Core {
 			if (memcmp(v, str.v, strSize * sizeof(T)) == 0)
 				return 0;
 			return Length;
+		}
+
+		bool startsWith(T c) const {
+			return v[0] == c;
 		}
 
 		bool startsWith(const T* str) const {
@@ -399,6 +442,10 @@ namespace Ghurund::Core {
 					return true;
 			}
 			return false;
+		}
+
+		bool endsWith(T c) const {
+			return v[size - 1] == c;
 		}
 
 		bool endsWith(const T* str) const {

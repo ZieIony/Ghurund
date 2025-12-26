@@ -7,12 +7,12 @@
 
 namespace Ghurund::UI {
 	FontAtlas* FontAtlasLoader::loadFromBin(MemoryInputStream& stream, const DirectoryPath& workingDir) {
-		ResourcePath path = ResourcePath::parse(stream.readUnicode());
+		FilePath path = FilePath(stream.readUnicode());
 		auto image = IntrusivePointer<Image>(resourceManager.load<Image>(path, workingDir, ResourceFormat::AUTO));
 
 		size_t glyphCount = stream.readUInt64();
 		Map<wchar_t, GlyphMetrics> glyphs;
-		for(size_t i=0;i<glyphCount;i++){
+		for (size_t i = 0; i < glyphCount; i++) {
 			wchar_t c = stream.readUInt32();
 			GlyphMetrics g = stream.read<GlyphMetrics>();
 			glyphs.put(c, g);
@@ -26,8 +26,7 @@ namespace Ghurund::UI {
 
 	FontAtlas* FontAtlasLoader::loadFromXml(const tinyxml2::XMLElement& xml, const DirectoryPath& workingDir) {
 		AString s = xml.FindAttribute("image")->Value();
-		s.replace(L'\\', L'/');
-		ResourcePath path = ResourcePath::parse(convertText<char, wchar_t>(s));
+		FilePath path = FilePath(convertText<char, wchar_t>(s));
 		auto image = IntrusivePointer<Image>(resourceManager.load<Image>(path, workingDir, ResourceFormat::AUTO));
 
 		const tinyxml2::XMLElement* child = xml.FirstChildElement();
@@ -81,8 +80,26 @@ namespace Ghurund::UI {
 	}
 
 	void FontAtlasLoader::saveToBin(FontAtlas& atlas, MemoryOutputStream& stream, const DirectoryPath& workingDir) const {
-		// resourceManager.save(*atlas.Image, workingDir);
-		stream.writeUnicode(atlas.Image->Path->toString());
+		DirectoryPath localDir = [&] {
+			if (atlas.Path) {
+				return ResourceManager::getLocalDir(*atlas.Path, workingDir);
+			} else {
+				return workingDir;
+			}
+		}();
+		FilePath path = [&] {
+			if (!atlas.Image->Path && atlas.Path) {
+				auto pathStr = std::format(L"{}{}", atlas.Path->FileName.substring(0, atlas.Path->FileName.findLast(L'.')).Data, L".png");
+				return FilePath(pathStr.c_str());
+			} else if (atlas.Image->Path) {
+				return *atlas.Image->Path;
+			} else {
+				Logger::log(LogType::ERR0R, _T("Font atlas could not be saved, because its path is null.\n"));
+				throw InvalidDataException();
+			}
+		}();
+		stream.writeUnicode(path.toString());
+		resourceManager.save(*atlas.Image, path, localDir);
 		stream.writeUInt64(atlas.Glyphs.Size);
 		for (auto& glyph : atlas.Glyphs) {
 			stream.writeUInt32(glyph.key);
@@ -96,10 +113,21 @@ namespace Ghurund::UI {
 		const ResourceFormat& format,
 		LoadOption options
 	) {
-		AString xmlString((const char*)stream.Data, stream.Size);
-		tinyxml2::XMLDocument doc;
-		doc.Parse(xmlString.Data);
-		return loadFromXml(*doc.RootElement(), workingDir);
+		if (format == ResourceFormat::AUTO) {
+			tinyxml2::XMLDocument doc;
+			auto error = doc.Parse(AString((const char*)stream.Data, stream.Size).Data);
+			if (error == tinyxml2::XML_SUCCESS) {
+				return loadFromXml(*doc.RootElement(), workingDir);
+			} else {
+				return loadFromBin(stream, workingDir);
+			}
+		} else if (format == FontAtlas::FORMAT_XML) {
+			tinyxml2::XMLDocument doc;
+			doc.Parse(AString((const char*)stream.Data, stream.Size).Data);
+			return loadFromXml(*doc.RootElement(), workingDir);
+		} else {
+			return loadFromBin(stream, workingDir);
+		}
 	}
 
 	void FontAtlasLoader::saveInternal(

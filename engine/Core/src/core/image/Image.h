@@ -2,6 +2,7 @@
 
 #pragma comment(lib, "Shlwapi.lib")
 
+#include "core/Buffer.h"
 #include "core/math/Size.h"
 #include "core/reflection/Type.h"
 #include "core/resource/Resource.h"

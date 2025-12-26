@@ -10,13 +10,13 @@ namespace Ghurund::UI {
 	class FileMaterialProvider:public MaterialProvider {
 	private:
 		ResourceManager& resourceManager;
-		ResourcePath resourcePath;
+		FilePath resourcePath;
 		IntrusivePointer<Material> cached;
 
 	public:
 		FileMaterialProvider(
 			ResourceManager& resourceManager,
-			const ResourcePath& resourcePath
+			const FilePath& resourcePath
 		): resourceManager(resourceManager), resourcePath(resourcePath) {
 		}
 

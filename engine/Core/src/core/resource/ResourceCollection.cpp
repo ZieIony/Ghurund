@@ -3,23 +3,23 @@
 
 namespace Ghurund::Core {
 
-	Resource* ResourceCollection::get(const ResourcePath& path) {
+	Resource* ResourceCollection::get(const WString& key) {
 		SectionLock lock(section);
-		auto iterator = resources.find(path);
+		auto iterator = resources.find(key);
 		if (iterator != resources.end())
-			return resources.get(path).get();
+			return resources.get(key).get();
 		return nullptr;
 	}
 
-	void ResourceCollection::add(const ResourcePath& path, Resource& resource) {
+	void ResourceCollection::add(const WString& key, Resource& resource) {
 		SectionLock lock(section);
 		resource.addReference();
-		resources.put(path, IntrusivePointer(&resource));
+		resources.put(key, IntrusivePointer(&resource));
 	}
 
-	void ResourceCollection::remove(const ResourcePath& path) {
+	void ResourceCollection::remove(const WString& key) {
 		SectionLock lock(section);
-		resources.remove(path);
+		resources.remove(key);
 	}
 
 	void ResourceCollection::clear() {

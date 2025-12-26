@@ -12,14 +12,14 @@ namespace Ghurund::UI {
 	private:
 		ResourceManager& resourceManager;
 		ITextureFactory& textureFactory;
-		ResourcePath resourcePath;
+		FilePath resourcePath;
 		IntrusivePointer<ITexture> cached;
 
 	public:
 		FileTextureProvider(
 			ResourceManager& resourceManager,
 			ITextureFactory& textureFactory,
-			const ResourcePath& resourcePath
+			const FilePath& resourcePath
 		): resourceManager(resourceManager), textureFactory(textureFactory), resourcePath(resourcePath) {}
 
 		virtual IntrusivePointer<ITexture> get() override {

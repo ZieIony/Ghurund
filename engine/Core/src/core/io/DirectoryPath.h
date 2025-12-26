@@ -9,14 +9,20 @@ namespace Ghurund::Core {
 
 	class DirectoryPath:public Path {
 	public:
-		DirectoryPath():Path([]()->WString {
+		DirectoryPath():Path([]->WString {
 			DWORD bufferLength = GetCurrentDirectory(0, nullptr);
-			Array<wchar_t> path(bufferLength + 1);   // string terminator
-			GetCurrentDirectory(bufferLength + 1, &path[0]);
-			return WString(&path[0], bufferLength);
-			}()) {}
+			Array<wchar_t> buffer(bufferLength);
+			GetCurrentDirectory(bufferLength, &buffer[0]);
+			auto path = WString(&buffer[0], bufferLength - 1);
+			if (!path.endsWith(L"/"))
+				path.add(L'/');
+			return path;
+		}()) {}
 
-		DirectoryPath(const WString& path):Path(path) {}
+		DirectoryPath(const WString& path):Path(path) {
+			if (!this->path.endsWith(L"/"))
+				this->path.add(L'/');
+		}
 
 		DirectoryPath(const DirectoryPath& path):DirectoryPath(path.path) {}
 
@@ -42,9 +48,9 @@ namespace Ghurund::Core {
 			return path;
 		}
 
-		DirectoryPath getAbsolutePath() const;
+		//DirectoryPath getAbsolutePath() const;
 
-		__declspec(property(get = getAbsolutePath)) DirectoryPath AbsolutePath;
+		//__declspec(property(get = getAbsolutePath)) DirectoryPath AbsolutePath;
 
 		inline DirectoryPath combine(const DirectoryPath& dir) const {
 			wchar_t destPath[MAX_PATH];

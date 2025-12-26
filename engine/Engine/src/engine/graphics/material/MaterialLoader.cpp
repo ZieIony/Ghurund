@@ -11,8 +11,7 @@ namespace Ghurund::Engine {
 
 	Material* MaterialLoader::loadFromXml(const tinyxml2::XMLElement& xml, const DirectoryPath& workingDir) {
 		AString s = xml.FindAttribute("shader")->Value();
-		s.replace(L'\\', L'/');
-		ResourcePath path = ResourcePath::parse(convertText<char, wchar_t>(s));
+		FilePath path = FilePath(convertText<char, wchar_t>(s));
 		auto shader = IntrusivePointer<IShader>(resourceManager.load<IShader>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE));
 		auto material = makeIntrusive<Material>(shader.ref());
 		const tinyxml2::XMLElement* child = xml.FirstChildElement();
@@ -24,7 +23,7 @@ namespace Ghurund::Engine {
 					auto parameter = material->Parameters.get(nameAttribute->Value());
 					if (parameter->Type == TextureParameter::TYPE) {
 						TextureParameter* typedParameter = (TextureParameter*)parameter;
-						ResourcePath texturePath = ResourcePath::parse(convertText<char, wchar_t>(AString(valueAttribute->Value())));
+						FilePath texturePath = FilePath(convertText<char, wchar_t>(AString(valueAttribute->Value())));
 						auto image = IntrusivePointer<Image>(resourceManager.load<Image>(texturePath, workingDir));
 						auto texture = IntrusivePointer<ITexture>(textureFactory.makeTexture(image.ref()));
 						typedParameter->Value = texture.get();

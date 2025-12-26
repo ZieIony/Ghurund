@@ -127,12 +127,31 @@ namespace Ghurund::Core {
             return *this;
         }
 
+        size_t find(T c, size_t start = 0) const {
+            for (size_t i = start; i < size; i++) {
+                if (v[i] == c)
+                    return i;
+            }
+            return size;
+        }
+
         size_t find(const T* str, size_t start = 0) const {
             size_t strSize = lengthOf(str);
             for (size_t i = start; i <= size - strSize; i++) {
                 if (memcmp(&v[i], str, strSize * sizeof(T)) == 0)
                     return i;
             }
+            return size;
+        }
+
+        size_t findLast(T c) const {
+            for (size_t i = size - 1; i > 0; i--) {
+                if (v[i] == c)
+                    return i;
+            }
+
+            if (v[0] == c)
+                return 0;
             return size;
         }
 
@@ -283,15 +302,15 @@ namespace Ghurund::Core {
             return GenericStringView<T>(v + start);
         }
 
-        inline GenericStringView<T> substring(size_t start, size_t length) const {
-            return GenericStringView<T>(v + start, length);
+        inline GenericString<T> substring(size_t start, size_t length) const {
+            return GenericString<T>(v + start, length);
         }
 
-        inline GenericStringView<T> trim() const {
+        inline GenericString<T> trim() const {
             size_t i, j, l = Length;
             for (i = 0; i < l && isSpace<T>(v[i]); i++);
             for (j = l; j > i && isSpace<T>(v[j]); j--);
-            return GenericStringView<T>(v + i, j - i);
+            return GenericString<T>(v + i, j - i);
         }
 
     };

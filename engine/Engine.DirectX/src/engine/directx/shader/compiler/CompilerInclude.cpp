@@ -1,7 +1,6 @@
 #include "ghedxpch.h"
 #include "CompilerInclude.h"
 
-#include "core/io/File.h"
 #include "core/logging/Logger.h"
 
 #include <format>
@@ -11,56 +10,44 @@ namespace Ghurund::Engine::DirectX {
 		WString fullPath;
 		AString aFileName = pFileName;
 		WString fileName = convertText<char, wchar_t>(aFileName);
+		FilePath filePath = FilePath(fileName);
 
-		// TODO: support library includes
 		switch (IncludeType) {
 		case D3D_INCLUDE_LOCAL: // #include "FILE"
 		{
-			fullPath = shaderDir / fileName;
-			if (!File(FilePath(fullPath)).Exists) {
-				auto text = std::format(_T("'{}' doesn't exist.\n"), fullPath);
-				Logger::log(LogType::ERR0R, text.c_str());
-				return E_FAIL;
+			try {
+				auto buffer = resourceManager.resolveResource(filePath, shaderDir);
+				*ppData = ghnew byte[buffer->Size];
+				memcpy((void*)*ppData, buffer->Data, buffer->Size);
+				*pBytes = (UINT)buffer->Size;
+				return S_OK;
+			} catch (InvalidParamException e) {
 			}
-			break;
+			auto text = std::format(_T("Include {} could not be found in {}.\n"), filePath, shaderDir);
+			Logger::log(LogType::ERR0R, text.c_str());
+			return E_FAIL;
 		}
 		case D3D_INCLUDE_SYSTEM: // #include <FILE>
 		{
 			bool found = false;
 			for (auto& systemDir : systemDirs) {
-				fullPath = systemDir / fileName;
-				if (File(FilePath(fullPath)).Exists) {
-					found = true;
-					break;
+				try {
+					auto buffer = resourceManager.resolveResource(filePath, systemDir);
+					*ppData = ghnew byte[buffer->Size];
+					memcpy((void*)*ppData, buffer->Data, buffer->Size);
+					*pBytes = (UINT)buffer->Size;
+					return S_OK;
+				} catch (InvalidParamException e) {
 				}
 			}
-			if (!found) {
-				auto text = std::format(_T("'{}' doesn't exist.\n"), fullPath);
-				Logger::log(LogType::ERR0R, text.c_str());
-				return E_FAIL;
-			}
-			break;
+			auto text = std::format(_T("Include {} could not be found in system include dirs.\n"), filePath);
+			Logger::log(LogType::ERR0R, text.c_str());
+			return E_FAIL;
 		}
 		default:
 			auto text = std::format(_T("Unknown include type: {}.\n"), (uint32_t)IncludeType);
 			Logger::log(LogType::ERR0R, text.c_str());
 			return E_FAIL;
 		}
-
-		File file = File(FilePath(fullPath));
-		Buffer buffer;
-		try {
-			file.read(buffer);
-		} catch (...) {
-			auto text = std::format(_T("Failed to load include file: '{}'.\n"), fullPath);
-			Logger::log(LogType::ERR0R, text.c_str());
-			return E_FAIL;
-		}
-
-		*ppData = ghnew byte[buffer.Size];
-		memcpy((void*)*ppData, buffer.Data, buffer.Size);
-		*pBytes = (UINT)buffer.Size;
-
-		return S_OK;
 	}
 }

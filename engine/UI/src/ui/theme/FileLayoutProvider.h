@@ -9,12 +9,12 @@ namespace Ghurund::UI {
 	class FileLayoutProvider:public LayoutProvider {
 	private:
 		Ghurund::Core::ResourceManager& resourceManager;
-		ResourcePath path;
+		FilePath path;
 
 	public:
 		FileLayoutProvider(
 			Ghurund::Core::ResourceManager& resourceManager,
-			const ResourcePath& path
+			const FilePath& path
 		): resourceManager(resourceManager), path(path) {}
 
 		virtual IntrusivePointer<Control> get() override {

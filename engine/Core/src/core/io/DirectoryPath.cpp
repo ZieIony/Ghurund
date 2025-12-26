@@ -5,13 +5,13 @@
 #include "core/logging/Logger.h"
 
 namespace Ghurund::Core {
-    DirectoryPath DirectoryPath::getAbsolutePath() const {
+    /*DirectoryPath DirectoryPath::getAbsolutePath() const {
         DWORD bufferLength = (DWORD)(GetCurrentDirectory(0, nullptr) + path.Size + 2); // slash and string terminator
         wchar_t fullPath[MAX_PATH];
         GetFullPathNameW(path.Data, bufferLength, fullPath, nullptr);
         DirectoryPath absolutePath(fullPath);
         return absolutePath;
-    }
+    }*/
 
     List<DirectoryPath> DirectoryPath::getDirectories() const {
         List<DirectoryPath> directories;
@@ -48,9 +48,28 @@ namespace Ghurund::Core {
     }
 
     FilePath DirectoryPath::combine(const FilePath& file) const {
-        wchar_t destPath[MAX_PATH];
-        PathCchCombine(destPath, MAX_PATH, path.Data, file.toString().Data);
-        return FilePath(destPath);
+        if (file.IsAbsolute)
+            return file;
+        auto absolutePath = path;
+        auto& fileStr = file.toString();
+        if (fileStr.startsWith(Path::SEPARATOR)) {
+            absolutePath.add(fileStr.Data + 1, fileStr.Length);
+        } else {
+            absolutePath.add(fileStr);
+        }
+        while (true) {
+            size_t index = absolutePath.find(L"/..");
+			if (index == absolutePath.Length)
+                break;
+			if (index == 0)
+                throw InvalidDataException();  // there's something wrong with the path
+            size_t prev = absolutePath.findLast(L"/", index - 1);
+            if (prev > index)
+                throw InvalidDataException();  // there's something wrong with the path
+            absolutePath.remove(prev, index - prev + 3);
+        }
+        absolutePath.removeAll(L"./");
+        return FilePath(absolutePath);
     }
 
     FilePath DirectoryPath::operator/(const FilePath& file) const {

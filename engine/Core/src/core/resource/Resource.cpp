@@ -18,10 +18,12 @@ namespace Ghurund::Core {
 		delete path;
 	}
 
-    void Resource::setPath(const ResourcePath* path) {
+    void Resource::setPath(const FilePath* path) {
+		if (this->path == path)
+			return;
         delete this->path;
         if (path) {
-            this->path = ghnew ResourcePath(*path);
+            this->path = ghnew FilePath(*path);
         } else {
             this->path = nullptr;
         }

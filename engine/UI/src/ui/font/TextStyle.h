@@ -5,6 +5,7 @@
 #include "FontMetrics.h"
 #include "KerningPairs.h"
 
+#include "core/object/NotNull.h"
 #include "core/resource/Resource.h"
 
 namespace Ghurund::UI {

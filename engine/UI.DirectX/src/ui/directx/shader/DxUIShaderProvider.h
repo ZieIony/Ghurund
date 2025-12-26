@@ -12,7 +12,7 @@ namespace Ghurund::Engine::DirectX {
         ResourceManager& manager;
 
         inline DxShader* load(const WString& fileName) const {
-            return manager.load<DxShader>(ResourcePath(ResourceManager::ENGINE_LIB_NAME, fileName), DirectoryPath());
+			return manager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(fileName));
         }
 
         DxUIShaderProvider& operator=(const DxUIShaderProvider& other) = delete;

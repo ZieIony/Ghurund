@@ -1,13 +1,13 @@
 #include "utepch.h"
 #include "CppUnitTest.h"
 
+#include "core/io/File.h"
 #include "core/object/IntrusivePointer.h"
 #include "core/reflection/StandardTypes.h"
 #include "engine/directx/DxGraphics.h"
 #include "engine/directx/shader/DxShaderLoader.h"
 #include "engine/parameter/ValueParameter.h"
 #include "test/utils/MemoryGuard.h"
-#include "test/utils/TestUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

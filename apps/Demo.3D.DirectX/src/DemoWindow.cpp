@@ -1,18 +1,17 @@
 #include "DemoWindow.h"
 
 #include "DemoApplication.h"
-#include "core/Colors.h"
-#include "core/window/DisplayManager.h"
 
-#include <engine/graphics/mesh/QuadMeshData.h>
-#include <engine/directx/mesh/DxMesh.h>
-#include <ui/font/FontLoader.h>
-#include <core/math/Matrix.h>
-#include <ui/directx/text/DxTextMeshFactory.h>
-#include <ui/material/ShadowMaterialParameters.h>
-#include <ui/material/ControlMaterialParameters.h>
-#include <ui/directx/shader/DxUIShaderProvider.h>
-#include <ui/material/UIMaterialProvider.h>
+#include "core/Colors.h"
+#include "core/io/File.h"
+#include "core/math/Matrix.h"
+#include "core/window/DisplayManager.h"
+#include "engine/directx/mesh/DxMesh.h"
+#include "engine/graphics/mesh/QuadMeshData.h"
+#include "ui/directx/shader/DxUIShaderProvider.h"
+#include "ui/directx/text/DxTextMeshFactory.h"
+#include "ui/material/ControlMaterialParameters.h"
+#include "ui/material/UIMaterialProvider.h"
 
 namespace Demo {
 	using namespace Ghurund::UI::DirectX;
@@ -43,14 +42,14 @@ namespace Demo {
 		auto world = makeIntrusive<MatrixParameter>("world", MATRIX_IDENTITY);
 		ParameterManager.Parameters.put(world.get());
 
-		auto textStylePath = ResourcePath(FilePath(L"resources/textStyles/lato_regular_12.bin"));
-		if (textStylePath.exists(DirectoryPath(), app.ResourceManager.Libraries)) {
+		auto textStylePath = FilePath(L"resources/textStyles/lato_regular_12.bin");
+		if (File(textStylePath).exists()) {
 			textStyle.set(app.ResourceManager.load<TextStyle>(textStylePath, DirectoryPath(), TextStyle::FORMAT_BIN));
 		} else {
-			auto font = IntrusivePointer<Font>(app.ResourceManager.load<Font>(ResourcePath(FilePath(L"resources/fonts/lato_regular.ttf"))));
+			auto font = IntrusivePointer<Font>(app.ResourceManager.load<Font>(FilePath(L"resources/fonts/lato_regular.ttf")));
 			textStyle.set(ghnew TextStyle());
 			textStyle->init(font.ref(), 12);
-			auto atlasPath = ResourcePath(FilePath(L"resources/textStyles/lato_regular_12.png"));
+			auto atlasPath = FilePath(L"resources/textStyles/lato_regular_12.png");
 			app.ResourceManager.save(*textStyle->Atlas->Image, atlasPath, DirectoryPath(), Image::FORMAT_PNG);
 			app.ResourceManager.save(textStyle.ref(), textStylePath, DirectoryPath(), TextStyle::FORMAT_BIN);
 		}

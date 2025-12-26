@@ -35,7 +35,7 @@ public:
 			size_t getCalls = library.getCalls;
 			size_t loadCalls = testLoader->loadCalls;
 
-			IntrusivePointer<TestResource> resource(resourceManager.load<TestResource>(ResourcePath(L"test", L"testpath"), DirectoryPath()));
+			IntrusivePointer<TestResource> resource(resourceManager.load<TestResource>(FilePath(L"lib://test/testpath"), DirectoryPath()));
 			Assert::AreEqual(resource->text, AString("test"));
 			Assert::AreEqual(getCalls + 1, library.getCalls);
 			Assert::AreEqual(loadCalls + 1, testLoader->loadCalls);
@@ -53,32 +53,12 @@ public:
 			size_t getCalls = library.getCalls;
 			size_t loadCalls = testLoader->loadCalls;
 
-			IntrusivePointer<TestResource> resource(resourceManager.load<TestResource>(ResourcePath(L"test", L"testpath"), DirectoryPath()));
-			IntrusivePointer<TestResource> resource2(resourceManager.load<TestResource>(ResourcePath(L"test", L"testpath"), DirectoryPath()));
+			IntrusivePointer<TestResource> resource(resourceManager.load<TestResource>(FilePath(L"lib://test/testpath"), DirectoryPath()));
+			IntrusivePointer<TestResource> resource2(resourceManager.load<TestResource>(FilePath(L"lib://test/testpath"), DirectoryPath()));
 			Assert::IsTrue(resource.get() == resource2.get());
 			Assert::AreEqual(getCalls + 1, library.getCalls);
 			Assert::AreEqual(loadCalls + 1, testLoader->loadCalls);
 	
-			resourceManager.clearCache();
-		}
-	}
-
-	TEST_METHOD(ResourceManager_loadFromFile) {
-		MemoryGuard guard;
-		{
-			resourceManager.clearCache();
-
-			TestLibrary& library = (TestLibrary&)resourceManager.Libraries.get(0);
-			size_t getCalls = library.getCalls;
-			size_t loadCalls = testLoader->loadCalls;
-
-			File file(FilePath(L"../../resources/test/testresource.txt"));
-
-			IntrusivePointer<TestResource> resource(resourceManager.load<TestResource>(file));
-			Assert::AreEqual(resource->text, AString("test"));
-			Assert::AreEqual(getCalls, library.getCalls);
-			Assert::AreEqual(loadCalls + 1, testLoader->loadCalls);
-		
 			resourceManager.clearCache();
 		}
 	}

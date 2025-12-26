@@ -2,11 +2,31 @@
 #include "ResourceManager.h"
 
 #include "core/EnumOperators.h"
+#include "core/io/File.h"
 #include "core/Timer.h"
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core {
+	SharedPointer<Buffer> ResourceManager::resolveResource(const FilePath& path, const DirectoryPath& workingDir) const {
+		FilePath absolutePath = getAbsolutePath(path, workingDir);
+		WString pathStr = absolutePath.toString();
+		if (pathStr.startsWith(LIB_PROTOCOL)) {
+			size_t afterLibName = pathStr.find(Path::SEPARATOR, LIB_PROTOCOL.Size);
+			const WString libName = pathStr.substring(LIB_PROTOCOL.Length, afterLibName);
+			const WString relativePath = pathStr.substring(afterLibName + 1);
+			const Library* library = libraries.get(libName);
+			return library->get(relativePath);
+		} else {
+			File file(absolutePath);
+			if (!file.Exists)
+				throw InvalidParamException();
+			auto buffer = SharedPointer(ghnew Buffer());
+			file.read(*buffer.get());
+			return buffer;
+		}
+	}
+
 	Loader* ResourceManager::getLoader(const Ghurund::Core::Type& type) const {
 		Loader* loader = loaders.get(type);
 
@@ -20,21 +40,23 @@ namespace Ghurund::Core {
 		return loader;
 	}
 
-	Resource* ResourceManager::loadInternal(Loader& loader, const DirectoryPath& workingDir, const ResourcePath& path, const ResourceFormat& format, LoadOption options) {
-		auto iterator = resourceCache.find(path);
+	Resource* ResourceManager::loadInternal(Loader& loader, const FilePath& path, const DirectoryPath& workingDir, const ResourceFormat& format, LoadOption options) {
+		const WString cacheKey = getCacheKey(path, workingDir);
+		auto iterator = resourceCache.find(cacheKey);
 		SharedPointer<Buffer> buffer;
 		if (iterator == resourceCache.end()) {
 			Logger::log(LogType::INFO, std::format(_T("loading {} from resource\n"), path).c_str());
-			buffer = path.resolveResource(workingDir, libraries);
-			resourceCache.put(path, buffer);
+			buffer = resolveResource(path, workingDir);
+			resourceCache.put(cacheKey, buffer);
 		} else {
 			Logger::log(LogType::INFO, std::format(_T("loading {} from cache\n"), path).c_str());
 			buffer = iterator->value;
 		}
-		return loadInternal(loader, workingDir, *buffer.get(), format, options);
+
+		return loadInternal(loader, *buffer.get(), getLocalDir(path, workingDir), format, options);
 	}
 
-	Resource* ResourceManager::loadInternal(Loader& loader, const DirectoryPath& workingDir, const Buffer& buffer, const ResourceFormat& format, LoadOption options) {
+	Resource* ResourceManager::loadInternal(Loader& loader, const Buffer& buffer, const DirectoryPath& workingDir, const ResourceFormat& format, LoadOption options) {
 		if (buffer.Size == 0) {
 			auto message = std::format(_T("the buffer is empty\n"));
 			Logger::log(LogType::ERR0R, message.c_str());
@@ -76,7 +98,7 @@ namespace Ghurund::Core {
 		return resource;
 	}
 
-	void ResourceManager::saveInternal(Resource& resource, const Loader& loader, const DirectoryPath& workingDir, Buffer& buffer, const ResourceFormat& format, SaveOption options) const {
+	void ResourceManager::saveInternal(Resource& resource, const Loader& loader, Buffer& buffer, const DirectoryPath& workingDir, const ResourceFormat& format, SaveOption options) const {
 		MemoryOutputStream stream;
 		try {
 			loader.save(stream, workingDir, resource, format, options);
@@ -87,32 +109,18 @@ namespace Ghurund::Core {
 		buffer.setData(stream.Data, stream.BytesWritten);
 	}
 
-	Resource* ResourceManager::load(Loader& loader, const File& file, const ResourceFormat& format, LoadOption options) {
-		Resource* resource = resources.get(file.Path);
+	Resource* ResourceManager::load(Loader& loader, const FilePath& path, const DirectoryPath& workingDir, const ResourceFormat& format, LoadOption options) {
+		const WString cacheKey = getCacheKey(path, workingDir);
+		Resource* resource = resources.get(cacheKey);
 		if (!resource) {
-			// TODO: do the same for ResourcePath - use the resource directory as workingDir
-			resource = loadInternal(loader, file.Path.Directory, file.Path, format, options);
+			resource = loadInternal(loader, path, workingDir, format, options);
 		} else {
 			resource->addReference();
 		}
-		ResourcePath filePath = file.Path;
-		resource->Path = &filePath;
+		auto absolutePath = getAbsolutePath(path, workingDir);
+		resource->Path = &absolutePath;
 		if ((options & LoadOption::DONT_CACHE) != LoadOption::DONT_CACHE)
-			resources.add(file.Path, *resource);
-		return resource;
-	}
-
-	Resource* ResourceManager::load(Loader& loader, const ResourcePath& path, const DirectoryPath& workingDir, const ResourceFormat& format, LoadOption options) {
-		ResourcePath resolvedPath = path.getAbsolutePath(workingDir, libraries);
-		Resource* resource = resources.get(resolvedPath); // TODO: why it doesn't find fonts?
-		if (!resource) {
-			resource = loadInternal(loader, workingDir, path, format, options);
-		} else {
-			resource->addReference();
-		}
-		resource->Path = &path;	// use the original path in case anything changes in libs
-		if ((options & LoadOption::DONT_CACHE) != LoadOption::DONT_CACHE)
-			resources.add(resolvedPath, *resource);
+			resources.add(cacheKey, *resource);
 		return resource;
 	}
 
@@ -124,6 +132,8 @@ namespace Ghurund::Core {
 
 		return TYPE;
 	}
+
+	const DirectoryPath ResourceManager::ENGINE_LIB = DirectoryPath(std::format(L"{}{}", LIB_PROTOCOL, ENGINE_LIB_NAME).c_str());
 
 	ResourceManager::ResourceManager() {
 		loadingThread.start();
@@ -156,7 +166,7 @@ namespace Ghurund::Core {
 		reloadQueue.clear();
 	}
 
-	/*Status ResourceManager::save(Resource& resource, const DirectoryPath& workingDir, MemoryOutputStream& stream, const ResourceFormat* format, SaveOption options) const {
+	/*Status ResourceManager::save(MemoryOutputStream& stream, Resource& resource, const DirectoryPath& workingDir,const ResourceFormat* format, SaveOption options) const {
 		size_t index = Ghurund::Core::Type::TYPES.find([&](const std::reference_wrapper<const Ghurund::Core::Type> obj) { return obj.get() == resource.getType(); });
 		stream.writeUInt32((uint32_t)index);
 		if (resource.Path == nullptr) {

@@ -8,7 +8,7 @@
 		<ControlContainer width="Parent.Width" top="Parent.Top" bottom="'progress'.Top"
 						  name="container">
 			<ControlGroup width="Parent.Width" height="Parent.Height">
-				<ImageView top="Parent.Top" width="433" height="56" scaleMode="fit" image="images\buttons.png">
+				<ImageView top="Parent.Top" width="433" height="56" scaleMode="fit" image="../../../images/buttons.png">
 					<ImageView.Material shader="lib://Ghurund/shaders/DirectX/ui/image.hlsl"/>
 				</ImageView>
 			</ControlGroup>

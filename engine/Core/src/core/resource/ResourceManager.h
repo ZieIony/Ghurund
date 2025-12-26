@@ -6,10 +6,10 @@
 #include "Resource.h"
 #include "ResourceCollection.h"
 #include "ResourceFormat.h"
-#include "ResourcePath.h"
 
 #include "core/Buffer.h"
 #include "core/io/File.h"
+#include "core/io/FilePath.h"
 #include "core/io/LibraryCollection.h"
 #include "core/io/watcher/FileWatcher.h"
 #include "core/object/Noncopyable.h"
@@ -35,7 +35,7 @@ namespace Ghurund::Core {
 	private:
 		FileWatcher watcher;
 		ResourceCollection resources;
-		mutable Map<ResourcePath, SharedPointer<Buffer>> resourceCache;
+		mutable Map<WString, SharedPointer<Buffer>> resourceCache;
 		LibraryCollection libraries;
 		LoaderCollection loaders;
 
@@ -47,20 +47,17 @@ namespace Ghurund::Core {
 #else
 			= false;
 #endif
+
+		inline WString getCacheKey(const FilePath& path, const DirectoryPath& workingDir) const {
+			return getAbsolutePath(path, workingDir).toString();
+		}
+
 		Loader* getLoader(const Ghurund::Core::Type& type) const;
 
 		[[nodiscard]]
 		Resource* load(
 			Loader& loader,
-			const File& file,
-			const ResourceFormat& format = ResourceFormat::AUTO,
-			LoadOption options = LoadOption::DEFAULT
-		);
-
-		[[nodiscard]]
-		Resource* load(
-			Loader& loader,
-			const ResourcePath& path,
+			const FilePath& path,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
@@ -68,16 +65,16 @@ namespace Ghurund::Core {
 
 		Resource* loadInternal(
 			Loader& loader,
+			const FilePath& path,
 			const DirectoryPath& workingDir,
-			const ResourcePath& path,
 			const ResourceFormat& format,
 			LoadOption options
 		);
 
 		Resource* loadInternal(
 			Loader& loader,
-			const DirectoryPath& workingDir,
 			const Buffer& buffer,
+			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
 			LoadOption options
 		);
@@ -85,19 +82,30 @@ namespace Ghurund::Core {
 		void saveInternal(
 			Resource& resource,
 			const Loader& loader,
-			const DirectoryPath& workingDir,
 			Buffer& buffer,
+			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
 			SaveOption options
 		) const;
 
 	public:
-		inline static const wchar_t* const ENGINE_LIB_NAME = L"Ghurund";
-		inline static const wchar_t* const LIB_PROTOCOL = L"lib://";
+		inline static const WString ENGINE_LIB_NAME = L"Ghurund";
+		static const DirectoryPath ENGINE_LIB;
+		inline static const WString LIB_PROTOCOL = L"lib://";
 
 		ResourceManager();
 
 		~ResourceManager();
+
+		SharedPointer<Buffer> resolveResource(const FilePath& path, const DirectoryPath& workingDir) const;
+
+		static inline FilePath getAbsolutePath(const FilePath& path, const DirectoryPath& workingDir) {
+			return path.IsAbsolute ? path : (workingDir / path);
+		}
+
+		static inline DirectoryPath getLocalDir(const FilePath& path, const DirectoryPath& workingDir) {
+			return getAbsolutePath(path, workingDir).Directory;
+		}
 
 		inline LoaderCollection& getLoaders() {
 			return loaders;
@@ -110,11 +118,11 @@ namespace Ghurund::Core {
 			resourceCache.clear();
 		}
 
-		inline void removeFromCache(Resource* resource) {
-			const ResourcePath* path = resource->Path;
+		inline void removeFromCache(Resource* resource, DirectoryPath workingDir) {
+			const FilePath* path = resource->Path;
 			if (path) {
-				resources.remove(*path);
-				
+				const WString cacheKey = getCacheKey(*path, workingDir);
+				resources.remove(cacheKey);
 			}
 		}
 
@@ -122,37 +130,8 @@ namespace Ghurund::Core {
 
 		template<Derived<Resource> T>
 		[[nodiscard]]
-		T* load(const File& file, const ResourceFormat& format = ResourceFormat::AUTO, LoadOption options = LoadOption::DEFAULT) {
-			Loader* loader = getLoader(Ghurund::Core::getType<T>());
-			return (T*)load(*loader, file, format, options);
-		}
-
-		template<class T>
-		void loadAsync(
-			const File& file,
-			const ResourceFormat& format = ResourceFormat::AUTO,
-			std::function<void(T*)> onLoaded = nullptr,
-			std::function<void(std::exception)> onError = nullptr,
-			LoadOption options = LoadOption::DEFAULT
-		) {
-			IntrusivePointer<Task> task = makeIntrusive<Task>(file.Path, [this, file, format, onLoaded, onError, options] {
-				try {
-					T* resource = load<T>(file, format, options);
-					if (onLoaded)
-						onLoaded((T*)resource);
-				} catch (std::exception& e) {
-					if (onError)
-						onError(e);
-					throw e;
-				}
-				});
-			loadingThread.post(task.get());
-		}
-
-		template<Derived<Resource> T>
-		[[nodiscard]]
 		T* load(
-			const ResourcePath& path,
+			const FilePath& path,
 			const DirectoryPath& workingDir = DirectoryPath(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
@@ -163,7 +142,7 @@ namespace Ghurund::Core {
 
 		template<class T>
 		void loadAsync(
-			const ResourcePath& path,
+			const FilePath& path,
 			const DirectoryPath& workingDir = DirectoryPath(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			std::function<void(T*)> onLoaded = nullptr,
@@ -193,7 +172,7 @@ namespace Ghurund::Core {
 			LoadOption options = LoadOption::DEFAULT
 		) {
 			Loader* loader = getLoader(Ghurund::Core::getType<T>());
-			return (T*)loadInternal(*loader, workingDir, buffer, format, options);
+			return (T*)loadInternal(*loader, buffer, workingDir, format, options);
 		}
 
 		/*template<class T>
@@ -228,18 +207,19 @@ namespace Ghurund::Core {
 		) const {
 			const Loader* loader = getLoader(Ghurund::Core::getType<T>());
 			Buffer buffer;
-			saveInternal(resource, *loader, workingDir, buffer, format, options);
+			saveInternal(resource, *loader, buffer, workingDir, format, options);
 		}
 
 		template<Derived<Resource> T>
 		void save(
 			T& resource,
-			const ResourcePath& path,
+			const FilePath& path,
 			const DirectoryPath& workingDir = DirectoryPath(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			SaveOption options = SaveOption::DEFAULT
 		) const {
-			resource.Path = &path;
+			auto absolutePath = getAbsolutePath(path, workingDir);
+			resource.Path = &absolutePath;
 			const Loader* loader = getLoader(Ghurund::Core::getType<T>());
 			//Library* library = path.findLibrary(libraries);
 			//if (library) {
@@ -247,8 +227,8 @@ namespace Ghurund::Core {
 				//saveInternal(resource, *loader, workingDir, buffer, format, options);
 			//} else {
 				Buffer buffer;
-				saveInternal(resource, *loader, workingDir, buffer, format, options);
-				File file(FilePath(path.toString()));
+				saveInternal(resource, *loader, buffer, workingDir, format, options);
+				File file(*resource.Path);
 				file.write(buffer);
 			//}
 		}

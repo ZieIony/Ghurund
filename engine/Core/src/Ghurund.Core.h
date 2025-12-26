@@ -21,7 +21,7 @@ namespace Ghurund::Core {
 
         Logger::init(std::move(logOutput));
 #ifdef _DEBUG
-        auto text = std::format(_T("working dir: {}\n"), DirectoryPath(L".").AbsolutePath);
+        auto text = std::format(_T("working dir: {}\n"), DirectoryPath());
         Logger::log(LogType::INFO, text.c_str());
 #endif
 

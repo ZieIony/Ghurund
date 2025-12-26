@@ -1,12 +1,9 @@
 #pragma once
 
-#include "core/exception/Exceptions.h"
-#include "core/object/RefCountedObject.h"
-#include "core/io/DirectoryPath.h"
-#include "core/resource/ResourcePath.h"
-#include "LoadOption.h"
 #include "ResourceFormat.h"
-#include "SaveOption.h"
+
+#include "core/io/FilePath.h"
+#include "core/object/RefCountedObject.h"
 
 namespace Ghurund::Core {
 	struct DataSize {
@@ -32,7 +29,7 @@ namespace Ghurund::Core {
 #pragma endregion
 
 	private:
-		ResourcePath* path = nullptr;
+		FilePath* path = nullptr;
 
 	protected:
 		DataSize dataSize = {};
@@ -40,7 +37,7 @@ namespace Ghurund::Core {
 		Resource() {}
 
 		Resource(const Resource& other):
-			path(other.path ? ghnew ResourcePath(*other.path) : nullptr),
+			path(other.path ? ghnew FilePath(*other.path) : nullptr),
 			dataSize(other.dataSize) {}
 
 		~Resource();
@@ -54,13 +51,13 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = isValid)) bool Valid;
 
-		const ResourcePath* getPath() const {
+		const FilePath* getPath() const {
 			return path;
 		}
 
-		void setPath(const ResourcePath* path);
+		void setPath(const FilePath* path);
 
-		__declspec(property(get = getPath, put = setPath)) ResourcePath* Path;
+		__declspec(property(get = getPath, put = setPath)) FilePath* Path;
 		/*
 		const DataSize& getSize() const {
 			return dataSize;

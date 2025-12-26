@@ -40,8 +40,8 @@ namespace Demo {
             auto graphicsFeature = Features.get<DxGraphicsFeature>();
 
             shaderCompiler = makeShared<DxShaderCompiler>(graphicsFeature->Graphics);
-            shaderLoader = makeIntrusive<DxShaderLoader>(shaderCompiler.ref());
-            shaderLoader->includeDirs.add(DirectoryPath(L"./resources/shaders/DirectX/"));
+            shaderLoader = makeIntrusive<DxShaderLoader>(ResourceManager, shaderCompiler.ref());
+            shaderLoader->includeDirs.add(DirectoryPath() / DirectoryPath(L"./resources/shaders/DirectX/"));
             ResourceManager.Loaders.set<DxShader>(shaderLoader.ref());
 
             fontLoader = makeIntrusive<FontLoader>();

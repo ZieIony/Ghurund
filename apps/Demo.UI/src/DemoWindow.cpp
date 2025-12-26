@@ -51,9 +51,9 @@ namespace Demo {
 			Color(0xff0000ff)
 			});
 
-		auto pasteImage = IntrusivePointer<Image>(Application.ResourceManager.load<Image>(ResourcePath(FilePath(_T("resources/icons/paste 18.png")))));
+		auto pasteImage = IntrusivePointer<Image>(Application.ResourceManager.load<Image>(FilePath(_T("resources/icons/paste 18.png"))));
 		auto pasteIcon = IntrusivePointer<ITexture>(textureFactory.makeTexture(pasteImage.ref()));
-		auto buttonImage = IntrusivePointer<Image>(Application.ResourceManager.load<Image>(ResourcePath(FilePath(_T("resources/button.png")))));
+		auto buttonImage = IntrusivePointer<Image>(Application.ResourceManager.load<Image>(FilePath(_T("resources/button.png"))));
 		auto buttonIcon = IntrusivePointer<ITexture>(textureFactory.makeTexture(buttonImage.ref()));
 
 		Toolbar* toolbar = (Toolbar*)demoLayout->find("toolbar");

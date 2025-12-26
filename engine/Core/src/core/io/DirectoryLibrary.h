@@ -2,7 +2,8 @@
 
 #include "DirectoryPath.h"
 #include "Library.h"
-#include "core/resource/ResourcePath.h"
+
+#include "core/io/File.h"
 
 namespace Ghurund::Core {
     /*
@@ -25,22 +26,16 @@ namespace Ghurund::Core {
             return File(this->path / FilePath(path)).Exists;
         }
 
-        virtual ResourcePath getResourcePath(const WString& path) const override {
-            return ResourcePath(this->path / FilePath(path));
-        }
-
-        virtual ResourcePath getResourcePath(const size_t index) const override {
-            return ResourcePath(path.Files[index]);
-        }
-
-        virtual SharedPointer<Buffer> get(const WString& path) override {
+        virtual SharedPointer<Buffer> get(const WString& path) const override {
             File file(this->path / FilePath(path));
+            if (!file.Exists)
+                throw InvalidParamException();
             auto buffer = SharedPointer(ghnew Buffer());
             file.read(*buffer.get());
             return buffer;
         }
 
-        virtual SharedPointer<Buffer> get(const size_t index) override {
+        virtual SharedPointer<Buffer> get(const size_t index) const override {
             File file(path.Files[index]);
             auto buffer = SharedPointer(ghnew Buffer());
             file.read(*buffer.get());

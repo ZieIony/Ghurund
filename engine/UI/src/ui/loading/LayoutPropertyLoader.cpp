@@ -10,13 +10,12 @@
 namespace Ghurund::UI {
 	void LayoutPropertyLoader::loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const {
 		AString s = text;
-		s.replace(L'\\', L'/');
 		std::unique_ptr<LayoutAttr> attr;
 		if (s.startsWith(THEME_LAYOUT)) {
 			LayoutKey layoutKey = s.substring(lengthOf(THEME_LAYOUT));
 			attr.reset(ghnew LayoutRef(layoutKey));
 		} else {
-			ResourcePath path = ResourcePath::parse(convertText<char, wchar_t>(s));
+			FilePath path = FilePath(convertText<char, wchar_t>(s));
 			Control* control = resourceManager.load<Control>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE);
 			attr.reset(ghnew LayoutValue(control));
 			control->release();

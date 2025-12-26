@@ -24,7 +24,7 @@ namespace Ghurund::Core {
     }
 
     void FileWatcher::addFile(const FilePath& path, std::function<void(const FilePath& path, const FileChange&)> fileChangedHandler) {
-        WString dir = path.Directory;
+        WString dir = path.Directory.toString();
 
         if (!watches.contains(dir)) {
             DirectoryWatch* watch = ghnew DirectoryWatch(dir);
@@ -39,7 +39,7 @@ namespace Ghurund::Core {
     }
 
     void FileWatcher::removeFile(const FilePath& path) {
-        WString dir = path.Directory;
+        WString dir = path.Directory.toString();
 
         if (!watches.contains(dir))
             return;

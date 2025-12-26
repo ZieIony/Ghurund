@@ -28,7 +28,7 @@ namespace Ghurund::Engine {
 
         virtual ITexture* makeChecker() const = 0;
 
-		ITexture* makeFromImage(const ResourcePath& imagePath) const {
+		ITexture* makeFromImage(const FilePath& imagePath) const {
 			Ghurund::Core::Image* image = resourceManager.load<Ghurund::Core::Image>(imagePath, DirectoryPath());
 			if (image == nullptr)
 				return nullptr;

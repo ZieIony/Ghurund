@@ -37,7 +37,7 @@ public:
         context = ghnew TestUIContext(*window, *textMeshFactory, *textureFactory);
         fontLoader = ghnew FontLoader();
         resourceManager.Loaders.set<Font>(*fontLoader);
-        ResourcePath path = Ghurund::Core::FilePath(L"../../resources/fonts\\lato_medium.ttf");
+        FilePath path = Ghurund::Core::FilePath(L"../../resources/fonts\\lato_medium.ttf");
         latoMediumFont = Ghurund::Core::IntrusivePointer<Font>(resourceManager.load<Font>(path, DirectoryPath()));
     }
 

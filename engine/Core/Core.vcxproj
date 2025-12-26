@@ -247,7 +247,6 @@
     <ClInclude Include="src\core\resource\ResourceCollection.h" />
     <ClInclude Include="src\core\resource\ResourceFormat.h" />
     <ClInclude Include="src\core\resource\ResourceManager.h" />
-    <ClInclude Include="src\core\resource\ResourcePath.h" />
     <ClInclude Include="src\core\resource\SaveOption.h" />
     <ClInclude Include="src\core\resource\TextLoader.h" />
     <ClInclude Include="src\core\resource\TextResource.h" />
@@ -316,7 +315,6 @@
     <ClCompile Include="src\core\resource\ResourceCollection.cpp" />
     <ClCompile Include="src\core\resource\ResourceFormat.cpp" />
     <ClCompile Include="src\core\resource\ResourceManager.cpp" />
-    <ClCompile Include="src\core\resource\ResourcePath.cpp" />
     <ClCompile Include="src\core\state\State.cpp" />
     <ClCompile Include="src\core\string\GenericString.cpp" />
     <ClCompile Include="src\core\threading\FunctionQueue.cpp" />
@@ -334,6 +332,9 @@
     <ClCompile Include="src\ghcpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="Engine.Core.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

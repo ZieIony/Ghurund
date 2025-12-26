@@ -1,6 +1,8 @@
 #include "ghcpch.h"
 #include "Settings.h"
 
+#include "core/io/File.h"
+
 #include <tinyxml2.h>
 
 namespace Ghurund::Core {

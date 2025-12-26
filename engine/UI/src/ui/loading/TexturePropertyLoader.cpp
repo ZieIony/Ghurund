@@ -13,7 +13,7 @@ namespace Ghurund::UI {
 			TextureKey imageKey = s.substring(lengthOf(THEME_TEXTURE));
 			attr.reset(ghnew TextureRef(imageKey));
 		} else {
-			ResourcePath path = FilePath(convertText<char, wchar_t>(s));
+			FilePath path = FilePath(convertText<char, wchar_t>(s));
 			auto image = IntrusivePointer<Image>(resourceManager.load<Image>(path, workingDir));
 			ITexture* texture = textureFactory.makeTexture(image.ref());
 			attr.reset(ghnew TextureValue(texture));

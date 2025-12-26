@@ -2,8 +2,8 @@
 
 #include "Fence.h"
 
+#include "core/object/NotNull.h"
 #include "core/object/RefCountedObject.h"
-#include "core/resource/Resource.h"
 
 namespace Ghurund::Engine::DirectX {
     class DxGraphics;

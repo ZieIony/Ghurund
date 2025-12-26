@@ -5,8 +5,6 @@
 #include "core/string/String.h"
 
 namespace Ghurund::Core {
-    class ResourcePath;
-
     class Library {
     private:
         WString name;
@@ -24,13 +22,9 @@ namespace Ghurund::Core {
 
         virtual bool contains(const WString& path) const = 0;
 
-        virtual ResourcePath getResourcePath(const WString& path) const = 0;
+        virtual SharedPointer<Buffer> get(const WString& path) const = 0;
 
-        virtual ResourcePath getResourcePath(const size_t index) const = 0;
-
-        virtual SharedPointer<Buffer> get(const WString& path) = 0;
-
-        virtual SharedPointer<Buffer> get(const size_t index) = 0;
+        virtual SharedPointer<Buffer> get(const size_t index) const = 0;
 
         virtual size_t getSize() const = 0;
 

@@ -69,7 +69,7 @@ float4 pixelMain(DefaultPixel input): SV_Target{
             graphics.init();
 
             DxShaderCompiler compiler(graphics);
-            auto loader = makeIntrusive<DxShaderLoader>(compiler);
+            auto loader = makeIntrusive<DxShaderLoader>(resourceManager, compiler);
             Buffer data;
             MemoryInputStream stream(data.Data, data.Size);
 
@@ -83,7 +83,7 @@ float4 pixelMain(DefaultPixel input): SV_Target{
             graphics.init();
 
             DxShaderCompiler compiler(graphics);
-            IntrusivePointer<DxShaderLoader> loader(ghnew DxShaderLoader(compiler));
+            auto loader = makeIntrusive<DxShaderLoader>(resourceManager, compiler);
             MemoryInputStream stream(testShaderSource.Data, testShaderSource.Size);
             IntrusivePointer<DxShader> shader((DxShader*)loader->load(stream, DirectoryPath()));
   

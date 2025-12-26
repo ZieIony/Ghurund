@@ -36,11 +36,10 @@ namespace Ghurund::Engine::DirectX {
 		throw NotImplementedException();
 	}
 
-	DxShader* DxShaderLoader::loadHlsl(MemoryInputStream& stream) {
+	DxShader* DxShaderLoader::loadHlsl(MemoryInputStream& stream, const DirectoryPath& workingDir) {
 		AString sourceCode((const char*)stream.Data, stream.Size);
 
-		DirectoryPath workingDir;
-		CompilerInclude include(workingDir, includeDirs);
+		CompilerInclude include(resourceManager, workingDir, includeDirs);
 		List<SharedPointer<DxShaderProgram>> programs;
 		for (const DxShaderType& shaderType : DxShaderType::VALUES) {
 			auto program = SharedPointer<DxShaderProgram>(compiler.compile(sourceCode, shaderType, &include));
@@ -80,7 +79,7 @@ namespace Ghurund::Engine::DirectX {
 		LoadOption options
 	) {
 		try {
-			return loadHlsl(stream);
+			return loadHlsl(stream, workingDir);
 		} catch (...) {
 			throw InvalidFormatException();
 		}

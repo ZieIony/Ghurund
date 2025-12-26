@@ -9,15 +9,16 @@ namespace Ghurund::Engine::DirectX {
 
 	class DxShaderLoader:public Loader {
 	private:
+        ResourceManager& resourceManager;
         DxShaderCompiler& compiler;
 
 		DxShader* loadShd(MemoryInputStream& stream);
-		DxShader* loadHlsl(MemoryInputStream& stream);
+		DxShader* loadHlsl(MemoryInputStream& stream, const DirectoryPath& workingDir);
 
     public:
         List<DirectoryPath> includeDirs;
 
-        DxShaderLoader(DxShaderCompiler& compiler):compiler(compiler) {}
+        DxShaderLoader(ResourceManager& resourceManager, DxShaderCompiler& compiler):resourceManager(resourceManager), compiler(compiler) {}
 
         virtual Resource* loadInternal(
             MemoryInputStream& stream,

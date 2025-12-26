@@ -11,7 +11,7 @@ namespace Ghurund::Core {
 		FilePath path;
 
 	public:
-		File(const FilePath& path):path(path.AbsolutePath) {}
+		File(const FilePath& path):path(path) {}
 
 		File(const File& other):path(path) {}
 
@@ -37,8 +37,8 @@ namespace Ghurund::Core {
 
 		const FilePath& getPath() const { return path; }
 
-		void setPath(const FilePath& val) {
-			this->path = val.AbsolutePath;
+		void setPath(const FilePath& path) {
+			this->path = path;
 		}
 
 		__declspec(property(get = getPath, put = setPath)) FilePath& Path;

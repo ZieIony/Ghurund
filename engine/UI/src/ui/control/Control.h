@@ -394,6 +394,10 @@ namespace Ghurund::UI {
 			}
 		}
 
+		virtual Control* clone() const override {
+			return ghnew Control(*this);
+		}
+
 #pragma region formats
 	protected:
 		virtual const Array<ResourceFormat>& getFormatsImpl() const override {

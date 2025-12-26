@@ -6,8 +6,7 @@
 namespace Ghurund::UI {
 	void MaterialPropertyLoader::loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const {
 		AString s = text;
-		s.replace(L'\\', L'/');
-		ResourcePath path = ResourcePath::parse(convertText<char, wchar_t>(s));
+		FilePath path = FilePath(convertText<char, wchar_t>(s));
 		IntrusivePointer<Material> material = IntrusivePointer<Material>(resourceManager.load<Material>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE));
 		Material* m = material.get();
 		property.setRaw(&obj, &m);

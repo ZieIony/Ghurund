@@ -9,6 +9,15 @@
 	<Type Name="Ghurund::Core::Path">
 		<DisplayString>{path}</DisplayString>
 	</Type>
+	<Type Name="Ghurund::Core::Array&lt;*&gt;">
+		<DisplayString>{{size={size} v={v}}}</DisplayString>
+		<Expand>
+			<ArrayItems>
+				<Size>size</Size>
+				<ValuePointer>v</ValuePointer>
+			</ArrayItems>
+		</Expand>
+	</Type>
 	<Type Name="Ghurund::Core::List&lt;*&gt;">
 		<DisplayString>{{size={size} capacity={capacity}}}</DisplayString>
 		<Expand>

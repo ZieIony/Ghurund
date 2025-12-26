@@ -1,6 +1,5 @@
 #pragma once
 #include "core/io/Library.h"
-#include "core/resource/ResourcePath.h"
 
 namespace UnitTest {
 	using namespace Ghurund::Core;
@@ -18,22 +17,12 @@ namespace UnitTest {
 			return true;
 		}
 
-		virtual ResourcePath getResourcePath(const WString& path) const override {
-			getResourcePathCalls++;
-			return FilePath(L"testpath");
-		}
-
-		virtual ResourcePath getResourcePath(const size_t index) const override {
-			getResourcePathCalls++;
-			return FilePath(L"testpath");
-		}
-
-		virtual SharedPointer<Buffer> get(const WString& path)  override {
+		virtual SharedPointer<Buffer> get(const WString& path) const override {
 			getCalls++;
 			return buffer;
 		}
 
-		virtual SharedPointer<Buffer> get(const size_t index)  override {
+		virtual SharedPointer<Buffer> get(const size_t index) const override {
 			getCalls++;
 			return buffer;
 		}

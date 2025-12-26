@@ -3,29 +3,29 @@
 
 #include "core/logging/Formatter.h"
 
-#include <Windows.h>
-#include <pathcch.h>
+#include <regex>
 
 namespace Ghurund::Core {
     DirectoryPath FilePath::getDirectory() const {
-        wchar_t* pathCopy = copyStr(path.Data);
-        PathCchRemoveFileSpec(pathCopy, path.Size);
-        DirectoryPath dir = WString(pathCopy);
-        delete[] pathCopy;
-        return dir;
+        return DirectoryPath(path.substring(0, path.findLast(Path::SEPARATOR)));
     }
 
     FilePath FilePath::getRelativePath(const DirectoryPath& dir) const {
-        wchar_t relativePathStr[MAX_PATH];
-        BOOL success = PathRelativePathToW(relativePathStr, dir.toString().getData(), FILE_ATTRIBUTE_DIRECTORY, path.getData(), FILE_ATTRIBUTE_NORMAL);
-        if (success)
-            return FilePath(relativePathStr);
+        if (path.startsWith(dir.toString()))
+            return FilePath(path.substring(0, dir.toString().Length));
         return *this;
     }
 
-    FilePath FilePath::getAbsolutePath() const {
+    bool FilePath::isAbsolute() const {
+        std::wregex regex(L"lib://.*|.:.*");
+        std::wsmatch m;
+        std::wstring s = path.Data;
+        return std::regex_match(s, m, regex);
+    }
+
+    /*FilePath FilePath::getAbsolutePath() const {
         wchar_t fullPath[MAX_PATH];
         GetFullPathNameW(path.Data, MAX_PATH, fullPath, nullptr);
         return FilePath(fullPath);
-    }
+    }*/
 }

@@ -61,7 +61,7 @@ namespace Ghurund::Core {
         size_t findFile(const FilePath& path) const {
             for (size_t i = 0; i < libs.Size;i++) {
                 Library* lib = libs[i];
-                if (lib->contains(path))
+                if (lib->contains(path.toString()))
                     return i;
             }
             return libs.Size;

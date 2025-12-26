@@ -33,9 +33,9 @@ public:
         imageLoader.set(ghnew ImageLoader());
         resourceManager.Loaders.set<Font>(*fontLoader.get());
         resourceManager.Loaders.set<Image>(*imageLoader.get());
-        resourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"../../resources")));
+        resourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(ResourceManager::ENGINE_LIB_NAME, DirectoryPath() / DirectoryPath(L"../../../resources")));
 
-        auto latoMediumPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/fonts\\lato_bold.ttf");
+		auto latoMediumPath = ResourceManager::ENGINE_LIB / FilePath(L"/fonts\\lato_bold.ttf");
         IntrusivePointer<Font> font = makeIntrusive<Font>();
         Ghurund::Core::IntrusivePointer<Ghurund::UI::Font> latoMediumFont(resourceManager.load<Ghurund::UI::Font>(latoMediumPath, DirectoryPath()));
         //resourceManager.save(*latoMediumFont.get()->Atlas, FilePath(_T("../../test.bmp")));

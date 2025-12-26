@@ -1,12 +1,14 @@
 #pragma once
 
+#include "GlyphMetrics.h"
+
 #include "core/collection/Map.h"
+#include "core/image/Image.h"
 #include "core/math/Size.h"
 #include "core/object/IntrusivePointer.h"
-#include "core/resource/Resource.h"
+#include "core/object/NotNull.h"
 #include "core/reflection/Type.h"
-#include "core/image/Image.h"
-#include "GlyphMetrics.h"
+#include "core/resource/Resource.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;

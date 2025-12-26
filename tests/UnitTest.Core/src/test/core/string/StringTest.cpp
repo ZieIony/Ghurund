@@ -23,12 +23,22 @@ public:
 			WString str = L"test str";
 			Assert::AreEqual(str.Size, (size_t)9);
 			Assert::AreEqual(str.Length, (size_t)8);
+		}
+	}
+
+	TEST_METHOD(String_add){
+		MemoryGuard guard;
+		{
+			WString str = L"test str";
 
 			str.add(L"add");
 			Assert::AreEqual(str.getData(), L"test stradd");
 
 			str.add('a');
 			Assert::AreEqual(str.getData(), L"test stradda");
+
+			str.add(WString(L"test"));
+			Assert::AreEqual(str.getData(), L"test straddatest");
 		}
 	}
 
@@ -113,17 +123,41 @@ public:
 	TEST_METHOD(String_findLastChar) {
 		MemoryGuard guard;
 		{
+			String str = _T("Test string");
+			Assert::AreEqual(0ull, str.findLast(_T('T')));
+			Assert::AreEqual(6ull, str.findLast(_T('t')));
+			Assert::AreEqual(10ull, str.findLast(_T('g')));
+			Assert::AreEqual(11ull, str.findLast(_T('f')));
+			AString astr = "Test string";
+			Assert::AreEqual(0ull, astr.findLast('T'));
+			Assert::AreEqual(6ull, astr.findLast('t'));
+			Assert::AreEqual(10ull, astr.findLast('g'));
+			Assert::AreEqual(11ull, astr.findLast('f'));
+			WString wstr = L"Test string";
+			Assert::AreEqual(0ull, wstr.findLast(L'T'));
+			Assert::AreEqual(6ull, wstr.findLast(L't'));
+			Assert::AreEqual(10ull, wstr.findLast(L'g'));
+			Assert::AreEqual(11ull, wstr.findLast(L'f'));
+		}
+	}
+
+	TEST_METHOD(String_findLastCharStr) {
+		MemoryGuard guard;
+		{
 			String str = _T("test string");
 			Assert::AreEqual(0ull, str.findLast(_T("tes")));
 			Assert::AreEqual(6ull, str.findLast(_T("t")));
+			Assert::AreEqual(8ull, str.findLast(_T("ing")));
 			Assert::AreEqual(11ull, str.findLast(_T("float")));
 			AString astr = "test string";
 			Assert::AreEqual(0ull, astr.findLast("tes"));
 			Assert::AreEqual(6ull, astr.findLast("t"));
+			Assert::AreEqual(8ull, astr.findLast("ing"));
 			Assert::AreEqual(11ull, astr.findLast("float"));
 			WString wstr = L"test string";
 			Assert::AreEqual(0ull, wstr.findLast(L"tes"));
 			Assert::AreEqual(6ull, wstr.findLast(L"t"));
+			Assert::AreEqual(8ull, wstr.findLast(L"ing"));
 			Assert::AreEqual(11ull, wstr.findLast(L"float"));
 		}
 	}
@@ -134,14 +168,17 @@ public:
 			String str = _T("test string");
 			Assert::AreEqual(0ull, str.findLast(String(_T("tes"))));
 			Assert::AreEqual(6ull, str.findLast(String(_T("t"))));
+			Assert::AreEqual(8ull, str.findLast(String(_T("ing"))));
 			Assert::AreEqual(11ull, str.findLast(String(_T("float"))));
 			AString astr = "test string";
 			Assert::AreEqual(0ull, astr.findLast(AString("tes")));
 			Assert::AreEqual(6ull, astr.findLast(AString("t")));
+			Assert::AreEqual(8ull, astr.findLast(AString("ing")));
 			Assert::AreEqual(11ull, astr.findLast(AString("float")));
 			WString wstr = L"test string";
 			Assert::AreEqual(0ull, wstr.findLast(WString(L"tes")));
 			Assert::AreEqual(6ull, wstr.findLast(WString(L"t")));
+			Assert::AreEqual(8ull, wstr.findLast(WString(L"ing")));
 			Assert::AreEqual(11ull, wstr.findLast(WString(L"float")));
 		}
 	}
@@ -233,6 +270,52 @@ public:
 			WString wstr = L"test string";
 			Assert::IsTrue(wstr.endsWith(WString(L"ing")));
 			Assert::IsFalse(wstr.endsWith(WString(L"est")));
+		}
+	}
+
+	TEST_METHOD(String_removeAllCharStr) {
+		MemoryGuard guard;
+		{
+			String str = _T("test string");
+			str.removeAll(_T("ing"));
+			Assert::AreEqual(_T("test str"), str.Data);
+			str.removeAll(_T("t"));
+			Assert::AreEqual(_T("es sr"), str.Data);
+
+			AString astr = "test string";
+			astr.removeAll("ing");
+			Assert::AreEqual("test str", astr.Data);
+			astr.removeAll("t");
+			Assert::AreEqual("es sr", astr.Data);
+
+			WString wstr = L"test string";
+			wstr.removeAll(L"ing");
+			Assert::AreEqual(L"test str", wstr.Data);
+			wstr.removeAll(L"t");
+			Assert::AreEqual(L"es sr", wstr.Data);
+		}
+	}
+
+	TEST_METHOD(String_removeAllString) {
+		MemoryGuard guard;
+		{
+			String str = _T("test string");
+			str.removeAll(String(_T("ing")));
+			Assert::AreEqual(_T("test str"), str.Data);
+			str.removeAll(String(_T("t")));
+			Assert::AreEqual(_T("es sr"), str.Data);
+
+			AString astr = "test string";
+			astr.removeAll(AString("ing"));
+			Assert::AreEqual("test str", astr.Data);
+			astr.removeAll(AString("t"));
+			Assert::AreEqual("es sr", astr.Data);
+
+			WString wstr = L"test string";
+			wstr.removeAll(WString(L"ing"));
+			Assert::AreEqual(L"test str", wstr.Data);
+			wstr.removeAll(WString(L"t"));
+			Assert::AreEqual(L"es sr", wstr.Data);
 		}
 	}
 

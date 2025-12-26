@@ -91,7 +91,8 @@ namespace Ghurund::UI {
 
 	TextStyle* TextStyleLoader::loadFromBin(MemoryInputStream& stream, const DirectoryPath& workingDir) const {
 		auto textStyle = makeIntrusive<TextStyle>();
-		IntrusivePointer<FontAtlas> atlas = IntrusivePointer<FontAtlas>(fontAtlasLoader.loadFromBin(stream, workingDir));
+		FilePath path = FilePath(stream.readUnicode());
+		IntrusivePointer<FontAtlas> atlas = IntrusivePointer<FontAtlas>(resourceManager.load<FontAtlas>(path, workingDir));
 		auto kerning = loadKerning(stream);
 		FontMetrics fontMetrics = *(FontMetrics*)stream.readBytes(sizeof(FontMetrics));
 		textStyle->init(fontMetrics, atlas.ref(), kerning);
@@ -118,7 +119,26 @@ namespace Ghurund::UI {
 	}
 
 	void TextStyleLoader::saveToBin(TextStyle& textStyle, MemoryOutputStream& stream, const DirectoryPath& workingDir) const {
-		fontAtlasLoader.saveToBin(*textStyle.Atlas, stream, workingDir);
+		DirectoryPath localDir = [&] {
+			if (textStyle.Path) {
+				return ResourceManager::getLocalDir(*textStyle.Path, workingDir);
+			} else {
+				return workingDir;
+			}
+		}();
+		FilePath path = [&] {
+			if (!textStyle.Atlas->Path && textStyle.Path) {
+				auto pathStr = std::format(L"{}{}", textStyle.Path->FileName.substring(0, textStyle.Path->FileName.findLast(L'.')).Data, L"_atlas.bin");
+				return FilePath(pathStr.c_str());
+			} else if (textStyle.Atlas->Path) {
+				return *textStyle.Atlas->Path;
+			} else {
+				Logger::log(LogType::ERR0R, _T("Font atlas could not be saved, because its path is null.\n"));
+				throw InvalidDataException();
+			}
+		}();
+		stream.writeUnicode(path.toString());
+		resourceManager.save(*textStyle.Atlas, path, localDir, FontAtlas::FORMAT_BIN);
 		saveKerning(textStyle.Kerning, stream);
 		stream.writeBytes(&textStyle.FontMetrics, sizeof(FontMetrics));
 	}
@@ -129,7 +149,15 @@ namespace Ghurund::UI {
 		const ResourceFormat& format,
 		LoadOption options
 	) {
-		if (format == ResourceFormat::AUTO || format == TextStyle::FORMAT_XML) {
+		if (format == ResourceFormat::AUTO) {
+			tinyxml2::XMLDocument doc;
+			auto error = doc.Parse(AString((const char*)stream.Data, stream.Size).Data);
+			if (error == tinyxml2::XML_SUCCESS) {
+				return loadFromXml(*doc.RootElement(), workingDir);
+			} else {
+				return loadFromBin(stream, workingDir);
+			}
+		} else if (format == TextStyle::FORMAT_XML) {
 			tinyxml2::XMLDocument doc;
 			doc.Parse(AString((const char*)stream.Data, stream.Size).Data);
 			return loadFromXml(*doc.RootElement(), workingDir);

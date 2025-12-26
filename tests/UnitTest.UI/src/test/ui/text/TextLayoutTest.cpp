@@ -7,6 +7,8 @@
 #include "core/window/SystemWindow.h"
 #include "ui/text/TextLayout.h"
 #include "ui/font/FontLoader.h"
+#include <ui/font/TextStyleLoader.h>
+#include <core/image/ImageLoader.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -18,18 +20,25 @@ namespace UnitTest {
     TEST_CLASS(TextLayoutTest) {
 private:
     ResourceManager resourceManager;
-    FontLoader* fontLoader;
-    Ghurund::Core::IntrusivePointer<Font> latoMediumFont;
+    IntrusivePointer<ImageLoader> imageLoader;
+    IntrusivePointer<FontLoader> fontLoader;
+    IntrusivePointer<TextStyleLoader> textStyleLoader;
+    IntrusivePointer<FontAtlasLoader> fontAtlasLoader;
     Ghurund::Core::IntrusivePointer<TextStyle> textStyle;
 
 public:
     TextLayoutTest() {
-        fontLoader = ghnew FontLoader();
-        resourceManager.Loaders.set<Font>(*fontLoader);
-        ResourcePath path = Ghurund::Core::FilePath(L"../../resources/fonts\\lato_medium.ttf");
-        latoMediumFont = Ghurund::Core::IntrusivePointer<Font>(resourceManager.load<Font>(path, DirectoryPath()));
-        textStyle = makeIntrusive<TextStyle>();
-        textStyle->init(latoMediumFont.ref(), 12);
+        imageLoader = makeIntrusive<ImageLoader>();
+        resourceManager.Loaders.set<Image>(imageLoader.ref());
+        fontLoader = makeIntrusive<FontLoader>();
+        resourceManager.Loaders.set<Font>(fontLoader.ref());
+        fontAtlasLoader = makeIntrusive<FontAtlasLoader>(resourceManager);
+        resourceManager.Loaders.set<FontAtlas>(fontAtlasLoader.ref());
+        textStyleLoader = makeIntrusive<TextStyleLoader>(resourceManager, fontAtlasLoader.ref());
+        resourceManager.Loaders.set<TextStyle>(textStyleLoader.ref());
+
+        FilePath path = Ghurund::Core::FilePath(L"../../resources/textStyles\\lato_medium_12.bin");
+        textStyle = Ghurund::Core::IntrusivePointer<TextStyle>(resourceManager.load<TextStyle>(path, DirectoryPath()));
     }
 
     ~TextLayoutTest() {
@@ -75,7 +84,7 @@ public:
         Assert::AreEqual(1ull, textLayout->Lines[1].Spans.Size);
         Assert::AreEqual(0ull, textLayout->Lines[1].Spans[0].start);
         Assert::AreEqual(1ull, textLayout->Lines[1].Spans[0].finish);
-        Assert::AreEqual(textLayout->Lines[0].Height, (uint16_t)textLayout->Lines[1].Characters[0].pos.y);
+		Assert::AreEqual((uint16_t)(textLayout->Lines[0].Height + textLayout->Lines[1].Ascent), (uint16_t)textLayout->Lines[1].Characters[0].pos.y);
         Assert::AreEqual(textStyle->FontMetrics.height, textLayout->Lines[0].Height);
         Assert::AreEqual(textStyle->FontMetrics.height, textLayout->Lines[1].Height);
         Assert::IsTrue(textLayout->validate());
@@ -106,8 +115,8 @@ public:
             Assert::AreEqual(1ull, textLayout->Lines[i].Spans[0].finish);
             Assert::AreEqual(textStyle->FontMetrics.height, textLayout->Lines[i].Height);
         }
-        Assert::AreEqual(textLayout->Lines[0].Height, (uint16_t)textLayout->Lines[1].Characters[0].pos.y);
-		Assert::AreEqual((uint16_t)(textLayout->Lines[0].Height + textLayout->Lines[1].Height), (uint16_t)textLayout->Lines[2].Characters[0].pos.y);
+        Assert::AreEqual((uint16_t)(textLayout->Lines[0].Height + textLayout->Lines[1].Ascent), (uint16_t)textLayout->Lines[1].Characters[0].pos.y);
+		Assert::AreEqual((uint16_t)(textLayout->Lines[0].Height + textLayout->Lines[1].Height + textLayout->Lines[2].Ascent), (uint16_t)textLayout->Lines[2].Characters[0].pos.y);
         Assert::IsTrue(textLayout->validate());
     }
 
