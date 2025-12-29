@@ -16,7 +16,8 @@ namespace Ghurund::UI {
         Ghurund::Core::IntSize size, preferredSize;
         Ghurund::UI::TextDocument* document = nullptr;
         List<TextLine> lines;
-        List<DrawPacket> textMeshes;
+        List<IntrusivePointer<Resource>> textMeshes;
+        IntrusivePointer<Material> textMaterial;
 
         bool valid = false;
 

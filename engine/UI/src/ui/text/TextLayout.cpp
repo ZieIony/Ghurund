@@ -83,18 +83,15 @@ namespace Ghurund::UI {
 		NotNull<Material> material
 	) {
 		textMeshes.clear();
+		material->addReference();
+		this->textMaterial.set(material.get());
 		for (auto& line : lines) {
 			for (auto& span : line.Spans) {
 				auto mesh = IntrusivePointer<Resource>(textMeshFactory.makeMesh(line.Characters, span));
-				material->addReference();
-				XMFLOAT3 pos = { line.Characters[0].pos.x, line.Characters[0].pos.y, 0 };
+				// TODO: support multiple materials
 				TextureParameter* colorTextureParameter = (TextureParameter*)material->Parameters.get("colorTexture");
 				colorTextureParameter->Value = IntrusivePointer<ITexture>(textureFactory.makeTexture(*span.textStyle->Atlas->Image)).get();
-				textMeshes.add(DrawPacket{
-					mesh,
-					IntrusivePointer<Material>(&material),
-					pos
-				});
+				textMeshes.add(mesh);
 			}
 		}
 	}
@@ -134,13 +131,14 @@ namespace Ghurund::UI {
 	void TextLayout::draw(RenderGroup& group, const XMFLOAT2& position) {
 		if (!valid)
 			refresh();
-		for (auto& packet : textMeshes) {
-			Float2Parameter* positionParameter = (Float2Parameter*)packet.material->Parameters.get("position");
-			positionParameter->Value = { packet.position.x + position.x, packet.position.y + position.y };
+		auto material = IntrusivePointer<Material>(textMaterial->clone());
+		Float2Parameter* positionParameter = (Float2Parameter*)material->Parameters.get("position");
+		positionParameter->Value = position;
+		for (auto& mesh : textMeshes) {
 			group.objects.add({
-				packet.mesh,
-				packet.material,
-				{ packet.position.x + position.x, packet.position.y + position.y, 0 }
+				mesh,
+				material,
+				{ position.x, position.y, 0 }
 			});
 		}
 	}

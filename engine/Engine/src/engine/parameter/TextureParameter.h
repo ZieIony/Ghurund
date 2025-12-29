@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Parameter.h"
+
 #include "engine/graphics/texture/ITexture.h"
+#include "engine/graphics/shader/TextureInput.h"
 
 namespace Ghurund::Engine {
     class TextureParameter:public Parameter {
@@ -24,6 +26,12 @@ namespace Ghurund::Engine {
 
     private:
         const ITexture* value;
+
+    protected:
+        TextureParameter(const TextureParameter& other):Parameter(other), value(other.value) {
+            if (value)
+                value->addReference();
+        }
 
     public:
         TextureParameter(const AString& constantName):Parameter(constantName), value(nullptr) {}
@@ -57,9 +65,12 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getValue, put = setValue)) const ITexture* Value;
 
-        virtual size_t getSize() const override {
-            // TODO: this class shouldn't have this method
-            throw NotSupportedException();
+        inline void apply(TextureInput& input) {
+            input.Value = value;
+        }
+
+        virtual TextureParameter* clone() const {
+            return ghnew TextureParameter(*this);
         }
     };
 }

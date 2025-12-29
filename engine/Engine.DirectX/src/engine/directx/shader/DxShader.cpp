@@ -4,6 +4,10 @@
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 #include "engine/directx/texture/DxTexture.h"
+#include "engine/parameter/ValueParameter.h"
+#include "variables/ConstantBuffer.h"
+#include "variables/Sampler.h"
+#include "variables/TextureConstant.h"
 
 namespace Ghurund::Engine::DirectX {
 	const Ghurund::Core::Type& DxShader::GET_TYPE() {
@@ -11,27 +15,6 @@ namespace Ghurund::Engine::DirectX {
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;
-	}
-
-	bool DxShader::set(CommandList& commandList, ParameterManager& parameterManager) {
-		bool rsChanged = commandList.setGraphicsRootSignature(rootSignature);
-		bool psChanged = commandList.setPipelineState(pipelineState);
-
-		for (size_t i = 0; i < constantBuffers.Size; i++)
-			constantBuffers[i]->set(commandList, parameterManager);
-
-		for (size_t i = 0; i < textures.Size; i++) {
-			TextureParameter* parameter = (TextureParameter*)textures.get(i)->Parameter;
-			DxTexture* texture = (DxTexture*)parameter->getValue();
-			if (!texture) {
-				auto text = std::format(_T("Parameter for variable '{}' is missing.\n"), textures[i]->Name);
-				Logger::logOnce(LogType::WARNING, text.c_str(), i);
-				continue;
-			}
-			texture->set(commandList, textures[i]->BindSlot);
-		}
-
-		return rsChanged || psChanged;
 	}
 
 	void DxShader::finalize() {
@@ -45,33 +28,116 @@ namespace Ghurund::Engine::DirectX {
 		samplers.deleteItems();
 	}
 
-	DxShader::~DxShader() {
-		finalize();
-	}
-
-	/*void Shader::reload() {
-		size_t paramCount = this->parameters ? this->parameters->Size : 0;
-		Array<SharedPointer<Parameter>> parameters(paramCount);
-		if (this->parameters)
-			this->parameters->copyTo(parameters);
-		__super::reload();
-		if (this->parameters) {
-			for (Parameter* p2 : parameters) {
-				if (p2->Empty)
-					continue;
-				for (Parameter* p : *this->parameters) {
-					if (p->ConstantName == p2->ConstantName && p->ValueType == p2->ValueType) {
-						if (p->ValueType == ParameterType::TEXTURE) {
-							((TextureParameter*)p)->Value = ((TextureParameter*)p2)->Value;
-						} else {
-							((ValueParameter*)p)->Value = ((ValueParameter*)p2)->Value;
-						}
-						break;
-					}
+	InputType DxShader::makeInputByType(
+		D3D_SHADER_VARIABLE_CLASS _class,
+		D3D_SHADER_VARIABLE_TYPE type,
+		const AString& name,
+		uint16_t size
+	) {
+		if (_class == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_SCALAR) {
+			if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_INT) {
+				if (size == IntParameter::SIZE)
+					return InputType::INT;
+			} else if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
+				if (size == FloatParameter::SIZE)
+					return InputType::FLOAT;
+			}
+		} else if (_class == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_VECTOR) {
+			if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_INT) {
+				if (size == Int2Parameter::SIZE)
+					return InputType::INT2;
+			} else if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
+				if (size == Float2Parameter::SIZE) {
+					return InputType::FLOAT2;
+				} else if (size == Float3Parameter::SIZE) {
+					return InputType::FLOAT3;
+				} else if (size == Float4Parameter::SIZE) {
+					return InputType::FLOAT4;
+				}
+			}
+		} else if (_class == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_MATRIX_ROWS) {
+			if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
+				if (size == MatrixParameter::SIZE) {
+					return InputType::MATRIX;
 				}
 			}
 		}
-	}*/
+		auto message = std::format(
+			_T("format [class: {}, type: {}, size: {}] of parameter '{}' is not supported\n"),
+			(uint32_t)_class, (uint32_t)type, size, name
+		);
+		Logger::log(LogType::WARNING, message.c_str());
+		AString exMessage = convertText<tchar, char>(String(message.c_str()));
+		throw NotSupportedException(exMessage.Data);
+	}
+
+	void DxShader::applyInputs(CommandList& commandList) {
+		size_t vi = 0;
+		for (auto& cb : constantBuffers) {
+			for (auto& v : cb->Variables) {
+				auto& input = valueInputs[vi];
+				auto value = input.value ? input.value : v.defaultValue;
+				if (value)
+					cb->setValue(value, v.size, v.offset);
+				vi++;
+			}
+			cb->set(commandList);
+		}
+
+		for (size_t i = 0; i < textures.Size; i++) {
+			DxTexture* texture = (DxTexture*)textureInputs[i].Value;
+			if (!texture) {
+				auto text = std::format(_T("Parameter for variable '{}' is missing.\n"), textures[i]->Name);
+				Logger::logOnce(LogType::WARNING, text.c_str(), i);
+				continue;
+			}
+			texture->set(commandList, textures[i]->BindSlot);
+		}
+	}
+
+	void DxShader::init(
+		const Array<VertexRole>& layout,
+		OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> rootSignature,
+		OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,
+		const List<ConstantBuffer*>& constantBuffers,
+		const List<TextureConstant*>& textures,
+		const List<Sampler*>& samplers,
+		bool isTransparencyEnabled
+	) {
+		this->layout = layout;
+		this->rootSignature = rootSignature.reset();
+		this->pipelineState = pipelineState.reset();
+		this->constantBuffers = constantBuffers;
+		for (auto& cb : constantBuffers) {
+			for (auto& v : cb->Variables) {
+				InputType type = makeInputByType(
+					v.variableClass,
+					v.variableType,
+					v.name,
+					v.size
+				);
+				valueInputs.add(ValueInput(v.name, type, v.size, v.offset, v.defaultValue));
+			}
+		}
+		this->textures = textures;
+		for (auto& t : textures)
+			textureInputs.add(TextureInput(t->Name));
+		this->samplers = samplers;
+		this->isTransparencyEnabled = isTransparencyEnabled;
+	}
+
+	bool DxShader::set(CommandList& commandList) {
+		bool rsChanged = commandList.setGraphicsRootSignature(rootSignature);
+		bool psChanged = commandList.setPipelineState(pipelineState);
+
+		applyInputs(commandList);
+
+		return rsChanged || psChanged;
+	}
+
+	DxShader::~DxShader() {
+		finalize();
+	}
 
 	void DxShader::invalidate() {
 		finalize();
@@ -81,38 +147,4 @@ namespace Ghurund::Engine::DirectX {
 
 		__super::invalidate();
 	}
-
-	/*void Shader::initParameters(ParameterManager& parameterManager) {
-		if (parameters != nullptr)
-			return;
-
-		size_t constantsCount = 0;
-		for (size_t i = 0; i < constantBuffers.Size; i++) {
-			constantBuffers[i]->initParameters(parameterManager);
-			constantsCount += constantBuffers[i]->Parameters.Size;
-		}
-		parameters = ghnew Array<SharedPointer<Parameter>>(constantsCount + textures.Size);    // TODO: correct number of parameters  +textureBuffers.Size+textures.Size
-#ifdef _DEBUG
-		reported = ghnew bool[textures.Size];
-#endif
-
-		size_t paramOffset = 0;
-		for (size_t i = 0; i < constantBuffers.Size; i++) {
-			constantBuffers[i]->Parameters.copyTo(*parameters, paramOffset);
-			paramOffset += constantBuffers[i]->Parameters.Size;
-		}
-
-		for (size_t i = 0; i < textures.Size; i++) {
-			Parameter* p = parameterManager.getParameter(textures[i]->Name);
-#ifdef _DEBUG
-			reported[i] = false;
-#endif
-			TextureParameter* tp = ghnew TextureParameter(textures[i]->Name.Data);
-			if (p && p->ValueType == ParameterType::TEXTURE)
-				tp->DefaultValue = ((TextureParameter*)p)->Value;
-			parameters->set(i + constantsCount, tp);
-			tp->release();
-		}
-	}*/
-
 }

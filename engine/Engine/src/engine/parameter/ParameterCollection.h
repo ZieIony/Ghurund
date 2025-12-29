@@ -37,8 +37,17 @@ namespace Ghurund::Engine {
 			return parameters.end();
 		}
 
-		inline void putAll(const ParameterCollection& other) {
-			parameters.addAll(other.parameters);
+		template<typename T>
+		inline void putAll(const T& collection) {
+			parameters.addAll(collection);
+		}
+
+		inline void putAll(const ParameterCollection& collection) {
+			parameters.addAll(collection.parameters);
+		}
+
+		inline void clear() {
+			parameters.clear();
 		}
 	};
 }

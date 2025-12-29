@@ -1,10 +1,5 @@
 #pragma once
 
-#include "ConstantBuffer.h"
-#include "Sampler.h"
-#include "TextureBufferConstant.h"
-#include "TextureConstant.h"
-
 #include "core/collection/Array.h"
 #include "core/collection/List.h"
 #include "core/IUnknownImpl.h"
@@ -12,6 +7,9 @@
 #include "core/resource/ResourceManager.h"
 #include "engine/graphics/mesh/VertexStream.h"
 #include "engine/graphics/shader/IShader.h"
+#include "variables/ConstantBuffer.h"
+#include "variables/Sampler.h"
+#include "variables/TextureConstant.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
@@ -45,6 +43,15 @@ namespace Ghurund::Engine::DirectX {
 
 		void finalize();
 
+		InputType makeInputByType(
+			D3D_SHADER_VARIABLE_CLASS _class,
+			D3D_SHADER_VARIABLE_TYPE type,
+			const AString& name,
+			uint16_t size
+		);
+
+		void applyInputs(CommandList& commandList);
+
 	public:
 		~DxShader();
 
@@ -62,21 +69,9 @@ namespace Ghurund::Engine::DirectX {
 			const List<TextureConstant*>& textures,
 			const List<Sampler*>& samplers,
 			bool isTransparencyEnabled
-		) {
-			this->layout = layout;
-			this->rootSignature = rootSignature.reset();
-			this->pipelineState = pipelineState.reset();
-			this->constantBuffers = constantBuffers;
-			for (auto& cb : constantBuffers)
-				parameters.putAll(cb->Parameters);
-			this->textures = textures;
-			for (auto& t : textures)
-				parameters.put(t->Parameter);
-			this->samplers = samplers;
-			this->isTransparencyEnabled = isTransparencyEnabled;
-		}
+		);
 
-		bool set(CommandList& commandList, ParameterManager& parameterManager);
+		bool set(CommandList& commandList);
 
 		inline const Array<VertexRole>& getLayout() const {
 			return layout;

@@ -32,11 +32,11 @@ namespace Ghurund::Engine::DirectX {
         }
 
 		void setValue(const void* value, size_t size, size_t offset) {
-			memcpy((BYTE*)buffer->Data + offset, value, size);
+			memcpy((uint8_t*)buffer->Data + offset, value, size);
 		}
 
 		template<class Type> void setValue(const Type& value, size_t offset) {
-			memcpy((BYTE*)buffer->Data + offset, &value, sizeof(Type));
+			memcpy((uint8_t*)buffer->Data + offset, &value, sizeof(Type));
 		}
 
         void set(CommandList& commandList, unsigned int bindSlot);

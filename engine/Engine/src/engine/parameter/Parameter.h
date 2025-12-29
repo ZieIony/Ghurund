@@ -2,7 +2,6 @@
 
 #include "core/object/RefCountedObject.h"
 #include "core/string/String.h"
-#include "core/object/IntrusivePointer.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
@@ -24,11 +23,9 @@ namespace Ghurund::Engine {
 
     protected:
         const AString name;
-        void* rawValue = nullptr;
         bool isEmpty = true;
 
-        // TODO: rawValue is here, but initialization is done by ValueParameter and TextureParameter
-        Parameter(const Parameter& other):name(other.name), isEmpty(false), rawValue(nullptr) {}
+        Parameter(const Parameter& other):name(other.name), isEmpty(other.isEmpty) {}
 
     public:
         Parameter(const AString& name):name(name) {}
@@ -39,22 +36,14 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getName)) const AString& Name;
 
-		inline const void* const getRawValue() const {
-			if (isEmpty)
-				return nullptr;
-			return rawValue;
-		}
-
-		__declspec(property(get = getRawValue)) const void* const RawValue;
-
-        virtual size_t getSize() const = 0;
-
-        __declspec(property(get = getSize)) size_t Size;
-
         inline bool getIsEmpty() const {
             return isEmpty;
         }
 
         __declspec(property(get = getIsEmpty)) bool IsEmpty;
+  
+        inline void reset() {
+            isEmpty = true;
+        }
     };
 }

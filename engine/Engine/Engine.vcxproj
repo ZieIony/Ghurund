@@ -102,7 +102,10 @@
     <ClInclude Include="src\engine\application\LayerList.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialProvider.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialLoader.h" />
+    <ClInclude Include="src\engine\graphics\shader\InputType.h" />
     <ClInclude Include="src\engine\graphics\shader\IShaderProvider.h" />
+    <ClInclude Include="src\engine\graphics\shader\TextureInput.h" />
+    <ClInclude Include="src\engine\graphics\shader\ValueInput.h" />
     <ClInclude Include="src\engine\graphics\texture\ITextureFactory.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
@@ -227,6 +230,8 @@
     <ClCompile Include="src\engine\graphics\mesh\SphereMeshData.cpp" />
     <ClCompile Include="src\engine\graphics\shader\IShader.cpp" />
     <ClCompile Include="src\engine\graphics\shader\ShaderCode.cpp" />
+    <ClCompile Include="src\engine\graphics\shader\TextureInput.cpp" />
+    <ClCompile Include="src\engine\graphics\shader\ValueInput.cpp" />
     <ClCompile Include="src\engine\graphics\texture\ITexture.cpp" />
     <ClCompile Include="src\engine\net\Client.cpp" />
     <ClCompile Include="src\engine\net\Message.cpp" />

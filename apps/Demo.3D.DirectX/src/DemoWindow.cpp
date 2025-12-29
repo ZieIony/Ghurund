@@ -88,7 +88,7 @@ namespace Demo {
 
 		}
 		uiGroup.objects.add(DrawPacket{ shadowMesh, controlMaterial });
-		textLayout.draw(uiGroup, { 200, 200 });
+		textLayout.draw(uiGroup, { 50, 100 });
 		renderGroups.put(uiGroup);
 	}
 

@@ -303,7 +303,7 @@ namespace Ghurund::Engine::DirectX {
 					constantBuffers.add(cb);
 					return cb;
 				}();
-				cb->initParameters(constantBuffer, bufferDesc);
+				cb->initVariables(constantBuffer, bufferDesc);
 			}
 			break;
 			case D3D_SIT_TEXTURE:

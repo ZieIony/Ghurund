@@ -1,12 +1,54 @@
 #pragma once
 
 #include "Parameter.h"
+
 #include "core/reflection/StandardTypes.h"
+#include "engine/graphics/shader/ValueInput.h"
 
 namespace Ghurund::Engine {
 
+	class BaseValueParameter:public Parameter {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE() {
+			static const Ghurund::Core::Type TYPE = TypeBuilder<BaseValueParameter>()
+				.withSupertype(__super::GET_TYPE());
+
+			return TYPE;
+		}
+
+		inline static const Ghurund::Core::Type& TYPE = BaseValueParameter::GET_TYPE();
+#pragma endregion
+
+	protected:
+		void* rawValue = nullptr;	// initialize in ValueParameter
+
+	protected:
+		BaseValueParameter(const BaseValueParameter& other):Parameter(other) {}
+
+	public:
+		BaseValueParameter(const AString& constantName):Parameter(constantName) {}
+
+		inline const void* const getRawValue() const {
+			if (isEmpty)
+				return nullptr;
+			return rawValue;
+		}
+
+		__declspec(property(get = getRawValue)) const void* const RawValue;
+
+		inline void apply(ValueInput& shaderInput) const {
+			shaderInput.value = rawValue;
+		}
+	};
+
 	template<typename T>
-	class ValueParameter:public Parameter {
+	class ValueParameter:public BaseValueParameter {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -29,16 +71,18 @@ namespace Ghurund::Engine {
 		T value;
 
 	protected:
-		ValueParameter(const ValueParameter<T>& other):Parameter(other), value(other.value) {}
+		ValueParameter(const ValueParameter<T>& other):BaseValueParameter(other), value(other.value) {
+			rawValue = &value;
+		}
 
 	public:
 		using value_t = T;
 
-		ValueParameter(const AString& constantName):Parameter(constantName), value(T()) {
+		ValueParameter(const AString& constantName):BaseValueParameter(constantName), value(T()) {
 			rawValue = &this->value;
 		}
 
-		ValueParameter(const AString& constantName, const T value):Parameter(constantName), value(value) {
+		ValueParameter(const AString& constantName, const T value):BaseValueParameter(constantName), value(value) {
 			rawValue = &this->value;
 			isEmpty = false;
 		}
@@ -54,13 +98,11 @@ namespace Ghurund::Engine {
 
 		__declspec(property(get = getValue, put = setValue)) const T Value;
 
-		inline void clearValue() {
-			isEmpty = true;
-		}
-
-		virtual size_t getSize() const override {
+		inline size_t getSize() const {
 			return SIZE;
 		}
+
+		__declspec(property(get = getSize)) size_t Size;
 
 		static inline size_t SIZE = sizeof(T);
 
