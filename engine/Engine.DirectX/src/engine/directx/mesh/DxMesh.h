@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine/directx/Fence.h"
-#include "engine/directx/DxGraphics.h"
+#include "engine/directx/memory/DxGPUMemoryManager.h"
 #include "engine/directx/CommandList.h"
 #include "core/resource/Resource.h"
 #include "core/resource/ResourceManager.h"
@@ -10,13 +10,10 @@
 #pragma warning(push, 0)
 #include <d3d12.h>
 #include <dxgi1_4.h>
-#include <D3Dcompiler.h>
 #include <DirectXMath.h>
 #include "d3dx12.h"
-#include <DirectXCollision.h>
 
 #include <wrl.h>
-
 #pragma warning(pop)
 
 namespace Ghurund::Engine::DirectX {
@@ -48,27 +45,20 @@ namespace Ghurund::Engine::DirectX {
         D3D12_INDEX_BUFFER_VIEW indexBufferView;
         uint32_t indexCount;
 
-        List<ComPtr<ID3D12Resource>> vertexUploadHeaps;
-        ComPtr<ID3D12Resource> indexUploadHeap;
+        void initVertexBuffers(const Array<VertexStream>& vertexStreams, uint32_t vertexCount, DxGPUMemoryManager& memoryManager);
 
-        void initVertexBuffers(const Array<VertexStream>& vertexStreams, uint32_t vertexCount, DxGraphics& graphics, CommandList& commandList);
-
-        void initIndexBuffer(const Buffer& indices, uint32_t indexCount, DxGraphics& graphics, CommandList& commandList);
+        void initIndexBuffer(const Buffer& indices, uint32_t indexCount, DxGPUMemoryManager& memoryManager);
 
     public:
-        virtual void init(const MeshData& mesh, DxGraphics& graphics, CommandList& commandList);
+        virtual void init(const MeshData& mesh, DxGPUMemoryManager& memoryManager);
 
         virtual void invalidate() override {
             uploaded = false;
             vertexBuffers.clear();
             vertexBuffersView.clear();
-            vertexUploadHeaps.clear();
             /*for(auto& buffer:vertexBuffers)
                 buffer.Reset();*/
             indexBuffer.Reset();
-            for(auto& heap:vertexUploadHeaps)
-                heap.Reset();
-            indexUploadHeap.Reset();
 
             __super::invalidate();
         }

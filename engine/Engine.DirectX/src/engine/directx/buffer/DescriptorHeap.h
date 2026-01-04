@@ -3,7 +3,9 @@
 #include "core/collection/Map.h"
 #include "core/object/NotNull.h"
 
+#pragma warning(push, 0)
 #include <d3d12.h>
+#pragma warning(pop)
 
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;

@@ -16,6 +16,8 @@ namespace Ghurund::Engine::DirectX {
         resourceManager.Loaders.remove<Material>();
         resourceManager.Loaders.remove<DxShader>();
         shaderCompiler.set(nullptr);
+        delete memoryManager;
+        memoryManager = nullptr;
         graphics.uninit();
     }
 
@@ -28,7 +30,8 @@ namespace Ghurund::Engine::DirectX {
         commandList = makeIntrusive<CommandList>();
         commandList->init(graphics, graphics.DirectQueue);
         textureFactory = makeShared<DxTextureFactory>(graphics, commandList.ref());
-        auto materialLoader = makeIntrusive<MaterialLoader>(resourceManager, textureFactory.ref());
+        memoryManager = ghnew DxGPUMemoryManager(graphics, commandList.ref());
+        auto materialLoader = makeIntrusive<MaterialLoader>(resourceManager, textureFactory.ref(), *memoryManager);
         resourceManager.Loaders.set<Material>(materialLoader.ref());
     }
 

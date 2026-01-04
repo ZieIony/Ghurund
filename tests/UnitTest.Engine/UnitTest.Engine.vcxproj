@@ -107,6 +107,7 @@
     <ClCompile Include="src\test\directx\shader\DxShaderLoaderTest.cpp" />
     <ClCompile Include="src\test\game\action\ActionMappingTest.cpp" />
     <ClCompile Include="src\test\game\action\FloatGameActionTest.cpp" />
+    <ClCompile Include="src\test\graphics\material\MaterialTest.cpp" />
     <ClCompile Include="src\test\graphics\mesh\MeshDataLoaderTest.cpp" />
     <ClCompile Include="src\test\graphics\mesh\MeshDataTest.cpp" />
     <ClCompile Include="src\test\graphics\mesh\VertexStreamTest.cpp" />

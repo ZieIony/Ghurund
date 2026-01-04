@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreviewLayout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Preview">
-	<PreviewLayout.Material shader="lib://Ghurund/shaders/DirectX/ui/color.hlsl">
-		<Parameter name="backgroundColor" value="#ffcccccc"/>
-	</PreviewLayout.Material>
 	<ControlGroup width="Parent.Width" height="Parent.Height">
 		<ControlGroup.Material color="theme://color/background" shader="lib://Ghurund/shaders/DirectX/ui/control.hlsl"/>
 		<ControlContainer width="Parent.Width" top="Parent.Top" bottom="'progress'.Top"

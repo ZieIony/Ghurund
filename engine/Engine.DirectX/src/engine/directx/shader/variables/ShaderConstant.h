@@ -12,13 +12,13 @@ namespace Ghurund::Engine::DirectX {
 	class ShaderConstant {
 	protected:
 		AString name;
-		unsigned int bindPoint, bindSlot;
+		uint32_t bindPoint, bindSlot = 0;
 		D3D12_SHADER_VISIBILITY visibility;
 
 	public:
 		ShaderConstant(
 			const AString& name,
-			unsigned int bindPoint,
+			uint32_t bindPoint,
 			D3D12_SHADER_VISIBILITY visibility
 		):name(name), bindPoint(bindPoint), visibility(visibility) {
 		}
@@ -29,19 +29,19 @@ namespace Ghurund::Engine::DirectX {
 
 		__declspec(property(get = getName)) const AString& Name;
 
-		inline unsigned int getBindPoint() const {
+		inline uint32_t getBindPoint() const {
 			return bindPoint;
 		}
 
-		inline unsigned int getBindSlot() const {
+		inline uint32_t getBindSlot() const {
 			return bindSlot;
 		}
 
-		inline void setBindSlot(unsigned int slot) {
+		inline void setBindSlot(uint32_t slot) {
 			bindSlot = slot;
 		}
 
-		__declspec(property(get = getBindSlot, put = setBindSlot)) unsigned int BindSlot;
+		__declspec(property(get = getBindSlot, put = setBindSlot)) uint32_t BindSlot;
 
 		inline D3D12_SHADER_VISIBILITY getVisibility() const {
 			return visibility;

@@ -12,16 +12,20 @@ namespace Ghurund::Engine {
 	Material* MaterialLoader::loadFromXml(const tinyxml2::XMLElement& xml, const DirectoryPath& workingDir) {
 		AString s = xml.FindAttribute("shader")->Value();
 		FilePath path = FilePath(convertText<char, wchar_t>(s));
-		auto shader = IntrusivePointer<IShader>(resourceManager.load<IShader>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE));
-		auto material = makeIntrusive<Material>(shader.ref());
+		auto shader = IntrusivePointer<Shader>(resourceManager.load<Shader>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE));
+		auto material = makeIntrusive<Material>(memoryManager, shader.ref());
 		const tinyxml2::XMLElement* child = xml.FirstChildElement();
 		while (child) {
 			if (child->Name() == AString("Parameter")) {
 				auto nameAttribute = child->FindAttribute("name");
 				auto valueAttribute = child->FindAttribute("value");
 				if (nameAttribute && valueAttribute) {
-					auto parameter = material->Parameters.get(nameAttribute->Value());
-					if (parameter->Type == TextureParameter::TYPE) {
+					AString name = nameAttribute->Value();
+					auto parameter = material->Parameters.get(name);
+					if (!parameter) {
+						auto text = std::format(_T("Shader {} doesn't specify a parameter named '{}'\n"), path.toString(), convertText<char, tchar>(name));
+						Logger::log(LogType::WARNING, text.c_str());
+					} else if (parameter->Type == TextureParameter::TYPE) {
 						TextureParameter* typedParameter = (TextureParameter*)parameter;
 						FilePath texturePath = FilePath(convertText<char, wchar_t>(AString(valueAttribute->Value())));
 						auto image = IntrusivePointer<Image>(resourceManager.load<Image>(texturePath, workingDir));

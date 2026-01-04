@@ -2,12 +2,13 @@
 
 #include "core/object/NotNull.h"
 #include "core/resource/Resource.h"
-#include "engine/graphics/shader/IShader.h"
+#include "engine/graphics/shader/Shader.h"
 #include "engine/parameter/ParameterProvider.h"
 #include "engine/graphics/shader/ValueInput.h"
 #include "engine/graphics/shader/TextureInput.h"
 #include "engine/parameter/TextureParameter.h"
 #include "engine/parameter/ValueParameter.h"
+#include <engine/graphics/memory/IGPUMemoryManager.h>
 
 namespace Ghurund::Engine {
 
@@ -25,22 +26,13 @@ namespace Ghurund::Engine {
 #pragma endregion
 
     private:
-        IShader* shader = nullptr;
+        IGPUMemoryManager& memoryManager;
+        Shader* shader = nullptr;
+        List< IntrusivePointer<ConstantBuffer>> constantBuffers;
         List<std::pair<ValueInput*, IntrusivePointer<BaseValueParameter>>> valueParameters;
         List<std::pair<TextureInput*, IntrusivePointer<TextureParameter>>> textureParameters;
 
-        inline void initParameters() {
-            for (auto& vi : shader->ValueInputs) {
-                auto p = IntrusivePointer(vi.makeParameter());
-                valueParameters.add({ &vi, p });
-                parameters.put(p.get());
-            }
-            for (auto& ti : shader->TextureInputs) {
-                auto p = IntrusivePointer(ti.makeParameter());
-                textureParameters.add({ &ti, p });
-                parameters.put(p.get());
-            }
-        }
+        void initParameters();
 
         inline void finalize() {
             safeRelease(shader);
@@ -48,30 +40,19 @@ namespace Ghurund::Engine {
         }
 
     protected:
-        Material(const Material& other):Resource(other), shader(other.shader) {
-            if (shader) {
-                shader->addReference();
-                for (auto& vp : other.valueParameters) {
-                    auto p = IntrusivePointer((BaseValueParameter*)vp.second->clone());
-                    valueParameters.add({ vp.first, p });
-                    parameters.put(p.get());
-                }
-                for (auto& tp : other.textureParameters) {
-                    auto p = IntrusivePointer(tp.second->clone());
-                    textureParameters.add({ tp.first, p });
-                    parameters.put(p.get());
-                }
-            }
-        }
+        Material(const Material& other);
 
         ~Material() {
             finalize();
         }
 
     public:
-        Material() {}
+        Material(IGPUMemoryManager& memoryManager):memoryManager(memoryManager) {}
 
-        Material(NotNull<IShader> shader):shader(shader.get()) {
+        Material(
+            IGPUMemoryManager& memoryManager,
+            NotNull<Shader> shader
+        ):memoryManager(memoryManager), shader(shader.get()) {
             shader->addReference();
             initParameters();
         }
@@ -85,11 +66,11 @@ namespace Ghurund::Engine {
             return shader != nullptr && shader->Valid && __super::Valid;
         }
 
-        IShader* getShader() {
+        Shader* getShader() {
             return shader;
         }
 
-        void setShader(IShader* shader) {
+        inline void setShader(Shader* shader) {
             setPointer(this->shader, shader);
             valueParameters.clear();
             textureParameters.clear();
@@ -98,7 +79,7 @@ namespace Ghurund::Engine {
                 initParameters();
         }
 
-        __declspec(property(get = getShader, put = setShader)) IShader* Shader;
+        __declspec(property(get = getShader, put = setShader)) Shader* Shader;
 
         bool getIsTransparencyEnabled() const {
             return shader->IsTransparencyEnabled;

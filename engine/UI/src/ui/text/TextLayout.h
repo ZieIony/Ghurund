@@ -13,10 +13,15 @@
 namespace Ghurund::UI {
     class TextLayout {
     protected:
+        struct TextDrawPacket {
+            IntrusivePointer<Resource> mesh;
+            IntrusivePointer<Material> material;
+        };
+
         Ghurund::Core::IntSize size, preferredSize;
         Ghurund::UI::TextDocument* document = nullptr;
         List<TextLine> lines;
-        List<IntrusivePointer<Resource>> textMeshes;
+        List<TextDrawPacket> textMeshes;
         IntrusivePointer<Material> textMaterial;
 
         bool valid = false;

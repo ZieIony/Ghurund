@@ -4,19 +4,19 @@
 #include "engine/parameter/TextureParameter.h"
 
 namespace Ghurund::Engine {
-    Material* MaterialProvider::makeWithShader(IShader* shader) const {
+    Material* MaterialProvider::makeWithShader(Shader* shader) const {
         Material* material = nullptr;
         if (shader) {
-            material = ghnew Material(shader);
+            material = ghnew Material(memoryManager, shader);
         }
         return material;
     }
 
     Material* MaterialProvider::makeBasic(ITexture* diffuseTexture) const {
         Material* material = nullptr;
-        IntrusivePointer<IShader> shader(shaderProvider.loadBasic());
+        IntrusivePointer<Shader> shader(shaderProvider.loadBasic());
         if (shader!=nullptr) {
-            material = ghnew Material(shader.get());
+            material = ghnew Material(memoryManager, shader.get());
             /*if (diffuseTexture) {
                 TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
                 diffuse->setValue(diffuseTexture);
@@ -27,9 +27,9 @@ namespace Ghurund::Engine {
 
     Material* MaterialProvider::makeBasicLight(ITexture* diffuseTexture, ITexture* specularTexture, ITexture* normalTexture) const {
         Material* material = nullptr;
-        IntrusivePointer<IShader> shader(shaderProvider.loadBasicLight());
+        IntrusivePointer<Shader> shader(shaderProvider.loadBasicLight());
         if (shader!=nullptr) {
-            material = ghnew Material(shader.get());
+            material = ghnew Material(memoryManager, shader.get());
             /*if (diffuseTexture) {
                 TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
                 diffuse->setValue(diffuseTexture);
@@ -48,9 +48,9 @@ namespace Ghurund::Engine {
 
     Material* MaterialProvider::makeChecker() const {
         Material* material = nullptr;
-        IntrusivePointer<IShader> shader(shaderProvider.loadBasic());
+        IntrusivePointer<Shader> shader(shaderProvider.loadBasic());
         if (shader!=nullptr) {
-            material = ghnew Material(shader.get());
+            material = ghnew Material(memoryManager, shader.get());
             ITexture* texture = textureProvider.makeChecker();
             //TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
             //diffuse->setValue(texture);
@@ -59,37 +59,37 @@ namespace Ghurund::Engine {
     }
 
     Material* MaterialProvider::makeWireframe() const {
-        IntrusivePointer<IShader> shader(shaderProvider.loadWireframe());
+        IntrusivePointer<Shader> shader(shaderProvider.loadWireframe());
         return makeWithShader(shader.get());
     }
 
     Material* MaterialProvider::makeOutline() const {
-        IntrusivePointer<IShader> shader(shaderProvider.loadOutline());
+        IntrusivePointer<Shader> shader(shaderProvider.loadOutline());
         return makeWithShader(shader.get());
     }
 
     Material* MaterialProvider::makeNormals() const {
-        IntrusivePointer<IShader> shader(shaderProvider.loadNormals());
+        IntrusivePointer<Shader> shader(shaderProvider.loadNormals());
         return makeWithShader(shader.get());
     }
 
     Material* MaterialProvider::makeInvalid() const {
-        IntrusivePointer<IShader> shader(shaderProvider.loadInvalid());
+        IntrusivePointer<Shader> shader(shaderProvider.loadInvalid());
         return makeWithShader(shader.get());
     }
 
     Material* MaterialProvider::makeLightPass() const {
-        IntrusivePointer<IShader> shader(shaderProvider.loadLightPass());
+        IntrusivePointer<Shader> shader(shaderProvider.loadLightPass());
         return makeWithShader(shader.get());
     }
 
     Material* MaterialProvider::makeBasicSky() const {
-        IntrusivePointer<IShader> shader(shaderProvider.loadBasicSky());
+        IntrusivePointer<Shader> shader(shaderProvider.loadBasicSky());
         return makeWithShader(shader.get());
     }
 
     Material* MaterialProvider::makeAdvancedSky() const {
-        IntrusivePointer<IShader> shader(shaderProvider.loadAdvancedSky());
+        IntrusivePointer<Shader> shader(shaderProvider.loadAdvancedSky());
         return makeWithShader(shader.get());
     }
 }

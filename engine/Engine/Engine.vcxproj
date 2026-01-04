@@ -100,13 +100,16 @@
   <ItemGroup>
     <ClInclude Include="src\engine\application\Layer.h" />
     <ClInclude Include="src\engine\application\LayerList.h" />
+    <ClInclude Include="src\engine\graphics\memory\IGPUMemoryManager.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialProvider.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialLoader.h" />
-    <ClInclude Include="src\engine\graphics\shader\InputType.h" />
+    <ClInclude Include="src\engine\graphics\shader\BufferInput.h" />
+    <ClInclude Include="src\engine\graphics\shader\ValueInputType.h" />
     <ClInclude Include="src\engine\graphics\shader\IShaderProvider.h" />
     <ClInclude Include="src\engine\graphics\shader\TextureInput.h" />
     <ClInclude Include="src\engine\graphics\shader\ValueInput.h" />
     <ClInclude Include="src\engine\graphics\texture\ITextureFactory.h" />
+    <ClInclude Include="src\engine\graphics\shader\ConstantBuffer.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />
@@ -162,7 +165,7 @@
     <ClInclude Include="src\engine\graphics\mesh\QuadMeshData.h" />
     <ClInclude Include="src\engine\graphics\mesh\SphereMeshData.h" />
     <ClInclude Include="src\engine\graphics\mesh\VertexStream.h" />
-    <ClInclude Include="src\engine\graphics\shader\IShader.h" />
+    <ClInclude Include="src\engine\graphics\shader\Shader.h" />
     <ClInclude Include="src\engine\graphics\shader\ShaderCode.h" />
     <ClInclude Include="src\engine\graphics\texture\ITexture.h" />
     <ClInclude Include="src\engine\graphics\texture\TextureProvider.h" />
@@ -228,7 +231,7 @@
     <ClCompile Include="src\engine\graphics\mesh\MeshData.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\MeshDataLoader.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\SphereMeshData.cpp" />
-    <ClCompile Include="src\engine\graphics\shader\IShader.cpp" />
+    <ClCompile Include="src\engine\graphics\shader\Shader.cpp" />
     <ClCompile Include="src\engine\graphics\shader\ShaderCode.cpp" />
     <ClCompile Include="src\engine\graphics\shader\TextureInput.cpp" />
     <ClCompile Include="src\engine\graphics\shader\ValueInput.cpp" />

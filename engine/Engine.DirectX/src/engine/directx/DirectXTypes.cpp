@@ -27,8 +27,8 @@ namespace Ghurund::Core {
     }
 
     template<>
-    const Type& getType<Ghurund::Engine::DirectX::GPUResourceFactory>() {
-        static Type TYPE = TypeBuilder<Ghurund::Engine::DirectX::GPUResourceFactory>();
+    const Type& getType<Ghurund::Engine::DirectX::DxGPUMemoryManager>() {
+        static Type TYPE = TypeBuilder<Ghurund::Engine::DirectX::DxGPUMemoryManager>();
         return TYPE;
     }
 }

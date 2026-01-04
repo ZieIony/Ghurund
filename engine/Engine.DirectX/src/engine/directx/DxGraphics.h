@@ -7,7 +7,7 @@
 #include "core/reflection/Type.h"
 #include "engine/directx/adapter/GraphicsAdapter.h"
 #include "engine/directx/buffer/DescriptorHeap.h"
-#include "engine/directx/memory/GPUResourceFactory.h"
+#include "memory/DxGPUMemoryManager.h"
 
 namespace Ghurund::Engine::DirectX {
     using namespace DirectX;
@@ -35,7 +35,6 @@ namespace Ghurund::Engine::DirectX {
         IDXGIFactory4* factory;
 
         DescriptorAllocator allocator;
-        GPUResourceFactory* resourceFactory;
 
         List<GraphicsAdapter*> adapters;
 
@@ -96,12 +95,6 @@ namespace Ghurund::Engine::DirectX {
         }
 
         __declspec(property(get = getDescriptorAllocator)) Ghurund::Engine::DirectX::DescriptorAllocator& DescriptorAllocator;
-
-        GPUResourceFactory& getResourceFactory() {
-            return *resourceFactory;
-        }
-
-        __declspec(property(get = getResourceFactory)) GPUResourceFactory& ResourceFactory;
     };
 
     template<typename T>

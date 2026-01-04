@@ -28,9 +28,9 @@ namespace Preview {
 		auto commandList = makeIntrusive<CommandList>();
 		commandList->init(graphicsFeature->Graphics, graphicsFeature->Graphics.DirectQueue);
 
-		textMeshFactory = makeShared<DxTextMeshFactory>(graphicsFeature->Graphics, commandList.ref());
+		textMeshFactory = makeShared<DxTextMeshFactory>(graphicsFeature->MemoryManager);
 		textureFactory = makeShared<DxTextureFactory>(graphicsFeature->Graphics, commandList.ref());
-		uiContext = makeShared<DxUIContext>(*this, graphicsFeature->Graphics, commandList.ref(), textMeshFactory.ref(), textureFactory.ref());
+		uiContext = makeShared<DxUIContext>(*this, graphicsFeature->MemoryManager, textMeshFactory.ref(), textureFactory.ref());
 		uiLayer.set(ghnew UILayer());
 		uiLayer->init(uiContext.ref());
 		uiLayer->Theme = &themeApp.CurrentTheme;
@@ -38,7 +38,7 @@ namespace Preview {
 		Layers.add(uiLayer.get());
 
 		DxUIShaderProvider shaderProvider(Application.ResourceManager);
-		UIMaterialProvider materialProvider(shaderProvider);
+		UIMaterialProvider materialProvider(shaderProvider, graphicsFeature->MemoryManager);
 		basicMaterial = IntrusivePointer<Material>(materialProvider.makeControl());
 		ControlMaterialParameters params(basicMaterial.ref());
 		params.BackgroundColor = Colors::ALICE_BLUE;

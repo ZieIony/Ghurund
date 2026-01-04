@@ -5,9 +5,10 @@
 #include "core/IUnknownImpl.h"
 #include "core/object/OwnedNotNull.h"
 #include "core/resource/ResourceManager.h"
+#include "engine/directx/CommandList.h"
 #include "engine/graphics/mesh/VertexStream.h"
-#include "engine/graphics/shader/IShader.h"
-#include "variables/ConstantBuffer.h"
+#include "engine/graphics/shader/Shader.h"
+#include "variables/BufferConstant.h"
 #include "variables/Sampler.h"
 #include "variables/TextureConstant.h"
 
@@ -19,7 +20,7 @@ namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
 	using namespace Microsoft::WRL;
 
-	class DxShader:public IShader {
+	class DxShader:public Shader {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -37,13 +38,13 @@ namespace Ghurund::Engine::DirectX {
 		ID3D12PipelineState* pipelineState = nullptr;
 		Array<VertexRole> layout;
 
-		List<ConstantBuffer*> constantBuffers;
-		List<TextureConstant*> textures;
+		List<BufferConstant*> bufferConstants;
+		List<TextureConstant*> textureConstants;
 		List<Sampler*> samplers;
 
 		void finalize();
 
-		InputType makeInputByType(
+		ValueInputType makeInputByType(
 			D3D_SHADER_VARIABLE_CLASS _class,
 			D3D_SHADER_VARIABLE_TYPE type,
 			const AString& name,
@@ -65,8 +66,8 @@ namespace Ghurund::Engine::DirectX {
 			const Array<VertexRole>& layout,
 			OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> rootSignature,
 			OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,
-			const List<ConstantBuffer*>& constantBuffers,
-			const List<TextureConstant*>& textures,
+			const List<BufferConstant*>& bufferConstants,
+			const List<TextureConstant*>& textureConstants,
 			const List<Sampler*>& samplers,
 			bool isTransparencyEnabled
 		);

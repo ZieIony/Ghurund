@@ -31,7 +31,7 @@ namespace Demo {
 		commandList->init(graphicsFeature->Graphics, graphicsFeature->Graphics.DirectQueue);
 
 		DxUIShaderProvider shaderProvider(app.ResourceManager);
-		UIMaterialProvider materialProvider(shaderProvider);
+		UIMaterialProvider materialProvider(shaderProvider, graphicsFeature->MemoryManager);
 
 		camera = makeIntrusive<Camera>();
 		camera->setPositionTargetUp({ 10,10,-10 }, { 0,0,0 });
@@ -54,7 +54,7 @@ namespace Demo {
 			app.ResourceManager.save(textStyle.ref(), textStylePath, DirectoryPath(), TextStyle::FORMAT_BIN);
 		}
 
-		DxTextMeshFactory textMeshfactory(graphicsFeature->Graphics, commandList.ref());
+		DxTextMeshFactory textMeshfactory(graphicsFeature->MemoryManager);
 		DxTextureFactory textureFactory(graphicsFeature->Graphics, commandList.ref());
 
 		RenderGroup uiGroup(0, DrawOrder::BACK_TO_FRONT);
@@ -79,7 +79,7 @@ namespace Demo {
 			auto meshData = makeIntrusive<QuadMeshData>();
 			meshData->init();
 			shadowMesh = IntrusivePointer<Resource>(mesh);
-			mesh->init(meshData.ref(), graphicsFeature->Graphics, commandList.ref());
+			mesh->init(meshData.ref(), graphicsFeature->MemoryManager);
 
 			controlMaterial = IntrusivePointer<Material>(materialProvider.makeControl());
 			ControlMaterialParameters parameters(controlMaterial.ref());

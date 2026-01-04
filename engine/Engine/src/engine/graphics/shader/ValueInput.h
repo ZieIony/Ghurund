@@ -1,6 +1,6 @@
 #pragma once
 
-#include "InputType.h"
+#include "ValueInputType.h"
 
 #include "core/string/String.h"
 
@@ -14,16 +14,16 @@ namespace Ghurund::Engine {
 	class ValueInput {
 	private:
 		const AString name;
-		const InputType type;
+		const ValueInputType type;
 		size_t size, offset;
 		const void* defaultValue;
 
 	public:
-		void* value = nullptr;
+		const void* value = nullptr;
 
 		ValueInput(
 			const AString& name,
-			InputType type,
+			ValueInputType type,
 			size_t size,
 			size_t offset,
 			const void* defaultValue
@@ -73,11 +73,23 @@ namespace Ghurund::Engine {
 
 		__declspec(property(get = getName)) const AString& Name;
 
-		inline InputType getType() const {
+		inline ValueInputType getType() const {
 			return type;
 		}
 
-		__declspec(property(get = getType)) InputType Type;
+		__declspec(property(get = getType)) ValueInputType Type;
+
+		inline size_t getSize() const {
+			return size;
+		}
+
+		__declspec(property(get = getSize)) size_t Size;
+
+		inline size_t getOffset() const {
+			return offset;
+		}
+
+		__declspec(property(get = getOffset)) size_t Offset;
 
 		template<typename T>
 		BaseValueParameter* makeParameter() const {

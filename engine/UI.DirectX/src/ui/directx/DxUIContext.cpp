@@ -19,15 +19,14 @@ namespace Ghurund::UI::DirectX {
 
     DxUIContext::DxUIContext(
         ::Ghurund::Core::Window& window,
-        DxGraphics& graphics,
-        CommandList& commandList,
+        DxGPUMemoryManager& memoryManager,
         ITextMeshFactory& textMeshFactory,
         ITextureFactory& textureFactory
-    ):UIContext(window, textMeshFactory, textureFactory), graphics(graphics), commandList(commandList) {
+    ):UIContext(window, textMeshFactory, textureFactory), memoryManager(memoryManager) {
         auto mesh = ghnew DxMesh();
         auto meshData = ghnew QuadMeshData();
         meshData->init();
-        mesh->init(*meshData, graphics, commandList);
+        mesh->init(*meshData, memoryManager);
         meshData->release();
         this->mesh.set(mesh);
     }

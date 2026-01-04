@@ -1,15 +1,16 @@
 #pragma once
 
-#include "core/resource/Resource.h"
-#include "core/io/File.h"
 #include "OglShaderProgram.h"
 
-#include "gl/gl.h"
+#include "core/io/File.h"
+#include "engine/graphics/shader/Shader.h"
 
-using namespace Ghurund::Core;
+#include <gl/gl.h>
 
 namespace Ghurund::Engine::OpenGL {
-	class OglShader:public Resource {
+	using namespace Ghurund::Core;
+
+	class OglShader:public Shader {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {

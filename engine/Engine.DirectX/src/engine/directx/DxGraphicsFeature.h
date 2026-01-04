@@ -26,6 +26,7 @@ namespace Ghurund::Engine::DirectX {
     private:
         DxGraphics graphics;
         IntrusivePointer<CommandList> commandList;
+        DxGPUMemoryManager* memoryManager;
         ResourceManager& resourceManager;
         SharedPointer<DxShaderCompiler> shaderCompiler;
         SharedPointer<DxTextureFactory> textureFactory;
@@ -49,5 +50,11 @@ namespace Ghurund::Engine::DirectX {
         }
 
         __declspec(property(get = getGraphics)) DxGraphics& Graphics;
+
+        inline DxGPUMemoryManager& getMemoryManager() {
+            return *memoryManager;
+        }
+
+        __declspec(property(get = getMemoryManager)) DxGPUMemoryManager& MemoryManager;
     };
 }

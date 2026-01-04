@@ -9,34 +9,38 @@ namespace Ghurund::UI {
     class UIMaterialProvider:public Noncopyable {
     private:
         IUIShaderProvider& shaderProvider;
+        IGPUMemoryManager& memoryManager;
 
-        Material* makeWithShader(IShader* shader) const {
+        Material* makeWithShader(Shader* shader) const {
             Material* material = nullptr;
             if (shader)
-                material = ghnew Material(shader);
+                material = ghnew Material(memoryManager, shader);
             return material;
         }
 
     public:
-		UIMaterialProvider(IUIShaderProvider& shaderProvider): shaderProvider(shaderProvider) {}
+		UIMaterialProvider(
+            IUIShaderProvider& shaderProvider,
+            IGPUMemoryManager& memoryManager
+        ): shaderProvider(shaderProvider), memoryManager(memoryManager) {}
 
         inline Material* makeInvalid() const {
-            IntrusivePointer<IShader> shader(shaderProvider.loadInvalid());
+            IntrusivePointer<Shader> shader(shaderProvider.loadInvalid());
             return makeWithShader(shader.get());
         }
 
         inline Material* makeControl() const {
-            IntrusivePointer<IShader> shader(shaderProvider.loadControl());
+            IntrusivePointer<Shader> shader(shaderProvider.loadControl());
             return makeWithShader(shader.get());
         }
 
         inline Material* makeText() const {
-            IntrusivePointer<IShader> shader(shaderProvider.loadText());
+            IntrusivePointer<Shader> shader(shaderProvider.loadText());
             return makeWithShader(shader.get());
         }
 
         inline Material* makeShadow() const {
-            IntrusivePointer<IShader> shader(shaderProvider.loadShadow());
+            IntrusivePointer<Shader> shader(shaderProvider.loadShadow());
             return makeWithShader(shader.get());
         }
     };

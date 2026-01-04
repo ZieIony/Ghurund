@@ -13,6 +13,7 @@ namespace Ghurund::Engine {
 	private:
 		ResourceManager& resourceManager;
 		ITextureFactory& textureFactory;
+		IGPUMemoryManager& memoryManager;
 
 	protected:
         virtual Resource* loadInternal(
@@ -33,8 +34,9 @@ namespace Ghurund::Engine {
 	public:
 		MaterialLoader(
 			ResourceManager& resourceManager,
-			ITextureFactory& textureFactory
-		):resourceManager(resourceManager), textureFactory(textureFactory) {
+			ITextureFactory& textureFactory,
+			IGPUMemoryManager& memoryManager
+		):resourceManager(resourceManager), textureFactory(textureFactory), memoryManager(memoryManager) {
 		}
 
 		Material* loadFromXml(const tinyxml2::XMLElement& xml, const DirectoryPath& workingDir);

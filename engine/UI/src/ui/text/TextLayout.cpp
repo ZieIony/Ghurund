@@ -88,10 +88,11 @@ namespace Ghurund::UI {
 		for (auto& line : lines) {
 			for (auto& span : line.Spans) {
 				auto mesh = IntrusivePointer<Resource>(textMeshFactory.makeMesh(line.Characters, span));
+				auto material = IntrusivePointer<Material>(textMaterial->clone());
 				// TODO: support multiple materials
 				TextureParameter* colorTextureParameter = (TextureParameter*)material->Parameters.get("colorTexture");
 				colorTextureParameter->Value = IntrusivePointer<ITexture>(textureFactory.makeTexture(*span.textStyle->Atlas->Image)).get();
-				textMeshes.add(mesh);
+				textMeshes.add({ mesh, material });
 			}
 		}
 	}
@@ -130,14 +131,13 @@ namespace Ghurund::UI {
 
 	void TextLayout::draw(RenderGroup& group, const XMFLOAT2& position) {
 		if (!valid)
-			refresh();
-		auto material = IntrusivePointer<Material>(textMaterial->clone());
-		Float2Parameter* positionParameter = (Float2Parameter*)material->Parameters.get("position");
-		positionParameter->Value = position;
+			return;
 		for (auto& mesh : textMeshes) {
+			Float2Parameter* positionParameter = (Float2Parameter*)mesh.material->Parameters.get("position");
+			positionParameter->Value = position;
 			group.objects.add({
-				mesh,
-				material,
+				mesh.mesh,
+				mesh.material,
 				{ position.x, position.y, 0 }
 			});
 		}

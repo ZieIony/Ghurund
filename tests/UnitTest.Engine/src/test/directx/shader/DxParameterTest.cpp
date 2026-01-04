@@ -84,9 +84,9 @@ public:
             List<ConstantBuffer*> constantBuffers;
             List<TextureConstant*> textures;
             List<Sampler*> samplers;
-            shaderCompiler->initConstants(*shaderProgram.get(), constantBuffers, textures, samplers);
+            /*shaderCompiler->initConstants(*shaderProgram.get(), constantBuffers, textures, samplers);
 
-            /*auto alpha = constantBuffers[0]->getParameter("alpha");
+            auto alpha = constantBuffers[0]->getParameter("alpha");
             verifyParameter<float>(alpha, "alpha", 0.3f);
 
             auto size = constantBuffers[0]->getParameter("size");
@@ -116,7 +116,7 @@ public:
             List<ConstantBuffer*> constantBuffers;
             List<TextureConstant*> textures;
             List<Sampler*> samplers;
-            shaderCompiler->initConstants(*shaderProgram.get(), constantBuffers, textures, samplers);
+            //shaderCompiler->initConstants(*shaderProgram.get(), constantBuffers, textures, samplers);
 
             //auto view = constantBuffers[0]->getParameter("view");
             //verifyParameter<::DirectX::XMFLOAT4X4>(view, "view", ::DirectX::XMFLOAT4X4());

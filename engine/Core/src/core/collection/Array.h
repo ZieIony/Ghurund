@@ -78,32 +78,32 @@ namespace Ghurund::Core {
             return ArrayIterator<Value>(v);
         }
 
-        inline ArrayIterator<const Value> begin() const {
-            return ArrayIterator<const Value>(v);
+        inline ConstArrayIterator<Value> begin() const {
+            return ConstArrayIterator<Value>(v);
         }
 
         inline ArrayIterator<Value> end() {
             return ArrayIterator<Value>(v + size);
         }
 
-        inline ArrayIterator<const Value> end() const {
-            return ArrayIterator<const Value>(v + size);
+        inline ConstArrayIterator<Value> end() const {
+            return ConstArrayIterator<Value>(v + size);
         }
 
         inline ReverseArrayIterator<Value> rbegin() {
             return ReverseArrayIterator<Value>(v + size - 1);
         }
 
-        inline ReverseArrayIterator<const Value> rbegin() const {
-            return ReverseArrayIterator<const Value>(v + size - 1);
+        inline ConstReverseArrayIterator<Value> rbegin() const {
+            return ConstReverseArrayIterator<Value>(v + size - 1);
         }
 
         inline ReverseArrayIterator<Value> rend() {
             return ReverseArrayIterator<Value>(v - 1);
         }
 
-        inline ReverseArrayIterator<const Value> rend() const {
-            return ReverseArrayIterator<const Value>(v - 1);
+        inline ConstReverseArrayIterator<Value> rend() const {
+            return ConstReverseArrayIterator<Value>(v - 1);
         }
 
         inline size_t indexOf(const Value& item) const {

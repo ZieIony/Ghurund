@@ -9,17 +9,16 @@ namespace Ghurund::UI::DirectX {
 
 	class DxTextMeshFactory:public ITextMeshFactory {
 	private:
-		DxGraphics& graphics;
-		CommandList& commandList;
+		DxGPUMemoryManager& memoryManager;
 
 	public:
-		DxTextMeshFactory(DxGraphics& graphics, CommandList& commandList):graphics(graphics), commandList(commandList) {}
+		DxTextMeshFactory(DxGPUMemoryManager& memoryManager):memoryManager(memoryManager) {}
 
 		virtual Resource* makeMesh(const List<CharacterInfo>& characters, const TextSpan& span) const {
 			auto meshData = makeIntrusive<TextMesh>();
 			meshData->init(characters, span);
 			auto mesh = makeIntrusive<DxMesh>();
-			mesh->init(meshData.ref(), graphics, commandList);
+			mesh->init(meshData.ref(), memoryManager);
 			mesh->addReference();
 			return mesh.get();
 		}

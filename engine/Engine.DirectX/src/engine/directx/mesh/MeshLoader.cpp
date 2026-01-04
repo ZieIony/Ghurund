@@ -10,7 +10,7 @@ namespace Ghurund::Engine::DirectX {
     ) {
         DxMesh* mesh = makeResource<DxMesh>();
         MeshData* meshData = (MeshData*)meshDataLoader.load(stream, workingDir, format, options);
-        mesh->init(*meshData, graphics, commandList);
+        mesh->init(*meshData, memoryManager);
         meshData->release();
         return mesh;
     }

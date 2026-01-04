@@ -2,6 +2,7 @@
 
 #include "TextureInput.h"
 #include "ValueInput.h"
+#include "BufferInput.h"
 
 #include "core/resource/Resource.h"
 #include "engine/parameter/Parameter.h"
@@ -9,7 +10,7 @@
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
 
-    class IShader:public Resource {
+    class Shader:public Resource {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -19,12 +20,13 @@ namespace Ghurund::Engine {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = IShader::GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = Shader::GET_TYPE();
 #pragma endregion
 
     protected:
         bool isTransparencyEnabled = false;
         List<ValueInput> valueInputs;
+        List<BufferInput> bufferInputs;
         List<TextureInput> textureInputs;
 
     public:
@@ -39,6 +41,12 @@ namespace Ghurund::Engine {
         }
 
         __declspec(property(get = getValueInputs)) const List<ValueInput>& ValueInputs;
+
+        inline const List<BufferInput>& getBufferInputs() const {
+            return bufferInputs;
+        }
+
+        __declspec(property(get = getBufferInputs)) const List<BufferInput>& BufferInputs;
 
         inline const List<TextureInput>& getTextureInputs() const {
             return textureInputs;

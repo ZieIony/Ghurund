@@ -12,15 +12,17 @@ namespace Ghurund::Engine {
         ParameterManager& parameterManager;
         IShaderProvider& shaderProvider;
         TextureProvider& textureProvider;
+        IGPUMemoryManager& memoryManager;
 
-        Material* makeWithShader(IShader *shader) const;
+        Material* makeWithShader(Shader *shader) const;
 
     public:
         MaterialProvider(
             ParameterManager& parameterManager,
             IShaderProvider& shaderProvider,
-            TextureProvider& textureProvider
-		):parameterManager(parameterManager), shaderProvider(shaderProvider), textureProvider(textureProvider) {
+            TextureProvider& textureProvider,
+            IGPUMemoryManager& memoryManager
+		):parameterManager(parameterManager), shaderProvider(shaderProvider), textureProvider(textureProvider), memoryManager(memoryManager) {
 		}
 
         Material* makeBasic(ITexture* texture = nullptr) const;

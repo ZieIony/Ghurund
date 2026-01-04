@@ -110,7 +110,7 @@ namespace Ghurund::Engine::DirectX {
 		const Array<SharedPointer<DxShaderProgram>>& programs,
 		ShaderSettings shaderSettings
 	) {
-		List<ConstantBuffer*> constantBuffers;
+		List<BufferConstant*> constantBuffers;
 		List<TextureConstant*> textures;
 		List<Sampler*> samplers;
 		for (auto& program : programs)
@@ -218,7 +218,7 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> DxShaderCompiler::makeRootSignature(
-		const List<ConstantBuffer*>& constantBuffers,
+		const List<BufferConstant*>& constantBuffers,
 		const List<TextureConstant*>& textures,
 		const List<Sampler*>& samplers
 	) {
@@ -243,7 +243,7 @@ namespace Ghurund::Engine::DirectX {
 		Array<D3D12_STATIC_SAMPLER_DESC> samplerDescs(samplers.Size);
 		for (size_t i = 0; i < samplers.Size; i++) {
 			samplers[i]->build();
-			samplerDescs[i] = samplers.get(i)->samplerDesc;
+			samplerDescs[i] = samplers[i]->samplerDesc;
 		}
 
 		CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc = {};
@@ -258,7 +258,8 @@ namespace Ghurund::Engine::DirectX {
 		ComPtr<ID3DBlob> signature;
 		ComPtr<ID3DBlob> error;
 		if (FAILED(D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error))) {
-			auto text = std::format(_T("D3D12SerializeRootSignature() failed\n%hs"), error->GetBufferPointer());
+			AString errorMessage = (const char*)error->GetBufferPointer();
+			auto text = std::format(_T("D3D12SerializeRootSignature() failed:\n{}"), convertText<char, wchar_t>(errorMessage));
 			Logger::log(LogType::ERR0R, text.c_str());
 			throw CallFailedException();
 		}
@@ -272,7 +273,7 @@ namespace Ghurund::Engine::DirectX {
 
 	void DxShaderCompiler::initConstants(
 		const DxShaderProgram& program,
-		List<ConstantBuffer*>& constantBuffers,
+		List<BufferConstant*>& constantBuffers,
 		List<TextureConstant*>& textures,
 		List<Sampler*>& samplers
 	) {
@@ -280,6 +281,8 @@ namespace Ghurund::Engine::DirectX {
 		D3DReflect(program.ByteCode.Data, program.ByteCode.Size, IID_ID3D12ShaderReflection, (void**)&reflector);
 		D3D12_SHADER_DESC desc;
 		reflector->GetDesc(&desc);
+
+		auto visibility = program.Type.Visibility;
 
 		for (unsigned int i = 0; i < desc.BoundResources; i++) {
 			D3D12_SHADER_INPUT_BIND_DESC bindDesc;
@@ -291,42 +294,38 @@ namespace Ghurund::Engine::DirectX {
 				ID3D12ShaderReflectionConstantBuffer* constantBuffer = reflector->GetConstantBufferByName(bindDesc.Name);
 				D3D12_SHADER_BUFFER_DESC bufferDesc;
 				constantBuffer->GetDesc(&bufferDesc);
-				ConstantBuffer* cb = [&] {
-					for (size_t i = 0; i < constantBuffers.Size; i++) {
-						if (strcmp(bindDesc.Name, constantBuffers[i]->Name.Data) == 0) {
-							constantBuffers[i]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
-							return constantBuffers[i];
-						}
-					}
-					ConstantBuffer* cb = ghnew ConstantBuffer(bindDesc.Name, bindDesc.BindPoint, program.getType().getVisibility());
-					cb->init(graphics, bufferDesc);
+				size_t index = constantBuffers.find([&](auto& item) {return strcmp(bindDesc.Name, item->Name.Data) == 0; });
+				if (index != constantBuffers.Size) {
+					constantBuffers[index]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
+					constantBuffers[index]->init(*constantBuffer, bufferDesc);
+				} else {
+					BufferConstant* cb = ghnew BufferConstant(bindDesc.Name, bindDesc.BindPoint, visibility);
+					cb->init(*constantBuffer, bufferDesc);
 					constantBuffers.add(cb);
-					return cb;
-				}();
-				cb->initVariables(constantBuffer, bufferDesc);
+				}
 			}
 			break;
 			case D3D_SIT_TEXTURE:
-				for (size_t i = 0; i < textures.Size; i++) {
-					if (strcmp(bindDesc.Name, textures[i]->Name.Data) == 0) {
-						textures[i]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
-						goto bufferMerged;
-					}
+			{
+				size_t index = textures.find([&](auto& item) {return strcmp(bindDesc.Name, item->Name.Data) == 0; });
+				if (index != textures.Size) {
+					textures[index]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
+				} else {
+					textures.add(ghnew TextureConstant(bindDesc.Name, bindDesc.BindPoint, visibility));
 				}
-				textures.add(ghnew TextureConstant(bindDesc.Name, bindDesc.BindPoint, program.getType().getVisibility()));
-				break;
-			case D3D_SIT_SAMPLER:
-				for (size_t i = 0; i < samplers.Size; i++) {
-					if (strcmp(bindDesc.Name, samplers[i]->Name.Data) == 0) {
-						samplers[i]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
-						goto bufferMerged;
-					}
-				}
-				samplers.add(ghnew Sampler(bindDesc.Name, bindDesc.BindPoint, program.getType().getVisibility()));
-				break;
 			}
-
-		bufferMerged:;
+			break;
+			case D3D_SIT_SAMPLER:
+			{
+				size_t index = samplers.find([&](auto& item) {return strcmp(bindDesc.Name, item->Name.Data) == 0; });
+				if (index != samplers.Size) {
+					samplers[index]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
+				} else {
+					samplers.add(ghnew Sampler(bindDesc.Name, bindDesc.BindPoint, visibility));
+				}
+			}
+			break;
+			}
 		}
 
 		reflector->Release();

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "engine/directx/memory/DxGPUMemoryManager.h"
 #include "ui/UIContext.h"
 
 namespace Ghurund::Core {
@@ -18,15 +19,13 @@ namespace Ghurund::UI::DirectX {
 
     class DxUIContext:public UIContext {
     private:
-        DxGraphics& graphics;
-        CommandList& commandList;
+        DxGPUMemoryManager& memoryManager;
         IntrusivePointer<Resource> mesh;
 
     public:
         DxUIContext(
             ::Ghurund::Core::Window& window,
-            DxGraphics& graphics,
-            CommandList& commandList,
+            DxGPUMemoryManager& memoryManager,
             ITextMeshFactory& textMeshFactory,
             ITextureFactory& textureFactory
         );

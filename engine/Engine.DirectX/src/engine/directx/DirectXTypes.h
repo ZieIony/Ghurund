@@ -2,7 +2,7 @@
 
 #include "core/reflection/Type.h"
 #include "engine/directx/buffer/DescriptorHeap.h"
-#include "engine/directx/memory/GPUResourceFactory.h"
+#include "engine/directx/memory/DxGPUMemoryManager.h"
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
@@ -21,5 +21,5 @@ namespace Ghurund::Core {
     const Type& getType<Ghurund::Engine::DirectX::DescriptorAllocator>();
 
     template<>
-    const Type& getType<Ghurund::Engine::DirectX::GPUResourceFactory>();
+    const Type& getType<Ghurund::Engine::DirectX::DxGPUMemoryManager>();
 }

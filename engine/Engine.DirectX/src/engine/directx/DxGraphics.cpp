@@ -15,7 +15,6 @@ namespace Ghurund::Engine::DirectX {
         static auto PROPERTY_COPYQUEUE = Property<DxGraphics, ID3D12CommandQueue*>("CopyQueue", &getCopyQueue);
         static auto PROPERTY_FACTORY = Property<DxGraphics, IDXGIFactory4*>("Factory", &getFactory);
         static auto PROPERTY_DESCRIPTORALLOCATOR = Property<DxGraphics, Ghurund::Engine::DirectX::DescriptorAllocator&>("DescriptorAllocator", &getDescriptorAllocator);
-        static auto PROPERTY_RESOURCEFACTORY = Property<DxGraphics, GPUResourceFactory&>("ResourceFactory", &getResourceFactory);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<DxGraphics>()
             .withProperty(PROPERTY_DEVICE)
@@ -24,7 +23,6 @@ namespace Ghurund::Engine::DirectX {
             .withProperty(PROPERTY_COPYQUEUE)
             .withProperty(PROPERTY_FACTORY)
             .withProperty(PROPERTY_DESCRIPTORALLOCATOR)
-            .withProperty(PROPERTY_RESOURCEFACTORY)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
@@ -128,8 +126,6 @@ namespace Ghurund::Engine::DirectX {
         // TODO: do it properly
         allocator.allocate(*this, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
         allocator.allocate(*this, D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
-
-        resourceFactory = ghnew GPUResourceFactory(*this);
     }
 
     void DxGraphics::uninitDevice() {
@@ -145,8 +141,6 @@ namespace Ghurund::Engine::DirectX {
             copyQueue->Release();
             copyQueue = nullptr;
         }
-        delete resourceFactory;
-        resourceFactory = nullptr;
         if (device) {
             device->Release();
             device = nullptr;

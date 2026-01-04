@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\directx\memory\DxGPUMemoryManager.h" />
     <ClInclude Include="src\engine\directx\DxGraphicsFeature.h" />
     <ClInclude Include="src\engine\directx\DxGraphicsFeatureFactory.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\ShaderCompilationResult.h" />
@@ -115,17 +116,16 @@
     <ClInclude Include="src\engine\directx\buffer\DepthBuffer.h" />
     <ClInclude Include="src\engine\directx\buffer\DescriptorHeap.h" />
     <ClInclude Include="src\engine\directx\buffer\DynamicBuffer.h" />
-    <ClInclude Include="src\engine\directx\buffer\GPUBuffer.h" />
+    <ClInclude Include="src\engine\directx\shader\DxConstantBuffer.h" />
     <ClInclude Include="src\engine\directx\buffer\RenderTarget.h" />
-    <ClInclude Include="src\engine\directx\memory\GPUResourceFactory.h" />
     <ClInclude Include="src\engine\directx\memory\GPUResourcePointer.h" />
     <ClInclude Include="src\engine\directx\memory\HeapAllocator.h" />
     <ClInclude Include="src\engine\directx\mesh\DxMesh.h" />
     <ClInclude Include="src\engine\directx\mesh\MeshLoader.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\CompilationTarget.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\CompilerInclude.h" />
-    <ClInclude Include="src\engine\directx\shader\variables\ConstantBuffer.h" />
-    <ClInclude Include="src\engine\directx\shader\variables\ConstantBufferField.h" />
+    <ClInclude Include="src\engine\directx\shader\variables\BufferConstant.h" />
+    <ClInclude Include="src\engine\directx\shader\variables\BufferConstantField.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\DxCompilationException.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\DxEntrypointNotFoundException.h" />
     <ClInclude Include="src\engine\directx\shader\DxShader.h" />
@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="src\engine\directx\CommandList.cpp" />
     <ClCompile Include="src\engine\directx\DirectXTypes.cpp" />
+    <ClCompile Include="src\engine\directx\memory\DxGPUMemoryManager.cpp" />
     <ClCompile Include="src\engine\directx\DxGraphics.cpp" />
     <ClCompile Include="src\engine\directx\DxGraphicsFeature.cpp" />
     <ClCompile Include="src\engine\directx\DxRenderer.cpp" />
@@ -158,16 +159,15 @@
     <ClCompile Include="src\engine\directx\adapter\GraphicsAdapter.cpp" />
     <ClCompile Include="src\engine\directx\buffer\DepthBuffer.cpp" />
     <ClCompile Include="src\engine\directx\buffer\DescriptorHeap.cpp" />
-    <ClCompile Include="src\engine\directx\buffer\GPUBuffer.cpp" />
+    <ClCompile Include="src\engine\directx\shader\DxConstantBuffer.cpp" />
     <ClCompile Include="src\engine\directx\buffer\RenderTarget.cpp" />
-    <ClCompile Include="src\engine\directx\memory\GPUResourceFactory.cpp" />
     <ClCompile Include="src\engine\directx\memory\GPUResourcePointer.cpp" />
     <ClCompile Include="src\engine\directx\memory\HeapAllocator.cpp" />
     <ClCompile Include="src\engine\directx\mesh\DxMesh.cpp" />
     <ClCompile Include="src\engine\directx\mesh\MeshLoader.cpp" />
     <ClCompile Include="src\engine\directx\shader\compiler\CompilationTarget.cpp" />
     <ClCompile Include="src\engine\directx\shader\compiler\CompilerInclude.cpp" />
-    <ClCompile Include="src\engine\directx\shader\variables\ConstantBuffer.cpp" />
+    <ClCompile Include="src\engine\directx\shader\variables\BufferConstant.cpp" />
     <ClCompile Include="src\engine\directx\shader\DxShader.cpp" />
     <ClCompile Include="src\engine\directx\shader\compiler\DxShaderCompiler.cpp" />
     <ClCompile Include="src\engine\directx\shader\DxShaderLoader.cpp" />

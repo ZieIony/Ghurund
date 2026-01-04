@@ -34,7 +34,8 @@ public:
             graphics.init();
             auto commandList = makeIntrusive<CommandList>();
             commandList->init(graphics, graphics.CopyQueue);
-            dxMesh->init(*mesh.get(), graphics, *commandList.get());
+            DxGPUMemoryManager memoryManager(graphics, commandList.ref());
+            dxMesh->init(*mesh.get(), memoryManager);
 
             Assert::IsTrue(mesh->Valid);
         }

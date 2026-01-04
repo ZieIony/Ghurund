@@ -7,14 +7,14 @@
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
 
-	struct ConstantBufferField {
+	struct BufferConstantField {
 		D3D_SHADER_VARIABLE_CLASS variableClass;
 		D3D_SHADER_VARIABLE_TYPE variableType;
 		AString name;
 		size_t size, offset;
 		const void* defaultValue;
 
-		ConstantBufferField(
+		BufferConstantField(
 			D3D_SHADER_VARIABLE_CLASS variableClass,
 			D3D_SHADER_VARIABLE_TYPE variableType,
 			AString name,
@@ -32,7 +32,7 @@ namespace Ghurund::Engine::DirectX {
 		}()) {
 		}
 
-		ConstantBufferField(const ConstantBufferField& other):
+		BufferConstantField(const BufferConstantField& other):
 			variableClass(other.variableClass),
 			variableType(other.variableType),
 			name(other.name),
@@ -49,7 +49,7 @@ namespace Ghurund::Engine::DirectX {
 		}()) {
 		}
 
-		ConstantBufferField(ConstantBufferField&& other):
+		BufferConstantField(BufferConstantField&& other):
 			variableClass(other.variableClass),
 			variableType(other.variableType),
 			name(other.name),
@@ -59,7 +59,7 @@ namespace Ghurund::Engine::DirectX {
 			other.defaultValue = nullptr;
 		}
 
-		~ConstantBufferField() {
+		~BufferConstantField() {
 			delete defaultValue;
 		}
 	};

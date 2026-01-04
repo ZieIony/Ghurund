@@ -10,8 +10,7 @@ namespace Ghurund::Engine::DirectX {
 
     class MeshLoader:public Loader {
     private:
-        DxGraphics& graphics;
-        CommandList& commandList;
+        DxGPUMemoryManager& memoryManager;
         MeshDataLoader meshDataLoader;
 
     protected:
@@ -23,6 +22,6 @@ namespace Ghurund::Engine::DirectX {
         ) override;
 
     public:
-        MeshLoader(DxGraphics& graphics, CommandList& commandList):graphics(graphics), commandList(commandList) {}
+        MeshLoader(DxGPUMemoryManager& memoryManager):memoryManager(memoryManager) {}
     };
 }

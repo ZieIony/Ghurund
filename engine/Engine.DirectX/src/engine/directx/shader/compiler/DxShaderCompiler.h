@@ -7,9 +7,9 @@
 
 #include "core/IUnknownImpl.h"
 #include "core/string/String.h"
+#include "engine/directx/shader/DxConstantBuffer.h"
 #include "engine/directx/shader/DxShader.h"
 #include "engine/directx/shader/DxShaderType.h"
-#include "engine/directx/shader/variables/ConstantBuffer.h"
 #include "engine/directx/shader/variables/Sampler.h"
 #include "engine/directx/shader/variables/TextureConstant.h"
 #include "engine/graphics/mesh/VertexStream.h"
@@ -49,14 +49,14 @@ namespace Ghurund::Engine::DirectX {
 		);
 
 		OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> makeRootSignature(
-			const List<ConstantBuffer*>& constantBuffers,
+			const List<BufferConstant*>& constantBuffers,
 			const List<TextureConstant*>& textures,
 			const List<Sampler*>& samplers
 		);
 
 		void initConstants(
 			const DxShaderProgram& program,
-			List<ConstantBuffer*>& constantBuffers,
+			List<BufferConstant*>& constantBuffers,
 			List<TextureConstant*>& textures,
 			List<Sampler*>& samplers
 		);

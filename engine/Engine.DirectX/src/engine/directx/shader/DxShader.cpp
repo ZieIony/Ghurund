@@ -1,11 +1,13 @@
 #include "ghedxpch.h"
 #include "DxShader.h"
 
+#include "DxConstantBuffer.h"
+
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 #include "engine/directx/texture/DxTexture.h"
 #include "engine/parameter/ValueParameter.h"
-#include "variables/ConstantBuffer.h"
+#include "variables/BufferConstant.h"
 #include "variables/Sampler.h"
 #include "variables/TextureConstant.h"
 
@@ -23,12 +25,12 @@ namespace Ghurund::Engine::DirectX {
 		if (pipelineState != nullptr)
 			pipelineState->Release();
 
-		constantBuffers.deleteItems();
-		textures.deleteItems();
+		bufferConstants.deleteItems();
+		textureConstants.deleteItems();
 		samplers.deleteItems();
 	}
 
-	InputType DxShader::makeInputByType(
+	ValueInputType DxShader::makeInputByType(
 		D3D_SHADER_VARIABLE_CLASS _class,
 		D3D_SHADER_VARIABLE_TYPE type,
 		const AString& name,
@@ -37,28 +39,28 @@ namespace Ghurund::Engine::DirectX {
 		if (_class == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_SCALAR) {
 			if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_INT) {
 				if (size == IntParameter::SIZE)
-					return InputType::INT;
+					return ValueInputType::INT;
 			} else if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
 				if (size == FloatParameter::SIZE)
-					return InputType::FLOAT;
+					return ValueInputType::FLOAT;
 			}
 		} else if (_class == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_VECTOR) {
 			if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_INT) {
 				if (size == Int2Parameter::SIZE)
-					return InputType::INT2;
+					return ValueInputType::INT2;
 			} else if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
 				if (size == Float2Parameter::SIZE) {
-					return InputType::FLOAT2;
+					return ValueInputType::FLOAT2;
 				} else if (size == Float3Parameter::SIZE) {
-					return InputType::FLOAT3;
+					return ValueInputType::FLOAT3;
 				} else if (size == Float4Parameter::SIZE) {
-					return InputType::FLOAT4;
+					return ValueInputType::FLOAT4;
 				}
 			}
 		} else if (_class == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_MATRIX_ROWS) {
 			if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
 				if (size == MatrixParameter::SIZE) {
-					return InputType::MATRIX;
+					return ValueInputType::MATRIX;
 				}
 			}
 		}
@@ -73,25 +75,19 @@ namespace Ghurund::Engine::DirectX {
 
 	void DxShader::applyInputs(CommandList& commandList) {
 		size_t vi = 0;
-		for (auto& cb : constantBuffers) {
-			for (auto& v : cb->Variables) {
-				auto& input = valueInputs[vi];
-				auto value = input.value ? input.value : v.defaultValue;
-				if (value)
-					cb->setValue(value, v.size, v.offset);
-				vi++;
-			}
-			cb->set(commandList);
+		for (size_t i = 0; i < bufferConstants.Size; i++) {
+			DxConstantBuffer* buffer = (DxConstantBuffer*)BufferInputs[i].constantBuffer;
+			buffer->set(commandList, bufferConstants[i]->BindSlot);
 		}
 
-		for (size_t i = 0; i < textures.Size; i++) {
+		for (size_t i = 0; i < textureConstants.Size; i++) {
 			DxTexture* texture = (DxTexture*)textureInputs[i].Value;
 			if (!texture) {
-				auto text = std::format(_T("Parameter for variable '{}' is missing.\n"), textures[i]->Name);
+				auto text = std::format(_T("Parameter for variable '{}' is missing.\n"), textureInputs[i].Name);
 				Logger::logOnce(LogType::WARNING, text.c_str(), i);
 				continue;
 			}
-			texture->set(commandList, textures[i]->BindSlot);
+			texture->set(commandList, textureConstants[i]->BindSlot);
 		}
 	}
 
@@ -99,28 +95,30 @@ namespace Ghurund::Engine::DirectX {
 		const Array<VertexRole>& layout,
 		OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> rootSignature,
 		OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,
-		const List<ConstantBuffer*>& constantBuffers,
-		const List<TextureConstant*>& textures,
+		const List<BufferConstant*>& bufferConstants,
+		const List<TextureConstant*>& textureConstants,
 		const List<Sampler*>& samplers,
 		bool isTransparencyEnabled
 	) {
 		this->layout = layout;
 		this->rootSignature = rootSignature.reset();
 		this->pipelineState = pipelineState.reset();
-		this->constantBuffers = constantBuffers;
-		for (auto& cb : constantBuffers) {
-			for (auto& v : cb->Variables) {
-				InputType type = makeInputByType(
+		this->bufferConstants = bufferConstants;
+		for (auto& cb : bufferConstants) {
+			List<ValueInput> cbInputs;
+			for (auto& v : cb->Fields) {
+				ValueInputType type = makeInputByType(
 					v.variableClass,
 					v.variableType,
 					v.name,
 					v.size
 				);
-				valueInputs.add(ValueInput(v.name, type, v.size, v.offset, v.defaultValue));
+				cbInputs.add(ValueInput(v.name, type, v.size, v.offset, v.defaultValue));
 			}
+			bufferInputs.add(BufferInput(cb->Name, cbInputs));
 		}
-		this->textures = textures;
-		for (auto& t : textures)
+		this->textureConstants = textureConstants;
+		for (auto& t : textureConstants)
 			textureInputs.add(TextureInput(t->Name));
 		this->samplers = samplers;
 		this->isTransparencyEnabled = isTransparencyEnabled;

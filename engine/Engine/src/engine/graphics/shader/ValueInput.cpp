@@ -6,19 +6,19 @@
 namespace Ghurund::Engine {
 	BaseValueParameter* ValueInput::makeParameter() const {
 		switch (type) {
-		case InputType::INT:
+		case ValueInputType::INT:
 			return makeParameter<IntParameter>();
-		case InputType::INT2:
+		case ValueInputType::INT2:
 			return makeParameter<Int2Parameter>();
-		case InputType::FLOAT:
+		case ValueInputType::FLOAT:
 			return makeParameter<FloatParameter>();
-		case InputType::FLOAT2:
+		case ValueInputType::FLOAT2:
 			return makeParameter<Float2Parameter>();
-		case InputType::FLOAT3:
+		case ValueInputType::FLOAT3:
 			return makeParameter<Float3Parameter>();
-		case InputType::FLOAT4:
+		case ValueInputType::FLOAT4:
 			return makeParameter<Float4Parameter>();
-		case InputType::MATRIX:
+		case ValueInputType::MATRIX:
 			return makeParameter<MatrixParameter>();
 		}
 		throw InvalidParamException();

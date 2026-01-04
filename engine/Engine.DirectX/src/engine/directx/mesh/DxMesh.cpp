@@ -12,129 +12,49 @@ namespace Ghurund::Engine::DirectX {
 		return TYPE;
 	}
 
-	void DxMesh::init(const MeshData& mesh, DxGraphics& graphics, CommandList& commandList) {
+	void DxMesh::init(const MeshData& mesh, DxGPUMemoryManager& memoryManager) {
 		if (!mesh.Valid)
 			throw InvalidParamException("Mesh is not valid.\n");
-		if (commandList.State == CommandListState::FINISHED)
-			commandList.reset();
+		memoryManager.resetUpload();
 
-		initVertexBuffers(mesh.VertexStreams, mesh.VertexCount, graphics, commandList);
-		initIndexBuffer(mesh.Indices, mesh.IndexCount, graphics, commandList);
+		initVertexBuffers(mesh.VertexStreams, mesh.VertexCount, memoryManager);
+		initIndexBuffer(mesh.Indices, mesh.IndexCount, memoryManager);
 
-		commandList.finish();
-		commandList.wait();
+		memoryManager.executeUploads();
 
 		uploaded = true;
 	}
 
-	void DxMesh::initVertexBuffers(const Array<VertexStream>& vertexStreams, uint32_t vertexCount, DxGraphics& graphics, CommandList& commandList) {
+	void DxMesh::initVertexBuffers(const Array<VertexStream>& vertexStreams, uint32_t vertexCount, DxGPUMemoryManager& memoryManager) {
 		roles.clear();
 		vertexBuffers.clear();
 		vertexBuffersView.clear();
-		vertexUploadHeaps.clear();
 		for (size_t i = 0; i < vertexStreams.Size; i++) {
 			const VertexStream& stream = vertexStreams[i];
 
 			unsigned int vertexBufferSize = stream.vertexSize * vertexCount;
 
-			ComPtr<ID3D12Resource> vertexBuffer;
-			auto defaultHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
-			auto resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize);
-			if (FAILED(graphics.Device->CreateCommittedResource(
-				&defaultHeapProperties,
-				D3D12_HEAP_FLAG_NONE,
-				&resourceDesc,
-				D3D12_RESOURCE_STATE_COMMON,
-				nullptr,
-				IID_PPV_ARGS(&vertexBuffer)))) {
-				Logger::log(LogType::ERR0R, _T("device->CreateCommittedResource() failed\n"));
-				throw CallFailedException("device->CreateCommittedResource() failed");
-			}
-
-			ComPtr<ID3D12Resource> vertexUploadHeap;
-			auto uploadHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-			if (FAILED(graphics.Device->CreateCommittedResource(
-				&uploadHeapProperties,
-				D3D12_HEAP_FLAG_NONE,
-				&resourceDesc,
-				D3D12_RESOURCE_STATE_GENERIC_READ,
-				nullptr,
-				IID_PPV_ARGS(&vertexUploadHeap)))) {
-				Logger::log(LogType::ERR0R, _T("device->CreateCommittedResource() failed\n"));
-				throw CallFailedException("device->CreateCommittedResource() failed");
-			}
-
-			D3D12_SUBRESOURCE_DATA vertexData = {};
-			vertexData.pData = stream.data.Data;
-			vertexData.RowPitch = vertexBufferSize;
-			vertexData.SlicePitch = vertexBufferSize;
-
-			// we are now creating a command with the command list to copy the data from
-			// the upload heap to the default heap
-			UpdateSubresources(commandList.get(), vertexBuffer.Get(), vertexUploadHeap.Get(), 0, 0, 1, &vertexData);
-
-			auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(vertexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
-			commandList.get()->ResourceBarrier(1, &barrier);
+			ComPtr<ID3D12Resource> vertexBuffer = memoryManager.makeVertexBuffer(stream.data);
 
 			D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
 			vertexBufferView.BufferLocation = vertexBuffer->GetGPUVirtualAddress();
 			vertexBufferView.StrideInBytes = stream.vertexSize;
 			vertexBufferView.SizeInBytes = vertexBufferSize;
 
-			// https://github.com/microsoft/DirectXTK12/blob/main/Src/ResourceUploadBatch.cpp
-			commandList.addResourceRef(vertexUploadHeap.Get());
-			commandList.addResourceRef(vertexBuffer.Get());
-
 			roles.add(stream.role);
 			vertexBuffers.add(vertexBuffer);
 			vertexBuffersView.add(vertexBufferView);
-			vertexUploadHeaps.add(vertexUploadHeap);
 		}
 	}
 
-	void DxMesh::initIndexBuffer(const Buffer& indices, uint32_t indexCount, DxGraphics& graphics, CommandList& commandList) {
-		size_t indexBufferSize = indices.Size;
+	void DxMesh::initIndexBuffer(const Buffer& buffer, uint32_t indexCount, DxGPUMemoryManager& memoryManager) {
+		size_t indexBufferSize = buffer.Size;
 		this->indexCount = indexCount;
-
-		auto defaultHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
-		auto resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(indexBufferSize);
-		if (FAILED(graphics.Device->CreateCommittedResource(
-			&defaultHeapProperties,
-			D3D12_HEAP_FLAG_NONE,
-			&resourceDesc,
-			D3D12_RESOURCE_STATE_COMMON,
-			nullptr,
-			IID_PPV_ARGS(&indexBuffer)))) {
-			Logger::log(LogType::ERR0R, _T("device->CreateCommittedResource() failed\n"));
-			throw CallFailedException("device->CreateCommittedResource() failed");
-		}
-
-		auto uploadHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-		if (FAILED(graphics.Device->CreateCommittedResource(
-			&uploadHeapProperties,
-			D3D12_HEAP_FLAG_NONE,
-			&resourceDesc,
-			D3D12_RESOURCE_STATE_GENERIC_READ,
-			nullptr,
-			IID_PPV_ARGS(&indexUploadHeap)))) {
-			Logger::log(LogType::ERR0R, _T("device->CreateCommittedResource() failed\n"));
-			throw CallFailedException("device->CreateCommittedResource() failed");
-		}
-
-		D3D12_SUBRESOURCE_DATA indexData = {};
-		indexData.pData = indices.Data;
-		indexData.RowPitch = indexBufferSize;
-		indexData.SlicePitch = indexBufferSize;
-
-		// we are now creating a command with the command list to copy the data from
-		// the upload heap to the default heap
-		UpdateSubresources(commandList.get(), indexBuffer.Get(), indexUploadHeap.Get(), 0, 0, 1, &indexData);
-
-		auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(indexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
-		commandList.get()->ResourceBarrier(1, &barrier);
+		
+		indexBuffer = memoryManager.makeIndexBuffer(buffer);
 
 		indexBufferView.BufferLocation = indexBuffer->GetGPUVirtualAddress();
-		uint8_t indexSize = indices.Size / indexCount;
+		uint8_t indexSize = buffer.Size / indexCount;
 		if (indexSize == 4) {
 			indexBufferView.Format = DXGI_FORMAT_R32_UINT;
 		} else if (indexSize == 2) {
@@ -144,9 +64,6 @@ namespace Ghurund::Engine::DirectX {
 			throw InvalidDataException("index size not supported");
 		}
 		indexBufferView.SizeInBytes = indexBufferSize;
-
-		commandList.addResourceRef(indexUploadHeap.Get());
-		commandList.addResourceRef(indexBuffer.Get());
 	}
 
 	void DxMesh::draw(CommandList& commandList, const Array<VertexRole>& layout) {

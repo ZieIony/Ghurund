@@ -69,7 +69,7 @@ public:
             List<ConstantBuffer*> constantBuffers;
             List<TextureConstant*> textures;
             List<Sampler*> samplers;
-            shaderCompiler->initConstants(*shaderProgram.get(), constantBuffers, textures, samplers);
+            //shaderCompiler->initConstants(*shaderProgram.get(), constantBuffers, textures, samplers);
 
             // not set anywhere
             /*auto time = (FloatParameter*)constantBuffers[0]->getParameter("time");
@@ -117,7 +117,7 @@ public:
             List<ConstantBuffer*> constantBuffers;
             List<TextureConstant*> textures;
             List<Sampler*> samplers;
-            shaderCompiler->initConstants(*shaderProgram.get(), constantBuffers, textures, samplers);
+            //shaderCompiler->initConstants(*shaderProgram.get(), constantBuffers, textures, samplers);
 
             /*auto teamColor = (Float4Parameter*)constantBuffers[0]->getParameter(teamColorName);
             Assert::IsNotNull(teamColor->RawValue);

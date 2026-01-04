@@ -3,9 +3,11 @@
 #include "Parameter.h"
 
 #include "core/reflection/StandardTypes.h"
+#include "core/reflection/TypeBuilder.h"
 #include "engine/graphics/shader/ValueInput.h"
 
 namespace Ghurund::Engine {
+	using namespace Ghurund::Core;
 
 	class BaseValueParameter:public Parameter {
 #pragma region reflection
