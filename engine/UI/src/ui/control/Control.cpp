@@ -75,6 +75,39 @@ namespace Ghurund::UI {
 		//loader.loadBindings()
 	}
 
+	void Control::onStateChanged() {
+		if (focusedParameter)
+			focusedParameter->Value = Focused ? 1.0f : 0.0f;
+	}
+
+	void Control::onMaterialChanged() {
+		if (material != nullptr) {
+			positionParameter = (Float2Parameter*)material->Parameters.get("position");
+			sizeParameter = (Float2Parameter*)material->Parameters.get("size");
+			alphaParameter = (FloatParameter*)material->Parameters.get("alpha");
+			enabledParameter = (BoolParameter*)material->Parameters.get("enabled");
+			if (enabledParameter)
+				enabledParameter->Value = enabled ? 1.0f : 0.0f;
+			focusedParameter = (BoolParameter*)material->Parameters.get("focused");
+			if (focusedParameter)
+				focusedParameter->Value = Focused ? 1.0f : 0.0f;
+		} else {
+			positionParameter = nullptr;
+			sizeParameter = nullptr;
+			alphaParameter = nullptr;
+			enabledParameter = nullptr;
+			focusedParameter = nullptr;
+		}
+	}
+
+	void Control::onContextChanged() {
+		auto context = Context;
+		if (context) {
+			mesh.set(context->makeControlMesh());
+		}
+		contextChanged();
+	}
+
 	void Control::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
 		if (material == nullptr)
 			return;
@@ -86,6 +119,15 @@ namespace Ghurund::UI {
 			material,
 			XMFLOAT3(parentPosition.x + position.x, parentPosition.y + position.y, 0)
 		});
+	}
+
+	bool Control::onMouseMotionEvent(const MouseMotionEventArgs& event) {
+		bool result = __super::onMouseMotionEvent(event);
+		if (!result && cursor) {
+			cursor->set();
+			return true;
+		}
+		return result;
 	}
 
 	bool Control::onMouseButtonEvent(const MouseButtonEventArgs& event) {
@@ -122,7 +164,7 @@ namespace Ghurund::UI {
 		const Control& c = (const Control&)other;
 		return cursor == c.cursor &&
 			size == c.size &&
-			visible == c.visible && enabled == c.enabled && focusable == c.focusable && roundToPixels == c.roundToPixels &&
+			visible == c.visible && enabled == c.enabled && focusable == c.focusable &&
 			*name == *c.name &&
 			position == c.position &&
 			needsLayout == c.needsLayout &&
@@ -346,15 +388,6 @@ namespace Ghurund::UI {
 		POINT p = { (LONG)pos.x, (LONG)pos.y };
 		//ClientToScreen(window.Handle, &p);
 		return XMFLOAT2{ (float)p.x, (float)p.y };
-	}
-
-	bool Control::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
-		bool result = __super::dispatchMouseMotionEvent(event);
-		if (!result && cursor) {
-			cursor->set();
-			return true;
-		}
-		return result;
 	}
 
 #ifdef _DEBUG

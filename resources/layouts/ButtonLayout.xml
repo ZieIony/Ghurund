@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ControlGroup xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<ControlContainer name="container"/>
+</ControlGroup>

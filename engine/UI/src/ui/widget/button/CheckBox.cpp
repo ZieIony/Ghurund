@@ -1,38 +1,13 @@
 #include "ghuipch.h"
 #include "CheckBox.h"
 
-#include "ui/theme/Theme.h"
-
 namespace Ghurund::UI {
 	void CheckBox::onStateChanged() {
-		/*if (drawable) {
-			if (checked) {
-				drawable->Drawable = Theme::TEXTURE_CHECKBOX_CHECKED;
-			} else {
-				drawable->Drawable = Theme::TEXTURE_CHECKBOX_UNCHECKED;
-			}
-			if (!Enabled) {
-				drawable->Tint = Theme::COLOR_DISABLED_ONBACKGROUND;
-			} else if (interactionHandler.isPressed) {
-				if (checked) {
-					drawable->Tint = Theme::COLOR_ACCENT;
-				} else {
-					drawable->Tint = Theme::COLOR_PRIMARY_ONBACKGROUND;
-				}
-			} else if (interactionHandler.isHovered || Focused) {
-				if (checked) {
-					drawable->Tint = Theme::COLOR_ACCENT;
-				} else {
-					drawable->Tint = Theme::COLOR_SECONDARY_ONBACKGROUND;
-				}
-			} else {
-				if (checked) {
-					drawable->Tint = Theme::COLOR_ACCENT;
-				} else {
-					drawable->Tint = Theme::COLOR_SECONDARY_ONBACKGROUND;
-				}
-			}
-		}*/
+		__super::onStateChanged();
+		if (checkedParameter)
+			checkedParameter->Value = checked;
+		if (checkedParameter2)
+			checkedParameter2->Value = checked;
 	}
 
 	const Ghurund::Core::Type& CheckBox::GET_TYPE() {

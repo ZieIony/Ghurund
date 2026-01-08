@@ -32,25 +32,9 @@ namespace Ghurund::UI {
         Float4Parameter* tintParameter;
 
     protected:
-        virtual void onMaterialChanged() override {
-            if (Material) {
-                imageParameter = (TextureParameter*)Material->Parameters.get("image");
-                imageParameter->Value = image.get();
-                tintParameter = (Float4Parameter*)Material->Parameters.get("tint");
-                tintParameter->Value = tint.toVector();
-            } else {
-                tintParameter = nullptr;
-            }
-        }
+        virtual void onMaterialChanged() override;
 
-        virtual void onThemeChanged() override {
-            const UI::Theme* theme = Theme;
-            if (theme) {
-                image.resolve(*theme);
-                if (imageParameter)
-                    imageParameter->Value = image.get();
-            }
-        }
+        virtual void onThemeChanged() override;
 
 	public:
 		inline void setImage(std::unique_ptr<TextureAttr> image) {

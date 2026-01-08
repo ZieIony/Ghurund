@@ -27,6 +27,18 @@ namespace Ghurund::UI {
 
         virtual void onLayout(float x, float y, float width, float height) override;
 
+        virtual bool onKeyEvent(const KeyEventArgs& event) override;
+
+        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override {
+            return __super::dispatchMouseButtonEvent(event.translate(scroll.x, scroll.y, event.Inside));
+        }
+
+        virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override {
+            return __super::dispatchMouseMotionEvent(event.translate(scroll.x, scroll.y, event.Inside));
+        }
+
+        virtual bool onMouseWheelEvent(const MouseWheelEventArgs& event);
+
     public:
         Event<Control> onScrolled = *this;
 
@@ -56,17 +68,5 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getMaxScroll)) const XMFLOAT2& MaxScroll;
-
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
-
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
-            return __super::dispatchMouseButtonEvent(event.translate(scroll.x, scroll.y, event.Inside));
-        }
-
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
-            return __super::dispatchMouseMotionEvent(event.translate(scroll.x, scroll.y, event.Inside));
-        }
-
-        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event);
     };
 }

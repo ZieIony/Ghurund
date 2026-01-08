@@ -8,7 +8,7 @@ namespace Ghurund::UI {
     public:
         WindowFrame() {}
 
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
+        //virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
     };
 
     class WindowContainer:Widget {

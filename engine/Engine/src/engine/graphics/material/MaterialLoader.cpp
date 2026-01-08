@@ -33,6 +33,7 @@ namespace Ghurund::Engine {
 						typedParameter->Value = texture.get();
 					} else if (parameter->Type == Float4Parameter::TYPE) {
 						Float4Parameter* typedParameter = (Float4Parameter*)parameter;
+						// TODO: load theme attributes or do binding
 						if (AString(valueAttribute->Value()).startsWith("#")) {
 							typedParameter->Value = Color::parse(valueAttribute->Value()).toVector();
 						}

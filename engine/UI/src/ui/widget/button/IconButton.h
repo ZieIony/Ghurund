@@ -3,7 +3,6 @@
 #include "ui/control/InteractionHandler.h"
 #include "ui/style/AttrProperty.h"
 #include "ui/style/ColorAttr.h"
-#include "ui/widget/StateIndicator.h"
 #include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
@@ -22,7 +21,6 @@ namespace Ghurund::UI {
 
 	private:
 		InteractionHandler interactionHandler = *this;
-		Ghurund::UI::StateIndicator* state = nullptr;
 		//PointerAttrProperty<DrawableAttr, Drawable> drawable;
 		NullableAttrProperty<ColorAttr, Color> tint;
 
@@ -46,11 +44,6 @@ namespace Ghurund::UI {
 			interactionHandler.clicked += [this](InteractionHandler&, const MouseClickedEventArgs& args) {
 				return clicked(args);
 			};
-		}
-
-		~IconButton() {
-			if (state)
-				state->release();
 		}
 
 		/*inline void setDrawable(std::unique_ptr<DrawableAttr> drawable) {

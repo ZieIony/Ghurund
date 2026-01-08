@@ -47,6 +47,62 @@ namespace Ghurund::UI {
 		}
 	}
 
+	bool ControlGroup::onKeyEvent(const KeyEventArgs& event) {
+		if (focusedChild)
+			return focusedChild->dispatchKeyEvent(event);
+		for (size_t i = 0; i < children.Size; i++) {
+			ControlWithConstraints& c = children[children.Size - i - 1];
+			if (c.control->canReceiveEvent(event) && c.control->dispatchKeyEvent(event))
+				return true;
+		}
+		return false;
+	}
+
+	bool ControlGroup::onMouseButtonEvent(const MouseButtonEventArgs& event) {
+		if (capturedChild) {
+			auto e = event.translate(-capturedChild->Position.x, -capturedChild->Position.y, capturedChild->canReceiveEvent(event));
+			return capturedChild->dispatchMouseButtonEvent(e);
+		}
+
+		for (size_t i = 0; i < children.Size; i++) {
+			ControlWithConstraints& c = children[children.Size - i - 1];
+			if (c.control->canReceiveEvent(event) && c.control->dispatchMouseButtonEvent(event.translate(-c.control->Position.x, -c.control->Position.y, true)))
+				return true;
+		}
+		return false;
+	}
+
+	bool ControlGroup::onMouseMotionEvent(const MouseMotionEventArgs& event) {
+		if (capturedChild) {
+			auto e = event.translate(-capturedChild->Position.x, -capturedChild->Position.y, capturedChild->canReceiveEvent(event));
+			return capturedChild->dispatchMouseMotionEvent(e);
+		}
+		if (previousReceiver && !previousReceiver->canReceiveEvent(event)) {
+			previousReceiver->dispatchMouseMotionEvent(event.translate(-previousReceiver->Position.x, -previousReceiver->Position.y, false));
+			previousReceiver->release();
+			previousReceiver = nullptr;
+		}
+
+		for (size_t i = 0; i < children.Size; i++) {
+			ControlWithConstraints& c = children.get(children.Size - i - 1);
+			if (c.control->canReceiveEvent(event)) {
+				setPointer(previousReceiver, c.control.get());
+				if (c.control->dispatchMouseMotionEvent(event.translate(-c.control->Position.x, -c.control->Position.y, true)))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	bool ControlGroup::onMouseWheelEvent(const MouseWheelEventArgs& event) {
+		for (size_t i = 0; i < children.Size; i++) {
+			ControlWithConstraints& c = children[children.Size - i - 1];
+			if (c.control->canReceiveEvent(event) && c.control->dispatchMouseWheelEvent(event.translate(-c.control->Position.x, -c.control->Position.y)))
+				return true;
+		}
+		return false;
+	}
+
 	ControlGroup::ControlGroup():children(*this) {
 		children.collectionChanged += [&](ControlCollection&) {
 			needsLayout = true;
@@ -140,62 +196,6 @@ namespace Ghurund::UI {
 				continue;
 			c.control->draw(group, position + parentPosition);
 		}
-	}
-
-	bool ControlGroup::dispatchKeyEvent(const KeyEventArgs& event) {
-		if (focusedChild)
-			return focusedChild->dispatchKeyEvent(event);
-		for (size_t i = 0; i < children.Size; i++) {
-			ControlWithConstraints& c = children[children.Size - i - 1];
-			if (c.control->canReceiveEvent(event) && c.control->dispatchKeyEvent(event))
-				return true;
-		}
-		return __super::dispatchKeyEvent(event);
-	}
-
-	bool ControlGroup::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
-		if (capturedChild) {
-			auto e = event.translate(-capturedChild->Position.x, -capturedChild->Position.y, capturedChild->canReceiveEvent(event));
-			return capturedChild->dispatchMouseButtonEvent(e);
-		}
-
-		for (size_t i = 0; i < children.Size; i++) {
-			ControlWithConstraints& c = children[children.Size - i - 1];
-			if (c.control->canReceiveEvent(event) && c.control->dispatchMouseButtonEvent(event.translate(-c.control->Position.x, -c.control->Position.y, true)))
-				return true;
-		}
-		return __super::dispatchMouseButtonEvent(event);
-	}
-
-	bool ControlGroup::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
-		if (capturedChild) {
-			auto e = event.translate(-capturedChild->Position.x, -capturedChild->Position.y, capturedChild->canReceiveEvent(event));
-			return capturedChild->dispatchMouseMotionEvent(e);
-		}
-		if (previousReceiver && !previousReceiver->canReceiveEvent(event)) {
-			previousReceiver->dispatchMouseMotionEvent(event.translate(-previousReceiver->Position.x, -previousReceiver->Position.y, false));
-			previousReceiver->release();
-			previousReceiver = nullptr;
-		}
-
-		for (size_t i = 0; i < children.Size; i++) {
-			ControlWithConstraints& c = children.get(children.Size - i - 1);
-			if (c.control->canReceiveEvent(event)) {
-				setPointer(previousReceiver, c.control.get());
-				if (c.control->dispatchMouseMotionEvent(event.translate(-c.control->Position.x, -c.control->Position.y, true)))
-					return true;
-			}
-		}
-		return __super::dispatchMouseMotionEvent(event);
-	}
-
-	bool ControlGroup::dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
-		for (size_t i = 0; i < children.Size; i++) {
-			ControlWithConstraints& c = children[children.Size - i - 1];
-			if (c.control->canReceiveEvent(event) && c.control->dispatchMouseWheelEvent(event.translate(-c.control->Position.x, -c.control->Position.y)))
-				return true;
-		}
-		return __super::dispatchMouseWheelEvent(event);
 	}
 
 	Control* ControlGroup::find(const AString& name) {

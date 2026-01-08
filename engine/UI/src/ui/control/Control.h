@@ -56,7 +56,6 @@ namespace Ghurund::UI {
 		bool visible = true;
 		bool enabled = true;
 		bool focusable = false;
-		bool roundToPixels = true;
 
 		Ghurund::Core::AString* name = nullptr;
 
@@ -71,6 +70,7 @@ namespace Ghurund::UI {
 		IntrusivePointer<Resource> mesh;
 		Float2Parameter* positionParameter = nullptr, * sizeParameter = nullptr;
 		FloatParameter* alphaParameter = nullptr;
+		BoolParameter *enabledParameter = nullptr, * focusedParameter = nullptr;
 
 		bool needsLayout = true;
 
@@ -81,7 +81,7 @@ namespace Ghurund::UI {
 		Control(const Control& other):Resource(other),
 			cursor(other.cursor),
 			size(other.size),
-			visible(other.visible), enabled(other.enabled), focusable(other.focusable), roundToPixels(other.roundToPixels),
+			visible(other.visible), enabled(other.enabled), focusable(other.focusable),
 			name(other.name ? ghnew AString(*other.name) : nullptr),
 			position(other.position),
 			needsLayout(other.needsLayout),
@@ -93,23 +93,19 @@ namespace Ghurund::UI {
 
 		virtual void onLoaded() {}
 
-		virtual void onStateChanged() {}
+		virtual void onStateChanged();
 
-		virtual void onMaterialChanged() {}
+		virtual void onMaterialChanged();
 
 		virtual void onThemeChanged() {}
 
-		virtual void onContextChanged() {
-			auto context = Context;
-			if (context) {
-				mesh.set(context->makeControlMesh());
-			}
-			contextChanged();
-		}
+		virtual void onContextChanged();
 
 		virtual void onLayout(float x, float y, float width, float height) {}
 
 		virtual void onDraw(RenderGroup& group, const XMFLOAT2& parentPosition);
+
+		virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override;
 
 		virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
@@ -157,6 +153,8 @@ namespace Ghurund::UI {
 			if (this->enabled == enabled)
 				return;
 			this->enabled = enabled;
+			if (enabledParameter)
+				enabledParameter->Value = enabled;
 			if (!enabled && Focused)
 				clearFocus();
 			dispatchStateChanged();
@@ -214,30 +212,12 @@ namespace Ghurund::UI {
 
 		virtual bool focusRight();
 
-		inline bool isRoundToPixelsEnabled() const {
-			return roundToPixels;
-		}
-
-		inline void setRoundToPixelsEnabled(bool roundToPixels) {
-			this->roundToPixels = roundToPixels;
-		}
-
-		__declspec(property(get = isRoundToPixelsEnabled, put = setRoundToPixelsEnabled)) bool RoundToPixelsEnabled;
-
 		inline void setMaterial(Material* material) {
 			if (this->material.get() == material)
 				return;
 			this->material.set(material);
-			if (material) {
+			if (material)
 				material->addReference();
-				positionParameter = (Float2Parameter*)material->Parameters.get("position");
-				sizeParameter = (Float2Parameter*)material->Parameters.get("size");
-				alphaParameter = (FloatParameter*)material->Parameters.get("alpha");
-			} else {
-				positionParameter = nullptr;
-				sizeParameter = nullptr;
-				alphaParameter = nullptr;
-			}
 			dispatchMaterialChanged();
 		}
 
@@ -328,18 +308,18 @@ namespace Ghurund::UI {
 		__declspec(property(get = getContext)) UIContext* Context;
 
 		virtual void dispatchStateChanged() {
-			stateChanged();
 			onStateChanged();
+			stateChanged();
 		}
 
 		virtual void dispatchMaterialChanged() {
-			materialChanged();
 			onMaterialChanged();
+			materialChanged();
 		}
 
 		virtual void dispatchThemeChanged() {
-			themeChanged();
 			onThemeChanged();
+			themeChanged();
 			dispatchStateChanged();
 		}
 
@@ -382,8 +362,6 @@ namespace Ghurund::UI {
 		XMFLOAT2 getPositionOnScreen();
 
 		__declspec(property(get = getPositionOnScreen)) XMFLOAT2 PositionOnScreen;
-
-		virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
 
 		inline void load(Ghurund::UI::LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
 			try {

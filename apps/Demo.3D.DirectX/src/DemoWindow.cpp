@@ -100,7 +100,7 @@ namespace Demo {
 			//backgroundColorParameter->Value = Colors::LIGHT_GRAY.toVector();
 			//borderColorParameter->Value = Colors::WHITE.toVector();
 		}
-		return true;
+		return __super::onMouseButtonEvent(args);
 	}
 	
 	bool DemoWindow::onKeyEvent(const KeyEventArgs& args) {

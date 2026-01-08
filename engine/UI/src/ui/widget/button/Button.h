@@ -2,7 +2,6 @@
 
 #include "ui/control/InteractionHandler.h"
 #include "ui/widget/ContentWidget.h"
-#include "ui/widget/StateIndicator.h"
 
 namespace Ghurund::UI {
 	class Button:public ContentWidget {
@@ -20,12 +19,9 @@ namespace Ghurund::UI {
 
 	private:
 		InteractionHandler interactionHandler = *this;
-		Ghurund::UI::StateIndicator* state = nullptr;
 
 	protected:
 		Button(const Button& button):ContentWidget(button) {}
-		
-		virtual void onLayoutChanged() override;
 
 	public:
 		Event<Button, MouseClickedEventArgs> clicked = *this;
@@ -35,11 +31,6 @@ namespace Ghurund::UI {
 			interactionHandler.clicked += [this](InteractionHandler&, const MouseClickedEventArgs& args) {
 				return clicked(args);
 			};
-		}
-
-		~Button() {
-			if (state)
-				state->release();
 		}
 
 		virtual Button* clone() const override {

@@ -1,6 +1,7 @@
 #include <common.hlsli>
 #include <ui.hlsli>
 #include <sdf.hlsli>
+#include <colors.hlsli>
 
 cbuffer perCamera: register(b0) {
     int2 viewportSize;
@@ -12,6 +13,8 @@ cbuffer perObject: register(b1) {
     float4 backgroundColor = float4(0.5, 0, 0, 1);
     float4 borderColor;
     float4 cornerRadius = float4(4, 4, 4, 4);
+    float focused = 0.0f;
+    float enabled = 0.0f;
     float borderWidth = 0, alpha = 1.0f;
 }
 
@@ -42,6 +45,8 @@ float4 pixelMain(UIPixel input): SV_Target {
         float ambientShadowIntensity = smoothstep(0, 1, (elevation / 2 - dist) / elevation / 2);
         return float4(shadowColor.rgb, backgroundColor.a * shadowColor.a * (shadowIntensity + ambientShadowIntensity) / 2 * alpha);
     } else {
-        return float4(backgroundColor.rgb, backgroundColor.a * alpha);
+        float4 color = saturate(mul(backgroundColor, makeBrightnessMatrix(1 + focused / 2)));
+        color = saturate(mul(color, makeSaturationMatrix(enabled / 2 + 0.5)));
+        return float4(color.rgb, backgroundColor.a * alpha);
     }
 }

@@ -50,7 +50,7 @@ namespace Ghurund::Engine::DirectX {
 				for (auto& packet : group.objects) {
 					auto mesh = (DxMesh*)packet.mesh.get();
 					auto material = packet.material.get();
-					material->setParameters(parameterManager);
+					material->setParameters(parameterManager.Parameters);
 					auto shader = (DxShader*)material->Shader;
 					shader->set(*commandList);
 					mesh->draw(*commandList, shader->Layout);

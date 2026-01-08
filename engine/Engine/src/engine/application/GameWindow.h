@@ -50,18 +50,18 @@ namespace Ghurund::Engine {
         }
 
         virtual bool onKeyEvent(const KeyEventArgs& event) override {
-            return __super::onKeyEvent(event) || actionMapping.onKeyEvent(event);
+            return layers.dispatchKeyEvent(event) || actionMapping.onKeyEvent(event);
         }
 
         virtual bool onMouseButtonEvent(const MouseButtonEventArgs& args) override;
 
         virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override {
             mousePosParameter->Value = { event.Position.x, event.Position.y };
-            return __super::onMouseMotionEvent(event) || actionMapping.onMouseMotionEvent(event);
+            return layers.dispatchMouseMotionEvent(event) || actionMapping.onMouseMotionEvent(event);
         }
 
         virtual bool onMouseWheelEvent(const MouseWheelEventArgs& event) override {
-            return __super::onMouseWheelEvent(event) || actionMapping.onMouseWheelEvent(event);
+            return layers.dispatchMouseWheelEvent(event) || actionMapping.onMouseWheelEvent(event);
         }
         
         virtual bool onSizeChanged() override;

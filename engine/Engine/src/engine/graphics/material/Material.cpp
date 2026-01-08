@@ -56,13 +56,13 @@ namespace Ghurund::Engine {
 		}
 	}
 
-    void Material::setParameters(ParameterManager& parameterManager) {
+    void Material::setParameters(ParameterCollection& defaults) {
         size_t i = 0;
         for (auto& [input, parameter] : valueParameters) {
             i++;
             auto p = parameter.get();
             if (p->IsEmpty) {
-                auto global = (BaseValueParameter*)parameterManager.Parameters.get(p->Name);
+                auto global = (BaseValueParameter*)defaults.get(p->Name);
                 if (!global) {
                     auto text = std::format(_T("Parameter for variable '{}' is missing.\n"), p->Name);
                     Logger::logOnce(LogType::WARNING, text.c_str(), i);
@@ -82,14 +82,20 @@ namespace Ghurund::Engine {
             auto& bi = shader->BufferInputs[b];
             auto& cb = constantBuffers[b];
             bi.constantBuffer = cb.get();
-            for (auto& vi : bi.ValueInputs)
+            for (auto& vi : bi.ValueInputs) {
+                if (!vi.value) {
+                    auto text = std::format(_T("Input '{}' is empty.\n"), vi.Name);
+                    Logger::logOnce(LogType::WARNING, text.c_str(), i);
+                    continue;
+                }
                 cb->setValue(vi.value, vi.Size, vi.Offset);
+            }
         }
         for (auto& [input, parameter] : textureParameters) {
             i++;
             auto p = parameter.get();
             if (p->IsEmpty) {
-                auto global = (TextureParameter*)parameterManager.Parameters.get(p->Name);
+                auto global = (TextureParameter*)defaults.get(p->Name);
                 if (!global) {
                     auto text = std::format(_T("Parameter for variable '{}' is missing.\n"), p->Name);
                     Logger::logOnce(LogType::WARNING, text.c_str(), i);

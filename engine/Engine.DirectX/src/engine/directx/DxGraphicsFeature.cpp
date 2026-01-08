@@ -25,7 +25,7 @@ namespace Ghurund::Engine::DirectX {
         graphics.init();
         shaderCompiler = makeShared<DxShaderCompiler>(graphics);
         auto shaderLoader = makeIntrusive<DxShaderLoader>(resourceManager, shaderCompiler.ref());
-        shaderLoader->includeDirs.add(DirectoryPath(L"./resources/shaders/DirectX/"));
+        shaderLoader->includeDirs.add(DirectoryPath(L"./resources/shaders/DirectX/include"));
         resourceManager.Loaders.set<DxShader>(shaderLoader.ref());
         commandList = makeIntrusive<CommandList>();
         commandList->init(graphics, graphics.DirectQueue);

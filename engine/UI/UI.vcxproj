@@ -239,7 +239,6 @@
     <ClInclude Include="src\ui\widget\ProgressBar.h" />
     <ClInclude Include="src\ui\widget\Separator.h" />
     <ClInclude Include="src\ui\widget\SplitLayout.h" />
-    <ClInclude Include="src\ui\widget\StateIndicator.h" />
     <ClInclude Include="src\ui\widget\Widget.h" />
     <ClInclude Include="src\ui\widget\button\Button.h" />
     <ClInclude Include="src\ui\widget\button\CheckBox.h" />
@@ -356,7 +355,6 @@
     <ClCompile Include="src\ui\widget\ProgressBar.cpp" />
     <ClCompile Include="src\ui\widget\Separator.cpp" />
     <ClCompile Include="src\ui\widget\SplitLayout.cpp" />
-    <ClCompile Include="src\ui\widget\StateIndicator.cpp" />
     <ClCompile Include="src\ui\widget\Widget.cpp" />
     <ClCompile Include="src\ui\widget\button\Button.cpp" />
     <ClCompile Include="src\ui\widget\button\CheckBox.cpp" />

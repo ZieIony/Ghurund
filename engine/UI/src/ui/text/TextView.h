@@ -61,6 +61,12 @@ namespace Ghurund::UI {
 
         virtual void onThemeChanged() override;
 
+        virtual bool onKeyEvent(const KeyEventArgs& event) override;
+
+        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
+
+        virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override;
+
         ~TextView() {
          //   if (cursorDrawable)
          //       cursorDrawable->release();
@@ -88,11 +94,5 @@ namespace Ghurund::UI {
         bool setSelection(SetSelectionMode moveMode, uint32_t advance, bool extendSelection, bool updateCaretFormat = true);
 
         void copyToClipboard();
-
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
-
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
-
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
     };
 }

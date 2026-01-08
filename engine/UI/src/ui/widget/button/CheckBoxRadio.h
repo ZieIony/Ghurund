@@ -1,7 +1,8 @@
 #pragma once
 
+#include "ui/control/ImageView.h"
+#include "ui/control/InteractionHandler.h"
 #include "ui/widget/ContentWidget.h"
-#include "ui/widget/StateIndicator.h"
 
 namespace Ghurund::UI {
 	class CheckBoxRadio:public ContentWidget {
@@ -25,29 +26,32 @@ namespace Ghurund::UI {
 	protected:
 		bool checked = false;
 		InteractionHandler interactionHandler = *this;
-
-		Ghurund::UI::StateIndicator* state = nullptr;
+		IntrusivePointer<ImageView> iconView;
+		BoolParameter* checkedParameter = nullptr;
+		BoolParameter* checkedParameter2 = nullptr;
 
 		virtual void onLayoutChanged() override {
-			if (state) {
-				state->InteractionHandler = nullptr;
-				state->release();
-				state = nullptr;
-			}
-			//safeRelease(drawable);
+			iconView.set(nullptr);
 			__super::onLayoutChanged();
 			Control* layoutControl = layout.get();
 			if (layoutControl) {
-				setPointer(state, (Ghurund::UI::StateIndicator*)layoutControl->find("state"));
-				if (state)
-					state->InteractionHandler = &interactionHandler;
-				//setPointer(drawable, (Ghurund::UI::DrawableView*)layoutControl->find("drawable"));
+				iconView.set((Ghurund::UI::ImageView*)layoutControl->find("icon"));
+				iconView->addReference();
+					checkedParameter2 = (BoolParameter*)iconView->Material->Parameters.get("checked");
 			}
 		}
 
-		~CheckBoxRadio() {
-			if (state)
-				state->release();
+		virtual void onMaterialChanged() override {
+			if (material != nullptr) {
+				checkedParameter = (BoolParameter*)material->Parameters.get("checked");
+			} else {
+				checkedParameter = nullptr;
+			}
+		}
+
+	public:
+		CheckBoxRadio() {
+			Focusable = true;
 		}
 	};
 }

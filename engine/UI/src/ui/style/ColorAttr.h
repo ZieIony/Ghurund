@@ -19,7 +19,12 @@ namespace Ghurund::UI {
         inline static const Ghurund::Core::Type& TYPE = ColorAttr::GET_TYPE();
 #pragma endregion
 
+    private:
+        static inline const char* THEME_COLOR = "theme://color/";
+
     public:
+        static std::unique_ptr<ColorAttr> load(const AString& text);
+
         virtual const Color* resolve(const Theme& theme) const = 0;
     };
 

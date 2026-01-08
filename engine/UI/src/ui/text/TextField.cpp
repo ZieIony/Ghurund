@@ -7,6 +7,13 @@
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
+    const Ghurund::Core::Type& TextField::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<TextField>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     void TextField::onReturn() {
         uint32_t absolutePosition = caretPosition + caretPositionOffset;
         deleteSelection();
@@ -124,6 +131,19 @@ namespace Ghurund::UI {
         }
     }
 
+    bool TextField::onKeyEvent(const KeyEventArgs& event) {
+        if (Focused) {
+            if (event.Action == KeyAction::DOWN) {
+                onKeyPress(event.KeyCode);
+                return true;
+            } else if (event.Action == KeyAction::CHAR) {
+                onKeyCharacter(event.KeyCode);
+                return true;
+            }
+        }
+        return __super::onKeyEvent(event);
+    }
+
     void TextField::deleteSelection() {
         Selection selectionRange = getSelectionRange();
         if (selectionRange.length <= 0)
@@ -147,25 +167,5 @@ namespace Ghurund::UI {
             setSelection(SetSelectionMode::RightChar, (uint32_t)data->Length, true);
             repaint();
         }
-    }
-
-    const Ghurund::Core::Type& TextField::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<TextField>()
-            .withSupertype(__super::GET_TYPE());
-
-        return TYPE;
-    }
-
-    bool TextField::dispatchKeyEvent(const KeyEventArgs& event) {
-        if (Focused) {
-            if (event.Action == KeyAction::DOWN) {
-                onKeyPress(event.KeyCode);
-                return true;
-            } else if (event.Action == KeyAction::CHAR) {
-                onKeyCharacter(event.KeyCode);
-                return true;
-            }
-        }
-        return __super::dispatchKeyEvent(event);
     }
 }

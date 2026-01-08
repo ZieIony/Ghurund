@@ -48,6 +48,8 @@ namespace Ghurund::UI {
         }
 
     protected:
+        virtual bool onKeyEvent(const KeyEventArgs& event) override;
+        
         ~TextField() {}
 
     public:
@@ -64,7 +66,5 @@ namespace Ghurund::UI {
         void deleteSelection();
 
         void pasteFromClipboard();
-
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
     };
 }

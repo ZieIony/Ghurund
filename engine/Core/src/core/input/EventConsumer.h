@@ -1,13 +1,16 @@
 #pragma once
 
 #include "core/Event.h"
-#include "EventDispatcher.h"
 #include "gamepad/GamepadButtonEventArgs.h"
 #include "gamepad/GamepadStickEventArgs.h"
 #include "gamepad/GamepadTriggerEventArgs.h"
+#include "keyboard/KeyEventArgs.h"
+#include "mouse/MouseButtonEventArgs.h"
+#include "mouse/MouseMotionEventArgs.h"
+#include "mouse/MouseWheelEventArgs.h"
 
 namespace Ghurund::Core {
-    class EventConsumer:public EventDispatcher {
+    class EventConsumer {
     protected:
         virtual bool onGamepadButtonEvent(const GamepadButtonEventArgs& event) {
             return false;
@@ -46,43 +49,43 @@ namespace Ghurund::Core {
         Event<EventConsumer, MouseMotionEventArgs> mouseMotionEvent = *this;
         Event<EventConsumer, MouseWheelEventArgs> mouseWheelEvent = *this;
 
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override {
+        inline bool dispatchKeyEvent(const KeyEventArgs& event) {
             bool result = onKeyEvent(event);
             bool result2 = keyEvent(event);
             return result || result2;
         }
 
-        virtual bool dispatchGamepadButtonEvent(const GamepadButtonEventArgs& event) override {
+        inline bool dispatchGamepadButtonEvent(const GamepadButtonEventArgs& event) {
             bool result = onGamepadButtonEvent(event);
             bool result2 = gamepadButtonEvent(event);
             return result || result2;
         }
 
-        virtual bool dispatchGamepadStickEvent(const GamepadStickEventArgs& event) override {
+        inline bool dispatchGamepadStickEvent(const GamepadStickEventArgs& event) {
             bool result = onGamepadStickEvent(event);
             bool result2 = gamepadStickEvent(event);
             return result || result2;
         }
 
-        virtual bool dispatchGamepadTriggerEvent(const GamepadTriggerEventArgs& event) override {
+        inline bool dispatchGamepadTriggerEvent(const GamepadTriggerEventArgs& event) {
             bool result = onGamepadTriggerEvent(event);
             bool result2 = gamepadTriggerEvent(event);
             return result || result2;
         }
 
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override {
+        inline bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
             bool result = onMouseButtonEvent(event);
             bool result2 = mouseButtonEvent(event);
             return result || result2;
         }
 
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override {
+        inline bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
             bool result = onMouseMotionEvent(event);
             bool result2 = mouseMotionEvent(event);
             return result || result2;
         }
 
-        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override {
+        inline bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
             bool result = onMouseWheelEvent(event);
             bool result2 = mouseWheelEvent(event);
             return result || result2;

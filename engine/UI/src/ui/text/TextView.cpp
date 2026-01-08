@@ -334,15 +334,15 @@ namespace Ghurund::UI {
         }*/
     }
 
-    bool TextView::dispatchKeyEvent(const KeyEventArgs& event) {
+    bool TextView::onKeyEvent(const KeyEventArgs& event) {
         if (event.Action == KeyAction::DOWN && event.KeyCode == 'C' && Context->Window.Input->isControlDown()) {
             copyToClipboard();
             return true;
         }
-        return __super::dispatchKeyEvent(event);
+        return false;
     }
 
-    bool TextView::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
+    bool TextView::onMouseButtonEvent(const MouseButtonEventArgs& event) {
         if (event.Button == MouseButton::LEFT) {
             if (event.Action == MouseButtonAction::PRESSED) {
                 pressed = true;
@@ -353,14 +353,16 @@ namespace Ghurund::UI {
                 Parent->CapturedChild = nullptr;
             }
         }
-        return __super::dispatchMouseButtonEvent(event);
+        return false;
     }
 
-    bool TextView::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
-        if (pressed)
+    bool TextView::onMouseMotionEvent(const MouseMotionEventArgs& event) {
+        if (pressed) {
             setSelectionFromPoint((float)event.Position.x, (float)event.Position.y, true);
+            return true;
+        }
 
-        return __super::dispatchMouseMotionEvent(event);
+        return false;
     }
 
     void TextView::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {

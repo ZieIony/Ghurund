@@ -17,6 +17,35 @@ namespace Ghurund::UI {
 		return TYPE;
 	}
 
+	bool ControlContainerBase::onKeyEvent(const KeyEventArgs& event) {
+		return child && child->canReceiveEvent(event) && child->dispatchKeyEvent(event);
+	}
+
+	bool ControlContainerBase::onMouseButtonEvent(const MouseButtonEventArgs& event) {
+		return child
+			&& (capturedChild || child->canReceiveEvent(event))
+			&& child->dispatchMouseButtonEvent(event.translate(-child->Position.x, -child->Position.y, true));
+	}
+
+	bool ControlContainerBase::onMouseMotionEvent(const MouseMotionEventArgs& event) {
+		if (child) {
+			if (capturedChild || child->canReceiveEvent(event)) {
+				previousReceiver = true;
+				if (child->dispatchMouseMotionEvent(event.translate(-child->Position.x, -child->Position.y, true)))
+					return true;
+			} else if (previousReceiver) {
+				previousReceiver = false;
+				if (child->dispatchMouseMotionEvent(event.translate(-child->Position.x, -child->Position.y, false)))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	bool ControlContainerBase::onMouseWheelEvent(const MouseWheelEventArgs& event) {
+		return child && child->canReceiveEvent(event) && child->dispatchMouseWheelEvent(event.translate(-child->Position.x, -child->Position.y));
+	}
+
 	void ControlContainerBase::setChild(Control* child) {
 		setChild(child, makeDefaultConstraints());
 	}
@@ -116,41 +145,6 @@ namespace Ghurund::UI {
 		__super::onDraw(group, parentPosition);
 		if (child)
 			child->draw(group, position + parentPosition);
-	}
-
-	bool ControlContainerBase::dispatchKeyEvent(const KeyEventArgs& event) {
-		if (child && child->canReceiveEvent(event) && child->dispatchKeyEvent(event))
-			return true;
-		return __super::dispatchKeyEvent(event);
-	}
-
-	bool ControlContainerBase::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
-		if (child
-			&& (capturedChild || child->canReceiveEvent(event))
-			&& child->dispatchMouseButtonEvent(event.translate(-child->Position.x, -child->Position.y, true)))
-			return true;
-		return __super::dispatchMouseButtonEvent(event);
-	}
-
-	bool ControlContainerBase::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
-		if (child) {
-			if (capturedChild || child->canReceiveEvent(event)) {
-				previousReceiver = true;
-				if (child->dispatchMouseMotionEvent(event.translate(-child->Position.x, -child->Position.y, true)))
-					return true;
-			} else if (previousReceiver) {
-				previousReceiver = false;
-				if (child->dispatchMouseMotionEvent(event.translate(-child->Position.x, -child->Position.y, false)))
-					return true;
-			}
-		}
-		return __super::dispatchMouseMotionEvent(event);
-	}
-
-	bool ControlContainerBase::dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
-		if (child && child->canReceiveEvent(event) && child->dispatchMouseWheelEvent(event.translate(-child->Position.x, -child->Position.y)))
-			return true;
-		return __super::dispatchMouseWheelEvent(event);
 	}
 
 	void ControlContainerBase::resolveConstraints(ConstraintGraph& graph, const Constraint& width, const Constraint& height) {

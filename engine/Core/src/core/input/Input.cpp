@@ -1,6 +1,5 @@
 #include "ghcpch.h"
 #include "Input.h"
-#include "gamepad/GamepadButtonEventArgs.h"
 
 #include <Windows.h>
 #include <windowsx.h>

@@ -87,7 +87,7 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getIsTransparencyEnabled)) bool IsTransparencyEnabled;
 
-        void setParameters(ParameterManager& parameterManager);
+        void setParameters(ParameterCollection& defaults);
 
         virtual Material* clone() const {
             return ghnew Material(*this);

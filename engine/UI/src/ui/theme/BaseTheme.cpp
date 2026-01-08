@@ -34,7 +34,7 @@ namespace Ghurund::UI {
 		Ghurund::Core::ResourceManager& resourceManager,
 		ITextureFactory& textureFactory
 	):Theme(), resourceManager(resourceManager) {
-		auto buttonLayoutPath = ResourceManager::ENGINE_LIB / FilePath(L"/layouts/ButtonDefaultLayout.xml");
+		auto buttonLayoutPath = ResourceManager::ENGINE_LIB / FilePath(L"/layouts/ButtonLayout.xml");
 		Layouts.put(LayoutKey(Button::GET_TYPE().Name), makeShared<FileLayoutProvider>(resourceManager, buttonLayoutPath));
 		auto checkBoxLayoutPath = ResourceManager::ENGINE_LIB / FilePath(L"/layouts/CheckBoxLayout.xml");
 		Layouts.put(LayoutKey(CheckBox::GET_TYPE().Name), makeShared<FileLayoutProvider>(resourceManager, checkBoxLayoutPath));

@@ -43,6 +43,14 @@ namespace Ghurund::UI {
 
 		virtual void onChildChanged() {}
 
+		virtual bool onKeyEvent(const KeyEventArgs& event) override;
+
+		virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
+
+		virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override;
+
+		virtual bool onMouseWheelEvent(const MouseWheelEventArgs& event) override;
+
 	public:
 		Event<ControlContainerBase> childChanged = *this;
 
@@ -96,14 +104,6 @@ namespace Ghurund::UI {
 		}
 
 		virtual void onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
-
-		virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
-
-		virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
-
-		virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
-
-		virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
 
 		virtual void resolveConstraints(ConstraintGraph& graph, const Constraint& width, const Constraint& height) override;
 

@@ -5,20 +5,11 @@
 #include "ui/constraint/WindowConstraint.h"
 
 namespace Ghurund::UI {
-	RootView::RootView(UIContext& context):context(context) {
-		Cursor = &Cursor::ARROW;
-		Name = "root";
-	}
-
-	void RootView::requestLayout() {
-		needsLayout = true;
-	}
-
-	bool RootView::dispatchKeyEvent(const KeyEventArgs& event) {
+	bool RootView::onKeyEvent(const KeyEventArgs& event) {
 		if (Focus && findFocus()->dispatchKeyEvent(event))
 			return true;
 
-		if (event.Action != Ghurund::Core::KeyAction::DOWN)
+		if (event.Action != Ghurund::Core::KeyAction::PRESSED)
 			return false;
 
 		if (event.KeyCode == VK_TAB) {
@@ -64,27 +55,13 @@ namespace Ghurund::UI {
 		return false;
 	}
 
-	bool RootView::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
-		if (capturedChild) {
-			auto position = capturedChild->PositionInWindow;
-			bool inside = event.Position.x >= position.x && event.Position.x < position.x + capturedChild->Size.Width &&
-				event.Position.y >= position.y && event.Position.y < position.y + capturedChild->Size.Height;
-			auto result = capturedChild->dispatchMouseButtonEvent(event.translate(-position.x, -position.y, inside));
-			return result;
-		}
-
-		return __super::dispatchMouseButtonEvent(event);
+	RootView::RootView(UIContext& context):context(context) {
+		Cursor = &Cursor::ARROW;
+		Name = "root";
 	}
 
-	bool RootView::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
-		if (capturedChild) {
-			auto position = capturedChild->PositionInWindow;
-			bool inside = event.Position.x >= position.x && event.Position.x < position.x + capturedChild->Size.Width &&
-				event.Position.y >= position.y && event.Position.y < position.y + capturedChild->Size.Height;
-			return capturedChild->dispatchMouseMotionEvent(event.translate(-position.x, -position.y, inside));
-		}
-
-		return __super::dispatchMouseMotionEvent(event);
+	void RootView::requestLayout() {
+		needsLayout = true;
 	}
 
 	PartialConstraintSet RootView::makeDefaultConstraints() const {

@@ -31,7 +31,7 @@ namespace Ghurund::Engine {
 		this->window = window;
 	}
 
-	bool CameraController::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
+	bool CameraController::onMouseButtonEvent(const MouseButtonEventArgs& event) {
 		if (event.Action == MouseButtonAction::PRESSED) {
 			pressed = true;
 			pressedButton = event.Button;
@@ -47,7 +47,7 @@ namespace Ghurund::Engine {
 		return false;
 	}
 
-	bool CameraController::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
+	bool CameraController::onMouseMotionEvent(const MouseMotionEventArgs& event) {
 		/*if (pressed) {
 			Camera& camera = *cameraEntity.Components.get<CameraComponent>().camera;
 			TransformComponent& transformComponent = cameraEntity.Components.get<TransformComponent>();
@@ -69,7 +69,7 @@ namespace Ghurund::Engine {
 		return pressed;
 	}
 
-	bool CameraController::dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
+	bool CameraController::onMouseWheelEvent(const MouseWheelEventArgs& event) {
 		/*Camera& camera = *cameraEntity.Components.get<CameraComponent>().camera;
 		TransformComponent& transformComponent = cameraEntity.Components.get<TransformComponent>();
 		if (camera.getDistance() > event.Delta) {

@@ -36,6 +36,14 @@ namespace Ghurund::UI {
 
 		virtual void onLayout(float x, float y, float width, float height) override;
 
+		virtual bool onKeyEvent(const KeyEventArgs& event) override;
+
+		virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
+
+		virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override;
+
+		virtual bool onMouseWheelEvent(const MouseWheelEventArgs& event) override;
+
 	public:
 		ControlGroup();
 
@@ -90,14 +98,6 @@ namespace Ghurund::UI {
 		virtual void onUpdate(const uint64_t time) override;
 
 		virtual void onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
-
-		virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
-
-		virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
-
-		virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
-
-		virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
 
 		using Control::find;
 

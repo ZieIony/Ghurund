@@ -169,7 +169,6 @@
     <ClInclude Include="src\core\image\Image.h" />
     <ClInclude Include="src\core\image\ImageLoader.h" />
     <ClInclude Include="src\core\input\EventConsumer.h" />
-    <ClInclude Include="src\core\input\EventDispatcher.h" />
     <ClInclude Include="src\core\input\Input.h" />
     <ClInclude Include="src\core\input\InputEventArgs.h" />
     <ClInclude Include="src\core\input\gamepad\GamepadButton.h" />

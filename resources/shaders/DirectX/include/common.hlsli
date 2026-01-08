@@ -5,9 +5,9 @@
 #define CULL_MODE_FRONT 2
 #define CULL_MODE_BACK 3
 
-const float PI = 3.14159265f;
+static const float PI = 3.14159265f;
 
-const matrix MATRIX_IDENTITY = {
+static const matrix MATRIX_IDENTITY = {
     { 1, 0, 0, 0 },
     { 0, 1, 0, 0 },
     { 0, 0, 1, 0 },

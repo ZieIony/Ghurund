@@ -74,7 +74,7 @@ namespace Ghurund::Engine {
         inline bool dispatchMouseMotionEvent(const MouseMotionEventArgs& args) {
             bool consumed = false;
             // TODO: inverse layers for events
-            for (IntrusivePointer<Layer>& layer : layers)
+            for (auto& layer : layers)
                 consumed |= layer->dispatchMouseMotionEvent(args);
             return consumed;
         }
@@ -82,13 +82,13 @@ namespace Ghurund::Engine {
         inline bool dispatchMouseWheelEvent(const MouseWheelEventArgs& args) {
             bool consumed = false;
             // TODO: inverse layers for events
-            for (IntrusivePointer<Layer>& layer : layers)
+            for (auto& layer : layers)
                 consumed |= layer->dispatchMouseWheelEvent(args);
             return consumed;
         }
 
         inline void update(const uint64_t time) {
-            for (IntrusivePointer<Layer>& layer : layers)
+            for (auto& layer : layers)
                 layer->update(time);
         }
 

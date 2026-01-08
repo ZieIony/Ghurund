@@ -10,6 +10,9 @@ namespace Ghurund::UI {
         UIContext& context;
         bool focused = false;
 
+    protected:
+        virtual bool onKeyEvent(const KeyEventArgs& event) override;
+
     public:
         RootView(UIContext& context);
 
@@ -52,12 +55,6 @@ namespace Ghurund::UI {
         }
 
         virtual void requestLayout();
-
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
-
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
-
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
 
         virtual PartialConstraintSet makeDefaultConstraints() const override;
     };

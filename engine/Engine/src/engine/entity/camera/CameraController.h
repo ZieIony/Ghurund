@@ -24,14 +24,14 @@ namespace Ghurund::Engine {
         static constexpr float DIST_EPSILON = 0.01f;
         SystemWindow* window;
 
+        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
+
+        virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override;
+
+        virtual bool onMouseWheelEvent(const MouseWheelEventArgs& event) override;
+
     public:
         CameraController(CameraEntity& camera, SystemWindow* window = nullptr);
-
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
-
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
-
-        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
 
         void update(Input& input, float dt);
     };

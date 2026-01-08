@@ -35,7 +35,7 @@ namespace Ghurund::UI {
         }
     }
     
-    bool ScrollView::dispatchKeyEvent(const KeyEventArgs& event) {
+    bool ScrollView::onKeyEvent(const KeyEventArgs& event) {
         if (event.Action == Ghurund::Core::KeyAction::DOWN && event.KeyCode == VK_NEXT) {
             XMFLOAT2 prevScroll = scroll;
             if (Child && Child->Size.Height == Size.Height) {
@@ -85,10 +85,10 @@ namespace Ghurund::UI {
             }
             return true;
         }
-        return __super::dispatchKeyEvent(event);
+        return false;
     }
     
-    bool ScrollView::dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
+    bool ScrollView::onMouseWheelEvent(const MouseWheelEventArgs& event) {
         if (Child) {
             XMFLOAT2 prevScroll = scroll;
             if (event.Wheel == MouseWheel::HORIZONTAL || Child->Size.Height == Size.Height) {

@@ -11,6 +11,19 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
+    std::unique_ptr<ColorAttr> ColorAttr::load(const AString& text) {
+        AString s = text;
+        s = s.trim();
+        s.replace('\\', '/');
+        if (s.startsWith("#")) {
+            return std::make_unique<ColorValue>(Color::parse(s));
+        } else if (s.startsWith(THEME_COLOR)) {
+            return std::make_unique<ColorRef>(ColorKey(s.substring(lengthOf(THEME_COLOR))));
+        } else {
+            return nullptr;
+        }
+    }
+
     const Ghurund::Core::Type& ColorValue::GET_TYPE() {
         static const Ghurund::Core::Type TYPE = TypeBuilder<RefCountedObject>()
             .withSupertype(__super::GET_TYPE());

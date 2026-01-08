@@ -25,6 +25,10 @@ namespace Ghurund::Core {
 			}
 			return this->value;
 		}
+
+		inline bool operator==(const State<T>& other) const {
+			return value == other.value;
+		}
 	};
 }
 

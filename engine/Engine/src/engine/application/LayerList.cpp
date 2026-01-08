@@ -7,7 +7,7 @@ namespace Ghurund::Engine {
             focusedLayer->Focused = false;
             focusedLayer.set(nullptr);
         }
-        size_t index = layers.find([&](const IntrusivePointer<Layer>& item) { return item.get() == layer; });
+        size_t index = layers.find([&](auto& item) { return item.get() == layer; });
         if (index != layers.Size)
             layers.removeAt(index);
     }
@@ -15,7 +15,7 @@ namespace Ghurund::Engine {
     bool LayerList::dispatchMouseButtonEvent(const MouseButtonEventArgs& args) {
         bool consumed = false;
         // TODO: inverse layers for events
-        for (IntrusivePointer<Layer>& layer : layers) {
+        for (auto& layer : layers) {
             consumed |= layer->dispatchMouseButtonEvent(args);
             if (consumed) {
                 if (!layer->Focused) {
