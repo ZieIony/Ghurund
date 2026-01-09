@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Loader.h"
-#include "LoaderCollection.h"
 #include "ReloadTask.h"
 #include "Resource.h"
 #include "ResourceCollection.h"
@@ -12,6 +10,8 @@
 #include "core/io/FilePath.h"
 #include "core/io/LibraryCollection.h"
 #include "core/io/watcher/FileWatcher.h"
+#include "core/loading/Loader.h"
+#include "core/loading/LoaderCollection.h"
 #include "core/object/Noncopyable.h"
 #include "core/object/Object.h"
 #include "core/reflection/Type.h"

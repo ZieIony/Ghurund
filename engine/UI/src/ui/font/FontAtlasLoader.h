@@ -2,7 +2,7 @@
 
 #include "FontAtlas.h"
 
-#include "core/resource/Loader.h"
+#include "core/loading/Loader.h"
 
 #include <tinyxml2.h>
 

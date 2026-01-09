@@ -1,7 +1,8 @@
 #pragma once
 
 #include "MeshData.h"
-#include "core/resource/Loader.h"
+
+#include "core/loading/Loader.h"
 
 namespace Ghurund::Engine {
     class MeshDataLoader:public Loader {

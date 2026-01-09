@@ -110,6 +110,7 @@
     <ClInclude Include="src\engine\graphics\shader\ValueInput.h" />
     <ClInclude Include="src\engine\graphics\texture\ITextureFactory.h" />
     <ClInclude Include="src\engine\graphics\shader\ConstantBuffer.h" />
+    <ClInclude Include="src\engine\parameter\AttributeLoader.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />

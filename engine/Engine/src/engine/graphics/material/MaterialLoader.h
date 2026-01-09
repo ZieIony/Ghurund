@@ -2,7 +2,7 @@
 
 #include "Material.h"
 
-#include "core/resource/Loader.h"
+#include "core/loading/Loader.h"
 #include "engine/graphics/texture/ITextureFactory.h"
 
 #include <tinyxml2.h>

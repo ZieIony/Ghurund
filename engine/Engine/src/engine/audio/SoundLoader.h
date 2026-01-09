@@ -2,7 +2,7 @@
 
 #include "Audio.h"
 
-#include "core/resource/Loader.h"
+#include "core/loading/Loader.h"
 
 namespace Ghurund {
     using namespace Ghurund::Core;

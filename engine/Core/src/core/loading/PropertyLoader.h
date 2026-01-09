@@ -7,7 +7,7 @@
 #include <exception>
 #include <tinyxml2.h>
 
-namespace Ghurund::UI {
+namespace Ghurund::Core {
     using namespace Ghurund::Core;
 
     class PropertyTypeNotSupportedException:public std::exception {};

@@ -2,7 +2,10 @@
 
 #include "PropertyLoader.h"
 
-namespace Ghurund::UI {
+#include "core/reflection/Type.h"
+#include "core/string/TextConversionUtils.h"
+
+namespace Ghurund::Core {
 
     class AStringPropertyLoader:public PropertyLoader {
     public:

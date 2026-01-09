@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Script.h"
-#include "core/resource/Loader.h"
+
+#include "core/loading/Loader.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;

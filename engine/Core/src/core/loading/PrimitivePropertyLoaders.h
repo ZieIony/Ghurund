@@ -1,11 +1,12 @@
 #pragma once
 
 #include "PropertyLoader.h"
+
 #include "core/math/Int.h"
 #include "core/math/Float.h"
 #include "core/reflection/StandardTypes.h"
 
-namespace Ghurund::UI {
+namespace Ghurund::Core {
     class BoolPropertyLoader:public PropertyLoader {
     public:
         virtual const Type& getType() const override {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/resource/Loader.h"
+#include "core/loading/Loader.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;

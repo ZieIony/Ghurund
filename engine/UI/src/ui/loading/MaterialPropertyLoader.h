@@ -1,7 +1,6 @@
 #pragma once
 
-#include "PropertyLoader.h"
-
+#include "core/loading/PropertyLoader.h"
 #include "engine/graphics/material/Material.h"
 #include "engine/graphics/material/MaterialLoader.h"
 

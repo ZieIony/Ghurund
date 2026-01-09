@@ -1,12 +1,13 @@
 #pragma once
 
 #include "PropertyLoader.h"
+
 #include "core/reflection/Type.h"
 #include "core/collection/Map.h"
 
 #include <memory>
 
-namespace Ghurund::UI {
+namespace Ghurund::Core {
     class PropertyLoaderCollection {
     private:
         Map<const Type*, PropertyLoader*> loaders;

@@ -2,7 +2,8 @@
 
 #include "OglShader.h"
 #include "OglShaderCompiler.h"
-#include "core/resource/Loader.h"
+
+#include "core/loading/Loader.h"
 
 namespace tinyxml2 {
     class XMLElement;

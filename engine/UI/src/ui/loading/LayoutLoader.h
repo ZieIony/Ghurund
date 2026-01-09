@@ -1,10 +1,8 @@
 #pragma once
 
-#include "PropertyLoaderCollection.h"
-
-#include "core/object/NotNull.h"
 #include "core/exception/Exceptions.h"
-#include "core/resource/Loader.h"
+#include "core/loading/Loader.h"
+#include "core/loading/PropertyLoaderCollection.h"
 #include "core/resource/ResourceManager.h"
 #include "engine/graphics/texture/ITextureFactory.h"
 #include "ui/Alignment.h"

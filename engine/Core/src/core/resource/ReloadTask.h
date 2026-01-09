@@ -2,6 +2,8 @@
 
 #include "Resource.h"
 
+#include "core/loading/Loader.h"
+
 namespace Ghurund::Core {
     class ReloadTask {
     private:

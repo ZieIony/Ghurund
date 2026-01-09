@@ -1,8 +1,10 @@
 #pragma once
 
 #include "Loader.h"
-#include "TextResource.h"
-#include "core/exception/Exceptions.h"
+
+#include "core/resource/LoadOption.h"
+#include "core/resource/TextResource.h"
+#include "core/io/MemoryInputStream.h"
 
 namespace Ghurund::Core {
     class TextLoader:public Loader {
@@ -14,7 +16,7 @@ namespace Ghurund::Core {
             LoadOption options
         ) {
             TextResource* textResource = ghnew TextResource();
-            textResource->Text = stream->readASCII();
+            textResource->Text = stream.readASCII();
             return textResource;
         }
     };

@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Image.h"
-#include "core/resource/Loader.h"
+
+#include "core/loading/Loader.h"
 #include "core/exception/Exceptions.h"
 
 namespace Ghurund::Core {

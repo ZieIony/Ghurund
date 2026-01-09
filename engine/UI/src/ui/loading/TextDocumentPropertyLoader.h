@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PropertyLoader.h"
+#include "core/loading/PropertyLoader.h"
 #include "ui/text/TextDocument.h"
 
 namespace Ghurund::UI {

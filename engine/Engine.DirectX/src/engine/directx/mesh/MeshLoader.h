@@ -2,7 +2,7 @@
 
 #include "DxMesh.h"
 
-#include "core/resource/Loader.h"
+#include "core/loading/Loader.h"
 #include "engine/graphics/mesh/MeshDataLoader.h"
 
 namespace Ghurund::Engine::DirectX {

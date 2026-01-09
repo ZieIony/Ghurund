@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core/resource/Loader.h"
 #include "TestResource.h"
-#include "core/exception/Exceptions.h"
+
+#include "core/loading/Loader.h"
 
 namespace UnitTest {
     using namespace Ghurund::Core;

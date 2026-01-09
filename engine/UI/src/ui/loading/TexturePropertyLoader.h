@@ -1,7 +1,6 @@
 #pragma once
 
-#include "PropertyLoader.h"
-
+#include "core/loading/PropertyLoader.h"
 #include "engine/graphics/texture/ITextureFactory.h"
 #include "ui/style/TextureAttr.h"
 

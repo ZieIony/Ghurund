@@ -1,9 +1,10 @@
 #pragma once
 
-#include "core/object/IntrusivePointer.h"
+#include "Loader.h"
+
 #include "core/collection/Map.h"
+#include "core/object/IntrusivePointer.h"
 #include "core/reflection/Type.h"
-#include "core/resource/Loader.h"
 
 namespace Ghurund::Core {
     class LoaderCollection {

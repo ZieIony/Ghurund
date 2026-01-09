@@ -101,6 +101,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\loading\PrimitivePropertyLoaders.h" />
+    <ClInclude Include="src\core\loading\PropertyLoader.h" />
+    <ClInclude Include="src\core\loading\PropertyLoaderCollection.h" />
+    <ClInclude Include="src\core\loading\StringPropertyLoader.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -239,15 +243,15 @@
     <ClInclude Include="src\core\reflection\UniqueProperty.h" />
     <ClInclude Include="src\core\reflection\Visibility.h" />
     <ClInclude Include="src\core\resource\LoadOption.h" />
-    <ClInclude Include="src\core\resource\Loader.h" />
-    <ClInclude Include="src\core\resource\LoaderCollection.h" />
+    <ClInclude Include="src\core\loading\Loader.h" />
+    <ClInclude Include="src\core\loading\LoaderCollection.h" />
     <ClInclude Include="src\core\resource\ReloadTask.h" />
     <ClInclude Include="src\core\resource\Resource.h" />
     <ClInclude Include="src\core\resource\ResourceCollection.h" />
     <ClInclude Include="src\core\resource\ResourceFormat.h" />
     <ClInclude Include="src\core\resource\ResourceManager.h" />
     <ClInclude Include="src\core\resource\SaveOption.h" />
-    <ClInclude Include="src\core\resource\TextLoader.h" />
+    <ClInclude Include="src\core\loading\TextLoader.h" />
     <ClInclude Include="src\core\resource\TextResource.h" />
     <ClInclude Include="src\core\state\State.h" />
     <ClInclude Include="src\core\state\StateMachine.h" />
@@ -309,7 +313,7 @@
     <ClCompile Include="src\core\reflection\StandardTypes.cpp" />
     <ClCompile Include="src\core\reflection\TypeBuilder.cpp" />
     <ClCompile Include="src\core\reflection\TypeMember.cpp" />
-    <ClCompile Include="src\core\resource\Loader.cpp" />
+    <ClCompile Include="src\core\loading\Loader.cpp" />
     <ClCompile Include="src\core\resource\Resource.cpp" />
     <ClCompile Include="src\core\resource\ResourceCollection.cpp" />
     <ClCompile Include="src\core\resource\ResourceFormat.cpp" />

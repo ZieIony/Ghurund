@@ -1,9 +1,5 @@
 #pragma once
 
-#include "LoadOption.h"
-#include "ResourceFormat.h"
-#include "SaveOption.h"
-
 #include "core/allocation/Allocator.h"
 #include "core/concepts/Concepts.h"
 #include "core/exception/FormatNotSupportedException.h"
@@ -12,7 +8,10 @@
 #include "core/logging/Logger.h"
 #include "core/object/RefCountedObject.h"
 #include "core/reflection/Type.h"
+#include "core/resource/LoadOption.h"
 #include "core/resource/Resource.h"
+#include "core/resource/ResourceFormat.h"
+#include "core/resource/SaveOption.h"
 
 #include <cstdint>
 

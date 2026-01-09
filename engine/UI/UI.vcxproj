@@ -114,6 +114,7 @@
     <ClInclude Include="src\ui\font\KerningPairs.h" />
     <ClInclude Include="src\ui\font\TextStyle.h" />
     <ClInclude Include="src\ui\font\TextStyleLoader.h" />
+    <ClInclude Include="src\ui\loading\ColorPropertyLoaders.h" />
     <ClInclude Include="src\ui\loading\TexturePropertyLoader.h" />
     <ClInclude Include="src\ui\loading\MaterialPropertyLoader.h" />
     <ClInclude Include="src\ui\material\ControlMaterialParameters.h" />
@@ -197,14 +198,9 @@
     <ClInclude Include="src\ui\layout\LayoutManager.h" />
     <ClInclude Include="src\ui\layout\VerticalLayout.h" />
     <ClInclude Include="src\ui\layout\VerticalLayoutManager.h" />
-    <ClInclude Include="src\ui\loading\ColorPropertyLoaders.h" />
     <ClInclude Include="src\ui\loading\ImageScaleModePropertyLoader.h" />
     <ClInclude Include="src\ui\loading\LayoutLoader.h" />
     <ClInclude Include="src\ui\loading\LayoutPropertyLoader.h" />
-    <ClInclude Include="src\ui\loading\PrimitivePropertyLoaders.h" />
-    <ClInclude Include="src\ui\loading\PropertyLoader.h" />
-    <ClInclude Include="src\ui\loading\PropertyLoaderCollection.h" />
-    <ClInclude Include="src\ui\loading\StringPropertyLoader.h" />
     <ClInclude Include="src\ui\loading\TextDocumentPropertyLoader.h" />
     <ClInclude Include="src\ui\material\ShadowMaterialParameters.h" />
     <ClInclude Include="src\ui\style\AttrProperty.h" />
