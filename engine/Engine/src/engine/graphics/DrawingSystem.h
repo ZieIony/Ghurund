@@ -88,14 +88,14 @@ namespace Ghurund::Engine {
             return picked;
         }
 
-        void initParameters(ParameterManager& parameterManager) {
-            /*if (material)
+        /*void initParameters(ParameterManager& parameterManager) {
+            if (material)
                 material->initParameters(parameterManager);
             if (invalidMaterial)
                 invalidMaterial->initParameters(parameterManager);
             for (DrawableComponent* c : Components)
-                c->initParameters(parameterManager);*/
-        }
+                c->initParameters(parameterManager);
+        }*/
 
         void setupDrawingParams(TransformComponent& transform) {
             parameterWorld->setValue(transform.Transformation);
@@ -105,10 +105,10 @@ namespace Ghurund::Engine {
             parameterWorldIT->setValue(worldIT);
         }
 
-        void updateParameters(ParameterManager& parameterManager) {
+        /*void updateParameters(ParameterManager& parameterManager) {
             camera->updateParameters();
             parameterManager.Parameters.putAll(camera->Parameters);
-        }
+        }*/
 
         /*void draw(CommandList& commandList) {
             cull();

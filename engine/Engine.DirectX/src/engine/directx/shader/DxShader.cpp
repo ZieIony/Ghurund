@@ -25,12 +25,12 @@ namespace Ghurund::Engine::DirectX {
 		if (pipelineState != nullptr)
 			pipelineState->Release();
 
-		bufferConstants.deleteItems();
-		textureConstants.deleteItems();
+		bufferConstantInfos.deleteItems();
+		textureConstantInfos.deleteItems();
 		samplers.deleteItems();
 	}
 
-	ValueInputType DxShader::makeInputByType(
+	InputType DxShader::makeInputByType(
 		D3D_SHADER_VARIABLE_CLASS _class,
 		D3D_SHADER_VARIABLE_TYPE type,
 		const AString& name,
@@ -39,28 +39,28 @@ namespace Ghurund::Engine::DirectX {
 		if (_class == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_SCALAR) {
 			if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_INT) {
 				if (size == IntParameter::SIZE)
-					return ValueInputType::INT;
+					return InputType::INT;
 			} else if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
 				if (size == FloatParameter::SIZE)
-					return ValueInputType::FLOAT;
+					return InputType::FLOAT;
 			}
 		} else if (_class == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_VECTOR) {
 			if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_INT) {
 				if (size == Int2Parameter::SIZE)
-					return ValueInputType::INT2;
+					return InputType::INT2;
 			} else if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
 				if (size == Float2Parameter::SIZE) {
-					return ValueInputType::FLOAT2;
+					return InputType::FLOAT2;
 				} else if (size == Float3Parameter::SIZE) {
-					return ValueInputType::FLOAT3;
+					return InputType::FLOAT3;
 				} else if (size == Float4Parameter::SIZE) {
-					return ValueInputType::FLOAT4;
+					return InputType::FLOAT4;
 				}
 			}
 		} else if (_class == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_MATRIX_ROWS) {
 			if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
 				if (size == MatrixParameter::SIZE) {
-					return ValueInputType::MATRIX;
+					return InputType::MATRIX;
 				}
 			}
 		}
@@ -75,19 +75,19 @@ namespace Ghurund::Engine::DirectX {
 
 	void DxShader::applyInputs(CommandList& commandList) {
 		size_t vi = 0;
-		for (size_t i = 0; i < bufferConstants.Size; i++) {
-			DxConstantBuffer* buffer = (DxConstantBuffer*)BufferInputs[i].constantBuffer;
-			buffer->set(commandList, bufferConstants[i]->BindSlot);
+		for (size_t i = 0; i < bufferConstantInfos.Size; i++) {
+			DxConstantBuffer* buffer = (DxConstantBuffer*)BufferConstants[i].constantBuffer;
+			buffer->set(commandList, bufferConstantInfos[i]->BindSlot);
 		}
 
-		for (size_t i = 0; i < textureConstants.Size; i++) {
-			DxTexture* texture = (DxTexture*)textureInputs[i].Value;
+		for (size_t i = 0; i < textureConstantInfos.Size; i++) {
+			DxTexture* texture = (DxTexture*)textureConstants[i].Value;
 			if (!texture) {
-				auto text = std::format(_T("Parameter for variable '{}' is missing.\n"), textureInputs[i].Name);
+				auto text = std::format(_T("No value for constant '{}'.\n"), textureConstantInfos[i]->Name);
 				Logger::logOnce(LogType::WARNING, text.c_str(), i);
 				continue;
 			}
-			texture->set(commandList, textureConstants[i]->BindSlot);
+			texture->set(commandList, textureConstantInfos[i]->BindSlot);
 		}
 	}
 
@@ -95,31 +95,31 @@ namespace Ghurund::Engine::DirectX {
 		const Array<VertexRole>& layout,
 		OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> rootSignature,
 		OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,
-		const List<BufferConstant*>& bufferConstants,
-		const List<TextureConstant*>& textureConstants,
+		const List<DxBufferConstantInfo*>& bufferConstantInfos,
+		const List<DxTextureConstantInfo*>& textureConstantInfos,
 		const List<Sampler*>& samplers,
 		bool isTransparencyEnabled
 	) {
 		this->layout = layout;
 		this->rootSignature = rootSignature.reset();
 		this->pipelineState = pipelineState.reset();
-		this->bufferConstants = bufferConstants;
-		for (auto& cb : bufferConstants) {
-			List<ValueInput> cbInputs;
+		this->bufferConstantInfos = bufferConstantInfos;
+		for (auto& cb : bufferConstantInfos) {
+			List<ValueConstant> cbInputs;
 			for (auto& v : cb->Fields) {
-				ValueInputType type = makeInputByType(
+				InputType type = makeInputByType(
 					v.variableClass,
 					v.variableType,
 					v.name,
 					v.size
 				);
-				cbInputs.add(ValueInput(v.name, type, v.size, v.offset, v.defaultValue));
+				cbInputs.add(ValueConstant(v.name, type, v.size, v.offset, v.defaultValue));
 			}
-			bufferInputs.add(BufferInput(cb->Name, cbInputs));
+			bufferConstants.add(BufferConstant(cb->Name, cbInputs));
 		}
-		this->textureConstants = textureConstants;
-		for (auto& t : textureConstants)
-			textureInputs.add(TextureInput(t->Name));
+		this->textureConstantInfos = textureConstantInfos;
+		for (auto& t : textureConstantInfos)
+			textureConstants.add(TextureConstant(t->Name));
 		this->samplers = samplers;
 		this->isTransparencyEnabled = isTransparencyEnabled;
 	}

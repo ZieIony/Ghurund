@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ValueInputType.h"
+#include "InputType.h"
 
 #include "core/string/String.h"
 
@@ -9,21 +9,18 @@
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
 
-	class BaseValueParameter;
-
-	class ValueInput {
+	class ValueConstant {
 	private:
 		const AString name;
-		const ValueInputType type;
-		size_t size, offset;
+		const InputType type;
+		const size_t size, offset;
 		const void* defaultValue;
-
-	public:
 		const void* value = nullptr;
 
-		ValueInput(
+	public:
+		ValueConstant(
 			const AString& name,
-			ValueInputType type,
+			InputType type,
 			size_t size,
 			size_t offset,
 			const void* defaultValue
@@ -38,7 +35,7 @@ namespace Ghurund::Engine {
 		}()) {
 		}
 
-		ValueInput(const ValueInput& other):
+		ValueConstant(const ValueConstant& other):
 			name(other.name),
 			type(other.type),
 			size(other.size),
@@ -54,7 +51,7 @@ namespace Ghurund::Engine {
 		}()) {
 		}
 
-		ValueInput(ValueInput&& other):
+		ValueConstant(ValueConstant&& other) noexcept:
 			name(other.name),
 			type(other.type),
 			size(other.size),
@@ -63,7 +60,7 @@ namespace Ghurund::Engine {
 			other.defaultValue = nullptr;
 		}
 
-		~ValueInput() {
+		~ValueConstant() {
 			delete defaultValue;
 		}
 
@@ -73,11 +70,11 @@ namespace Ghurund::Engine {
 
 		__declspec(property(get = getName)) const AString& Name;
 
-		inline ValueInputType getType() const {
+		inline InputType getType() const {
 			return type;
 		}
 
-		__declspec(property(get = getType)) ValueInputType Type;
+		__declspec(property(get = getType)) InputType Type;
 
 		inline size_t getSize() const {
 			return size;
@@ -91,14 +88,20 @@ namespace Ghurund::Engine {
 
 		__declspec(property(get = getOffset)) size_t Offset;
 
-		template<typename T>
-		BaseValueParameter* makeParameter() const {
-			T* p = ghnew T(name);
-			if (defaultValue)
-				p->Value = *(typename T::value_t*)defaultValue;
-			return p;
+		inline const void* getValue() const {
+			return value;
 		}
 
-		BaseValueParameter* makeParameter() const;
+		inline void setValue(const void* value) {
+			this->value = value;
+		}
+
+		__declspec(property(get = getValue, put = setValue)) const void* Value;
+
+		inline const void* getDefaultValue() const {
+			return defaultValue;
+		}
+
+		__declspec(property(get = getDefaultValue)) const void* DefaultValue;
 	};
 }

@@ -49,15 +49,15 @@ namespace Ghurund::Engine::DirectX {
 		);
 
 		OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> makeRootSignature(
-			const List<BufferConstant*>& constantBuffers,
-			const List<TextureConstant*>& textures,
+			const List<DxBufferConstantInfo*>& constantBuffers,
+			const List<DxTextureConstantInfo*>& textures,
 			const List<Sampler*>& samplers
 		);
 
 		void initConstants(
 			const DxShaderProgram& program,
-			List<BufferConstant*>& constantBuffers,
-			List<TextureConstant*>& textures,
+			List<DxBufferConstantInfo*>& constantBuffers,
+			List<DxTextureConstantInfo*>& textures,
 			List<Sampler*>& samplers
 		);
 

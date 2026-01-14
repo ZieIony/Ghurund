@@ -4,6 +4,7 @@
 
 #include "engine/graphics/shader/IShaderProvider.h"
 #include "engine/graphics/texture/TextureProvider.h"
+#include "engine/parameter/ParameterManager.h"
 
 namespace Ghurund::Engine {
 

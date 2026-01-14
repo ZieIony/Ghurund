@@ -2,14 +2,14 @@
 #include "BufferConstant.h"
 
 namespace Ghurund::Engine::DirectX {
-	BufferConstant::BufferConstant(
+	DxBufferConstantInfo::DxBufferConstantInfo(
 		const AString& name,
 		uint32_t bindPoint,
 		D3D12_SHADER_VISIBILITY visibility
 	):ShaderConstant(name, bindPoint, visibility) {
 	}
 
-	void BufferConstant::init(
+	void DxBufferConstantInfo::init(
 		ID3D12ShaderReflectionConstantBuffer& constantBuffer,
 		D3D12_SHADER_BUFFER_DESC& bufferDesc
 	) {

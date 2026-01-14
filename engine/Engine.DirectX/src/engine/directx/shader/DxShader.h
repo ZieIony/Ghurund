@@ -38,13 +38,13 @@ namespace Ghurund::Engine::DirectX {
 		ID3D12PipelineState* pipelineState = nullptr;
 		Array<VertexRole> layout;
 
-		List<BufferConstant*> bufferConstants;
-		List<TextureConstant*> textureConstants;
+		List<DxBufferConstantInfo*> bufferConstantInfos;
+		List<DxTextureConstantInfo*> textureConstantInfos;
 		List<Sampler*> samplers;
 
 		void finalize();
 
-		ValueInputType makeInputByType(
+		InputType makeInputByType(
 			D3D_SHADER_VARIABLE_CLASS _class,
 			D3D_SHADER_VARIABLE_TYPE type,
 			const AString& name,
@@ -66,8 +66,8 @@ namespace Ghurund::Engine::DirectX {
 			const Array<VertexRole>& layout,
 			OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> rootSignature,
 			OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,
-			const List<BufferConstant*>& bufferConstants,
-			const List<TextureConstant*>& textureConstants,
+			const List<DxBufferConstantInfo*>& bufferConstantInfos,
+			const List<DxTextureConstantInfo*>& textureConstantInfos,
 			const List<Sampler*>& samplers,
 			bool isTransparencyEnabled
 		);

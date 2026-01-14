@@ -23,6 +23,18 @@ namespace Ghurund::Engine {
 		viewProj2 = view2 * proj2;
 		XMStoreFloat4x4(&viewProj, viewProj2);
 		XMStoreFloat4x4(&viewProjInv, XMMatrixInverse(nullptr, viewProj2));
+
+		parameterDirection->Value = dir;
+		parameterPosition->Value = pos;
+		parameterUp->Value = up;
+		parameterRight->Value = right;
+		parameterFov->Value = fov;
+		parameterZNear->Value = zNear;
+		parameterZFar->Value = zFar;
+		parameterView->Value = view;
+		parameterProjection->Value = proj;
+		parameterViewProjection->Value = viewProj;
+		parameterViewProjectionInv->Value = viewProjInv;
 	}
 
 	Camera::Camera():
@@ -37,7 +49,6 @@ namespace Ghurund::Engine {
 		dir(XMFLOAT3(0, 0, 1)),
 		right(XMFLOAT3(1, 0, 0)),
 		dist(1.0f) {
-		//rebuild();
 
 		float rotation = 0.0f;
 		//setPositionTargetUp(XMFLOAT3(sin(rotation) * 600, 200, cos(rotation) * 600), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
@@ -73,21 +84,6 @@ namespace Ghurund::Engine {
 		parameterProjection->release();
 		parameterViewProjection->release();
 		parameterViewProjectionInv->release();
-	}
-
-	void Camera::updateParameters() {
-		//rebuild();
-		parameterDirection->Value = dir;
-		parameterPosition->Value = pos;
-		parameterUp->Value = up;
-		parameterRight->Value = right;
-		parameterFov->Value = fov;
-		parameterZNear->Value = zNear;
-		parameterZFar->Value = zFar;
-		parameterView->Value = view;
-		parameterProjection->Value = proj;
-		parameterViewProjection->Value = viewProj;
-		parameterViewProjectionInv->Value = viewProjInv;
 	}
 
 	void Camera::calcMouseRay(const XMINT2& mousePos, XMFLOAT3& rayPos, XMFLOAT3& rayDir)const {

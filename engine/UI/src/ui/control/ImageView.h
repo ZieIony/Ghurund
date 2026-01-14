@@ -27,9 +27,9 @@ namespace Ghurund::UI {
     private:
         // TODO: maybe this should be Image*?
         PointerAttrProperty<TextureAttr, ITexture> image;
-        TextureParameter* imageParameter;
+        TextureInput* imageInput = nullptr;
         Color tint = Colors::WHITE;
-        Float4Parameter* tintParameter;
+        Float4Input* tintInput = nullptr;
 
     protected:
         virtual void onMaterialChanged() override;
@@ -39,16 +39,16 @@ namespace Ghurund::UI {
 	public:
 		inline void setImage(std::unique_ptr<TextureAttr> image) {
 			this->image.set(std::move(image));
-			if (imageParameter)
-				imageParameter->Value = this->image.get();
+			if (imageInput)
+				imageInput->Value = this->image.get();
 		}
 
 		__declspec(property(put = setImage)) std::unique_ptr<TextureAttr> Image;
 
 		inline void setTint(const Color& tint) {
 			this->tint = tint;
-			if (tintParameter)
-				tintParameter->Value = tint.toVector();
+			if (tintInput)
+				tintInput->Value = tint.toVector();
 		}
 
         inline const Color& getTint() const {

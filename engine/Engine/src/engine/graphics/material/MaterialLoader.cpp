@@ -21,22 +21,21 @@ namespace Ghurund::Engine {
 				auto valueAttribute = child->FindAttribute("value");
 				if (nameAttribute && valueAttribute) {
 					AString name = nameAttribute->Value();
-					auto parameter = material->Parameters.get(name);
-					if (!parameter) {
-						auto text = std::format(_T("Shader {} doesn't specify a parameter named '{}'\n"), path.toString(), convertText<char, tchar>(name));
+					auto input = material->getInputs().get(name);
+					if (!input) {
+						auto text = std::format(_T("Shader {} doesn't specify an input named '{}'\n"), path.toString(), convertText<char, tchar>(name));
 						Logger::log(LogType::WARNING, text.c_str());
-					} else if (parameter->Type == TextureParameter::TYPE) {
-						TextureParameter* typedParameter = (TextureParameter*)parameter;
+					} else if (input->Type == InputType::TEXTURE) {
+						TextureInput* textureInput = (TextureInput*)input;
 						FilePath texturePath = FilePath(convertText<char, wchar_t>(AString(valueAttribute->Value())));
 						auto image = IntrusivePointer<Image>(resourceManager.load<Image>(texturePath, workingDir));
 						auto texture = IntrusivePointer<ITexture>(textureFactory.makeTexture(image.ref()));
-						typedParameter->Value = texture.get();
-					} else if (parameter->Type == Float4Parameter::TYPE) {
-						Float4Parameter* typedParameter = (Float4Parameter*)parameter;
+						textureInput->Value = texture.get();
+					} else if (input->Type == InputType::FLOAT4) {
+						Float4Input* float4Input = (Float4Input*)input;
 						// TODO: load theme attributes or do binding
-						if (AString(valueAttribute->Value()).startsWith("#")) {
-							typedParameter->Value = Color::parse(valueAttribute->Value()).toVector();
-						}
+						if (AString(valueAttribute->Value()).startsWith("#"))
+							float4Input->Value = Color::parse(valueAttribute->Value()).toVector();
 					}
 				}
 			}

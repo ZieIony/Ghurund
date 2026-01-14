@@ -117,7 +117,7 @@
     <ClInclude Include="src\ui\loading\ColorPropertyLoaders.h" />
     <ClInclude Include="src\ui\loading\TexturePropertyLoader.h" />
     <ClInclude Include="src\ui\loading\MaterialPropertyLoader.h" />
-    <ClInclude Include="src\ui\material\ControlMaterialParameters.h" />
+    <ClInclude Include="src\ui\material\ControlMaterialInputs.h" />
     <ClInclude Include="src\ui\material\UIMaterialProvider.h" />
     <ClInclude Include="src\ui\Orientation.h" />
     <ClInclude Include="src\ui\RootView.h" />
@@ -202,7 +202,7 @@
     <ClInclude Include="src\ui\loading\LayoutLoader.h" />
     <ClInclude Include="src\ui\loading\LayoutPropertyLoader.h" />
     <ClInclude Include="src\ui\loading\TextDocumentPropertyLoader.h" />
-    <ClInclude Include="src\ui\material\ShadowMaterialParameters.h" />
+    <ClInclude Include="src\ui\material\ShadowMaterialInputs.h" />
     <ClInclude Include="src\ui\style\AttrProperty.h" />
     <ClInclude Include="src\ui\style\ColorAttr.h" />
     <ClInclude Include="src\ui\style\TextureAttr.h" />

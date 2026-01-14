@@ -1,11 +1,10 @@
 #pragma once
 
-#include "TextureInput.h"
-#include "ValueInput.h"
-#include "BufferInput.h"
+#include "TextureConstant.h"
+#include "ValueConstant.h"
+#include "BufferConstant.h"
 
 #include "core/resource/Resource.h"
-#include "engine/parameter/Parameter.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
@@ -25,9 +24,9 @@ namespace Ghurund::Engine {
 
     protected:
         bool isTransparencyEnabled = false;
-        List<ValueInput> valueInputs;
-        List<BufferInput> bufferInputs;
-        List<TextureInput> textureInputs;
+        List<ValueConstant> valueConstants;
+        List<BufferConstant> bufferConstants;
+        List<TextureConstant> textureConstants;
 
     public:
         bool getIsTransparencyEnabled() {
@@ -36,22 +35,22 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getIsTransparencyEnabled)) bool IsTransparencyEnabled;
 
-        inline const List<ValueInput>& getValueInputs() const {
-            return valueInputs;
+        inline const List<ValueConstant>& getValueConstants() const {
+            return valueConstants;
         }
 
-        __declspec(property(get = getValueInputs)) const List<ValueInput>& ValueInputs;
+        __declspec(property(get = getValueConstants)) const List<ValueConstant>& ValueConstants;
 
-        inline const List<BufferInput>& getBufferInputs() const {
-            return bufferInputs;
+        inline const List<BufferConstant>& getBufferInputs() const {
+            return bufferConstants;
         }
 
-        __declspec(property(get = getBufferInputs)) const List<BufferInput>& BufferInputs;
+        __declspec(property(get = getBufferInputs)) const List<BufferConstant>& BufferConstants;
 
-        inline const List<TextureInput>& getTextureInputs() const {
-            return textureInputs;
+        inline const List<TextureConstant>& getTextureConstants() const {
+            return textureConstants;
         }
 
-        __declspec(property(get = getTextureInputs)) const List<TextureInput>& TextureInputs;
+        __declspec(property(get = getTextureConstants)) const List<TextureConstant>& TextureConstants;
     };
 }

@@ -97,18 +97,18 @@ namespace Ghurund::Core {
             return *this;
         }
 
-        void clear() {
+        inline void clear() {
             listeners.clear();
         }
 
-        bool invoke(const Type& args) {
+        inline bool invoke(const Type& args) const {
             bool result = false;
             for (auto& listener : listeners)
                 result |= listener(owner, args);
             return result;
         }
 
-        inline bool operator()(const Type& args) {
+        inline bool operator()(const Type& args) const {
             return invoke(args);
         }
     };

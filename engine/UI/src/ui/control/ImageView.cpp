@@ -22,13 +22,13 @@ namespace Ghurund::UI {
     void ImageView::onMaterialChanged() {
         __super::onMaterialChanged();
         if (material != nullptr) {
-            imageParameter = (TextureParameter*)material->Parameters.get("image");
-            imageParameter->Value = image.get();
-            tintParameter = (Float4Parameter*)material->Parameters.get("tint");
-            tintParameter->Value = tint.toVector();
+            imageInput = (TextureInput*)material->Inputs.get("image");
+            imageInput->Value = image.get();
+            tintInput = (Float4Input*)material->Inputs.get("tint");
+            tintInput->Value = tint.toVector();
         } else {
-            imageParameter = nullptr;
-            tintParameter = nullptr;
+            imageInput = nullptr;
+            tintInput = nullptr;
         }
     }
 
@@ -36,8 +36,8 @@ namespace Ghurund::UI {
         const UI::Theme* theme = Theme;
         if (theme) {
             image.resolve(*theme);
-            if (imageParameter)
-                imageParameter->Value = image.get();
+            if (imageInput)
+                imageInput->Value = image.get();
         }
     }
 }

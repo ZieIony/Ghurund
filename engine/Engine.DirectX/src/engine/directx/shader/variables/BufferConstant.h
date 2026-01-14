@@ -6,15 +6,15 @@
 #include <d3dcompiler.h>
 
 namespace Ghurund::Engine::DirectX {
-	class BufferConstant:public ShaderConstant {
+	class DxBufferConstantInfo:public ShaderConstant {
 	private:
 		uint32_t size = 0;
 		List<BufferConstantField> fields;
 
-		BufferConstant(const BufferConstant& other) = delete;
+		DxBufferConstantInfo(const DxBufferConstantInfo& other) = delete;
 
 	public:
-		BufferConstant(
+		DxBufferConstantInfo(
 			const AString& name,
 			uint32_t bindPoint,
 			D3D12_SHADER_VISIBILITY visibility

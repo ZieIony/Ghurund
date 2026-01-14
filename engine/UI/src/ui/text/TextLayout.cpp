@@ -2,8 +2,7 @@
 #include "TextLayout.h"
 
 #include "engine/graphics/RenderGroup.h"
-#include "engine/parameter/TextureParameter.h"
-#include <engine/parameter/ValueParameter.h>
+#include "engine/graphics/material/TextureInput.h"
 
 namespace Ghurund::UI {
 	void TextLayout::refresh() {
@@ -90,8 +89,8 @@ namespace Ghurund::UI {
 				auto mesh = IntrusivePointer<Resource>(textMeshFactory.makeMesh(line.Characters, span));
 				auto material = IntrusivePointer<Material>(textMaterial->clone());
 				// TODO: support multiple materials
-				TextureParameter* colorTextureParameter = (TextureParameter*)material->Parameters.get("colorTexture");
-				colorTextureParameter->Value = IntrusivePointer<ITexture>(textureFactory.makeTexture(*span.textStyle->Atlas->Image)).get();
+				TextureInput* colorTextureInput = (TextureInput*)material->Inputs.get("colorTexture");
+				colorTextureInput->Value = IntrusivePointer<ITexture>(textureFactory.makeTexture(*span.textStyle->Atlas->Image)).get();
 				textMeshes.add({ mesh, material });
 			}
 		}
@@ -133,8 +132,8 @@ namespace Ghurund::UI {
 		if (!valid)
 			return;
 		for (auto& mesh : textMeshes) {
-			Float2Parameter* positionParameter = (Float2Parameter*)mesh.material->Parameters.get("position");
-			positionParameter->Value = position;
+			Float2Input* positionInput = (Float2Input*)mesh.material->Inputs.get("position");
+			positionInput->Value = position;
 			group.objects.add({
 				mesh.mesh,
 				mesh.material,

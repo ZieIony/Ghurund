@@ -100,17 +100,20 @@
   <ItemGroup>
     <ClInclude Include="src\engine\application\Layer.h" />
     <ClInclude Include="src\engine\application\LayerList.h" />
+    <ClInclude Include="src\engine\graphics\material\MaterialInput.h" />
+    <ClInclude Include="src\engine\graphics\material\MaterialInputCollection.h" />
+    <ClInclude Include="src\engine\graphics\material\ValueInput.h" />
+    <ClInclude Include="src\engine\graphics\material\TextureInput.h" />
     <ClInclude Include="src\engine\graphics\memory\IGPUMemoryManager.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialProvider.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialLoader.h" />
-    <ClInclude Include="src\engine\graphics\shader\BufferInput.h" />
-    <ClInclude Include="src\engine\graphics\shader\ValueInputType.h" />
+    <ClInclude Include="src\engine\graphics\shader\BufferConstant.h" />
+    <ClInclude Include="src\engine\graphics\shader\InputType.h" />
     <ClInclude Include="src\engine\graphics\shader\IShaderProvider.h" />
-    <ClInclude Include="src\engine\graphics\shader\TextureInput.h" />
-    <ClInclude Include="src\engine\graphics\shader\ValueInput.h" />
+    <ClInclude Include="src\engine\graphics\shader\TextureConstant.h" />
+    <ClInclude Include="src\engine\graphics\shader\ValueConstant.h" />
     <ClInclude Include="src\engine\graphics\texture\ITextureFactory.h" />
     <ClInclude Include="src\engine\graphics\shader\ConstantBuffer.h" />
-    <ClInclude Include="src\engine\parameter\AttributeLoader.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />
@@ -183,7 +186,6 @@
     <ClInclude Include="src\engine\parameter\Parameter.h" />
     <ClInclude Include="src\engine\parameter\ParameterCollection.h" />
     <ClInclude Include="src\engine\parameter\ParameterManager.h" />
-    <ClInclude Include="src\engine\parameter\ParameterProvider.h" />
     <ClInclude Include="src\engine\parameter\TextureParameter.h" />
     <ClInclude Include="src\engine\parameter\ValueParameter.h" />
     <ClInclude Include="src\engine\physics\Physics.h" />
@@ -234,8 +236,6 @@
     <ClCompile Include="src\engine\graphics\mesh\SphereMeshData.cpp" />
     <ClCompile Include="src\engine\graphics\shader\Shader.cpp" />
     <ClCompile Include="src\engine\graphics\shader\ShaderCode.cpp" />
-    <ClCompile Include="src\engine\graphics\shader\TextureInput.cpp" />
-    <ClCompile Include="src\engine\graphics\shader\ValueInput.cpp" />
     <ClCompile Include="src\engine\graphics\texture\ITexture.cpp" />
     <ClCompile Include="src\engine\net\Client.cpp" />
     <ClCompile Include="src\engine\net\Message.cpp" />
@@ -246,7 +246,6 @@
     <ClCompile Include="src\engine\net\Socket.cpp" />
     <ClCompile Include="src\engine\parameter\Parameter.cpp" />
     <ClCompile Include="src\engine\parameter\ParameterManager.cpp" />
-    <ClCompile Include="src\engine\parameter\ParameterProvider.cpp" />
     <ClCompile Include="src\engine\physics\Physics.cpp" />
     <ClCompile Include="src\engine\script\Script.cpp" />
     <ClCompile Include="src\engine\script\ScriptEngine.cpp" />

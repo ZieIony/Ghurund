@@ -68,9 +68,9 @@ namespace Ghurund::UI {
 
 		IntrusivePointer<Material> material;
 		IntrusivePointer<Resource> mesh;
-		Float2Parameter* positionParameter = nullptr, * sizeParameter = nullptr;
-		FloatParameter* alphaParameter = nullptr;
-		BoolParameter *enabledParameter = nullptr, * focusedParameter = nullptr;
+		Float2Input* positionInput = nullptr, * sizeInput = nullptr;
+		FloatInput* alphaInput = nullptr;
+		FloatInput *enabledInput = nullptr, * focusedInput = nullptr;
 
 		bool needsLayout = true;
 
@@ -153,8 +153,8 @@ namespace Ghurund::UI {
 			if (this->enabled == enabled)
 				return;
 			this->enabled = enabled;
-			if (enabledParameter)
-				enabledParameter->Value = enabled;
+			if (enabledInput)
+				enabledInput->Value = enabled ? 1.0f : 0.0f;
 			if (!enabled && Focused)
 				clearFocus();
 			dispatchStateChanged();

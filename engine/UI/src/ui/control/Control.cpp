@@ -8,7 +8,6 @@
 #include "core/window/Cursor.h"
 #include "engine/graphics/RenderGroup.h"
 #include "ui/loading/LayoutLoader.h"
-#include "ui/material/ControlMaterialParameters.h"
 #include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
@@ -76,27 +75,27 @@ namespace Ghurund::UI {
 	}
 
 	void Control::onStateChanged() {
-		if (focusedParameter)
-			focusedParameter->Value = Focused ? 1.0f : 0.0f;
+		if (focusedInput)
+			focusedInput->Value = Focused ? 1.0f : 0.0f;
 	}
 
 	void Control::onMaterialChanged() {
 		if (material != nullptr) {
-			positionParameter = (Float2Parameter*)material->Parameters.get("position");
-			sizeParameter = (Float2Parameter*)material->Parameters.get("size");
-			alphaParameter = (FloatParameter*)material->Parameters.get("alpha");
-			enabledParameter = (BoolParameter*)material->Parameters.get("enabled");
-			if (enabledParameter)
-				enabledParameter->Value = enabled ? 1.0f : 0.0f;
-			focusedParameter = (BoolParameter*)material->Parameters.get("focused");
-			if (focusedParameter)
-				focusedParameter->Value = Focused ? 1.0f : 0.0f;
+			positionInput = (Float2Input*)material->Inputs.get("position");
+			sizeInput = (Float2Input*)material->Inputs.get("size");
+			alphaInput = (FloatInput*)material->Inputs.get("alpha");
+			enabledInput = (FloatInput*)material->Inputs.get("enabled");
+			if (enabledInput)
+				enabledInput->Value = enabled ? 1.0f : 0.0f;
+			focusedInput = (FloatInput*)material->Inputs.get("focused");
+			if (focusedInput)
+				focusedInput->Value = Focused ? 1.0f : 0.0f;
 		} else {
-			positionParameter = nullptr;
-			sizeParameter = nullptr;
-			alphaParameter = nullptr;
-			enabledParameter = nullptr;
-			focusedParameter = nullptr;
+			positionInput = nullptr;
+			sizeInput = nullptr;
+			alphaInput = nullptr;
+			enabledInput = nullptr;
+			focusedInput = nullptr;
 		}
 	}
 
@@ -111,9 +110,9 @@ namespace Ghurund::UI {
 	void Control::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
 		if (material == nullptr)
 			return;
-		positionParameter->Value = parentPosition + position;
-		sizeParameter->Value = { Size.Width, Size.Height };
-		alphaParameter->Value = alpha;
+		positionInput->Value = parentPosition + position;
+		sizeInput->Value = { Size.Width, Size.Height };
+		alphaInput->Value = alpha;
 		group.objects.add(DrawPacket{
 			mesh,
 			material,

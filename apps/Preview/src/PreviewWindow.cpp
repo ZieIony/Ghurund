@@ -7,7 +7,7 @@
 #include "engine/directx/DxGraphicsFeature.h"
 #include "ui/directx/shader/DxUIShaderProvider.h"
 #include "ui/directx/text/DxTextMeshFactory.h"
-#include "ui/material/ControlMaterialParameters.h"
+#include "ui/material/ControlMaterialInputs.h"
 #include "ui/material/UIMaterialProvider.h"
 
 namespace Preview {
@@ -40,7 +40,7 @@ namespace Preview {
 		DxUIShaderProvider shaderProvider(Application.ResourceManager);
 		UIMaterialProvider materialProvider(shaderProvider, graphicsFeature->MemoryManager);
 		basicMaterial = IntrusivePointer<Material>(materialProvider.makeControl());
-		ControlMaterialParameters params(basicMaterial.ref());
+		ControlMaterialInputs params(basicMaterial.ref());
 		params.BackgroundColor = Colors::ALICE_BLUE;
 		previewLayout->Material = basicMaterial.get();
 

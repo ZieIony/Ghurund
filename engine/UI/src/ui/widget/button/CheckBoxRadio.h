@@ -27,8 +27,8 @@ namespace Ghurund::UI {
 		bool checked = false;
 		InteractionHandler interactionHandler = *this;
 		IntrusivePointer<ImageView> iconView;
-		BoolParameter* checkedParameter = nullptr;
-		BoolParameter* checkedParameter2 = nullptr;
+		FloatInput* checkedParameter = nullptr;
+		FloatInput* checkedParameter2 = nullptr;
 
 		virtual void onLayoutChanged() override {
 			iconView.set(nullptr);
@@ -37,13 +37,13 @@ namespace Ghurund::UI {
 			if (layoutControl) {
 				iconView.set((Ghurund::UI::ImageView*)layoutControl->find("icon"));
 				iconView->addReference();
-					checkedParameter2 = (BoolParameter*)iconView->Material->Parameters.get("checked");
+					checkedParameter2 = (FloatInput*)iconView->Material->Inputs.get("checked");
 			}
 		}
 
 		virtual void onMaterialChanged() override {
 			if (material != nullptr) {
-				checkedParameter = (BoolParameter*)material->Parameters.get("checked");
+				checkedParameter = (FloatInput*)material->Inputs.get("checked");
 			} else {
 				checkedParameter = nullptr;
 			}

@@ -3,17 +3,15 @@
 #include "engine/graphics/texture/ITexture.h"
 
 namespace Ghurund::Engine {
-	class TextureParameter;
-
-	class TextureInput {
+	class TextureConstant {
 	private:
 		const AString name;
 		const ITexture* value = nullptr;
 
 	public:
-		TextureInput(const AString& name):name(name) {}
+		TextureConstant(const AString& name):name(name) {}
 
-		~TextureInput() {
+		~TextureConstant() {
 			if (value)
 				value->release();
 		}
@@ -28,19 +26,10 @@ namespace Ghurund::Engine {
 			return value;
 		}
 
-		void setValue(const ITexture* value) {
+		inline void setValue(const ITexture* value) {
 			setPointer(this->value, value);
 		}
 
-		void clearValue() {
-			if (value) {
-				value->release();
-				value = nullptr;
-			}
-		}
-
 		__declspec(property(get = getValue, put = setValue)) const ITexture* Value;
-
-		TextureParameter* makeParameter() const;
 	};
 }

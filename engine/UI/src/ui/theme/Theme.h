@@ -1,15 +1,16 @@
 #pragma once
 
 #include "AttributeKey.h"
-#include "core/object/IntrusivePointer.h"
+#include "LayoutProvider.h"
+#include "MaterialProvider.h"
+#include "TextureProvider.h"
+
 #include "core/collection/Map.h"
 #include "core/Color.h"
-
+#include "core/object/IntrusivePointer.h"
+#include "core/object/SharedPointer.h"
+#include "engine/graphics/texture/ITexture.h"
 #include "ui/font/TextStyle.h"
-#include "TextureProvider.h"
-#include "LayoutProvider.h"
-#include <engine/graphics/texture/ITexture.h>
-#include "MaterialProvider.h"
 
 namespace Ghurund::UI {
 

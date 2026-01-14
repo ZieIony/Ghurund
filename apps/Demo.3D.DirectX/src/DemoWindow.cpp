@@ -10,7 +10,7 @@
 #include "engine/graphics/mesh/QuadMeshData.h"
 #include "ui/directx/shader/DxUIShaderProvider.h"
 #include "ui/directx/text/DxTextMeshFactory.h"
-#include "ui/material/ControlMaterialParameters.h"
+#include "ui/material/ControlMaterialInputs.h"
 #include "ui/material/UIMaterialProvider.h"
 
 namespace Demo {
@@ -33,15 +33,6 @@ namespace Demo {
 		DxUIShaderProvider shaderProvider(app.ResourceManager);
 		UIMaterialProvider materialProvider(shaderProvider, graphicsFeature->MemoryManager);
 
-		camera = makeIntrusive<Camera>();
-		camera->setPositionTargetUp({ 10,10,-10 }, { 0,0,0 });
-		camera->rebuild();
-		camera->updateParameters();
-		ParameterManager.Parameters.putAll(camera->Parameters);
-
-		auto world = makeIntrusive<MatrixParameter>("world", MATRIX_IDENTITY);
-		ParameterManager.Parameters.put(world.get());
-
 		auto textStylePath = FilePath(L"resources/textStyles/lato_regular_12.bin");
 		if (File(textStylePath).exists()) {
 			textStyle.set(app.ResourceManager.load<TextStyle>(textStylePath, DirectoryPath(), TextStyle::FORMAT_BIN));
@@ -62,8 +53,8 @@ namespace Demo {
 			basicMaterial = IntrusivePointer<Material>(materialProvider.makeText());
 			colorTexture = makeIntrusive<DxTexture>();
 			colorTexture->init(graphicsFeature->Graphics, commandList.ref(), *textStyle->Atlas->Image);
-			colorTextureParameter = (TextureParameter*)basicMaterial->Parameters.get("colorTexture");
-			colorTextureParameter->Value = colorTexture.get();
+			colorTextureInput = (TextureInput*)basicMaterial->Inputs.get("colorTexture");
+			colorTextureInput->Value = colorTexture.get();
 
 			textLayout.Document = makeIntrusive<TextDocument>(
 				L"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -82,9 +73,9 @@ namespace Demo {
 			mesh->init(meshData.ref(), graphicsFeature->MemoryManager);
 
 			controlMaterial = IntrusivePointer<Material>(materialProvider.makeControl());
-			ControlMaterialParameters parameters(controlMaterial.ref());
-			parameters.Size = { (float)textLayout.Size.Width, (float)textLayout.Size.Height };
-			parameters.BackgroundColor = Colors::WHITE;
+			ControlMaterialInputs inputs(controlMaterial.ref());
+			inputs.Size = { (float)textLayout.Size.Width, (float)textLayout.Size.Height };
+			inputs.BackgroundColor = Colors::WHITE;
 
 		}
 		uiGroup.objects.add(DrawPacket{ shadowMesh, controlMaterial });

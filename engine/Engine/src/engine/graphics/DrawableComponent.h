@@ -3,7 +3,6 @@
 #include "engine/entity/Entity.h"
 #include "engine/entity/TransformComponent.h"
 #include "engine/graphics/RenderingStatistics.h"
-#include "engine/parameter/ParameterProvider.h"
 
 #include <DirectXCollision.h>
 

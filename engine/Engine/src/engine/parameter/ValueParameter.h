@@ -4,7 +4,6 @@
 
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/TypeBuilder.h"
-#include "engine/graphics/shader/ValueInput.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
@@ -43,10 +42,6 @@ namespace Ghurund::Engine {
 		}
 
 		__declspec(property(get = getRawValue)) const void* const RawValue;
-
-		inline void apply(ValueInput& shaderInput) const {
-			shaderInput.value = rawValue;
-		}
 	};
 
 	template<typename T>

@@ -2,10 +2,7 @@
 
 #include "DemoApplication.h"
 #include "engine/application/GameWindow.h"
-#include "ui/font/Font.h"
-#include <engine/directx/mesh/DxMesh.h>
 #include <engine/entity/camera/Camera.h>
-#include <ui/font/FontLoader.h>
 #include <ui/text/TextLayout.h>
 
 namespace Demo {
@@ -21,11 +18,9 @@ namespace Demo {
 
 		IntrusivePointer<Resource> textMesh, shadowMesh;
 		IntrusivePointer<Material> basicMaterial, controlMaterial;
-		IntrusivePointer<Camera> camera;
 		IntrusivePointer<TextStyle> textStyle;
 
-		Float2Parameter* sizeParameter;
-		TextureParameter* colorTextureParameter;
+		TextureInput* colorTextureInput;
 		IntrusivePointer<DxTexture> colorTexture;
 
 		TextLayout textLayout;

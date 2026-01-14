@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/math/Size.h"
-#include "engine/parameter/ParameterProvider.h"
+#include "engine/parameter/ParameterCollection.h"
 #include "engine/parameter/ValueParameter.h"
 
 #include <DirectXMath.h>
@@ -9,7 +9,7 @@
 namespace Ghurund::Engine {
 	using namespace ::DirectX;
 
-	class Camera: public RefCountedObject, public ParameterProvider {
+	class Camera: public RefCountedObject {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -43,6 +43,7 @@ namespace Ghurund::Engine {
 		inline static const AString VIEW_PROJECTION = "viewProjection";
 		inline static const AString VIEW_PROJECTION_INV = "viewProjectionInv";
 
+		ParameterCollection parameters;
 		Float3Parameter* parameterDirection = nullptr, * parameterPosition = nullptr, * parameterTarget = nullptr;
 		Float3Parameter* parameterUp = nullptr, * parameterRight = nullptr;
 		FloatParameter* parameterFov = nullptr;
@@ -59,7 +60,11 @@ namespace Ghurund::Engine {
 
 		~Camera();
 
-		virtual void updateParameters();
+		inline ParameterCollection& getParameters() {
+			return parameters;
+		}
+
+		__declspec(property(get = getParameters)) ParameterCollection& Parameters;
 
 		void rebuild();
 

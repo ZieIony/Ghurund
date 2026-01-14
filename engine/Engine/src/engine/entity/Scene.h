@@ -32,9 +32,9 @@ namespace Ghurund::Engine {
     public:
         Scene() {}
 
-        inline void init(ParameterManager& parameterManager) {
+        /*inline void init(ParameterManager& parameterManager) {
             drawingSystem.initParameters(parameterManager);
-        }
+        }*/
 
         virtual void invalidate() override {
             __super::invalidate();

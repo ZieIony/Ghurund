@@ -41,7 +41,7 @@ namespace Demo {
 
             shaderCompiler = makeShared<DxShaderCompiler>(graphicsFeature->Graphics);
             shaderLoader = makeIntrusive<DxShaderLoader>(ResourceManager, shaderCompiler.ref());
-            shaderLoader->includeDirs.add(DirectoryPath() / DirectoryPath(L"./resources/shaders/DirectX/"));
+            shaderLoader->includeDirs.add(DirectoryPath() / DirectoryPath(L"./resources/shaders/DirectX/include"));
             ResourceManager.Loaders.set<DxShader>(shaderLoader.ref());
 
             fontLoader = makeIntrusive<FontLoader>();

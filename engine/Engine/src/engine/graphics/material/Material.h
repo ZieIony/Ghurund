@@ -1,18 +1,18 @@
 #pragma once
 
+#include "ValueInput.h"
+#include "TextureInput.h"
+#include "MaterialInputCollection.h"
+
 #include "core/object/NotNull.h"
 #include "core/resource/Resource.h"
+#include "engine/graphics/memory/IGPUMemoryManager.h"
 #include "engine/graphics/shader/Shader.h"
-#include "engine/parameter/ParameterProvider.h"
-#include "engine/graphics/shader/ValueInput.h"
-#include "engine/graphics/shader/TextureInput.h"
-#include "engine/parameter/TextureParameter.h"
-#include "engine/parameter/ValueParameter.h"
-#include <engine/graphics/memory/IGPUMemoryManager.h>
+#include "engine/parameter/ParameterCollection.h"
 
 namespace Ghurund::Engine {
 
-    class Material:public Ghurund::Core::Resource, public ParameterProvider {
+    class Material:public Ghurund::Core::Resource {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -26,17 +26,18 @@ namespace Ghurund::Engine {
 #pragma endregion
 
     private:
+        MaterialInputCollection inputs;
         IGPUMemoryManager& memoryManager;
         Shader* shader = nullptr;
-        List< IntrusivePointer<ConstantBuffer>> constantBuffers;
-        List<std::pair<ValueInput*, IntrusivePointer<BaseValueParameter>>> valueParameters;
-        List<std::pair<TextureInput*, IntrusivePointer<TextureParameter>>> textureParameters;
+        List<IntrusivePointer<ConstantBuffer>> constantBuffers;
+        List<BaseValueInput*> valueInputs;
+        List<TextureInput*> textureInputs;
 
         void initParameters();
 
         inline void finalize() {
             safeRelease(shader);
-            parameters.clear();
+            inputs.clear();
         }
 
     protected:
@@ -66,15 +67,21 @@ namespace Ghurund::Engine {
             return shader != nullptr && shader->Valid && __super::Valid;
         }
 
+        inline MaterialInputCollection& getInputs() {
+            return inputs;
+        }
+
+        __declspec(property(get = getInputs)) MaterialInputCollection& Inputs;
+        
         Shader* getShader() {
             return shader;
         }
 
         inline void setShader(Shader* shader) {
             setPointer(this->shader, shader);
-            valueParameters.clear();
-            textureParameters.clear();
-            parameters.clear();
+            valueInputs.clear();
+            textureInputs.clear();
+            inputs.clear();
             if (shader)
                 initParameters();
         }
@@ -87,7 +94,7 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getIsTransparencyEnabled)) bool IsTransparencyEnabled;
 
-        void setParameters(ParameterCollection& defaults);
+        void applyInputs(ParameterCollection& defaults);
 
         virtual Material* clone() const {
             return ghnew Material(*this);

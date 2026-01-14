@@ -110,8 +110,8 @@ namespace Ghurund::Engine::DirectX {
 		const Array<SharedPointer<DxShaderProgram>>& programs,
 		ShaderSettings shaderSettings
 	) {
-		List<BufferConstant*> constantBuffers;
-		List<TextureConstant*> textures;
+		List<DxBufferConstantInfo*> constantBuffers;
+		List<DxTextureConstantInfo*> textures;
 		List<Sampler*> samplers;
 		for (auto& program : programs)
 			initConstants(*program.get(), constantBuffers, textures, samplers);
@@ -218,8 +218,8 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> DxShaderCompiler::makeRootSignature(
-		const List<BufferConstant*>& constantBuffers,
-		const List<TextureConstant*>& textures,
+		const List<DxBufferConstantInfo*>& constantBuffers,
+		const List<DxTextureConstantInfo*>& textures,
 		const List<Sampler*>& samplers
 	) {
 		size_t paramCount = constantBuffers.Size + textures.Size;
@@ -273,8 +273,8 @@ namespace Ghurund::Engine::DirectX {
 
 	void DxShaderCompiler::initConstants(
 		const DxShaderProgram& program,
-		List<BufferConstant*>& constantBuffers,
-		List<TextureConstant*>& textures,
+		List<DxBufferConstantInfo*>& constantBuffers,
+		List<DxTextureConstantInfo*>& textures,
 		List<Sampler*>& samplers
 	) {
 		ID3D12ShaderReflection* reflector = nullptr;
@@ -299,7 +299,7 @@ namespace Ghurund::Engine::DirectX {
 					constantBuffers[index]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
 					constantBuffers[index]->init(*constantBuffer, bufferDesc);
 				} else {
-					BufferConstant* cb = ghnew BufferConstant(bindDesc.Name, bindDesc.BindPoint, visibility);
+					DxBufferConstantInfo* cb = ghnew DxBufferConstantInfo(bindDesc.Name, bindDesc.BindPoint, visibility);
 					cb->init(*constantBuffer, bufferDesc);
 					constantBuffers.add(cb);
 				}
@@ -311,7 +311,7 @@ namespace Ghurund::Engine::DirectX {
 				if (index != textures.Size) {
 					textures[index]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
 				} else {
-					textures.add(ghnew TextureConstant(bindDesc.Name, bindDesc.BindPoint, visibility));
+					textures.add(ghnew DxTextureConstantInfo(bindDesc.Name, bindDesc.BindPoint, visibility));
 				}
 			}
 			break;

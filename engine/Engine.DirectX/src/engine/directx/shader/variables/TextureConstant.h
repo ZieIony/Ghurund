@@ -3,9 +3,9 @@
 #include "ShaderConstant.h"
 
 namespace Ghurund::Engine::DirectX {
-    class TextureConstant:public ShaderConstant {
+    class DxTextureConstantInfo:public ShaderConstant {
     public:
-        TextureConstant(
+        DxTextureConstantInfo(
             const char *name,
             unsigned int bindPoint,
             D3D12_SHADER_VISIBILITY visibility

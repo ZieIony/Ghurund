@@ -3,7 +3,6 @@
 #include "Parameter.h"
 
 #include "engine/graphics/texture/ITexture.h"
-#include "engine/graphics/shader/TextureInput.h"
 
 namespace Ghurund::Engine {
     class TextureParameter:public Parameter {
@@ -64,10 +63,6 @@ namespace Ghurund::Engine {
         }
 
         __declspec(property(get = getValue, put = setValue)) const ITexture* Value;
-
-        inline void apply(TextureInput& input) {
-            input.Value = value;
-        }
 
         virtual TextureParameter* clone() const {
             return ghnew TextureParameter(*this);

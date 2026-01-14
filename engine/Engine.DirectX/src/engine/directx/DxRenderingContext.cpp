@@ -33,5 +33,23 @@ namespace Ghurund::Engine::DirectX {
 			swapChain->initBuffers();
 		}
 	}
+
+	void DxRenderingContext::draw(Set<RenderGroup>& renderGroups, ParameterManager& parameterManager) {
+		Ghurund::Engine::DirectX::CommandList* commandList = swapChain->CurrentFrame.CommandList;
+		for (auto& group : renderGroups) {
+			// TODO: sort on insertion
+			group.objects.sort([&](const DrawPacket& first, const DrawPacket& second) {
+				return (first.position.z - second.position.z) * (int8_t)group.DrawOrder;
+			});
+			for (auto& packet : group.objects) {
+				auto mesh = (DxMesh*)packet.mesh.get();
+				auto material = packet.material.get();
+				material->applyInputs(parameterManager.Parameters);
+				auto shader = (DxShader*)material->Shader;
+				shader->set(*commandList);
+				mesh->draw(*commandList, shader->Layout);
+			}
+		}
+	}
 }
 
