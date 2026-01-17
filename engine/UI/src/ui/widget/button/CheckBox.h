@@ -5,6 +5,10 @@
 namespace Ghurund::UI {
 	class CheckBox:public CheckBoxRadio {
 #pragma region reflection
+	private:
+		static Property<CheckBox, bool> PROPERTY_IS_CHECKED;
+		BindableProperty isCheckedProperty = BindableProperty(*this, PROPERTY_IS_CHECKED);
+
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
 			return GET_TYPE();
@@ -24,19 +28,21 @@ namespace Ghurund::UI {
 
 		CheckBox() {
 			interactionHandler.clicked += [this](InteractionHandler&, const MouseClickedEventArgs&) {
-				Checked = !checked;
+				IsChecked = !checked;
 				return true;
 			};
+			bindableProperties.add(isCheckedProperty);
 		}
 
-        inline void setChecked(bool checked) {
+        inline void setIsChecked(bool checked) {
             if (this->checked != checked) {
                 this->checked = checked;
                 dispatchStateChanged();
+				isCheckedProperty.PropertyChanged(&checked);
                 checkedChanged(checked);
             }
         }
 
-        __declspec(property(put = setChecked)) bool Checked;
+        __declspec(property(put = setIsChecked)) bool IsChecked;
 	};
 }

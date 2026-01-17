@@ -10,7 +10,7 @@ namespace Ghurund::UI {
 
     class Control;
 
-    class Binding {
+    class Binding2 {
     private:
         Control& target;
         BaseProperty* sourceProperty;
@@ -21,7 +21,7 @@ namespace Ghurund::UI {
         Control* resolvePath(const Array<AString>& path);
 
     public:
-        Binding(Control& target, BaseProperty* targetProperty, BaseProperty* sourceProperty)
+        Binding2(Control& target, BaseProperty* targetProperty, BaseProperty* sourceProperty)
             :target(target), targetProperty(targetProperty), sourceProperty(sourceProperty) {}
 
         void parse(AString& attrName, AString& attrValue);

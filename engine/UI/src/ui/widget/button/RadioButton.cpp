@@ -18,7 +18,7 @@ namespace Ghurund::UI {
 			} else {
 				drawable->Drawable = Theme::TEXTURE_RADIOBUTTON_UNCHECKED;
 			}
-			if (!Enabled) {
+			if (!IsEnabled) {
 				drawable->Tint = Theme::COLOR_DISABLED_ONBACKGROUND;
 			} else if (interactionHandler.isPressed) {
 				if (checked) {

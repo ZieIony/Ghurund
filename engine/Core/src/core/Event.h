@@ -49,14 +49,14 @@ namespace Ghurund::Core {
             listeners.clear();
         }
 
-        inline bool invoke() {
+        inline bool invoke() const {
             bool result = false;
             for (auto& listener : listeners)
                 result |= listener(owner);
             return result;
         }
 
-        inline bool operator()() {
+        inline bool operator()() const {
             return invoke();
         }
     };
@@ -68,6 +68,8 @@ namespace Ghurund::Core {
         SenderType& owner;
 
     public:
+        using args_t = Type;
+
         Event(SenderType& owner):owner(owner) {}
 
         inline void add(const std::function<bool(SenderType& sender, const Type& args)>& lambda) {

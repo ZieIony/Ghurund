@@ -3,14 +3,16 @@
 #include "core/Event.h"
 #include "core/input/EventConsumer.h"
 #include "core/math/Size.h"
+#include "core/reflection/Property.h"
+#include "core/reflection/StandardTypes.h"
 #include "core/resource/Resource.h"
-#include "ui/Binding.h"
+#include "engine/graphics/material/Material.h"
 #include "ui/constraint/Constraint.h"
 #include "ui/constraint/ContentSize.h"
 #include "ui/constraint/WrapConstraint.h"
 #include "ui/UIContext.h"
-#include "engine/graphics/material/Material.h"
-#include "engine/parameter/ValueParameter.h"
+#include "ui/control/binding/BindableProperty.h"
+#include "ui/control/binding/BindablePropertyCollection.h"
 
 namespace tinyxml2 {
 	class XMLElement;
@@ -36,6 +38,9 @@ namespace Ghurund::UI {
 
 	class Control:public Resource, public EventConsumer {
 #pragma region reflection
+	private:
+		static Ghurund::Core::Property<Control, bool> PROPERTY_IS_ENABLED;
+
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
 			return GET_TYPE();
@@ -55,6 +60,8 @@ namespace Ghurund::UI {
 
 		bool visible = true;
 		bool enabled = true;
+		BindableProperty isEnabledProperty = BindableProperty(*this, PROPERTY_IS_ENABLED);
+
 		bool focusable = false;
 
 		Ghurund::Core::AString* name = nullptr;
@@ -75,8 +82,6 @@ namespace Ghurund::UI {
 		bool needsLayout = true;
 
 		Theme* localTheme = nullptr;
-
-		List<Binding> bindings;
 
 		Control(const Control& other):Resource(other),
 			cursor(other.cursor),
@@ -114,13 +119,17 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
+		BindablePropertyCollection bindableProperties;
+
 		Event<Control> sizeChanged = *this;
 		Event<Control> stateChanged = *this;
 		Event<Control> materialChanged = *this;
 		Event<Control> themeChanged = *this;
 		Event<Control> contextChanged = *this;
 
-		Control() {}
+		Control() {
+			bindableProperties.add(isEnabledProperty);
+		}
 
 		inline const Ghurund::Core::AString* getName() const {
 			return name;
@@ -147,9 +156,9 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = isVisible, put = setVisible)) bool Visible;
 
-		bool isEnabled() const;
+		bool getIsEnabled() const;
 
-		inline void setEnabled(bool enabled) {
+		inline void setIsEnabled(bool enabled) {
 			if (this->enabled == enabled)
 				return;
 			this->enabled = enabled;
@@ -157,10 +166,11 @@ namespace Ghurund::UI {
 				enabledInput->Value = enabled ? 1.0f : 0.0f;
 			if (!enabled && Focused)
 				clearFocus();
+			isEnabledProperty.PropertyChanged(&enabled);	// not always a different value
 			dispatchStateChanged();
 		}
 
-		__declspec(property(get = isEnabled, put = setEnabled)) bool Enabled;
+		__declspec(property(get = getIsEnabled, put = setIsEnabled)) bool IsEnabled;
 
 		inline bool isFocusable() const {
 			return enabled && visible && focusable;
@@ -267,11 +277,11 @@ namespace Ghurund::UI {
 		__declspec(property(get = getSize)) Ghurund::Core::FloatSize& Size;
 
 		inline bool canReceiveEvent(const KeyEventArgs& event) const {
-			return Visible && Enabled;
+			return Visible && IsEnabled;
 		}
 
 		inline bool canReceiveEvent(const MouseEventArgs& event) const {
-			return Visible && Enabled && hitTest((float)event.Position.x, (float)event.Position.y);
+			return Visible && IsEnabled && hitTest((float)event.Position.x, (float)event.Position.y);
 		}
 
 		// TODO: support matrix transformation
@@ -352,8 +362,6 @@ namespace Ghurund::UI {
 			contentSize.Width.resolve(*this, graph);
 			contentSize.Height.resolve(*this, graph);
 		}
-
-		virtual void bind();
 
 		virtual XMFLOAT2 getPositionInWindow();
 

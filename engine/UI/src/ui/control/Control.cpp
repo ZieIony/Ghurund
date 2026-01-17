@@ -12,11 +12,12 @@
 
 namespace Ghurund::UI {
 
+	Property<Control, bool> Control::PROPERTY_IS_ENABLED = Property<Control, bool>("IsEnabled", &getIsEnabled, &setIsEnabled);
+
 	const Ghurund::Core::Type& Control::GET_TYPE() {
 		static const auto CONSTRUCTOR = Constructor<Control>();
 		static auto PROPERTY_NAME = Property<Control, const AString*>("Name", (const AString * (Control::*)()) & getName, (void(Control::*)(const AString*)) & setName);
 		static auto PROPERTY_VISIBLE = Property<Control, bool>("Visible", (bool(Control::*)()) & isVisible, (void(Control::*)(bool)) & setVisible);
-		static auto PROPERTY_ENABLED = Property<Control, bool>("Enabled", (bool(Control::*)()) & isEnabled, (void(Control::*)(bool)) & setEnabled);
 		static auto PROPERTY_FOCUSABLE = Property<Control, bool>("Focusable", (bool(Control::*)()) & isFocusable, (void(Control::*)(bool)) & setFocusable);
 		static auto PROPERTY_FOCUS = Property<Control, Control*>("Focus", &getFocus);
 		static auto PROPERTY_FOCUSED = Property<Control, bool>("Focused", (bool(Control::*)()) & isFocused);
@@ -34,7 +35,7 @@ namespace Ghurund::UI {
 			.withConstructor(CONSTRUCTOR)
 			.withProperty(PROPERTY_NAME)
 			.withProperty(PROPERTY_VISIBLE)
-			.withProperty(PROPERTY_ENABLED)
+			.withProperty(PROPERTY_IS_ENABLED)
 			.withProperty(PROPERTY_FOCUSABLE)
 			.withProperty(PROPERTY_FOCUS)
 			.withProperty(PROPERTY_FOCUSED)
@@ -170,8 +171,8 @@ namespace Ghurund::UI {
 			localTheme == c.localTheme;
 	}
 
-	bool Control::isEnabled() const {
-		return enabled && (!parent || parent->Enabled);
+	bool Control::getIsEnabled() const {
+		return enabled && (!parent || parent->IsEnabled);
 	}
 
 	void Control::requestFocus() {
@@ -361,12 +362,6 @@ namespace Ghurund::UI {
 		onDraw(group, parentPosition);
 	}
 
-	void Control::bind() {
-		for (Binding& b : bindings) {
-			b.execute();
-		}
-	}
-
 	XMFLOAT2 Control::getPositionInWindow() {
 		Control* control = this;
 		while (control) {
@@ -397,7 +392,7 @@ namespace Ghurund::UI {
 
 	String Control::printTree() const {
 		String state = _T("");
-		if (Enabled)
+		if (IsEnabled)
 			state.add(_T('e'));
 		if (Focusable)
 			state.add(_T('f'));

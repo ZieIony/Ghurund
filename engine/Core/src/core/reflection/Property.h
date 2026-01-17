@@ -66,7 +66,7 @@ namespace Ghurund::Core {
             onGet((void*)&val);
         }
 
-        virtual void setRaw(void* obj, void* val) const override {
+        virtual void setRaw(void* obj, const void* val) const override {
             set(*(OwnerT*)obj, *(std::remove_cvref_t<PropType>*)val);
         }
     };

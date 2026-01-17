@@ -35,11 +35,6 @@ namespace Ghurund::UI {
             return GET_TYPE();
         }
 
-        virtual void bind() override {
-            __super::bind();
-            //selectableView->stateChanged += [this](Control& control) { return stateChanged(); };
-        }
-
     public:
         Tab() {
             Focusable = true;

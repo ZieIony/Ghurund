@@ -50,7 +50,7 @@ namespace Ghurund::Core {
         __declspec(property(get = getType)) const Type& Type;
 
         virtual void getRaw(void* obj, std::function<void(void*)> onGet) const = 0;
-        virtual void setRaw(void* obj, void* val) const = 0;
+        virtual void setRaw(void* obj, const void* val) const = 0;
 
         inline bool canRead() const {
             return canReadImpl();

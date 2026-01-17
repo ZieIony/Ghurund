@@ -20,7 +20,7 @@ namespace Preview {
 			return true;
 			};
 		binding.EnabledCheckBox.checkedChanged += [this](CheckBox& checkBox, bool checked) {
-			binding.Container.Enabled = checked;
+			binding.Container.IsEnabled = checked;
 			binding.Container.repaint();
 			return true;
 			};
@@ -43,5 +43,9 @@ namespace Preview {
 		binding.ColorTheme.clicked += [this](Button& button, const MouseClickedEventArgs& args) {
 			return onColorClicked(args, WindowsTheme::getAccentColor());
 			};
+
+		auto& colorIsEnabled = binding.Color1.bindableProperties.get("IsEnabled");
+		auto& checkBoxIsChecked = binding.EnabledCheckBox.bindableProperties.get("IsChecked");
+		colorIsEnabled.bindTo(checkBoxIsChecked);
 	}
 }

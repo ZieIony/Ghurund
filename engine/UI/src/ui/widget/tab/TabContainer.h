@@ -14,14 +14,6 @@ namespace Ghurund::UI {
         List<TabItem*> tabs;
         Ghurund::UI::AdapterLayout* tabLayout = nullptr;
 
-    protected:
-        virtual void bind() override {
-            __super::bind();
-            tabLayout = (Ghurund::UI::AdapterLayout*)find("tabs");
-            //provider = ghnew TabChildrenProvider();
-            //tabLayout->ControlProvider = std::unique_ptr<ControlProvider>(provider);
-        }
-
     public:
         class LayoutVerticalBottom;
 

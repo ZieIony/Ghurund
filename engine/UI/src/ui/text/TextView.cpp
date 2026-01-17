@@ -366,7 +366,7 @@ namespace Ghurund::UI {
     }
 
     void TextView::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
-        if (Enabled) {
+        if (IsEnabled) {
             Selection caretRange = getSelectionRange();
 
             /*if (caretRange.length > 0) {

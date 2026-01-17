@@ -42,7 +42,7 @@ namespace Ghurund::UI {
             StringType b;
             item->get((void**)&b);
             ((StringPropertyRow<StringType>&)control).Value = b;
-            control.Content->Enabled = !item->Property.ReadOnly;
+            control.Content->IsEnabled = !item->Property.ReadOnly;
             control.OnValueChanged.clear();
             if (!item->Property.ReadOnly) {
                 control.OnValueChanged.add([item](PropertyRow& row) {

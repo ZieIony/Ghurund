@@ -108,6 +108,8 @@
     <ClInclude Include="src\ghuipch.h" />
     <ClInclude Include="src\ui\Alignment.h" />
     <ClInclude Include="src\ui\Binding.h" />
+    <ClInclude Include="src\ui\control\binding\BindablePropertyCollection.h" />
+    <ClInclude Include="src\ui\control\binding\BindableProperty.h" />
     <ClInclude Include="src\ui\control\ImageView.h" />
     <ClInclude Include="src\ui\font\FontAtlasLoader.h" />
     <ClInclude Include="src\ui\font\FontMetrics.h" />
@@ -275,6 +277,7 @@
     </ClCompile>
     <ClCompile Include="src\ui\Alignment.cpp" />
     <ClCompile Include="src\ui\Binding.cpp" />
+    <ClCompile Include="src\ui\control\binding\BindableProperty.cpp" />
     <ClCompile Include="src\ui\control\ImageView.cpp" />
     <ClCompile Include="src\ui\font\FontAtlasLoader.cpp" />
     <ClCompile Include="src\ui\font\KerningPairs.cpp" />

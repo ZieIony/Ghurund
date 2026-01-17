@@ -4,7 +4,7 @@
 #include "ui/control/ControlParent.h"
 
 namespace Ghurund::UI {
-    Control* Binding::resolvePath(const Array<AString>& path) {
+    Control* Binding2::resolvePath(const Array<AString>& path) {
         Control* result = &target;
         for (const AString& part : path) {
             if (part == "Parent") {
@@ -24,7 +24,7 @@ namespace Ghurund::UI {
         return result;
     }
 
-    void Binding::parse(AString& attrName, AString& attrValue) {
+    void Binding2::parse(AString& attrName, AString& attrValue) {
         std::regex regex(" *\\{ *((?:(?:parent|[a-zA-Z0-9_]+)\\/)*)([a-zA-Z0-9_]+) *\\} *");
         std::smatch m;
         std::string s = attrValue.Data;
@@ -48,7 +48,7 @@ namespace Ghurund::UI {
         }
     }
     
-    void Binding::execute() {
+    void Binding2::execute() {
         Control* result = resolvePath(path);
         if (result) {
             size_t sourcePropIndex = result->Type.Properties.find([&](const BaseProperty& prop) {

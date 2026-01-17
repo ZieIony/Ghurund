@@ -1,10 +1,13 @@
 #pragma once
 
+#include "core/reflection/Property.h"
 #include "ui/control/ImageView.h"
 #include "ui/control/InteractionHandler.h"
 #include "ui/widget/ContentWidget.h"
 
 namespace Ghurund::UI {
+	using namespace Ghurund::Core;
+
 	class CheckBoxRadio:public ContentWidget {
 #pragma region reflection
 	protected:

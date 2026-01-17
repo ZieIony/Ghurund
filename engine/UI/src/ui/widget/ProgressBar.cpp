@@ -20,7 +20,7 @@ namespace Ghurund::UI {
 	}
 
 	void ProgressBar::onStateChanged() {
-		if (Enabled) {
+		if (IsEnabled) {
 			ProgressColor = ColorRef(Theme::COLOR_ACCENT);
 			BackgroundColor = ColorRef(Theme::COLOR_CONTROL);
 		} else {
