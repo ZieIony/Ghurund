@@ -22,7 +22,7 @@ namespace Preview {
 	}
 
 	void PreviewWindow::init() {
-		previewLayout.set(Application.ResourceManager.load<Control>(FilePath(L"apps/Preview/res/layout.xml"), DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
+		previewLayout.set((PreviewLayout*)Application.ResourceManager.load<Control>(FilePath(L"apps/Preview/res/layout.xml"), DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
 
 		DxGraphicsFeature* graphicsFeature = Application.Features.get<DxGraphicsFeature>();
 		auto commandList = makeIntrusive<CommandList>();
@@ -39,12 +39,12 @@ namespace Preview {
 
 		DxUIShaderProvider shaderProvider(Application.ResourceManager);
 		UIMaterialProvider materialProvider(shaderProvider, graphicsFeature->MemoryManager);
-		basicMaterial = IntrusivePointer<Material>(materialProvider.makeControl());
+		basicMaterial = IntrusivePointer<UIMaterial>(materialProvider.makeControl());
 		ControlMaterialInputs params(basicMaterial.ref());
 		params.BackgroundColor = Colors::ALICE_BLUE;
 		previewLayout->Material = basicMaterial.get();
 
-		/*previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
+		previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
 			Application.FunctionQueue.post([&, type] {
 				themeApp.ThemeType = type;
 				previewLayout.Theme = &themeApp.CurrentTheme;
@@ -58,7 +58,7 @@ namespace Preview {
 				previewLayout.dispatchThemeChanged();
 			});
 			return true;
-		};*/
+		};
 
 #ifdef _DEBUG
 		sizeChanged += [&](Window& window) {

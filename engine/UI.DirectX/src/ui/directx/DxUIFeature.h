@@ -26,13 +26,18 @@ namespace Ghurund::UI::DirectX {
     private:
         ResourceManager& resourceManager;
         DxGraphics& graphics;
+        DxGPUMemoryManager& memoryManager;
         IntrusivePointer<CommandList> commandList;
         ITextureFactory* textureFactory = nullptr;
         Ghurund::UI::ConstraintFactory* constraintFactory = nullptr;
         IntrusivePointer<Ghurund::UI::LayoutLoader> layoutLoader;
 
     public:
-        DxUIFeature(ResourceManager& resourceManager, DxGraphics& graphics):resourceManager(resourceManager), graphics(graphics) {}
+        DxUIFeature(
+            ResourceManager& resourceManager,
+            DxGraphics& graphics,
+            DxGPUMemoryManager& memoryManager
+        ):resourceManager(resourceManager), graphics(graphics), memoryManager(memoryManager) {}
 
         virtual void onInit() override;
 

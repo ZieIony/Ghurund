@@ -14,7 +14,7 @@ namespace Ghurund::UI::DirectX {
 	public:
 		DxTextMeshFactory(DxGPUMemoryManager& memoryManager):memoryManager(memoryManager) {}
 
-		virtual Resource* makeMesh(const List<CharacterInfo>& characters, const TextSpan& span) const {
+		virtual Mesh* makeMesh(const List<CharacterInfo>& characters, const TextSpan& span) const {
 			auto meshData = makeIntrusive<TextMesh>();
 			meshData->init(characters, span);
 			auto mesh = makeIntrusive<DxMesh>();

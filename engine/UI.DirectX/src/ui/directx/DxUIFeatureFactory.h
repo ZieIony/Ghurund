@@ -12,8 +12,10 @@ namespace Ghurund::UI::DirectX {
 		DxUIFeatureFactory(Application& app):FeatureFactory(app) {}
 
 		virtual OwnedNotNull<Feature> make() const override {
-			auto& graphics = app.Features.get<DxGraphicsFeature>()->Graphics;
-			return OwnedNotNull<Feature>(ghnew DxUIFeature(app.ResourceManager, graphics));
+			auto graphicsFeature = app.Features.get<DxGraphicsFeature>();
+			auto& graphics = graphicsFeature->Graphics;
+			auto& memoryManager = graphicsFeature->MemoryManager;
+			return OwnedNotNull<Feature>(ghnew DxUIFeature(app.ResourceManager, graphics, memoryManager));
 		}
 	};
 }

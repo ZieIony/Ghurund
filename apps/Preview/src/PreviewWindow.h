@@ -17,7 +17,7 @@ namespace Preview {
 
 	class PreviewWindow :public Ghurund::Engine::GameWindow {
 	private:
-		IntrusivePointer<Control> previewLayout;
+		IntrusivePointer<PreviewLayout> previewLayout;
 		FileWatcher fileWatcher;
 		std::function<void()> loadCallback;
 		ThemeApplication& themeApp;
@@ -25,7 +25,7 @@ namespace Preview {
 		SharedPointer<DxTextureFactory> textureFactory;
 		SharedPointer<DxUIContext> uiContext;
 		IntrusivePointer<UILayer> uiLayer;
-		IntrusivePointer<Material> basicMaterial;
+		IntrusivePointer<UIMaterial> basicMaterial;
 
 	public:
 		PreviewWindow(

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/reflection/Type.h"
+#include "engine/graphics/mesh/Mesh.h"
 #include "engine/graphics/texture/ITextureFactory.h"
 #include "text/ITextMeshFactory.h"
 
@@ -31,7 +32,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getWindow)) Ghurund::Core::Window& Window;
 
-        virtual Resource* makeControlMesh() = 0;
+        virtual Mesh* makeControlMesh() = 0;
 
         inline ITextMeshFactory& getTextMeshFactory() const {
             return textMeshFactory;

@@ -86,7 +86,7 @@ namespace Ghurund::UI {
 		this->textMaterial.set(material.get());
 		for (auto& line : lines) {
 			for (auto& span : line.Spans) {
-				auto mesh = IntrusivePointer<Resource>(textMeshFactory.makeMesh(line.Characters, span));
+				auto mesh = IntrusivePointer<Mesh>(textMeshFactory.makeMesh(line.Characters, span));
 				auto material = IntrusivePointer<Material>(textMaterial->clone());
 				// TODO: support multiple materials
 				TextureInput* colorTextureInput = (TextureInput*)material->Inputs.get("colorTexture");

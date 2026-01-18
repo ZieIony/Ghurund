@@ -20,7 +20,7 @@ namespace Ghurund::UI::DirectX {
     class DxUIContext:public UIContext {
     private:
         DxGPUMemoryManager& memoryManager;
-        IntrusivePointer<Resource> mesh;
+        IntrusivePointer<Mesh> mesh;
 
     public:
         DxUIContext(
@@ -30,7 +30,7 @@ namespace Ghurund::UI::DirectX {
             ITextureFactory& textureFactory
         );
 
-        virtual Resource* makeControlMesh() override;
+        virtual Mesh* makeControlMesh() override;
     };
 }
 

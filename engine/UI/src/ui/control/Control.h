@@ -6,13 +6,14 @@
 #include "core/reflection/Property.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/resource/Resource.h"
-#include "engine/graphics/material/Material.h"
 #include "ui/constraint/Constraint.h"
 #include "ui/constraint/ContentSize.h"
 #include "ui/constraint/WrapConstraint.h"
-#include "ui/UIContext.h"
 #include "ui/control/binding/BindableProperty.h"
 #include "ui/control/binding/BindablePropertyCollection.h"
+#include "ui/material/UIMaterial.h"
+#include "ui/UIContext.h"
+#include "engine/graphics/mesh/Mesh.h"
 
 namespace tinyxml2 {
 	class XMLElement;
@@ -73,9 +74,8 @@ namespace Ghurund::UI {
 		XMFLOAT2 position = { 0,0 };
 		float alpha = 1.0f;
 
-		IntrusivePointer<Material> material;
-		IntrusivePointer<Resource> mesh;
-		Float2Input* positionInput = nullptr, * sizeInput = nullptr;
+		IntrusivePointer<UIMaterial> material;
+		IntrusivePointer<Mesh> mesh;
 		FloatInput* alphaInput = nullptr;
 		FloatInput *enabledInput = nullptr, * focusedInput = nullptr;
 
@@ -102,7 +102,11 @@ namespace Ghurund::UI {
 
 		virtual void onMaterialChanged();
 
-		virtual void onThemeChanged() {}
+		virtual void onThemeChanged() {
+			auto theme = this->Theme;
+			if (material != nullptr && theme)
+				material->setTheme(theme);
+		}
 
 		virtual void onContextChanged();
 
@@ -222,20 +226,24 @@ namespace Ghurund::UI {
 
 		virtual bool focusRight();
 
-		inline void setMaterial(Material* material) {
+		inline void setMaterial(UIMaterial* material) {
 			if (this->material.get() == material)
 				return;
 			this->material.set(material);
-			if (material)
+			if (material) {
 				material->addReference();
+				auto theme = Theme;
+				if (theme)
+					material->setTheme(theme);
+			}
 			dispatchMaterialChanged();
 		}
 
-		inline Material* getMaterial() const {
+		inline UIMaterial* getMaterial() const {
 			return material.get();
 		}
 
-		__declspec(property(get = getMaterial, put = setMaterial)) Material* Material;
+		__declspec(property(get = getMaterial, put = setMaterial)) UIMaterial* Material;
 
 		inline const XMFLOAT2& getPosition() const {
 			return position;

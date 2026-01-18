@@ -2,7 +2,7 @@
 #include "TestUIContext.h"
 
 namespace UnitTest {
-    Resource* TestUIContext::makeControlMesh() {
+    Mesh* TestUIContext::makeControlMesh() {
         return nullptr;
     }
 }

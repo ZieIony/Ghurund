@@ -37,7 +37,7 @@ namespace Ghurund::Engine {
         throw InvalidParamException();
     }
 
-    void Material::initParameters() {
+    void Material::initInputs() {
         for (auto& bi : shader->BufferConstants) {
             size_t size = 0;
             for (auto& vi : bi.ValueConstants) {

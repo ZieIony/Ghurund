@@ -31,7 +31,7 @@ namespace Ghurund::UI::DirectX {
         this->mesh.set(mesh);
     }
 
-    Resource* DxUIContext::makeControlMesh() {
+    Mesh* DxUIContext::makeControlMesh() {
         return mesh.get();
     }
 }

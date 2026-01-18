@@ -14,7 +14,7 @@ namespace Ghurund::UI {
     class TextLayout {
     protected:
         struct TextDrawPacket {
-            IntrusivePointer<Resource> mesh;
+            IntrusivePointer<Mesh> mesh;
             IntrusivePointer<Material> material;
         };
 

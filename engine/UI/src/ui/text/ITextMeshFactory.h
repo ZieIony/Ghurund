@@ -5,11 +5,13 @@
 
 #include "core/collection/List.h"
 #include "core/object/Noncopyable.h"
-#include "core/resource/Resource.h"
+#include "engine/graphics/mesh/Mesh.h"
 
 namespace Ghurund::UI {
+	using namespace Ghurund::Engine;
+
 	class ITextMeshFactory:public Noncopyable {
 	public:
-		virtual Resource* makeMesh(const List<CharacterInfo>& characters, const TextSpan& span) const = 0;
+		virtual Mesh* makeMesh(const List<CharacterInfo>& characters, const TextSpan& span) const = 0;
 	};
 }

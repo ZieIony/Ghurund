@@ -53,7 +53,8 @@ public:
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/ui.hlsl");
             MemoryInputStream stream(testShaderSource.Data, testShaderSource.Size);
             IntrusivePointer<DxShader> shader((DxShader*)shaderLoader->load(stream, DirectoryPath()));
-            auto material = makeIntrusive<Material>(memoryManager.ref(), shader.ref());
+            auto material = makeIntrusive<Material>(memoryManager.ref());
+            material->Shader = shader.get();
         }
     }
 
@@ -63,7 +64,8 @@ public:
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/ui.hlsl");
             MemoryInputStream stream(testShaderSource.Data, testShaderSource.Size);
             IntrusivePointer<DxShader> shader((DxShader*)shaderLoader->load(stream, DirectoryPath()));
-            auto material = makeIntrusive<Material>(memoryManager.ref(), shader.ref());
+            auto material = makeIntrusive<Material>(memoryManager.ref());
+            material->Shader = shader.get();
             auto material2 = IntrusivePointer<Material>((Material*)material->clone());
             material.set(nullptr);
         }

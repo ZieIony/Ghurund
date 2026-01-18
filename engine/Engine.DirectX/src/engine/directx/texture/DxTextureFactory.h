@@ -9,14 +9,16 @@ namespace Ghurund::Engine::DirectX {
     class DxTextureFactory:public ITextureFactory {
     private:
         DxGraphics& graphics;
-        CommandList& commandList;
+        IntrusivePointer<CommandList> commandList;
 
     public:
-        DxTextureFactory(DxGraphics& graphics, CommandList& commandList):graphics(graphics), commandList(commandList) {}
+        DxTextureFactory(DxGraphics& graphics, NotNull<CommandList> commandList):graphics(graphics), commandList(commandList.get()) {
+            commandList->addReference();
+        }
 
         virtual ITexture* makeTexture(Image& image) override {
             auto texture = ghnew DxTexture();
-            texture->init(graphics, commandList, image);
+            texture->init(graphics, commandList.ref(), image);
             return texture;
         }
     };

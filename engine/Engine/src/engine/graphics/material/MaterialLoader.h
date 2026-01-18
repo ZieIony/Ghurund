@@ -10,12 +10,15 @@
 namespace Ghurund::Engine {
 
 	class MaterialLoader:public Ghurund::Core::Loader {
-	private:
+	protected:
 		ResourceManager& resourceManager;
 		ITextureFactory& textureFactory;
 		IGPUMemoryManager& memoryManager;
 
-	protected:
+		virtual Material* makeMaterial();
+
+		virtual void onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value);
+
         virtual Resource* loadInternal(
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,

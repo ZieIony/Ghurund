@@ -1,5 +1,6 @@
 #pragma once
 
+#include "engine/graphics/mesh/Mesh.h"
 #include "ui/UIContext.h"
 
 namespace Ghurund::Core {
@@ -17,6 +18,6 @@ namespace UnitTest {
             ITextureFactory& textureFactory
         ):UIContext(window, textMeshFactory, textureFactory) {}
 
-        virtual Resource* makeControlMesh() override;
+        virtual Mesh* makeControlMesh() override;
     };
 }

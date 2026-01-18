@@ -1,26 +1,25 @@
 #pragma once
 
 #include "core/loading/PropertyLoader.h"
-#include "engine/graphics/material/Material.h"
-#include "engine/graphics/material/MaterialLoader.h"
+#include "ui/material/UIMaterialLoader.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Engine;
 
-    class MaterialPropertyLoader:public PropertyLoader {
+    class UIMaterialPropertyLoader:public PropertyLoader {
     private:
         ResourceManager& resourceManager;
-        MaterialLoader& materialLoader;
+        UIMaterialLoader& materialLoader;
 
     public:
-		MaterialPropertyLoader(
+		UIMaterialPropertyLoader(
             ResourceManager& resourceManager,
-            MaterialLoader& materialLoader
+            UIMaterialLoader& materialLoader
 		):resourceManager(resourceManager), materialLoader(materialLoader) {
 		}
 
         virtual const Type& getType() const override {
-            return Ghurund::Core::getType<Material*>();
+            return Ghurund::Core::getType<UIMaterial*>();
         }
 
         virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override;

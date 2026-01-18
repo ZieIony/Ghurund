@@ -1,11 +1,12 @@
 #pragma once
 
-#include "engine/directx/Fence.h"
-#include "engine/directx/memory/DxGPUMemoryManager.h"
-#include "engine/directx/CommandList.h"
 #include "core/resource/Resource.h"
 #include "core/resource/ResourceManager.h"
+#include "engine/directx/CommandList.h"
+#include "engine/directx/Fence.h"
+#include "engine/directx/memory/DxGPUMemoryManager.h"
 #include "engine/graphics/mesh/MeshData.h"
+#include "engine/graphics/mesh/Mesh.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
@@ -21,7 +22,7 @@ namespace Ghurund::Engine::DirectX {
     using namespace DirectX;
     using namespace Microsoft::WRL;
 
-    class DxMesh:public Resource {
+    class DxMesh:public Mesh {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {

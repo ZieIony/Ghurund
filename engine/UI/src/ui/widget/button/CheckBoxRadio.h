@@ -1,6 +1,5 @@
 #pragma once
 
-#include "core/reflection/Property.h"
 #include "ui/control/ImageView.h"
 #include "ui/control/InteractionHandler.h"
 #include "ui/widget/ContentWidget.h"
@@ -16,12 +15,7 @@ namespace Ghurund::UI {
 		}
 
 	public:
-		static const Ghurund::Core::Type& GET_TYPE() {
-			static const Ghurund::Core::Type TYPE = TypeBuilder<CheckBoxRadio>()
-				.withSupertype(__super::GET_TYPE());
-
-			return TYPE;
-		}
+		static const Ghurund::Core::Type& GET_TYPE();
 
 		inline static const Ghurund::Core::Type& TYPE = CheckBoxRadio::GET_TYPE();
 #pragma endregion
@@ -33,24 +27,9 @@ namespace Ghurund::UI {
 		FloatInput* checkedParameter = nullptr;
 		FloatInput* checkedParameter2 = nullptr;
 
-		virtual void onLayoutChanged() override {
-			iconView.set(nullptr);
-			__super::onLayoutChanged();
-			Control* layoutControl = layout.get();
-			if (layoutControl) {
-				iconView.set((Ghurund::UI::ImageView*)layoutControl->find("icon"));
-				iconView->addReference();
-					checkedParameter2 = (FloatInput*)iconView->Material->Inputs.get("checked");
-			}
-		}
+		virtual void onLayoutChanged() override;
 
-		virtual void onMaterialChanged() override {
-			if (material != nullptr) {
-				checkedParameter = (FloatInput*)material->Inputs.get("checked");
-			} else {
-				checkedParameter = nullptr;
-			}
-		}
+		virtual void onMaterialChanged() override;
 
 	public:
 		CheckBoxRadio() {

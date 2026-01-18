@@ -2,8 +2,8 @@
 
 #include "DemoApplication.h"
 #include "engine/application/GameWindow.h"
-#include <engine/entity/camera/Camera.h>
-#include <ui/text/TextLayout.h>
+#include "ui/material/UIMaterial.h"
+#include "ui/text/TextLayout.h"
 
 namespace Demo {
 	using namespace Ghurund;
@@ -16,8 +16,8 @@ namespace Demo {
 
 		Set<RenderGroup> renderGroups;
 
-		IntrusivePointer<Resource> textMesh, shadowMesh;
-		IntrusivePointer<Material> basicMaterial, controlMaterial;
+		IntrusivePointer<Mesh> shadowMesh;
+		IntrusivePointer<UIMaterial> basicMaterial, controlMaterial;
 		IntrusivePointer<TextStyle> textStyle;
 
 		TextureInput* colorTextureInput;

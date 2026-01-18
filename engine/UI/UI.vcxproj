@@ -118,8 +118,10 @@
     <ClInclude Include="src\ui\font\TextStyleLoader.h" />
     <ClInclude Include="src\ui\loading\ColorPropertyLoaders.h" />
     <ClInclude Include="src\ui\loading\TexturePropertyLoader.h" />
-    <ClInclude Include="src\ui\loading\MaterialPropertyLoader.h" />
+    <ClInclude Include="src\ui\material\UIMaterialPropertyLoader.h" />
     <ClInclude Include="src\ui\material\ControlMaterialInputs.h" />
+    <ClInclude Include="src\ui\material\UIMaterialLoader.h" />
+    <ClInclude Include="src\ui\material\UIMaterial.h" />
     <ClInclude Include="src\ui\material\UIMaterialProvider.h" />
     <ClInclude Include="src\ui\Orientation.h" />
     <ClInclude Include="src\ui\RootView.h" />
@@ -284,7 +286,9 @@
     <ClCompile Include="src\ui\font\TextStyle.cpp" />
     <ClCompile Include="src\ui\font\TextStyleLoader.cpp" />
     <ClCompile Include="src\ui\loading\TexturePropertyLoader.cpp" />
-    <ClCompile Include="src\ui\loading\MaterialPropertyLoader.cpp" />
+    <ClCompile Include="src\ui\material\UIMaterialPropertyLoader.cpp" />
+    <ClCompile Include="src\ui\material\UIMaterial.cpp" />
+    <ClCompile Include="src\ui\material\UIMaterialLoader.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\text\TextLine.cpp" />
     <ClCompile Include="src\ui\UIContext.cpp" />
@@ -348,6 +352,7 @@
     <ClCompile Include="src\ui\theme\BaseTheme.cpp" />
     <ClCompile Include="src\ui\theme\Theme.cpp" />
     <ClCompile Include="src\ui\theme\WindowsTheme.cpp" />
+    <ClCompile Include="src\ui\widget\button\CheckBoxRadio.cpp" />
     <ClCompile Include="src\ui\widget\ContentWidget.cpp" />
     <ClCompile Include="src\ui\widget\DragHelper.cpp" />
     <ClCompile Include="src\ui\widget\ExpandableContainer.cpp" />

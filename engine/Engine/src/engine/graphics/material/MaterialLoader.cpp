@@ -2,18 +2,35 @@
 #include "MaterialLoader.h"
 
 #include "core/image/Image.h"
-#include "engine/parameter/TextureParameter.h"
-#include "engine/parameter/ValueParameter.h"
 
 #include <tinyxml2.h>
 
 namespace Ghurund::Engine {
+	Material* MaterialLoader::makeMaterial() {
+		return ghnew Material(memoryManager);
+	}
+
+	void MaterialLoader::onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value) {
+		if (input.Type == InputType::TEXTURE) {
+			TextureInput& textureInput = (TextureInput&)input;
+			FilePath texturePath = FilePath(convertText<char, wchar_t>(value));
+			auto image = IntrusivePointer<Image>(resourceManager.load<Image>(texturePath, workingDir));
+			auto texture = IntrusivePointer<ITexture>(textureFactory.makeTexture(image.ref()));
+			textureInput.Value = texture.get();
+		} else if (input.Type == InputType::FLOAT4) {
+			Float4Input& float4Input = (Float4Input&)input;
+			// TODO: load theme attributes or do binding
+			if (value.startsWith("#"))
+				float4Input.Value = Color::parse(value).toVector();
+		}
+	}
 
 	Material* MaterialLoader::loadFromXml(const tinyxml2::XMLElement& xml, const DirectoryPath& workingDir) {
 		AString s = xml.FindAttribute("shader")->Value();
 		FilePath path = FilePath(convertText<char, wchar_t>(s));
 		auto shader = IntrusivePointer<Shader>(resourceManager.load<Shader>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE));
-		auto material = makeIntrusive<Material>(memoryManager, shader.ref());
+		auto material = IntrusivePointer<Material>(makeMaterial());
+		material->Shader = shader.get();
 		const tinyxml2::XMLElement* child = xml.FirstChildElement();
 		while (child) {
 			if (child->Name() == AString("Parameter")) {
@@ -25,17 +42,8 @@ namespace Ghurund::Engine {
 					if (!input) {
 						auto text = std::format(_T("Shader {} doesn't specify an input named '{}'\n"), path.toString(), convertText<char, tchar>(name));
 						Logger::log(LogType::WARNING, text.c_str());
-					} else if (input->Type == InputType::TEXTURE) {
-						TextureInput* textureInput = (TextureInput*)input;
-						FilePath texturePath = FilePath(convertText<char, wchar_t>(AString(valueAttribute->Value())));
-						auto image = IntrusivePointer<Image>(resourceManager.load<Image>(texturePath, workingDir));
-						auto texture = IntrusivePointer<ITexture>(textureFactory.makeTexture(image.ref()));
-						textureInput->Value = texture.get();
-					} else if (input->Type == InputType::FLOAT4) {
-						Float4Input* float4Input = (Float4Input*)input;
-						// TODO: load theme attributes or do binding
-						if (AString(valueAttribute->Value()).startsWith("#"))
-							float4Input->Value = Color::parse(valueAttribute->Value()).toVector();
+					} else {
+						onLoadParameter(material.ref(), workingDir, *input, valueAttribute->Value());
 					}
 				}
 			}

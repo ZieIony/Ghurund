@@ -107,6 +107,7 @@
     <ClInclude Include="src\engine\graphics\memory\IGPUMemoryManager.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialProvider.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialLoader.h" />
+    <ClInclude Include="src\engine\graphics\mesh\Mesh.h" />
     <ClInclude Include="src\engine\graphics\shader\BufferConstant.h" />
     <ClInclude Include="src\engine\graphics\shader\InputType.h" />
     <ClInclude Include="src\engine\graphics\shader\IShaderProvider.h" />

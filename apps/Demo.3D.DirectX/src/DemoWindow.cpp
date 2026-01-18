@@ -50,7 +50,7 @@ namespace Demo {
 
 		RenderGroup uiGroup(0, DrawOrder::BACK_TO_FRONT);
 		{
-			basicMaterial = IntrusivePointer<Material>(materialProvider.makeText());
+			basicMaterial = IntrusivePointer<UIMaterial>(materialProvider.makeText());
 			colorTexture = makeIntrusive<DxTexture>();
 			colorTexture->init(graphicsFeature->Graphics, commandList.ref(), *textStyle->Atlas->Image);
 			colorTextureInput = (TextureInput*)basicMaterial->Inputs.get("colorTexture");
@@ -69,12 +69,12 @@ namespace Demo {
 			auto mesh = ghnew DxMesh();
 			auto meshData = makeIntrusive<QuadMeshData>();
 			meshData->init();
-			shadowMesh = IntrusivePointer<Resource>(mesh);
+			shadowMesh = IntrusivePointer<Mesh>(mesh);
 			mesh->init(meshData.ref(), graphicsFeature->MemoryManager);
 
-			controlMaterial = IntrusivePointer<Material>(materialProvider.makeControl());
+			controlMaterial = IntrusivePointer<UIMaterial>(materialProvider.makeControl());
+			controlMaterial->UIInputs.Size = { (float)textLayout.Size.Width, (float)textLayout.Size.Height };
 			ControlMaterialInputs inputs(controlMaterial.ref());
-			inputs.Size = { (float)textLayout.Size.Width, (float)textLayout.Size.Height };
 			inputs.BackgroundColor = Colors::WHITE;
 
 		}

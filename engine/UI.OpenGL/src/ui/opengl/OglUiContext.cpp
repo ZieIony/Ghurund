@@ -10,7 +10,7 @@ namespace Ghurund::Core {
 }
 
 namespace Ghurund::UI::OpenGL {
-    Resource* OglUiContext::makeControlMesh() {
+    Mesh* OglUiContext::makeControlMesh() {
         return nullptr;
     }
 }

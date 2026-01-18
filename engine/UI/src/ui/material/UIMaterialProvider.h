@@ -1,8 +1,7 @@
 #pragma once
 
+#include "ui/material/UIMaterial.h"
 #include "ui/shader/IUIShaderProvider.h"
-
-#include <engine/graphics/material/Material.h>
 
 namespace Ghurund::UI {
 
@@ -11,10 +10,12 @@ namespace Ghurund::UI {
         IUIShaderProvider& shaderProvider;
         IGPUMemoryManager& memoryManager;
 
-        Material* makeWithShader(Shader* shader) const {
-            Material* material = nullptr;
-            if (shader)
-                material = ghnew Material(memoryManager, shader);
+        UIMaterial* makeWithShader(Shader* shader) const {
+            UIMaterial* material = nullptr;
+            if (shader) {
+                material = ghnew UIMaterial(memoryManager);
+                material->Shader = shader;
+            }
             return material;
         }
 
@@ -24,22 +25,22 @@ namespace Ghurund::UI {
             IGPUMemoryManager& memoryManager
         ): shaderProvider(shaderProvider), memoryManager(memoryManager) {}
 
-        inline Material* makeInvalid() const {
+        inline UIMaterial* makeInvalid() const {
             IntrusivePointer<Shader> shader(shaderProvider.loadInvalid());
             return makeWithShader(shader.get());
         }
 
-        inline Material* makeControl() const {
+        inline UIMaterial* makeControl() const {
             IntrusivePointer<Shader> shader(shaderProvider.loadControl());
             return makeWithShader(shader.get());
         }
 
-        inline Material* makeText() const {
+        inline UIMaterial* makeText() const {
             IntrusivePointer<Shader> shader(shaderProvider.loadText());
             return makeWithShader(shader.get());
         }
 
-        inline Material* makeShadow() const {
+        inline UIMaterial* makeShadow() const {
             IntrusivePointer<Shader> shader(shaderProvider.loadShadow());
             return makeWithShader(shader.get());
         }

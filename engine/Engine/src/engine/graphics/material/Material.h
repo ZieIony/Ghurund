@@ -33,8 +33,6 @@ namespace Ghurund::Engine {
         List<BaseValueInput*> valueInputs;
         List<TextureInput*> textureInputs;
 
-        void initParameters();
-
         inline void finalize() {
             safeRelease(shader);
             inputs.clear();
@@ -47,16 +45,10 @@ namespace Ghurund::Engine {
             finalize();
         }
 
+        virtual void initInputs();
+
     public:
         Material(IGPUMemoryManager& memoryManager):memoryManager(memoryManager) {}
-
-        Material(
-            IGPUMemoryManager& memoryManager,
-            NotNull<Shader> shader
-        ):memoryManager(memoryManager), shader(shader.get()) {
-            shader->addReference();
-            initParameters();
-        }
 
         virtual void invalidate() {
             finalize();
@@ -83,7 +75,7 @@ namespace Ghurund::Engine {
             textureInputs.clear();
             inputs.clear();
             if (shader)
-                initParameters();
+                initInputs();
         }
 
         __declspec(property(get = getShader, put = setShader)) Shader* Shader;

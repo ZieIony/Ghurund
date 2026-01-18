@@ -11,8 +11,6 @@ namespace Ghurund::UI {
     class ControlMaterialInputs {
     private:
         Float4Input* backgroundColorInput,* borderColorInput,* cornerRadiusInput;
-        Float2Input* sizeInput;
-        Float2Input* positionInput;
         FloatInput* borderWidthInput;
 
     public:
@@ -22,8 +20,6 @@ namespace Ghurund::UI {
             //borderColorInput->addReference();
             //cornerRadiusInput.set((Float4Input*)material.Inputs.get("cornerRadius"));
             //cornerRadiusInput->addReference();
-            sizeInput = (Float2Input*)material.Inputs.get("size");
-            positionInput = (Float2Input*)material.Inputs.get("position");
             //borderWidthInput.set((FloatInput*)material.Inputs.get("borderWidth"));
             //borderWidthInput->addReference();
         }
@@ -39,18 +35,6 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(put = setBorderColor)) const Color& BorderColor;
-
-        inline void setSize(const XMFLOAT2& size) {
-            sizeInput->Value = size;
-        }
-
-        __declspec(property(put = setSize)) const XMFLOAT2& Size;
-
-        inline void setPosition(const XMFLOAT2& pos) {
-            positionInput->Value = pos;
-        }
-
-        __declspec(property(put = setPosition)) const XMFLOAT2& Position;
 
         inline void setBorderWidth(float width) {
             borderWidthInput->Value = width;

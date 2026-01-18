@@ -8,7 +8,8 @@
 #include "ui/font/FontLoader.h"
 #include "ui/font/TextStyleLoader.h"
 #include "ui/loading/LayoutLoader.h"
-#include "ui/loading/MaterialPropertyLoader.h"
+#include "ui/material/UIMaterialPropertyLoader.h"
+#include "ui/material/UIMaterialLoader.h"
 
 namespace Ghurund::UI::DirectX {
     using namespace Ghurund::Core;
@@ -35,9 +36,12 @@ namespace Ghurund::UI::DirectX {
         auto textStyleLoader = makeIntrusive<TextStyleLoader>(resourceManager, fontAtlasLoader.ref());
         resourceManager.Loaders.set<TextStyle>(textStyleLoader.ref());
 
+        auto materialLoader = makeIntrusive<UIMaterialLoader>(resourceManager, *textureFactory, memoryManager);
+        resourceManager.Loaders.set<UIMaterial>(materialLoader.ref());
+
         layoutLoader = makeIntrusive<Ghurund::UI::LayoutLoader>(resourceManager, *textureFactory, *constraintFactory);
-        layoutLoader->PropertyLoaders.add(std::make_unique<MaterialPropertyLoader>(resourceManager, *(MaterialLoader*)resourceManager.Loaders.get<Material>()));
-        resourceManager.Loaders.set<Control>(*layoutLoader.get());
+        layoutLoader->PropertyLoaders.add(std::make_unique<UIMaterialPropertyLoader>(resourceManager, materialLoader.ref()));
+        resourceManager.Loaders.set<Control>(layoutLoader.ref());
     }
     
     void DxUIFeature::onUninit() {

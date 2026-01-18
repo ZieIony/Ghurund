@@ -25,7 +25,7 @@ namespace Ghurund::UI {
 		static auto PROPERTY_SIZE = Property<Control, FloatSize&>("Size", (FloatSize & (Control::*)()) & getSize);
 		static auto PROPERTY_PARENT = Property<Control, ControlParent*>("Parent", (ControlParent * (Control::*)()) & getParent, (void(Control::*)(ControlParent*)) & setParent);
 		static auto PROPERTY_CURSOR = Property<Control, const Ghurund::UI::Cursor*>("Cursor", (Ghurund::UI::Cursor * (Control::*)()) & getCursor, (void(Control::*)(const Ghurund::UI::Cursor*)) & setCursor);
-		static auto PROPERTY_MATERIAL = Property<Control, Ghurund::Engine::Material*>("Material", & getMaterial, & setMaterial);
+		static auto PROPERTY_MATERIAL = Property<Control, Ghurund::UI::UIMaterial*>("Material", & getMaterial, & setMaterial);
 		static auto PROPERTY_THEME = Property<Control, Ghurund::UI::Theme*>("Theme", (Ghurund::UI::Theme * (Control::*)()) & getTheme, (void(Control::*)(Ghurund::UI::Theme*)) & setTheme);
 		static auto PROPERTY_CONTEXT = Property<Control, UIContext*>("Context", &getContext);
 		static auto PROPERTY_POSITIONINWINDOW = Property<Control, XMFLOAT2>("PositionInWindow", &getPositionInWindow);
@@ -82,8 +82,6 @@ namespace Ghurund::UI {
 
 	void Control::onMaterialChanged() {
 		if (material != nullptr) {
-			positionInput = (Float2Input*)material->Inputs.get("position");
-			sizeInput = (Float2Input*)material->Inputs.get("size");
 			alphaInput = (FloatInput*)material->Inputs.get("alpha");
 			enabledInput = (FloatInput*)material->Inputs.get("enabled");
 			if (enabledInput)
@@ -92,8 +90,6 @@ namespace Ghurund::UI {
 			if (focusedInput)
 				focusedInput->Value = Focused ? 1.0f : 0.0f;
 		} else {
-			positionInput = nullptr;
-			sizeInput = nullptr;
 			alphaInput = nullptr;
 			enabledInput = nullptr;
 			focusedInput = nullptr;
@@ -104,6 +100,7 @@ namespace Ghurund::UI {
 		auto context = Context;
 		if (context) {
 			mesh.set(context->makeControlMesh());
+			mesh->addReference();
 		}
 		contextChanged();
 	}
@@ -111,8 +108,8 @@ namespace Ghurund::UI {
 	void Control::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
 		if (material == nullptr)
 			return;
-		positionInput->Value = parentPosition + position;
-		sizeInput->Value = { Size.Width, Size.Height };
+		material->UIInputs.Position = parentPosition + position;
+		material->UIInputs.Size = { Size.Width, Size.Height };
 		alphaInput->Value = alpha;
 		group.objects.add(DrawPacket{
 			mesh,

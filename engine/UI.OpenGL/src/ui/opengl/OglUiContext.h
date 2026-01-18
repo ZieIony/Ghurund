@@ -18,7 +18,7 @@ namespace Ghurund::UI::OpenGL {
             ITextureFactory& textureFactory
         ):UIContext(window, textMeshFactory, textureFactory) {}
 
-        virtual Resource* makeControlMesh() override;
+        virtual Mesh* makeControlMesh() override;
     };
 }
 

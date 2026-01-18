@@ -12,7 +12,7 @@
 		<Control bottom="'controls'.Top" left="Parent.Left" right="Parent.Right" width="300" height="2"
 				 name="progress">
 			<Control.Material shader="lib://Ghurund/shaders/DirectX/ui/progressLinearInfinite.hlsl">
-				<Parameter name="progressColor" value="#ffff0000"/>
+				<Parameter name="progressColor" value="theme://color/accent"/>
 			</Control.Material>
 		</Control>
 		<ControlGroup left="10" width="Parent.Width" name="controls">
@@ -48,7 +48,7 @@
 				<Button.Left path="Previous.Right" offset="10"/>
 				<Button.Width path="content" offset="10"/>
 				<Button.Material shader="lib://Ghurund/shaders/DirectX/ui/controlWithShadow.hlsl">
-					<Parameter name="backgroundColor" value="#ffffffff"/>
+					<Parameter name="backgroundColor" value="theme://color/background"/>
 				</Button.Material>
 				<TextBlock width="content" height="content" text="theme" left="5"/>
 			</Button>
