@@ -8,8 +8,6 @@
 #include <tinyxml2.h>
 
 namespace Ghurund::Core {
-    using namespace Ghurund::Core;
-
     class PropertyTypeNotSupportedException:public std::exception {};
 
     class PropertyLoader {

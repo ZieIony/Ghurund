@@ -1,8 +1,7 @@
 #pragma once
 
 #include "ui/control/InteractionHandler.h"
-#include "ui/style/AttrProperty.h"
-#include "ui/style/ColorAttr.h"
+#include "ui/theme/ThemedValueProperty.h"
 #include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
@@ -22,7 +21,17 @@ namespace Ghurund::UI {
 	private:
 		InteractionHandler interactionHandler = *this;
 		//PointerAttrProperty<DrawableAttr, Drawable> drawable;
-		NullableAttrProperty<ColorAttr, Color> tint;
+		ThemedValueProperty<ColorKey, Color*> tint;
+
+		inline void setThemedTint(std::unique_ptr<ThemedColor> tint) {
+			if (!tint) {
+				setTint(nullptr);
+			} else if (tint->Key) {
+				setTint(*tint->Key);
+			} else {
+				setTint(tint->Value);
+			}
+		}
 
 		inline void updateProperties() {
 			/*if (drawableView) {
@@ -68,27 +77,22 @@ namespace Ghurund::UI {
 
 		__declspec(property(put = setDrawable)) std::unique_ptr<DrawableAttr>& Drawable;*/
 
-		inline void setTint(std::unique_ptr<ColorAttr> tint) {
-			this->tint.set(std::move(tint));
+		inline void setTint(nullptr_t) {
+			this->tint.set(nullptr);
 			updateProperties();
 		}
 
 		inline void setTint(const ColorKey& tint) {
-			this->tint.set(std::make_unique<ColorRef>(tint));
+			this->tint.set(tint);
 			updateProperties();
 		}
 
-		inline void setTint(Color tint) {
-			this->tint.set(std::make_unique<ColorValue>(tint));
+		inline void setTint(const Color& tint) {
+			this->tint.set(tint);
 			updateProperties();
 		}
 
-		inline void setTint(const NullableAttrProperty<ColorAttr, Color>& tint) {
-			this->tint = tint;
-			updateProperties();
-		}
-
-		__declspec(property(put = setTint)) std::unique_ptr<ColorAttr> Tint;
+		__declspec(property(put = setTint)) const Color& Tint;
 
 		virtual IconButton* clone() const override {
 			return ghnew IconButton(*this);

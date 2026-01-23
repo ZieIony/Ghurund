@@ -7,8 +7,8 @@
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& ImageView::GET_TYPE() {
 		static const auto CONSTRUCTOR = Constructor<ImageView>();
-		static auto PROPERTY_IMAGE = UniqueProperty<ImageView, std::unique_ptr<TextureAttr>>("Image", &setImage);
-		static auto PROPERTY_TINT = Property<ImageView, const Color&>("Tint", &getTint, &setTint);
+		static auto PROPERTY_IMAGE = UniqueProperty<ImageView, std::unique_ptr<ThemedTexture>>("Image", &setThemedImage);
+		static auto PROPERTY_TINT = Property<ImageView, const ThemedColor&>("Tint", &setThemedTint);
 
 		static const Ghurund::Core::Type TYPE = TypeBuilder<ImageView>()
 			.withConstructor(CONSTRUCTOR)
@@ -23,9 +23,9 @@ namespace Ghurund::UI {
         __super::onMaterialChanged();
         if (material != nullptr) {
             imageInput = (TextureInput*)material->Inputs.get("image");
-            imageInput->Value = image.get();
+            imageInput->Value = image.get().get();
             tintInput = (Float4Input*)material->Inputs.get("tint");
-            tintInput->Value = tint.toVector();
+            tintInput->Value = tint.get().toVector();
         } else {
             imageInput = nullptr;
             tintInput = nullptr;
@@ -33,11 +33,12 @@ namespace Ghurund::UI {
     }
 
     void ImageView::onThemeChanged() {
-        const UI::Theme* theme = Theme;
+        __super::onThemeChanged();
+        auto theme = Theme;
         if (theme) {
             image.resolve(*theme);
             if (imageInput)
-                imageInput->Value = image.get();
+                imageInput->Value = image.get().get();
         }
     }
 }

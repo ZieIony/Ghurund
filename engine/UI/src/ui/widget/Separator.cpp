@@ -18,9 +18,9 @@ namespace Ghurund::UI {
 
     void Separator::onStateChanged() {
         if (IsEnabled) {
-            Color = ColorRef(Theme::COLOR_CONTROL);
+            Color = Theme::COLOR_CONTROL;
         } else {
-            Color = ColorRef(Theme::COLOR_BACKGR0UND);
+            Color = Theme::COLOR_BACKGR0UND;
         }
     }
 

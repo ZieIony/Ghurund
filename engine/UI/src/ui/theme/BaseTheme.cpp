@@ -43,6 +43,9 @@ namespace Ghurund::UI {
 		auto expandableContainerLayoutPath = ResourceManager::ENGINE_LIB / FilePath(L"/layouts/ExpandableContainer.xml");
 		Layouts.put(LayoutKey(ExpandableContainer::GET_TYPE().Name), makeShared<FileLayoutProvider>(resourceManager, expandableContainerLayoutPath));
 
+		auto imageViewMaterialPath = ResourceManager::ENGINE_LIB / FilePath(L"/materials/DirectX/ui/ImageView.xml");
+		Materials.put(ImageView::GET_TYPE().Name, makeShared<FileMaterialProvider>(resourceManager, imageViewMaterialPath));
+
 		TextStyles.put(Theme::TEXT_STYLE_BUTTON, makeTextStyle(L"medium", 12.0f));
 		TextStyles.put(Theme::TEXT_STYLE_LIST_HEADER, makeTextStyle(L"light", 14.0f));
 		TextStyles.put(Theme::TEXT_STYLE_TEXT_PRIMARY, makeTextStyle(L"regular", 12.0f));

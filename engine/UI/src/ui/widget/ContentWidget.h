@@ -42,7 +42,7 @@ namespace Ghurund::UI {
 				container->release();
 				container = nullptr;
 			}
-			Control* layoutControl = layout.get();
+			Control* layoutControl = layout.get().get();
 			if (layoutControl)
 				setPointer(container, (Ghurund::UI::ControlContainer*)layoutControl->find("container"));
 			updateContent();
@@ -52,6 +52,7 @@ namespace Ghurund::UI {
 		ContentWidget() {}
 
 		ContentWidget(const ContentWidget& other):Widget(other),
+			// TODO: this clone looks suspicious
 			container((ControlContainer*)other.container->clone()) {
 			Content = (Control*)other.content->clone();
 		}

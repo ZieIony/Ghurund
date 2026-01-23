@@ -9,10 +9,10 @@
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/control/Control.h"
 #include "ui/layout/ControlWithConstraints.h"
-#include "ui/style/TextStyleAttr.h"
 #include "ui/text/DocumentElement.h"
 
 #include <tinyxml2.h>
+#include <ui/theme/ThemedValue.h>
 
 namespace Ghurund::UI {
 	using namespace Ghurund::Core;
@@ -95,7 +95,7 @@ namespace Ghurund::UI {
 
 		Constraint* loadConstraint(const char* str, Orientation orientation);
 
-		TextStyleRef* loadTextStyle(const char* str);
+		ThemedTextStyle* loadTextStyle(const char* str);
 
         void loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment);
 

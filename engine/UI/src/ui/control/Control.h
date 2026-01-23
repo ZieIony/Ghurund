@@ -6,6 +6,7 @@
 #include "core/reflection/Property.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/resource/Resource.h"
+#include "engine/graphics/mesh/Mesh.h"
 #include "ui/constraint/Constraint.h"
 #include "ui/constraint/ContentSize.h"
 #include "ui/constraint/WrapConstraint.h"
@@ -13,7 +14,7 @@
 #include "ui/control/binding/BindablePropertyCollection.h"
 #include "ui/material/UIMaterial.h"
 #include "ui/UIContext.h"
-#include "engine/graphics/mesh/Mesh.h"
+#include "ui/theme/ThemedValueProperty.h"
 
 namespace tinyxml2 {
 	class XMLElement;
@@ -67,6 +68,16 @@ namespace Ghurund::UI {
 
 		Ghurund::Core::AString* name = nullptr;
 
+		inline void setThemedMaterial(std::unique_ptr<ThemedMaterial> material) {
+			if (material == nullptr) {
+				setMaterial(nullptr);
+			} else if (material->Key) {
+				setMaterial(*material->Key);
+			} else {
+				setMaterial(material->Value);
+			}
+		}
+
 	protected:
 		ContentSize contentSize = Ghurund::UI::ContentSize(makeIntrusive<WrapWidthConstraint>().get(), makeIntrusive<WrapHeightConstraint>().get());
 		Ghurund::Core::FloatSize minSize = { 0, 0 };
@@ -74,7 +85,7 @@ namespace Ghurund::UI {
 		XMFLOAT2 position = { 0,0 };
 		float alpha = 1.0f;
 
-		IntrusivePointer<UIMaterial> material;
+		ThemedValueProperty<MaterialKey, UIMaterial> material;
 		IntrusivePointer<Mesh> mesh;
 		FloatInput* alphaInput = nullptr;
 		FloatInput *enabledInput = nullptr, * focusedInput = nullptr;
@@ -96,7 +107,7 @@ namespace Ghurund::UI {
 
 		virtual void loadInternal(Ghurund::UI::LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
 
-		virtual void onLoaded() {}
+		virtual void onLoaded();
 
 		virtual void onStateChanged();
 
@@ -104,8 +115,12 @@ namespace Ghurund::UI {
 
 		virtual void onThemeChanged() {
 			auto theme = this->Theme;
-			if (material != nullptr && theme)
-				material->setTheme(theme);
+			if (theme)
+				material.resolve(*theme);
+			if (material.get() != nullptr && theme) {
+				onMaterialChanged();
+				material.get()->setTheme(theme);
+			}
 		}
 
 		virtual void onContextChanged();
@@ -226,18 +241,18 @@ namespace Ghurund::UI {
 
 		virtual bool focusRight();
 
-		inline void setMaterial(UIMaterial* material) {
-			if (this->material.get() == material)
-				return;
-			this->material.set(material);
-			if (material) {
-				material->addReference();
-				auto theme = Theme;
-				if (theme)
-					material->setTheme(theme);
+		inline void setMaterial(MaterialKey key) {
+			this->material.set(key);
+			auto theme = Theme;
+			if (theme) {
+				this->material.resolve(*theme);
+				if (this->material.get() != nullptr)
+					this->material->setTheme(theme);
 			}
 			dispatchMaterialChanged();
 		}
+
+		void setMaterial(UIMaterial* material);
 
 		inline UIMaterial* getMaterial() const {
 			return material.get();

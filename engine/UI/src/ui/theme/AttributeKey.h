@@ -1,6 +1,13 @@
 #pragma once
 
+#include "core/string/String.h"
+#include <core/Color.h>
+#include <engine/graphics/texture/ITexture.h>
+#include <ui/font/TextStyle.h>
+
 namespace Ghurund::UI {
+    using namespace Ghurund::Engine;
+
     template<typename Type>
     class AttributeKey {
     private:
@@ -19,4 +26,8 @@ namespace Ghurund::UI {
             return str <=> other.str;
         }
     };
+
+    using ColorKey = AttributeKey<Color>;
+    using TextureKey = AttributeKey<ITexture>;
+    using TextStyleKey = AttributeKey<Ghurund::UI::TextStyle>;
 }

@@ -1,13 +1,15 @@
 #pragma once
 
 #include "core/loading/PropertyLoader.h"
-#include "ui/style/LayoutAttr.h"
+#include "ui/widget/Widget.h"
 
 namespace Ghurund::Core {
     class ResourceManager;
 }
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
     class LayoutLoader;
 
     class LayoutPropertyLoader:public PropertyLoader {
@@ -21,7 +23,7 @@ namespace Ghurund::UI {
         LayoutPropertyLoader(ResourceManager& resourceManager, LayoutLoader& layoutLoader):resourceManager(resourceManager), layoutLoader(layoutLoader) {}
 
         virtual const Type& getType() const override {
-            return Ghurund::Core::getType<std::unique_ptr<Ghurund::UI::LayoutAttr>>();
+            return Ghurund::Core::getType<const ThemedLayout&>();
         }
 
         virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override;

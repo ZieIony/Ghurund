@@ -1,8 +1,9 @@
 #pragma once
 
+#include "core/Color.h"
 #include "ui/constraint/ContentConstraint.h"
 #include "ui/control/ControlContainer.h"
-#include "ui/style/ColorAttr.h"
+#include <ui/theme/AttributeKey.h>
 
 namespace Ghurund::UI {
 	class Separator:public ControlContainer {
@@ -26,10 +27,13 @@ namespace Ghurund::UI {
 	public:
 		Separator();
 
-		inline void setColor(const ColorAttr& color) {
+		inline void setColor(const Color& color) {
 		}
 
-		__declspec(property(put = setColor)) const ColorAttr& Color;
+		inline void setColor(const ColorKey& color) {
+		}
+
+		__declspec(property(put = setColor)) const Color& Color;
 
 		inline float getThickness() const {
 			return 0;

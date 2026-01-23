@@ -21,7 +21,7 @@ namespace Ghurund::UI {
 
     void MenuBar::onLayoutChanged() {
         __super::onLayoutChanged();
-        Control* layoutControl = layout.get();
+        Control* layoutControl = layout.get().get();
         if (layoutControl) {
             setPointer(adapterLayout, (Ghurund::UI::AdapterLayout*)layoutControl->find("adapterLayout"));
             updateProperties();

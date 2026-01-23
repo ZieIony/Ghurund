@@ -4,25 +4,27 @@
 		<ControlContainer width="Parent.Width" top="Parent.Top" bottom="'progress'.Top"
 						  name="container">
 			<ControlGroup width="Parent.Width" height="Parent.Height">
-				<ImageView top="Parent.Top" width="433" height="56" scaleMode="fit" image="../../../images/buttons.png">
-					<ImageView.Material shader="lib://Ghurund/shaders/DirectX/ui/image.hlsl"/>
-				</ImageView>
+				<ImageView top="Parent.Top" width="433" height="56" scaleMode="fit" image="../../../images/buttons.png"/>
 			</ControlGroup>
 		</ControlContainer>
+		
 		<Control bottom="'controls'.Top" left="Parent.Left" right="Parent.Right" width="300" height="2"
 				 name="progress">
 			<Control.Material shader="lib://Ghurund/shaders/DirectX/ui/progressLinearInfinite.hlsl">
 				<Parameter name="progressColor" value="theme://color/accent"/>
 			</Control.Material>
 		</Control>
+		
 		<ControlGroup left="10" width="Parent.Width" name="controls">
 			<ControlGroup.Bottom path="Parent.Bottom" offset="-10"/>
+			
 			<Button name="color1" width="24" height="24">
 				<Button.Material shader="lib://Ghurund/shaders/DirectX/ui/controlWithShadow.hlsl">
 					<Parameter name="backgroundColor" value="#ffd32f2f"/>
 				</Button.Material>
 				<TextBlock width="content" height="content" text="1"/>
 			</Button>
+			
 			<Button name="color2" width="24" height="24" enabled="false">
 				<Button.Left path="Previous.Right" offset="10"/>
 				<Button.Material shader="lib://Ghurund/shaders/DirectX/ui/controlWithShadow.hlsl">
@@ -30,6 +32,7 @@
 				</Button.Material>
 				<TextBlock width="content" height="content" text="2"/>
 			</Button>
+			
 			<Button name="color3" width="24" height="24">
 				<Button.Left path="Previous.Right" offset="10"/>
 				<Button.Material shader="lib://Ghurund/shaders/DirectX/ui/controlWithShadow.hlsl">
@@ -37,6 +40,7 @@
 				</Button.Material>
 				<TextBlock width="content" height="content" text="3"/>
 			</Button>
+			
 			<Button name="color4" width="24" height="24">
 				<Button.Left path="Previous.Right" offset="10"/>
 				<Button.Material shader="lib://Ghurund/shaders/DirectX/ui/controlWithShadow.hlsl">
@@ -44,6 +48,7 @@
 				</Button.Material>
 				<TextBlock width="content" height="content" left="Parent.Left" right="Parent.Right" top="Parent.Top" bottom="Parent.Bottom" text="4"/>
 			</Button>
+			
 			<Button name="colorTheme" height="24">
 				<Button.Left path="Previous.Right" offset="10"/>
 				<Button.Width path="content" offset="10"/>
@@ -52,10 +57,12 @@
 				</Button.Material>
 				<TextBlock width="content" height="content" text="theme" left="5"/>
 			</Button>
+			
 			<CheckBox name="enabledCheckBox">
 				<CheckBox.Left path="Previous.Right" offset="10"/>
 				<TextBlock width="content" height="content" text="enabled"/>
 			</CheckBox>
+			
 			<CheckBox name="themeCheckBox">
 				<CheckBox.Left path="Previous.Right" offset="10"/>
 				<TextBlock width="content" height="content" text="theme"/>

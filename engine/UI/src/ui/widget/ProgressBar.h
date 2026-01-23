@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ui/control/Control.h"
-#include "ui/style/AttrProperty.h"
-#include "ui/style/ColorAttr.h"
+#include "ui/theme/Theme.h"
+#include "ui/theme/ThemedValueProperty.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
@@ -23,8 +23,24 @@ namespace Ghurund::UI {
     private:
         float progress = 0.0f;
         bool indeterminate = false;
-        AttrProperty<ColorAttr, Color> progressColor;
-        AttrProperty<ColorAttr, Color> backgroundColor;
+        ThemedValueProperty<ColorKey, Color> progressColor;
+        ThemedValueProperty<ColorKey, Color> backgroundColor;
+
+        inline void setBackgroundColor(const ThemedColor& color) {
+            if (color.Key) {
+                setBackgroundColor(*color.Key);
+            } else {
+                setBackgroundColor(color.Value);
+            }
+        }
+
+        inline void setProgressColor(const ThemedColor& color) {
+            if (color.Key) {
+                setProgressColor(*color.Key);
+            } else {
+                setProgressColor(color.Value);
+            }
+        }
 
     protected:
         virtual void onThemeChanged() override;
@@ -35,8 +51,8 @@ namespace Ghurund::UI {
 
     public:
         ProgressBar(
-            const ColorAttr& progressColor = ColorRef(Theme::COLOR_ACCENT),
-            const ColorAttr& backgroundColor = ColorRef(Theme::COLOR_CONTROL))
+            const ThemedColor& progressColor = Theme::COLOR_ACCENT,
+            const ThemedColor& backgroundColor = Theme::COLOR_CONTROL)
             :progressColor(progressColor), backgroundColor(backgroundColor)
         {}
 
@@ -61,16 +77,24 @@ namespace Ghurund::UI {
 
         __declspec(property(get = isIndeterminate, put = setIndeterminate)) bool Indeterminate;
 
-        inline void setBackgroundColor(const ColorAttr& color) {
+        inline void setBackgroundColor(const Color& color) {
             backgroundColor.set(color);
         }
 
-        __declspec(property(put = setBackgroundColor)) const ColorAttr& BackgroundColor;
+        inline void setBackgroundColor(const ColorKey& color) {
+            backgroundColor.set(color);
+        }
 
-        inline void setProgressColor(const ColorAttr& color) {
+        __declspec(property(put = setBackgroundColor)) const Color& BackgroundColor;
+
+        inline void setProgressColor(const Color& color) {
             progressColor.set(color);
         }
 
-        __declspec(property(put = setProgressColor)) const ColorAttr& ProgressColor;
+        inline void setProgressColor(const ColorKey& color) {
+            progressColor.set(color);
+        }
+
+        __declspec(property(put = setProgressColor)) const Color& ProgressColor;
     };
 }

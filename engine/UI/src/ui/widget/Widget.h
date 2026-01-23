@@ -1,11 +1,16 @@
 #pragma once
 
 #include "ui/control/ControlContainerBase.h"
-#include "ui/style/LayoutAttr.h"
-#include "ui/style/PointerAttrProperty.h"
+#include "ui/theme/ThemedValueProperty.h"
 
 namespace Ghurund::UI {
 	using namespace Ghurund::Core;
+
+	using LayoutKey = AttributeKey<Control>;
+	using ThemedLayout = ThemedValue<LayoutKey, IntrusivePointer<Control>>;
+
+	template<>
+	IntrusivePointer<Control> resolveThemeValue(const Theme& theme, const LayoutKey& key);
 
 	class Widget:public ControlContainerBase {
 #pragma region reflection
@@ -20,8 +25,17 @@ namespace Ghurund::UI {
 		inline static const Ghurund::Core::Type& TYPE = Widget::GET_TYPE();
 #pragma endregion
 
+	private:
+		inline void setThemedLayout(const ThemedLayout& layout) {
+			if (layout.Key) {
+				setLayout(*layout.Key);
+			} else {
+				setLayout(layout.Value.get());
+			}
+		}
+
 	protected:
-		PointerAttrProperty<LayoutAttr, Control> layout;
+		ThemedValueProperty<LayoutKey, IntrusivePointer<Control>> layout;
 
 		Widget() {}
 
@@ -36,12 +50,18 @@ namespace Ghurund::UI {
 		virtual void onLayoutChanged() {}
 
 	public:
-		inline void setLayout(std::unique_ptr<LayoutAttr> layout) {
-			this->layout.set(std::move(layout));
+		inline void setLayout(LayoutKey layout) {
+			this->layout.set(layout);
 			updateLayout();
 		}
 
-		__declspec(property(put = setLayout)) LayoutAttr* Layout;
+		inline void setLayout(NotNull<Control> layout) {
+			this->layout.set(IntrusivePointer(layout.get()));
+			layout->addReference();
+			updateLayout();
+		}
+
+		__declspec(property(put = setLayout)) Control* Layout;
 
 		virtual PartialConstraintSet makeDefaultConstraints() const override {
 			return ConstraintSetInitializer{
@@ -50,4 +70,9 @@ namespace Ghurund::UI {
 			};
 		}
 	};
+}
+
+namespace Ghurund::Core {
+	template<>
+	const Type& getType<Ghurund::UI::ThemedLayout>();
 }

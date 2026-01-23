@@ -118,6 +118,7 @@
     <ClCompile Include="src\test\ui\control\TextBlockTest.cpp" />
     <ClCompile Include="src\test\ui\font\FontTest.cpp" />
     <ClCompile Include="src\test\ui\text\TextLayoutTest.cpp" />
+    <ClCompile Include="src\test\ui\theme\ThemedValuePropertyTest.cpp" />
     <ClCompile Include="src\test\ui\widget\WidgetTest.cpp" />
     <ClCompile Include="src\utuipch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

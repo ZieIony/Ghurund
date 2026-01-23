@@ -3,10 +3,8 @@
 #include "core/Color.h"
 #include "core/Colors.h"
 #include "engine/graphics/texture/ITexture.h"
-#include "engine/parameter/TextureParameter.h"
 #include "ui/control/Control.h"
-#include "ui/style/PointerAttrProperty.h"
-#include "ui/style/TextureAttr.h"
+#include "ui/theme/ThemedValueProperty.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
@@ -26,10 +24,28 @@ namespace Ghurund::UI {
 
     private:
         // TODO: maybe this should be Image*?
-        PointerAttrProperty<TextureAttr, ITexture> image;
+        ThemedValueProperty<TextureKey, IntrusivePointer<ITexture>> image;
         TextureInput* imageInput = nullptr;
-        Color tint = Colors::WHITE;
+        ThemedValueProperty<ColorKey, Color> tint = Color(Colors::WHITE);
         Float4Input* tintInput = nullptr;
+
+        inline void setThemedImage(std::unique_ptr<ThemedTexture> image) {
+            if (!image) {
+                setImage(IntrusivePointer<ITexture>());
+            } else if (image->Key) {
+                setImage(*image->Key);
+            } else {
+                setImage(image->Value);
+            }
+        }
+
+        inline void setThemedTint(const ThemedColor& tint) {
+            if (tint.Key) {
+                setTint(*tint.Key);
+            } else {
+                setTint(tint.Value);
+            }
+        }
 
     protected:
         virtual void onMaterialChanged() override;
@@ -37,13 +53,28 @@ namespace Ghurund::UI {
         virtual void onThemeChanged() override;
 
 	public:
-		inline void setImage(std::unique_ptr<TextureAttr> image) {
-			this->image.set(std::move(image));
-			if (imageInput)
-				imageInput->Value = this->image.get();
-		}
+        inline void setImage(TextureKey image) {
+            this->image.set(image);
+            if (imageInput)
+                imageInput->Value = this->image.get().get();
+        }
 
-		__declspec(property(put = setImage)) std::unique_ptr<TextureAttr> Image;
+        inline void setImage(IntrusivePointer<ITexture> image) {
+            this->image.set(image);
+            if (imageInput)
+                imageInput->Value = this->image.get().get();
+        }
+
+        __declspec(property(put = setImage)) IntrusivePointer<ITexture> Image;
+
+        inline void setTint(const ColorKey& tint) {
+            this->tint = tint;
+            auto theme = Theme;
+            if (tintInput && theme) {
+                this->tint.resolve(*theme);
+                tintInput->Value = this->tint.get().toVector();
+            }
+        }
 
 		inline void setTint(const Color& tint) {
 			this->tint = tint;
@@ -51,10 +82,6 @@ namespace Ghurund::UI {
 				tintInput->Value = tint.toVector();
 		}
 
-        inline const Color& getTint() const {
-            return tint;
-        }
-
-        __declspec(property(get = getTint, put = setTint)) const Color& Tint;
+        __declspec(property(put = setTint)) const Color& Tint;
     };
 }

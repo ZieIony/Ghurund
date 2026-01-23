@@ -11,10 +11,9 @@
 #include <ui/constraint/ParentConstraint.h>
 #include <ui/constraint/SiblingConstraint.h>
 #include <ui/control/ControlGroup.h>
-#include <ui/style/LayoutAttr.h>
 #include <ui/text/TextDocument.h>
-#include <ui/style/ColorAttr.h>
 #include <ui/control/ImageScaleMode.h>
+#include <ui/theme/ThemedValue.h>
 
 using namespace Ghurund::UI;
 using namespace UnitTest::Utils;
@@ -108,12 +107,10 @@ public:
 		Ghurund::Core::getType<const AString&>();
 		Ghurund::Core::getType<const AString*>();
 		Ghurund::Core::getType<const WString&>();
-		Ghurund::Core::getType<const ColorAttr&>();
-		Ghurund::Core::getType<std::unique_ptr<ColorAttr>>();
+		Ghurund::Core::getType<std::unique_ptr<ThemedColor>>();
 		Ghurund::Core::getType<Ghurund::UI::ImageScaleMode>();
 		//Ghurund::Core::getType<std::unique_ptr<Ghurund::UI::DrawableAttr>>();
 		Ghurund::Core::getType<std::unique_ptr<TextDocument>>();
-		Ghurund::Core::getType<std::unique_ptr<LayoutAttr>>();
 
 		ResourceManager resourceManager;
 		//TestDrawableFactory drawableFactory;

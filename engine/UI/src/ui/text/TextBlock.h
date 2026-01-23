@@ -2,11 +2,10 @@
 
 #include "TextLayout.h"
 #include "TextLayoutConstraint.h"
+
 #include "ui/control/Control.h"
-#include "ui/style/AttrProperty.h"
-#include "ui/style/ColorAttr.h"
-#include "ui/style/TextStyleAttr.h"
-#include "ui/style/PointerAttrProperty.h"
+#include "ui/theme/Theme.h"
+#include "ui/theme/ThemedValueProperty.h"
 
 namespace Ghurund::UI {
 	class TextBlock:public Control {
@@ -24,21 +23,37 @@ namespace Ghurund::UI {
 
 	private:
 		WString text;
-		AttrProperty<ColorAttr, Color> color;
-		PointerAttrProperty<TextStyleAttr, TextStyle> textStyle;
+		ThemedValueProperty<ColorKey, Color> color;
+		ThemedValueProperty<TextStyleKey, IntrusivePointer<TextStyle>> textStyle;
 		TextLayout textLayout;
 
 		void refreshLayout();
 
 		virtual void onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
 
+		inline void setThemedTextColor(const ThemedColor& color) {
+			if (color.Key) {
+				setTextColor(*color.Key);
+			} else {
+				setTextColor(color.Value);
+			}
+		}
+
+		inline void setThemedTextStyle(const ThemedTextStyle& textStyle) {
+			if (textStyle.Key) {
+				setTextStyle(*textStyle.Key);
+			} else {
+				setTextStyle(textStyle.Value);
+			}
+		}
+
 	public:
-		TextBlock():color(ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND)) {
+		TextBlock():color(Theme::COLOR_PRIMARY_ONBACKGROUND) {
 			contentSize = Ghurund::UI::ContentSize(
 				makeIntrusive<TextLayoutWidthConstraint>(textLayout).get(),
 				makeIntrusive<TextLayoutHeightConstraint>(textLayout).get()
 			);
-			setTextStyle(std::make_unique<TextStyleRef>(Theme::TEXT_STYLE_TEXT_SECONDARY));
+			setTextStyle(Theme::TEXT_STYLE_TEXT_SECONDARY);
 		}
 
 		const WString& getText() {
@@ -52,13 +67,23 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = getText, put = setText)) const WString& Text;
 
-		inline void setTextColor(const ColorAttr& color);
+		inline void setTextColor(const Color& color) {
+			this->color.set(color);
+			refreshLayout();
+		}
 
-		__declspec(property(put = setTextColor)) const ColorAttr& TextColor;
+		inline void setTextColor(const ColorKey& color) {
+			this->color.set(color);
+			refreshLayout();
+		}
 
-		void setTextStyle(std::unique_ptr<Ghurund::UI::TextStyleAttr> textStyle);
+		__declspec(property(put = setTextColor)) const Color& TextColor;
 
-		__declspec(property(put = setTextStyle)) std::unique_ptr<Ghurund::UI::TextStyleAttr> TextStyle;
+		void setTextStyle(Ghurund::UI::TextStyleKey textStyle);
+
+		void setTextStyle(IntrusivePointer<Ghurund::UI::TextStyle> textStyle);
+
+		__declspec(property(put = setTextStyle)) IntrusivePointer<Ghurund::UI::TextStyle> TextStyle;
 
 		void dispatchContextChanged();
 	};

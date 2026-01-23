@@ -23,4 +23,22 @@ namespace Ghurund::UI {
 			}
 		}
 	}
+
+	template<>
+	UIMaterial* resolveThemeValue(const Theme& theme, const MaterialKey& key) {
+		auto iterator = theme.Materials.find(key);
+		if (iterator != theme.Materials.end()) {
+			return iterator->value->get();
+		} else {
+			return nullptr;
+		}
+	}
+}
+
+namespace Ghurund::Core {
+	template<>
+	const Type& getType<Ghurund::UI::ThemedMaterial>() {
+        static Type TYPE = TypeBuilder<Ghurund::UI::ThemedMaterial>();
+        return TYPE;
+    }
 }

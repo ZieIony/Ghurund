@@ -22,7 +22,7 @@ namespace Ghurund::Core {
                 }
             }
         } else {
-            throw std::invalid_argument("invalid color string");
+            throw InvalidParamException("invalid color string");
         }
         return Color(value);
     }

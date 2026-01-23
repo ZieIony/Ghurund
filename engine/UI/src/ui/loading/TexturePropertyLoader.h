@@ -2,9 +2,12 @@
 
 #include "core/loading/PropertyLoader.h"
 #include "engine/graphics/texture/ITextureFactory.h"
-#include "ui/style/TextureAttr.h"
+#include "ui/theme/ThemedValue.h"
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+    using namespace Ghurund::Engine;
+
     class TexturePropertyLoader:public PropertyLoader {
     private:
         static inline const char* THEME_TEXTURE = "theme://texture/";
@@ -19,7 +22,7 @@ namespace Ghurund::UI {
         ):resourceManager(resourceManager), textureFactory(textureFactory) {}
 
         virtual const Type& getType() const override {
-            return Ghurund::Core::getType<std::unique_ptr<Ghurund::UI::TextureAttr>>();
+            return Ghurund::Core::getType<std::unique_ptr<ThemedTexture>>();
         }
 
         virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override;

@@ -2,7 +2,6 @@
 #include "TextBlock.h"
 
 #include "core/reflection/Property.h"
-#include "core/reflection/UniqueProperty.h"
 
 namespace Ghurund::UI {
 	using namespace Ghurund::Core;
@@ -13,13 +12,14 @@ namespace Ghurund::UI {
 		if (theme && context) {
 			this->textStyle.resolve(*theme);
 			this->color.resolve(*theme);
-			textLayout.Document = makeIntrusive<Ghurund::UI::TextDocument>(text, textStyle.get(), *color.get()).get();
+			textLayout.Document = makeIntrusive<Ghurund::UI::TextDocument>(text, textStyle.get().get(), color.get()).get();
 			textLayout.PreferredSize = { std::numeric_limits<uint32_t>::max(), std::numeric_limits<uint32_t>::max() };
 			textLayout.refresh();
 
 			auto materialProvider = theme->Materials.get(Theme::MATERIAL_TEXT);
-			auto material = materialProvider->get();
-			textLayout.initMeshes(context->TextMeshFactory, context->TextureFactory, material.ref());
+			UIMaterial* material = materialProvider->get();
+			textLayout.initMeshes(context->TextMeshFactory, context->TextureFactory, material);
+			material->release();
 		}
 	}
 
@@ -29,8 +29,8 @@ namespace Ghurund::UI {
 
 	const Ghurund::Core::Type& TextBlock::GET_TYPE() {
 		static auto PROPERTY_TEXT = Property<TextBlock, const WString&>("Text", &getText, &setText);
-		static auto PROPERTY_TEXT_STYLE = UniqueProperty<TextBlock, std::unique_ptr<TextStyleAttr>>("TextStyle", &setTextStyle);
-		static auto PROPERTY_COLOR = Property<TextBlock, const ColorAttr&>("TextColor", &setTextColor);
+		static auto PROPERTY_TEXT_STYLE = Property<TextBlock, const ThemedTextStyle&>("TextStyle", &setThemedTextStyle);
+		static auto PROPERTY_COLOR = Property<TextBlock, const ThemedColor&>("TextColor", &setThemedTextColor);
 
 		static const Ghurund::Core::Type TYPE = TypeBuilder<TextBlock>()
 			.withProperty(PROPERTY_TEXT)
@@ -41,13 +41,13 @@ namespace Ghurund::UI {
 		return TYPE;
 	}
 
-	void TextBlock::setTextColor(const ColorAttr& color) {
-		this->color.set(color);
+	void TextBlock::setTextStyle(Ghurund::UI::TextStyleKey textStyle) {
+		this->textStyle.set(textStyle);
 		refreshLayout();
 	}
 
-	void TextBlock::setTextStyle(std::unique_ptr<Ghurund::UI::TextStyleAttr> textStyle) {
-		this->textStyle.set(std::move(textStyle));
+	void TextBlock::setTextStyle(IntrusivePointer<Ghurund::UI::TextStyle> textStyle) {
+		this->textStyle.set(textStyle);
 		refreshLayout();
 	}
 

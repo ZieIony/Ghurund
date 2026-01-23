@@ -12,11 +12,12 @@ namespace Ghurund::UI {
 	void CheckBoxRadio::onLayoutChanged() {
 		iconView.set(nullptr);
 		__super::onLayoutChanged();
-		Control* layoutControl = layout.get();
+		Control* layoutControl = layout.get().get();
 		if (layoutControl) {
 			iconView.set((Ghurund::UI::ImageView*)layoutControl->find("icon"));
 			iconView->addReference();
-			checkedParameter2 = (FloatInput*)iconView->Material->Inputs.get("checked");
+			if (iconView->Material)
+				checkedParameter2 = (FloatInput*)iconView->Material->Inputs.get("checked");
 		}
 	}
 	

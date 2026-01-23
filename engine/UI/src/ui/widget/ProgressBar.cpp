@@ -21,22 +21,22 @@ namespace Ghurund::UI {
 
 	void ProgressBar::onStateChanged() {
 		if (IsEnabled) {
-			ProgressColor = ColorRef(Theme::COLOR_ACCENT);
-			BackgroundColor = ColorRef(Theme::COLOR_CONTROL);
+			ProgressColor = Theme::COLOR_ACCENT;
+			BackgroundColor = Theme::COLOR_CONTROL;
 		} else {
-			ProgressColor = ColorRef(Theme::COLOR_CONTROL);
-			BackgroundColor = ColorRef(Theme::COLOR_BACKGR0UND);
+			ProgressColor = Theme::COLOR_CONTROL;
+			BackgroundColor = Theme::COLOR_BACKGR0UND;
 		}
 	}
 
 	void ProgressBar::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
 		if (indeterminate) {
-			const Color* bgColor = backgroundColor.get();
+			Color bgColor = backgroundColor.get();
 			if (bgColor) {
 				//canvas.Color = *bgColor;
 				//canvas.fillRect(0, 0, Size.Width, Size.Height);
 			}
-			const Color* prColor = progressColor.get();
+			Color prColor = progressColor.get();
 			if (prColor) {
 				//canvas.Color = *prColor;
 				//canvas.fillRect(Size.Width * progress, 0, Size.Width * cos(progress * 6.28f) / 2 + 0.5f, Size.Height);
@@ -46,12 +46,12 @@ namespace Ghurund::UI {
 				progress--;
 			repaint();
 		} else {
-			const Color* bgColor = backgroundColor.get();
+			Color bgColor = backgroundColor.get();
 			if (bgColor) {
 				//canvas.Color = *bgColor;
 				//canvas.fillRect(Size.Width * progress, 0, Size.Width, Size.Height);
 			}
-			const Color* prColor = progressColor.get();
+			Color prColor = progressColor.get();
 			if (prColor) {
 				//canvas.Color = *prColor;
 				//canvas.fillRect(0, 0, Size.Width * progress, Size.Height);

@@ -9,17 +9,10 @@
 #include "core/Color.h"
 #include "core/object/IntrusivePointer.h"
 #include "core/object/SharedPointer.h"
-#include "engine/graphics/texture/ITexture.h"
 #include "ui/font/TextStyle.h"
+#include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
-
-    typedef AttributeKey<Color> ColorKey;
-    typedef AttributeKey<ITexture> TextureKey;
-    typedef AttributeKey<Material> MaterialKey;
-    typedef AttributeKey<Ghurund::UI::TextStyle> TextStyleKey;
-    typedef AttributeKey<Control> LayoutKey;
-
     class Theme {
     private:
         static const inline float emphasis_high = 0.87f;
@@ -128,6 +121,6 @@ namespace Ghurund::UI {
 }
 
 namespace Ghurund::Core {
-    template<>
-    const Type& getType<Ghurund::UI::Theme>();
+	template<>
+	const Type& getType<Ghurund::UI::Theme>();
 }

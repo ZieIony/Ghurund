@@ -9,7 +9,7 @@ namespace Ghurund::UI {
         Button* button = ghnew Button();
         auto layoutPath = ResourceManager::ENGINE_LIB / FilePath(L"/layouts/ButtonIconLayout.xml");
         Control* layout = resourceManager.load<Control>(layoutPath);
-        button->Layout = std::make_unique<LayoutValue>(LayoutValue(layout));
+        button->Layout = layout;
         //DrawableView* drawableView = ghnew DrawableView();
         //drawableView->Name = "drawableView";
         //button->Content = drawableView;

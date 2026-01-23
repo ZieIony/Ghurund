@@ -222,14 +222,14 @@ namespace Ghurund::UI {
         return constraintFactory.parseConstraint(str, orientation);
     }
 
-    TextStyleRef* LayoutLoader::loadTextStyle(const char* str) {
+    ThemedTextStyle* LayoutLoader::loadTextStyle(const char* str) {
         AString s = str;
         s.replace('\\', '/');
         if (s.startsWith(FILE_PROTOCOL)) {
             //auto font = ghnew Font()
         } else if (s.startsWith(THEME_TEXT_STYLE)) {
             TextStyleKey textStyleKey = s.substring(lengthOf(THEME_TEXT_STYLE));
-            return ghnew TextStyleRef(textStyleKey);
+            return ghnew ThemedTextStyle(textStyleKey);
         }
         return nullptr;
     }

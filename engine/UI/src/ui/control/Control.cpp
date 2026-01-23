@@ -5,6 +5,7 @@
 #include "core/reflection/Property.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/TypeBuilder.h"
+#include "core/reflection/UniqueProperty.h"
 #include "core/window/Cursor.h"
 #include "engine/graphics/RenderGroup.h"
 #include "ui/loading/LayoutLoader.h"
@@ -24,9 +25,9 @@ namespace Ghurund::UI {
 		static auto PROPERTY_POSITION = Property<Control, const XMFLOAT2&>("Position", (XMFLOAT2 & (Control::*)()) & getPosition, (void(Control::*)(const XMFLOAT2&)) & setPosition);
 		static auto PROPERTY_SIZE = Property<Control, FloatSize&>("Size", (FloatSize & (Control::*)()) & getSize);
 		static auto PROPERTY_PARENT = Property<Control, ControlParent*>("Parent", (ControlParent * (Control::*)()) & getParent, (void(Control::*)(ControlParent*)) & setParent);
-		static auto PROPERTY_CURSOR = Property<Control, const Ghurund::UI::Cursor*>("Cursor", (Ghurund::UI::Cursor * (Control::*)()) & getCursor, (void(Control::*)(const Ghurund::UI::Cursor*)) & setCursor);
-		static auto PROPERTY_MATERIAL = Property<Control, Ghurund::UI::UIMaterial*>("Material", & getMaterial, & setMaterial);
-		static auto PROPERTY_THEME = Property<Control, Ghurund::UI::Theme*>("Theme", (Ghurund::UI::Theme * (Control::*)()) & getTheme, (void(Control::*)(Ghurund::UI::Theme*)) & setTheme);
+		static auto PROPERTY_CURSOR = Property<Control, const Ghurund::UI::Cursor*>("Cursor", & getCursor, & setCursor);
+		static auto PROPERTY_MATERIAL = UniqueProperty<Control, std::unique_ptr<ThemedMaterial>>("Material", &setThemedMaterial);
+		static auto PROPERTY_THEME = Property<Control, Ghurund::UI::Theme*>("Theme", (Ghurund::UI::Theme * (Control::*)()) & getTheme, & setTheme);
 		static auto PROPERTY_CONTEXT = Property<Control, UIContext*>("Context", &getContext);
 		static auto PROPERTY_POSITIONINWINDOW = Property<Control, XMFLOAT2>("PositionInWindow", &getPositionInWindow);
 		static auto PROPERTY_POSITIONONSCREEN = Property<Control, XMFLOAT2>("PositionOnScreen", &getPositionOnScreen);
@@ -75,6 +76,11 @@ namespace Ghurund::UI {
 		//loader.loadBindings()
 	}
 
+	void Control::onLoaded() {
+		if (material.get() == nullptr)
+			setMaterial(Type.Name);
+	}
+
 	void Control::onStateChanged() {
 		if (focusedInput)
 			focusedInput->Value = Focused ? 1.0f : 0.0f;
@@ -108,12 +114,14 @@ namespace Ghurund::UI {
 	void Control::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
 		if (material == nullptr)
 			return;
-		material->UIInputs.Position = parentPosition + position;
-		material->UIInputs.Size = { Size.Width, Size.Height };
+		material.get()->UIInputs.Position = parentPosition + position;
+		material.get()->UIInputs.Size = { Size.Width, Size.Height };
 		alphaInput->Value = alpha;
+		IntrusivePointer<UIMaterial> m(material.get());
+		m->addReference();
 		group.objects.add(DrawPacket{
 			mesh,
-			material,
+			m,
 			XMFLOAT3(parentPosition.x + position.x, parentPosition.y + position.y, 0)
 		});
 	}
@@ -274,6 +282,18 @@ namespace Ghurund::UI {
 			return true;
 		}
 		return false;
+	}
+
+	void Control::setMaterial(UIMaterial* material) {
+		if (this->material == material)
+			return;
+		this->material.set(material);
+		if (material) {
+			auto theme = Theme;
+			if (theme)
+				material->setTheme(theme);
+		}
+		dispatchMaterialChanged();
 	}
 
 	void Control::setParent(ControlParent* parent) {

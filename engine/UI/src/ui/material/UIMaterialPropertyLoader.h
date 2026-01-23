@@ -8,6 +8,8 @@ namespace Ghurund::UI {
 
     class UIMaterialPropertyLoader:public PropertyLoader {
     private:
+        static inline const char* THEME_MATERIAL = "theme://material/";
+  
         ResourceManager& resourceManager;
         UIMaterialLoader& materialLoader;
 
@@ -19,7 +21,7 @@ namespace Ghurund::UI {
 		}
 
         virtual const Type& getType() const override {
-            return Ghurund::Core::getType<UIMaterial*>();
+            return Ghurund::Core::getType<std::unique_ptr<ThemedMaterial>>();
         }
 
         virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override;

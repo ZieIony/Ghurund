@@ -1,52 +1,17 @@
 #pragma once
 
-#include "engine/graphics/material/Material.h"
+#include "ThemeParameter.h"
+#include "UIInputs.h"
 
-#include <DirectXMath.h>
+#include "engine/graphics/material/Material.h"
+#include "ui/theme/AttributeKey.h"
+#include "ui/theme/ThemedValue.h"
 
 namespace Ghurund::UI {
 	using namespace Ghurund::Engine;
 	using namespace ::DirectX;
 
 	class Theme;
-
-	class UIInputs {
-	private:
-		Float2Input* sizeInput = nullptr;
-		Float2Input* positionInput = nullptr;
-
-	public:
-		UIInputs() {}
-
-		UIInputs(const UIInputs& other):sizeInput(sizeInput), positionInput(positionInput) {}
-
-		inline void init(MaterialInputCollection& inputs) {
-			sizeInput = (Float2Input*)inputs.get("size");
-			positionInput = (Float2Input*)inputs.get("position");
-		}
-
-		inline void setSize(const XMFLOAT2& size) {
-			sizeInput->Value = size;
-		}
-
-		__declspec(property(put = setSize)) const XMFLOAT2& Size;
-
-		inline void setPosition(const XMFLOAT2& pos) {
-			positionInput->Value = pos;
-		}
-
-		__declspec(property(put = setPosition)) const XMFLOAT2& Position;
-	};
-
-	enum class ThemeParameterType {
-		COLOR, DIMENSION
-	};
-
-	struct ThemeParameter {
-		AString name;
-		AString key;
-		ThemeParameterType type;
-	};
 
 	class UIMaterial:public Material {
 #pragma region reflection
@@ -86,5 +51,20 @@ namespace Ghurund::UI {
 		List<ThemeParameter> themeParameters;
 
 		void setTheme(const Theme* theme);
+
+		virtual UIMaterial* clone() const {
+			return ghnew UIMaterial(*this);
+		}
 	};
+
+	using MaterialKey = AttributeKey<UIMaterial>;
+	using ThemedMaterial = ThemedValue<MaterialKey, UIMaterial>;
+
+	template<>
+	UIMaterial* resolveThemeValue(const Theme& theme, const MaterialKey& key);;
+}
+
+namespace Ghurund::Core {
+	template<>
+	const Type& getType<Ghurund::UI::ThemedMaterial>();
 }
