@@ -87,7 +87,7 @@ namespace Ghurund::Engine {
             return consumed;
         }
 
-        inline void update(const uint64_t time) {
+        inline void update(uint64_t time) {
             for (auto& layer : layers)
                 layer->update(time);
         }

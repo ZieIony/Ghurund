@@ -8,10 +8,10 @@
 #include <engine/parameter/ParameterManager.h>
 #include <ui/directx/DxUIFeatureFactory.h>
 #include "core/math/Int.h"
+#include "engine/directx/DxGraphicsFeatureFactory.h"
 
 #include <cstdint>
 #include <format>
-#include <engine/directx/DxGraphicsFeatureFactory.h>
 
 namespace Messenger {
     using namespace Ghurund::Engine;
@@ -36,9 +36,8 @@ namespace Messenger {
             auto& graphics = Features.get<DxGraphicsFeature>()->Graphics;
             commandList = makeIntrusive<CommandList>();
             commandList->init(graphics, graphics.CopyQueue);
-            auto textureFactory = ghnew DxTextureFactory(graphics, commandList.ref());
             Features.add<DxUIFeature, DxUIFeatureFactory>();
-            lightTheme = ghnew LightTheme(ResourceManager, *textureFactory);
+            lightTheme = ghnew LightTheme(ResourceManager);
             LayoutLoader* layoutLoader = (LayoutLoader*)ResourceManager.Loaders.get<Control>();
             //layoutLoader->Theme = lightTheme;
             renderer = ghnew DxRenderer(graphics);

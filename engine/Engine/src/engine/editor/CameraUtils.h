@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine/entity/camera/Camera.h"
-#include "engine/graphics/DrawableComponent.h"
+#include "engine/entity/3d/Drawable3DComponent.h"
 
 namespace Ghurund::Editor {
     using namespace Ghurund::Engine;
@@ -11,7 +11,7 @@ namespace Ghurund::Editor {
 		CameraUtils() = delete;
 
     public:
-        static void lookAtEntity(Camera& camera, Ghurund::Engine::DrawableComponent& entity) {
+        static void lookAtEntity(Camera& camera, Ghurund::Engine::Drawable3DComponent& entity) {
             /*XMFLOAT3 pos;
             XMStoreFloat3(&pos, XMLoadFloat3(&entity.BoundingBox->Center) + XMLoadFloat3(&entity.BoundingBox->Extents) * 2);
             pos.z *= -1;

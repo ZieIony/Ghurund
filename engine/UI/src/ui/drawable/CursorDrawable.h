@@ -18,7 +18,7 @@ namespace Ghurund::UI {
 
         __declspec(property(put = setColor)) const Color& Color;
 
-        virtual void update(const uint64_t time) override {
+        virtual void update(uint64_t time) override {
             visible = fmod(time, blinkTimeMs) < blinkTimeMs / 2.0f;
         }
 

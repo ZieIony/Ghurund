@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/resource/Resource.h"
+#include "core/math/Size.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
@@ -17,5 +18,10 @@ namespace Ghurund::Engine {
 
 		inline static const Ghurund::Core::Type& TYPE = ITexture::GET_TYPE();
 #pragma endregion
+
+	public:
+		virtual const IntSize& getSize() const = 0;
+
+		__declspec(property(get = getSize)) const IntSize& Size;
 	};
 }

@@ -1,18 +1,20 @@
 #pragma once
 
+#include "engine/entity/Component.h"
+
 #include <DirectXMath.h>
 
 namespace Ghurund::Engine {
 	using namespace ::DirectX;
 
-	class TransformComponent {
+	class Transform3DComponent:public Component {
 	private:
 		XMFLOAT3 position = {};
 		XMFLOAT3 rotation = {}, scale = { 1,1,1 };
 		XMFLOAT4X4 world;
 
 	public:
-		inline void update() {
+		virtual void update(uint64_t time) override {
 			XMMATRIX local = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixRotationRollPitchYaw(rotation.y, rotation.x, rotation.z) * XMMatrixTranslation(position.x, position.y, position.z);
 			XMStoreFloat4x4(&world, local);
 		}
@@ -26,7 +28,7 @@ namespace Ghurund::Engine {
 			return world;
 		}
 
-		__declspec(property(get = getTransformation)) XMFLOAT4X4& Transformation;
+		__declspec(property(get = getTransformation)) const XMFLOAT4X4& Transformation;
 
 		void setPosition(const XMFLOAT3& pos) {
 			this->position = pos;
@@ -42,7 +44,7 @@ namespace Ghurund::Engine {
 			return position;
 		}
 
-		__declspec(property(get = getPosition, put = setPosition)) XMFLOAT3& Position;
+		__declspec(property(get = getPosition, put = setPosition)) const XMFLOAT3& Position;
 
 
 		void setRotation(const XMFLOAT3& rotation) {
@@ -59,7 +61,7 @@ namespace Ghurund::Engine {
 			return rotation;
 		}
 
-		__declspec(property(get = getRotation, put = setRotation)) XMFLOAT3& Rotation;
+		__declspec(property(get = getRotation, put = setRotation)) const XMFLOAT3& Rotation;
 
 		void setScale(const XMFLOAT3& scale) {
 			this->scale = scale;
@@ -75,6 +77,6 @@ namespace Ghurund::Engine {
 			return scale;
 		}
 
-		__declspec(property(get = getScale, put = setScale)) XMFLOAT3& Scale;
+		__declspec(property(get = getScale, put = setScale)) const XMFLOAT3& Scale;
 	};
 }

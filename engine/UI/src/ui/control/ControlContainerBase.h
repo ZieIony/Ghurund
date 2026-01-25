@@ -98,7 +98,7 @@ namespace Ghurund::UI {
 
 		virtual void onLayout(float x, float y, float width, float height) override;
 
-		virtual void onUpdate(const uint64_t time) override {
+		virtual void onUpdate(uint64_t time) override {
 			if (child)
 				child->onUpdate(time);
 		}

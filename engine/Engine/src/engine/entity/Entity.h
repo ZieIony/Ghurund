@@ -1,60 +1,33 @@
 #pragma once
 
-#include "core/object/RefCountedObject.h"
+#include "Component.h"
 
-//#include <entt.hpp>
+#include "core/object/RefCountedObject.h"
+#include <engine/graphics/RenderGroup.h>
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
 
     class Entity:public RefCountedObject {
-    public:
-        /*class ComponentCollection {
-        private:
-            Entity& owner;
-
-        public:
-            ComponentCollection(Entity& owner):owner(owner) {}
-
-            template<typename Type, typename... Args>
-            Type& add(Args&&... args) {
-                return owner.registry.emplace<Type>(owner.id, std::forward<Args>(args)...);
-            }
-
-            template<typename Type>
-            bool contains() {
-                return owner.registry.any_of<Type>(owner.id);
-            }
-
-            template<typename Type>
-            Type& get() {
-                return owner.registry.get<Type>(owner.id);
-            }
-
-            template<typename Type>
-            void remove() {
-                owner.registry.remove<Type>(owner.id);
-            }
-        };*/
-
     private:
-        /*entt::entity id;
-        entt::registry& registry;
-        ComponentCollection components;*/
         WString name;
+        Component* rootComponent = nullptr;
 
     public:
-        /*Entity(entt::registry& registry) :id(registry.create()), registry(registry), components(*this) {}
-
         ~Entity() {
-            registry.destroy(id);
+            delete rootComponent;
         }
 
-        inline ComponentCollection& getComponents() {
-            return components;
+        inline Component& getRootComponent() {
+            return *rootComponent;
         }
 
-        __declspec(property(get = getComponents)) ComponentCollection& Components;*/
+        inline void setRootComponent(std::unique_ptr<Component> component) {
+            delete rootComponent;
+            rootComponent = component.release();
+        }
+
+        __declspec(property(get = getRootComponent, put = setRootComponent)) Component& RootComponent;
 
         inline WString& getName() {
             return name;
@@ -65,5 +38,13 @@ namespace Ghurund::Engine {
         }
 
         __declspec(property(get = getName, put = setName)) WString& Name;
+
+        inline void update(uint64_t time) {
+            rootComponent->update(time);
+        }
+
+        inline void draw(RenderGroup& group) {
+			rootComponent->draw(group, { 0,0 });
+        }
     };
 }

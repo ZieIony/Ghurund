@@ -11,7 +11,7 @@ namespace Ghurund::Core {
         IWICImagingFactory* imageFactory = nullptr;
 
     protected:
-        virtual Resource* loadInternal(
+        virtual Image* loadInternal(
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,

@@ -3,7 +3,6 @@
 #include "Material.h"
 
 #include "core/loading/Loader.h"
-#include "engine/graphics/texture/ITextureFactory.h"
 
 #include <tinyxml2.h>
 
@@ -12,7 +11,6 @@ namespace Ghurund::Engine {
 	class MaterialLoader:public Ghurund::Core::Loader {
 	protected:
 		ResourceManager& resourceManager;
-		ITextureFactory& textureFactory;
 		IGPUMemoryManager& memoryManager;
 
 		virtual Material* makeMaterial();
@@ -37,9 +35,8 @@ namespace Ghurund::Engine {
 	public:
 		MaterialLoader(
 			ResourceManager& resourceManager,
-			ITextureFactory& textureFactory,
 			IGPUMemoryManager& memoryManager
-		):resourceManager(resourceManager), textureFactory(textureFactory), memoryManager(memoryManager) {
+		):resourceManager(resourceManager), memoryManager(memoryManager) {
 		}
 
 		Material* loadFromXml(const tinyxml2::XMLElement& xml, const DirectoryPath& workingDir);

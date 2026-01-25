@@ -5,6 +5,7 @@
 #include "engine/directx/DxRenderer.h"
 #include "ui/directx/DxUIFeatureFactory.h"
 #include "ui/theme/LightTheme.h"
+#include "engine/directx/texture/DxTextureFactory.h"
 
 namespace Demo {
     using namespace Ghurund::Engine;

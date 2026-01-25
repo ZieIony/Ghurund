@@ -30,10 +30,8 @@ namespace Ghurund::UI {
 		return textStyle;
 	};
 
-	BaseTheme::BaseTheme(
-		Ghurund::Core::ResourceManager& resourceManager,
-		ITextureFactory& textureFactory
-	):Theme(), resourceManager(resourceManager) {
+	BaseTheme::BaseTheme(Ghurund::Core::ResourceManager& resourceManager):Theme(), resourceManager(resourceManager) {
+
 		auto buttonLayoutPath = ResourceManager::ENGINE_LIB / FilePath(L"/layouts/ButtonLayout.xml");
 		Layouts.put(LayoutKey(Button::GET_TYPE().Name), makeShared<FileLayoutProvider>(resourceManager, buttonLayoutPath));
 		auto checkBoxLayoutPath = ResourceManager::ENGINE_LIB / FilePath(L"/layouts/CheckBoxLayout.xml");
@@ -52,19 +50,19 @@ namespace Ghurund::UI {
 		TextStyles.put(Theme::TEXT_STYLE_TEXT_SECONDARY, makeTextStyle(L"regular", 12.0f));
 
 		auto checkboxCheckedPath = ResourceManager::ENGINE_LIB / FilePath(L"/icons\\checkbox checked 18.png");
-		Textures.put(Theme::TEXTURE_CHECKBOX_CHECKED, makeShared<FileTextureProvider>(resourceManager, textureFactory, checkboxCheckedPath));
+		Textures.put(Theme::TEXTURE_CHECKBOX_CHECKED, makeShared<FileTextureProvider>(resourceManager, checkboxCheckedPath));
 		auto checkBoxUncheckedPath = ResourceManager::ENGINE_LIB / FilePath(L"/icons\\checkbox unchecked 18.png");
-		Textures.put(Theme::TEXTURE_CHECKBOX_UNCHECKED, makeShared<FileTextureProvider>(resourceManager, textureFactory, checkBoxUncheckedPath));
+		Textures.put(Theme::TEXTURE_CHECKBOX_UNCHECKED, makeShared<FileTextureProvider>(resourceManager, checkBoxUncheckedPath));
 		auto radioCheckedPath = ResourceManager::ENGINE_LIB / FilePath(L"/icons\\radiobutton checked 18.png");
-		Textures.put(Theme::TEXTURE_RADIOBUTTON_CHECKED, makeShared<FileTextureProvider>(resourceManager, textureFactory, radioCheckedPath));
+		Textures.put(Theme::TEXTURE_RADIOBUTTON_CHECKED, makeShared<FileTextureProvider>(resourceManager, radioCheckedPath));
 		auto radioUncheckedPath = ResourceManager::ENGINE_LIB / FilePath(L"/icons\\radiobutton unchecked 18.png");
-		Textures.put(Theme::TEXTURE_RADIOBUTTON_UNCHECKED, makeShared<FileTextureProvider>(resourceManager, textureFactory, radioUncheckedPath));
+		Textures.put(Theme::TEXTURE_RADIOBUTTON_UNCHECKED, makeShared<FileTextureProvider>(resourceManager, radioUncheckedPath));
 		auto arrowUpPath = ResourceManager::ENGINE_LIB / FilePath(L"/icons\\arrow up 18.png");
-		Textures.put(Theme::TEXTURE_ARROWUP, makeShared<FileTextureProvider>(resourceManager, textureFactory, arrowUpPath));
+		Textures.put(Theme::TEXTURE_ARROWUP, makeShared<FileTextureProvider>(resourceManager, arrowUpPath));
 		auto arrowDownPath = ResourceManager::ENGINE_LIB / FilePath(L"/icons\\arrow down 18.png");
-		Textures.put(Theme::TEXTURE_ARROWDOWN, makeShared<FileTextureProvider>(resourceManager, textureFactory, arrowDownPath));
+		Textures.put(Theme::TEXTURE_ARROWDOWN, makeShared<FileTextureProvider>(resourceManager, arrowDownPath));
 		auto arrowRightPath = ResourceManager::ENGINE_LIB / FilePath(L"/icons\\arrow right 18.png");
-		Textures.put(Theme::TEXTURE_ARROWRIGHT, makeShared<FileTextureProvider>(resourceManager, textureFactory, arrowRightPath));
+		Textures.put(Theme::TEXTURE_ARROWRIGHT, makeShared<FileTextureProvider>(resourceManager, arrowRightPath));
 
 		auto materialTextPath = ResourceManager::ENGINE_LIB / FilePath(L"/materials/directx/ui/text.xml");
 		Materials.put(Theme::MATERIAL_TEXT, makeShared<FileMaterialProvider>(resourceManager, materialTextPath));

@@ -46,8 +46,12 @@ namespace Ghurund::Engine::DirectX {
 				auto material = packet.material.get();
 				material->applyInputs(parameterManager.Parameters);
 				auto shader = (DxShader*)material->Shader;
-				shader->set(*commandList);
+				bool shaderChanged = shader->set(*commandList);
 				mesh->draw(*commandList, shader->Layout);
+
+				stats.modelsRendered++;
+				if (shaderChanged)
+					stats.materialChanges++;
 			}
 		}
 	}

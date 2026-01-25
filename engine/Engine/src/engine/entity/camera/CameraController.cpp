@@ -8,7 +8,6 @@
 
 #include "Camera.h"
 #include "CameraComponent.h"
-#include "engine/entity/TransformComponent.h"
 
 namespace Ghurund::Engine {
 	using namespace std;
@@ -50,7 +49,7 @@ namespace Ghurund::Engine {
 	bool CameraController::onMouseMotionEvent(const MouseMotionEventArgs& event) {
 		/*if (pressed) {
 			Camera& camera = *cameraEntity.Components.get<CameraComponent>().camera;
-			TransformComponent& transformComponent = cameraEntity.Components.get<TransformComponent>();
+			Transform3DComponent& transformComponent = cameraEntity.Components.get<Transform3DComponent>();
 			Mode mode = modeMap.get(pressedButton);
 			if (mode == CameraController::Mode::ORBIT) {
 				XMFLOAT3 rotation = camera.getRotation();
@@ -71,7 +70,7 @@ namespace Ghurund::Engine {
 
 	bool CameraController::onMouseWheelEvent(const MouseWheelEventArgs& event) {
 		/*Camera& camera = *cameraEntity.Components.get<CameraComponent>().camera;
-		TransformComponent& transformComponent = cameraEntity.Components.get<TransformComponent>();
+		Transform3DComponent& transformComponent = cameraEntity.Components.get<Transform3DComponent>();
 		if (camera.getDistance() > event.Delta) {
 			camera.zoom(transformComponent, (float)event.Delta);
 		} else {

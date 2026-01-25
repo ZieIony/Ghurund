@@ -100,6 +100,12 @@
   <ItemGroup>
     <ClInclude Include="src\engine\application\Layer.h" />
     <ClInclude Include="src\engine\application\LayerList.h" />
+    <ClInclude Include="src\engine\entity\2d\AnimatedSpriteComponent.h" />
+    <ClInclude Include="src\engine\entity\2d\SpriteAnimation.h" />
+    <ClInclude Include="src\engine\entity\2d\SpriteComponent.h" />
+    <ClInclude Include="src\engine\entity\2d\SpriteInputs.h" />
+    <ClInclude Include="src\engine\entity\Component.h" />
+    <ClInclude Include="src\engine\entity\2d\Transform2DComponent.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialInput.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialInputCollection.h" />
     <ClInclude Include="src\engine\graphics\material\ValueInput.h" />
@@ -113,7 +119,6 @@
     <ClInclude Include="src\engine\graphics\shader\IShaderProvider.h" />
     <ClInclude Include="src\engine\graphics\shader\TextureConstant.h" />
     <ClInclude Include="src\engine\graphics\shader\ValueConstant.h" />
-    <ClInclude Include="src\engine\graphics\texture\ITextureFactory.h" />
     <ClInclude Include="src\engine\graphics\shader\ConstantBuffer.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
@@ -127,8 +132,7 @@
     <ClInclude Include="src\engine\editor\ThumbnailRenderer.h" />
     <ClInclude Include="src\engine\entity\Entity.h" />
     <ClInclude Include="src\engine\entity\Scene.h" />
-    <ClInclude Include="src\engine\entity\Scenes.h" />
-    <ClInclude Include="src\engine\entity\TransformComponent.h" />
+    <ClInclude Include="src\engine\entity\3d\Transform3DComponent.h" />
     <ClInclude Include="src\engine\entity\camera\Camera.h" />
     <ClInclude Include="src\engine\entity\camera\CameraComponent.h" />
     <ClInclude Include="src\engine\entity\camera\CameraController.h" />
@@ -151,8 +155,7 @@
     <ClInclude Include="src\engine\game\sky\BasicSky.h" />
     <ClInclude Include="src\engine\game\sky\Sky.h" />
     <ClInclude Include="src\engine\graphics\DrawPacket.h" />
-    <ClInclude Include="src\engine\graphics\Drawable.h" />
-    <ClInclude Include="src\engine\graphics\DrawableComponent.h" />
+    <ClInclude Include="src\engine\entity\3d\Drawable3DComponent.h" />
     <ClInclude Include="src\engine\graphics\DrawableComponents.h" />
     <ClInclude Include="src\engine\graphics\DrawingSystem.h" />
     <ClInclude Include="src\engine\graphics\LightSystem.h" />

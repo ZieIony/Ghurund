@@ -12,11 +12,10 @@ namespace Ghurund::Engine {
 
 	void MaterialLoader::onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value) {
 		if (input.Type == InputType::TEXTURE) {
-			TextureInput& textureInput = (TextureInput&)input;
+			TextureInput& colorTextureInput = (TextureInput&)input;
 			FilePath texturePath = FilePath(convertText<char, wchar_t>(value));
-			auto image = IntrusivePointer<Image>(resourceManager.load<Image>(texturePath, workingDir));
-			auto texture = IntrusivePointer<ITexture>(textureFactory.makeTexture(image.ref()));
-			textureInput.Value = texture.get();
+			auto texture = IntrusivePointer(resourceManager.load<ITexture>(texturePath, workingDir));
+			colorTextureInput.Value = texture.get();
 		} else if (input.Type == InputType::FLOAT4) {
 			Float4Input& float4Input = (Float4Input&)input;
 			// TODO: load theme attributes or do binding
@@ -28,8 +27,8 @@ namespace Ghurund::Engine {
 	Material* MaterialLoader::loadFromXml(const tinyxml2::XMLElement& xml, const DirectoryPath& workingDir) {
 		AString s = xml.FindAttribute("shader")->Value();
 		FilePath path = FilePath(convertText<char, wchar_t>(s));
-		auto shader = IntrusivePointer<Shader>(resourceManager.load<Shader>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE));
-		auto material = IntrusivePointer<Material>(makeMaterial());
+		auto shader = IntrusivePointer(resourceManager.load<Shader>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE));
+		auto material = IntrusivePointer(makeMaterial());
 		material->Shader = shader.get();
 		const tinyxml2::XMLElement* child = xml.FirstChildElement();
 		while (child) {

@@ -1,13 +1,8 @@
 #pragma once
 
 #include "core/resource/Resource.h"
-#include "engine/graphics/DrawingSystem.h"
 #include "engine/entity/camera/Camera.h"
 #include "engine/entity/Entity.h"
-#include "engine/physics/Physics.h"
-#include "engine/physics/PhysicsSystem.h"
-
-#include <entt.hpp>
 
 namespace Ghurund::Engine {
     class Scene:public Resource {
@@ -24,32 +19,20 @@ namespace Ghurund::Engine {
 #pragma endregion
 
     private:
-        entt::registry entityRegistry;
-
         List<IntrusivePointer<Entity>> entities;
-        DrawingSystem drawingSystem;
+        IntrusivePointer<Camera> camera;
 
     public:
         Scene() {}
 
-        /*inline void init(ParameterManager& parameterManager) {
-            drawingSystem.initParameters(parameterManager);
-        }*/
-
-        virtual void invalidate() override {
-            __super::invalidate();
-        }
-
-        virtual bool isValid() const override {
-            return __super::isValid();
-        }
-
         inline void setCamera(Camera* camera) {
-            drawingSystem.Camera = camera;
+            this->camera.set(camera);
+            if(camera)
+                camera->addReference();
         }
 
         inline Camera* getCamera() {
-            return drawingSystem.Camera;
+            return camera.get();
         }
 
         __declspec(property(put = setCamera, get = getCamera)) Camera* Camera;
@@ -60,12 +43,15 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getEntities)) List<IntrusivePointer<Entity>>& Entities;
 
-        inline DrawingSystem& getGraphicsSystem() {
-            return drawingSystem;
+        inline void update(uint64_t time) {
+            for (auto& entity : entities)
+                entity->update(time);
         }
 
-        __declspec(property(get = getGraphicsSystem)) DrawingSystem& DrawingSystem;
-
+        inline void draw(RenderGroup& group) {
+            for (auto& entity : entities)
+                entity->draw(group);
+        }
 #pragma region formats
     protected:
         virtual const Array<ResourceFormat>& getFormatsImpl() const override {

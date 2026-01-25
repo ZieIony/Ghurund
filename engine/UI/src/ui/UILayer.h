@@ -101,7 +101,7 @@ namespace Ghurund::UI {
             return rootView->dispatchMouseWheelEvent(args);
         }
 
-        virtual void update(const uint64_t time) override;
+        virtual void update(uint64_t time) override;
 
         virtual void draw(RenderingContext& renderingContext, ParameterManager& parameterManager) override;
     };

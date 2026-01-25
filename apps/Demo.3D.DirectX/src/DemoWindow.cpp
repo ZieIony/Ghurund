@@ -3,19 +3,14 @@
 #include "DemoApplication.h"
 
 #include "core/Colors.h"
-#include "core/io/File.h"
-#include "core/math/Matrix.h"
 #include "core/window/DisplayManager.h"
-#include "engine/directx/mesh/DxMesh.h"
-#include "engine/graphics/mesh/QuadMeshData.h"
-#include "ui/directx/shader/DxUIShaderProvider.h"
-#include "ui/directx/text/DxTextMeshFactory.h"
-#include "ui/material/ControlMaterialInputs.h"
-#include "ui/material/UIMaterialProvider.h"
+#include <engine/directx/shader/DxShaderProvider.h>
+#include <engine/graphics/material/MaterialProvider.h>
+#include <engine/directx/texture/DxTextureProvider.h>
+#include <engine/graphics/mesh/QuadMeshData.h>
+#include <engine/entity/2d/AnimatedSpriteComponent.h>
 
 namespace Demo {
-	using namespace Ghurund::UI::DirectX;
-
 	DemoWindow::DemoWindow(
 		DemoApplication& app,
 		Ghurund::Engine::DirectX::DxRenderer& renderer
@@ -30,70 +25,41 @@ namespace Demo {
 		auto commandList = makeIntrusive<CommandList>();
 		commandList->init(graphicsFeature->Graphics, graphicsFeature->Graphics.DirectQueue);
 
-		DxUIShaderProvider shaderProvider(app.ResourceManager);
-		UIMaterialProvider materialProvider(shaderProvider, graphicsFeature->MemoryManager);
+		DxShaderProvider shaderProvider(app.ResourceManager);
+		DxTextureProvider textureProvider(app.ResourceManager);
+		MaterialProvider materialProvider(shaderProvider, textureProvider, graphicsFeature->MemoryManager);
 
-		auto textStylePath = FilePath(L"resources/textStyles/lato_regular_12.bin");
-		if (File(textStylePath).exists()) {
-			textStyle.set(app.ResourceManager.load<TextStyle>(textStylePath, DirectoryPath(), TextStyle::FORMAT_BIN));
-		} else {
-			auto font = IntrusivePointer<Font>(app.ResourceManager.load<Font>(FilePath(L"resources/fonts/lato_regular.ttf")));
-			textStyle.set(ghnew TextStyle());
-			textStyle->init(font.ref(), 12);
-			auto atlasPath = FilePath(L"resources/textStyles/lato_regular_12.png");
-			app.ResourceManager.save(*textStyle->Atlas->Image, atlasPath, DirectoryPath(), Image::FORMAT_PNG);
-			app.ResourceManager.save(textStyle.ref(), textStylePath, DirectoryPath(), TextStyle::FORMAT_BIN);
-		}
+		IntrusivePointer<DxShader> shader = IntrusivePointer(app.ResourceManager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(L"shaders/DirectX/2d/sprite.hlsl")));
+		IntrusivePointer<Material> material = makeIntrusive<Material>(graphicsFeature->MemoryManager);
+		material->Shader = shader.get();
 
-		DxTextMeshFactory textMeshfactory(graphicsFeature->MemoryManager);
-		DxTextureFactory textureFactory(graphicsFeature->Graphics, commandList.ref());
+		IntrusivePointer<QuadMeshData> meshData = makeIntrusive<QuadMeshData>();
+		meshData->init();
+		IntrusivePointer<DxMesh> mesh = makeIntrusive<DxMesh>();
+		mesh->init(meshData.ref(), graphicsFeature->MemoryManager);
 
-		RenderGroup uiGroup(0, DrawOrder::BACK_TO_FRONT);
-		{
-			basicMaterial = IntrusivePointer<UIMaterial>(materialProvider.makeText());
-			colorTexture = makeIntrusive<DxTexture>();
-			colorTexture->init(graphicsFeature->Graphics, commandList.ref(), *textStyle->Atlas->Image);
-			colorTextureInput = (TextureInput*)basicMaterial->Inputs.get("colorTexture");
-			colorTextureInput->Value = colorTexture.get();
+		scene.set(ghnew Scene());
 
-			textLayout.Document = makeIntrusive<TextDocument>(
-				L"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-				textStyle.ref(),
-				Colors::BLACK
-			).get();
-			textLayout.PreferredSize = { 200, 200 };
-			textLayout.refresh();
-			textLayout.initMeshes(textMeshfactory, textureFactory, basicMaterial.get());
-		}
-		{
-			auto mesh = ghnew DxMesh();
-			auto meshData = makeIntrusive<QuadMeshData>();
-			meshData->init();
-			shadowMesh = IntrusivePointer<Mesh>(mesh);
-			mesh->init(meshData.ref(), graphicsFeature->MemoryManager);
+		auto captain = makeIntrusive<Entity>();
+		auto captainSprite = std::unique_ptr<AnimatedSpriteComponent>(ghnew AnimatedSpriteComponent(mesh.ref(), material.ref()));
+		captainSprite->Position = { 100, 100 };
+		captainSprite->Size = { 128, 80 };
+		captainSprite->Scale = { 2, 2 };
+		auto captainIdle1 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 01.png")));
+		auto captainIdle2 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 02.png")));
+		auto captainIdle3 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 03.png")));
+		auto captainIdle4 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 04.png")));
+		auto captainIdle5 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 05.png")));
+		captainSprite->Animation.addFrame(captainIdle1.get(), 100);
+		captainSprite->Animation.addFrame(captainIdle2.get(), 100);
+		captainSprite->Animation.addFrame(captainIdle3.get(), 100);
+		captainSprite->Animation.addFrame(captainIdle4.get(), 100);
+		captainSprite->Animation.addFrame(captainIdle5.get(), 100);
 
-			controlMaterial = IntrusivePointer<UIMaterial>(materialProvider.makeControl());
-			controlMaterial->UIInputs.Size = { (float)textLayout.Size.Width, (float)textLayout.Size.Height };
-			ControlMaterialInputs inputs(controlMaterial.ref());
-			inputs.BackgroundColor = Colors::WHITE;
-
-		}
-		uiGroup.objects.add(DrawPacket{ shadowMesh, controlMaterial });
-		textLayout.draw(uiGroup, { 50, 100 });
-		renderGroups.put(uiGroup);
+		captain->RootComponent = std::move(captainSprite);
+		scene->Entities.add(captain);
 	}
 
-	bool DemoWindow::onMouseButtonEvent(const MouseButtonEventArgs& args) {
-		if (args.Action == MouseButtonAction::PRESSED) {
-			//backgroundColorParameter->Value = Colors::GRAY.toVector();
-			//borderColorParameter->Value = Colors::LIGHT_GRAY.toVector();
-		} else if (args.Action == MouseButtonAction::RELEASED) {
-			//backgroundColorParameter->Value = Colors::LIGHT_GRAY.toVector();
-			//borderColorParameter->Value = Colors::WHITE.toVector();
-		}
-		return __super::onMouseButtonEvent(args);
-	}
-	
 	bool DemoWindow::onKeyEvent(const KeyEventArgs& args) {
 		bool result = __super::onKeyEvent(args);
 		if (result)
@@ -121,8 +87,17 @@ namespace Demo {
 		}
 		return true;
 	}
+
+	void DemoWindow::update(uint64_t time) {
+		__super::update(time);
+		scene->update(time);
+	}
 	
 	void DemoWindow::onPaint(RenderingContext& renderingContext) {
+		RenderGroup _2dGroup(0, DrawOrder::BACK_TO_FRONT);
+		scene->draw(_2dGroup);
+		renderGroups.put(_2dGroup);
+
 		renderingContext.clear(BackgroundColor);
 		renderingContext.draw(renderGroups, ParameterManager);
 	}

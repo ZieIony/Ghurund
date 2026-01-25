@@ -16,7 +16,7 @@ namespace Ghurund {
 
 	class PhysicsComponent {
 	private:
-        TransformComponent& transformComponent;
+        Transform3DComponent& transformComponent;
 		PxShape* shape = nullptr;
 
 		void finalize() {
@@ -24,7 +24,7 @@ namespace Ghurund {
 		}
 
 	public:
-		PhysicsComponent(TransformComponent& transform) :transformComponent(transform) {}
+		PhysicsComponent(Transform3DComponent& transform) :transformComponent(transform) {}
 
 		PxShape* getShape() {
 			return shape;

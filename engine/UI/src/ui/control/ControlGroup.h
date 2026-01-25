@@ -95,7 +95,7 @@ namespace Ghurund::UI {
 
 		virtual void dispatchContextChanged() override;
 
-		virtual void onUpdate(const uint64_t time) override;
+		virtual void onUpdate(uint64_t time) override;
 
 		virtual void onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
 

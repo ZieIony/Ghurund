@@ -52,7 +52,7 @@ namespace Ghurund::UI {
 
         bool setSelectionFromPoint(float x, float y, bool extendSelection);
 
-        virtual void onUpdate(const uint64_t time) override {
+        virtual void onUpdate(uint64_t time) override {
             //if (cursorDrawable)
           //      cursorDrawable->update(time);
         }

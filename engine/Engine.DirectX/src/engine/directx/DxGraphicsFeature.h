@@ -5,7 +5,7 @@
 #include "core/reflection/Type.h"
 #include "core/feature/Feature.h"
 #include "shader/compiler/DxShaderCompiler.h"
-#include "texture/DxTextureFactory.h"
+#include "texture/DxTextureLoader.h"
 
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
@@ -29,7 +29,7 @@ namespace Ghurund::Engine::DirectX {
         DxGPUMemoryManager* memoryManager;
         ResourceManager& resourceManager;
         SharedPointer<DxShaderCompiler> shaderCompiler;
-        SharedPointer<DxTextureFactory> textureFactory;
+        IntrusivePointer<ImageLoader> imageLoader;
 
         void uninitGraphicsFeature();
 

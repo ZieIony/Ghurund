@@ -184,7 +184,7 @@ namespace Ghurund::UI {
 			c.control->dispatchContextChanged();
 	}
 
-	void ControlGroup::onUpdate(const uint64_t time) {
+	void ControlGroup::onUpdate(uint64_t time) {
 		for (ControlWithConstraints& c : children)
 			c.control->onUpdate(time);
 	}

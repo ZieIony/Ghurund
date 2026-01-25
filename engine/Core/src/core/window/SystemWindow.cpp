@@ -148,7 +148,7 @@ namespace Ghurund::Core {
 		}
 	}
 
-	void SystemWindow::update(const uint64_t time) {
+	void SystemWindow::update(uint64_t time) {
 		input.dispatchWindowEvents(time, *this);
 		input.dispatchMouseButtonDownEvents(time, *this);
 		input.dispatchKeyDownEvents(time, *this);

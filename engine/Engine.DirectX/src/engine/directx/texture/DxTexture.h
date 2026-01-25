@@ -64,6 +64,10 @@ namespace Ghurund::Engine::DirectX {
 
         __declspec(property(get = getImage)) Ghurund::Core::Image* Image;
 
+        virtual const IntSize& getSize() const override {
+            return image->Size;
+        }
+
         void set(CommandList& commandList, unsigned int index) {
             commandList.addResourceRef(textureResource.Get());
             commandList.addResourceRef(textureUploadHeap.Get());

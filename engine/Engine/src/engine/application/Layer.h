@@ -89,7 +89,7 @@ namespace Ghurund::Engine {
             return false;
         }
 
-        virtual void update(const uint64_t time) {}
+        virtual void update(uint64_t time) {}
 
         virtual void draw(RenderingContext& renderingContext, ParameterManager& parameterManager) {}
     };

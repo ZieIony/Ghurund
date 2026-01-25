@@ -4,13 +4,11 @@
 
 #include "engine/graphics/shader/IShaderProvider.h"
 #include "engine/graphics/texture/TextureProvider.h"
-#include "engine/parameter/ParameterManager.h"
 
 namespace Ghurund::Engine {
 
     class MaterialProvider: public Noncopyable {
     private:
-        ParameterManager& parameterManager;
         IShaderProvider& shaderProvider;
         TextureProvider& textureProvider;
         IGPUMemoryManager& memoryManager;
@@ -19,11 +17,10 @@ namespace Ghurund::Engine {
 
     public:
         MaterialProvider(
-            ParameterManager& parameterManager,
             IShaderProvider& shaderProvider,
             TextureProvider& textureProvider,
             IGPUMemoryManager& memoryManager
-		):parameterManager(parameterManager), shaderProvider(shaderProvider), textureProvider(textureProvider), memoryManager(memoryManager) {
+		):shaderProvider(shaderProvider), textureProvider(textureProvider), memoryManager(memoryManager) {
 		}
 
         Material* makeBasic(ITexture* texture = nullptr) const;

@@ -1,32 +1,42 @@
 #pragma once
 
-#include "engine/entity/Entity.h"
-#include "engine/entity/TransformComponent.h"
-#include "engine/graphics/RenderingStatistics.h"
+#include "SpriteInputs.h"
+#include "Transform2DComponent.h"
 
 #include <DirectXCollision.h>
 
 namespace Ghurund::Engine {
-	class DrawableComponent//:public ParameterProvider
-	{
+	class SpriteComponent:public Transform2DComponent {
 	private:
 		BoundingBox boundingBox;
 		BoundingOrientedBox transformedBoundingBox;
 		bool culled = false;
 		bool selectable = true, visible = true, cullingEnabled = true;
 
+		FloatSize size = { 0, 0 };
+
 		void finalize() {
-			/*safeRelease(mesh);
-			safeRelease(material);*/
+			safeRelease(mesh);
+			safeRelease(material);
+			safeRelease(colorTexture);
 		}
 
 	protected:
-		/*Mesh* mesh = nullptr;
-		Material* material = nullptr;*/
-		List<Entity*> entities;
+		Mesh* mesh = nullptr;
+		Material* material = nullptr;
+		ITexture* colorTexture = nullptr;
+		SpriteInputs inputs;
 
 	public:
-		virtual ~DrawableComponent() {
+		SpriteComponent() {}
+
+		SpriteComponent(NotNull<Mesh> mesh, NotNull<Material> material):mesh(mesh.get()), material(material.get()) {
+			mesh->addReference();
+			material->addReference();
+			inputs.init(material->Inputs);
+		}
+
+		virtual ~SpriteComponent() {
 			finalize();
 		}
 
@@ -34,56 +44,56 @@ namespace Ghurund::Engine {
 			finalize();
 		}
 
-		/*Mesh* getMesh() const {
-			return mesh;
+		inline const FloatSize& getSize() const {
+			return size;
 		}
 
-		void setMesh(Mesh* mesh) {
+		inline void setSize(const FloatSize& size) {
+			this->size = size;
+		}
+
+		__declspec(property(get = getSize, put = setSize)) const FloatSize& Size;
+
+		inline void setMesh(Mesh* mesh) {
 			setPointer(this->mesh, mesh);
 		}
 
-		__declspec(property(get = getMesh, put = setMesh)) Mesh* Mesh;
+		__declspec(property(put = setMesh)) Mesh* Mesh;
 
-		Material* getMaterial() {
-			return material;
-		}
-
-		void setMaterial(Material* material) {
+		inline void setMaterial(Material* material) {
 			setPointer(this->material, material);
+			if (material)
+				inputs.init(material->Inputs);
 		}
 
-		__declspec(property(get = getMaterial, put = setMaterial)) Material* Material;*/
+		__declspec(property(put = setMaterial)) Material* Material;
 
-		/*virtual void initParameters(ParameterManager& parameterManager) override {
-			material->initParameters(parameterManager);
+		inline void setColorTexture(ITexture* colorTexture) {
+			setPointer(this->colorTexture, colorTexture);
 		}
 
-		virtual void updateParameters() override {
-			material->updateParameters();
-		}
+		__declspec(property(put = setColorTexture)) ITexture* ColorTexture;
 
-		virtual const Array<SharedPointer<Parameter>>& getParameters() const override {
-			return material->Parameters;
-		}*/
-
-		/*virtual bool isValid() const {
+		virtual bool isValid() const {
 			return material != nullptr && material->Valid && mesh != nullptr && mesh->Valid;
 		}
 
-		void draw(Graphics& graphics, CommandList& commandList) {
-			material->set(graphics, commandList);
-			mesh->draw(commandList);
+		virtual void draw(RenderGroup& group, const XMFLOAT2& parentPosition) override {
+			if (!mesh || !material)
+				return;
+			mesh->addReference();
+			material->addReference();
+			inputs.Position = parentPosition + Position;
+			inputs.Size = { size.Width, size.Height };
+			inputs.ColorTexture = colorTexture;
+			group.objects.add(DrawPacket{
+				IntrusivePointer<Ghurund::Engine::Mesh>(mesh),
+				IntrusivePointer<Ghurund::Engine::Material>(material),
+				XMFLOAT3(parentPosition.x + Position.x, parentPosition.y + Position.y, 0)
+			});
 		}
 
-		void draw(Graphics& graphics, CommandList& commandList, RenderingStatistics& statistics) {
-			if (material->set(graphics, commandList))
-				statistics.materialChanges++;
-			mesh->draw(commandList);
-			statistics.modelsRendered++;
-			statistics.trianglesRendered += mesh->IndexCount / 3;
-		}
-
-		bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {
+		/*bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {
 			return mesh->intersects(pos, dir, dist);
 		}
 

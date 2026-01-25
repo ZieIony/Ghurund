@@ -153,7 +153,7 @@ namespace Ghurund::Core {
             SetWindowPos(handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
         }
 
-        virtual void update(const uint64_t time) override;
+        virtual void update(uint64_t dt) override;
 
         void dispatchMouseEvent(UINT msg, WPARAM wParam, LPARAM lParam);
 

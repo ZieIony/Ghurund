@@ -59,6 +59,6 @@ namespace Ghurund::Engine {
             return engine->CreateContext();
         }
 
-        void update(const uint64_t time);
+        void update(uint64_t time);
     };
 }

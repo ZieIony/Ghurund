@@ -364,7 +364,7 @@ namespace Ghurund::UI {
 
 		void layout(float x, float y, float width, float height);
 
-		virtual void onUpdate(const uint64_t time) {}
+		virtual void onUpdate(uint64_t time) {}
 
 		void draw(RenderGroup& group, const XMFLOAT2& parentPosition);
 

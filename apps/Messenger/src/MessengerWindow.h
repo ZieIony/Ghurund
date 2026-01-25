@@ -34,6 +34,6 @@ namespace Messenger {
 
         ~MessengerWindow();
 
-        virtual void update(const uint64_t time) override;
+        virtual void update(uint64_t time) override;
     };
 }

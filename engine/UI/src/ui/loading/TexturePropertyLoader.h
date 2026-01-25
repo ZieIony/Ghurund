@@ -13,13 +13,9 @@ namespace Ghurund::UI {
         static inline const char* THEME_TEXTURE = "theme://texture/";
 
         ResourceManager& resourceManager;
-        ITextureFactory& textureFactory;
 
     public:
-        TexturePropertyLoader(
-            ResourceManager& resourceManager,
-            ITextureFactory& textureFactory
-        ):resourceManager(resourceManager), textureFactory(textureFactory) {}
+        TexturePropertyLoader(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 
         virtual const Type& getType() const override {
             return Ghurund::Core::getType<std::unique_ptr<ThemedTexture>>();

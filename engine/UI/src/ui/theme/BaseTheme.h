@@ -3,7 +3,6 @@
 #include "Theme.h"
 
 #include "core/resource/ResourceManager.h"
-#include "engine/graphics/texture/ITextureFactory.h"
 
 namespace Ghurund::UI {
 	class BaseTheme:public Ghurund::UI::Theme {
@@ -13,9 +12,6 @@ namespace Ghurund::UI {
 		IntrusivePointer<TextStyle> makeTextStyle(const wchar_t* style, float size);
 
 	public:
-		BaseTheme(
-			Ghurund::Core::ResourceManager& resourceManager,
-			ITextureFactory& textureFactory
-		);
+		BaseTheme(Ghurund::Core::ResourceManager& resourceManager);
 	};
 }

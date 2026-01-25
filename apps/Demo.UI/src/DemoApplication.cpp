@@ -20,7 +20,7 @@ namespace Demo {
         commandList = makeIntrusive<CommandList>();
         commandList->init(graphicsFeature->Graphics, *graphicsFeature->Graphics.CopyQueue);
         textureFactory = ghnew DxTextureFactory(graphicsFeature->Graphics, commandList.ref());
-        theme = ghnew LightTheme(ResourceManager, *textureFactory);
+        theme = ghnew LightTheme(ResourceManager);
 
         window = ghnew DemoWindow(*this, *renderer, *textureFactory);
         window->init();

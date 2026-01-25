@@ -67,7 +67,7 @@ namespace Ghurund::Engine {
         TimerScriptBindings::registerClass(*engine, &this->timer);
     }
 
-    void ScriptEngine::update(const uint64_t time) {
+    void ScriptEngine::update(uint64_t time) {
         /*for (ScriptComponent* c : Components) {
             if (!c->Enabled)
                 continue;

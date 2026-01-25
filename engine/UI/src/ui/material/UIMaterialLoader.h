@@ -3,7 +3,6 @@
 #include "UIMaterial.h"
 
 #include "engine/graphics/material/MaterialLoader.h"
-#include "engine/graphics/texture/ITextureFactory.h"
 
 namespace Ghurund::UI {
 
@@ -16,9 +15,8 @@ namespace Ghurund::UI {
 	public:
 		UIMaterialLoader(
 			ResourceManager& resourceManager,
-			ITextureFactory& textureFactory,
 			IGPUMemoryManager& memoryManager
-		):MaterialLoader(resourceManager, textureFactory, memoryManager) {
+		):MaterialLoader(resourceManager, memoryManager) {
 		}
 	};
 }

@@ -37,9 +37,8 @@ namespace Ghurund::UI {
 
     LayoutLoader::LayoutLoader(
         Ghurund::Core::ResourceManager& resourceManager,
-        ITextureFactory& textureFactory,
         ConstraintFactory& constraintFactory
-	):resourceManager(resourceManager), textureFactory(textureFactory), constraintFactory(constraintFactory) {
+	):resourceManager(resourceManager), constraintFactory(constraintFactory) {
         propertyLoaders.add(std::make_unique<BoolPropertyLoader>());
         propertyLoaders.add(std::make_unique<UInt32PropertyLoader>());
         propertyLoaders.add(std::make_unique<FloatPropertyLoader>());
@@ -49,7 +48,7 @@ namespace Ghurund::UI {
         propertyLoaders.add(std::make_unique<ColorPropertyLoader>());
         propertyLoaders.add(std::make_unique<NullableColorPropertyLoader>());
 		propertyLoaders.add(std::make_unique<ImageScaleModePropertyLoader>());
-		propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew TexturePropertyLoader(resourceManager, textureFactory)));
+		propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew TexturePropertyLoader(resourceManager)));
 		//propertyLoaders.add(std::make_unique<TextDocumentPropertyLoader>());
 		propertyLoaders.add(std::unique_ptr<LayoutPropertyLoader>(ghnew LayoutPropertyLoader(resourceManager, *this)));
 

@@ -2,8 +2,7 @@
 
 #include "DemoApplication.h"
 #include "engine/application/GameWindow.h"
-#include "ui/material/UIMaterial.h"
-#include "ui/text/TextLayout.h"
+#include "engine/entity/Scene.h"
 
 namespace Demo {
 	using namespace Ghurund;
@@ -15,15 +14,7 @@ namespace Demo {
 		DemoApplication& app;
 
 		Set<RenderGroup> renderGroups;
-
-		IntrusivePointer<Mesh> shadowMesh;
-		IntrusivePointer<UIMaterial> basicMaterial, controlMaterial;
-		IntrusivePointer<TextStyle> textStyle;
-
-		TextureInput* colorTextureInput;
-		IntrusivePointer<DxTexture> colorTexture;
-
-		TextLayout textLayout;
+		IntrusivePointer<Scene> scene;
 
 	public:
 		DemoWindow(
@@ -31,9 +22,9 @@ namespace Demo {
 			Ghurund::Engine::DirectX::DxRenderer& renderer
 		);
 
-		virtual bool onMouseButtonEvent(const MouseButtonEventArgs& args) override;
-
 		virtual bool onKeyEvent(const KeyEventArgs& args) override;
+
+		virtual void update(uint64_t time) override;
 
 		virtual void onPaint(RenderingContext& renderingContext) override;
 	};

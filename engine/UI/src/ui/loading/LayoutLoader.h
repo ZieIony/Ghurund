@@ -35,7 +35,6 @@ namespace Ghurund::UI {
 
 	private:
 		Ghurund::Core::ResourceManager& resourceManager;
-		ITextureFactory& textureFactory;
 		ConstraintFactory& constraintFactory;
 		PropertyLoaderCollection propertyLoaders;
 		Map<AString, const BaseConstructor*> types;
@@ -54,11 +53,7 @@ namespace Ghurund::UI {
 		static inline const char* FILE_PROTOCOL = "file://";
 		static inline const char* THEME_TEXT_STYLE = "theme://textStyle/";
 
-		LayoutLoader(
-			Ghurund::Core::ResourceManager& resourceManager,
-			ITextureFactory& textureFactory,
-			ConstraintFactory& constraintFactory
-		);
+		LayoutLoader(Ghurund::Core::ResourceManager& resourceManager, ConstraintFactory& constraintFactory);
 
 		virtual ~LayoutLoader() {}
 

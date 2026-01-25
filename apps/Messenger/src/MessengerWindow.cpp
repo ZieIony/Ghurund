@@ -123,7 +123,7 @@ namespace Messenger {
         RootView = rootView;
     }*/
 
-    void MessengerWindow::update(const uint64_t time) {
+    void MessengerWindow::update(uint64_t time) {
         /*if (server.Hosting) {
             server.update(time);
             clientCount->Text = fmt::format(L"server: {} client(s)", server.Connections.count([](Connection* c) {

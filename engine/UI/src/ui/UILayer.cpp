@@ -30,7 +30,7 @@ namespace Ghurund::UI {
         rootView = nullptr;
     }
     
-    void UILayer::update(const uint64_t time) {
+    void UILayer::update(uint64_t time) {
         rootView->onUpdate(time);
         graph.clear();
         graph.add(rootViewWidth.get());

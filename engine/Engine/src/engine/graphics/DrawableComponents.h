@@ -1,6 +1,5 @@
 #pragma once
 
-#include "DrawableComponent.h"
 /*#include "core/directx/mesh/PlaneMeshData.h"
 #include "core/directx/mesh/QuadMeshData.h"
 #include "core/directx/mesh/ConeMeshData.h"*/

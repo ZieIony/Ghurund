@@ -14,7 +14,6 @@ namespace Ghurund::Engine {
         Material* invalidMaterial = nullptr;
         MatrixParameter* parameterWorld = nullptr;
         MatrixParameter* parameterWorldIT = nullptr;
-        RenderingStatistics stats;
 
     public:
         inline static const AString WORLD = "world";
@@ -97,7 +96,7 @@ namespace Ghurund::Engine {
                 c->initParameters(parameterManager);
         }*/
 
-        void setupDrawingParams(TransformComponent& transform) {
+        void setupDrawingParams(Transform3DComponent& transform) {
             parameterWorld->setValue(transform.Transformation);
             XMMATRIX world = XMLoadFloat4x4(&transform.Transformation);
             XMFLOAT4X4 worldIT;
@@ -113,7 +112,7 @@ namespace Ghurund::Engine {
         /*void draw(CommandList& commandList) {
             cull();
 
-            TransformComponent* t = ghnew TransformComponent();
+            Transform3DComponent* t = ghnew Transform3DComponent();
             t->update();
             if (material || invalidMaterial) {
                 for (auto c : Components) {
