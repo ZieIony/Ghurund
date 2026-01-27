@@ -27,7 +27,6 @@ namespace Ghurund::Engine::DirectX {
 
 		bufferConstantInfos.deleteItems();
 		textureConstantInfos.deleteItems();
-		samplers.deleteItems();
 	}
 
 	InputType DxShader::makeInputByType(
@@ -97,7 +96,6 @@ namespace Ghurund::Engine::DirectX {
 		OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,
 		const List<DxBufferConstantInfo*>& bufferConstantInfos,
 		const List<DxTextureConstantInfo*>& textureConstantInfos,
-		const List<Sampler*>& samplers,
 		bool isTransparencyEnabled
 	) {
 		this->layout = layout;
@@ -120,7 +118,6 @@ namespace Ghurund::Engine::DirectX {
 		this->textureConstantInfos = textureConstantInfos;
 		for (auto& t : textureConstantInfos)
 			textureConstants.add(TextureConstant(t->Name));
-		this->samplers = samplers;
 		this->isTransparencyEnabled = isTransparencyEnabled;
 	}
 

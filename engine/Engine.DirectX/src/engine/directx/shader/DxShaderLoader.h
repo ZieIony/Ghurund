@@ -5,16 +5,30 @@
 #include "core/loading/Loader.h"
 #include "compiler/DxShaderCompiler.h"
 
+#include <tinyxml2.h>
+
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
+
+    struct DxShaderProgramSourceCode:public ShaderProgramSourceCode {
+        DxShaderType type = DxShaderType::VERTEX;
+        AString entryPoint;
+
+        DxShaderProgramSourceCode(
+            DxShaderType type,
+            const AString& entryPoint,
+            const AString& sourceCode
+        ):ShaderProgramSourceCode(sourceCode), type(type), entryPoint(entryPoint) {}
+    };
 
 	class DxShaderLoader:public Loader {
 	private:
         ResourceManager& resourceManager;
         DxShaderCompiler& compiler;
 
-		DxShader* loadShd(MemoryInputStream& stream);
-		DxShader* loadHlsl(MemoryInputStream& stream, const DirectoryPath& workingDir);
+        DxShader* loadFromSource(NotNull<ShaderSource> sourceCode, const DirectoryPath& workingDir);
+		DxShader* loadFromXml(const tinyxml2::XMLElement& xml, const DirectoryPath& workingDir);
+		DxShader* loadFromHlsl(const AString& sourceCode, const DirectoryPath& workingDir);
 
     public:
         List<DirectoryPath> includeDirs;

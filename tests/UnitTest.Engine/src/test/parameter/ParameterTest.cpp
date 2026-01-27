@@ -65,7 +65,7 @@ public:
         {
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/defaultParams.hlsl");
 
-            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
+            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, "pixelMain", DxShaderType::PIXEL));
             List<ConstantBuffer*> constantBuffers;
             List<TextureConstant*> textures;
             List<Sampler*> samplers;
@@ -113,7 +113,7 @@ public:
         MemoryGuard guard;
         {
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/defaultParams.hlsl");
-            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
+            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, "pixelMain", DxShaderType::PIXEL));
             List<ConstantBuffer*> constantBuffers;
             List<TextureConstant*> textures;
             List<Sampler*> samplers;

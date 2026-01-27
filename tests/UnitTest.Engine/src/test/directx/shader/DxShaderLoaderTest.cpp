@@ -6,6 +6,7 @@
 #include <engine/directx/shader/DxShaderLoader.h>
 
 #include "test/utils/TestUtils.h"
+#include <engine/directx/shader/compiler/DxEntrypointNotFoundException.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -70,10 +71,10 @@ float4 pixelMain(DefaultPixel input): SV_Target{
 
             DxShaderCompiler compiler(graphics);
             auto loader = makeIntrusive<DxShaderLoader>(resourceManager, compiler);
-            Buffer data;
+            Buffer data("test", 4);
             MemoryInputStream stream(data.Data, data.Size);
 
-            Assert::ExpectException<InvalidFormatException>([&] {
+            Assert::ExpectException<DxEntrypointNotFoundException>([&] {
                 IntrusivePointer<Resource> shader(loader->load(stream, DirectoryPath()));
             });
         }

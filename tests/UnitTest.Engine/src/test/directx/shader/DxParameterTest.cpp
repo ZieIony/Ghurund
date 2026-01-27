@@ -80,7 +80,7 @@ public:
         {
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/floatParams.hlsl");
 
-            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
+            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, "pixelMain", DxShaderType::PIXEL));
             List<ConstantBuffer*> constantBuffers;
             List<TextureConstant*> textures;
             List<Sampler*> samplers;
@@ -112,7 +112,7 @@ public:
         {
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/matrixParams.hlsl");
 
-            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
+            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, "pixelMain", DxShaderType::PIXEL));
             List<ConstantBuffer*> constantBuffers;
             List<TextureConstant*> textures;
             List<Sampler*> samplers;

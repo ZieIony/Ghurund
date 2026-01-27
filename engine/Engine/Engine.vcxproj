@@ -117,9 +117,13 @@
     <ClInclude Include="src\engine\graphics\shader\BufferConstant.h" />
     <ClInclude Include="src\engine\graphics\shader\InputType.h" />
     <ClInclude Include="src\engine\graphics\shader\IShaderProvider.h" />
+    <ClInclude Include="src\engine\graphics\shader\ShaderSettings.h" />
+    <ClInclude Include="src\engine\graphics\shader\ShaderSource.h" />
     <ClInclude Include="src\engine\graphics\shader\TextureConstant.h" />
     <ClInclude Include="src\engine\graphics\shader\ValueConstant.h" />
     <ClInclude Include="src\engine\graphics\shader\ConstantBuffer.h" />
+    <ClInclude Include="src\engine\graphics\texture\ITextureFactory.h" />
+    <ClInclude Include="src\engine\graphics\texture\TextureFilter.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />
@@ -174,7 +178,6 @@
     <ClInclude Include="src\engine\graphics\mesh\SphereMeshData.h" />
     <ClInclude Include="src\engine\graphics\mesh\VertexStream.h" />
     <ClInclude Include="src\engine\graphics\shader\Shader.h" />
-    <ClInclude Include="src\engine\graphics\shader\ShaderCode.h" />
     <ClInclude Include="src\engine\graphics\texture\ITexture.h" />
     <ClInclude Include="src\engine\graphics\texture\TextureProvider.h" />
     <ClInclude Include="src\engine\net\Client.h" />
@@ -239,7 +242,7 @@
     <ClCompile Include="src\engine\graphics\mesh\MeshDataLoader.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\SphereMeshData.cpp" />
     <ClCompile Include="src\engine\graphics\shader\Shader.cpp" />
-    <ClCompile Include="src\engine\graphics\shader\ShaderCode.cpp" />
+    <ClCompile Include="src\engine\graphics\shader\ShaderSource.cpp" />
     <ClCompile Include="src\engine\graphics\texture\ITexture.cpp" />
     <ClCompile Include="src\engine\net\Client.cpp" />
     <ClCompile Include="src\engine\net\Message.cpp" />

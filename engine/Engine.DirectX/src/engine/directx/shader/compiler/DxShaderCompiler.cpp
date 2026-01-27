@@ -77,12 +77,11 @@ namespace Ghurund::Engine::DirectX {
 		return DXGI_FORMAT_UNKNOWN;
 	}
 
-	DxShaderProgram* DxShaderCompiler::compile(const AString& sourceCode, const DxShaderType& shaderType, CompilerInclude* include, bool debug) {
+	DxShaderProgram* DxShaderCompiler::compile(const AString& sourceCode, AString entryPoint, const DxShaderType& shaderType, CompilerInclude* include, bool debug) {
 		unsigned int compileFlags = debug ? D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION : 0;
 
 		ID3DBlob* errorBlob;
 		ComPtr<ID3DBlob> shader;
-		AString entryPoint = shaderType.getEntryPoint();
 		AString target = makeCompilationTarget(shaderType);
 		HRESULT hr = D3DCompile(sourceCode.Data, sourceCode.Length, nullptr, nullptr, include, entryPoint.Data, target.Data, compileFlags, 0, &shader, &errorBlob);
 		if (FAILED(hr)) {
@@ -108,13 +107,14 @@ namespace Ghurund::Engine::DirectX {
 
 	OwnedNotNull<DxShader, RefCountedObjectDeleter> DxShaderCompiler::build(
 		const Array<SharedPointer<DxShaderProgram>>& programs,
+		const List<SamplerInfo>& samplerInfos,
 		ShaderSettings shaderSettings
 	) {
 		List<DxBufferConstantInfo*> constantBuffers;
 		List<DxTextureConstantInfo*> textures;
 		List<Sampler*> samplers;
 		for (auto& program : programs)
-			initConstants(*program.get(), constantBuffers, textures, samplers);
+			initConstants(*program.get(), samplerInfos, constantBuffers, textures, samplers);
 
 		D3D12_INPUT_LAYOUT_DESC inputLayout;
 		for (auto& program : programs) {
@@ -139,7 +139,6 @@ namespace Ghurund::Engine::DirectX {
 			std::move(pipelineState),
 			constantBuffers,
 			textures,
-			samplers,
 			shaderSettings.isTransparencyEnabled
 		);
 		return shader;
@@ -155,7 +154,15 @@ namespace Ghurund::Engine::DirectX {
 		psoDesc.DepthStencilState.DepthEnable = shaderSettings.isDepthTestEnabled;
 		psoDesc.pRootSignature = rootSignature;
 		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-		psoDesc.RasterizerState.CullMode = shaderSettings.cullMode;
+		psoDesc.RasterizerState.CullMode = [&] {
+			if (shaderSettings.cullMode == CullMode::NONE) {
+				return D3D12_CULL_MODE_NONE;
+			} else if (shaderSettings.cullMode == CullMode::FRONT) {
+				return D3D12_CULL_MODE_FRONT;
+			} else {
+				return D3D12_CULL_MODE_BACK;
+			}
+		}();
 
 		for (auto& program : programs) {
 			if (program->Type == DxShaderType::VERTEX) {
@@ -242,8 +249,7 @@ namespace Ghurund::Engine::DirectX {
 
 		Array<D3D12_STATIC_SAMPLER_DESC> samplerDescs(samplers.Size);
 		for (size_t i = 0; i < samplers.Size; i++) {
-			samplers[i]->build();
-			samplerDescs[i] = samplers[i]->samplerDesc;
+			samplerDescs[i] = samplers[i]->get();
 		}
 
 		CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc = {};
@@ -273,6 +279,7 @@ namespace Ghurund::Engine::DirectX {
 
 	void DxShaderCompiler::initConstants(
 		const DxShaderProgram& program,
+		const List<SamplerInfo>& samplerInfos,
 		List<DxBufferConstantInfo*>& constantBuffers,
 		List<DxTextureConstantInfo*>& textures,
 		List<Sampler*>& samplers
@@ -321,7 +328,11 @@ namespace Ghurund::Engine::DirectX {
 				if (index != samplers.Size) {
 					samplers[index]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
 				} else {
-					samplers.add(ghnew Sampler(bindDesc.Name, bindDesc.BindPoint, visibility));
+					auto sampler = ghnew Sampler(bindDesc.Name, bindDesc.BindPoint, visibility);
+					samplers.add(sampler);
+					size_t index = samplerInfos.find([&](auto& info) {return info.name == bindDesc.Name; });
+					if (index != samplerInfos.Size)
+						sampler->Filter = samplerInfos[index].filter;
 				}
 			}
 			break;

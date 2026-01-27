@@ -40,7 +40,6 @@ namespace Ghurund::Engine::DirectX {
 
 		List<DxBufferConstantInfo*> bufferConstantInfos;
 		List<DxTextureConstantInfo*> textureConstantInfos;
-		List<Sampler*> samplers;
 
 		void finalize();
 
@@ -68,7 +67,6 @@ namespace Ghurund::Engine::DirectX {
 			OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,
 			const List<DxBufferConstantInfo*>& bufferConstantInfos,
 			const List<DxTextureConstantInfo*>& textureConstantInfos,
-			const List<Sampler*>& samplers,
 			bool isTransparencyEnabled
 		);
 

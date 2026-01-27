@@ -3,11 +3,9 @@
 #include "CompilationTarget.h"
 #include "CompilerInclude.h"
 #include "DxShaderProgram.h"
-#include "ShaderSettings.h"
 
 #include "core/IUnknownImpl.h"
 #include "core/string/String.h"
-#include "engine/directx/shader/DxConstantBuffer.h"
 #include "engine/directx/shader/DxShader.h"
 #include "engine/directx/shader/DxShaderType.h"
 #include "engine/directx/shader/variables/Sampler.h"
@@ -56,12 +54,13 @@ namespace Ghurund::Engine::DirectX {
 
 		void initConstants(
 			const DxShaderProgram& program,
+			const List<SamplerInfo>& samplerInfos,
 			List<DxBufferConstantInfo*>& constantBuffers,
 			List<DxTextureConstantInfo*>& textures,
 			List<Sampler*>& samplers
 		);
 
-		DxShaderProgram* compile(const AString& sourceCode, const DxShaderType& shaderType, CompilerInclude* include = nullptr, bool debug =
+		DxShaderProgram* compile(const AString& sourceCode, AString entryPoint, const DxShaderType& shaderType, CompilerInclude* include = nullptr, bool debug =
 #ifdef _DEBUG
 			true
 #else
@@ -71,6 +70,7 @@ namespace Ghurund::Engine::DirectX {
 
 		OwnedNotNull<DxShader, RefCountedObjectDeleter> build(
 			const Array<SharedPointer<DxShaderProgram>>& programs,
+			const List<SamplerInfo>& samplerInfos,
 			ShaderSettings shaderSettings
 		);
 	};

@@ -29,7 +29,7 @@ namespace Demo {
 		DxTextureProvider textureProvider(app.ResourceManager);
 		MaterialProvider materialProvider(shaderProvider, textureProvider, graphicsFeature->MemoryManager);
 
-		IntrusivePointer<DxShader> shader = IntrusivePointer(app.ResourceManager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(L"shaders/DirectX/2d/sprite.hlsl")));
+		IntrusivePointer<DxShader> shader = IntrusivePointer(app.ResourceManager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(L"shaders/DirectX/2d/sprite.xml")));
 		IntrusivePointer<Material> material = makeIntrusive<Material>(graphicsFeature->MemoryManager);
 		material->Shader = shader.get();
 

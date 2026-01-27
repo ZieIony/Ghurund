@@ -75,7 +75,7 @@ public:
     TEST_METHOD(DxShaderCompiler_compileVertex) {
         MemoryGuard guard;
         {
-            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::VERTEX));
+            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, "vertexMain", DxShaderType::VERTEX));
             Assert::IsNotNull(shaderProgram.get());
         }
     }
@@ -83,7 +83,7 @@ public:
     TEST_METHOD(DxShaderCompiler_compilePixel) {
         MemoryGuard guard;
         {
-            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, DxShaderType::PIXEL));
+            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, "pixelMain", DxShaderType::PIXEL));
             Assert::IsNotNull(shaderProgram.get());
         }
     }

@@ -189,12 +189,15 @@ public:
 			String str = _T("test string");
 			Assert::IsTrue(str.startsWith(_T("tes")));
 			Assert::IsFalse(str.startsWith(_T("est")));
+			Assert::IsFalse(str.startsWith(_T("test string +some chars")));
 			AString astr = "test string";
 			Assert::IsTrue(astr.startsWith("tes"));
-			Assert::IsFalse(astr.endsWith("est"));
+			Assert::IsFalse(astr.startsWith("est"));
+			Assert::IsFalse(astr.startsWith("test string +some chars"));
 			WString wstr = L"test string";
 			Assert::IsTrue(wstr.startsWith(L"tes"));
-			Assert::IsFalse(wstr.endsWith(L"est"));
+			Assert::IsFalse(wstr.startsWith(L"est"));
+			Assert::IsFalse(wstr.startsWith(L"test string +some chars"));
 		}
 	}
 
@@ -204,12 +207,15 @@ public:
 			String str = _T("test string");
 			Assert::IsTrue(str.startsWith(String(_T("tes"))));
 			Assert::IsFalse(str.startsWith(String(_T("est"))));
+			Assert::IsFalse(str.startsWith(String(_T("test string +some chars"))));
 			AString astr = "test string";
 			Assert::IsTrue(astr.startsWith(AString("tes")));
-			Assert::IsFalse(astr.endsWith(AString("est")));
+			Assert::IsFalse(astr.startsWith(AString("est")));
+			Assert::IsFalse(astr.startsWith(AString("test string +some chars")));
 			WString wstr = L"test string";
 			Assert::IsTrue(wstr.startsWith(WString(L"tes")));
-			Assert::IsFalse(wstr.endsWith(WString(L"est")));
+			Assert::IsFalse(wstr.startsWith(WString(L"est")));
+			Assert::IsFalse(wstr.startsWith(WString(L"test string +some chars")));
 		}
 	}
 
@@ -219,12 +225,15 @@ public:
 			String str = _T("test string");
 			Assert::IsTrue(str.contains(_T("est")));
 			Assert::IsFalse(str.contains(_T("set")));
+			Assert::IsFalse(str.contains(_T("test string +some chars")));
 			AString astr = "test string";
 			Assert::IsTrue(astr.contains("est"));
 			Assert::IsFalse(astr.contains("set"));
+			Assert::IsFalse(astr.contains("test string +some chars"));
 			WString wstr = L"test string";
 			Assert::IsTrue(wstr.contains(L"est"));
 			Assert::IsFalse(wstr.contains(L"set"));
+			Assert::IsFalse(wstr.contains(L"test string +some chars"));
 		}
 	}
 
@@ -234,12 +243,15 @@ public:
 			String str = _T("test string");
 			Assert::IsTrue(str.contains(String(_T("est"))));
 			Assert::IsFalse(str.contains(String(_T("set"))));
+			Assert::IsFalse(str.contains(String(_T("test string +some chars"))));
 			AString astr = "test string";
 			Assert::IsTrue(astr.contains(AString("est")));
 			Assert::IsFalse(astr.contains(AString("set")));
+			Assert::IsFalse(astr.contains(AString("test string +some chars")));
 			WString wstr = L"test string";
 			Assert::IsTrue(wstr.contains(WString(L"est")));
 			Assert::IsFalse(wstr.contains(WString(L"set")));
+			Assert::IsFalse(wstr.contains(WString(L"test string +some chars")));
 		}
 	}
 
@@ -249,12 +261,15 @@ public:
 			String str = _T("test string");
 			Assert::IsTrue(str.endsWith(_T("ing")));
 			Assert::IsFalse(str.endsWith(_T("est")));
+			Assert::IsFalse(str.endsWith(_T("test string +some chars")));
 			AString astr = "test string";
 			Assert::IsTrue(astr.endsWith("ing"));
 			Assert::IsFalse(astr.endsWith("est"));
+			Assert::IsFalse(astr.endsWith("test string +some chars"));
 			WString wstr = L"test string";
 			Assert::IsTrue(wstr.endsWith(L"ing"));
 			Assert::IsFalse(wstr.endsWith(L"est"));
+			Assert::IsFalse(wstr.endsWith(L"test string +some chars"));
 		}
 	}
 
@@ -264,12 +279,15 @@ public:
 			String str = _T("test string");
 			Assert::IsTrue(str.endsWith(String(_T("ing"))));
 			Assert::IsFalse(str.endsWith(String(_T("est"))));
+			Assert::IsFalse(str.endsWith(String(_T("test string +some chars"))));
 			AString astr = "test string";
 			Assert::IsTrue(astr.endsWith(AString("ing")));
 			Assert::IsFalse(astr.endsWith(AString("est")));
+			Assert::IsFalse(astr.endsWith(AString("test string +some chars")));
 			WString wstr = L"test string";
 			Assert::IsTrue(wstr.endsWith(WString(L"ing")));
 			Assert::IsFalse(wstr.endsWith(WString(L"est")));
+			Assert::IsFalse(wstr.endsWith(WString(L"test string +some chars")));
 		}
 	}
 

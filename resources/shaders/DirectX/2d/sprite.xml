@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Shader>
+	<Settings isDepthTestEnabled="false" cullMode="none" isTransparencyEnabled="true"/>
+	<Samplers>
+		<Sampler name="pointSampler" filter="point"/>
+	</Samplers>
+	<Programs>
+		<Program type="vertex" path="2d_vs.hlsl"/>
+		<Program type="pixel" path="sprite_ps.hlsl"/>
+	</Programs>
+</Shader>

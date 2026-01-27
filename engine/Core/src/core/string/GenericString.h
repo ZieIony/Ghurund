@@ -421,24 +421,29 @@ namespace Ghurund::Core {
 		}
 
 		bool startsWith(const GenericString<T>& str) const {
-			if (str.Length > Length)
+			size_t l = str.Length;
+			if (l > Length)
 				return false;
-			return memcmp(v, str.Data, str.Length * sizeof(T)) == 0;
+			return memcmp(v, str.Data, l * sizeof(T)) == 0;
 		}
 
 		bool contains(const T* str) const {
-			size_t strSize = lengthOf(str);
-			for (size_t i = 0; i <= size - strSize; i++) {
-				if (memcmp(&v[i], str, strSize * sizeof(T)) == 0)
+			size_t l = lengthOf(str);
+			if (l > Length)
+				return false;
+			for (size_t i = 0; i <= Length - l; i++) {
+				if (memcmp(&v[i], str, l * sizeof(T)) == 0)
 					return true;
 			}
 			return false;
 		}
 
 		bool contains(const GenericString<T>& str) const {
-			size_t strSize = str.Length;
-			for (size_t i = 0; i <= size - strSize; i++) {
-				if (memcmp(&v[i], str.Data, strSize * sizeof(T)) == 0)
+			size_t l = str.Length;
+			if (l > Length)
+				return false;
+			for (size_t i = 0; i <= Length - l; i++) {
+				if (memcmp(&v[i], str.Data, l * sizeof(T)) == 0)
 					return true;
 			}
 			return false;
@@ -456,9 +461,10 @@ namespace Ghurund::Core {
 		}
 
 		bool endsWith(const GenericString<T>& str) const {
-			if (str.Length > Length)
+			size_t l = str.Length;
+			if (l > Length)
 				return false;
-			return memcmp(&v[Length - str.Length], str.Data, str.Length * sizeof(T)) == 0;
+			return memcmp(&v[Length - l], str.Data, l * sizeof(T)) == 0;
 		}
 
 		inline bool isEmpty() const {

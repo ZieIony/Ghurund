@@ -96,7 +96,6 @@
     <ClInclude Include="src\engine\directx\DxGraphicsFeature.h" />
     <ClInclude Include="src\engine\directx\DxGraphicsFeatureFactory.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\ShaderCompilationResult.h" />
-    <ClInclude Include="src\engine\directx\shader\compiler\ShaderSettings.h" />
     <ClInclude Include="src\engine\directx\texture\DxTextureFactory.h" />
     <ClInclude Include="src\engine\directx\texture\DxTextureLoader.h" />
     <ClInclude Include="src\Ghurund.Engine.DirectX.h" />

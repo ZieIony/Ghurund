@@ -5,6 +5,7 @@
 #include "BufferConstant.h"
 
 #include "core/resource/Resource.h"
+#include "ShaderSource.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
@@ -27,8 +28,14 @@ namespace Ghurund::Engine {
         List<ValueConstant> valueConstants;
         List<BufferConstant> bufferConstants;
         List<TextureConstant> textureConstants;
+        ShaderSource* source = nullptr;
 
     public:
+        ~Shader() {
+            if (source)
+                source->release();
+        }
+
         bool getIsTransparencyEnabled() {
             return isTransparencyEnabled;
         }
@@ -52,5 +59,11 @@ namespace Ghurund::Engine {
         }
 
         __declspec(property(get = getTextureConstants)) const List<TextureConstant>& TextureConstants;
+
+        inline const ShaderSource* getSource() const {
+            return source;
+        }
+
+        __declspec(property(get = getSource)) const ShaderSource* Source;
     };
 }
