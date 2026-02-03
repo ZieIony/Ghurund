@@ -117,7 +117,7 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getParameterManager)) ParameterManager& ParameterManager;
 
-        virtual void update(uint64_t time) override;
+        virtual void update() override;
 
         virtual void paint() override {
             if (!renderingContext)

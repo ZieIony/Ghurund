@@ -59,7 +59,7 @@
       <PrecompiledHeaderFile>utepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;RES_DIR=LR"($(solutionDir)resources\test)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;..\..\engine\Engine\src;..\..\engine\Engine.DirectX\src;..\..\engine\Engine.OpenGL\src;..\UnitTest.Utils\src;..\..\libs\CRCpp\inc;..\..\libs;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;..\..\engine\Engine\src;..\..\engine\Engine.2D\src;..\..\engine\Engine.DirectX\src;..\..\engine\Engine.OpenGL\src;..\UnitTest.Utils\src;..\..\libs\CRCpp\inc;..\..\libs;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;..\..\libs\box2d-3.1.1\include\box2d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -69,6 +69,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>..\..\libs\box2d-3.1.1\build\src\Debug\box2dd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>..\..\bin\Debug\UnitTest.Engine.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
@@ -78,7 +79,7 @@
       <PrecompiledHeaderFile>utepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;RES_DIR=LR"($(solutionDir)resources\test)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;..\..\engine\Engine\src;..\..\engine\Engine.DirectX\src;..\..\engine\Engine.OpenGL\src;..\UnitTest.Utils\src;..\..\libs\CRCpp\inc;..\..\libs;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;..\..\engine\Engine\src;..\..\engine\Engine.2D\src;..\..\engine\Engine.DirectX\src;..\..\engine\Engine.OpenGL\src;..\UnitTest.Utils\src;..\..\libs\CRCpp\inc;..\..\libs;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;..\..\libs\box2d-3.1.1\include\box2d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -92,6 +93,7 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>..\..\libs\box2d-3.1.1\build\src\Release\box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>..\..\bin\Release\UnitTest.Engine.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
@@ -105,6 +107,7 @@
     <ClCompile Include="src\test\directx\shader\DxParameterTest.cpp" />
     <ClCompile Include="src\test\directx\shader\DxShaderCompilerTest.cpp" />
     <ClCompile Include="src\test\directx\shader\DxShaderLoaderTest.cpp" />
+    <ClCompile Include="src\test\entity\BoxComponentTest.cpp" />
     <ClCompile Include="src\test\game\action\ActionMappingTest.cpp" />
     <ClCompile Include="src\test\game\action\FloatGameActionTest.cpp" />
     <ClCompile Include="src\test\graphics\material\MaterialTest.cpp" />
@@ -128,6 +131,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\engine\Engine\Engine.vcxproj">
       <Project>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\engine\Engine.2D\Engine.2D.vcxproj">
+      <Project>{5F488BD1-CBB2-3F48-14F1-F0ED809A1D9D}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\engine\Engine.DirectX\Engine.DirectX.vcxproj">
       <Project>{BC80A119-A84E-951F-91E2-05467D4F7184}</Project>

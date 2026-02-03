@@ -148,10 +148,10 @@ namespace Ghurund::Core {
 		}
 	}
 
-	void SystemWindow::update(uint64_t time) {
-		input.dispatchWindowEvents(time, *this);
-		input.dispatchMouseButtonDownEvents(time, *this);
-		input.dispatchKeyDownEvents(time, *this);
+	void SystemWindow::update() {
+		input.dispatchWindowEvents(timer.TimeMs, *this);
+		input.dispatchMouseButtonDownEvents(timer.TimeMs, *this);
+		input.dispatchKeyDownEvents(timer.TimeMs, *this);
 	}
 
 	void SystemWindow::dispatchMouseEvent(UINT msg, WPARAM wParam, LPARAM lParam) {

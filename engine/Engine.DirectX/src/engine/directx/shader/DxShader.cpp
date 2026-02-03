@@ -56,7 +56,11 @@ namespace Ghurund::Engine::DirectX {
 					return InputType::FLOAT4;
 				}
 			}
-		} else if (_class == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_MATRIX_ROWS) {
+		} else if (
+			// HLSL prefers column-major matrices, so let's just not support row-major
+			//_class == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_MATRIX_ROWS ||
+			_class == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_MATRIX_COLUMNS
+		) {
 			if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
 				if (size == MatrixParameter::SIZE) {
 					return InputType::MATRIX;

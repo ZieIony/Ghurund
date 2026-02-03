@@ -40,7 +40,7 @@ namespace Ghurund::Engine {
 			this->position.z = z;
 		}
 
-		inline const XMFLOAT3& getPosition() const {
+		inline XMFLOAT3 getPosition() const {
 			return position;
 		}
 

@@ -255,7 +255,7 @@ namespace Ghurund::Core {
             return result || result2;
         }
 
-        virtual void update(const uint64_t time) {}
+        virtual void update() {}
 
         virtual void paint() {}
   };

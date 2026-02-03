@@ -1,42 +1,43 @@
 #pragma once
 
 #include "SpriteInputs.h"
-#include "Transform2DComponent.h"
+#include "SpriteAnimation.h"
+
+#include "engine/2d/entity/Transform2DComponent.h"
 
 #include <DirectXCollision.h>
 
-namespace Ghurund::Engine {
-	class SpriteComponent:public Transform2DComponent {
+namespace Ghurund::Engine::_2D {
+	class AnimatedSpriteComponent:public Transform2DComponent {
 	private:
 		BoundingBox boundingBox;
 		BoundingOrientedBox transformedBoundingBox;
 		bool culled = false;
 		bool selectable = true, visible = true, cullingEnabled = true;
 
-		FloatSize size = { 0, 0 };
+		XMFLOAT2 size = { 0, 0 };
 
 		void finalize() {
 			safeRelease(mesh);
 			safeRelease(material);
-			safeRelease(colorTexture);
 		}
 
 	protected:
 		Mesh* mesh = nullptr;
 		Material* material = nullptr;
-		ITexture* colorTexture = nullptr;
+		SpriteAnimation animation;
 		SpriteInputs inputs;
 
 	public:
-		SpriteComponent() {}
+		AnimatedSpriteComponent() {}
 
-		SpriteComponent(NotNull<Mesh> mesh, NotNull<Material> material):mesh(mesh.get()), material(material.get()) {
+		AnimatedSpriteComponent(NotNull<Mesh> mesh, NotNull<Material> material):mesh(mesh.get()), material(material.get()) {
 			mesh->addReference();
 			material->addReference();
 			inputs.init(material->Inputs);
 		}
 
-		virtual ~SpriteComponent() {
+		virtual ~AnimatedSpriteComponent() {
 			finalize();
 		}
 
@@ -44,15 +45,15 @@ namespace Ghurund::Engine {
 			finalize();
 		}
 
-		inline const FloatSize& getSize() const {
+		inline const XMFLOAT2& getSize() const {
 			return size;
 		}
 
-		inline void setSize(const FloatSize& size) {
+		inline void setSize(const XMFLOAT2& size) {
 			this->size = size;
 		}
 
-		__declspec(property(get = getSize, put = setSize)) const FloatSize& Size;
+		__declspec(property(get = getSize, put = setSize)) const XMFLOAT2& Size;
 
 		inline void setMesh(Mesh* mesh) {
 			setPointer(this->mesh, mesh);
@@ -68,30 +69,22 @@ namespace Ghurund::Engine {
 
 		__declspec(property(put = setMaterial)) Material* Material;
 
-		inline void setColorTexture(ITexture* colorTexture) {
-			setPointer(this->colorTexture, colorTexture);
+		inline SpriteAnimation& getAnimation() {
+			return animation;
 		}
 
-		__declspec(property(put = setColorTexture)) ITexture* ColorTexture;
+		__declspec(property(get = getAnimation)) SpriteAnimation& Animation;
 
 		virtual bool isValid() const {
 			return material != nullptr && material->Valid && mesh != nullptr && mesh->Valid;
 		}
 
-		virtual void draw(RenderGroup& group, const XMFLOAT2& parentPosition) override {
-			if (!mesh || !material)
-				return;
-			mesh->addReference();
-			material->addReference();
-			inputs.Position = parentPosition + Position;
-			inputs.Size = { size.Width, size.Height };
-			inputs.ColorTexture = colorTexture;
-			group.objects.add(DrawPacket{
-				IntrusivePointer<Ghurund::Engine::Mesh>(mesh),
-				IntrusivePointer<Ghurund::Engine::Material>(material),
-				XMFLOAT3(parentPosition.x + Position.x, parentPosition.y + Position.y, 0)
-			});
+		virtual void update(uint64_t time) override {
+			__super::update(time);
+			animation.update(time);
 		}
+
+		virtual void draw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
 
 		/*bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {
 			return mesh->intersects(pos, dir, dist);
@@ -139,7 +132,7 @@ namespace Ghurund::Engine {
 
 		__declspec(property(get = isVisible, put = setVisible)) bool Visible;
 
-		void update(const XMFLOAT4X4 &transformation) {
+		void update(const XMFLOAT4X4& transformation) {
 			BoundingOrientedBox::CreateFromBoundingBox(transformedBoundingBox, boundingBox);
 			transformedBoundingBox.Transform(transformedBoundingBox, XMLoadFloat4x4(&transformation));
 		}

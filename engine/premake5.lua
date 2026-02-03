@@ -2,6 +2,8 @@ group "engine"
 
 include "Core"
 include "Engine"
+include "Engine.2D"
+include "Engine.3D"
 include "Engine.DirectX"
 include "Engine.OpenGL"
 include "UI"

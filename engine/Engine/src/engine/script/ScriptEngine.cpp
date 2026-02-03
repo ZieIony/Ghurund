@@ -60,10 +60,10 @@ namespace Ghurund::Engine {
         Float4ScriptBindings::registerClass(*engine);
         Int2ScriptBindings::registerClass(*engine);
 
-        CameraScriptBindings::registerClass(*engine);
-        LightScriptBindings::registerClass(*engine);
-        SceneScriptBindings::registerClass(*engine);
-        ModelScriptBindings::registerClass(*engine);
+        //CameraScriptBindings::registerClass(*engine);
+        //LightScriptBindings::registerClass(*engine);
+        //SceneScriptBindings::registerClass(*engine);
+        //ModelScriptBindings::registerClass(*engine);
         TimerScriptBindings::registerClass(*engine, &this->timer);
     }
 

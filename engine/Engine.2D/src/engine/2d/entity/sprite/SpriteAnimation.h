@@ -5,7 +5,7 @@
 #include "core/object/NotNull.h"
 #include "engine/graphics/texture/ITexture.h"
 
-namespace Ghurund::Engine {
+namespace Ghurund::Engine::_2D {
 	using namespace Ghurund::Core;
 
 	class SpriteAnimation:public Noncopyable {
@@ -25,6 +25,14 @@ namespace Ghurund::Engine {
 			frames.add({ IntrusivePointer<ITexture>(texture.get()), durationMs });
 			texture->addReference();
 			duration += durationMs;
+		}
+
+		inline void addFrames(Array<NotNull<ITexture>> textures, uint64_t durationMs) {
+			for (auto& texture : textures) {
+				frames.add({ IntrusivePointer<ITexture>(texture.get()), durationMs });
+				texture->addReference();
+			}
+			duration += durationMs * textures.Size;
 		}
 
 		inline bool getIsLooped() const {

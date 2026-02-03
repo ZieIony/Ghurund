@@ -44,8 +44,6 @@ namespace Ghurund::Core {
         running = true;
 
         timer.tick();
-        uint64_t time = timer.TimeMs;
-        const uint32_t DT_MS = 10;
 
         while (windows.Size != 0) {
             if (handleMessages())
@@ -55,14 +53,8 @@ namespace Ghurund::Core {
             resourceManager.reload();
 
             timer.tick();
-            while (time + DT_MS < timer.TimeMs) {
-                time += DT_MS;
-                // TODO: per window
-                //scriptEngine->update(time);
-
-                for (auto window : windows)
-                    window->update(time);
-            }
+            for (auto window : windows)
+                window->update();
 
             for (auto window : windows) {
                 if (window->Size.Width == 0 || window->Size.Height == 0 || !window->Visible)

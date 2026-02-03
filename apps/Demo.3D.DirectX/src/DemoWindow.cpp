@@ -8,7 +8,6 @@
 #include <engine/graphics/material/MaterialProvider.h>
 #include <engine/directx/texture/DxTextureProvider.h>
 #include <engine/graphics/mesh/QuadMeshData.h>
-#include <engine/entity/2d/AnimatedSpriteComponent.h>
 
 namespace Demo {
 	DemoWindow::DemoWindow(
@@ -39,25 +38,6 @@ namespace Demo {
 		mesh->init(meshData.ref(), graphicsFeature->MemoryManager);
 
 		scene.set(ghnew Scene());
-
-		auto captain = makeIntrusive<Entity>();
-		auto captainSprite = std::unique_ptr<AnimatedSpriteComponent>(ghnew AnimatedSpriteComponent(mesh.ref(), material.ref()));
-		captainSprite->Position = { 100, 100 };
-		captainSprite->Size = { 128, 80 };
-		captainSprite->Scale = { 2, 2 };
-		auto captainIdle1 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 01.png")));
-		auto captainIdle2 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 02.png")));
-		auto captainIdle3 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 03.png")));
-		auto captainIdle4 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 04.png")));
-		auto captainIdle5 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 05.png")));
-		captainSprite->Animation.addFrame(captainIdle1.get(), 100);
-		captainSprite->Animation.addFrame(captainIdle2.get(), 100);
-		captainSprite->Animation.addFrame(captainIdle3.get(), 100);
-		captainSprite->Animation.addFrame(captainIdle4.get(), 100);
-		captainSprite->Animation.addFrame(captainIdle5.get(), 100);
-
-		captain->RootComponent = std::move(captainSprite);
-		scene->Entities.add(captain);
 	}
 
 	bool DemoWindow::onKeyEvent(const KeyEventArgs& args) {

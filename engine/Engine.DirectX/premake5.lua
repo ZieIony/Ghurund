@@ -5,8 +5,8 @@ project "Engine.DirectX"
 	staticruntime "on"
 
 	dependson {
-		"Engine",
-		"Core"
+		"Core",
+		"Engine"
 	}
 
 	files {
@@ -23,7 +23,7 @@ project "Engine.DirectX"
 	}
 
 	links {
-		"Engine",
-		"Core"
+		"Core",
+		"Engine"
 	}
 	

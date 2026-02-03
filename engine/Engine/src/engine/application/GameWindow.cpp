@@ -52,11 +52,11 @@ namespace Ghurund::Engine {
         return __super::onFocusedChanged();
     }
 
-    void GameWindow::update(const uint64_t time) {
-        __super::update(time);
-        timeParameter->Value = time / 1000.0f;
-        layers.update(time);
-        Input->dispatchGamepadEvents(time, *this);
+    void GameWindow::update() {
+        __super::update();
+        timeParameter->Value = Timer.Time;
+        layers.update(Timer.TimeMs);
+        Input->dispatchGamepadEvents(Timer.TimeMs, *this);
         actionMapping.executeDispatches();
     }
 }

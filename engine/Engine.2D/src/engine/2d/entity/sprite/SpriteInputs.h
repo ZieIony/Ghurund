@@ -4,7 +4,7 @@
 
 #include <DirectXMath.h>
 
-namespace Ghurund::Engine {
+namespace Ghurund::Engine::_2D {
 	using namespace Ghurund::Engine;
 	using namespace ::DirectX;
 

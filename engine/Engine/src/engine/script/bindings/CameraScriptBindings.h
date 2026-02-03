@@ -4,12 +4,12 @@
 #include <cassert>
 #include <format>
 
-#include "engine/entity/camera/Camera.h"
+//#include "engine/entity/camera/Camera.h"
 #include "ScriptBindings.h"
 
 namespace Ghurund::Engine {
 
-    class CameraScriptBindings:ScriptBindings<Camera> {
+    /*class CameraScriptBindings:ScriptBindings<Camera> {
     public:
         static void registerClass(asIScriptEngine& engine) {
             ScriptBindings<Camera>::registerRefClass(engine, Camera::GET_TYPE().Name.Data);
@@ -29,6 +29,6 @@ namespace Ghurund::Engine {
             r = engine.RegisterObjectMethod(Camera::GET_TYPE().Name.Data, "void pan(float x, float y)", asMETHOD(Camera, pan), asCALL_THISCALL); assert(r >= 0);
             r = engine.RegisterObjectMethod(Camera::GET_TYPE().Name.Data, "void zoom(float z)", asMETHOD(Camera, zoom), asCALL_THISCALL); assert(r >= 0);
         }
-    };
+    };*/
 
 }

@@ -108,7 +108,6 @@
     <ClInclude Include="src\utcpch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\test\core\io\MemoryStreamTest.cpp" />
     <ClCompile Include="src\test\TestEnum.cpp" />
     <ClCompile Include="src\test\core\BufferTest.cpp" />
     <ClCompile Include="src\test\core\ColorTest.cpp" />
@@ -127,6 +126,7 @@
     <ClCompile Include="src\test\core\collection\SetTest.cpp" />
     <ClCompile Include="src\test\core\collection\StackTest.cpp" />
     <ClCompile Include="src\test\core\collection\TreeTest.cpp" />
+    <ClCompile Include="src\test\core\io\MemoryStreamTest.cpp" />
     <ClCompile Include="src\test\core\io\PathTest.cpp" />
     <ClCompile Include="src\test\core\object\OwnedNotNullTest.cpp" />
     <ClCompile Include="src\test\core\object\SharedPointerTest.cpp" />

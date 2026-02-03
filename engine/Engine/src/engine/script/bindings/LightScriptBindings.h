@@ -2,16 +2,16 @@
 
 #include "core/reflection/Type.h"
 
-#include "engine/entity/light/Light.h"
+//#include "engine/entity/light/Light.h"
 #include "ScriptBindings.h"
 
 namespace Ghurund::Engine {
 
-    class LightScriptBindings:ScriptBindings<Light> {
+  /*  class LightScriptBindings:ScriptBindings<Light> {
     public:
         static void registerClass(asIScriptEngine& engine) {
             ScriptBindings<Light>::registerRefClass(engine, Light::GET_TYPE().Name.Data);
         }
-    };
+    };*/
 
 }

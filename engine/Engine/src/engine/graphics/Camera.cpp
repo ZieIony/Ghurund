@@ -13,16 +13,16 @@ namespace Ghurund::Engine {
 	void Camera::rebuild() {
 		XMMATRIX view2, proj2, viewProj2;
 		view2 = XMMatrixLookAtLH(XMLoadFloat3(&pos), XMLoadFloat3(&target), XMLoadFloat3(&up));
-		XMStoreFloat4x4(&view, view2);
+		XMStoreFloat4x4(&view, XMMatrixTranspose(view2));
 		if (pers) {
 			proj2 = XMMatrixPerspectiveFovLH(fov, getAspect(), zNear, zFar);
 		} else {
 			proj2 = XMMatrixOrthographicLH((float)screenSize.Width, (float)screenSize.Height, zNear, zFar);
 		}
-		XMStoreFloat4x4(&proj, proj2);
+		XMStoreFloat4x4(&proj, XMMatrixTranspose(proj2));
 		viewProj2 = view2 * proj2;
-		XMStoreFloat4x4(&viewProj, viewProj2);
-		XMStoreFloat4x4(&viewProjInv, XMMatrixInverse(nullptr, viewProj2));
+		XMStoreFloat4x4(&viewProj, XMMatrixTranspose(viewProj2));
+		XMStoreFloat4x4(&viewProjInv, XMMatrixTranspose(XMMatrixInverse(nullptr, viewProj2)));
 
 		parameterDirection->Value = dir;
 		parameterPosition->Value = pos;

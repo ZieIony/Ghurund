@@ -128,6 +128,7 @@ namespace Ghurund::Engine::DirectX {
 			for (size_t i = 0; i < inputLayout.NumElements; i++)
 				delete[] inputLayout.pInputElementDescs[i].SemanticName;
 			delete[] inputLayout.pInputElementDescs;
+			samplers.deleteItems();
 		};
 
 		auto rootSignature = makeRootSignature(constantBuffers, textures, samplers);
