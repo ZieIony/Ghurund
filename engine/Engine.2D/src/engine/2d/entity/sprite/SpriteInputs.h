@@ -10,35 +10,46 @@ namespace Ghurund::Engine::_2D {
 
 	class SpriteInputs {
 	private:
-		Float2Input* sizeInput = nullptr;
-		Float2Input* positionInput = nullptr;
+		MatrixInput* worldInput = nullptr;
 		TextureInput* colorTextureInput = nullptr;
+		Float3Input* tintInput = nullptr;
+		FloatInput* alphaInput = nullptr;
 
 	public:
 		SpriteInputs() {}
 
 		// this pointer copy is intentional - inputs are managed elsewhere
-		SpriteInputs(
-			const SpriteInputs& other
-		):sizeInput(other.sizeInput), positionInput(other.positionInput), colorTextureInput(colorTextureInput) {}
+		SpriteInputs(const SpriteInputs& other):
+			worldInput(other.worldInput),
+			colorTextureInput(other.colorTextureInput),
+			tintInput(other.tintInput),
+			alphaInput(other.alphaInput) {
+		}
 
 		inline void init(MaterialInputCollection& inputs) {
-			sizeInput = (Float2Input*)inputs.get("size");
-			positionInput = (Float2Input*)inputs.get("position");
+			worldInput = (MatrixInput*)inputs.get("world");
 			colorTextureInput = (TextureInput*)inputs.get("colorTexture");
+			tintInput = (Float3Input*)inputs.get("tint");
+			alphaInput = (FloatInput*)inputs.get("alpha");
 		}
 
-		inline void setSize(const XMFLOAT2& size) {
-			sizeInput->Value = size;
+		inline void setTransformation(const XMFLOAT4X4& world) {
+			worldInput->Value = world;
 		}
 
-		__declspec(property(put = setSize)) const XMFLOAT2& Size;
+		__declspec(property(put = setTransformation)) const XMFLOAT4X4& Transformation;
 
-		inline void setPosition(const XMFLOAT2& pos) {
-			positionInput->Value = pos;
+		inline void setTint(const Color& color) {
+			tintInput->Value = { color.R, color.G, color.B };
 		}
 
-		__declspec(property(put = setPosition)) const XMFLOAT2& Position;
+		__declspec(property(put = setTint)) const Color& Tint;
+
+		inline void setAlpha(float alpha) {
+			alphaInput->Value = alpha;
+		}
+
+		__declspec(property(put = setAlpha)) float Alpha;
 
 		inline void setColorTexture(ITexture* texture) {
 			colorTextureInput->Value = texture;

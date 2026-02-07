@@ -1,38 +1,40 @@
 #pragma once
 
 #include "Common.h"
-#include "core/string/TextConversionUtils.h"
-#include "core/string/String.h"
+
+#include "core/collection/List.h"
 #include "core/collection/Map.h"
+#include "core/string/String.h"
 
 namespace Ghurund::Core {
-    class CommandLine {
-    private:
-        Map<AString, AString> parameters;
+	class CommandLine {
+	private:
+		List<AString> arguments;
+		Map<AString, AString> parameters;
 
-    public:
-        CommandLine(const AString& commandLine = GetCommandLineA()) {
-            Array<AString> commands = commandLine.split(" ");
-            for (size_t i = 0; i < commands.Size; i++) {
-                Array<AString> keyVal = commands[i].split("=");
-                if (keyVal.Size != 2)
-                    continue;
-                parameters.put(keyVal[0], keyVal[1]);
-            }
-        }
+	public:
+		CommandLine(const AString& commandLine = GetCommandLineA()) {
+			Array<AString> items = commandLine.split(" ");
+			for (size_t i = 0; i < items.Size; i++) {
+				Array<AString> keyVal = items[i].split("=");
+				if (keyVal.Size != 2) {
+					arguments.add(items[i]);
+				} else {
+					parameters.put(keyVal[0], keyVal[1]);
+				}
+			}
+		}
 
-        inline Map<AString, AString>& getParameters() {
-            return parameters;
-        }
+		inline const List<AString>& getArguments() const {
+			return arguments;
+		}
 
-        __declspec(property(get = getParameters)) Map<AString, AString>& Parameters;
+		__declspec(property(get = getArguments)) const List<AString>& Arguments;
 
-        inline AString get(const AString& name) const {
-            return parameters[name];
-        }
+		inline const Map<AString, AString>& getParameters() const {
+			return parameters;
+		}
 
-        inline void set(const AString& name, const AString& value) {
-            parameters.put(name, value);
-        }
-    };
+		__declspec(property(get = getParameters)) const Map<AString, AString>& Parameters;
+	};
 }

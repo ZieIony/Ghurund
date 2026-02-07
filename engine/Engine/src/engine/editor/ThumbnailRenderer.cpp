@@ -18,7 +18,7 @@ namespace Ghurund::Editor {
 
         camera = ghnew Camera();
         camera->initParameters(context.ParameterManager);
-        camera->setScreenSize(width, height);
+        camera->setViewSize(width, height);
 
         / *step = ghnew RenderStep();
         step->initParameters(context.ParameterManager);

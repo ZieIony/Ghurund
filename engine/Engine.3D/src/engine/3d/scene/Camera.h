@@ -1,6 +1,8 @@
 #pragma once
 
 #include "core/math/Size.h"
+#include <core/resource/LoadOption.h>
+#include <core/resource/SaveOption.h>
 #include "engine/parameter/ParameterCollection.h"
 #include "engine/parameter/ValueParameter.h"
 
@@ -26,7 +28,7 @@ namespace Ghurund::Engine {
 		XMFLOAT3 pos, target, dir, right, up;
 		XMFLOAT4X4 view, proj, viewProj, viewProjInv;
 		//XMFLOAT4X4 facing;
-		IntSize screenSize;
+		IntSize viewSize;
 		float fov, zNear, zFar, dist;
 		bool pers;
 
@@ -101,22 +103,22 @@ namespace Ghurund::Engine {
 		__declspec(property(get = getRight)) XMFLOAT3& Right;
 
 
-		inline const IntSize& getScreenSize() const {
-			return screenSize;
+		inline const IntSize& getViewSize() const {
+			return viewSize;
 		}
 
-		inline void setScreenSize(const IntSize& screenSize) {
-			this->screenSize = screenSize;
+		inline void setViewSize(const IntSize& viewSize) {
+			this->viewSize = viewSize;
 		}
 
-		inline void setScreenSize(uint32_t w, uint32_t h) {
-			screenSize = IntSize(w, h);
+		inline void setViewSize(uint32_t w, uint32_t h) {
+			viewSize = IntSize(w, h);
 		}
 
-		__declspec(property(get = getScreenSize, put = setScreenSize)) IntSize& ScreenSize;
+		__declspec(property(get = getViewSize, put = setViewSize)) IntSize& ViewSize;
 
 		inline float getAspect() const {
-			return (float)screenSize.Width / (float)screenSize.Height;
+			return (float)viewSize.Width / (float)viewSize.Height;
 		}
 
 		__declspec(property(get = getAspect)) float Aspect;

@@ -7,10 +7,9 @@
 #include <engine/directx/shader/DxShaderProvider.h>
 #include <engine/graphics/material/MaterialProvider.h>
 #include <engine/directx/texture/DxTextureProvider.h>
-#include <engine/graphics/mesh/QuadMeshData.h>
+#include <engine/graphics/mesh/SpriteMeshData.h>
 #include <engine/2d/entity/sprite/AnimatedSpriteComponent.h>
 #include <engine/2d/physics/BoxComponent2D.h>
-#include "engine/graphics/Camera.h"
 //#include "engine/2d/entity/CameraComponent2D.h"
 
 namespace Demo {
@@ -32,18 +31,14 @@ namespace Demo {
 		DxTextureProvider textureProvider(app.ResourceManager);
 		MaterialProvider materialProvider(shaderProvider, textureProvider, graphicsFeature->MemoryManager);
 
-		auto meshData = makeIntrusive<QuadMeshData>();
+		auto meshData = makeIntrusive<SpriteMeshData>();
 		meshData->init();
 		auto mesh = makeIntrusive<DxMesh>();
 		mesh->init(meshData.ref(), graphicsFeature->MemoryManager);
 
-		camera = makeIntrusive<Camera>();
-		camera->ScreenSize = { 80, 60 };
-		camera->Perspective = false;
-		camera->setPositionTargetUp({ 0,0,10 }, { 0,0,0 }, { 0,-1,0 });
-		camera->rebuild();
-
-		ParameterManager.Parameters.putAll(camera->Parameters);
+		camera = makeIntrusive<Camera2D>();
+		camera->ViewSize = { 8, 6 };
+		camera->setPositionUp({ 0, 0 });
 
 		world = makeShared<World2D>();
 		scene = makeIntrusive<Scene2D>();
@@ -56,15 +51,15 @@ namespace Demo {
 			auto captainBox = std::unique_ptr<BoxComponent2D>(ghnew BoxComponent2D(mesh.ref(), boxMaterial.ref()));
 			captainBox->init(world.ref());
 			captainBox->Type = BodyType::DYNAMIC;
-			captainBox->Size = { 16, 10 };
+			captainBox->IsRotationFixed = true;
+			captainBox->Size = { 1.6, 1 };
 
 			captain = makeIntrusive<Entity2D>();
 			auto shader = IntrusivePointer(app.ResourceManager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(L"shaders/DirectX/2d/sprite.xml")));
 			auto material = makeIntrusive<Material>(graphicsFeature->MemoryManager);
 			material->Shader = shader.get();
 			auto captainSprite = OwnedNotNull<AnimatedSpriteComponent>(ghnew AnimatedSpriteComponent(mesh.ref(), material.ref()));
-			captainSprite->Size = { 16, 10 };
-			captainSprite->Position = { -captainSprite->Size.x / 2, -captainSprite->Size.y / 2 };
+			captainSprite->Size = { 1.6, 1 };
 			auto captainIdle1 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 01.png")));
 			auto captainIdle2 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 02.png")));
 			auto captainIdle3 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 03.png")));
@@ -81,7 +76,7 @@ namespace Demo {
 			captainBox->Components.add(captainSprite.reset());
 			captain->RootComponent = std::move(captainBox);
 			scene->Entities.add(captain);
-			captain->Position = { 5, 0 };
+			captain->Position = { 0, 2 };
 		}
 
 		{
@@ -92,8 +87,8 @@ namespace Demo {
 			auto groundBox = std::unique_ptr<BoxComponent2D>(ghnew BoxComponent2D(mesh.ref(), groundMaterial.ref()));
 			groundBox->init(world.ref());
 			groundBox->Type = BodyType::STATIC;
-			groundBox->Position = { 5, 20 };
-			groundBox->Size = { 300, 10 };
+			groundBox->Position = { 0, 0 };
+			groundBox->Size = { 5, 1 };
 
 			ground->RootComponent = std::move(groundBox);
 			scene->Entities.add(ground);
@@ -123,7 +118,7 @@ namespace Demo {
 			Position = { 0, 0 };
 		} else if (args.KeyCode == 'w') {
 			BodyComponent2D& body = (BodyComponent2D&)captain->RootComponent;
-			body.applyForce({ 0, -100 });
+			body.applyForce({ 0, 100 });
 		} else if (args.KeyCode == 'a') {
 			BodyComponent2D& body = (BodyComponent2D&)captain->RootComponent;
 			body.applyForce({ -100, 0 });
@@ -142,6 +137,7 @@ namespace Demo {
 	
 	void DemoWindow::onPaint(RenderingContext& renderingContext) {
 		RenderGroup _2dGroup(0, DrawOrder::BACK_TO_FRONT);
+		_2dGroup.Camera = camera.get();
 		scene->draw(_2dGroup);
 		renderGroups.put(_2dGroup);
 

@@ -30,7 +30,7 @@ namespace Ghurund::Engine::_2D {
 
 		virtual void update(uint64_t time) {}
 
-		virtual void draw(RenderGroup& group, const XMFLOAT2& parentPosition) {}
+		virtual void draw(RenderGroup& group, const XMFLOAT4X4& parentTransformation) {}
 	};
 
 	class ComponentGroup2D:public Component2D {
@@ -53,9 +53,9 @@ namespace Ghurund::Engine::_2D {
 				component->update(time);
 		}
 
-		virtual void draw(RenderGroup& group, const XMFLOAT2& parentPosition) override {
+		virtual void draw(RenderGroup& group, const XMFLOAT4X4& parentTransformation) override {
 			for (auto& component : components)
-				component->draw(group, parentPosition);
+				component->draw(group, parentTransformation);
 		}
 	};
 }

@@ -1,10 +1,11 @@
 #pragma once
 
 #include "SpriteInputs.h"
-#include "engine/2d/entity/Transform2DComponent.h"
 
+#include "core/Colors.h"
 #include "core/math/Size.h"
 #include "core/object/NotNull.h"
+#include "engine/2d/entity/Transform2DComponent.h"
 #include "engine/graphics/material/Material.h"
 #include "engine/graphics/mesh/Mesh.h"
 #include "engine/graphics/texture/ITexture.h"
@@ -32,6 +33,8 @@ namespace Ghurund::Engine::_2D {
 	protected:
 		Mesh* mesh = nullptr;
 		Material* material = nullptr;
+		Color tint = Colors::WHITE;
+		float alpha = 1.0f;
 		ITexture* colorTexture = nullptr;
 		SpriteInputs inputs;
 
@@ -76,6 +79,18 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(put = setMaterial)) Material* Material;
 
+		inline void setTint(const Color& color) {
+			this->tint = color;
+		}
+
+		__declspec(property(put = setTint)) const Color& Tint;
+
+		inline void setAlpha(float alpha) {
+			this->alpha = alpha;
+		}
+
+		__declspec(property(put = setAlpha)) float Alpha;
+
 		inline void setColorTexture(ITexture* colorTexture) {
 			setPointer(this->colorTexture, colorTexture);
 		}
@@ -86,7 +101,7 @@ namespace Ghurund::Engine::_2D {
 			return material != nullptr && material->Valid && mesh != nullptr && mesh->Valid;
 		}
 
-		virtual void draw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
+		virtual void draw(RenderGroup& group, const XMFLOAT4X4& parentTransformation) override;
 
 		/*bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {
 			return mesh->intersects(pos, dir, dist);

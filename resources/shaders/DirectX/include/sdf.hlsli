@@ -26,4 +26,8 @@ float sdRing(float2 p, float2 n, float r, float th) {
     );
 }
 
+float sdCapsule(float2 p, float2 b, float radius) {
+    return sdRect(p, b) - radius;
+}
+
 #endif

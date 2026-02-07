@@ -1,9 +1,10 @@
 #pragma once
 
-#include "SpriteInputs.h"
 #include "SpriteAnimation.h"
+#include "SpriteInputs.h"
 
 #include "engine/2d/entity/Transform2DComponent.h"
+#include "core/Colors.h"
 
 #include <DirectXCollision.h>
 
@@ -25,6 +26,8 @@ namespace Ghurund::Engine::_2D {
 	protected:
 		Mesh* mesh = nullptr;
 		Material* material = nullptr;
+		Color tint = Colors::WHITE;
+		float alpha = 1.0f;
 		SpriteAnimation animation;
 		SpriteInputs inputs;
 
@@ -69,6 +72,18 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(put = setMaterial)) Material* Material;
 
+		inline void setTint(const Color& color) {
+			this->tint = color;
+		}
+
+		__declspec(property(put = setTint)) const Color& Tint;
+
+		inline void setAlpha(float alpha) {
+			this->alpha = alpha;
+		}
+
+		__declspec(property(put = setAlpha)) float Alpha;
+
 		inline SpriteAnimation& getAnimation() {
 			return animation;
 		}
@@ -84,7 +99,7 @@ namespace Ghurund::Engine::_2D {
 			animation.update(time);
 		}
 
-		virtual void draw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
+		virtual void draw(RenderGroup& group, const XMFLOAT4X4& parentTransformation) override;
 
 		/*bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {
 			return mesh->intersects(pos, dir, dist);

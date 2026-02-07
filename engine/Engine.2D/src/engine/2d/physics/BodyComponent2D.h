@@ -1,16 +1,16 @@
 #pragma once
 
+#include "BodyInputs.h"
 #include "World2D.h"
 
 #include "engine/2d/entity/Component2D.h"
-#include "engine/2d/entity/sprite/SpriteInputs.h"
 
 #include <box2d.h>
 #include <DirectXMath.h>
 
 namespace Ghurund::Engine::_2D {
 	using namespace ::DirectX;
-	
+
 	enum class BodyType {
 		STATIC = b2_staticBody, KINEMATIC = b2_kinematicBody, DYNAMIC = b2_dynamicBody
 	};
@@ -22,7 +22,8 @@ namespace Ghurund::Engine::_2D {
 
 		Mesh* mesh = nullptr;
 		Material* material = nullptr;
-		SpriteInputs inputs;
+		Color color = Color(random() / 2 + 0.5f, random() / 2 + 0.5f, random() / 2 + 0.5f);
+		BodyInputs inputs;
 
 	protected:
 		virtual XMFLOAT2 getPositionInternal() const override {
@@ -44,6 +45,7 @@ namespace Ghurund::Engine::_2D {
 			mesh->addReference();
 			material->addReference();
 			inputs.init(material->Inputs);
+			inputs.Color = color;
 		}
 
 		virtual ~BodyComponent2D() = 0 {
@@ -51,13 +53,12 @@ namespace Ghurund::Engine::_2D {
 				mesh->release();
 			if (material)
 				material->release();
-			if(initialized)
+			if (initialized)
 				uninit();
 		}
 
 		inline void init(const World2D& world) {
 			b2BodyDef bodyDef = b2DefaultBodyDef();
-			bodyDef.fixedRotation = true;
 			bodyDef.position = { 0.0f, 0.0f };
 			id = b2CreateBody(world.Id, &bodyDef);
 			initialized = true;
@@ -84,6 +85,16 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getType, put = setType)) BodyType Type;
 
+		inline void setIsRotationFixed(bool fixed) {
+			b2Body_SetFixedRotation(id, fixed);
+		}
+
+		inline bool getIsRotationFixed() const {
+			return b2Body_IsFixedRotation(id);
+		}
+
+		__declspec(property(get = getIsRotationFixed, put = setIsRotationFixed)) bool IsRotationFixed;
+
 		inline float getRotation() const {
 			b2Rot rotation = b2Body_GetRotation(id);
 			return b2Rot_GetAngle(rotation) / DirectX::XM_PI * 180.0f;
@@ -96,7 +107,7 @@ namespace Ghurund::Engine::_2D {
 		}
 
 		__declspec(property(get = getRotation, put = setRotation)) float Rotation;
-	
+
 		virtual void setSize(const FloatSize& size) = 0;
 
 		virtual const FloatSize& getSize() const = 0;
@@ -107,6 +118,6 @@ namespace Ghurund::Engine::_2D {
 			b2Body_ApplyForceToCenter(id, { force.x, force.y }, true);
 		}
 
-		virtual void draw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
+		virtual void draw(RenderGroup& group, const XMFLOAT4X4& parentTransformation) override;
 	};
 }

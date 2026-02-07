@@ -54,7 +54,9 @@ namespace Ghurund::Engine::_2D {
         }
 
         inline void draw(RenderGroup& group) {
-			rootComponent->draw(group, { 0,0 });
+            XMFLOAT4X4 identity;
+            XMStoreFloat4x4(&identity, XMMatrixIdentity());
+			rootComponent->draw(group, identity);
         }
     };
 }

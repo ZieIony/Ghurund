@@ -10,9 +10,9 @@ namespace Ghurund::Core {
 	class DirectoryPath:public Path {
 	public:
 		DirectoryPath():Path([]->WString {
-			DWORD bufferLength = GetCurrentDirectory(0, nullptr);
+			DWORD bufferLength = GetCurrentDirectoryW(0, nullptr);
 			Array<wchar_t> buffer(bufferLength);
-			GetCurrentDirectory(bufferLength, &buffer[0]);
+			GetCurrentDirectoryW(bufferLength, &buffer[0]);
 			auto path = WString(&buffer[0], bufferLength - 1);
 			if (!path.endsWith(L"/"))
 				path.add(L'/');

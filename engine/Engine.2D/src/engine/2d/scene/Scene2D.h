@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/resource/Resource.h"
-#include "Entity2D.h"
+#include "engine/2d/entity/Entity2D.h"
 
 namespace Ghurund::Engine::_2D {
     class Scene2D:public Resource {

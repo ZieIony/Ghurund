@@ -37,6 +37,9 @@ namespace Ghurund::Engine::DirectX {
 	void DxRenderingContext::draw(Set<RenderGroup>& renderGroups, ParameterManager& parameterManager) {
 		Ghurund::Engine::DirectX::CommandList* commandList = swapChain->CurrentFrame.CommandList;
 		for (auto& group : renderGroups) {
+			if (group.Camera)
+				group.Camera->apply(parameterManager);
+
 			// TODO: sort on insertion
 			group.objects.sort([&](const DrawPacket& first, const DrawPacket& second) {
 				return (first.position.z - second.position.z) * (int8_t)group.DrawOrder;

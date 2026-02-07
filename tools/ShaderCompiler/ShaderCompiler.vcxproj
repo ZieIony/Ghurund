@@ -11,20 +11,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{80488BD1-ECB2-3F48-35F1-F0EDA19A1D9D}</ProjectGuid>
+    <ProjectGuid>{37C9FAD8-2397-EEDE-0C2B-5F05F897CA43}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Engine.3D</RootNamespace>
+    <RootNamespace>ShaderCompiler</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
@@ -40,24 +40,25 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
+    <LinkIncremental>true</LinkIncremental>
     <OutDir>..\..\bin\Debug\</OutDir>
     <IntDir>obj\Win64\Debug\</IntDir>
-    <TargetName>Engine.3D</TargetName>
-    <TargetExt>.lib</TargetExt>
+    <TargetName>ShaderCompiler</TargetName>
+    <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
+    <LinkIncremental>false</LinkIncremental>
     <OutDir>..\..\bin\Release\</OutDir>
     <IntDir>obj\Win64\Release\</IntDir>
-    <TargetName>Engine.3D</TargetName>
-    <TargetExt>.lib</TargetExt>
+    <TargetName>ShaderCompiler</TargetName>
+    <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>ghe3dpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;..\..\engine\Engine.DirectX\src;..\..\engine\Engine\src;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -65,17 +66,16 @@
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>ghe3dpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;..\..\engine\Engine.DirectX\src;..\..\engine\Engine\src;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -86,46 +86,22 @@
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\3d\scene\Camera.h" />
-    <ClInclude Include="src\Ghurund.Engine.3D.h" />
-    <ClInclude Include="src\engine\3d\entity\Drawable3DComponent.h" />
-    <ClInclude Include="src\engine\3d\entity\Transform3DComponent.h" />
-    <ClInclude Include="src\engine\3d\entity\Component.h" />
-    <ClInclude Include="src\engine\3d\entity\Entity.h" />
-    <ClInclude Include="src\engine\3d\scene\Scene.h" />
-    <ClInclude Include="src\engine\3d\entity\camera\CameraComponent.h" />
-    <ClInclude Include="src\engine\3d\scene\camera\CameraController.h" />
-    <ClInclude Include="src\engine\3d\entity\camera\CameraEntity.h" />
-    <ClInclude Include="src\engine\3d\scene\light\Light.h" />
-    <ClInclude Include="src\engine\3d\entity\light\LightComponent.h" />
-    <ClInclude Include="src\engine\3d\entity\light\LightEntity.h" />
-    <ClInclude Include="src\engine\3d\physics\Physics.h" />
-    <ClInclude Include="src\engine\3d\physics\PhysicsComponent.h" />
-    <ClInclude Include="src\engine\3d\physics\PhysicsSystem.h" />
-    <ClInclude Include="src\engine\3d\physics\RigidBodyComponent.h" />
-    <ClInclude Include="src\ghe3dpch.h" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\engine\3d\scene\Camera.cpp" />
-    <ClCompile Include="src\engine\3d\scene\Scene.cpp" />
-    <ClCompile Include="src\engine\3d\scene\camera\CameraController.cpp" />
-    <ClCompile Include="src\engine\3d\scene\light\Light.cpp" />
-    <ClCompile Include="src\engine\3d\physics\Physics.cpp" />
-    <ClCompile Include="src\ghe3dpch.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Core\Core.vcxproj">
+    <ProjectReference Include="..\..\engine\Core\Core.vcxproj">
       <Project>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.vcxproj">
+    <ProjectReference Include="..\..\engine\Engine.DirectX\Engine.DirectX.vcxproj">
+      <Project>{BC80A119-A84E-951F-91E2-05467D4F7184}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\engine\Engine\Engine.vcxproj">
       <Project>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</Project>
     </ProjectReference>
   </ItemGroup>

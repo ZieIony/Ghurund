@@ -6,11 +6,11 @@ namespace Ghurund::Engine {
 	class QuadMeshData: public MeshData {
 	public:
 		void init() {
-			VertexStream posStream = VertexStream(List<XMFLOAT3>({
-				{0.0f, 0.0f, 0.0f},
-				{0.0f, 1.0f, 0.0f},
-				{1.0f, 0.0f, 0.0f},
-				{1.0f, 1.0f, 0.0f},
+			VertexStream posStream = VertexStream(List<XMFLOAT2>({
+				{0.0f, 0.0f},
+				{0.0f, 1.0f},
+				{1.0f, 0.0f},
+				{1.0f, 1.0f},
 			}), VertexRole::POSITION);
 
 			List<uint16_t> indices = {

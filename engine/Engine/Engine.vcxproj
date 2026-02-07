@@ -98,7 +98,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\graphics\Camera.h" />
+    <ClInclude Include="src\engine\graphics\ICamera.h" />
+    <ClInclude Include="src\engine\graphics\mesh\SpriteMeshData.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
     <ClInclude Include="src\engine\application\Layer.h" />
@@ -206,7 +207,6 @@
     <ClCompile Include="src\engine\audio\SoundLoader.cpp" />
     <ClCompile Include="src\engine\editor\ThumbnailRenderer.cpp" />
     <ClCompile Include="src\engine\game\action\ActionMapping.cpp" />
-    <ClCompile Include="src\engine\graphics\Camera.cpp" />
     <ClCompile Include="src\engine\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\engine\graphics\Renderer.cpp" />
     <ClCompile Include="src\engine\graphics\RenderingStatistics.cpp" />

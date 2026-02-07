@@ -98,26 +98,30 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\2d\physics\CapsuleComponent2D.h" />
+    <ClInclude Include="src\engine\2d\scene\Camera2D.h" />
     <ClInclude Include="src\Ghurund.Engine.2D.h" />
+    <ClInclude Include="src\engine\2d\entity\Component2D.h" />
+    <ClInclude Include="src\engine\2d\entity\Entity2D.h" />
+    <ClInclude Include="src\engine\2d\scene\Scene2D.h" />
+    <ClInclude Include="src\engine\2d\entity\Transform2DComponent.h" />
     <ClInclude Include="src\engine\2d\entity\sprite\AnimatedSpriteComponent.h" />
     <ClInclude Include="src\engine\2d\entity\sprite\SpriteAnimation.h" />
     <ClInclude Include="src\engine\2d\entity\sprite\SpriteComponent.h" />
     <ClInclude Include="src\engine\2d\entity\sprite\SpriteInputs.h" />
-    <ClInclude Include="src\engine\2d\entity\Transform2DComponent.h" />
-    <ClInclude Include="src\engine\2d\entity\Component2D.h" />
-    <ClInclude Include="src\engine\2d\entity\Entity2D.h" />
-    <ClInclude Include="src\engine\2d\entity\Scene2D.h" />
     <ClInclude Include="src\engine\2d\physics\BodyComponent2D.h" />
+    <ClInclude Include="src\engine\2d\physics\BodyInputs.h" />
     <ClInclude Include="src\engine\2d\physics\BoxComponent2D.h" />
+    <ClInclude Include="src\engine\2d\physics\CapsuleComponent2D.h" />
+    <ClInclude Include="src\engine\2d\physics\SegmentComponent2D.h" />
     <ClInclude Include="src\engine\2d\physics\World2D.h" />
     <ClInclude Include="src\ghe2dpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\2d\scene\Scene2D.cpp" />
     <ClCompile Include="src\engine\2d\entity\sprite\AnimatedSpriteComponent.cpp" />
     <ClCompile Include="src\engine\2d\entity\sprite\SpriteComponent.cpp" />
-    <ClCompile Include="src\engine\2d\entity\Scene2D.cpp" />
     <ClCompile Include="src\engine\2d\physics\BodyComponent2D.cpp" />
+    <ClCompile Include="src\engine\2d\scene\Camera2D.cpp" />
     <ClCompile Include="src\ghe2dpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

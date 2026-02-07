@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DrawPacket.h"
+#include "ICamera.h"
 
 #include "core/collection/List.h"
 
@@ -17,6 +18,7 @@ namespace Ghurund::Engine {
 	private:
 		uint32_t order;
 		DrawOrder drawOrder;
+		ICamera* camera = nullptr;
 
 	public:
 		List<DrawPacket> objects;
@@ -24,12 +26,27 @@ namespace Ghurund::Engine {
 		// TODO: is this draw order correct?
 		RenderGroup(uint32_t order, DrawOrder drawOrder = DrawOrder::FRONT_TO_BACK):order(order), drawOrder(drawOrder) {}
 
+		~RenderGroup() {
+			if (camera)
+				camera->release();
+		}
+
 		// TODO: get sorted objects from here
 		inline DrawOrder getDrawOrder() const {
 			return drawOrder;
 		}
 
 		__declspec(property(get = getDrawOrder)) DrawOrder DrawOrder;
+
+		inline void setCamera(ICamera* camera) {
+			setPointer(this->camera, camera);
+		}
+
+		inline ICamera* getCamera() const {
+			return camera;
+		}
+
+		__declspec(property(get = getCamera, put = setCamera)) ICamera* Camera;
 
 		inline auto operator<=>(const RenderGroup& other) const {
 			return order <=> other.order;

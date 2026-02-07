@@ -2,9 +2,10 @@
 
 #include "DemoApplication.h"
 #include "engine/application/GameWindow.h"
-#include "engine/2d/entity/Scene2D.h"
+#include "engine/2d/scene/Scene2D.h"
 #include "engine/2d/physics/World2D.h"
-#include <engine/graphics/Camera.h>
+#include "engine/2d/scene/Camera2D.h"
+#include <engine/2d/entity/Entity2D.h>
 
 namespace Demo {
 	using namespace Ghurund;
@@ -20,7 +21,7 @@ namespace Demo {
 		IntrusivePointer<Scene2D> scene;
 		SharedPointer<World2D> world;
 		IntrusivePointer<Entity2D> captain, ground;
-		IntrusivePointer<Camera> camera;
+		IntrusivePointer<Camera2D> camera;
 
 	public:
 		DemoWindow(

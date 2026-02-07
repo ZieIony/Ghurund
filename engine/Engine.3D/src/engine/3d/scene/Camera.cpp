@@ -17,7 +17,7 @@ namespace Ghurund::Engine {
 		if (pers) {
 			proj2 = XMMatrixPerspectiveFovLH(fov, getAspect(), zNear, zFar);
 		} else {
-			proj2 = XMMatrixOrthographicLH((float)screenSize.Width, (float)screenSize.Height, zNear, zFar);
+			proj2 = XMMatrixOrthographicLH((float)viewSize.Width, (float)viewSize.Height, zNear, zFar);
 		}
 		XMStoreFloat4x4(&proj, XMMatrixTranspose(proj2));
 		viewProj2 = view2 * proj2;
@@ -38,7 +38,7 @@ namespace Ghurund::Engine {
 	}
 
 	Camera::Camera():
-		screenSize({ 640, 480 }),
+		viewSize({ 640, 480 }),
 		fov(XM_PI / 4),
 		zNear(0.1f),
 		zFar(10000.0f),
@@ -89,14 +89,14 @@ namespace Ghurund::Engine {
 	void Camera::calcMouseRay(const XMINT2& mousePos, XMFLOAT3& rayPos, XMFLOAT3& rayDir)const {
 		XMFLOAT3 v = { (float)mousePos.x, (float)mousePos.y, 0 };
 		XMVECTOR rayPos2 = XMVector3Unproject(XMLoadFloat3(&v),
-			0, 0, (float)screenSize.Width, (float)screenSize.Height, 0, 1,
+			0, 0, (float)viewSize.Width, (float)viewSize.Height, 0, 1,
 			XMLoadFloat4x4(&proj),
 			XMLoadFloat4x4(&view),
 			XMMatrixIdentity());
 
 		XMFLOAT3 v2 = { (float)mousePos.x, (float)mousePos.y, 1 };
 		XMVECTOR rayTarget2 = XMVector3Unproject(XMLoadFloat3(&v2),
-			0, 0, (float)screenSize.Width, (float)screenSize.Height, 0, 1,
+			0, 0, (float)viewSize.Width, (float)viewSize.Height, 0, 1,
 			XMLoadFloat4x4(&proj),
 			XMLoadFloat4x4(&view),
 			XMMatrixIdentity());
@@ -191,7 +191,7 @@ namespace Ghurund::Engine {
 		memcpy(&proj, stream.readBytes(sizeof(proj)), sizeof(proj));
 		memcpy(&viewProj, stream.readBytes(sizeof(viewProj)), sizeof(viewProj));
 		//memcpy(&facing, stream.readBytes(sizeof(facing)), sizeof(facing));
-		memcpy(&screenSize, stream.readBytes(sizeof(screenSize)), sizeof(screenSize));
+		memcpy(&viewSize, stream.readBytes(sizeof(viewSize)), sizeof(viewSize));
 		fov = stream.readFloat();
 		zNear = stream.readFloat();
 		zFar = stream.readFloat();
@@ -210,7 +210,7 @@ namespace Ghurund::Engine {
 		stream.writeBytes(&proj, sizeof(proj));
 		stream.writeBytes(&viewProj, sizeof(viewProj));
 		//stream.writeBytes(&facing, sizeof(facing));
-		stream.writeBytes(&screenSize, sizeof(screenSize));
+		stream.writeBytes(&viewSize, sizeof(viewSize));
 		stream.writeFloat(fov);
 		stream.writeFloat(zNear);
 		stream.writeFloat(zFar);

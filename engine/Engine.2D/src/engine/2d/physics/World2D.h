@@ -13,7 +13,7 @@ namespace Ghurund::Engine::_2D {
 	public:
 		World2D() {
 			b2WorldDef worldDef = b2DefaultWorldDef();
-			worldDef.gravity = { 0.0f, 10.0f };
+			worldDef.gravity = { 0.0f, -10.0f };
 			id = b2CreateWorld(&worldDef);
 		}
 
