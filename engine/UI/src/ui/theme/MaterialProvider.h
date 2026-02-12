@@ -8,5 +8,5 @@ namespace Ghurund::UI {
 	using namespace Ghurund::Core;
 	using namespace Ghurund::Engine;
 
-	class MaterialProvider:public Ghurund::Core::Provider<UIMaterial*> {};
+	class UIMaterialProvider:public Ghurund::Core::Provider<UIMaterial*> {};
 }

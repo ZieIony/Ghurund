@@ -8,12 +8,15 @@
 #include "ui/font/Font.h"
 #include "ui/font/FontLoader.h"
 #include <ui/font/TextStyleLoader.h>
+#include <ui/directx/DxUIFeature.h>
+#include <ui/directx/DxUIFeatureFactory.h>
 
 namespace Demo {
     using namespace Ghurund::Engine;
     using namespace Ghurund::Engine::DirectX;
     using namespace Ghurund::Core;
     using namespace Ghurund::UI;
+    using namespace Ghurund::UI::DirectX;
 
     class DemoWindow;
 
@@ -50,6 +53,8 @@ namespace Demo {
             ResourceManager.Loaders.set<FontAtlas>(fontAtlasLoader.ref());
             textStyleLoader = makeIntrusive<TextStyleLoader>(ResourceManager, fontAtlasLoader.ref());
             ResourceManager.Loaders.set<TextStyle>(textStyleLoader.ref());
+
+            Features.add<DxUIFeature, DxUIFeatureFactory>();
         }
 
         ~DemoApplication() {

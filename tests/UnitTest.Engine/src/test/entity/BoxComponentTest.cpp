@@ -3,7 +3,7 @@
 
 #include "core/object/IntrusivePointer.h"
 #include "core/reflection/StandardTypes.h"
-#include "engine/2d/physics/BoxComponent2D.h"
+#include "engine/2d/physics/component/BoxComponent2D.h"
 #include "test/utils/MemoryGuard.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

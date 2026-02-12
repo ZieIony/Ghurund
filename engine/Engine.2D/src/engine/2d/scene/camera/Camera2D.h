@@ -4,7 +4,6 @@
 #include <core/resource/LoadOption.h>
 #include <core/resource/SaveOption.h>
 #include "engine/graphics/ICamera.h"
-#include "engine/parameter/ParameterCollection.h"
 #include "engine/parameter/ValueParameter.h"
 
 #include <DirectXMath.h>
@@ -28,7 +27,6 @@ namespace Ghurund::Engine::_2D {
 	private:
 		XMFLOAT3 pos, right, up;
 		float zNear, zFar;
-		XMFLOAT4X4 view, proj, viewProj, viewProjInv;
 		IntSize viewSize;
 
 		inline static const AString CAMERA_POSITION = "cameraPosition";
@@ -54,6 +52,8 @@ namespace Ghurund::Engine::_2D {
 		Camera2D();
 
 		~Camera2D();
+
+		virtual void update() override;
 
 		virtual void apply(ParameterManager& parameterManager) override;
 
@@ -95,30 +95,6 @@ namespace Ghurund::Engine::_2D {
 		}
 
 		__declspec(property(get = getAspect)) float Aspect;
-
-		inline const XMFLOAT4X4& getView() const {
-			return view;
-		}
-
-		__declspec(property(get = getView)) XMFLOAT4X4& View;
-
-		inline const XMFLOAT4X4& getProjection() const {
-			return proj;
-		}
-
-		__declspec(property(get = getProjection)) XMFLOAT4X4& Projection;
-
-		inline const XMFLOAT4X4& getViewProjection() const {
-			return viewProj;
-		}
-
-		__declspec(property(get = getViewProjection)) XMFLOAT4X4& ViewProjection;
-
-		inline const XMFLOAT4X4& getViewProjectionInv() const {
-			return viewProjInv;
-		}
-
-		__declspec(property(get = getViewProjectionInv)) XMFLOAT4X4& ViewProjectionInv;
 
 		void setPositionUp(const XMFLOAT2& pos, const XMFLOAT2& up = XMFLOAT2(0, 1));
 

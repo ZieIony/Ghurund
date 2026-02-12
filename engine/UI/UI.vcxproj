@@ -199,7 +199,7 @@
     <ClInclude Include="src\ui\material\UIMaterial.h" />
     <ClInclude Include="src\ui\material\UIMaterialLoader.h" />
     <ClInclude Include="src\ui\material\UIMaterialPropertyLoader.h" />
-    <ClInclude Include="src\ui\material\UIMaterialProvider.h" />
+    <ClInclude Include="src\ui\material\UIMaterials.h" />
     <ClInclude Include="src\ui\shader\IUIShaderProvider.h" />
     <ClInclude Include="src\ui\text\CharacterInfo.h" />
     <ClInclude Include="src\ui\text\DocumentElement.h" />

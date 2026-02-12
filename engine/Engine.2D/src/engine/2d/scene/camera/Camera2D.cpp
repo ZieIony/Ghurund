@@ -46,27 +46,36 @@ namespace Ghurund::Engine::_2D {
 		parameterViewProjectionInv->release();
 	}
 
-	void Camera2D::apply(ParameterManager& parameterManager) {
-		XMMATRIX view2, proj2, viewProj2;
+	void Camera2D::update() {
+		XMMATRIX viewTemp, projTemp, viewProjTemp, viewProjInvTemp;
+		XMFLOAT4X4 viewTransposed, projTransposed, viewProjTransposed, viewProjInvTransposed;
 		XMFLOAT3 dir = { 0, 0, 1 };
-		view2 = XMMatrixLookToLH(XMLoadFloat3(&pos), XMLoadFloat3(&dir), XMLoadFloat3(&up));
-		XMStoreFloat4x4(&view, XMMatrixTranspose(view2));
-		proj2 = XMMatrixOrthographicLH((float)viewSize.Width, (float)viewSize.Height, zNear, zFar);
-		XMStoreFloat4x4(&proj, XMMatrixTranspose(proj2));
-		viewProj2 = view2 * proj2;
-		XMStoreFloat4x4(&viewProj, XMMatrixTranspose(viewProj2));
-		XMStoreFloat4x4(&viewProjInv, XMMatrixTranspose(XMMatrixInverse(nullptr, viewProj2)));
+		viewTemp = XMMatrixLookToLH(XMLoadFloat3(&pos), XMLoadFloat3(&dir), XMLoadFloat3(&up));
+		XMStoreFloat4x4(&view, viewTemp);
+		projTemp = XMMatrixOrthographicLH((float)viewSize.Width, (float)viewSize.Height, zNear, zFar);
+		XMStoreFloat4x4(&proj, projTemp);
+		viewProjTemp = viewTemp * projTemp;
+		XMStoreFloat4x4(&viewProj, viewProjTemp);
+		viewProjInvTemp = XMMatrixInverse(nullptr, viewProjTemp);
+		XMStoreFloat4x4(&viewProjInv, viewProjInvTemp);
 
 		parameterPosition->Value = pos;
 		parameterUp->Value = up;
 		parameterRight->Value = right;
 		parameterZNear->Value = zNear;
 		parameterZFar->Value = zFar;
-		parameterView->Value = view;
-		parameterProjection->Value = proj;
-		parameterViewProjection->Value = viewProj;
-		parameterViewProjectionInv->Value = viewProjInv;
 
+		XMStoreFloat4x4(&viewTransposed, XMMatrixTranspose(viewTemp));
+		parameterView->Value = viewTransposed;
+		XMStoreFloat4x4(&projTransposed, XMMatrixTranspose(projTemp));
+		parameterProjection->Value = projTransposed;
+		XMStoreFloat4x4(&viewProjTransposed, XMMatrixTranspose(viewProjTemp));
+		parameterViewProjection->Value = viewProjTransposed;
+		XMStoreFloat4x4(&viewProjInvTransposed, XMMatrixTranspose(viewProjInvTemp));
+		parameterViewProjectionInv->Value = viewProjInvTransposed;
+	}
+
+	void Camera2D::apply(ParameterManager& parameterManager) {
 		parameterManager.Parameters.put(parameterPosition);
 		parameterManager.Parameters.put(parameterUp);
 		parameterManager.Parameters.put(parameterRight);
@@ -78,7 +87,6 @@ namespace Ghurund::Engine::_2D {
 		parameterManager.Parameters.put(parameterProjection);
 		parameterManager.Parameters.put(parameterViewProjection);
 		parameterManager.Parameters.put(parameterViewProjectionInv);
-
 	}
 
 	void Camera2D::setPositionUp(const XMFLOAT2& pos, const XMFLOAT2& up) {

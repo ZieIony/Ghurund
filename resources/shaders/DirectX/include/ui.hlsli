@@ -9,7 +9,7 @@
 #define depthTestEnabled false
 
 struct UIVertex {
-    float3 position: POSITION;
+    float2 position: POSITION;
 };
 
 struct TextVertex {

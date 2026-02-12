@@ -8,7 +8,6 @@
 #include "ui/directx/shader/DxUIShaderProvider.h"
 #include "ui/directx/text/DxTextMeshFactory.h"
 #include "ui/material/ControlMaterialInputs.h"
-#include "ui/material/UIMaterialProvider.h"
 
 namespace Preview {
 	PreviewWindow::PreviewWindow(

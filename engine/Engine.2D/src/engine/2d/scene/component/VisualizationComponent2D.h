@@ -1,0 +1,49 @@
+#pragma once
+
+#include "TransformComponent2D.h"
+#include "VisualizationInputs.h"
+
+#include "core/math/Matrix.h"
+
+namespace Ghurund::Engine::_2D {
+	class VisualizationComponent2D:public Component2D {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = VisualizationComponent2D::GET_TYPE();
+#pragma endregion
+
+	private:
+		Mesh* mesh = nullptr;
+		Material* material = nullptr;
+		Color color = Color(random() / 2 + 0.5f, random() / 2 + 0.5f, random() / 2 + 0.5f);
+		VisualizationInputs inputs;
+		XMFLOAT4X4 worldTransformation = Ghurund::Core::MATRIX_IDENTITY;
+		XMFLOAT2 extents = { 0, 0 };
+
+	public:
+		VisualizationComponent2D(NotNull<Mesh> mesh, NotNull<Material> material);
+		
+		~VisualizationComponent2D();
+
+		inline void setTransformation(const XMFLOAT4X4& transformation) {
+			this->worldTransformation = transformation;
+		}
+
+		__declspec(property(put = setTransformation)) const XMFLOAT4X4& Transformation;
+
+		inline void setExtents(const XMFLOAT2& extents) {
+			this->extents = extents;
+		}
+
+		__declspec(property(put = setExtents)) const XMFLOAT2& Extents;
+
+		virtual void draw(RenderGroup& group) override;
+	};
+}

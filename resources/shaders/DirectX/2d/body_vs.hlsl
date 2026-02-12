@@ -11,7 +11,7 @@ Pixel2D vertexMain(Vertex2D input) {
 
     float4 inputPos = float4(input.position, 0, 1);
     output.position = mul(mul(inputPos, world), viewProjection);
-    output.texCoord = input.texCoord;
+    output.texCoord = input.texCoord - 0.5;
 
     return output;
 }

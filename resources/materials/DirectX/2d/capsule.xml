@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Material xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" shader="lib://Ghurund/shaders/DirectX/2d/capsule.xml"/>

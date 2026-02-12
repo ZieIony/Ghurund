@@ -1,11 +1,12 @@
 #pragma once
 
+#include "core/object/Noncopyable.h"
 #include "ui/material/UIMaterial.h"
 #include "ui/shader/IUIShaderProvider.h"
 
 namespace Ghurund::UI {
 
-    class UIMaterialProvider:public Noncopyable {
+    class UIMaterials:public Noncopyable {
     private:
         IUIShaderProvider& shaderProvider;
         IGPUMemoryManager& memoryManager;
@@ -20,7 +21,7 @@ namespace Ghurund::UI {
         }
 
     public:
-		UIMaterialProvider(
+		UIMaterials(
             IUIShaderProvider& shaderProvider,
             IGPUMemoryManager& memoryManager
         ): shaderProvider(shaderProvider), memoryManager(memoryManager) {}

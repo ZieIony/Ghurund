@@ -159,7 +159,7 @@ namespace Ghurund::Core {
 
         bool dispatchWindowEvent(UINT msg, WPARAM wParam, LPARAM lParam);
 
-        inline void close() {
+        inline void minimize() {
             CloseWindow(handle);
         }
     };

@@ -33,7 +33,7 @@ namespace Ghurund::Engine::DirectX {
         }
 
         void set(CommandList &commandList, unsigned int bindSlot) {
-            //bufferedValue->set(commandList, bindSlot);
+            //bufferedValue->apply(commandList, bindSlot);
             bufferedValue.next();
         }
     };

@@ -1,22 +1,38 @@
 #pragma once
 
-#include "SpriteAnimation.h"
 #include "SpriteInputs.h"
 
-#include "engine/2d/entity/Transform2DComponent.h"
 #include "core/Colors.h"
+#include "core/math/Size.h"
+#include "core/object/NotNull.h"
+#include "engine/2d/scene/component/TransformComponent2D.h"
+#include "engine/graphics/material/Material.h"
+#include "engine/graphics/mesh/Mesh.h"
 
 #include <DirectXCollision.h>
 
 namespace Ghurund::Engine::_2D {
-	class AnimatedSpriteComponent:public Transform2DComponent {
+	using namespace Ghurund::Core;
+
+	class BaseSpriteComponent:public TransformComponent2D {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = BaseSpriteComponent::GET_TYPE();
+#pragma endregion
+
 	private:
 		BoundingBox boundingBox;
 		BoundingOrientedBox transformedBoundingBox;
 		bool culled = false;
 		bool selectable = true, visible = true, cullingEnabled = true;
-
-		XMFLOAT2 size = { 0, 0 };
+		FloatSize size = { 1, 1 };
 
 		void finalize() {
 			safeRelease(mesh);
@@ -28,35 +44,24 @@ namespace Ghurund::Engine::_2D {
 		Material* material = nullptr;
 		Color tint = Colors::WHITE;
 		float alpha = 1.0f;
-		SpriteAnimation animation;
 		SpriteInputs inputs;
 
 	public:
-		AnimatedSpriteComponent() {}
+		BaseSpriteComponent() {}
 
-		AnimatedSpriteComponent(NotNull<Mesh> mesh, NotNull<Material> material):mesh(mesh.get()), material(material.get()) {
+		BaseSpriteComponent(NotNull<Mesh> mesh, NotNull<Material> material):mesh(mesh.get()), material(material.get()) {
 			mesh->addReference();
 			material->addReference();
 			inputs.init(material->Inputs);
 		}
 
-		virtual ~AnimatedSpriteComponent() {
+		virtual ~BaseSpriteComponent() = 0 {
 			finalize();
 		}
 
 		virtual void invalidate() {
 			finalize();
 		}
-
-		inline const XMFLOAT2& getSize() const {
-			return size;
-		}
-
-		inline void setSize(const XMFLOAT2& size) {
-			this->size = size;
-		}
-
-		__declspec(property(get = getSize, put = setSize)) const XMFLOAT2& Size;
 
 		inline void setMesh(Mesh* mesh) {
 			setPointer(this->mesh, mesh);
@@ -84,22 +89,21 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(put = setAlpha)) float Alpha;
 
-		inline SpriteAnimation& getAnimation() {
-			return animation;
+		inline void setSize(const FloatSize& size) {
+			this->size = size;
 		}
 
-		__declspec(property(get = getAnimation)) SpriteAnimation& Animation;
+		inline const FloatSize& getSize() const {
+			return size;
+		}
+
+		__declspec(property(get = getSize, put = setSize)) const FloatSize& Size;
 
 		virtual bool isValid() const {
 			return material != nullptr && material->Valid && mesh != nullptr && mesh->Valid;
 		}
 
-		virtual void update(uint64_t time) override {
-			__super::update(time);
-			animation.update(time);
-		}
-
-		virtual void draw(RenderGroup& group, const XMFLOAT4X4& parentTransformation) override;
+		virtual void draw(RenderGroup& group) override;
 
 		/*bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {
 			return mesh->intersects(pos, dir, dist);
@@ -147,10 +151,10 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = isVisible, put = setVisible)) bool Visible;
 
-		void update(const XMFLOAT4X4& transformation) {
+		/*void update(const XMFLOAT4X4& transformation) {
 			BoundingOrientedBox::CreateFromBoundingBox(transformedBoundingBox, boundingBox);
 			transformedBoundingBox.Transform(transformedBoundingBox, XMLoadFloat4x4(&transformation));
-		}
+		}*/
 
 		void cull(BoundingFrustum& frustum) {
 			culled = CullingEnabled && frustum.Contains(transformedBoundingBox) == ContainmentType::DISJOINT;

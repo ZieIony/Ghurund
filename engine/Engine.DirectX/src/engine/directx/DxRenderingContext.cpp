@@ -15,7 +15,7 @@ namespace Ghurund::Engine::DirectX {
 		swapChain->CurrentFrame.start();
 
 		CommandList* commandList = swapChain->CurrentFrame.CommandList;
-		graphics.DescriptorAllocator.set(commandList->get());   // TODO: set allocator properly
+		graphics.DescriptorAllocator.set(commandList->get());   // TODO: apply allocator properly
 		stats.startFrame();
 	}
 
@@ -41,15 +41,15 @@ namespace Ghurund::Engine::DirectX {
 				group.Camera->apply(parameterManager);
 
 			// TODO: sort on insertion
-			group.objects.sort([&](const DrawPacket& first, const DrawPacket& second) {
-				return (first.position.z - second.position.z) * (int8_t)group.DrawOrder;
+			group.objects.sort([&](const DrawPacket& first, const DrawPacket& second) -> bool {
+				return (first.Order - second.Order) * (int8_t)group.DrawOrder > 0;
 			});
 			for (auto& packet : group.objects) {
-				auto mesh = (DxMesh*)packet.mesh.get();
-				auto material = packet.material.get();
+				auto mesh = (DxMesh*)packet.Mesh;
+				auto material = packet.Material;
 				material->applyInputs(parameterManager.Parameters);
 				auto shader = (DxShader*)material->Shader;
-				bool shaderChanged = shader->set(*commandList);
+				bool shaderChanged = shader->apply(*commandList);
 				mesh->draw(*commandList, shader->Layout);
 
 				stats.modelsRendered++;

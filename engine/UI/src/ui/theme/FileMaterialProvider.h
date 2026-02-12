@@ -7,7 +7,7 @@
 namespace Ghurund::UI {
 	using namespace Ghurund::Engine;
 
-	class FileMaterialProvider:public MaterialProvider {
+	class FileMaterialProvider:public UIMaterialProvider {
 	private:
 		ResourceManager& resourceManager;
 		FilePath resourcePath;

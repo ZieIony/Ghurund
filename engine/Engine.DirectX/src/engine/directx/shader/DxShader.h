@@ -70,7 +70,7 @@ namespace Ghurund::Engine::DirectX {
 			bool isTransparencyEnabled
 		);
 
-		bool set(CommandList& commandList);
+		bool apply(CommandList& commandList);
 
 		inline const Array<VertexRole>& getLayout() const {
 			return layout;

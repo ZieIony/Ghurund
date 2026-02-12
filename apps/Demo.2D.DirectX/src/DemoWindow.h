@@ -4,8 +4,15 @@
 #include "engine/application/GameWindow.h"
 #include "engine/2d/scene/Scene2D.h"
 #include "engine/2d/physics/World2D.h"
-#include "engine/2d/scene/Camera2D.h"
-#include <engine/2d/entity/Entity2D.h>
+#include "engine/2d/scene/camera/Camera2D.h"
+#include <engine/2d/scene/Entity2D.h>
+#include <engine/2d/scene/camera/CameraComponent2D.h>
+#include <ui/directx/text/DxTextMeshFactory.h>
+#include <engine/directx/texture/DxTextureFactory.h>
+#include <ui/directx/DxUIContext.h>
+#include <ui/UILayer.h>
+#include <ui/control/ControlGroup.h>
+#include "ui/theme/Theme.h"
 
 namespace Demo {
 	using namespace Ghurund;
@@ -22,6 +29,8 @@ namespace Demo {
 		SharedPointer<World2D> world;
 		IntrusivePointer<Entity2D> captain, ground;
 		IntrusivePointer<Camera2D> camera;
+		IntrusivePointer<CameraComponent2D> cameraComponent;
+		float direction = 1;
 
 	public:
 		DemoWindow(
@@ -36,6 +45,8 @@ namespace Demo {
 			scene.set(nullptr);
 			world.set(nullptr);
 		}
+
+		void initCaptain();
 
 		virtual bool onKeyEvent(const KeyEventArgs& args) override;
 

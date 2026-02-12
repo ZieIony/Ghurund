@@ -134,11 +134,7 @@ namespace Ghurund::UI {
 		for (auto& mesh : textMeshes) {
 			Float2Input* positionInput = (Float2Input*)mesh.material->Inputs.get("position");
 			positionInput->Value = position;
-			group.objects.add({
-				mesh.mesh,
-				mesh.material,
-				{ position.x, position.y, 0 }
-			});
+			group.objects.add(DrawPacket(mesh.mesh.get(), mesh.material.get(), 0));
 		}
 	}
 

@@ -28,7 +28,7 @@ namespace Ghurund::UI {
         Ghurund::Core::Map<TextStyleKey, Ghurund::Core::IntrusivePointer<Ghurund::UI::TextStyle>> fonts;
         Ghurund::Core::Map<ColorKey, Color> colors;
         Ghurund::Core::Map<TextureKey, SharedPointer<TextureProvider>> textures;
-        Ghurund::Core::Map<MaterialKey, SharedPointer<MaterialProvider>> materials;
+        Ghurund::Core::Map<MaterialKey, SharedPointer<UIMaterialProvider>> materials;
         Ghurund::Core::Map<LayoutKey, SharedPointer<LayoutProvider>> layouts;
 
     public:
@@ -98,15 +98,15 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTextures)) Map<TextureKey, SharedPointer<TextureProvider>>& Textures;
 
-        inline Map<MaterialKey, SharedPointer<MaterialProvider>>& getMaterials() {
+        inline Map<MaterialKey, SharedPointer<UIMaterialProvider>>& getMaterials() {
             return materials;
         }
 
-        inline const Map<MaterialKey, SharedPointer<MaterialProvider>>& getMaterials() const {
+        inline const Map<MaterialKey, SharedPointer<UIMaterialProvider>>& getMaterials() const {
             return materials;
         }
 
-        __declspec(property(get = getMaterials)) Map<MaterialKey, SharedPointer<MaterialProvider>>& Materials;
+        __declspec(property(get = getMaterials)) Map<MaterialKey, SharedPointer<UIMaterialProvider>>& Materials;
 
         inline Ghurund::Core::Map<LayoutKey, SharedPointer<LayoutProvider>>& getLayouts() {
             return layouts;

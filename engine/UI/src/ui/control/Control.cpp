@@ -114,16 +114,10 @@ namespace Ghurund::UI {
 	void Control::onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) {
 		if (material == nullptr)
 			return;
-		material.get()->UIInputs.Position = parentPosition + position;
-		material.get()->UIInputs.Size = { Size.Width, Size.Height };
+		material->UIInputs.Position = parentPosition + position;
+		material->UIInputs.Size = { Size.Width, Size.Height };
 		alphaInput->Value = alpha;
-		IntrusivePointer<UIMaterial> m(material.get());
-		m->addReference();
-		group.objects.add(DrawPacket{
-			mesh,
-			m,
-			XMFLOAT3(parentPosition.x + position.x, parentPosition.y + position.y, 0)
-		});
+		group.objects.add(DrawPacket(mesh.get(), material.get(), 0));
 	}
 
 	bool Control::onMouseMotionEvent(const MouseMotionEventArgs& event) {
@@ -346,10 +340,8 @@ namespace Ghurund::UI {
 	}
 
 	void Control::layout(float x, float y, float width, float height) {
-		if (position.x != x || position.y != y) {
-			position.x = x;
-			position.y = y;
-		}
+		position.x = x;
+		position.y = y;
 		if (needsLayout || size.Width != width || size.Height != height) {
 #ifdef _DEBUG
 			if (width == 0 || height == 0) {

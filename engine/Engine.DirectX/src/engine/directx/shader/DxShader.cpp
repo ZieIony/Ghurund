@@ -125,7 +125,7 @@ namespace Ghurund::Engine::DirectX {
 		this->isTransparencyEnabled = isTransparencyEnabled;
 	}
 
-	bool DxShader::set(CommandList& commandList) {
+	bool DxShader::apply(CommandList& commandList) {
 		bool rsChanged = commandList.setGraphicsRootSignature(rootSignature);
 		bool psChanged = commandList.setPipelineState(pipelineState);
 

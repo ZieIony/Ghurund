@@ -26,7 +26,6 @@ namespace Ghurund::Engine {
 
 	private:
 		XMFLOAT3 pos, target, dir, right, up;
-		XMFLOAT4X4 view, proj, viewProj, viewProjInv;
 		//XMFLOAT4X4 facing;
 		IntSize viewSize;
 		float fov, zNear, zFar, dist;
@@ -128,30 +127,6 @@ namespace Ghurund::Engine {
 		}
 
 		__declspec(property(get = getDistance)) float Distance;
-
-		inline const XMFLOAT4X4& getView() const {
-			return view;
-		}
-
-		__declspec(property(get = getView)) XMFLOAT4X4& View;
-
-		inline const XMFLOAT4X4& getProjection() const {
-			return proj;
-		}
-
-		__declspec(property(get = getProjection)) XMFLOAT4X4& Projection;
-
-		inline const XMFLOAT4X4& getViewProjection() const {
-			return viewProj;
-		}
-
-		__declspec(property(get = getViewProjection)) XMFLOAT4X4& ViewProjection;
-
-		inline const XMFLOAT4X4& getViewProjectionInv() const {
-			return viewProjInv;
-		}
-
-		__declspec(property(get = getViewProjectionInv)) XMFLOAT4X4& ViewProjectionInv;
 
 /*		inline const XMFLOAT4X4& getFacing() const {
 			return facing;
