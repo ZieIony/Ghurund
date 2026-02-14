@@ -1,9 +1,11 @@
 #pragma once
 
-#include "engine/directx/DxGraphics.h"
-#include "engine/directx/CommandList.h"
 #include "core/image/Image.h"
+#include "engine/directx/CommandList.h"
+#include "engine/directx/DxGraphics.h"
 #include "engine/graphics/texture/ITexture.h"
+
+#include <dxgiformat.h>
 
 namespace Ghurund::Engine::DirectX {
     class DxTexture:public ITexture {
@@ -27,9 +29,7 @@ namespace Ghurund::Engine::DirectX {
 
         bool uploaded = false;
 
-    protected:
-        virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-        virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options)const;
+        DXGI_FORMAT adjustFormat(DXGI_FORMAT format, TextureType textureType);
 
     public:
         DescriptorHandle descHandle;
@@ -56,7 +56,7 @@ namespace Ghurund::Engine::DirectX {
 			return image != nullptr && image->Valid && __super::Valid && uploaded;
         }
 
-        void init(DxGraphics& graphics, CommandList& commandList, Ghurund::Core::Image& image);
+        void init(DxGraphics& graphics, CommandList& commandList, Ghurund::Core::Image& image, TextureType textureType);
 
         inline Ghurund::Core::Image* getImage() {
             return image;

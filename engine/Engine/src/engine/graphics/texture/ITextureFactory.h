@@ -10,6 +10,6 @@ namespace Ghurund::Engine {
 
     class ITextureFactory:public Noncopyable {
     public:
-        virtual ITexture* makeTexture(Image& image) = 0;
+        virtual ITexture* makeTexture(Image& image, TextureType textureType) = 0;
     };
 }

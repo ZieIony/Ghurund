@@ -90,7 +90,7 @@ namespace Ghurund::UI {
 				auto material = IntrusivePointer<Material>(textMaterial->clone());
 				// TODO: support multiple materials
 				TextureInput* colorTextureInput = (TextureInput*)material->Inputs.get("colorTexture");
-				colorTextureInput->Value = IntrusivePointer<ITexture>(textureFactory.makeTexture(*span.textStyle->Atlas->Image)).get();
+				colorTextureInput->Value = IntrusivePointer<ITexture>(textureFactory.makeTexture(*span.textStyle->Atlas->Image, TextureType::OTHER)).get();
 				textMeshes.add({ mesh, material });
 			}
 		}

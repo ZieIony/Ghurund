@@ -22,7 +22,7 @@ namespace Ghurund::Engine::DirectX {
         ) override {
             auto image = IntrusivePointer((Image*)imageLoader.load(stream, workingDir, format, options));
             auto texture = makeIntrusive<DxTexture>();
-            texture->init(graphics, commandList, image.ref());
+            texture->init(graphics, commandList, image.ref(), TextureType::COLOR);
             texture->addReference();
             return texture.get();
         }

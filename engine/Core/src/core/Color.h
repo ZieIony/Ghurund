@@ -125,17 +125,42 @@ namespace Ghurund::Core {
 			return { r, g, b, a };
 		}
 
+		inline Color toLinear() const {
+			return {
+				a,
+				r < 0.04045f ? r / 12.92f : powf((r + 0.055f) / 1.055f, 2.4f),
+				g < 0.04045f ? g / 12.92f : powf((g + 0.055f) / 1.055f, 2.4f),
+				b < 0.04045f ? b / 12.92f : powf((b + 0.055f) / 1.055f, 2.4f)
+			};
+		}
+
+		inline Color toSRGB() const {
+			return {
+				a,
+				r < 0.0031308 ? 12.92f * r : 1.055f * powf(abs(r), 1.0f / 2.4f) - 0.055f,
+				g < 0.0031308 ? 12.92f * g : 1.055f * powf(abs(g), 1.0f / 2.4f) - 0.055f,
+				b < 0.0031308 ? 12.92f * b : 1.055f * powf(abs(b), 1.0f / 2.4f) - 0.055f
+			};
+		}
+
+		// use linear color space
+		inline float getBrightness() const {
+			return 0.213f * r + 0.715f * g + 0.072f * b;
+		}
+
+		__declspec(property(get = getBrightness)) float Brightness;
+
 		static Color parse(const AString& color);
 
 		String toString() const;
 	};
 
-	constexpr uint32_t colorWithAlpha(float alpha, uint32_t color) {
+	constexpr inline uint32_t colorWithAlpha(float alpha, uint32_t color) {
 		uint32_t a = (uint32_t)(alpha * 0xff);
 		return ((a & 0xff) << 24) | (color & 0xffffff);
 	}
 
-	constexpr uint32_t lerpColors(uint32_t color, uint32_t color2, float amount) {
+	constexpr inline uint32_t lerpColors(uint32_t color, uint32_t color2, float amount) {
 		uint32_t a = (uint32_t)(((color >> 24) & 0xff) * (1 - amount) + ((color2 >> 24) & 0xff) * amount);
 		uint32_t r = (uint32_t)(((color >> 16) & 0xff) * (1 - amount) + ((color2 >> 16) & 0xff) * amount);
 		uint32_t g = (uint32_t)(((color >> 8) & 0xff) * (1 - amount) + ((color2 >> 8) & 0xff) * amount);

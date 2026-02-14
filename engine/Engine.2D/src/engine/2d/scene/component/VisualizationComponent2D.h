@@ -1,8 +1,9 @@
 #pragma once
 
-#include "TransformComponent2D.h"
+#include "Component2D.h"
 #include "VisualizationInputs.h"
 
+#include "core/Colors.h"
 #include "core/math/Matrix.h"
 
 namespace Ghurund::Engine::_2D {
@@ -22,7 +23,13 @@ namespace Ghurund::Engine::_2D {
 	private:
 		Mesh* mesh = nullptr;
 		Material* material = nullptr;
-		Color color = Color(random() / 2 + 0.5f, random() / 2 + 0.5f, random() / 2 + 0.5f);
+		Color color = [] {
+			while (true) {
+				Color c = Colors::VALUES[random(0ull, Colors::VALUES.Size)].toLinear();
+				if (c.Brightness > 0.5f)
+					return c;
+			}
+		}();
 		VisualizationInputs inputs;
 		XMFLOAT4X4 worldTransformation = Ghurund::Core::MATRIX_IDENTITY;
 		XMFLOAT2 extents = { 0, 0 };

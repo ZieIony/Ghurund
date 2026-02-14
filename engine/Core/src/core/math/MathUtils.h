@@ -34,6 +34,11 @@ namespace Ghurund::Core {
         return (float)rand() / (float)RAND_MAX;
     }
 
+    template<typename T>
+    inline T random(T from, T to) {
+        return (T)(random() * (to - from));
+    }
+
     enum class VectorComponent {
         X, Y, Z, W
     };
