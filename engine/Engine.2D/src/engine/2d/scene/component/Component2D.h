@@ -47,7 +47,6 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getName, put = setName)) const Ghurund::Core::AString* Name;
 
-
 		inline Component2D* getParent() const {
 			return parent;
 		}

@@ -18,18 +18,27 @@ namespace Ghurund::Engine::_2D {
 #pragma endregion
 
 	protected:
-		SpriteAnimation animation;
+		SpriteAnimation* animation = nullptr;
 
 	public:
 		AnimatedSpriteComponent() {}
 
 		AnimatedSpriteComponent(NotNull<Ghurund::Engine::Mesh> mesh, NotNull<Ghurund::Engine::Material> material):BaseSpriteComponent(mesh, material) {}
 
-		inline SpriteAnimation& getAnimation() {
+		~AnimatedSpriteComponent() {
+			if (animation)
+				animation->release();
+		}
+
+		inline SpriteAnimation* getAnimation() {
 			return animation;
 		}
 
-		__declspec(property(get = getAnimation)) SpriteAnimation& Animation;
+		inline void setAnimation(SpriteAnimation* animation) {
+			setPointer(this->animation, animation);
+		}
+
+		__declspec(property(get = getAnimation, put = setAnimation)) SpriteAnimation* Animation;
 
 		virtual bool isValid() const {
 			return material != nullptr && material->Valid && mesh != nullptr && mesh->Valid;
@@ -37,8 +46,10 @@ namespace Ghurund::Engine::_2D {
 
 		virtual void update(const XMFLOAT4X4& parentTransformation, uint64_t time) override {
 			__super::update(parentTransformation, time);
-			animation.update(time);
-			inputs.ColorTexture = animation.CurrentTexture;
+			if (animation) {
+				animation->update(time);
+				inputs.ColorTexture = animation->CurrentTexture;
+			}
 		}
 	};
 }

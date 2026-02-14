@@ -99,6 +99,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\engine\2d\graphics\sprite\BaseSpriteComponent.h" />
+    <ClInclude Include="src\engine\2d\graphics\sprite\SpriteAnimationSetLoader.h" />
+    <ClInclude Include="src\engine\2d\graphics\sprite\SpriteAnimationSet.h" />
     <ClInclude Include="src\engine\2d\scene\camera\CameraComponent2D.h" />
     <ClInclude Include="src\engine\2d\scene\component\BaseTransformComponent2D.h" />
     <ClInclude Include="src\engine\2d\scene\component\Component2DCollection.h" />
@@ -125,6 +127,8 @@
   <ItemGroup>
     <ClCompile Include="src\engine\2d\graphics\sprite\AnimatedSpriteComponent.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\BaseSpriteComponent.cpp" />
+    <ClCompile Include="src\engine\2d\graphics\sprite\SpriteAnimationSetLoader.cpp" />
+    <ClCompile Include="src\engine\2d\graphics\sprite\SpriteAnimation.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\SpriteComponent.cpp" />
     <ClCompile Include="src\engine\2d\physics\component\BodyComponent2D.cpp" />
     <ClCompile Include="src\engine\2d\physics\component\BoxComponent2D.cpp" />

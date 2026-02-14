@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SpriteAnimationSet xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" version="1">
+	<SpriteAnimation name="idle">
+		<SpriteAnimationFrame texture="Idle Sword 01.png" durationMs="100"/>
+		<SpriteAnimationFrame texture="Idle Sword 02.png" durationMs="100"/>
+		<SpriteAnimationFrame texture="Idle Sword 03.png" durationMs="100"/>
+		<SpriteAnimationFrame texture="Idle Sword 04.png" durationMs="100"/>
+		<SpriteAnimationFrame texture="Idle Sword 05.png" durationMs="100"/>
+	</SpriteAnimation>
+</SpriteAnimationSet>

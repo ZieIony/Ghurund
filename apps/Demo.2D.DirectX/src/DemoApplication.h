@@ -10,10 +10,12 @@
 #include <ui/font/TextStyleLoader.h>
 #include <ui/directx/DxUIFeature.h>
 #include <ui/directx/DxUIFeatureFactory.h>
+#include <engine/2d/graphics/sprite/SpriteAnimationSetLoader.h>
 
 namespace Demo {
     using namespace Ghurund::Engine;
     using namespace Ghurund::Engine::DirectX;
+    using namespace Ghurund::Engine::_2D;
     using namespace Ghurund::Core;
     using namespace Ghurund::UI;
     using namespace Ghurund::UI::DirectX;
@@ -29,6 +31,7 @@ namespace Demo {
         IntrusivePointer<FontLoader> fontLoader;
         IntrusivePointer<TextStyleLoader> textStyleLoader;
         IntrusivePointer<FontAtlasLoader> fontAtlasLoader;
+        IntrusivePointer<SpriteAnimationSetLoader> animationSetLoader;
 
         void uninitDemoApplication();
 
@@ -53,6 +56,9 @@ namespace Demo {
             ResourceManager.Loaders.set<FontAtlas>(fontAtlasLoader.ref());
             textStyleLoader = makeIntrusive<TextStyleLoader>(ResourceManager, fontAtlasLoader.ref());
             ResourceManager.Loaders.set<TextStyle>(textStyleLoader.ref());
+
+            animationSetLoader = makeIntrusive<SpriteAnimationSetLoader>(ResourceManager);
+            ResourceManager.Loaders.set<SpriteAnimationSet>(animationSetLoader.ref());
 
             Features.add<DxUIFeature, DxUIFeatureFactory>();
         }

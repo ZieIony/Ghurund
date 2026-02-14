@@ -89,23 +89,15 @@ namespace Demo {
 		auto shader = IntrusivePointer(app.ResourceManager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(L"shaders/DirectX/2d/sprite.xml")));
 		auto material = makeIntrusive<Material>(graphicsFeature->MemoryManager);
 		material->Shader = shader.get();
-		auto captainSprite = OwnedNotNull<AnimatedSpriteComponent>(ghnew AnimatedSpriteComponent(mesh.ref(), material.ref()));
-		auto captainIdle1 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 01.png")));
-		auto captainIdle2 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 02.png")));
-		auto captainIdle3 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 03.png")));
-		auto captainIdle4 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 04.png")));
-		auto captainIdle5 = IntrusivePointer(app.ResourceManager.load<DxTexture>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/Idle Sword 05.png")));
-		captainSprite->Animation.addFrames({
-			captainIdle1.get(),
-			captainIdle2.get(),
-			captainIdle3.get(),
-			captainIdle4.get(),
-			captainIdle5.get()
-			}, 100);
+		auto captainSprite = makeIntrusive<AnimatedSpriteComponent>(mesh.ref(), material.ref());
+
+		auto animationSet = IntrusivePointer<SpriteAnimationSet>(app.ResourceManager.load<SpriteAnimationSet>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/captain.xml")));
+		captainSprite->Animation = animationSet->get(animationSet->find("idle"));
+
 		captainSprite->Position = { 0, -0.025f * 2.0f };
 		captainSprite->Size = { 1.6f, 1 };
 
-		captainCapsule->Components.add(captainSprite.reset());
+		captainCapsule->Components.add(captainSprite.get());
 		captainCapsule->Components.add(cameraComponent.get());
 		captain->RootComponent = captainCapsule.get();
 		scene->Entities.add(captain);
