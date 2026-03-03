@@ -3,7 +3,7 @@
 #include "core/Color.h"
 #include "core/object/IntrusivePointer.h"
 #include "core/string/TextConversionUtils.h"
-#include "engine/graphics/RenderGroup.h"
+#include "engine/graphics/rendering/RenderGroup.h"
 #include "ui/font/Font.h"
 
 #include <tinyxml2.h>

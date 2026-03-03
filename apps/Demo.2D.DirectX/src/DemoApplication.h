@@ -1,16 +1,13 @@
 ﻿#pragma once
 
-#include "core/application/Application.h"
+#include "engine/application/GameApplication.h"
 #include "engine/directx/DxGraphicsFeature.h"
 #include "engine/directx/DxGraphicsFeatureFactory.h"
 #include "engine/directx/DxRenderer.h"
-#include "engine/directx/shader/DxShaderLoader.h"
-#include "ui/font/Font.h"
-#include "ui/font/FontLoader.h"
-#include <ui/font/TextStyleLoader.h>
 #include <ui/directx/DxUIFeature.h>
 #include <ui/directx/DxUIFeatureFactory.h>
-#include <engine/2d/graphics/sprite/SpriteAnimationSetLoader.h>
+#include <engine/2d/Graphics2DFeature.h>
+#include <engine/2d/Graphics2DFeatureFactory.h>
 
 namespace Demo {
     using namespace Ghurund::Engine;
@@ -22,16 +19,10 @@ namespace Demo {
 
     class DemoWindow;
 
-    class DemoApplication:public Application {
+    class DemoApplication:public GameApplication {
     private:
         DxRenderer* renderer = nullptr;
         DemoWindow* window = nullptr;
-        IntrusivePointer<DxShaderLoader> shaderLoader;
-        SharedPointer<DxShaderCompiler> shaderCompiler;
-        IntrusivePointer<FontLoader> fontLoader;
-        IntrusivePointer<TextStyleLoader> textStyleLoader;
-        IntrusivePointer<FontAtlasLoader> fontAtlasLoader;
-        IntrusivePointer<SpriteAnimationSetLoader> animationSetLoader;
 
         void uninitDemoApplication();
 
@@ -42,24 +33,9 @@ namespace Demo {
 
     public:
         DemoApplication() {
+            Features.add<GraphicsFeature, GraphicsFeatureFactory>();
             Features.add<DxGraphicsFeature, DxGraphicsFeatureFactory>();
-            auto graphicsFeature = Features.get<DxGraphicsFeature>();
-
-            shaderCompiler = makeShared<DxShaderCompiler>(graphicsFeature->Graphics);
-            shaderLoader = makeIntrusive<DxShaderLoader>(ResourceManager, shaderCompiler.ref());
-            shaderLoader->includeDirs.add(DirectoryPath() / DirectoryPath(L"./resources/shaders/DirectX/include"));
-            ResourceManager.Loaders.set<DxShader>(shaderLoader.ref());
-
-            fontLoader = makeIntrusive<FontLoader>();
-            ResourceManager.Loaders.set<Font>(fontLoader.ref());
-            fontAtlasLoader = makeIntrusive<FontAtlasLoader>(ResourceManager);
-            ResourceManager.Loaders.set<FontAtlas>(fontAtlasLoader.ref());
-            textStyleLoader = makeIntrusive<TextStyleLoader>(ResourceManager, fontAtlasLoader.ref());
-            ResourceManager.Loaders.set<TextStyle>(textStyleLoader.ref());
-
-            animationSetLoader = makeIntrusive<SpriteAnimationSetLoader>(ResourceManager);
-            ResourceManager.Loaders.set<SpriteAnimationSet>(animationSetLoader.ref());
-
+            Features.add<Graphics2DFeature, Graphics2DFeatureFactory>();
             Features.add<DxUIFeature, DxUIFeatureFactory>();
         }
 

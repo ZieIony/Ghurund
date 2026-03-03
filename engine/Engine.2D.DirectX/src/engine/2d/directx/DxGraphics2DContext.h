@@ -1,0 +1,50 @@
+#pragma once
+
+#include "engine/graphics/material/Material.h"
+#include "engine/graphics/mesh/Mesh.h"
+#include "engine/2d/IGraphics2DContext.h"
+#include <engine/directx/memory/DxGPUMemoryManager.h>
+#include <engine/graphics/mesh/SpriteMeshData.h>
+#include <engine/directx/mesh/DxMesh.h>
+#include <engine/2d/graphics/mesh/TileMapMeshData.h>
+#include <engine/directx/shader/DxShader.h>
+
+namespace Ghurund::Engine::_2D::DirectX {
+	using namespace Ghurund::Engine::DirectX;
+
+	class DxGraphics2DContext:public IGraphics2DContext {
+	private:
+		DxGPUMemoryManager& memoryManager;
+		ResourceManager& resourceManager;
+		IntrusivePointer<SpriteMeshData> spriteMeshData;
+
+	public:
+		DxGraphics2DContext(
+			DxGPUMemoryManager& memoryManager,
+			ResourceManager& resourceManager
+		):memoryManager(memoryManager), resourceManager(resourceManager) {
+			spriteMeshData = makeIntrusive<SpriteMeshData>();
+			spriteMeshData->init();
+		}
+
+		virtual Mesh* makeSpriteMesh() override;
+
+		virtual Material* makeSpriteMaterial() override;
+
+		virtual Mesh* makeTileMapMesh(IntSize tileMapSize, Array<TileInfo>& tiles) override;
+
+		virtual Material* makeTileMapMaterial() override;
+
+		virtual Material* makeBoxVisualizationMaterial() override {
+			return resourceManager.load<Material>(ResourceManager::ENGINE_LIB / FilePath(L"materials/DirectX/2d/box.xml"));
+		}
+
+		virtual Material* makeCapsuleVisualizationMaterial() override {
+			return resourceManager.load<Material>(ResourceManager::ENGINE_LIB / FilePath(L"materials/DirectX/2d/capsule.xml"));
+		}
+
+		virtual Material* makeSegmentVisualizationMaterial() override {
+			 return resourceManager.load<Material>(ResourceManager::ENGINE_LIB / FilePath(L"materials/DirectX/2d/segment.xml"));
+		}
+	};
+}

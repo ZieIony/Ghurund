@@ -20,26 +20,13 @@ namespace Ghurund::Engine::_2D {
 		inline static const Ghurund::Core::Type& TYPE = SpriteComponent::GET_TYPE();
 #pragma endregion
 
-	private:
-		inline void finalize() {
-			safeRelease(colorTexture);
-		}
-
 	protected:
 		ITexture* colorTexture = nullptr;
 
 	public:
-		SpriteComponent() {}
-
-		SpriteComponent(NotNull<Ghurund::Engine::Mesh> mesh, NotNull<Ghurund::Engine::Material> material):BaseSpriteComponent(mesh, material) {}
-
 		virtual ~SpriteComponent() {
-			finalize();
-		}
-
-		virtual void invalidate() {
-			finalize();
-			__super::invalidate();
+			if (colorTexture)
+				colorTexture->release();
 		}
 
 		inline void setColorTexture(ITexture* colorTexture) {

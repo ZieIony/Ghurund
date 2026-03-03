@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/object/Object.h"
-#include "engine/graphics/RenderingStatistics.h"
+#include "engine/graphics/rendering/RenderingStatistics.h"
 #include "RenderingContext.h"
 #include "core/window/SystemWindow.h"
 #include "core/object/NotNull.h"

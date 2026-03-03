@@ -12,6 +12,27 @@ namespace Ghurund::Engine::_2D {
 		return TYPE;
 	}
 
+	void CapsuleComponent2D::onInit() {
+		if (isVisualized) {
+			if (visualizationComponent) {
+				Components.remove(visualizationComponent);
+				visualizationComponent->release();
+			}
+			visualizationComponent = ghnew VisualizationComponent2D();
+			visualizationComponent->Mesh = IntrusivePointer<Mesh>(Owner->Context->makeSpriteMesh()).get();
+			visualizationComponent->Material = IntrusivePointer<Material>(Owner->Context->makeCapsuleVisualizationMaterial()).get();
+			Components.add(visualizationComponent);
+		}
+		__super::onInit();
+
+		b2Capsule capsule;
+		capsule.radius = 1;
+		capsule.center1 = { 0, -0.5 };
+		capsule.center2 = { 0, 0.5 };
+		b2ShapeDef shapeDef = b2DefaultShapeDef();
+		shapeId = b2CreateCapsuleShape(Id, &shapeDef, &capsule);
+	}
+
 	void CapsuleComponent2D::updateSize() {
 		b2Capsule capsule;
 		float r = fabs(scale.x * size.Width) / 2;
@@ -20,16 +41,5 @@ namespace Ghurund::Engine::_2D {
 		capsule.center1 = { 0, -h / 2 };
 		capsule.center2 = { 0, h / 2 };
 		b2Shape_SetCapsule(shapeId, &capsule);
-	}
-	
-	void CapsuleComponent2D::init(const World2D& world) {
-		__super::init(world);
-
-		b2Capsule capsule;
-		capsule.radius = 1;
-		capsule.center1 = { 0, -0.5 };
-		capsule.center2 = { 0, 0.5 };
-		b2ShapeDef shapeDef = b2DefaultShapeDef();
-		shapeId = b2CreateCapsuleShape(Id, &shapeDef, &capsule);
 	}
 }

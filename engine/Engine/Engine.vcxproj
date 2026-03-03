@@ -98,13 +98,13 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\graphics\ICamera.h" />
-    <ClInclude Include="src\engine\graphics\mesh\SpriteMeshData.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
+    <ClInclude Include="src\engine\application\GameApplication.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
     <ClInclude Include="src\engine\application\Layer.h" />
     <ClInclude Include="src\engine\application\LayerList.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />
+    <ClInclude Include="src\engine\audio\AudioFeature.h" />
     <ClInclude Include="src\engine\audio\Sound.h" />
     <ClInclude Include="src\engine\audio\Sound3d.h" />
     <ClInclude Include="src\engine\audio\SoundLoader.h" />
@@ -126,14 +126,12 @@
     <ClInclude Include="src\engine\game\sky\AdvancedSky.h" />
     <ClInclude Include="src\engine\game\sky\BasicSky.h" />
     <ClInclude Include="src\engine\game\sky\Sky.h" />
-    <ClInclude Include="src\engine\graphics\DrawPacket.h" />
     <ClInclude Include="src\engine\graphics\DrawableComponents.h" />
     <ClInclude Include="src\engine\graphics\DrawingSystem.h" />
+    <ClInclude Include="src\engine\graphics\GraphicsFeature.h" />
+    <ClInclude Include="src\engine\graphics\GraphicsFeatureFactory.h" />
+    <ClInclude Include="src\engine\graphics\ICamera.h" />
     <ClInclude Include="src\engine\graphics\LightSystem.h" />
-    <ClInclude Include="src\engine\graphics\RenderGroup.h" />
-    <ClInclude Include="src\engine\graphics\Renderer.h" />
-    <ClInclude Include="src\engine\graphics\RenderingContext.h" />
-    <ClInclude Include="src\engine\graphics\RenderingStatistics.h" />
     <ClInclude Include="src\engine\graphics\material\Material.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialInput.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialInputCollection.h" />
@@ -151,7 +149,13 @@
     <ClInclude Include="src\engine\graphics\mesh\PlaneMeshData.h" />
     <ClInclude Include="src\engine\graphics\mesh\QuadMeshData.h" />
     <ClInclude Include="src\engine\graphics\mesh\SphereMeshData.h" />
+    <ClInclude Include="src\engine\graphics\mesh\SpriteMeshData.h" />
     <ClInclude Include="src\engine\graphics\mesh\VertexStream.h" />
+    <ClInclude Include="src\engine\graphics\rendering\DrawPacket.h" />
+    <ClInclude Include="src\engine\graphics\rendering\RenderGroup.h" />
+    <ClInclude Include="src\engine\graphics\rendering\Renderer.h" />
+    <ClInclude Include="src\engine\graphics\rendering\RenderingContext.h" />
+    <ClInclude Include="src\engine\graphics\rendering\RenderingStatistics.h" />
     <ClInclude Include="src\engine\graphics\shader\BufferConstant.h" />
     <ClInclude Include="src\engine\graphics\shader\ConstantBuffer.h" />
     <ClInclude Include="src\engine\graphics\shader\IShaderProvider.h" />
@@ -163,6 +167,8 @@
     <ClInclude Include="src\engine\graphics\shader\ValueConstant.h" />
     <ClInclude Include="src\engine\graphics\texture\ITexture.h" />
     <ClInclude Include="src\engine\graphics\texture\ITextureFactory.h" />
+    <ClInclude Include="src\engine\graphics\texture\TextureAtlas.h" />
+    <ClInclude Include="src\engine\graphics\texture\TextureAtlasLoader.h" />
     <ClInclude Include="src\engine\graphics\texture\TextureFilter.h" />
     <ClInclude Include="src\engine\graphics\texture\TextureProvider.h" />
     <ClInclude Include="src\engine\net\Client.h" />
@@ -203,13 +209,13 @@
     <ClCompile Include="src\engine\application\GameWindow.cpp" />
     <ClCompile Include="src\engine\application\LayerList.cpp" />
     <ClCompile Include="src\engine\audio\Audio.cpp" />
+    <ClCompile Include="src\engine\audio\AudioFeature.cpp" />
     <ClCompile Include="src\engine\audio\Sound.cpp" />
     <ClCompile Include="src\engine\audio\SoundLoader.cpp" />
     <ClCompile Include="src\engine\editor\ThumbnailRenderer.cpp" />
     <ClCompile Include="src\engine\game\action\ActionMapping.cpp" />
     <ClCompile Include="src\engine\graphics\DrawableComponents.cpp" />
-    <ClCompile Include="src\engine\graphics\Renderer.cpp" />
-    <ClCompile Include="src\engine\graphics\RenderingStatistics.cpp" />
+    <ClCompile Include="src\engine\graphics\GraphicsFeature.cpp" />
     <ClCompile Include="src\engine\graphics\material\Material.cpp" />
     <ClCompile Include="src\engine\graphics\material\MaterialLoader.cpp" />
     <ClCompile Include="src\engine\graphics\material\MaterialProvider.cpp" />
@@ -218,9 +224,13 @@
     <ClCompile Include="src\engine\graphics\mesh\MeshData.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\MeshDataLoader.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\SphereMeshData.cpp" />
+    <ClCompile Include="src\engine\graphics\rendering\Renderer.cpp" />
+    <ClCompile Include="src\engine\graphics\rendering\RenderingStatistics.cpp" />
     <ClCompile Include="src\engine\graphics\shader\Shader.cpp" />
     <ClCompile Include="src\engine\graphics\shader\ShaderSource.cpp" />
     <ClCompile Include="src\engine\graphics\texture\ITexture.cpp" />
+    <ClCompile Include="src\engine\graphics\texture\TextureAtlas.cpp" />
+    <ClCompile Include="src\engine\graphics\texture\TextureAtlasLoader.cpp" />
     <ClCompile Include="src\engine\net\Client.cpp" />
     <ClCompile Include="src\engine\net\Message.cpp" />
     <ClCompile Include="src\engine\net\MessageType.cpp" />

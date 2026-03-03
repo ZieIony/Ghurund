@@ -133,6 +133,7 @@ namespace Ghurund::Engine::_2D {
 		inline size_t find(const Ghurund::Core::Type& type) const {
 			return animations.find([&](SpriteAnimation* c) { return c->Type == type; });
 		}
+
 #pragma region formats
 	protected:
 		virtual const Array<ResourceFormat>& getFormatsImpl() const override {

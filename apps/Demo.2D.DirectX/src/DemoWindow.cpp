@@ -11,6 +11,7 @@
 #include "ui/theme/LightTheme.h"
 #include <engine/2d/physics/component/CapsuleComponent2D.h>
 #include <engine/2d/physics/component/SegmentComponent2D.h>
+#include <engine/2d/scene/tiles/TileMapComponent.h>
 
 namespace Demo {
 	DemoWindow::DemoWindow(
@@ -27,28 +28,27 @@ namespace Demo {
 		auto commandList = makeIntrusive<CommandList>();
 		commandList->init(graphicsFeature->Graphics, graphicsFeature->Graphics.DirectQueue);
 
+		context2d = makeShared<DxGraphics2DContext>(graphicsFeature->MemoryManager, app.ResourceManager);
+
 		camera = makeIntrusive<Camera2D>();
 		camera->ViewSize = { 8, 6 };
 		camera->setPositionUp({ 0, 0 });
 		cameraComponent = makeIntrusive<CameraComponent2D>(camera.ref());
 
 		world = makeShared<World2D>();
-		scene = makeIntrusive<Scene2D>();
+		scene = makeIntrusive<Scene2D>(context2d.ref());
 
 		initCaptain();
 
 		{
-			auto meshData = makeIntrusive<SpriteMeshData>();
-			meshData->init();
-			auto mesh = makeIntrusive<DxMesh>();
-			mesh->init(meshData.ref(), graphicsFeature->MemoryManager);
-
 			ground = makeIntrusive<Entity2D>();
+			ground->Context = context2d.get();
 
 			{
-				auto groundMaterial = IntrusivePointer(app.ResourceManager.load<Material>(ResourceManager::ENGINE_LIB / FilePath(L"materials/DirectX/2d/box.xml")));
-				auto groundBox = makeIntrusive<BoxComponent2D>(mesh.ref(), groundMaterial.ref());
-				groundBox->init(world.ref());
+				auto groundBox = makeIntrusive<BoxComponent2D>();
+				groundBox->World = world.get();
+				groundBox->Owner = ground.get();
+				groundBox->init();
 				groundBox->Type = BodyType::STATIC;
 				groundBox->Position = { 0, 0 };
 				groundBox->Size = { 5, 1 };
@@ -56,15 +56,27 @@ namespace Demo {
 			}
 
 			{
-				auto segmentMaterial = IntrusivePointer(app.ResourceManager.load<Material>(ResourceManager::ENGINE_LIB / FilePath(L"materials/DirectX/2d/segment.xml")));
-				auto segmentBox = makeIntrusive<SegmentComponent2D>(mesh.ref(), segmentMaterial.ref());
-				segmentBox->init(world.ref());
+				auto segmentBox = makeIntrusive<SegmentComponent2D>();
+				segmentBox->World = world.get();
+				segmentBox->Owner = ground.get();
+				segmentBox->init();
 				segmentBox->Type = BodyType::STATIC;
-				segmentBox->Position = { 0, -1.1 };
+				segmentBox->Position = { 0, -1.1f };
 				segmentBox->Size = { 8, 1 };
 				ground->RootComponent->Components.add(segmentBox.get());
 			}
 
+			{
+				auto tileMap = IntrusivePointer<TileMap>(app.ResourceManager.load<TileMap>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/terrainTileMap.xml")));
+				auto tileMapComponent = makeIntrusive<TileMapComponent>();
+				tileMapComponent->TileMap = tileMap.get();
+				tileMapComponent->Owner = ground.get();
+				tileMapComponent->init();
+				tileMapComponent->Position = { 0.0f, -1.0f };
+				ground->RootComponent->Components.add(tileMapComponent.get());
+			}
+
+			ground->init();
 			scene->Entities.add(ground);
 		}
 	}
@@ -72,24 +84,20 @@ namespace Demo {
 	void DemoWindow::initCaptain() {
 		DxGraphicsFeature* graphicsFeature = app.Features.get<DxGraphicsFeature>();
 
-		auto meshData = makeIntrusive<SpriteMeshData>();
-		meshData->init();
-		auto mesh = makeIntrusive<DxMesh>();
-		mesh->init(meshData.ref(), graphicsFeature->MemoryManager);
+		captain = makeIntrusive<Entity2D>();
+		captain->Context = context2d.get();
 
-		auto capsuleMaterial = IntrusivePointer(app.ResourceManager.load<Material>(ResourceManager::ENGINE_LIB / FilePath(L"materials/DirectX/2d/capsule.xml")));
-
-		auto captainCapsule = makeIntrusive<CapsuleComponent2D>(mesh.ref(), capsuleMaterial.ref());
-		captainCapsule->init(world.ref());
+		auto captainCapsule = makeIntrusive<CapsuleComponent2D>();
+		captainCapsule->World = world.get();
+		captainCapsule->Owner = captain.get();
+		captainCapsule->init();
 		captainCapsule->Type = BodyType::DYNAMIC;
 		captainCapsule->IsRotationFixed = true;
-		captainCapsule->Size = { 0.35, 0.7 };
+		captainCapsule->Size = { 0.35f, 0.7f };
 
-		captain = makeIntrusive<Entity2D>();
-		auto shader = IntrusivePointer(app.ResourceManager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(L"shaders/DirectX/2d/sprite.xml")));
-		auto material = makeIntrusive<Material>(graphicsFeature->MemoryManager);
-		material->Shader = shader.get();
-		auto captainSprite = makeIntrusive<AnimatedSpriteComponent>(mesh.ref(), material.ref());
+		auto captainSprite = makeIntrusive<AnimatedSpriteComponent>();
+		captainSprite->Owner = captain.get();
+		captainSprite->init();
 
 		auto animationSet = IntrusivePointer<SpriteAnimationSet>(app.ResourceManager.load<SpriteAnimationSet>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/captain.xml")));
 		captainSprite->Animation = animationSet->get(animationSet->find("idle"));
@@ -100,6 +108,7 @@ namespace Demo {
 		captainCapsule->Components.add(captainSprite.get());
 		captainCapsule->Components.add(cameraComponent.get());
 		captain->RootComponent = captainCapsule.get();
+		captain->init();
 		scene->Entities.add(captain);
 		captain->RootComponent->Position = { 0, 2 };
 	}

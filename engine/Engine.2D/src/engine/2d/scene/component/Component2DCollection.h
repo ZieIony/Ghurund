@@ -21,8 +21,8 @@ namespace Ghurund::Engine::_2D {
 			clear();
 		}
 
-		inline void add(Component2D* component) {
-			components.add(component);
+		inline void add(NotNull<Component2D> component) {
+			components.add(component.get());
 			component->addReference();
 			component->Parent = &owner;
 			collectionChanged();
@@ -46,8 +46,8 @@ namespace Ghurund::Engine::_2D {
 			collectionChanged();
 		}
 
-		inline void insert(size_t i, Component2D* component) {
-			components.insert(i, component);
+		inline void insert(size_t i, NotNull<Component2D> component) {
+			components.insert(i, component.get());
 			component->addReference();
 			component->Parent = &owner;
 			collectionChanged();

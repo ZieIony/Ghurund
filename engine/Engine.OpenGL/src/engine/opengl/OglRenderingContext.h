@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/graphics/RenderingContext.h"
+#include "engine/graphics/rendering/RenderingContext.h"
 
 #include <Windows.h>
 

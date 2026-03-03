@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine/application/Layer.h"
-#include "engine/graphics/RenderGroup.h"
+#include "engine/graphics/rendering/RenderGroup.h"
 #include "ui/constraint/ConstraintGraph.h"
 #include "ui/constraint/WindowConstraint.h"
 #include "ui/RootView.h"

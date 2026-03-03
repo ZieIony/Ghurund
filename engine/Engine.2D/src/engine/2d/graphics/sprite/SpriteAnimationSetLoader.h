@@ -13,11 +13,11 @@ namespace Ghurund::Engine::_2D {
 	private:
         ResourceManager& resourceManager;
 
-        SpriteAnimationSet* loadFromXml(
+        virtual SpriteAnimationSet* loadFromXmlInternal(
             const tinyxml2::XMLElement& xml,
             const DirectoryPath& workingDir,
             LoadOption options
-        );
+        ) override;
 
     public:
         List<DirectoryPath> includeDirs;

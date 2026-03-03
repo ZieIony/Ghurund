@@ -9,13 +9,6 @@ namespace Ghurund::Engine::_2D {
 		return TYPE;
 	}
 		
-	VisualizationComponent2D::VisualizationComponent2D(NotNull<Mesh> mesh, NotNull<Material> material):mesh(mesh.get()), material(material.get()) {
-		mesh->addReference();
-		material->addReference();
-		inputs.init(material->Inputs);
-		inputs.Color = color;
-	}
-	
 	VisualizationComponent2D::~VisualizationComponent2D() {
 		if (mesh)
 			mesh->release();

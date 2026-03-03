@@ -5,7 +5,7 @@
 #include "core/application/Application.h"
 #include "core/application/ApplicationWindow.h"
 #include "engine/game/action/ActionMapping.h"
-#include "engine/graphics/Renderer.h"
+#include "engine/graphics/rendering/Renderer.h"
 #include "engine/parameter/ParameterManager.h"
 #include "engine/parameter/ValueParameter.h"
 

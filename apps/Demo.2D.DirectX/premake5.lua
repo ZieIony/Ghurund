@@ -4,9 +4,10 @@ project "Demo.2D.DirectX"
 
 	dependson {
 		"Core",
+		"Engine",
 		"Engine.DirectX",
 		"Engine.2D",
-		"Engine",
+		"Engine.2D.DirectX",
 		"UI",
 		"UI.DirectX"
 	}
@@ -19,9 +20,10 @@ project "Demo.2D.DirectX"
 	includedirs {
 		"src",
 		includeDir["Core"],
+		includeDir["Engine"],
 		includeDir["Engine.DirectX"],
 		includeDir["Engine.2D"],
-		includeDir["Engine"],
+		includeDir["Engine.2D.DirectX"],
 		includeDir["UI"],
 		includeDir["UI.DirectX"],
 		includeDir["angelscript"],
@@ -31,9 +33,10 @@ project "Demo.2D.DirectX"
 
 	links {
 		"Core",
+		"Engine",
 		"Engine.DirectX",
 		"Engine.2D",
-		"Engine",
+		"Engine.2D.DirectX",
 		"UI",
 		"UI.DirectX"
 	}

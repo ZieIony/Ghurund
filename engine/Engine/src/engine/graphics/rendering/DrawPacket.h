@@ -1,10 +1,7 @@
 #pragma once
 
-#include "core/object/IntrusivePointer.h"
 #include "engine/graphics/material/Material.h"
-#include "mesh/Mesh.h"
-
-#include <DirectXMath.h>
+#include "engine/graphics/mesh/Mesh.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;

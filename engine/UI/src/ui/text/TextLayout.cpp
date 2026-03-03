@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "TextLayout.h"
 
-#include "engine/graphics/RenderGroup.h"
+#include "engine/graphics/rendering/RenderGroup.h"
 #include "engine/graphics/material/TextureInput.h"
 
 namespace Ghurund::UI {

@@ -92,31 +92,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\3d\scene\Camera.h" />
     <ClInclude Include="src\Ghurund.Engine.3D.h" />
-    <ClInclude Include="src\engine\3d\entity\Drawable3DComponent.h" />
-    <ClInclude Include="src\engine\3d\entity\Transform3DComponent.h" />
     <ClInclude Include="src\engine\3d\entity\Component.h" />
+    <ClInclude Include="src\engine\3d\entity\Drawable3DComponent.h" />
     <ClInclude Include="src\engine\3d\entity\Entity.h" />
-    <ClInclude Include="src\engine\3d\scene\Scene.h" />
+    <ClInclude Include="src\engine\3d\entity\Transform3DComponent.h" />
     <ClInclude Include="src\engine\3d\entity\camera\CameraComponent.h" />
-    <ClInclude Include="src\engine\3d\scene\camera\CameraController.h" />
     <ClInclude Include="src\engine\3d\entity\camera\CameraEntity.h" />
-    <ClInclude Include="src\engine\3d\scene\light\Light.h" />
     <ClInclude Include="src\engine\3d\entity\light\LightComponent.h" />
     <ClInclude Include="src\engine\3d\entity\light\LightEntity.h" />
     <ClInclude Include="src\engine\3d\physics\Physics.h" />
     <ClInclude Include="src\engine\3d\physics\PhysicsComponent.h" />
     <ClInclude Include="src\engine\3d\physics\PhysicsSystem.h" />
     <ClInclude Include="src\engine\3d\physics\RigidBodyComponent.h" />
+    <ClInclude Include="src\engine\3d\scene\Camera.h" />
+    <ClInclude Include="src\engine\3d\scene\Scene.h" />
+    <ClInclude Include="src\engine\3d\scene\camera\CameraController.h" />
+    <ClInclude Include="src\engine\3d\scene\light\Light.h" />
     <ClInclude Include="src\ghe3dpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\3d\physics\Physics.cpp" />
     <ClCompile Include="src\engine\3d\scene\Camera.cpp" />
     <ClCompile Include="src\engine\3d\scene\Scene.cpp" />
     <ClCompile Include="src\engine\3d\scene\camera\CameraController.cpp" />
     <ClCompile Include="src\engine\3d\scene\light\Light.cpp" />
-    <ClCompile Include="src\engine\3d\physics\Physics.cpp" />
     <ClCompile Include="src\ghe3dpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TileSet xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" version="1" texture="terrain.png" tileSize="32,32"/>

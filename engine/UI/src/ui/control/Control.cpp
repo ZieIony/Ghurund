@@ -7,7 +7,7 @@
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/UniqueProperty.h"
 #include "core/window/Cursor.h"
-#include "engine/graphics/RenderGroup.h"
+#include "engine/graphics/rendering/RenderGroup.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/theme/Theme.h"
 

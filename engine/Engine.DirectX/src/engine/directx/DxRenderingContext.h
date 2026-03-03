@@ -2,7 +2,7 @@
 
 #include "buffer/RenderTarget.h"
 #include "engine/directx/SwapChain.h"
-#include "engine/graphics/RenderingContext.h"
+#include "engine/graphics/rendering/RenderingContext.h"
 #include "mesh/DxMesh.h"
 #include "shader/DxShader.h"
 

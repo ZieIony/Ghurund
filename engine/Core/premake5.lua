@@ -17,7 +17,6 @@ project "Core"
 	}
 	
 	links {
-		"tinyxml2",
 		"Xinput",
 		"Xinput9_1_0"
 	}

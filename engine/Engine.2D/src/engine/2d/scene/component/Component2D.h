@@ -1,11 +1,14 @@
 #pragma once
 
-#include "engine/graphics/RenderGroup.h"
+#include <core/object/Initializable.h>
+#include "engine/graphics/rendering/RenderGroup.h"
 
 #include <cstdint>
 
 namespace Ghurund::Engine::_2D {
-	class Component2D:public RefCountedObject {
+	class Entity2D;
+
+	class Component2D:public RefCountedObject, public Initializable {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -22,6 +25,7 @@ namespace Ghurund::Engine::_2D {
 		float drawOrder = 0;
 		Ghurund::Core::AString* name = nullptr;
 		Component2D* parent = nullptr;
+		Entity2D* owner = nullptr;
 
 	public:
 		virtual ~Component2D() = 0 {
@@ -56,6 +60,16 @@ namespace Ghurund::Engine::_2D {
 		}
 
 		__declspec(property(get = getParent, put = setParent)) Component2D* Parent;
+
+		inline Entity2D* getOwner() const {
+			return owner;
+		}
+
+		inline void setOwner(Entity2D* owner) {
+			this->owner = owner;
+		}
+
+		__declspec(property(get = getOwner, put = setOwner)) Entity2D* Owner;
 
 		virtual void update(const XMFLOAT4X4& parentTransformation, uint64_t time) {}
 

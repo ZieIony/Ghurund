@@ -40,12 +40,14 @@ namespace Ghurund::Core {
 
 		template<Derived<Feature> T>
 		inline void add() {
-			features.put(&T::TYPE, IntrusivePointer<Feature>(ghnew T()));
+			if (!contains<T>())
+				features.put(&T::TYPE, IntrusivePointer<Feature>(ghnew T()));
 		}
 
 		template<Derived<Feature> T, Derived<FeatureFactory> R>
 		inline void add() {
-			factories.put(&T::TYPE, SharedPointer<FeatureFactory>(ghnew R(app)));
+			if(!contains<T>())
+				factories.put(&T::TYPE, SharedPointer<FeatureFactory>(ghnew R(app)));
 		}
 
 		template<Derived<Feature> T>
@@ -75,6 +77,20 @@ namespace Ghurund::Core {
 			const Type& type = getType<T>();
 			features.remove(&type);
 			factories.remove(&type);
+		}
+
+		template<Derived<Feature> T>
+		inline bool contains() const {
+			const Type& type = getType<T>();
+			for (auto& entry : features) {
+				if (entry.key->isOrExtends(type))
+					return true;
+			}
+			for (auto& entry : factories) {
+				if (entry.key->isOrExtends(type))
+					return true;
+			}
+			return false;
 		}
 
 		void init() {

@@ -22,7 +22,7 @@ namespace Ghurund {
     using Microsoft::WRL::ComPtr;
     using namespace Ghurund::Core;
 
-    class Audio:public Feature {
+    class Audio:public Noncopyable, public Object, public Initializable {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {

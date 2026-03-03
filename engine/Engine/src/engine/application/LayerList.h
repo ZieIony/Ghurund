@@ -6,7 +6,7 @@
 #include "core/input/EventConsumer.h"
 #include "core/math/Size.h"
 #include "core/object/IntrusivePointer.h"
-#include "engine/graphics/RenderingContext.h"
+#include "engine/graphics/rendering/RenderingContext.h"
 
 namespace Ghurund::Engine {
     class LayerList {

@@ -5,8 +5,7 @@
 
 #include "core/Color.h"
 #include "core/window/SystemWindow.h"
-#include "engine/graphics/Renderer.h"
-#include "engine/graphics/RenderingStatistics.h"
+#include "engine/graphics/rendering/Renderer.h"
 #include "engine/parameter/ParameterManager.h"
 #include "OglRenderingContext.h"
 

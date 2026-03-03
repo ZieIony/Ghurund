@@ -5,7 +5,7 @@
 #include "Postprocess.h"
 
 #include "core/Color.h"
-#include "engine/graphics/Renderer.h"
+#include "engine/graphics/rendering/Renderer.h"
 
 namespace Ghurund::Engine::DirectX {
     using namespace ::DirectX;

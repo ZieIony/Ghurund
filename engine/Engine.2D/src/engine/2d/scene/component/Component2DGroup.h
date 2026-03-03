@@ -3,7 +3,7 @@
 #include "Component2D.h"
 #include "Component2DCollection.h"
 
-#include "engine/graphics/RenderGroup.h"
+#include "engine/graphics/rendering/RenderGroup.h"
 
 #include <cstdint>
 
@@ -24,7 +24,27 @@ namespace Ghurund::Engine::_2D {
 	private:
 		Component2DCollection components = *this;
 
+	protected:
+		virtual void onInit() {
+			for (auto& component : components)
+				component->init();
+		};
+
+		inline void uninitComponent2DGroup() {
+			for (auto& component : components)
+				component->uninit();
+		}
+
+		virtual void onUninit() {
+			uninitComponent2DGroup();
+		};
+
 	public:
+		~Component2DGroup() {
+			if (IsInitialized)
+				uninitComponent2DGroup();
+		}
+
 		inline Component2DCollection& getComponents() {
 			return components;
 		}

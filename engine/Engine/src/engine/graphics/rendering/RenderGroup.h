@@ -1,7 +1,7 @@
 #pragma once
 
 #include "DrawPacket.h"
-#include "ICamera.h"
+#include "engine/graphics/ICamera.h"
 
 #include "core/collection/List.h"
 

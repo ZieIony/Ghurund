@@ -11,7 +11,7 @@ namespace Ghurund::Core {
         virtual void onUninit() {};
 
     public:
-        virtual ~Initializable() = default;
+        virtual ~Initializable() = 0 {};
 
         inline bool getIsInitialized() const {
             return isInitialized;

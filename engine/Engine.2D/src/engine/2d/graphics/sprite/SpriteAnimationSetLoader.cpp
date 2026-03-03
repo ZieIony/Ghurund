@@ -1,22 +1,12 @@
 #include "ghe2dpch.h"
 #include "SpriteAnimationSetLoader.h"
 
-#include "core/exception/InvalidVersionException.h"
-
 namespace Ghurund::Engine::_2D {
-	SpriteAnimationSet* SpriteAnimationSetLoader::loadFromXml(
+	SpriteAnimationSet* SpriteAnimationSetLoader::loadFromXmlInternal(
 		const tinyxml2::XMLElement& xml,
 		const DirectoryPath& workingDir,
 		LoadOption options
 	) {
-		if (AString(xml.Name()) != "SpriteAnimationSet")
-			throw InvalidFormatException();
-		auto versionAttr = xml.FindAttribute("version");
-		if (!versionAttr)
-			throw InvalidFormatException();
-		if (versionAttr->IntValue() != SpriteAnimationSet::VERSION)
-			throw InvalidVersionException(versionAttr->IntValue(), SpriteAnimationSet::VERSION);
-
 		auto animationSet = makeIntrusive<SpriteAnimationSet>();
 		auto animationElement = xml.FirstChildElement("SpriteAnimation");
 		while (animationElement) {
@@ -50,15 +40,7 @@ namespace Ghurund::Engine::_2D {
 		const ResourceFormat& format,
 		LoadOption options
 	) {
-		AString streamContents = stream.readASCII();
-		tinyxml2::XMLDocument document;
-		document.Parse(streamContents.Data);
-		const tinyxml2::XMLElement* root = document.RootElement();
-		if (root) {
-			return loadFromXml(*root, workingDir, options);
-		} else {
-			throw InvalidDataException();
-		}
+		return loadFromXml<SpriteAnimationSet>(stream, workingDir, options);
 	}
 
 	void SpriteAnimationSetLoader::saveInternal(

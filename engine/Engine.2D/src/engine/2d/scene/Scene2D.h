@@ -3,6 +3,7 @@
 #include "Entity2D.h"
 
 #include "core/resource/Resource.h"
+#include <engine/2d/IGraphics2DContext.h>
 
 namespace Ghurund::Engine::_2D {
     class Scene2D:public Resource {
@@ -19,10 +20,11 @@ namespace Ghurund::Engine::_2D {
 #pragma endregion
 
     private:
+        IGraphics2DContext& context;
         List<IntrusivePointer<Entity2D>> entities;
 
     public:
-        Scene2D() {}
+        Scene2D(IGraphics2DContext& context):context(context) {}
 
         inline List<IntrusivePointer<Entity2D>>& getEntities() {
             return entities;

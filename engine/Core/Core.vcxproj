@@ -70,7 +70,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>tinyxml2.lib;Xinput.lib;Xinput9_1_0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Xinput.lib;Xinput9_1_0.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
@@ -96,12 +96,11 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>tinyxml2.lib;Xinput.lib;Xinput9_1_0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Xinput.lib;Xinput9_1_0.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
-    <ClInclude Include="src\core\exception\InvalidVersionException.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -163,6 +162,7 @@
     <ClInclude Include="src\core\concepts\Iterable.h" />
     <ClInclude Include="src\core\exception\Exceptions.h" />
     <ClInclude Include="src\core\exception\FormatNotSupportedException.h" />
+    <ClInclude Include="src\core\exception\InvalidVersionException.h" />
     <ClInclude Include="src\core\exception\NullPointerException.h" />
     <ClInclude Include="src\core\feature\Feature.h" />
     <ClInclude Include="src\core\feature\FeatureFactory.h" />

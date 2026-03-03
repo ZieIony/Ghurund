@@ -21,10 +21,6 @@ namespace Ghurund::Engine::_2D {
 		SpriteAnimation* animation = nullptr;
 
 	public:
-		AnimatedSpriteComponent() {}
-
-		AnimatedSpriteComponent(NotNull<Ghurund::Engine::Mesh> mesh, NotNull<Ghurund::Engine::Material> material):BaseSpriteComponent(mesh, material) {}
-
 		~AnimatedSpriteComponent() {
 			if (animation)
 				animation->release();
@@ -40,16 +36,6 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getAnimation, put = setAnimation)) SpriteAnimation* Animation;
 
-		virtual bool isValid() const {
-			return material != nullptr && material->Valid && mesh != nullptr && mesh->Valid;
-		}
-
-		virtual void update(const XMFLOAT4X4& parentTransformation, uint64_t time) override {
-			__super::update(parentTransformation, time);
-			if (animation) {
-				animation->update(time);
-				inputs.ColorTexture = animation->CurrentTexture;
-			}
-		}
+		virtual void update(const XMFLOAT4X4& parentTransformation, uint64_t time) override;
 	};
 }

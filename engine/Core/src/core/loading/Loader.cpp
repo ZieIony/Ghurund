@@ -33,4 +33,22 @@ namespace Ghurund::Core {
 			throw InvalidDataException(exMessage.Data);
 		}
 	}
+
+	void Loader::checkXmlRoot(const tinyxml2::XMLElement& xml, const Ghurund::Core::Type& type, uint32_t version) {
+		if (xml.Name() != type.Name) {
+			auto message = std::format("Invalid resource type name (expected: {}, read: {})\n", type.Name, xml.Name());
+			String exMessage = convertText<char, tchar>(AString(message.c_str()));
+			Logger::log(LogType::ERR0R, exMessage.Data);
+			throw InvalidDataException(message.c_str());
+		}
+		auto versionAttr = xml.FindAttribute("version");
+		if (!versionAttr)
+			throw InvalidFormatException();
+		if (versionAttr->IntValue() != version) {
+			auto message = std::format(_T("Invalid version number (expected: {}, read: {})\n"), version, versionAttr->IntValue());
+			Logger::log(LogType::ERR0R, message.c_str());
+			AString exMessage = convertText<tchar, char>(String(message.c_str()));
+			throw InvalidDataException(exMessage.Data);
+		}
+	}
 }

@@ -4,8 +4,8 @@
 
 #include "core/Colors.h"
 #include "core/math/Size.h"
-#include "core/object/NotNull.h"
 #include "engine/2d/scene/component/TransformComponent2D.h"
+#include "engine/2d/scene/Entity2D.h"
 #include "engine/graphics/material/Material.h"
 #include "engine/graphics/mesh/Mesh.h"
 
@@ -34,10 +34,10 @@ namespace Ghurund::Engine::_2D {
 		bool selectable = true, visible = true, cullingEnabled = true;
 		FloatSize size = { 1, 1 };
 
-		void finalize() {
+		inline void uninitBaseSpriteComponent() {
 			safeRelease(mesh);
 			safeRelease(material);
-		}
+		};
 
 	protected:
 		Mesh* mesh = nullptr;
@@ -46,21 +46,21 @@ namespace Ghurund::Engine::_2D {
 		float alpha = 1.0f;
 		SpriteInputs inputs;
 
+		virtual void onInit() {
+			__super::onInit();
+			Mesh = IntrusivePointer(Owner->Context->makeSpriteMesh()).get();
+			Material = IntrusivePointer(Owner->Context->makeSpriteMaterial()).get();
+		}
+
+		virtual void onUninit() {
+			uninitBaseSpriteComponent();
+			__super::onUninit();
+		};
+
 	public:
-		BaseSpriteComponent() {}
-
-		BaseSpriteComponent(NotNull<Mesh> mesh, NotNull<Material> material):mesh(mesh.get()), material(material.get()) {
-			mesh->addReference();
-			material->addReference();
-			inputs.init(material->Inputs);
-		}
-
 		virtual ~BaseSpriteComponent() = 0 {
-			finalize();
-		}
-
-		virtual void invalidate() {
-			finalize();
+			if (IsInitialized)
+				uninitBaseSpriteComponent();
 		}
 
 		inline void setMesh(Mesh* mesh) {
@@ -98,10 +98,6 @@ namespace Ghurund::Engine::_2D {
 		}
 
 		__declspec(property(get = getSize, put = setSize)) const FloatSize& Size;
-
-		virtual bool isValid() const {
-			return material != nullptr && material->Valid && mesh != nullptr && mesh->Valid;
-		}
 
 		virtual void draw(RenderGroup& group) override;
 

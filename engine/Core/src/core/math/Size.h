@@ -55,7 +55,7 @@ namespace Ghurund::Core {
 		}
 
 		static BaseSize<T> parse(const AString& text) {
-			std::regex regex(" *(d+) *, *(d+) *");
+			std::regex regex(" *(.*) *, *(.*) *");
 			std::smatch m;
 			std::string s = text.Data;
 			if (std::regex_match(s, m, regex)) {

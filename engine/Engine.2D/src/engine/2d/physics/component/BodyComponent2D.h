@@ -28,11 +28,13 @@ namespace Ghurund::Engine::_2D {
 #pragma endregion
 
 	private:
-		bool initialized = false;
+		World2D* world;
 		b2BodyId id;
-		VisualizationComponent2D* visualizationComponent = nullptr;
 
 	protected:
+		bool isVisualized = true;
+		VisualizationComponent2D* visualizationComponent = nullptr;
+
 		XMFLOAT2 scale = { 1, 1 };
 		FloatSize size = { 1, 1 };
 
@@ -69,34 +71,39 @@ namespace Ghurund::Engine::_2D {
 			updateSize();
 		}
 
+		virtual void onInit() override {
+			__super::onInit();
+			b2BodyDef bodyDef = b2DefaultBodyDef();
+			bodyDef.position = { 0.0f, 0.0f };
+			id = b2CreateBody(world->Id, &bodyDef);
+		}
+
+		inline void uninitBodyComponent2D() {
+			b2DestroyBody(id);
+		};
+
+		virtual void onUninit() {
+			uninitBodyComponent2D();
+			__super::onUninit();
+		};
+
 		virtual void updateSize() = 0;
 
 	public:
-		BodyComponent2D() {}
-
-		BodyComponent2D(NotNull<Mesh> mesh, NotNull<Material> material) {
-			visualizationComponent = ghnew VisualizationComponent2D(mesh, material);
-			Components.add(visualizationComponent);
-		}
-
 		virtual ~BodyComponent2D() = 0 {
-			if (visualizationComponent)
-				visualizationComponent->release();
-			if (initialized)
-				uninit();
+			if (IsInitialized)
+				uninitBodyComponent2D();
 		}
 
-		inline void init(const World2D& world) {
-			b2BodyDef bodyDef = b2DefaultBodyDef();
-			bodyDef.position = { 0.0f, 0.0f };
-			id = b2CreateBody(world.Id, &bodyDef);
-			initialized = true;
+		inline void setWorld(World2D* world) {
+			this->world = world;
 		}
 
-		inline void uninit() {
-			b2DestroyBody(id);
-			initialized = false;
+		inline World2D* getWorld() const {
+			return world;
 		}
+
+		__declspec(property(get = getWorld, put = setWorld)) World2D* World;
 
 		inline b2BodyId getId() const {
 			return id;

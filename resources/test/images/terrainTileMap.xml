@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TileMap xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" version="1" tileSet="terrainTileSet.xml" size="5, 3">
+	0 1 1 1 2
+	17 18 18 18 19
+	34 35 35 35 36
+</TileMap>

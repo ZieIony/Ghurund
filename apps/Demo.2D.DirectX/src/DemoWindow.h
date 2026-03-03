@@ -7,23 +7,20 @@
 #include "engine/2d/scene/camera/Camera2D.h"
 #include <engine/2d/scene/Entity2D.h>
 #include <engine/2d/scene/camera/CameraComponent2D.h>
-#include <ui/directx/text/DxTextMeshFactory.h>
-#include <engine/directx/texture/DxTextureFactory.h>
-#include <ui/directx/DxUIContext.h>
-#include <ui/UILayer.h>
-#include <ui/control/ControlGroup.h>
-#include "ui/theme/Theme.h"
+#include <engine/2d/directx/DxGraphics2DContext.h>
 
 namespace Demo {
 	using namespace Ghurund;
 	using namespace Ghurund::Core;
 	using namespace Ghurund::UI;
 	using namespace Ghurund::Engine::_2D;
+	using namespace Ghurund::Engine::_2D::DirectX;
 
 	class DemoWindow:public Ghurund::Engine::GameWindow {
 	private:
 		DemoApplication& app;
 
+		SharedPointer<DxGraphics2DContext> context2d;
 		Set<RenderGroup> renderGroups;
 		IntrusivePointer<Scene2D> scene;
 		SharedPointer<World2D> world;

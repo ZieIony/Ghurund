@@ -14,6 +14,7 @@
 #include "core/resource/SaveOption.h"
 
 #include <cstdint>
+#include <tinyxml2.h>
 
 namespace Ghurund::Core {
 	class ResourceManager;
@@ -66,6 +67,39 @@ namespace Ghurund::Core {
 		}
 
 		void readHeader(MemoryInputStream& stream, const Ghurund::Core::Type& type, uint32_t version);
+
+		template<Derived<Resource> T>
+		void checkXmlRoot(const tinyxml2::XMLElement& xml) {
+			checkXmlRoot(xml, T::TYPE, T::VERSION);
+		}
+
+		void checkXmlRoot(const tinyxml2::XMLElement& xml, const Ghurund::Core::Type& type, uint32_t version);
+
+		virtual Resource* loadFromXmlInternal(
+			const tinyxml2::XMLElement& xml,
+			const DirectoryPath& workingDir,
+			LoadOption options
+		) {
+			throw NotSupportedException();
+		}
+
+		template<Derived<Resource> T>
+		T* loadFromXml(
+			MemoryInputStream& stream,
+			const DirectoryPath& workingDir,
+			LoadOption options
+		) {
+			AString streamContents = stream.readASCII();
+			tinyxml2::XMLDocument document;
+			document.Parse(streamContents.Data);
+			const tinyxml2::XMLElement* root = document.RootElement();
+			if (root) {
+				checkXmlRoot<T>(*root);
+				return (T*)loadFromXmlInternal(*root, workingDir, options);
+			} else {
+				throw InvalidDataException();
+			}
+		}
 
         virtual Resource* loadInternal(
             MemoryInputStream& stream,

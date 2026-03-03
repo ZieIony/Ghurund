@@ -24,7 +24,8 @@ public:
         {
             World2D world;
             BoxComponent2D component;
-            component.init(world);
+            component.World = &world;
+            component.init();
             component.Position = { 100, 30 };
             Assert::AreEqual(100.0f, component.Position.x);
             Assert::AreEqual(30.0f, component.Position.y);
@@ -36,7 +37,8 @@ public:
         {
             World2D world;
             BoxComponent2D component;
-            component.init(world);
+            component.World = &world;
+            component.init();
             component.Size = { 100, 30 };
             Assert::AreEqual(100.0f, component.Size.Width);
             Assert::AreEqual(30.0f, component.Size.Height);
@@ -48,7 +50,8 @@ public:
         {
             World2D world;
             BoxComponent2D component;
-            component.init(world);
+            component.World = &world;
+            component.init();
             component.Rotation = 90.0f;
             Assert::AreEqual(90.0f, component.Rotation);
         }

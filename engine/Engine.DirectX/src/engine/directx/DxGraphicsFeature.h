@@ -26,7 +26,7 @@ namespace Ghurund::Engine::DirectX {
     private:
         DxGraphics graphics;
         IntrusivePointer<CommandList> commandList;
-        DxGPUMemoryManager* memoryManager;
+        DxGPUMemoryManager* memoryManager = nullptr;
         ResourceManager& resourceManager;
         SharedPointer<DxShaderCompiler> shaderCompiler;
         IntrusivePointer<ImageLoader> imageLoader;

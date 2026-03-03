@@ -35,9 +35,23 @@ namespace Ghurund::Engine::_2D {
 		XMFLOAT2 extents = { 0, 0 };
 
 	public:
-		VisualizationComponent2D(NotNull<Mesh> mesh, NotNull<Material> material);
-		
 		~VisualizationComponent2D();
+
+		inline void setMesh(Mesh* mesh) {
+			setPointer(this->mesh, mesh);
+		}
+
+		__declspec(property(put = setMesh)) Mesh* Mesh;
+
+		inline void setMaterial(Material* material) {
+			setPointer(this->material, material);
+			if (material) {
+				inputs.init(material->Inputs);
+				inputs.Color = color;
+			}
+		}
+
+		__declspec(property(put = setMaterial)) Material* Material;
 
 		inline void setTransformation(const XMFLOAT4X4& transformation) {
 			this->worldTransformation = transformation;
