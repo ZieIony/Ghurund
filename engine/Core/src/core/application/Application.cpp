@@ -49,10 +49,10 @@ namespace Ghurund::Core {
             if (handleMessages())
                 break;
 
-            functionQueue.invoke();
             resourceManager.reload();
 
             timer.tick();
+            coroutineScheduler.update();
             for (auto window : windows)
                 window->update();
 

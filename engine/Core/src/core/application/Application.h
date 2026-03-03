@@ -7,20 +7,20 @@
 #include "core/object/Initializable.h"
 #include "core/object/Noncopyable.h"
 #include "core/Timer.h"
-#include "core/threading/FunctionQueue.h"
 #include "core/resource/ResourceManager.h"
+#include "core/coroutine/CoroutineScheduler.h"
 
 namespace Ghurund::Core {
 	class Application:public Noncopyable, public Initializable {
 	private:
+		Timer timer;
 		WindowCollection windows;
-		FunctionQueue functionQueue;
+		CoroutineScheduler coroutineScheduler = timer;
 		bool running = false;
 
 		Settings settings;
 
 		ResourceManager resourceManager;
-		Timer timer;
 
 		FeatureProvider features = *this;
 
@@ -48,6 +48,7 @@ namespace Ghurund::Core {
 			if (IsInitialized)
 				uninitApplication();
 
+			// TODO: cancel and destroy coroutines
 			OleUninitialize();
 			CoUninitialize();
 		}
@@ -76,11 +77,11 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = getWindows)) WindowCollection& Windows;
 
-		FunctionQueue& getFunctionQueue() {
-			return functionQueue;
+		CoroutineScheduler& getCoroutineScheduler() {
+			return coroutineScheduler;
 		}
 
-		__declspec(property(get = getFunctionQueue)) FunctionQueue& FunctionQueue;
+		__declspec(property(get = getCoroutineScheduler)) CoroutineScheduler& CoroutineScheduler;
 
 		inline ResourceManager& getResourceManager() {
 			return resourceManager;

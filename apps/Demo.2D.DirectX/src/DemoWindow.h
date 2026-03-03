@@ -8,6 +8,7 @@
 #include <engine/2d/scene/Entity2D.h>
 #include <engine/2d/scene/camera/CameraComponent2D.h>
 #include <engine/2d/directx/DxGraphics2DContext.h>
+#include <core/coroutine/CoroutineTask.h>
 
 namespace Demo {
 	using namespace Ghurund;
@@ -44,6 +45,8 @@ namespace Demo {
 		}
 
 		void initCaptain();
+
+		CoroutineTask jumpDelayed();
 
 		virtual bool onKeyEvent(const KeyEventArgs& args) override;
 

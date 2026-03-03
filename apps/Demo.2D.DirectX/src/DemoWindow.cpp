@@ -4,7 +4,6 @@
 
 #include "core/Colors.h"
 #include "core/window/DisplayManager.h"
-#include <engine/graphics/mesh/SpriteMeshData.h>
 #include <engine/2d/graphics/sprite/AnimatedSpriteComponent.h>
 #include <engine/2d/physics/component/BoxComponent2D.h>
 //#include "engine/2d/entity/CameraComponent2D.h"
@@ -113,6 +112,16 @@ namespace Demo {
 		captain->RootComponent->Position = { 0, 2 };
 	}
 
+	CoroutineTask DemoWindow::jumpDelayed() {
+		co_await app.CoroutineScheduler.delay(1000);
+		BodyComponent2D& body = (BodyComponent2D&)*captain->RootComponent;
+		body.applyForce({ 0, 1000 });
+		co_await app.CoroutineScheduler.delay(1000);
+		body.applyForce({ 1000, 0 });
+		co_await app.CoroutineScheduler.delay(1000);
+		body.applyForce({ -1000, 0 });
+	}
+
 	bool DemoWindow::onKeyEvent(const KeyEventArgs& args) {
 		//bool result = __super::onKeyEvent(args);
 		///if (result)
@@ -134,6 +143,8 @@ namespace Demo {
 			auto currentMode = DisplayManager::getDisplayMode();
 			ClientSize = currentMode.size;
 			Position = { 0, 0 };
+		} else if (args.KeyCode == 'e') {
+			jumpDelayed();
 		} else if (args.KeyCode == 'w') {
 			BodyComponent2D& body = (BodyComponent2D&)*captain->RootComponent;
 			body.applyForce({ 0, 1000 });

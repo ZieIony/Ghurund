@@ -1,6 +1,6 @@
 #pragma once
 
-#include "List.h"
+#include "ArrayCollection.h"
 
 #include <cassert>
 
@@ -56,6 +56,42 @@ namespace Ghurund::Core {
             for (size_t i = 0; i < list.size(); i++, j++)
                 new(A::v + A::size + i) Value(*j);
             A::size += list.size();
+        }
+
+        inline Value& get(size_t i) const {
+            _____________________check(i < A::size, "Index out of bounds.\n");
+            return A::v[i];
+        }
+
+        inline Value& operator[](size_t i) const {
+            _____________________check(i < A::size, "Index out of bounds.\n");
+            return A::v[i];
+        }
+
+        inline void set(size_t i, const Value& item) {
+            _____________________check(i < A::size, "Index out of bounds.\n");
+            new(A::v + i) Value(item);
+            A::v[i].~Value();
+        }
+
+        inline void set(size_t i, Value&& item) {
+            _____________________check(i < A::size, "Index out of bounds.\n");
+            new(A::v + i) Value(std::move(item));
+            A::v[i].~Value();
+        }
+
+        inline size_t indexOf(const Value& item) const {
+            for (size_t i = 0; i < A::size; i++)
+                if (A::v[i] == item)
+                    return i;
+            return A::size;
+        }
+
+        inline void removeAt(size_t i) {
+            _____________________check(i < A::size, "Index out of bounds.\n");
+            A::v[i] = std::move(A::v[A::size - 1]);
+            A::v[A::size - 1].~Value();
+            A::size--;
         }
 
         inline void remove(const Value& item) {
