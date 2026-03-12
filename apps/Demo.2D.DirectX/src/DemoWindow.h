@@ -44,7 +44,11 @@ namespace Demo {
 			world.set(nullptr);
 		}
 
-		void initCaptain();
+		CoroutineTask initScene();
+
+		CoroutineTask initGround();
+
+		CoroutineTask initCaptain();
 
 		CoroutineTask jumpDelayed();
 

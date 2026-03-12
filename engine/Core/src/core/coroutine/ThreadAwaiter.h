@@ -5,21 +5,21 @@
 #include <coroutine>
 
 namespace Ghurund::Core {
-	class UpdateAwaiter {
+	class ThreadAwaiter {
 	private:
-		Bag<std::coroutine_handle<>>& updateAwaiters;
+		Bag<std::coroutine_handle<>>& threadAwaiters;
 
 	public:
-		UpdateAwaiter(Bag<std::coroutine_handle<>>& updateAwaiters):updateAwaiters(updateAwaiters) {}
+		ThreadAwaiter(Bag<std::coroutine_handle<>>& threadAwaiters):threadAwaiters(threadAwaiters) {}
 
-		UpdateAwaiter(const UpdateAwaiter& other):updateAwaiters(other.updateAwaiters) {}
+		ThreadAwaiter(const ThreadAwaiter& other):threadAwaiters(other.threadAwaiters) {}
 
 		bool await_ready() const {
 			return false;
 		}
 
 		bool await_suspend(std::coroutine_handle<> handle) {
-			updateAwaiters.add(handle);
+			threadAwaiters.add(handle);
 			return true;
 		}
 

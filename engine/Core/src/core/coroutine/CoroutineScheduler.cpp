@@ -3,15 +3,18 @@
 
 namespace Ghurund::Core {
 	void CoroutineScheduler::update() {
-		List<DelayAwaiter> delayAwaitersToResume;
-		for (size_t i = 0; i < delayAwaiters.Size;) {
-			auto& awaiter = delayAwaiters[i];
-			if (awaiter.IsDone) {
-				awaiter.destroy();
-				delayAwaiters.removeAt(i);
-			} else if (awaiter.ResumeTime <= timer.TimeMs) {
+		{
+			std::unique_lock<std::mutex> lock(mutex);
+			updateAwaiters.addAll(fromAnotherThread);
+			fromAnotherThread.clear();
+		}
+
+		List<DelayedUpdateAwaiter> delayAwaitersToResume;
+		for (size_t i = 0; i < delayedUpdateAwaiters.Size;) {
+			auto& awaiter = delayedUpdateAwaiters[i];
+			if (awaiter.ResumeTime <= timer.TimeMs) {
 				delayAwaitersToResume.add(awaiter);
-				delayAwaiters.removeAt(i);
+				delayedUpdateAwaiters.removeAt(i);
 			} else {
 				i++;
 			}
@@ -19,13 +22,17 @@ namespace Ghurund::Core {
 		for (auto& awaiter : delayAwaitersToResume)
 			awaiter.resume();
 
-		List<UpdateAwaiter> updateAwaitersToResume = updateAwaiters;
+		List<std::coroutine_handle<>> updateAwaitersToResume = updateAwaiters;
 		updateAwaiters.clear();
-		for (auto& awaiter : updateAwaitersToResume) {
-			if (awaiter.IsDone) {
-				awaiter.destroy();
+		for (auto& awaiter : updateAwaitersToResume)
+			awaiter.resume();
+
+		for (size_t i = 0; i < tasks.Size;) {
+			auto& task = tasks[i];
+			if (task.IsDone) {
+				tasks.removeAt(i);
 			} else {
-				awaiter.resume();
+				i++;
 			}
 		}
 	}

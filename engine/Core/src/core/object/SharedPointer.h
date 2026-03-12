@@ -14,9 +14,9 @@ namespace Ghurund::Core {
 	public:
 		constexpr SharedPointer():pointer(nullptr), referenceCount(ghnew uint32_t(1)) {}
 
-		SharedPointer(const SharedPointer<T>& other) {
-			pointer = other.pointer;
-			referenceCount = other.referenceCount;
+		SharedPointer(
+			const SharedPointer<T>& other
+		):pointer(other.pointer), referenceCount(other.referenceCount) {
 			(*referenceCount)++;
 		}
 

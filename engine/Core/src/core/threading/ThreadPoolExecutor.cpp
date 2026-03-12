@@ -69,7 +69,7 @@ namespace Ghurund::Core {
         if (waitingThreads.Empty)
             return false;
         SharedPointer<Task> task = findNextTask();
-        if (&task == nullptr)
+        if (task == nullptr)
             return false;
         PoolThread* thread = waitingThreads[0];
         waitingThreads.removeFront();

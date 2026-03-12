@@ -1,10 +1,6 @@
 #pragma once
 
-#include "core/threading/CriticalSection.h"
-#include "core/reflection/Type.h"
-
-#include <process.h>
-#include <queue>
+#include <Windows.h>
 
 namespace Ghurund::Core {
     class Thread {

@@ -15,7 +15,10 @@ namespace Ghurund::Core {
 	private:
 		Timer timer;
 		WindowCollection windows;
-		CoroutineScheduler coroutineScheduler = timer;
+
+		CoroutineThreadPool threadPool = CoroutineThreadPool(4);
+		CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
+
 		bool running = false;
 
 		Settings settings;

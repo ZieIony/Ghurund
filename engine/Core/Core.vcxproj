@@ -103,7 +103,10 @@
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\core\coroutine\CoroutineScheduler.h" />
     <ClInclude Include="src\core\coroutine\CoroutineTask.h" />
+    <ClInclude Include="src\core\coroutine\CoroutineThreadPool.h" />
     <ClInclude Include="src\core\coroutine\DelayAwaiter.h" />
+    <ClInclude Include="src\core\coroutine\DelayedUpdateAwaiter.h" />
+    <ClInclude Include="src\core\coroutine\ThreadAwaiter.h" />
     <ClInclude Include="src\core\coroutine\UpdateAwaiter.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
@@ -294,6 +297,7 @@
   <ItemGroup>
     <ClCompile Include="src\core\Color.cpp" />
     <ClCompile Include="src\core\coroutine\CoroutineScheduler.cpp" />
+    <ClCompile Include="src\core\coroutine\CoroutineThreadPool.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
     <ClCompile Include="src\core\allocation\SimpleBufferStrategy.cpp" />
