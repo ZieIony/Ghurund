@@ -24,7 +24,6 @@ project "Editor"
 		includeDir["Engine"],
 		includeDir["entt"],
 		includeDir["CRC"],
-		includeDir["angelscript"],
 		includeDir["PhysX"],
 		includeDir["PhysX.Shared"],
 		includeDir["DirectX"]
@@ -39,7 +38,6 @@ project "Editor"
 	
 	filter "configurations:Debug"
 		links {
-			library["angelscript_Debug"],
 			library["PhysX_Debug"],
 			library["PhysXCommon_Debug"],
 			library["PhysXFoundation_Debug"],
@@ -49,7 +47,6 @@ project "Editor"
 
 	filter "configurations:Release"
 		links {
-			library["angelscript_Release"],
 			library["PhysX_Release"],
 			library["PhysXCommon_Release"],
 			library["PhysXFoundation_Release"],

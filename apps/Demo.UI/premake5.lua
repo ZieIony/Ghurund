@@ -26,7 +26,6 @@ project "Demo.UI"
 		includeDir["Engine"],
 		includeDir["entt"],
 		includeDir["CRC"],
-		includeDir["angelscript"],
 		includeDir["PhysX"],
 		includeDir["PhysX.Shared"],
 		includeDir["DirectX"]
@@ -42,7 +41,6 @@ project "Demo.UI"
 	
 	filter "configurations:Debug"
 		links {
-			library["angelscript_Debug"],
 			library["PhysX_Debug"],
 			library["PhysXCommon_Debug"],
 			library["PhysXFoundation_Debug"],
@@ -52,7 +50,6 @@ project "Demo.UI"
 
 	filter "configurations:Release"
 		links {
-			library["angelscript_Release"],
 			library["PhysX_Release"],
 			library["PhysXCommon_Release"],
 			library["PhysXFoundation_Release"],

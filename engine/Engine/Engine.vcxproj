@@ -57,7 +57,7 @@
       <PrecompiledHeaderFile>ghepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.36.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -68,9 +68,6 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <Lib>
-      <AdditionalDependencies>..\..\libs\angelscript_2.36.0\sdk\angelscript\lib\angelscript64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
     <ClCompile>
@@ -78,7 +75,7 @@
       <PrecompiledHeaderFile>ghepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.36.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -93,9 +90,6 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
-    <Lib>
-      <AdditionalDependencies>..\..\libs\angelscript_2.36.0\sdk\angelscript\lib\angelscript64.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Ghurund.Engine.h" />
@@ -186,23 +180,6 @@
     <ClInclude Include="src\engine\parameter\ParameterManager.h" />
     <ClInclude Include="src\engine\parameter\TextureParameter.h" />
     <ClInclude Include="src\engine\parameter\ValueParameter.h" />
-    <ClInclude Include="src\engine\script\Script.h" />
-    <ClInclude Include="src\engine\script\ScriptComponent.h" />
-    <ClInclude Include="src\engine\script\ScriptEngine.h" />
-    <ClInclude Include="src\engine\script\ScriptExecutionException.h" />
-    <ClInclude Include="src\engine\script\ScriptLoader.h" />
-    <ClInclude Include="src\engine\script\Scripts.h" />
-    <ClInclude Include="src\engine\script\StringFactory.h" />
-    <ClInclude Include="src\engine\script\angelscript\scriptmath.h" />
-    <ClInclude Include="src\engine\script\bindings\CameraScriptBindings.h" />
-    <ClInclude Include="src\engine\script\bindings\CollectionScriptBindings.h" />
-    <ClInclude Include="src\engine\script\bindings\EntityScriptBindings.h" />
-    <ClInclude Include="src\engine\script\bindings\LightScriptBindings.h" />
-    <ClInclude Include="src\engine\script\bindings\MathScriptBindings.h" />
-    <ClInclude Include="src\engine\script\bindings\ModelScriptBindings.h" />
-    <ClInclude Include="src\engine\script\bindings\SceneScriptBindings.h" />
-    <ClInclude Include="src\engine\script\bindings\ScriptBindings.h" />
-    <ClInclude Include="src\engine\script\bindings\TimerScriptBindings.h" />
     <ClInclude Include="src\ghepch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -240,10 +217,6 @@
     <ClCompile Include="src\engine\net\Socket.cpp" />
     <ClCompile Include="src\engine\parameter\Parameter.cpp" />
     <ClCompile Include="src\engine\parameter\ParameterManager.cpp" />
-    <ClCompile Include="src\engine\script\Script.cpp" />
-    <ClCompile Include="src\engine\script\ScriptEngine.cpp" />
-    <ClCompile Include="src\engine\script\ScriptLoader.cpp" />
-    <ClCompile Include="src\engine\script\angelscript\scriptmath.cpp" />
     <ClCompile Include="src\ghepch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

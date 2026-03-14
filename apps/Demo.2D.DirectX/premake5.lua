@@ -26,7 +26,6 @@ project "Demo.2D.DirectX"
 		includeDir["Engine.2D.DirectX"],
 		includeDir["UI"],
 		includeDir["UI.DirectX"],
-		includeDir["angelscript"],
 		includeDir["Box2D"],
 		includeDir["DirectX"]
 	}
@@ -43,12 +42,10 @@ project "Demo.2D.DirectX"
 	
 	filter "configurations:Debug"
 		links {
-			library["angelscript_Debug"],
 			library["Box2D_Debug"]
 		}
 
 	filter "configurations:Release"
 		links {
-			library["angelscript_Release"],
 			library["Box2D_Release"]
 		}

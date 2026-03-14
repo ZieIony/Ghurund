@@ -16,7 +16,6 @@ To build your own version you need the following tools.
  - [Visual Studio 2019](https://visualstudio.microsoft.com/vs/preview/)
  - [DirectX 12](https://docs.microsoft.com/en-us/windows/desktop/direct3d12/directx-12-programming-environment-set-up)
  - [PhysX](https://github.com/NVIDIAGameWorks/PhysX)
- - [AngelScript](https://www.angelcode.com/angelscript/downloads.html)
  - [TinyXML-2](http://www.grinninglizard.com/tinyxml2)
  - [CRC](https://github.com/d-bahr/CRCpp)
 
@@ -30,13 +29,11 @@ This project was never intended to be portable, so it can be only build using Vi
  - [MSDN](https://msdn.microsoft.com/en-us/library/windows/desktop/dn899121(v=vs.85).aspx)
  - [samples and MiniEngine from Microsoft](https://github.com/Microsoft/DirectX-Graphics-Samples)
  - [GPUOpen Libraries & SDKs](https://github.com/GPUOpen-LibrariesAndSDKs)
- - [AngelScript](https://www.angelcode.com/angelscript/sdk/docs/manual/index.html)
  - [X3DAudio](https://docs.microsoft.com/en-us/windows/desktop/xaudio2/how-to--integrate-x3daudio-with-xaudio2)
 
 ##### Blogs and tutorials
 
  - [DirectX tutorials](https://www.braynzarsoft.net/viewtutorial/q16390-04-directx-12-braynzar-soft-tutorials)
- - [StarCraft II effects](https://developer.amd.com/wordpress/media/2012/10/S2008-Filion-McNaughton-StarCraftII.pdf)
  - [ReadDirectoryChangesW](https://qualapps.blogspot.com/2010/05/understanding-readdirectorychangesw_19.html)
  - [rendering techniques by Hiago DeSena (DX11)](https://www.hiagodesena.com/)
  - [gamma correct rendering](http://renderwonk.com/blog/index.php/archive/adventures-with-gamma-correct-rendering/), [linear space lighting](http://filmicworlds.com/blog/linear-space-lighting-i-e-gamma/)

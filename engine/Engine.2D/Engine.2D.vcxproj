@@ -98,11 +98,11 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\2d\graphics\mesh\TileMapMeshData.h" />
     <ClInclude Include="src\Ghurund.Engine.2D.h" />
     <ClInclude Include="src\engine\2d\Graphics2DFeature.h" />
     <ClInclude Include="src\engine\2d\Graphics2DFeatureFactory.h" />
     <ClInclude Include="src\engine\2d\IGraphics2DContext.h" />
+    <ClInclude Include="src\engine\2d\graphics\mesh\TileMapMeshData.h" />
     <ClInclude Include="src\engine\2d\graphics\sprite\AnimatedSpriteComponent.h" />
     <ClInclude Include="src\engine\2d\graphics\sprite\BaseSpriteComponent.h" />
     <ClInclude Include="src\engine\2d\graphics\sprite\SpriteAnimation.h" />

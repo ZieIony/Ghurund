@@ -101,13 +101,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
-    <ClInclude Include="src\core\coroutine\CoroutineScheduler.h" />
-    <ClInclude Include="src\core\coroutine\CoroutineTask.h" />
-    <ClInclude Include="src\core\coroutine\CoroutineThreadPool.h" />
-    <ClInclude Include="src\core\coroutine\DelayAwaiter.h" />
-    <ClInclude Include="src\core\coroutine\DelayedUpdateAwaiter.h" />
-    <ClInclude Include="src\core\coroutine\ThreadAwaiter.h" />
-    <ClInclude Include="src\core\coroutine\UpdateAwaiter.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -167,6 +160,13 @@
     <ClInclude Include="src\core\collection\iterator\TreeNodeIterator.h" />
     <ClInclude Include="src\core\concepts\Concepts.h" />
     <ClInclude Include="src\core\concepts\Iterable.h" />
+    <ClInclude Include="src\core\coroutine\CoroutineScheduler.h" />
+    <ClInclude Include="src\core\coroutine\CoroutineTask.h" />
+    <ClInclude Include="src\core\coroutine\CoroutineThreadPool.h" />
+    <ClInclude Include="src\core\coroutine\DelayAwaiter.h" />
+    <ClInclude Include="src\core\coroutine\DelayedUpdateAwaiter.h" />
+    <ClInclude Include="src\core\coroutine\ThreadAwaiter.h" />
+    <ClInclude Include="src\core\coroutine\UpdateAwaiter.h" />
     <ClInclude Include="src\core\exception\Exceptions.h" />
     <ClInclude Include="src\core\exception\FormatNotSupportedException.h" />
     <ClInclude Include="src\core\exception\InvalidVersionException.h" />
@@ -296,14 +296,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\Color.cpp" />
-    <ClCompile Include="src\core\coroutine\CoroutineScheduler.cpp" />
-    <ClCompile Include="src\core\coroutine\CoroutineThreadPool.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
     <ClCompile Include="src\core\allocation\SimpleBufferStrategy.cpp" />
     <ClCompile Include="src\core\application\Application.cpp" />
     <ClCompile Include="src\core\application\ApplicationWindow.cpp" />
     <ClCompile Include="src\core\application\Settings.cpp" />
+    <ClCompile Include="src\core\coroutine\CoroutineScheduler.cpp" />
+    <ClCompile Include="src\core\coroutine\CoroutineThreadPool.cpp" />
     <ClCompile Include="src\core\feature\Feature.cpp" />
     <ClCompile Include="src\core\image\Image.cpp" />
     <ClCompile Include="src\core\image\ImageLoader.cpp" />
