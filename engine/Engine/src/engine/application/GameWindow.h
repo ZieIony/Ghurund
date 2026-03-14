@@ -117,17 +117,10 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getParameterManager)) ParameterManager& ParameterManager;
 
+        virtual void fixedUpdate() override {}
+
         virtual void update() override;
 
-        virtual void paint() override {
-            if (!renderingContext)
-                return;
-
-            renderingContext->startFrame();
-            __super::paint();
-            onPaint(*renderingContext);
-            layers.draw(*renderingContext, parameterManager);
-            renderingContext->finishFrame();
-        }
+        virtual void paint() override;
     };
 }

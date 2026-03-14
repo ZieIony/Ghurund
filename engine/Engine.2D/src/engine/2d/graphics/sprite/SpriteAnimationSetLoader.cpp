@@ -1,6 +1,8 @@
 #include "ghe2dpch.h"
 #include "SpriteAnimationSetLoader.h"
 
+#include "core/math/Float.h"
+
 namespace Ghurund::Engine::_2D {
 	CoroutineTask<void> SpriteAnimationSetLoader::loadInternal(
 		SpriteAnimationSet& resource,
@@ -20,12 +22,12 @@ namespace Ghurund::Engine::_2D {
 				auto textureAttribute = frameElement->findAttribute(L"texture");
 				if (!textureAttribute)
 					throw InvalidFormatException();
-				auto durationMsAttribute = frameElement->findAttribute(L"durationMs");
-				if (!durationMsAttribute)
+				auto durationAttribute = frameElement->findAttribute(L"duration");
+				if (!durationAttribute)
 					throw InvalidFormatException();
 				auto texturePath = FilePath(*textureAttribute);
 				auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, options);
-				animation->addFrame(texture.ref(), parse<uint32_t>(convertText<wchar_t, char>(*durationMsAttribute)));
+				animation->addFrame(texture.ref(), parse<float>(convertText<wchar_t, char>(*durationAttribute)));
 			}
 			resource.add(animation.get());
 		}

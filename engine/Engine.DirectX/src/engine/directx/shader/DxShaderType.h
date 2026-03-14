@@ -8,7 +8,6 @@
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
-	using namespace Microsoft::WRL;
 
 	enum class DxShaderTypeEnum {
 		VERTEX = 1, PIXEL = 2, GEOMETRY = 4, HULL = 8, D0MAIN = 16, COMPUTE = 32

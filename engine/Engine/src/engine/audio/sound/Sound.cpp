@@ -5,6 +5,7 @@
 #include "core/reflection/TypeBuilder.h"
 
 #include <xaudio2.h>
+#include <wrl.h>
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;

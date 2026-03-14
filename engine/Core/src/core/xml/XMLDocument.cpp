@@ -2,6 +2,7 @@
 #include "XMLDocument.h"
 
 #include <Shlwapi.h>
+#include <wrl.h>
 
 #pragma comment(lib, "xmllite.lib")
 

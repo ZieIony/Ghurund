@@ -9,18 +9,20 @@ namespace Ghurund::Core {
 	private:
 		Bag<DelayedUpdateAwaiter>& delayedUpdateAwaiters;
 		std::coroutine_handle<> handle;
-		uint64_t resumeTime;
+		double resumeTime;
+		bool useScaledTime;
 
 	public:
 		DelayedUpdateAwaiter(
 			Bag<DelayedUpdateAwaiter>& delayedUpdateAwaiters,
-			uint64_t resumeTime
-		):delayedUpdateAwaiters(delayedUpdateAwaiters), resumeTime(resumeTime) {
+			double resumeTime,
+			bool useScaledTime
+		):delayedUpdateAwaiters(delayedUpdateAwaiters), resumeTime(resumeTime), useScaledTime(useScaledTime) {
 		}
 
 		DelayedUpdateAwaiter(
 			const DelayedUpdateAwaiter& other
-		):delayedUpdateAwaiters(other.delayedUpdateAwaiters), handle(other.handle), resumeTime(other.resumeTime) {
+		):delayedUpdateAwaiters(other.delayedUpdateAwaiters), handle(other.handle), resumeTime(other.resumeTime), useScaledTime(other.useScaledTime) {
 		}
 
 		bool await_ready() const {
@@ -44,11 +46,17 @@ namespace Ghurund::Core {
 			return *this;
 		}
 
-		inline uint64_t getResumeTime() const {
+		inline double getResumeTime() const {
 			return resumeTime;
 		}
 
-		__declspec(property(get = getResumeTime)) uint64_t ResumeTime;
+		__declspec(property(get = getResumeTime)) double ResumeTime;
+
+		inline bool getUseScaledTime() const {
+			return useScaledTime;
+		}
+
+		__declspec(property(get = getUseScaledTime)) bool UseScaledTime;
 
 		inline void resume() {
 			handle.resume();

@@ -13,7 +13,9 @@
 namespace Ghurund::Core {
 	class Application:public Noncopyable, public Initializable {
 	private:
+		float frameTimeReminder = 0;
 		Timer timer;
+
 		WindowCollection windows;
 
 		CoroutineThreadPool threadPool = CoroutineThreadPool(4);
@@ -23,7 +25,7 @@ namespace Ghurund::Core {
 
 		Settings settings;
 
-		ResourceManager resourceManager = coroutineScheduler;
+		ResourceManager resourceManager = Ghurund::Core::ResourceManager(coroutineScheduler);
 
 		FeatureProvider features = *this;
 
@@ -31,6 +33,10 @@ namespace Ghurund::Core {
 		* returns true if the app should stop handling messages and quit
 		*/
 		bool handleMessages();
+
+		void update();
+
+		void paint();
 
 		void uninitApplication();
 

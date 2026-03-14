@@ -63,6 +63,11 @@ namespace Demo {
 
 		virtual bool onKeyEvent(const KeyEventArgs& args) override;
 
+		virtual void fixedUpdate() override {
+			__super::fixedUpdate();
+			world->simulate(Timer.FixedFrameTime);
+		}
+
 		virtual void update() override;
 
 		virtual void onPaint(RenderingContext& renderingContext) override;

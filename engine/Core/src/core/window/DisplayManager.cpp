@@ -5,7 +5,7 @@
 
 namespace Ghurund::Core {
 	List<DisplayDevice> DisplayManager::enumDisplayDevices() {
-		size_t i = 0;
+		DWORD i = 0;
 		List<DisplayDevice> devices;
 		while (true) {
 			DISPLAY_DEVICE device = {};

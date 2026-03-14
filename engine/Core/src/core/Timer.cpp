@@ -1,48 +1,38 @@
 #include "ghcpch.h"
 #include "Timer.h"
 
-#include "core/reflection/TypeBuilder.h"
-
 namespace Ghurund::Core {
-    const Ghurund::Core::Type& Timer::GET_TYPE() {
-        static const auto& CONSTRUCTOR = Constructor<Timer>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Timer>()
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::GET_TYPE());
+	Timer::Timer() {
+		QueryPerformanceCounter(&startFrame);
+		currentFrame = startFrame;
+		QueryPerformanceFrequency(&frequency);
+		fqMs = frequency.QuadPart / 1000.0;
+		fqNs = frequency.QuadPart / 1000000.0;
+	}
 
-        return TYPE;
-    }
+	void Timer::tick() {
+		LARGE_INTEGER prevFrame = currentFrame;
+		QueryPerformanceCounter(&currentFrame);
 
-    Timer::Timer() {
-        QueryPerformanceCounter(&startFrame);
-        QueryPerformanceFrequency(&frequency);
-    }
+		uint64_t frameTicks = currentFrame.QuadPart - prevFrame.QuadPart;
+		frameTime = (float)frameTicks / frequency.QuadPart;
+		frameTimeMs = (uint32_t)(frameTicks / fqMs);
+		frameTimeNs = (uint64_t)(frameTicks / fqNs);
 
-    void Timer::tick() {
-        if (paused)
-            return;
+		uint64_t ticks = currentFrame.QuadPart - startFrame.QuadPart;
+		time = (double)ticks / frequency.QuadPart;
+		timeMs = (uint32_t)(ticks / fqMs);
+		timeNs = (uint64_t)(ticks / fqNs);
 
-        LARGE_INTEGER prevFrame = currentFrame;
-        QueryPerformanceCounter(&currentFrame);
-        ticks = currentFrame.QuadPart - startFrame.QuadPart;
-        time = (double)ticks / frequency.QuadPart;
-        timeMs = (uint32_t)(ticks / (frequency.QuadPart / 1000.0));
-        frameTicks = currentFrame.QuadPart - prevFrame.QuadPart;
-        frameTime = (float)frameTicks / frequency.QuadPart;
-        frameTimeMs = (uint32_t)(frameTicks / (frequency.QuadPart / 1000.0));
-    }
+		scaledFrameTime = std::min(frameTime * timeScale, maxFrameTime);
+		scaledTime += scaledFrameTime;
 
-    void Timer::setPaused(bool p) {
-        if (paused == p)
-            return;
-
-        paused = p;
-        if (paused) {
-            pauseFrame = currentFrame;
-        } else {
-            LARGE_INTEGER prevFrame = currentFrame;
-            QueryPerformanceCounter(&currentFrame);
-            currentFrame.QuadPart -= (prevFrame.QuadPart - pauseFrame.QuadPart);
-        }
-    }
+		if (fpsFrames == frameWindow) {
+			fps = fpsFrames / fpsTime;
+			fpsTime = 0;
+			fpsFrames = 0;
+		}
+		fpsFrames++;
+		fpsTime += frameTime;
+	}
 }

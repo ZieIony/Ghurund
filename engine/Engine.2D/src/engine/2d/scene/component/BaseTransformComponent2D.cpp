@@ -1,6 +1,8 @@
 #include "ghe2dpch.h"
 #include "BaseTransformComponent2D.h"
 
+#include "core/math/Point.h"
+
 namespace Ghurund::Engine::_2D {
 	const Ghurund::Core::Type& BaseTransformComponent2D::GET_TYPE() {
 		static const Ghurund::Core::Type TYPE = TypeBuilder<BaseTransformComponent2D>()
@@ -9,7 +11,7 @@ namespace Ghurund::Engine::_2D {
 		return TYPE;
 	}
 		
-	void BaseTransformComponent2D::update(const XMFLOAT4X4& parentTransformation, uint64_t time) {
+	void BaseTransformComponent2D::update(const XMFLOAT4X4& parentTransformation, const Timer& timer) {
 		auto scaling = XMMatrixScaling(Scale.x, Scale.y, 1);
 		auto rotation = XMMatrixRotationZ(Rotation / 180 * XM_PI);
 		auto translation = XMMatrixTranslation(Position.x, Position.y, 0);
@@ -18,7 +20,7 @@ namespace Ghurund::Engine::_2D {
 
 		XMStoreFloat4x4(&worldTransformation, local * XMLoadFloat4x4(&parentTransformation));
 
-		__super::update(worldTransformation, time);
+		__super::update(worldTransformation, timer);
 	}
 
 #ifdef _DEBUG

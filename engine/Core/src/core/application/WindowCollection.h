@@ -1,13 +1,13 @@
 #pragma once
 
-#include "WindowCloseAction.h"
 #include "core/collection/List.h"
-#include "core/window/SystemWindow.h"
 
 namespace Ghurund::Core {
+    class ApplicationWindow;
+
     class WindowCollection {
     private:
-        List<SystemWindow*> windows;
+        List<ApplicationWindow*> windows;
 
 		WindowCollection& operator=(const WindowCollection& other) = delete;
 
@@ -16,11 +16,11 @@ namespace Ghurund::Core {
             clear();
         }
 
-        inline void add(SystemWindow& window) {
+        inline void add(ApplicationWindow& window) {
             windows.add(&window);
         }
 
-        inline void remove(SystemWindow& window) {
+        inline void remove(ApplicationWindow& window) {
             windows.remove(&window);
         }
 
@@ -32,19 +32,19 @@ namespace Ghurund::Core {
             windows.clear();
         }
 
-        inline ArrayIterator<SystemWindow*> begin() {
+        inline ArrayIterator<ApplicationWindow*> begin() {
             return windows.begin();
         }
 
-        inline ConstArrayIterator<SystemWindow*> begin() const {
+        inline ConstArrayIterator<ApplicationWindow*> begin() const {
             return windows.begin();
         }
 
-        inline ArrayIterator<SystemWindow*> end() {
+        inline ArrayIterator<ApplicationWindow*> end() {
             return windows.end();
         }
 
-        inline ConstArrayIterator<SystemWindow*> end() const {
+        inline ConstArrayIterator<ApplicationWindow*> end() const {
             return windows.end();
         }
 
@@ -54,19 +54,19 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getSize)) size_t Size;
 
-        inline SystemWindow& get(size_t i) const {
+        inline ApplicationWindow& get(size_t i) const {
             return *windows.get(i);
         }
 
-        inline size_t indexOf(SystemWindow& item) const {
+        inline size_t indexOf(ApplicationWindow& item) const {
             return windows.indexOf(&item);
         }
 
-        inline bool contains(SystemWindow& item) const {
+        inline bool contains(ApplicationWindow& item) const {
             return windows.contains(&item);
         }
 
-        inline SystemWindow& operator[](size_t i) const {
+        inline ApplicationWindow& operator[](size_t i) const {
             return *windows[i];
         }
     };

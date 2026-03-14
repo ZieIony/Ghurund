@@ -182,19 +182,23 @@ namespace Demo {
 			Logger::print(LogType::INFO, _T("\n"));
 			Logger::print(LogType::INFO, captain->RootComponent->printTree().Data);
 			Logger::print(LogType::INFO, _T("\n"));
+		} else if (args.KeyCode == 'p') {
+			Timer.TimeScale = Timer.TimeScale == 1.0f ? 0.1f : 1.0f;
 		}
 		return true;
 	}
 
 	void DemoWindow::update() {
 		__super::update();
-		world->simulate((float)Timer.FrameTime);
-		scene->update(Timer.TimeMs);
+		scene->update(Timer);
 		if (captain.get() && captain->RootComponent) {
 			audioListenerComponent->Position = captain->RootComponent->Position;
 			audioListenerComponent->Direction = { captain->RootComponent->Scale.x, 0 };
 			audioWorld->update();
 		}
+
+		auto text = std::format(_T("fps: {:.2f}"), Timer.FramesPerSecond);
+		Title = String(text.c_str());
 	}
 
 	void DemoWindow::onPaint(RenderingContext& renderingContext) {

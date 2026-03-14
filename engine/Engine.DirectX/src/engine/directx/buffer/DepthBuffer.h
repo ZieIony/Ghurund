@@ -1,5 +1,6 @@
 #pragma once
 
+#include <core/math/Size.h>
 #include "engine/directx/CommandList.h"
 
 #include <d3d12.h>
@@ -7,6 +8,8 @@
 #include <wrl.h>
 
 namespace Ghurund::Engine::DirectX {
+    using namespace Ghurund::Core;
+
     class DepthBuffer {
     private:
         ComPtr<ID3D12DescriptorHeap> dsvHeap;

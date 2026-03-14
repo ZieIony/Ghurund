@@ -81,7 +81,7 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getScale, put = setScale)) const XMFLOAT2& Scale;
 
-		virtual void update(const XMFLOAT4X4& parentTransformation, uint64_t time) override;
+		virtual void update(const XMFLOAT4X4& parentTransformation, const Timer& timer) override;
 
 #ifdef _DEBUG
 		virtual String printTree() const;

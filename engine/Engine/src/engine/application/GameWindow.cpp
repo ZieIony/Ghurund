@@ -53,10 +53,20 @@ namespace Ghurund::Engine {
     }
 
     void GameWindow::update() {
-        __super::update();
-        timeParameter->Value = Timer.Time;
+        timeParameter->Value = Timer.ScaledTime;
         layers.update(Timer.TimeMs);
         Input->dispatchGamepadEvents(Timer.TimeMs, *this);
         actionMapping.executeDispatches();
+    }
+    
+    void GameWindow::paint() {
+        if (!renderingContext)
+            return;
+
+        renderingContext->startFrame();
+        __super::paint();
+        onPaint(*renderingContext);
+        layers.draw(*renderingContext, parameterManager);
+        renderingContext->finishFrame();
     }
 }

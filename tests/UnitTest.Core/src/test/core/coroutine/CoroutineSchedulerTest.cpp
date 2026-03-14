@@ -21,17 +21,19 @@ public:
         {
             auto mainId = std::this_thread::get_id();
             CoroutineThreadPool threadPool(1);
-            Timer timer;
-            CoroutineScheduler scheduler(threadPool, timer);
             // let the thread pool start
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            Timer timer;
+            CoroutineScheduler scheduler(threadPool, timer);
             std::thread::id backgroundId, emptyId;
+
             scheduler.launch([&] -> CoroutineTask<void> {
                 co_await scheduler.backgroundThread();
                 auto id = std::this_thread::get_id();
                 co_await scheduler.mainThread();
                 backgroundId = id;
             }());
+
             // let the coroutines get thread id
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
             scheduler.update();
@@ -47,17 +49,19 @@ public:
         {
             auto mainId = std::this_thread::get_id();
             CoroutineThreadPool threadPool(1);
-            Timer timer;
-            CoroutineScheduler scheduler(threadPool, timer);
             // let the thread pool start
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            Timer timer;
+            CoroutineScheduler scheduler(threadPool, timer);
             std::thread::id delayId, emptyId;
+
             scheduler.launch([&] -> CoroutineTask<void> {
-                co_await scheduler.delay(10);
+                co_await scheduler.delay(0.01f);
                 auto id = std::this_thread::get_id();
                 co_await scheduler.mainThread();
                 delayId = id;
             }());
+
             // let the coroutines get thread id
             std::this_thread::sleep_for(std::chrono::milliseconds(20));
             scheduler.update();
@@ -73,22 +77,101 @@ public:
         {
             auto mainId = std::this_thread::get_id();
             CoroutineThreadPool threadPool(1);
+            // let the thread pool start
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
             Timer timer;
             CoroutineScheduler scheduler(threadPool, timer);
             timer.tick();
-            // let the thread pool start
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
             std::thread::id delayId, emptyId;
+
             scheduler.launch([&] -> CoroutineTask<void> {
-                co_await scheduler.delayedUpdate(10);
+                co_await scheduler.delayedUpdate(0.01f, false);
                 delayId = std::this_thread::get_id();
             }());
+
             // let the coroutines get thread id
             std::this_thread::sleep_for(std::chrono::milliseconds(20));
             timer.tick();
             scheduler.update();
             Assert::IsTrue(delayId != emptyId);
             Assert::IsTrue(delayId == mainId);
+        }
+    }
+
+    TEST_METHOD(CoroutineScheduler_delayedUpdate_timeScale) {
+        MemoryGuard guard;
+        {
+            CoroutineThreadPool threadPool(1);
+            // let the thread pool start
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            Timer timer;
+            CoroutineScheduler scheduler(threadPool, timer);
+            timer.tick();
+
+            auto task = [&] -> CoroutineTask<void> {
+                co_await scheduler.delayedUpdate(0.01f, true);
+            }();
+            scheduler.launch(task);
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(20));
+            timer.TimeScale = 0.0f;
+            timer.tick();
+            scheduler.update();
+            Assert::IsFalse(task.IsDone);
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(20));
+            timer.TimeScale = 1.0f;
+            timer.tick();
+            scheduler.update();
+            Assert::IsTrue(task.IsDone);
+        }
+    }
+
+    TEST_METHOD(CoroutineScheduler_nextUpdate) {
+        MemoryGuard guard;
+        {
+            CoroutineThreadPool threadPool(1);
+            // let the thread pool start
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            Timer timer;
+            CoroutineScheduler scheduler(threadPool, timer);
+            timer.tick();
+            timer.TimeScale = 0.0f;
+
+            auto task = [&] -> CoroutineTask<void> {
+                co_await scheduler.nextUpdate();
+            }();
+            scheduler.launch(task);
+
+            scheduler.fixedUpdate();
+            Assert::IsFalse(task.IsDone);
+
+            scheduler.update();
+            Assert::IsTrue(task.IsDone);
+        }
+    }
+
+    TEST_METHOD(CoroutineScheduler_nextFixedUpdate) {
+        MemoryGuard guard;
+        {
+            CoroutineThreadPool threadPool(1);
+            // let the thread pool start
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            Timer timer;
+            CoroutineScheduler scheduler(threadPool, timer);
+            timer.tick();
+            timer.TimeScale = 0.0f;
+
+            auto task = [&] -> CoroutineTask<void> {
+                co_await scheduler.nextFixedUpdate();
+            }();
+            scheduler.launch(task);
+
+            scheduler.update();
+            Assert::IsFalse(task.IsDone);
+
+            scheduler.fixedUpdate();
+            Assert::IsTrue(task.IsDone);
         }
     }
     };

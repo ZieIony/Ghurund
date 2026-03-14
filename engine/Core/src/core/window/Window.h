@@ -255,8 +255,6 @@ namespace Ghurund::Core {
             return result || result2;
         }
 
-        virtual void update() {}
-
         virtual void paint() {}
   };
 }

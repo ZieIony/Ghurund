@@ -145,7 +145,8 @@ namespace Ghurund::Engine::_2D {
 
 		inline static const Array<ResourceFormat>& FORMATS = { FORMAT_XML };
 
-		static const inline uint32_t VERSION = 1;
+		// version 1 used uint32_t durationMs
+		static const inline uint32_t VERSION = 2;
 #pragma endregion
 	};
 }

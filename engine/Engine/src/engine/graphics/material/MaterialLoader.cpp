@@ -1,6 +1,8 @@
 #include "ghepch.h"
 #include "MaterialLoader.h"
 
+#include "core/Color.h"
+
 namespace Ghurund::Engine {
 	CoroutineTask<void> MaterialLoader::onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value) {
 		if (input.Type == InputType::TEXTURE) {

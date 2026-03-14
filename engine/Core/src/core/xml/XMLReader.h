@@ -3,6 +3,7 @@
 #include "core/object/Initializable.h"
 
 #include <xmllite.h>
+#include <wrl.h>
 
 namespace Ghurund::Core {
 	class XMLReader:public Initializable {

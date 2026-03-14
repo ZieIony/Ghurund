@@ -1,10 +1,12 @@
 #pragma once
 
+#include "core/Color.h"
 #include "engine/graphics/material/Material.h"
 
 #include <DirectXMath.h>
 
 namespace Ghurund::Engine::_2D {
+	using namespace Ghurund::Core;
 	using namespace Ghurund::Engine;
 	using namespace ::DirectX;
 

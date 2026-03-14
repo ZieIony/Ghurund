@@ -12,8 +12,8 @@ namespace Ghurund::Engine::_2D {
 		return TYPE;
 	}
 		
-	void CameraComponent2D::update(const XMFLOAT4X4& parentTransformation, uint64_t time) {
-		__super::update(parentTransformation, time);
+	void CameraComponent2D::update(const XMFLOAT4X4& parentTransformation, const Timer& timer) {
+		__super::update(parentTransformation, timer);
 
 		auto w = XMLoadFloat4x4(&worldTransformation);
 		XMFLOAT3 pos;

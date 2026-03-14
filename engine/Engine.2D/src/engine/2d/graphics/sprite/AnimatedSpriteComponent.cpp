@@ -12,10 +12,10 @@ namespace Ghurund::Engine::_2D {
 		return TYPE;
 	}
 	
-	void AnimatedSpriteComponent::update(const XMFLOAT4X4& parentTransformation, uint64_t time) {
-		__super::update(parentTransformation, time);
+	void AnimatedSpriteComponent::update(const XMFLOAT4X4& parentTransformation, const Timer& timer) {
+		__super::update(parentTransformation, timer);
 		if (animation) {
-			animation->update(time);
+			animation->update(timer.ScaledFrameTime);
 			if (material)
 				inputs.ColorTexture = animation->CurrentTexture;
 		}

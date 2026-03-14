@@ -70,10 +70,10 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getName, put = setName)) WString& Name;
 
-		inline void update(uint64_t time) {
+		inline void update(const Timer& timer) {
 			XMFLOAT4X4 identity;
 			XMStoreFloat4x4(&identity, XMMatrixIdentity());
-			rootComponent->update(identity, time);
+			rootComponent->update(identity, timer);
 		}
 
 		inline void draw(RenderGroup& group) {

@@ -9,8 +9,8 @@ namespace Ghurund::Engine::_2D {
 			return TYPE;
 		}
 		
-		void BodyComponent2D::update(const XMFLOAT4X4& parentTransformation, uint64_t time) {
-		__super::update(parentTransformation, time);
+		void BodyComponent2D::update(const XMFLOAT4X4& parentTransformation, const Timer& timer) {
+		__super::update(parentTransformation, timer);
 		if (visualizationComponent) {
 			XMFLOAT4X4 world;
 			auto w = XMMatrixScaling(size.Width, size.Height, 1) * XMLoadFloat4x4(&worldTransformation);

@@ -2,6 +2,7 @@
 #include "DepthBuffer.h"
 
 #include "core/logging/Logger.h"
+#include <core/math/Size.h>
 #include "engine/directx/DxGraphics.h"
 
 namespace Ghurund::Engine::DirectX {

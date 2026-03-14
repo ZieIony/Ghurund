@@ -9,22 +9,19 @@ namespace Ghurund::Engine::_2D {
 		return TYPE;
 	}
 	
-	void SpriteAnimation::update(uint64_t time) {
-		int64_t dt = time - prevTime;
-		prevTime = time;
-		if (currentTime == duration && !loop)
+	void SpriteAnimation::update(float dt) {
+		if (currentFrame == frames.Size - 1 && !loop)
 			return;
 		while (dt > 0) {
 			auto& frame = frames[currentFrame];
-			uint64_t newFrameTime = frameTimeOffset + dt;
-			if (newFrameTime > frame.durationMs) {
+			float newFrameTime = frameTimeOffset + dt;
+			if (newFrameTime > frame.duration) {
 				if (currentFrame == frames.Size - 1 && !loop) {
-					currentTime = duration;
-					frameTimeOffset = frame.durationMs;
+					frameTimeOffset = frame.duration;
 					return;
 				} else {
 					currentFrame = (currentFrame + 1) % frames.Size;
-					dt = dt - frame.durationMs + frameTimeOffset;
+					dt = dt - frame.duration + frameTimeOffset;
 					frameTimeOffset = 0;
 				}
 			} else {

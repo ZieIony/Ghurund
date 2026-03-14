@@ -36,6 +36,6 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getAnimation, put = setAnimation)) SpriteAnimation* Animation;
 
-		virtual void update(const XMFLOAT4X4& parentTransformation, uint64_t time) override;
+		virtual void update(const XMFLOAT4X4& parentTransformation, const Timer& timer) override;
 	};
 }

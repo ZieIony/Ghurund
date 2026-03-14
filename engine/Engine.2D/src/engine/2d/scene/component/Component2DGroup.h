@@ -5,8 +5,6 @@
 
 #include "engine/graphics/rendering/RenderGroup.h"
 
-#include <cstdint>
-
 namespace Ghurund::Engine::_2D {
 	class Component2DGroup:public Component2D {
 #pragma region reflection
@@ -55,9 +53,9 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getComponents)) Component2DCollection& Components;
 
-		virtual void update(const XMFLOAT4X4& parentTransformation, uint64_t time) override {
+		virtual void update(const XMFLOAT4X4& parentTransformation, const Timer& timer) override {
 			for (auto& component : components)
-				component->update(parentTransformation, time);
+				component->update(parentTransformation, timer);
 		}
 
 		virtual void draw(RenderGroup& group) override {

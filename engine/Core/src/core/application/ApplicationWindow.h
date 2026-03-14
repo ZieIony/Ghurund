@@ -1,6 +1,7 @@
 #pragma once
 
-#include "core/application/Application.h"
+#include "Application.h"
+
 #include "core/window/SystemWindow.h"
 
 namespace Ghurund::Core {
@@ -44,5 +45,9 @@ namespace Ghurund::Core {
         }
 
         __declspec(property(get = getApplication)) Ghurund::Core::Application& Application;
+
+		virtual void fixedUpdate() {}
+
+        virtual void update() {}
     };
 }

@@ -148,7 +148,7 @@ namespace Ghurund::Core {
 		}
 	}
 
-	void SystemWindow::update() {
+	void SystemWindow::dispatchInputEvents() {
 		input.dispatchWindowEvents(timer.TimeMs, *this);
 		input.dispatchMouseButtonDownEvents(timer.TimeMs, *this);
 		input.dispatchKeyDownEvents(timer.TimeMs, *this);

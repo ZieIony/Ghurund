@@ -2,6 +2,13 @@
 #include "CoroutineScheduler.h"
 
 namespace Ghurund::Core {
+	void CoroutineScheduler::fixedUpdate() {
+		List<std::coroutine_handle<>> updateAwaitersToResume = fixedUpdateAwaiters;
+		fixedUpdateAwaiters.clear();
+		for (auto& awaiter : updateAwaitersToResume)
+			awaiter.resume();
+	}
+
 	void CoroutineScheduler::update() {
 		{
 			std::unique_lock<std::mutex> lock(mutex);
@@ -12,7 +19,7 @@ namespace Ghurund::Core {
 		List<DelayedUpdateAwaiter> delayAwaitersToResume;
 		for (size_t i = 0; i < delayedUpdateAwaiters.Size;) {
 			auto& awaiter = delayedUpdateAwaiters[i];
-			if (awaiter.ResumeTime <= timer.TimeMs) {
+			if (awaiter.ResumeTime <= (awaiter.UseScaledTime ? timer.ScaledTime : timer.Time)) {
 				delayAwaitersToResume.add(awaiter);
 				delayedUpdateAwaiters.removeAt(i);
 			} else {

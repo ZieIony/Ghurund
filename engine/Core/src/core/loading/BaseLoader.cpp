@@ -1,7 +1,10 @@
 #include "ghcpch.h"
 #include "BaseLoader.h"
 
+#include "core/DataParsing.h"
+#include "core/math/Int.h"
 #include "core/reflection/TypeBuilder.h"
+
 #include <format>
 
 namespace Ghurund::Core {

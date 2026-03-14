@@ -9,7 +9,7 @@ namespace Ghurund::Engine::_2D {
 
 	struct SpriteAnimationFrame {
 		IntrusivePointer<ITexture> texture;
-		uint64_t durationMs;
+		float duration;
 	};
 
 	// TODO: replace this with a proper collection
@@ -32,7 +32,7 @@ namespace Ghurund::Engine::_2D {
 		WString* name = nullptr;
 		List<SpriteAnimationFrame> frames;
 		uint16_t currentFrame = 0;
-		uint64_t currentTime = 0, duration = 0, frameTimeOffset = 0, prevTime = 0;
+		float duration = 0, frameTimeOffset = 0;
 		bool loop = true;
 
 	public:
@@ -65,18 +65,18 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getFrames)) SpriteAnimationFrameList& Frames;
 
-		inline void addFrame(NotNull<ITexture> texture, uint64_t durationMs) {
-			frames.add({ IntrusivePointer<ITexture>(texture.get()), durationMs });
+		inline void addFrame(NotNull<ITexture> texture, float frameDuration) {
+			frames.add({ IntrusivePointer<ITexture>(texture.get()), frameDuration });
 			texture->addReference();
-			duration += durationMs;
+			duration += frameDuration;
 		}
 
-		inline void addFrames(Array<NotNull<ITexture>> textures, uint64_t durationMs) {
+		inline void addFrames(Array<NotNull<ITexture>> textures, float frameDuration) {
 			for (auto& texture : textures) {
-				frames.add({ IntrusivePointer<ITexture>(texture.get()), durationMs });
+				frames.add({ IntrusivePointer<ITexture>(texture.get()), frameDuration });
 				texture->addReference();
 			}
-			duration += durationMs * textures.Size;
+			duration += frameDuration * textures.Size;
 		}
 
 		inline bool getIsLooped() const {
@@ -89,7 +89,7 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getIsLooped, put = setIsLooped)) bool IsLooped;
 
-		void update(uint64_t time);
+		void update(float dt);
 
 		inline ITexture* getCurrentTexture() const {
 			return frames[currentFrame].texture.get();

@@ -1,9 +1,8 @@
 #pragma once
 
-#include <engine/game/Component.h>
+#include "core/Timer.h"
+#include "engine/game/Component.h"
 #include "engine/graphics/rendering/RenderGroup.h"
-
-#include <cstdint>
 
 namespace Ghurund::Engine::_2D {
 	class Entity2D;
@@ -50,7 +49,7 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getOwner, put = setOwner)) Entity2D* Owner;
 
-		virtual void update(const XMFLOAT4X4& parentTransformation, uint64_t time) {}
+		virtual void update(const XMFLOAT4X4& parentTransformation, const Timer& timer) {}
 
 		virtual void draw(RenderGroup& group) {}
 	};

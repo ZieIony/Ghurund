@@ -5,6 +5,8 @@
 #include <DirectXMath.h>
 
 namespace Ghurund::UI {
+	using namespace ::DirectX;
+
 	class LayoutManager {
 	protected:
 		XMFLOAT2 scroll = { 0, 0 };

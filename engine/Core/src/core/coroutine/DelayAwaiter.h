@@ -6,10 +6,10 @@ namespace Ghurund::Core {
 	class DelayAwaiter {
 	private:
 		std::coroutine_handle<> handle;
-		uint64_t delay;
+		float delay;
 
 	public:
-		DelayAwaiter(uint64_t delay):delay(delay) {}
+		DelayAwaiter(float delay):delay(delay) {}
 
 		//DelayAwaiter(const DelayAwaiter& other):handle(other.handle), delay(other.delay) {}
 
@@ -19,7 +19,7 @@ namespace Ghurund::Core {
 
 		void await_suspend(std::coroutine_handle<> handle) {
 			std::thread([=]() {
-				std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+				std::this_thread::sleep_for(std::chrono::milliseconds((uint32_t)(delay * 1000)));
 				handle.resume();
 			}).detach();
 		}

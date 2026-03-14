@@ -1,8 +1,8 @@
 #include "ghcpch.h"
 #include "Application.h"
 
-#include "core/threading/FunctionQueue.h"
-#include "core/window/SystemWindow.h"
+#include "ApplicationWindow.h"
+
 #include "core/resource/ResourceManager.h"
 #include "core/image/ImageLoader.h"
 #include "core/io/DirectoryLibrary.h"
@@ -49,16 +49,11 @@ namespace Ghurund::Core {
             if (handleMessages())
                 break;
 
-            timer.tick();
-            coroutineScheduler.update();
             for (auto window : windows)
-                window->update();
+                window->dispatchInputEvents();
 
-            for (auto window : windows) {
-                if (window->Size.Width == 0 || window->Size.Height == 0 || !window->Visible)
-                    continue;
-                window->paint();
-            }
+            update();
+            paint();
         }
 
         running = false;
@@ -75,6 +70,30 @@ namespace Ghurund::Core {
             DispatchMessage(&msg);
         }
         return false;
+    }
+
+    void Application::update() {
+        timer.tick();
+
+        frameTimeReminder += timer.ScaledFrameTime;
+        while (frameTimeReminder >= timer.FixedFrameTime) {
+            frameTimeReminder -= timer.FixedFrameTime;
+            coroutineScheduler.fixedUpdate();
+            for (auto window : windows)
+                window->fixedUpdate();
+        }
+
+        coroutineScheduler.update();
+        for (auto window : windows)
+            window->update();
+    }
+
+    void Application::paint() {
+        for (auto window : windows) {
+            if (window->Size.Width == 0 || window->Size.Height == 0 || !window->Visible)
+                continue;
+            window->paint();
+        }
     }
 
     template<>

@@ -2,8 +2,13 @@
 
 #include "core/collection/List.h"
 #include "core/string/String.h"
+#include <core/math/Size.h>
+
+#include <DirectXMath.h>
 
 namespace Ghurund::Core {
+	using namespace ::DirectX;
+
 	struct DisplayMode {
 		uint32_t bitsPerPx;
 		IntSize size;

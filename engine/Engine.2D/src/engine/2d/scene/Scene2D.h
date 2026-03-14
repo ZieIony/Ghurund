@@ -32,9 +32,9 @@ namespace Ghurund::Engine::_2D {
 
         __declspec(property(get = getEntities)) List<IntrusivePointer<Entity2D>>& Entities;
 
-        inline void update(uint64_t time) {
+        inline void update(const Timer& timer) {
             for (auto& entity : entities)
-                entity->update(time);
+                entity->update(timer);
         }
 
         inline void draw(RenderGroup& group) {

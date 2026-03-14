@@ -44,6 +44,6 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getCamera, put = setCamera)) Camera2D* Camera;
 
-		virtual void update(const XMFLOAT4X4& parentTransformation, uint64_t time) override;
+		virtual void update(const XMFLOAT4X4& parentTransformation, const Timer& timer) override;
 	};
 }

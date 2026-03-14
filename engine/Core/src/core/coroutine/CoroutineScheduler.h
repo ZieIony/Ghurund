@@ -18,10 +18,11 @@ namespace Ghurund::Core {
 		Bag<CoroutineTask<void>> tasks;
 		Bag<std::coroutine_handle<>> fromAnotherThread;
 		Bag<DelayedUpdateAwaiter> delayedUpdateAwaiters;
-		Bag<std::coroutine_handle<>> updateAwaiters;
+		Bag<std::coroutine_handle<>> fixedUpdateAwaiters, updateAwaiters;
+		
 		Timer& timer;
-		std::mutex mutex;
 
+		std::mutex mutex;
 		CoroutineThreadPool& threadPool;
 
 	public:
@@ -31,12 +32,17 @@ namespace Ghurund::Core {
 		):threadPool(threadPool), timer(timer) {
 		}
 
-		DelayAwaiter delay(uint64_t delayMs) {
-			return { delayMs };
+		DelayAwaiter delay(float delay) {
+			return { delay };
 		}
 
-		DelayedUpdateAwaiter delayedUpdate(uint64_t delayMs) {
-			return { delayedUpdateAwaiters, timer.TimeMs + delayMs };
+		DelayedUpdateAwaiter delayedUpdate(float delay, bool useScaledTime = true) {
+			auto resumeTime = (useScaledTime ? timer.ScaledTime : timer.Time) + delay;
+			return { delayedUpdateAwaiters, resumeTime, useScaledTime };
+		}
+
+		UpdateAwaiter nextFixedUpdate() {
+			return { fixedUpdateAwaiters };
 		}
 
 		UpdateAwaiter nextUpdate() {
@@ -55,6 +61,8 @@ namespace Ghurund::Core {
 			tasks.add(task);
 			task.resume();
 		}
+
+		void fixedUpdate();
 
 		void update();
 	};

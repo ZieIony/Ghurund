@@ -146,6 +146,6 @@ namespace Ghurund::Engine::_2D {
 			b2Body_ApplyForceToCenter(id, { force.x, force.y }, true);
 		}
 
-		virtual void update(const XMFLOAT4X4& parentTransformation, uint64_t time) override;
+		virtual void update(const XMFLOAT4X4& parentTransformation, const Timer& timer) override;
 	};
 }
