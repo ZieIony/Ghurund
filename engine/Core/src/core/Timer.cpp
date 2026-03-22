@@ -29,7 +29,7 @@ namespace Ghurund::Core {
         timeMs = (uint32_t)(ticks / (frequency.QuadPart / 1000.0));
         frameTicks = currentFrame.QuadPart - prevFrame.QuadPart;
         frameTime = (float)frameTicks / frequency.QuadPart;
-        frameTimeMs = (uint32_t)(ticks / (frequency.QuadPart / 1000.0));
+        frameTimeMs = (uint32_t)(frameTicks / (frequency.QuadPart / 1000.0));
     }
 
     void Timer::setPaused(bool p) {

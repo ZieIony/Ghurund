@@ -54,7 +54,8 @@ namespace Ghurund::Engine::DirectX {
 
         __declspec(property(get = isInitialized)) bool Initialized;
 
-        void init(DxGraphics& graphics, HWND handle, IntSize size, uint32_t frameCount = 3);
+        // for some reason swapChain->Present(..) freezes from time to time when frameCount is 3
+        void init(DxGraphics& graphics, HWND handle, IntSize size, uint32_t frameCount = 2);
 
         void initBuffers();
 
