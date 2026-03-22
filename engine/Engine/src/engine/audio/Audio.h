@@ -17,7 +17,7 @@
 #pragma comment(lib, "mfplat.lib")
 #pragma comment(lib, "mfuuid")
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     using namespace ::DirectX;
     using Microsoft::WRL::ComPtr;
     using namespace Ghurund::Core;
@@ -37,11 +37,15 @@ namespace Ghurund {
 
     private:
         ComPtr<IXAudio2> device;
+        // can there be more than one mastering voice?
         IXAudio2MasteringVoice* masteringVoice = nullptr;
         ComPtr<IMFAttributes> sourceReaderConfiguration;
+        X3DAUDIO_DSP_SETTINGS dspSettings = {};
+        float* matrixCoefficients = nullptr;
+        float* delayTimes = nullptr;
+        XAUDIO2_VOICE_DETAILS outputDetails;
 
         X3DAUDIO_HANDLE x3DInstance;
-        X3DAUDIO_LISTENER listener = { };	// player's position
 
     public:
         virtual void onInit() override;
@@ -54,63 +58,47 @@ namespace Ghurund {
 
         __declspec(property(get = getDevice)) ComPtr<IXAudio2> Device;
 
+        inline IXAudio2MasteringVoice* getMasteringVoice() {
+            return masteringVoice;
+        }
+
+        __declspec(property(get = getMasteringVoice)) IXAudio2MasteringVoice* MasteringVoice;
+
         inline ComPtr<IMFAttributes> getReaderConfiguration() {
             return sourceReaderConfiguration;
         }
 
         __declspec(property(get = getReaderConfiguration)) ComPtr<IMFAttributes> ReaderConfiguration;
 
-        inline void setPosition(const XMFLOAT3& pos) {
-            listener.Position.x = pos.x;
-            listener.Position.y = pos.y;
-            listener.Position.z = pos.z;
+        inline uint32_t getChannels() const {
+            return outputDetails.InputChannels;
         }
 
-        inline XMFLOAT3 getPosition() const {
-            return XMFLOAT3(listener.Position.x, listener.Position.y, listener.Position.z);
+        __declspec(property(get = getChannels)) uint32_t Channels;
+
+        inline uint32_t getSampleRate() const {
+            return outputDetails.InputSampleRate;
         }
 
-        __declspec(property(get = getPosition, put = setPosition)) XMFLOAT3 Position;
+        __declspec(property(get = getSampleRate)) uint32_t SampleRate;
 
-        inline void setVelocity(const XMFLOAT3& vel) {
-            listener.Velocity.x = vel.x;
-            listener.Velocity.y = vel.y;
-            listener.Velocity.z = vel.z;
+        inline void setVolume(float volume) {
+            masteringVoice->SetVolume(volume);
         }
 
-        inline XMFLOAT3 getVelocity() const {
-            return XMFLOAT3(listener.Position.x, listener.Velocity.y, listener.Velocity.z);
+        inline float getVolume() const {
+            float volume;
+            masteringVoice->GetVolume(&volume);
+            return volume;
         }
 
-        __declspec(property(get = getVelocity, put = setVelocity)) XMFLOAT3 Velocity;
+        __declspec(property(get = getVolume, put = setVolume)) float Volume;
 
-        inline void setDirection(const XMFLOAT3& dir) {
-            listener.OrientFront.x = dir.x;
-            listener.OrientFront.y = dir.y;
-            listener.OrientFront.z = dir.z;
-        }
-
-        inline XMFLOAT3 getDirection() const {
-            return XMFLOAT3(listener.OrientFront.x, listener.OrientFront.y, listener.OrientFront.z);
-        }
-
-        __declspec(property(get = getDirection, put = setDirection)) XMFLOAT3 Direction;
-
-        inline void setUp(const XMFLOAT3& up) {
-            listener.OrientTop.x = up.x;
-            listener.OrientTop.y = up.y;
-            listener.OrientTop.z = up.z;
-        }
-
-        inline XMFLOAT3 getUp() const {
-            return XMFLOAT3(listener.OrientTop.x, listener.OrientTop.y, listener.OrientTop.z);
-        }
-
-        __declspec(property(get = getUp, put = setUp)) XMFLOAT3 Up;
-
-        inline void calculate3D(X3DAUDIO_EMITTER& emitter) {
-            X3DAUDIO_DSP_SETTINGS pDSPSettings = {};
-            X3DAudioCalculate(x3DInstance, &listener, &emitter, 0, &pDSPSettings);
+        inline X3DAUDIO_DSP_SETTINGS calculateDSPSettings(const X3DAUDIO_LISTENER& listener, const X3DAUDIO_EMITTER& emitter) {
+            uint32_t flags = X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_DOPPLER;
+            dspSettings.SrcChannelCount = emitter.ChannelCount;
+            X3DAudioCalculate(x3DInstance, &listener, &emitter, flags, &dspSettings);
+            return dspSettings;
         }
     };
 }

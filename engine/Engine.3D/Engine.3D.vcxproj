@@ -92,6 +92,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\3d\audio\component\AudioListenerComponent3D.h" />
+    <ClInclude Include="src\engine\3d\audio\component\SoundComponent3D.h" />
     <ClInclude Include="src\Ghurund.Engine.3D.h" />
     <ClInclude Include="src\engine\3d\entity\Component.h" />
     <ClInclude Include="src\engine\3d\entity\Drawable3DComponent.h" />
@@ -112,6 +114,8 @@
     <ClInclude Include="src\ghe3dpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\3d\audio\component\AudioListenerComponent3D.cpp" />
+    <ClCompile Include="src\engine\3d\audio\component\SoundComponent3D.cpp" />
     <ClCompile Include="src\engine\3d\physics\Physics.cpp" />
     <ClCompile Include="src\engine\3d\scene\Camera.cpp" />
     <ClCompile Include="src\engine\3d\scene\Scene.cpp" />

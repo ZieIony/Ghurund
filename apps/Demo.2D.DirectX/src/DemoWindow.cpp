@@ -23,6 +23,10 @@ namespace Demo {
 		Renderer = &renderer;
 		BackgroundColor = &Colors::BLACK;
 
+		init();
+	}
+
+	void DemoWindow::init() {
 		DxGraphicsFeature* graphicsFeature = app.Features.get<DxGraphicsFeature>();
 
 		context2d = makeShared<DxGraphics2DContext>(graphicsFeature->MemoryManager, app.ResourceManager);
@@ -36,6 +40,13 @@ namespace Demo {
 		scene = makeIntrusive<Scene2D>(context2d.ref());
 
 		app.CoroutineScheduler.launch(initScene());
+
+		AudioFeature* audioFeature = app.Features.get<AudioFeature>();
+		audioWorld = makeShared<AudioWorld2D>(audioFeature->Audio);
+		thudSound = IntrusivePointer(app.ResourceManager.load<Sound>(ResourceManager::ENGINE_LIB / FilePath(L"test/sounds/thud.wav")));
+		audioListenerComponent = IntrusivePointer(audioWorld->makeAudioListenerComponent());
+		soundComponent = IntrusivePointer(audioWorld->makeSoundComponent());
+		soundComponent->Sound = thudSound.get();
 	}
 
 	CoroutineTask DemoWindow::initScene() {
@@ -64,8 +75,8 @@ namespace Demo {
 			segmentBox->Owner = ground.get();
 			segmentBox->init();
 			segmentBox->Type = BodyType::STATIC;
-			segmentBox->Position = { 0, -1.1f };
-			segmentBox->Size = { 8, 1 };
+			segmentBox->Position = { 0, -0.1f };
+			segmentBox->Size = { 12, 1 };
 			ground->RootComponent->Components.add(segmentBox.get());
 		}
 
@@ -157,13 +168,15 @@ namespace Demo {
 		} else if (args.KeyCode == 'w') {
 			BodyComponent2D& body = (BodyComponent2D&)*captain->RootComponent;
 			body.applyForce({ 0, 1000 });
+		} else if (args.KeyCode == 'q') {
+			thudSound->play();
 		} else if (args.KeyCode == 'a') {
 			BodyComponent2D& body = (BodyComponent2D&)*captain->RootComponent;
-			body.applyForce({ -1000, 0 });
+			body.applyForce({ -500, 0 });
 			captain->RootComponent->Scale = { -1, 1 };
 		} else if (args.KeyCode == 'd') {
 			BodyComponent2D& body = (BodyComponent2D&)*captain->RootComponent;
-			body.applyForce({ 1000, 0 });
+			body.applyForce({ 500, 0 });
 			captain->RootComponent->Scale = { 1, 1 };
 		} else if (args.KeyCode == 't') {
 			Logger::print(LogType::INFO, _T("\n"));
@@ -177,6 +190,11 @@ namespace Demo {
 		__super::update();
 		world->simulate((float)Timer.FrameTime);
 		scene->update(Timer.TimeMs);
+		if (captain.get() && captain->RootComponent) {
+			audioListenerComponent->Position = captain->RootComponent->Position;
+			audioListenerComponent->Direction = { captain->RootComponent->Scale.x, 0 };
+			audioWorld->update();
+		}
 	}
 
 	void DemoWindow::onPaint(RenderingContext& renderingContext) {

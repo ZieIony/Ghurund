@@ -3,6 +3,7 @@
 #include "Audio.h"
 
 #include "core/feature/Feature.h"
+#include "sound/SoundLoader.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
@@ -21,11 +22,15 @@ namespace Ghurund::Engine {
 #pragma endregion
 
     private:
+        ResourceManager& resourceManager;
         Audio audio;
+        IntrusivePointer<SoundLoader> soundLoader;
 
         void uninitAudioFeature();
 
     public:
+        AudioFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
+
         ~AudioFeature() {
             if (IsInitialized)
                 uninitAudioFeature();

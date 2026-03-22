@@ -33,7 +33,6 @@ namespace Demo {
 
     public:
         DemoApplication() {
-            Features.add<GraphicsFeature, GraphicsFeatureFactory>();
             Features.add<DxGraphicsFeature, DxGraphicsFeatureFactory>();
             Features.add<Graphics2DFeature, Graphics2DFeatureFactory>();
             Features.add<DxUIFeature, DxUIFeatureFactory>();

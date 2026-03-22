@@ -9,6 +9,8 @@
 #include <engine/2d/scene/camera/CameraComponent2D.h>
 #include <engine/2d/directx/DxGraphics2DContext.h>
 #include <core/coroutine/CoroutineTask.h>
+#include <engine/audio/sound/Sound.h>
+#include "engine/2d/audio/AudioWorld2D.h"
 
 namespace Demo {
 	using namespace Ghurund;
@@ -25,10 +27,15 @@ namespace Demo {
 		Set<RenderGroup> renderGroups;
 		IntrusivePointer<Scene2D> scene;
 		SharedPointer<World2D> world;
+		SharedPointer<AudioWorld2D> audioWorld;
 		IntrusivePointer<Entity2D> captain, ground;
 		IntrusivePointer<Camera2D> camera;
 		IntrusivePointer<CameraComponent2D> cameraComponent;
 		float direction = 1;
+
+		IntrusivePointer<Sound> thudSound;
+		IntrusivePointer<AudioListenerComponent2D> audioListenerComponent;
+		IntrusivePointer<SoundComponent2D> soundComponent;
 
 	public:
 		DemoWindow(
@@ -43,6 +50,8 @@ namespace Demo {
 			scene.set(nullptr);
 			world.set(nullptr);
 		}
+
+		void init();
 
 		CoroutineTask initScene();
 

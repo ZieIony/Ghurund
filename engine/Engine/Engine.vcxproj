@@ -92,6 +92,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\audio\AudioFeatureFactory.h" />
+    <ClInclude Include="src\engine\audio\component\SoundComponent.h" />
+    <ClInclude Include="src\engine\game\Component.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameApplication.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
@@ -99,9 +102,8 @@
     <ClInclude Include="src\engine\application\LayerList.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />
     <ClInclude Include="src\engine\audio\AudioFeature.h" />
-    <ClInclude Include="src\engine\audio\Sound.h" />
-    <ClInclude Include="src\engine\audio\Sound3d.h" />
-    <ClInclude Include="src\engine\audio\SoundLoader.h" />
+    <ClInclude Include="src\engine\audio\sound\Sound.h" />
+    <ClInclude Include="src\engine\audio\sound\SoundLoader.h" />
     <ClInclude Include="src\engine\editor\CameraUtils.h" />
     <ClInclude Include="src\engine\editor\EditorComponent.h" />
     <ClInclude Include="src\engine\editor\ObservableObject.h" />
@@ -187,10 +189,12 @@
     <ClCompile Include="src\engine\application\LayerList.cpp" />
     <ClCompile Include="src\engine\audio\Audio.cpp" />
     <ClCompile Include="src\engine\audio\AudioFeature.cpp" />
-    <ClCompile Include="src\engine\audio\Sound.cpp" />
-    <ClCompile Include="src\engine\audio\SoundLoader.cpp" />
+    <ClCompile Include="src\engine\audio\component\SoundComponent.cpp" />
+    <ClCompile Include="src\engine\audio\sound\Sound.cpp" />
+    <ClCompile Include="src\engine\audio\sound\SoundLoader.cpp" />
     <ClCompile Include="src\engine\editor\ThumbnailRenderer.cpp" />
     <ClCompile Include="src\engine\game\action\ActionMapping.cpp" />
+    <ClCompile Include="src\engine\game\Component.cpp" />
     <ClCompile Include="src\engine\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\engine\graphics\GraphicsFeature.cpp" />
     <ClCompile Include="src\engine\graphics\material\Material.cpp" />

@@ -4,6 +4,7 @@
 #include <engine/audio/AudioFeature.h>
 #include <engine/graphics/GraphicsFeature.h>
 #include <engine/graphics/GraphicsFeatureFactory.h>
+#include <engine/audio/AudioFeatureFactory.h>
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
@@ -12,7 +13,7 @@ namespace Ghurund::Engine {
     public:
         GameApplication() {
             Features.add<GraphicsFeature, GraphicsFeatureFactory>();
-            Features.add<AudioFeature>();
+            Features.add<AudioFeature, AudioFeatureFactory>();
         }
     };
 }

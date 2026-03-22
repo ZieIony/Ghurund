@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/object/Initializable.h>
+#include <engine/game/Component.h>
 #include "engine/graphics/rendering/RenderGroup.h"
 
 #include <cstdint>
@@ -8,7 +8,7 @@
 namespace Ghurund::Engine::_2D {
 	class Entity2D;
 
-	class Component2D:public RefCountedObject, public Initializable {
+	class Component2D:public Component, public Initializable {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -23,33 +23,12 @@ namespace Ghurund::Engine::_2D {
 
 	protected:
 		float drawOrder = 0;
-		Ghurund::Core::AString* name = nullptr;
 		Component2D* parent = nullptr;
 		Entity2D* owner = nullptr;
 
 	public:
 		virtual ~Component2D() = 0 {
-			delete name;
 		}
-
-		inline const Ghurund::Core::AString* getName() const {
-			return name;
-		}
-
-		inline void setName(const AString* name) {
-			if (this->name)
-				delete this->name;
-			if (name)
-				this->name = ghnew AString(*name);
-		}
-
-		inline void setName(const AString& name) {
-			if (this->name)
-				delete this->name;
-			this->name = ghnew AString(name);
-		}
-
-		__declspec(property(get = getName, put = setName)) const Ghurund::Core::AString* Name;
 
 		inline Component2D* getParent() const {
 			return parent;
@@ -74,9 +53,5 @@ namespace Ghurund::Engine::_2D {
 		virtual void update(const XMFLOAT4X4& parentTransformation, uint64_t time) {}
 
 		virtual void draw(RenderGroup& group) {}
-
-#ifdef _DEBUG
-		virtual String printTree() const;
-#endif
 	};
 }

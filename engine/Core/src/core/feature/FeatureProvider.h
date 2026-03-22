@@ -46,7 +46,7 @@ namespace Ghurund::Core {
 
 		template<Derived<Feature> T, Derived<FeatureFactory> R>
 		inline void add() {
-			if(!contains<T>())
+			if (!contains<T>())
 				factories.put(&T::TYPE, SharedPointer<FeatureFactory>(ghnew R(app)));
 		}
 

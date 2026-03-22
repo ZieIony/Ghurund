@@ -11,21 +11,12 @@
 #include <x3daudio.h>
 #include <xaudio2.h>
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     using namespace ::DirectX;
     using namespace Ghurund::Core;
 
     const Ghurund::Core::Type& Audio::GET_TYPE() {
-        static auto PROPERTY_POSITION = Ghurund::Core::Property<Audio, XMFLOAT3>("Position", (XMFLOAT3(Audio::*)()) & getPosition, (void(Audio::*)(XMFLOAT3)) & setPosition);
-        static auto PROPERTY_VELOCITY = Ghurund::Core::Property<Audio, XMFLOAT3>("Velocity", (XMFLOAT3(Audio::*)()) & getVelocity, (void(Audio::*)(XMFLOAT3)) & setVelocity);
-        static auto PROPERTY_DIRECTION = Ghurund::Core::Property<Audio, XMFLOAT3>("Direction", (XMFLOAT3(Audio::*)()) & getDirection, (void(Audio::*)(XMFLOAT3)) & setDirection);
-        static auto PROPERTY_UP = Ghurund::Core::Property<Audio, XMFLOAT3>("Up", (XMFLOAT3(Audio::*)()) & getUp, (void(Audio::*)(XMFLOAT3)) & setUp);
-
         static const Ghurund::Core::Type TYPE = TypeBuilder<Audio>()
-            .withProperty(PROPERTY_POSITION)
-            .withProperty(PROPERTY_VELOCITY)
-            .withProperty(PROPERTY_DIRECTION)
-            .withProperty(PROPERTY_UP)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
@@ -72,6 +63,17 @@ namespace Ghurund {
             throw CallFailedException();
         }
 
+        masteringVoice->GetVoiceDetails(&outputDetails);
+        memset(&dspSettings, 0, sizeof(dspSettings));
+        dspSettings.SrcChannelCount = 1;
+        dspSettings.DstChannelCount = Channels;
+        matrixCoefficients = new float[64];
+		//memset(&matrixCoefficients, 0, sizeof(float) * 64);
+        dspSettings.pMatrixCoefficients = matrixCoefficients;
+        delayTimes = new float[64];
+        //memset(&delayTimes, 0, sizeof(float) * 64);
+        dspSettings.pDelayTimes = delayTimes;
+
         DWORD dwChannelMask;
         masteringVoice->GetChannelMask(&dwChannelMask);
         X3DAudioInitialize(dwChannelMask, X3DAUDIO_SPEED_OF_SOUND, x3DInstance);
@@ -80,6 +82,8 @@ namespace Ghurund {
     void Audio::onUninit() {
         MFShutdown();
 
+        delete[] matrixCoefficients;
+        delete[] delayTimes;
         if (masteringVoice != nullptr) {
             masteringVoice->DestroyVoice();
             masteringVoice = nullptr;
