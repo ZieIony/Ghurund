@@ -101,6 +101,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\xml\XMLDocument.h" />
+    <ClInclude Include="src\core\xml\XMLElement.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -342,6 +344,7 @@
     <ClCompile Include="src\core\window\WindowDecorationMetrics.cpp" />
     <ClCompile Include="src\core\window\WindowProc.cpp" />
     <ClCompile Include="src\core\window\WindowStyle.cpp" />
+    <ClCompile Include="src\core\xml\XMLDocument.cpp" />
     <ClCompile Include="src\ghcpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

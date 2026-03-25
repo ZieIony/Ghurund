@@ -7,12 +7,12 @@
 namespace Ghurund::Core {
     class Settings {
     private:
-        Map<AString, AString> values;
+        Map<WString, WString> values;
 
     public:
         Settings() {}
 
-        Settings(const Map<AString, AString>& values) :values(values) {}
+        Settings(const Map<WString, WString>& values) :values(values) {}
 
         Settings(const Settings& other) :values(other.values) {}
 
@@ -32,19 +32,21 @@ namespace Ghurund::Core {
             return *this;
         }
 
-        inline Map<AString, AString>& getValues() {
+        inline Map<WString, WString>& getValues() {
             return values;
         }
 
-        __declspec(property(get = getValues)) Map<AString, AString>& Values;
+        __declspec(property(get = getValues)) Map<WString, WString>& Values;
 
-        inline AString get(const AString& name) const {
+        inline WString get(const WString& name) const {
             return values.get(name);
         }
 
-        inline void put(const AString& name, const AString& value) {
+        inline void put(const WString& name, const WString& value) {
             values.put(name, value);
         }
+
+        void load(const void* data, uint32_t size);
 
         void load(const FilePath& path);
 
