@@ -1,68 +1,68 @@
 #include "ghedxpch.h"
 #include "DxShaderLoader.h"
 
+#include "core/xml/XMLDocument.h"
 #include "compiler/CompilerInclude.h"
 #include "compiler/DxShaderProgram.h"
 #include "compiler/DxEntrypointNotFoundException.h"
-#include <tinyxml2.h>
 
 namespace Ghurund::Engine::DirectX {
-	DxShader* DxShaderLoader::loadFromXml(const tinyxml2::XMLElement& xml, const DirectoryPath& workingDir) {
-		if (AString(xml.Name()) != "Shader")
+	DxShader* DxShaderLoader::loadFromXml(const XMLElement& xml, const DirectoryPath& workingDir) {
+		if (xml.name != L"Shader")
 			throw InvalidFormatException();
 
 		auto shaderSource = makeIntrusive<ShaderSource>();
-		auto settingsElement = xml.FirstChildElement("Settings");
-		if (settingsElement) {
-			auto cullModeAttribute = settingsElement->FindAttribute("cullMode");
-			if (cullModeAttribute) {
-				auto cullModeValue = AString(cullModeAttribute->Value());
-				if (cullModeValue == "none") {
+		auto settingsElementIndex = xml.children.find([](const SharedPointer<XMLElement>& element) { return element->name == L"Settings"; });
+		if (settingsElementIndex != xml.children.Size) {
+			auto& settingsElement = xml.children[settingsElementIndex];
+			auto cullModeAttributeIterator = settingsElement->attributes.find(L"cullMode");
+			if (cullModeAttributeIterator != settingsElement->attributes.end()) {
+				auto& cullModeValue = cullModeAttributeIterator->value;
+				if (cullModeValue == L"none") {
 					shaderSource->settings.cullMode = CullMode::NONE;
-				} else if (cullModeValue == "front") {
+				} else if (cullModeValue == L"front") {
 					shaderSource->settings.cullMode = CullMode::FRONT;
-				} else if (cullModeValue == "back") {
+				} else if (cullModeValue == L"back") {
 					shaderSource->settings.cullMode = CullMode::BACK;
 				}
 			}
-			auto transparencyAttribute = settingsElement->FindAttribute("isTransparencyEnabled");
-			if (transparencyAttribute)
-				shaderSource->settings.isTransparencyEnabled = transparencyAttribute->BoolValue();
-			auto depthTestAttribute = settingsElement->FindAttribute("isDepthTestEnabled");
-			if (depthTestAttribute)
-				shaderSource->settings.isDepthTestEnabled = depthTestAttribute->BoolValue();
+			auto transparencyAttributeIterator = settingsElement->attributes.find(L"isTransparencyEnabled");
+			if (transparencyAttributeIterator != settingsElement->attributes.end())
+				shaderSource->settings.isTransparencyEnabled = transparencyAttributeIterator->value == L"true";
+			auto depthTestAttributeIterator = settingsElement->attributes.find(L"isDepthTestEnabled");
+			if (depthTestAttributeIterator != settingsElement->attributes.end())
+				shaderSource->settings.isDepthTestEnabled = depthTestAttributeIterator->value == L"true";
 		}
-		auto samplersElement = xml.FirstChildElement("Samplers");
-		if (samplersElement) {
-			auto samplerElement = samplersElement->FirstChildElement();
-			while (samplerElement) {
+		auto samplersElementIndex = xml.children.find([](const SharedPointer<XMLElement>& element) { return element->name == L"Samplers"; });
+		if (samplersElementIndex != xml.children.Size) {
+			auto& samplersElement = xml.children[samplersElementIndex];
+			for (auto& samplerElement : samplersElement->children) {
 				SamplerInfo sampler;
-				auto samplerNameAttribute = samplerElement->FindAttribute("name");
-				if (samplerNameAttribute)
-					sampler.name = samplerNameAttribute->Value();
-				auto samplerFilterAttribute = samplerElement->FindAttribute("filter");
-				if (samplerFilterAttribute) {
-					auto filterValue = AString(samplerFilterAttribute->Value());
-					if (filterValue == "point") {
+				auto samplerNameAttributeIterator = samplerElement->attributes.find(L"name");
+				if (samplerNameAttributeIterator != samplerElement->attributes.end())
+					sampler.name = convertText<wchar_t, char>(samplerNameAttributeIterator->value);
+				auto samplerFilterAttributeIterator = samplerElement->attributes.find(L"filter");
+				if (samplerFilterAttributeIterator != samplerElement->attributes.end()) {
+					auto& filterValue = samplerFilterAttributeIterator->value;
+					if (filterValue == L"point") {
 						sampler.filter = TextureFilter::POINT;
-					} else if (filterValue == "linear") {
+					} else if (filterValue == L"linear") {
 						sampler.filter = TextureFilter::LINEAR;
-					} else if (filterValue == "anisotropic") {
+					} else if (filterValue == L"anisotropic") {
 						sampler.filter = TextureFilter::ANISOTROPIC;
 					}
 				}
 				shaderSource->samplers.add(sampler);
-				samplerElement = samplerElement->NextSiblingElement();
 			}
 		}
-		auto programsElement = xml.FirstChildElement("Programs");
-		if (programsElement) {
-			auto programElement = programsElement->FirstChildElement();
-			while (programElement) {
+		auto programsElementIndex = xml.children.find([](const SharedPointer<XMLElement>& element) { return element->name == L"Programs"; });
+		if (programsElementIndex != xml.children.Size) {
+			auto& programsElement = xml.children[programsElementIndex];
+			for (auto& programElement : programsElement->children) {
 				DxShaderType type = [&] {
-					auto programTypeAttribute = programElement->FindAttribute("type");
-					if (programTypeAttribute) {
-						auto programType = AString(programTypeAttribute->Value());
+					auto programTypeAttributeIterator = programElement->attributes.find(L"type");
+					if (programTypeAttributeIterator != programElement->attributes.end()) {
+						auto programType = convertText<wchar_t, char>(programTypeAttributeIterator->value);
 						try {
 							return DxShaderType::fromName(programType.toUpperCase());
 						} catch (InvalidParamException e) {
@@ -74,17 +74,17 @@ namespace Ghurund::Engine::DirectX {
 					}
 				}();
 				AString entryPoint = [&]->AString {
-					auto entryPointAttribute = programElement->FindAttribute("entryPoint");
-					if (entryPointAttribute) {
-						return entryPointAttribute->Value();
+					auto entryPointAttributeIterator = programElement->attributes.find(L"entryPoint");
+					if (entryPointAttributeIterator != programElement->attributes.end()) {
+						return convertText<wchar_t, char>(entryPointAttributeIterator->value);
 					} else {
 						return type.EntryPoint;
 					}
 				}();
 				AString sourceCode = [&] {
-					auto pathAttribute = programElement->FindAttribute("path");
-					if (pathAttribute) {
-						auto path = FilePath(convertText<char, wchar_t>(AString(pathAttribute->Value())));
+					auto pathAttributeIterator = programElement->attributes.find(L"path");
+					if (pathAttributeIterator != programElement->attributes.end()) {
+						auto path = FilePath(pathAttributeIterator->value);
 						auto buffer = resourceManager.resolveResource(path, workingDir);
 						return AString((const char*)buffer->Data, buffer->Size);
 					} else {
@@ -93,7 +93,6 @@ namespace Ghurund::Engine::DirectX {
 					}
 				}();
 				shaderSource->programs.add(ghnew DxShaderProgramSourceCode(type, entryPoint, sourceCode));
-				programElement = programElement->NextSiblingElement();
 			}
 		}
 		return loadFromSource(shaderSource.ref(), workingDir);
@@ -130,7 +129,7 @@ namespace Ghurund::Engine::DirectX {
 				shaderSource->programs.add(ghnew DxShaderProgramSourceCode(shaderType, entryPoint, sourceCode));
 		}
 
-		return loadFromSource(shaderSource.ref() , workingDir);
+		return loadFromSource(shaderSource.ref(), workingDir);
 	}
 
 	Resource* DxShaderLoader::loadInternal(
@@ -140,12 +139,12 @@ namespace Ghurund::Engine::DirectX {
 		LoadOption options
 	) {
 		AString streamContents = stream.readASCII();
-		tinyxml2::XMLDocument document;
-		document.Parse(streamContents.Data);
-		const tinyxml2::XMLElement* root = document.RootElement();
-		if (root) {
-			return loadFromXml(*root, workingDir);
-		} else {
+		try {
+			XMLDocument document;
+			document.parse(streamContents.Data, streamContents.Size);
+			const XMLElement& root = document.Root;
+			return loadFromXml(root, workingDir);
+		} catch (...) {
 			return loadFromHlsl(streamContents, workingDir);
 		}
 	}

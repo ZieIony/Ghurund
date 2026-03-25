@@ -3,9 +3,8 @@
 #include "DxShader.h"
 
 #include "core/loading/Loader.h"
+#include "core/xml/XMLDocument.h"
 #include "compiler/DxShaderCompiler.h"
-
-#include <tinyxml2.h>
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
@@ -27,7 +26,7 @@ namespace Ghurund::Engine::DirectX {
         DxShaderCompiler& compiler;
 
         DxShader* loadFromSource(NotNull<ShaderSource> sourceCode, const DirectoryPath& workingDir);
-		DxShader* loadFromXml(const tinyxml2::XMLElement& xml, const DirectoryPath& workingDir);
+		DxShader* loadFromXml(const XMLElement& xml, const DirectoryPath& workingDir);
 		DxShader* loadFromHlsl(const AString& sourceCode, const DirectoryPath& workingDir);
 
     public:

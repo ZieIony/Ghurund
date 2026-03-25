@@ -4,8 +4,6 @@
 #include "core/io/File.h"
 #include "core/xml/XMLDocument.h"
 
-#pragma comment(lib, "xmllite.lib")
-
 namespace Ghurund::Core {
     void Settings::load(const void* data, uint32_t size) {
         XMLDocument doc;

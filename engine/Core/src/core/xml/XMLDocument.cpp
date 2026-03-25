@@ -3,8 +3,11 @@
 
 #include <Shlwapi.h>
 
+#pragma comment(lib, "xmllite.lib")
+
 namespace Ghurund::Core {
 	void XMLDocument::parse(const void* data, uint32_t size) {
+		root.set(nullptr);
 		CreateXmlReader(__uuidof(IXmlReader), (void**)&reader, nullptr);
 		Microsoft::WRL::ComPtr<IStream> memStream = SHCreateMemStream((const BYTE*)data, (UINT)size);
 		reader->SetInput(memStream.Get());
@@ -40,5 +43,7 @@ namespace Ghurund::Core {
 				break;
 			}
 		}
+		if (root == nullptr)
+			throw InvalidDataException();
 	}
 }
