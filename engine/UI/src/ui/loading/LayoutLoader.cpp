@@ -58,34 +58,28 @@ namespace Ghurund::UI {
 		}
 	}
 
-	Resource* LayoutLoader::loadInternal(
+	void LayoutLoader::loadInternal(
+        Control& resource,
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
         LoadOption options
     ) {
-		tinyxml2::XMLDocument doc;
-		doc.Parse((const char*)stream.Data, stream.Size);
+        XMLDocument doc;
+		doc.parse(stream.Data, stream.Size);
+        // TODO: check root name and version
 
-        tinyxml2::XMLElement* child = doc.FirstChildElement();
-        if (!child) {
-            Logger::log(LogType::ERR0R, _T("Missing control tag.\n"));
-            throw InvalidFormatException("Missing control tag.\n");
-        }
+        const XMLElement& child = doc.Root;
         AString namespaceName = DEFAULT_CONTROL_NAMESPACE;
-        auto namespaceAttr = child->FindAttribute("namespace");
+        auto namespaceAttr = child.findAttribute(L"namespace");
         if (namespaceAttr)
-            namespaceName = namespaceAttr->Value();
-		AString type = namespaceName + "::" + child->Value();
-        const BaseConstructor* constructor = types.get(type);
-        if (!constructor)
-            throw InvalidDataException(std::format("No zero-argument constructor found for '{}'.\n", type).c_str());
-        Control* control = (Control*)constructor->invokeRaw();
-        control->load(*this, workingDir, *child);
-        return control;
+            namespaceName = convertText<wchar_t, char>(*namespaceAttr);
+		AString type = namespaceName + "::" + convertText<wchar_t, char>(child.name);
+
+        resource.load(*this, workingDir, child);
     }
 
-    void LayoutLoader::loadProperties(Object& obj, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+    void LayoutLoader::loadProperties(Object& obj, const DirectoryPath& workingDir, const XMLElement& xml) {
         const Core::Type* type = &obj.Type;
         while (*type != RefCountedObject::TYPE) {
             for (auto& property : type->Properties) {
@@ -96,15 +90,15 @@ namespace Ghurund::UI {
         }
     }
 
-    void LayoutLoader::loadProperty(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+    void LayoutLoader::loadProperty(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const XMLElement& xml) {
         AString propertyName = property.Name;
         AString propertyUpper = propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
         AString propertyLower = propertyName.substring(0, 1).toLowerCase() + propertyName.substring(1);
         const Core::Type& type = obj.Type;
-        auto elementName = std::format("{}.{}", type.Name, propertyUpper);
+        auto elementName = std::format(L"{}.{}", type.Name, propertyUpper);
 
-        const tinyxml2::XMLElement* propertyElement = xml.FirstChildElement(elementName.c_str());
-        auto propertyAttr = xml.FindAttribute(propertyLower.Data);
+        const XMLElement* propertyElement = xml.findElement(elementName.c_str());
+        auto propertyAttr = xml.findAttribute(convertText<char, wchar_t>(propertyLower.Data));
 
         if (propertyAttr && propertyElement) {
             auto text = std::format("A combination of both - '{}' attribute and '{}.{}' child is invalid.", propertyLower, type.Name, propertyUpper);
@@ -120,41 +114,36 @@ namespace Ghurund::UI {
         }
 
         if (propertyAttr) {
-            loader->loadAttr(obj, property, workingDir, propertyAttr->Value());
+            loader->loadAttr(obj, property, workingDir, convertText<wchar_t, char>(*propertyAttr));
         } else if (propertyElement) {
-            if (!propertyElement->FirstAttribute() &&
-                !propertyElement->NoChildren() &&
-                !propertyElement->FirstChildElement() &&
-                propertyElement->FirstChild()) {
-                loader->loadAttr(obj, property, workingDir, propertyElement->GetText());
-            } else if (!propertyElement->FirstAttribute() && !propertyElement->NoChildren()) {
-                loader->loadChildren(obj, property, workingDir, *propertyElement->FirstChildElement());
+            if (!propertyElement->value.Empty) {
+                loader->loadAttr(obj, property, workingDir, convertText<wchar_t, char>(propertyElement->value));
+            } else if (propertyElement->attributes.Empty && !propertyElement->children.Empty) {
+                loader->loadChildren(obj, property, workingDir, propertyElement->children[0].ref());
             } else {
                 loader->loadElement(obj, property, workingDir, *propertyElement);
             }
         }
     }
 
-    List<ControlWithConstraints> LayoutLoader::loadControls(ControlParent& parent, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+    List<ControlWithConstraints> LayoutLoader::loadControls(ControlParent& parent, const DirectoryPath& workingDir, const XMLElement& xml) {
         List<ControlWithConstraints> list;
-        const tinyxml2::XMLElement* childElement = xml.FirstChildElement();
-        while (childElement) {
-            if (!AString(childElement->Name()).contains("."))
-                list.add(loadControl(parent, workingDir, *childElement));
-			childElement = childElement->NextSiblingElement();
+        for(const auto& childElement : xml.children){
+            if (!childElement->name.contains(L"."))
+                list.add(loadControl(parent, workingDir, childElement.ref()));
         }
         return list;
     }
 
-    ControlWithConstraints LayoutLoader::loadControl(ControlParent& parent, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
-        const char* name = xml.Value();
-        if (strcmp(name, "include") == 0) {
-            auto layoutAttr = xml.FindAttribute("layout");
+    ControlWithConstraints LayoutLoader::loadControl(ControlParent& parent, const DirectoryPath& workingDir, const XMLElement& xml) {
+        const WString& name = xml.name;
+        if (name == L"include") {
+            auto layoutAttr = xml.findAttribute(L"layout");
             if (layoutAttr) {
-                AString s = layoutAttr->Value();
+                WString s = *layoutAttr;
                 try {
                     IntrusivePointer<Control> control(resourceManager.load<Control>(
-                        FilePath(convertText<char, wchar_t>(s)), workingDir, Control::FORMAT_XML, LoadOption::DONT_CACHE)
+                        FilePath(s), workingDir, Control::FORMAT_XML, LoadOption::DONT_CACHE)
                     );
                     PartialConstraintSet loadedConstraints;
                     loadedConstraints.load(control->Type, *this, xml);
@@ -170,10 +159,10 @@ namespace Ghurund::UI {
 			throw InvalidDataException("Missing 'layout' attribute.\n");
 		} else {
 			AString namespaceName = DEFAULT_CONTROL_NAMESPACE;
-			auto namespaceAttr = xml.FindAttribute("namespace");
+			auto namespaceAttr = xml.findAttribute(L"namespace");
 			if (namespaceAttr)
-				namespaceName = namespaceAttr->Value();
-			AString type = namespaceName + "::" + xml.Value();
+				namespaceName = convertText<wchar_t, char>(*namespaceAttr);
+			AString type = namespaceName + "::" + convertText<wchar_t, char>(name);
 			const BaseConstructor* constructor = types[type];
 			if (constructor) {
 				IntrusivePointer<Control> control((Control*)constructor->invokeRaw());
@@ -190,23 +179,23 @@ namespace Ghurund::UI {
 		}
 	}
 
-	Constraint* LayoutLoader::loadConstraint(const tinyxml2::XMLElement& xml, Orientation orientation) {
+	Constraint* LayoutLoader::loadConstraint(const XMLElement& xml, Orientation orientation) {
         AString name, ratio, offset, min, max;
-        auto nameAttr = xml.FindAttribute("path");
+        auto nameAttr = xml.findAttribute(L"path");
         if (nameAttr)
-            name = nameAttr->Value();
-        auto ratioAttr = xml.FindAttribute("ratio");
+            name = convertText<wchar_t, char>(*nameAttr);
+        auto ratioAttr = xml.findAttribute(L"ratio");
         if (ratioAttr)
-            ratio = ratioAttr->Value();
-        auto offsetAttr = xml.FindAttribute("offset");
+            ratio = convertText<wchar_t, char>(*ratioAttr);
+        auto offsetAttr = xml.findAttribute(L"offset");
         if (offsetAttr)
-            offset = offsetAttr->Value();
-        auto minAttr = xml.FindAttribute("min");
+            offset = convertText<wchar_t, char>(*offsetAttr);
+        auto minAttr = xml.findAttribute(L"min");
         if (minAttr)
-            min = minAttr->Value();
-        auto maxAttr = xml.FindAttribute("max");
+            min = convertText<wchar_t, char>(*minAttr);
+        auto maxAttr = xml.findAttribute(L"max");
         if (maxAttr)
-            max = maxAttr->Value();
+            max = convertText<wchar_t, char>(*maxAttr);
         return constraintFactory.parseConstraint(
             nameAttr ? &name : nullptr,
             ratioAttr ? &ratio : nullptr,
@@ -217,7 +206,7 @@ namespace Ghurund::UI {
         );
     }
 
-    Constraint* LayoutLoader::loadConstraint(const char* str, Orientation orientation) {
+    Constraint* LayoutLoader::loadConstraint(const AString& str, Orientation orientation) {
         return constraintFactory.parseConstraint(str, orientation);
     }
 
@@ -233,9 +222,9 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
-    void LayoutLoader::loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment) {
-        auto alignmentParam = xml.FindAttribute("alignment");
+    void LayoutLoader::loadAlignment(const XMLElement& xml, Alignment* alignment) {
+        auto alignmentParam = xml.findAttribute(L"alignment");
         if (alignmentParam)
-            *alignment = Alignment::parse(alignmentParam->Value());
+            *alignment = Alignment::parse(convertText<wchar_t, char>(*alignmentParam));
     }
 }

@@ -4,17 +4,16 @@
 
 #include "core/loading/Loader.h"
 
-#include <tinyxml2.h>
-
 namespace Ghurund::UI {
 	using namespace Ghurund::Core;
 
-	class FontAtlasLoader:public Loader {
+	class FontAtlasLoader:public Loader<FontAtlas> {
 	private:
 		ResourceManager& resourceManager;
 
 	protected:
-		virtual Resource* loadInternal(
+		virtual void loadInternal(
+			FontAtlas& resource,
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
@@ -22,9 +21,9 @@ namespace Ghurund::UI {
 		) override;
 
 		virtual void saveInternal(
+			FontAtlas& resource,
 			MemoryOutputStream& stream,
 			const DirectoryPath& workingDir,
-			Resource& resource,
 			const ResourceFormat& format,
 			SaveOption options
 		) const override;
@@ -32,11 +31,11 @@ namespace Ghurund::UI {
 	public:
 		FontAtlasLoader(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 
-		FontAtlas* loadFromBin(MemoryInputStream& stream, const DirectoryPath& workingDir);
+		void loadFromBin(MemoryInputStream& stream, const DirectoryPath& workingDir, FontAtlas& fontAtlas);
 
-		FontAtlas* loadFromXml(const tinyxml2::XMLElement& xml, const DirectoryPath& workingDir);
+		void loadFromXml(const XMLElement& xml, const DirectoryPath& workingDir, FontAtlas& fontAtlas);
 
-		void saveToXml(FontAtlas& atlas, tinyxml2::XMLDocument& document, tinyxml2::XMLElement& xml, const DirectoryPath& workingDir) const;
+		void saveToXml(FontAtlas& atlas, XMLDocument& document, XMLElement& xml, const DirectoryPath& workingDir) const;
 
 		void saveToBin(FontAtlas& atlas, MemoryOutputStream& stream, const DirectoryPath& workingDir) const;
 	};

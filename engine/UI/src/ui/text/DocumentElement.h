@@ -6,8 +6,6 @@
 #include "engine/graphics/rendering/RenderGroup.h"
 #include "ui/font/Font.h"
 
-#include <tinyxml2.h>
-
 namespace Ghurund::UI {
     using namespace Ghurund::Engine;
 
@@ -18,7 +16,7 @@ namespace Ghurund::UI {
 
         virtual size_t getLength() const = 0;
 
-        virtual void load(Ghurund::UI::LayoutLoader& loader, const tinyxml2::XMLElement& xml) = 0;
+        virtual void load(Ghurund::UI::LayoutLoader& loader, const XMLElement& xml) = 0;
 
         virtual void draw(RenderGroup& group, const Font& parentFormat, const Color& color) const = 0;
     };
@@ -33,7 +31,7 @@ namespace Ghurund::UI {
             return length;
         }
 
-        virtual void load(Ghurund::UI::LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
+        virtual void load(Ghurund::UI::LayoutLoader& loader, const XMLElement& xml) override;
 
         virtual void draw(RenderGroup& group, const Font& parentFormat, const Color& color) const override {
             for (auto element : elements)
@@ -52,8 +50,8 @@ namespace Ghurund::UI {
             return text.Length;
         }
 
-        virtual void load(Ghurund::UI::LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
-            text = convertText<char, wchar_t>(AString(xml.Value()));
+        virtual void load(Ghurund::UI::LayoutLoader& loader, const XMLElement& xml) override {
+            //text = convertText<char, wchar_t>(AString(xml.Value()));
         }
 
         virtual void draw(RenderGroup& group, const Font& parentFormat, const Color& color) const override {

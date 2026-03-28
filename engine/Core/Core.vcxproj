@@ -103,6 +103,8 @@
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\core\xml\XMLDocument.h" />
     <ClInclude Include="src\core\xml\XMLElement.h" />
+    <ClInclude Include="src\core\loading\Loader.h" />
+    <ClInclude Include="src\core\xml\XMLReader.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -209,7 +211,7 @@
     <ClInclude Include="src\core\io\watcher\DirectoryWatch.h" />
     <ClInclude Include="src\core\io\watcher\FileChange.h" />
     <ClInclude Include="src\core\io\watcher\FileWatcher.h" />
-    <ClInclude Include="src\core\loading\Loader.h" />
+    <ClInclude Include="src\core\loading\BaseLoader.h" />
     <ClInclude Include="src\core\loading\LoaderCollection.h" />
     <ClInclude Include="src\core\loading\PrimitivePropertyLoaders.h" />
     <ClInclude Include="src\core\loading\PropertyLoader.h" />
@@ -318,7 +320,7 @@
     <ClCompile Include="src\core\io\watcher\DirectoryWatch.cpp" />
     <ClCompile Include="src\core\io\watcher\FileChange.cpp" />
     <ClCompile Include="src\core\io\watcher\FileWatcher.cpp" />
-    <ClCompile Include="src\core\loading\Loader.cpp" />
+    <ClCompile Include="src\core\loading\BaseLoader.cpp" />
     <ClCompile Include="src\core\logging\LogType.cpp" />
     <ClCompile Include="src\core\logging\Logger.cpp" />
     <ClCompile Include="src\core\object\Object.cpp" />
@@ -345,6 +347,7 @@
     <ClCompile Include="src\core\window\WindowProc.cpp" />
     <ClCompile Include="src\core\window\WindowStyle.cpp" />
     <ClCompile Include="src\core\xml\XMLDocument.cpp" />
+    <ClCompile Include="src\core\xml\XMLReader.cpp" />
     <ClCompile Include="src\ghcpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

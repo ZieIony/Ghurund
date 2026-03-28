@@ -8,7 +8,9 @@ namespace Ghurund::UI {
 
 	class UIMaterialLoader:public MaterialLoader {
 	protected:
-		virtual UIMaterial* makeMaterial() override;
+		virtual const Ghurund::Core::Type& getResourceType() const override {
+			return UIMaterial::TYPE;
+		}
 
 		virtual void onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value) override;
 

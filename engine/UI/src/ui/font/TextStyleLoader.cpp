@@ -3,20 +3,16 @@
 
 #include "TextStyle.h"
 
-#include <tinyxml2.h>
-
 namespace Ghurund::UI {
-	KerningPairs loadKerning(const tinyxml2::XMLElement& xml) {
+	KerningPairs loadKerning(const XMLElement& xml) {
 		KerningPairs kerning;
-		const tinyxml2::XMLElement* child = xml.FirstChildElement();
-		while (child) {
-			if (child->Name() != AString("Pair"))
+		for (auto& child:xml.children) {
+			if (child->name != L"Pair")
 				throw InvalidFormatException("Kerning can only contain Pair children");
-			tchar first = child->FindAttribute("first")->UnsignedValue();
-			tchar second = child->FindAttribute("second")->UnsignedValue();
-			int value = child->FindAttribute("value")->IntValue();
+			uint32_t first = parse<uint32_t>(convertText<wchar_t, char>(child->attributes[L"first"]));
+			uint32_t second = parse<uint32_t>(convertText<wchar_t, char>(child->attributes[L"second"]));
+			int32_t value = parse<int32_t>(convertText<wchar_t, char>(child->attributes[L"value"]));
 			kerning.add(first, second, value);
-			child = child->NextSiblingElement();
 		}
 		return kerning;
 	}
@@ -33,8 +29,8 @@ namespace Ghurund::UI {
 		}
 	}
 
-	void saveKerning(const KerningPairs& kerning, tinyxml2::XMLDocument& document, tinyxml2::XMLElement& xml) {
-		for (auto first : kerning.kerning) {
+	void saveKerning(const KerningPairs& kerning, XMLDocument& document, XMLElement& xml) {
+		/*for (auto first : kerning.kerning) {
 			for (auto second : first.value) {
 				auto pairElement = document.NewElement("Pair");
 				xml.InsertEndChild(pairElement);
@@ -42,7 +38,7 @@ namespace Ghurund::UI {
 				pairElement->SetAttribute("second", second.key);
 				pairElement->SetAttribute("value", second.value);
 			}
-		}
+		}*/
 	}
 
 	void saveKerning(const KerningPairs& kerning, MemoryOutputStream& stream) {
@@ -56,52 +52,45 @@ namespace Ghurund::UI {
 		stream.writeUInt32(0);
 	}
 
-	TextStyle* TextStyleLoader::loadFromXml(const tinyxml2::XMLElement& xml, const DirectoryPath& workingDir) {
-		auto textStyle = makeIntrusive<TextStyle>();
-		const tinyxml2::XMLElement* child = xml.FirstChildElement();
+	void TextStyleLoader::loadFromXml(TextStyle& textStyle, const XMLElement& xml, const DirectoryPath& workingDir) {
 		IntrusivePointer<FontAtlas> atlas;
 		FontMetrics fontMetrics = {};
 		KerningPairs kerning;
 		bool kerningFound = false;
-		while (child) {
-			if (child->Name() == AString("Atlas")) {
+		for (const auto& child : xml.children) {
+			if (child->name == L"Atlas") {
 				if (atlas != nullptr)
 					throw InvalidFormatException("Atlas can appear only once in TextStyle");
-				IntrusivePointer<FontAtlas> atlas = IntrusivePointer<FontAtlas>(fontAtlasLoader.loadFromXml(*child, workingDir));
-			} else if (child->Name() == AString("Kerning")) {
+				IntrusivePointer<FontAtlas> atlas;
+				fontAtlasLoader.load(atlas.ref(), child.ref(), workingDir);
+			} else if (child->name == L"Kerning") {
 				if (kerningFound)
 					throw InvalidFormatException("Kerning can appear only once in TextStyle");
 				kerningFound = true;
-				kerning = loadKerning(*child);
-			} else if (child->Name() == AString("FontMetrics")) {
+				kerning = loadKerning(child.ref());
+			} else if (child->name == L"FontMetrics") {
 				if (fontMetrics.height != 0)
 					throw InvalidFormatException("FontMetrics can appear only once in TextStyle");
-				fontMetrics.ascent = child->FindAttribute("ascent")->UnsignedValue();
-				fontMetrics.descent = child->FindAttribute("descent")->UnsignedValue();
-				fontMetrics.height = child->FindAttribute("height")->UnsignedValue();
-				fontMetrics.weight = child->FindAttribute("weight")->UnsignedValue();
-				fontMetrics.italic = child->FindAttribute("italic")->BoolValue();
+				fontMetrics.ascent = parse<uint32_t>(convertText<wchar_t, char>(*child->findAttribute(L"ascent")));
+				fontMetrics.descent = parse<uint32_t>(convertText<wchar_t, char>(*child->findAttribute(L"descent")));
+				fontMetrics.height = parse<uint32_t>(convertText<wchar_t, char>(*child->findAttribute(L"height")));
+				fontMetrics.weight = parse<uint32_t>(convertText<wchar_t, char>(*child->findAttribute(L"weight")));
+				fontMetrics.italic = *child->findAttribute(L"italic") == L"true";
 			}
-			child = child->NextSiblingElement();
 		}
-		textStyle->init(fontMetrics, atlas.ref(), kerning);
-		textStyle->addReference();
-		return textStyle.get();
+		textStyle.init(fontMetrics, atlas.ref(), kerning);
 	}
 
-	TextStyle* TextStyleLoader::loadFromBin(MemoryInputStream& stream, const DirectoryPath& workingDir) const {
-		auto textStyle = makeIntrusive<TextStyle>();
+	void TextStyleLoader::loadFromBin(TextStyle& textStyle, MemoryInputStream& stream, const DirectoryPath& workingDir) const {
 		FilePath path = FilePath(stream.readUnicode());
 		IntrusivePointer<FontAtlas> atlas = IntrusivePointer<FontAtlas>(resourceManager.load<FontAtlas>(path, workingDir));
 		auto kerning = loadKerning(stream);
 		FontMetrics fontMetrics = *(FontMetrics*)stream.readBytes(sizeof(FontMetrics));
-		textStyle->init(fontMetrics, atlas.ref(), kerning);
-		textStyle->addReference();
-		return textStyle.get();
+		textStyle.init(fontMetrics, atlas.ref(), kerning);
 	}
 
-	void TextStyleLoader::saveToXml(TextStyle& textStyle, tinyxml2::XMLDocument& document, tinyxml2::XMLElement& xml, const DirectoryPath& workingDir) const {
-		auto atlasElement = document.NewElement("Atlas");
+	void TextStyleLoader::saveToXml(TextStyle& textStyle, XMLDocument& document, XMLElement& xml, const DirectoryPath& workingDir) const {
+		/*auto atlasElement = document.NewElement("Atlas");
 		xml.InsertEndChild(atlasElement);
 		fontAtlasLoader.saveToXml(*textStyle.Atlas, document, *atlasElement, workingDir);
 
@@ -115,7 +104,7 @@ namespace Ghurund::UI {
 		fontMetricsElement->SetAttribute("descent", textStyle.FontMetrics.descent);
 		fontMetricsElement->SetAttribute("height", textStyle.FontMetrics.height);
 		fontMetricsElement->SetAttribute("weight", textStyle.FontMetrics.weight);
-		fontMetricsElement->SetAttribute("italic", textStyle.FontMetrics.italic);
+		fontMetricsElement->SetAttribute("italic", textStyle.FontMetrics.italic);*/
 	}
 
 	void TextStyleLoader::saveToBin(TextStyle& textStyle, MemoryOutputStream& stream, const DirectoryPath& workingDir) const {
@@ -143,37 +132,40 @@ namespace Ghurund::UI {
 		stream.writeBytes(&textStyle.FontMetrics, sizeof(FontMetrics));
 	}
 
-	Resource* TextStyleLoader::loadInternal(
+	void TextStyleLoader::loadInternal(
+		TextStyle& resource,
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
 		LoadOption options
 	) {
 		if (format == ResourceFormat::AUTO) {
-			tinyxml2::XMLDocument doc;
-			auto error = doc.Parse(AString((const char*)stream.Data, stream.Size).Data);
-			if (error == tinyxml2::XML_SUCCESS) {
-				return loadFromXml(*doc.RootElement(), workingDir);
-			} else {
-				return loadFromBin(stream, workingDir);
+			auto position = stream.Position;
+			try{
+				XMLDocument doc;
+				doc.parse(stream.Data, stream.Size);
+				loadFromXml(resource, doc.Root, workingDir);
+			} catch(...) {
+				stream.Position = position;
+				loadFromBin(resource, stream, workingDir);
 			}
 		} else if (format == TextStyle::FORMAT_XML) {
-			tinyxml2::XMLDocument doc;
-			doc.Parse(AString((const char*)stream.Data, stream.Size).Data);
-			return loadFromXml(*doc.RootElement(), workingDir);
+			XMLDocument doc;
+			doc.parse(stream.Data, stream.Size);
+			loadFromXml(resource, doc.Root, workingDir);
 		} else {
-			return loadFromBin(stream, workingDir);
+			loadFromBin(resource, stream, workingDir);
 		}
 	}
 
 	void TextStyleLoader::saveInternal(
+		TextStyle& resource,
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,
-		Resource& resource,
 		const ResourceFormat& format,
 		SaveOption options
 	) const {
-		TextStyle& textStyle = castResource<TextStyle>(resource);
+		/*TextStyle& textStyle = castResource<TextStyle>(resource);
 		if (format == ResourceFormat::AUTO || format == TextStyle::FORMAT_XML) {
 			tinyxml2::XMLDocument xml;
 			auto element = xml.NewElement("TextStyle");
@@ -185,6 +177,6 @@ namespace Ghurund::UI {
 			stream.writeBytes(printer.CStr(), printer.CStrSize());
 		} else {
 			saveToBin(textStyle, stream, workingDir);
-		}
+		}*/
 	}
 }

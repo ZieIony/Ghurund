@@ -52,10 +52,6 @@ namespace Ghurund::Engine {
 		MatrixParameter* parameterView = nullptr, * parameterProjection = nullptr;
 		MatrixParameter* parameterViewProjection = nullptr, * parameterViewProjectionInv = nullptr;
 
-	protected:
-		virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-		virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
-
 	public:
 		Camera();
 

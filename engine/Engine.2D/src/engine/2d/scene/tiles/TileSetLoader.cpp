@@ -1,28 +1,27 @@
 #include "ghe2dpch.h"
 #include "TileSetLoader.h"
 
-#include <tinyxml2.h>
-
 namespace Ghurund::Engine::_2D {
-	TileSet* TileSetLoader::loadFromXmlInternal(
-		const tinyxml2::XMLElement& xml,
+	void TileSetLoader::loadInternal(
+		TileSet& resource,
+		const XMLElement& xml,
 		const DirectoryPath& workingDir,
+		const ResourceFormat& format,
 		LoadOption options
 	) {
-		auto textureAttribute = xml.FindAttribute("texture");
+		checkXmlRoot(xml, L"TileSet");
+	
+		auto textureAttribute = xml.findAttribute(L"texture");
 		if (!textureAttribute)
 			throw InvalidDataException();
-		auto texturePath = FilePath(convertText<char, wchar_t>(AString(textureAttribute->Value())));
+		auto texturePath = FilePath(*textureAttribute);
 		auto texture = IntrusivePointer<ITexture>(resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, options));
 
-		auto tileSizeAttribute = xml.FindAttribute("tileSize");
+		auto tileSizeAttribute = xml.findAttribute(L"tileSize");
 		if (!tileSizeAttribute)
 			throw InvalidDataException();
-		auto tileSize = IntSize::parse(tileSizeAttribute->Value());
+		auto tileSize = IntSize::parse(convertText<wchar_t, char>(*tileSizeAttribute));
 
-		auto tileSet = makeIntrusive<TileSet>();
-		tileSet->init(texture.ref(), tileSize);
-		tileSet->addReference();
-		return tileSet.get();
+		resource.init(texture.ref(), tileSize);
 	}
 }

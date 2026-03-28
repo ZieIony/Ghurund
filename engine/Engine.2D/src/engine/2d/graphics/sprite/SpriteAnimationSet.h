@@ -121,7 +121,7 @@ namespace Ghurund::Engine::_2D {
 			return animations[i];
 		}
 
-		inline size_t find(const Ghurund::Core::AString& name) {
+		inline size_t find(const Ghurund::Core::WString& name) {
 			return animations.find([&](SpriteAnimation* c) { return c->Name && c->Name->operator==(name); });
 		}
 

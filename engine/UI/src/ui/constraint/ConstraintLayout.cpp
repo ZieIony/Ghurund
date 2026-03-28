@@ -1,8 +1,6 @@
 #include "ghuipch.h"
 #include "ConstraintLayout.h"
 
-#include <tinyxml2.h>
-
 #include "Guide.h"
 #include "ConstraintGraph.h"
 
@@ -16,7 +14,7 @@ namespace Ghurund::UI {
 		return TYPE;
 	}
 
-	void ConstraintLayout::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+	void ConstraintLayout::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) {
 		__super::loadInternal(loader, workingDir, xml);
 		/*const tinyxml2::XMLElement* child = xml.FirstChildElement();
 		while (child != nullptr) {

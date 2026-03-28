@@ -27,7 +27,7 @@ namespace Ghurund::Engine {
 
     private:
         MaterialInputCollection inputs;
-        IGPUMemoryManager& memoryManager;
+        IGPUMemoryManager* memoryManager = nullptr;
         Shader* shader = nullptr;
         List<IntrusivePointer<ConstantBuffer>> constantBuffers;
         List<BaseValueInput*> valueInputs;
@@ -48,7 +48,11 @@ namespace Ghurund::Engine {
         virtual void initInputs();
 
     public:
-        Material(IGPUMemoryManager& memoryManager):memoryManager(memoryManager) {}
+        Material() {}
+
+        void init(NotNull<IGPUMemoryManager> memoryManager) {
+            this->memoryManager = memoryManager.get();
+        }
 
         virtual void invalidate() {
             finalize();
@@ -103,7 +107,7 @@ namespace Ghurund::Engine {
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_MATERIAL };
 
-        static const inline uint32_t VERSION = 0;
+        static const inline uint32_t VERSION = 1;
 #pragma endregion
     };
 }

@@ -27,8 +27,8 @@ namespace Ghurund::Core {
 		}
 	}
 
-	Loader* ResourceManager::getLoader(const Ghurund::Core::Type& type) const {
-		Loader* loader = loaders.get(type);
+	BaseLoader* ResourceManager::getLoader(const Ghurund::Core::Type& type) const {
+		BaseLoader* loader = loaders.get(type);
 
 		if (!loader) {
 			auto message = std::format(_T("loader for type {} is missing\n"), type.Name);
@@ -40,7 +40,13 @@ namespace Ghurund::Core {
 		return loader;
 	}
 
-	Resource* ResourceManager::loadInternal(Loader& loader, const FilePath& path, const DirectoryPath& workingDir, const ResourceFormat& format, LoadOption options) {
+	Resource* ResourceManager::loadInternal(
+		BaseLoader& loader,
+		const FilePath& path,
+		const DirectoryPath& workingDir,
+		const ResourceFormat& format,
+		LoadOption options
+	) {
 		const WString cacheKey = getCacheKey(path, workingDir);
 		auto iterator = resourceCache.find(cacheKey);
 		SharedPointer<Buffer> buffer;
@@ -56,7 +62,13 @@ namespace Ghurund::Core {
 		return loadInternal(loader, *buffer.get(), getLocalDir(path, workingDir), format, options);
 	}
 
-	Resource* ResourceManager::loadInternal(Loader& loader, const Buffer& buffer, const DirectoryPath& workingDir, const ResourceFormat& format, LoadOption options) {
+	Resource* ResourceManager::loadInternal(
+		BaseLoader& loader,
+		const Buffer& buffer,
+		const DirectoryPath& workingDir,
+		const ResourceFormat& format,
+		LoadOption options
+	) {
 		if (buffer.Size == 0) {
 			auto message = std::format(_T("the buffer is empty\n"));
 			Logger::log(LogType::ERR0R, message.c_str());
@@ -64,9 +76,9 @@ namespace Ghurund::Core {
 			throw InvalidParamException(exMessage.Data);
 		}
 		MemoryInputStream stream(buffer.Data, buffer.Size);
-		Resource* resource;
+		IntrusivePointer<Resource> resource;
 		try {
-			resource = loader.load(stream, workingDir, format, options);
+			resource = IntrusivePointer(loader.load(stream, workingDir, format, options));
 		} catch (std::exception& exception) {
 			auto text = std::format(_T("failed to load resource\n"));
 			Logger::log(LogType::ERR0R, text.c_str());
@@ -95,13 +107,21 @@ namespace Ghurund::Core {
 		//if (!(options & LoadOption::DONT_CACHE))
 			//resources.add(*resource);
 
-		return resource;
+		resource->addReference();
+		return resource.get();
 	}
 
-	void ResourceManager::saveInternal(Resource& resource, const Loader& loader, Buffer& buffer, const DirectoryPath& workingDir, const ResourceFormat& format, SaveOption options) const {
+	void ResourceManager::saveInternal(
+		Resource& resource,
+		const BaseLoader& loader,
+		Buffer& buffer,
+		const DirectoryPath& workingDir,
+		const ResourceFormat& format,
+		SaveOption options
+	) const {
 		MemoryOutputStream stream;
 		try {
-			loader.save(stream, workingDir, resource, format, options);
+			loader.save(resource, stream, workingDir, format, options);
 		} catch (std::exception& exception) {
 			Logger::log(LogType::ERR0R, std::format(_T("failed to save resource\n")).c_str());
 			throw exception;
@@ -109,7 +129,13 @@ namespace Ghurund::Core {
 		buffer.setData(stream.Data, stream.BytesWritten);
 	}
 
-	Resource* ResourceManager::load(Loader& loader, const FilePath& path, const DirectoryPath& workingDir, const ResourceFormat& format, LoadOption options) {
+	Resource* ResourceManager::load(
+		BaseLoader& loader,
+		const FilePath& path,
+		const DirectoryPath& workingDir,
+		const ResourceFormat& format,
+		LoadOption options
+	) {
 		const WString cacheKey = getCacheKey(path, workingDir);
 		Resource* resource = resources.get(cacheKey);
 		if (!resource) {

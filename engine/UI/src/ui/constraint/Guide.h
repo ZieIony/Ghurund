@@ -8,8 +8,6 @@
 #include "core/DataParsing.h"
 #include "ui/control/ControlPath.h"
 
-#include <tinyxml2.h>
-
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
@@ -41,7 +39,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getValue)) float Value;
 
-        static Guide load(const tinyxml2::XMLElement& xml);
+        static Guide load(const XMLElement& xml);
     };
 
     class GuideConstraint:public Constraint {

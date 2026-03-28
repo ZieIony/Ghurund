@@ -1,19 +1,19 @@
 #include "ghcpch.h"
-#include "Loader.h"
+#include "BaseLoader.h"
 
 #include "core/reflection/TypeBuilder.h"
 #include <format>
 
 namespace Ghurund::Core {
-	const Ghurund::Core::Type& Loader::GET_TYPE() {
-		static const Ghurund::Core::Type TYPE = TypeBuilder<Loader>()
+	const Ghurund::Core::Type& BaseLoader::GET_TYPE() {
+		static const Ghurund::Core::Type TYPE = TypeBuilder<BaseLoader>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;
 	}
 
-	void Loader::readHeader(MemoryInputStream& stream, const Ghurund::Core::Type& type, uint32_t version) {
-		if (stream.Size < stream.BytesRead + sizeof(unsigned int) * 2) {
+	void BaseLoader::readHeader(MemoryInputStream& stream, const Ghurund::Core::Type& type, uint32_t version) {
+		if (stream.Size < stream.Position + sizeof(unsigned int) * 2) {
 			Logger::log(LogType::ERR0R, _T("EOF\n"));
 			throw InvalidDataException("EOF");
 		}
@@ -34,18 +34,20 @@ namespace Ghurund::Core {
 		}
 	}
 
-	void Loader::checkXmlRoot(const tinyxml2::XMLElement& xml, const Ghurund::Core::Type& type, uint32_t version) {
-		if (xml.Name() != type.Name) {
-			auto message = std::format("Invalid resource type name (expected: {}, read: {})\n", type.Name, xml.Name());
+	void BaseLoader::checkXmlRoot(const XMLElement& xml, const WString& name) {
+		if (xml.name != name) {
+			auto message = std::format("Invalid resource type name (expected: {}, read: {})\n", name, xml.name);
 			String exMessage = convertText<char, tchar>(AString(message.c_str()));
 			Logger::log(LogType::ERR0R, exMessage.Data);
 			throw InvalidDataException(message.c_str());
 		}
-		auto versionAttr = xml.FindAttribute("version");
-		if (!versionAttr)
+		auto versionAttrIterator = xml.attributes.find(L"version");
+		if (versionAttrIterator == xml.attributes.end())
 			throw InvalidFormatException();
-		if (versionAttr->IntValue() != version) {
-			auto message = std::format(_T("Invalid version number (expected: {}, read: {})\n"), version, versionAttr->IntValue());
+		uint32_t version = parse<uint32_t>(convertText<wchar_t, char>(versionAttrIterator->value));
+		uint32_t supportedVersion = getResourceVersion();
+		if (version != supportedVersion) {
+			auto message = std::format(_T("Invalid version number (expected: {}, read: {})\n"), supportedVersion, version);
 			Logger::log(LogType::ERR0R, message.c_str());
 			AString exMessage = convertText<tchar, char>(String(message.c_str()));
 			throw InvalidDataException(exMessage.Data);

@@ -3,16 +3,15 @@
 #include "OglMesh.h"
 
 namespace Ghurund::Engine::OpenGL {
-    Resource* OglMeshLoader::loadInternal(
+    void OglMeshLoader::loadInternal(
+        OglMesh& resource,
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
         Ghurund::Core::LoadOption options
     ) {
-        OglMesh* mesh = makeResource<OglMesh>();
-        MeshData* meshData = (MeshData*)meshDataLoader.load(stream, workingDir, format, options);
-        mesh->init(*meshData);
-        meshData->release();
-        return mesh;
+        auto meshData = makeIntrusive<MeshData>();
+        meshDataLoader.load(meshData.ref(), stream, workingDir, format, options);
+        resource.init(meshData.ref());
     }
 }

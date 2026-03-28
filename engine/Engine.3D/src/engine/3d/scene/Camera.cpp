@@ -180,7 +180,7 @@ namespace Ghurund::Engine {
 		XMStoreFloat(&dist, XMVector3Length(XMLoadFloat3(&target) - pv2));
 	}
 
-	void Camera::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+	/*void Camera::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
 		//__super::loadInternal(context, workingDir, stream, options);
 
 		memcpy(&pos, stream.readBytes(sizeof(pos)), sizeof(pos));
@@ -216,7 +216,7 @@ namespace Ghurund::Engine {
 		stream.writeFloat(zFar);
 		stream.writeBytes(&up, sizeof(up));
 		stream.writeBoolean(pers);
-	}
+	}*/
 
 	const Ghurund::Core::Type& Camera::GET_TYPE() {
 		static const Ghurund::Core::Type TYPE = TypeBuilder<Camera>()

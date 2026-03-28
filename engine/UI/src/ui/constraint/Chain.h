@@ -1,9 +1,9 @@
 #pragma once
 
-#include "core/string/String.h"
 #include "Constraint.h"
 
-#include <tinyxml2.h>
+#include "core/string/String.h"
+#include <core/xml/XMLElement.h>
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
@@ -20,7 +20,7 @@ namespace Ghurund::UI {
         Type type;
         Constraint* start,* end;
 
-        static Chain* load(const tinyxml2::XMLElement& xml) {
+        static Chain* load(const XMLElement& xml) {
             return nullptr;
         }
     };

@@ -16,10 +16,6 @@
 #include "ui/UIContext.h"
 #include "ui/theme/ThemedValueProperty.h"
 
-namespace tinyxml2 {
-	class XMLElement;
-}
-
 namespace Ghurund::Core {
 	class Cursor;
 	class ResourceManager;
@@ -105,7 +101,7 @@ namespace Ghurund::UI {
 
 		virtual ~Control();
 
-		virtual void loadInternal(Ghurund::UI::LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
+		virtual void loadInternal(Ghurund::UI::LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml);
 
 		virtual void onLoaded();
 
@@ -394,7 +390,7 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = getPositionOnScreen)) XMFLOAT2 PositionOnScreen;
 
-		inline void load(Ghurund::UI::LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+		inline void load(Ghurund::UI::LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) {
 			try {
 				loadInternal(loader, workingDir, xml);
 				onLoaded();
@@ -417,6 +413,8 @@ namespace Ghurund::UI {
 		static const inline ResourceFormat FORMAT_XML = ResourceFormat(L"xml", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
 
 		inline static const Array<ResourceFormat>& FORMATS = { FORMAT_XML };
+
+		static const inline uint32_t VERSION = 0;
 #pragma endregion
 
 #ifdef _DEBUG

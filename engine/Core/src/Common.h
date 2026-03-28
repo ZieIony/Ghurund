@@ -29,7 +29,6 @@ typedef unsigned long address_t;
 #endif
 
 #pragma comment(lib, "Dbghelp.lib")
-#pragma comment(lib, "tinyxml2.lib")
 
 namespace Ghurund::Core {
     /**

@@ -7,17 +7,16 @@
 #include "core/io/MemoryInputStream.h"
 
 namespace Ghurund::Core {
-    class TextLoader:public Loader {
+    class TextLoader:public Loader<TextResource> {
     protected:
-        virtual Resource* loadInternal(
+        virtual void loadInternal(
+            TextResource& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
             LoadOption options
-        ) {
-            TextResource* textResource = ghnew TextResource();
-            textResource->Text = stream.readASCII();
-            return textResource;
+        ) override {
+            resource.Text = stream.readASCII();
         }
     };
 }

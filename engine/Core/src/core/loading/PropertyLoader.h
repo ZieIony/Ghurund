@@ -3,9 +3,9 @@
 #include "core/io/DirectoryPath.h"
 #include "core/object/Object.h"
 #include "core/reflection/BaseProperty.h"
+#include <core/xml/XMLElement.h>
 
 #include <exception>
-#include <tinyxml2.h>
 
 namespace Ghurund::Core {
     class PropertyTypeNotSupportedException:public std::exception {};
@@ -20,11 +20,11 @@ namespace Ghurund::Core {
             throw PropertyTypeNotSupportedException();
         }
 
-        virtual void loadElement(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) const {
+        virtual void loadElement(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const XMLElement& xml) const {
             throw PropertyTypeNotSupportedException();
         }
 
-        virtual void loadChildren(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) const {
+        virtual void loadChildren(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const XMLElement& xml) const {
             throw PropertyTypeNotSupportedException();
         }
     };

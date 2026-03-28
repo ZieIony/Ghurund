@@ -4,13 +4,11 @@
 #include "ui/loading/LayoutLoader.h"
 
 namespace Ghurund::UI {
-    void DocumentElementGroup::load(Ghurund::UI::LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        auto child = xml.FirstChildElement();
-        while (child) {
-            DocumentElement* element = loader.loadDocumentElement(*child);
-            if (element)
-                elements.add(element);
-            child = child->NextSiblingElement();
-        };
-    }
+	void DocumentElementGroup::load(Ghurund::UI::LayoutLoader& loader, const XMLElement& xml) {
+		for (const auto& child : xml.children) {
+			DocumentElement* element = loader.loadDocumentElement(child.ref());
+			if (element)
+				elements.add(element);
+		};
+	}
 }

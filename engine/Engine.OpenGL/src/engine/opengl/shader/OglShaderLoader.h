@@ -5,42 +5,34 @@
 
 #include "core/loading/Loader.h"
 
-namespace tinyxml2 {
-    class XMLElement;
-}
-
 namespace Ghurund::Engine::OpenGL {
 	using namespace Ghurund::Core;
 
-	class OglShaderLoader:public Loader {
+	class OglShaderLoader:public Loader<OglShader> {
 	private:
         OglShaderCompiler& compiler;
 
         SharedPointer<OglShaderProgram> loadShaderProgramFromXml(
-            const tinyxml2::XMLElement& xml,
+            const XMLElement& xml,
             const DirectoryPath& workingDir,
             const OglShaderType& shaderType
-        );
-
-        OglShader* loadXml(
-            const tinyxml2::XMLElement& xml,
-            const DirectoryPath& workingDir
         );
 
     public:
         OglShaderLoader(OglShaderCompiler& compiler):compiler(compiler) {}
 
-        virtual Resource* loadInternal(
-            MemoryInputStream& stream,
+        virtual void loadInternal(
+            OglShader& resource,
+            const XMLElement& xml,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
             LoadOption options
         ) override;
 
         virtual void saveInternal(
+            OglShader& resource,
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
-            Resource& resource,
             const ResourceFormat& format,
             SaveOption options
         ) const override;

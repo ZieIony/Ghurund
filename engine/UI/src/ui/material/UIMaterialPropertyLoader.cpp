@@ -18,8 +18,9 @@ namespace Ghurund::UI {
 		property.setRaw(&obj, &themedMaterial);
 	}
 
-	void UIMaterialPropertyLoader::loadElement(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) const {
-		auto material = IntrusivePointer<UIMaterial>((UIMaterial*)materialLoader.loadFromXml(xml, workingDir));
+	void UIMaterialPropertyLoader::loadElement(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const XMLElement& xml) const {
+		auto material = makeIntrusive<UIMaterial>();
+		materialLoader.load(material.ref(), xml, workingDir);
 		std::unique_ptr<ThemedMaterial> themedMaterial = std::make_unique<ThemedMaterial>(material.get());
 		property.setRaw(&obj, &themedMaterial);
 	}

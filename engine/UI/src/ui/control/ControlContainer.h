@@ -22,7 +22,7 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	protected:
-		virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
+		virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) override;
 
 	public:
 		using Control::find;

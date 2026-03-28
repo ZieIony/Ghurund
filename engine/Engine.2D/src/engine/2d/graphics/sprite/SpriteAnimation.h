@@ -29,7 +29,7 @@ namespace Ghurund::Engine::_2D {
 #pragma endregion
 
 	private:
-		AString* name = nullptr;
+		WString* name = nullptr;
 		List<SpriteAnimationFrame> frames;
 		uint16_t currentFrame = 0;
 		uint64_t currentTime = 0, duration = 0, frameTimeOffset = 0, prevTime = 0;
@@ -40,24 +40,24 @@ namespace Ghurund::Engine::_2D {
 			delete name;
 		}
 
-		inline const Ghurund::Core::AString* getName() const {
+		inline const Ghurund::Core::WString* getName() const {
 			return name;
 		}
 
-		inline void setName(const AString* name) {
+		inline void setName(const WString* name) {
 			if (this->name)
 				delete this->name;
 			if (name)
-				this->name = ghnew AString(*name);
+				this->name = ghnew WString(*name);
 		}
 
-		inline void setName(const AString& name) {
+		inline void setName(const WString& name) {
 			if (this->name)
 				delete this->name;
-			this->name = ghnew AString(name);
+			this->name = ghnew WString(name);
 		}
 
-		__declspec(property(get = getName, put = setName)) const Ghurund::Core::AString* Name;
+		__declspec(property(get = getName, put = setName)) const Ghurund::Core::WString* Name;
 
 		inline SpriteAnimationFrameList& getFrames() {
 			return frames;

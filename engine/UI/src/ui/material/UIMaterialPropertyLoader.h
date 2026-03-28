@@ -26,6 +26,6 @@ namespace Ghurund::UI {
 
         virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override;
 
-        virtual void loadElement(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) const override;
+        virtual void loadElement(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const XMLElement& xml) const override;
     };
 }

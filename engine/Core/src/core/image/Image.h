@@ -92,6 +92,8 @@ namespace Ghurund::Core {
 		static const inline ResourceFormat FORMAT_PNG = ResourceFormat(L"png", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
 
 		inline static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& FORMATS = { FORMAT_JPG, FORMAT_JPEG, FORMAT_PNG };
+
+		static const inline uint32_t VERSION = 0;
 #pragma endregion
 	};
 }

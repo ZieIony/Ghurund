@@ -8,25 +8,18 @@
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
 
-    class TextureAtlasLoader:public Loader {
+    class TextureAtlasLoader:public Loader<TextureAtlas> {
     private:
         ResourceManager& resourceManager;
 
     protected:
-        virtual TextureAtlas* loadFromXmlInternal(
-            const tinyxml2::XMLElement& xml,
-            const DirectoryPath& workingDir,
-            LoadOption options
-        ) override;
-
-        virtual TextureAtlas* loadInternal(
-            MemoryInputStream& stream,
+        virtual void loadInternal(
+            TextureAtlas& resource,
+            const XMLElement& xml,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
             LoadOption options
-        ) override {
-            return loadFromXml<TextureAtlas>(stream, workingDir, options);
-        }
+        ) override;
 
     public:
         TextureAtlasLoader(ResourceManager& resourceManager):resourceManager(resourceManager) {}

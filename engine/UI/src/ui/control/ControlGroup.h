@@ -32,7 +32,7 @@ namespace Ghurund::UI {
 	protected:
 		LayoutManager* layoutManager = nullptr;
 
-		virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
+		virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) override;
 
 		virtual void onLayout(float x, float y, float width, float height) override;
 

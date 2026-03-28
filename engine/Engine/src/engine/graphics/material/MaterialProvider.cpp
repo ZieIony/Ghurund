@@ -7,7 +7,8 @@ namespace Ghurund::Engine {
 	Material* MaterialProvider::makeWithShader(Shader* shader) const {
 		Material* material = nullptr;
 		if (shader) {
-			material = ghnew Material(memoryManager);
+			material = ghnew Material();
+			material->init(memoryManager);
 			material->Shader = shader;
 		}
 		return material;
@@ -17,7 +18,8 @@ namespace Ghurund::Engine {
 		Material* material = nullptr;
 		IntrusivePointer<Shader> shader(shaderProvider.loadBasic());
 		if (shader != nullptr) {
-			material = ghnew Material(memoryManager);
+			material = ghnew Material();
+			material->init(memoryManager);
 			material->Shader = shader.get();
 			/*if (diffuseTexture) {
 				TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
@@ -31,7 +33,8 @@ namespace Ghurund::Engine {
 		Material* material = nullptr;
 		IntrusivePointer<Shader> shader(shaderProvider.loadBasicLight());
 		if (shader != nullptr) {
-			material = ghnew Material(memoryManager);
+			material = ghnew Material();
+			material->init(memoryManager);
 			material->Shader = shader.get();
 			/*if (diffuseTexture) {
 				TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
@@ -53,7 +56,8 @@ namespace Ghurund::Engine {
 		Material* material = nullptr;
 		IntrusivePointer<Shader> shader(shaderProvider.loadBasic());
 		if (shader != nullptr) {
-			material = ghnew Material(memoryManager);
+			material = ghnew Material();
+			material->init(memoryManager);
 			material->Shader = shader.get();
 			ITexture* texture = textureProvider.makeChecker();
 			//TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);

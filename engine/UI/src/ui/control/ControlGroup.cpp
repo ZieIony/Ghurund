@@ -15,20 +15,18 @@ namespace Ghurund::UI {
 		return TYPE;
 	}
 
-	void ControlGroup::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+	void ControlGroup::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) {
 		__super::loadInternal(loader, workingDir, xml);
 		Children.clear();
-		const tinyxml2::XMLElement* childElement = xml.FirstChildElement();
-		while (childElement) {
-			if (!AString(childElement->Name()).contains(".")) {
+		for(const auto& childElement : xml.children){
+			if (!childElement->name.contains(L".")) {
 				try {
-					ControlWithConstraints control = loader.loadControl(*this, workingDir, *childElement);
+					ControlWithConstraints control = loader.loadControl(*this, workingDir, childElement.ref());
 					children.add(control.control.get(), control.Constraints);
 				} catch (...) {
-					Logger::log(LogType::WARNING, std::format(_T("Failed to load control {}.\n"), AString(childElement->Name())).c_str());
+					Logger::log(LogType::WARNING, std::format(_T("Failed to load control {}.\n"), childElement->name).c_str());
 				}
 			}
-			childElement = childElement->NextSiblingElement();
 		}
 	}
 

@@ -20,33 +20,42 @@ namespace Ghurund::Engine::DirectX {
         ):ShaderProgramSourceCode(sourceCode), type(type), entryPoint(entryPoint) {}
     };
 
-	class DxShaderLoader:public Loader {
+	class DxShaderLoader:public Loader<DxShader> {
 	private:
         ResourceManager& resourceManager;
         DxShaderCompiler& compiler;
 
-        DxShader* loadFromSource(NotNull<ShaderSource> sourceCode, const DirectoryPath& workingDir);
-		DxShader* loadFromXml(const XMLElement& xml, const DirectoryPath& workingDir);
-		DxShader* loadFromHlsl(const AString& sourceCode, const DirectoryPath& workingDir);
+        void loadFromSource(NotNull<ShaderSource> sourceCode, const DirectoryPath& workingDir, DxShader& shader);
+        void loadFromHlsl(const AString& sourceCode, const DirectoryPath& workingDir, DxShader& shader);
 
-    public:
-        List<DirectoryPath> includeDirs;
-
-        DxShaderLoader(ResourceManager& resourceManager, DxShaderCompiler& compiler):resourceManager(resourceManager), compiler(compiler) {}
-
-        virtual Resource* loadInternal(
+    protected:
+        virtual void loadInternal(
+            DxShader& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
             LoadOption options
         ) override;
 
+        virtual void loadInternal(
+            DxShader& resource,
+            const XMLElement& xml,
+            const DirectoryPath& workingDir,
+            const ResourceFormat& format,
+            LoadOption options
+        ) override;
+
         virtual void saveInternal(
+            DxShader& resource,
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
-            Resource& resource,
             const ResourceFormat& format,
             SaveOption options
         ) const override;
+
+    public:
+        List<DirectoryPath> includeDirs;
+
+        DxShaderLoader(ResourceManager& resourceManager, DxShaderCompiler& compiler):resourceManager(resourceManager), compiler(compiler) {}
 	};
 }

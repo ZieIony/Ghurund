@@ -11,7 +11,10 @@
 
 namespace Ghurund::Engine {
     const Ghurund::Core::Type& Material::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<Material>();
+
         static const Ghurund::Core::Type TYPE = Ghurund::Core::TypeBuilder<Material>()
+            .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
@@ -46,7 +49,7 @@ namespace Ghurund::Engine {
                 valueInputs.add(input);
                 inputs.add(input);
             }
-            constantBuffers.add(IntrusivePointer(memoryManager.makeConstantBuffer(size)));
+            constantBuffers.add(IntrusivePointer(memoryManager->makeConstantBuffer(size)));
         }
         for (auto& vi : shader->ValueConstants) {
             auto input = makeInput(vi);
@@ -69,7 +72,7 @@ namespace Ghurund::Engine {
                 inputs.add(input);
 			}
 			for (size_t i = 0; i < shader->BufferConstants.Size; i++)
-				constantBuffers.add(IntrusivePointer(memoryManager.makeConstantBuffer(other.constantBuffers[i]->Size)));
+				constantBuffers.add(IntrusivePointer(memoryManager->makeConstantBuffer(other.constantBuffers[i]->Size)));
 			for (size_t i = 0; i < other.textureInputs.Size; i++) {
 				auto input = other.textureInputs[i]->clone();
 				textureInputs.add(input);

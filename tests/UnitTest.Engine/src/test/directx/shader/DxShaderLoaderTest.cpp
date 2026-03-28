@@ -75,7 +75,8 @@ float4 pixelMain(DefaultPixel input): SV_Target{
             MemoryInputStream stream(data.Data, data.Size);
 
             Assert::ExpectException<DxEntrypointNotFoundException>([&] {
-                IntrusivePointer<Resource> shader(loader->load(stream, DirectoryPath()));
+                auto shader = makeIntrusive<DxShader>();
+                loader->load(shader.ref(), stream);
             });
         }
 
@@ -86,7 +87,8 @@ float4 pixelMain(DefaultPixel input): SV_Target{
             DxShaderCompiler compiler(graphics);
             auto loader = makeIntrusive<DxShaderLoader>(resourceManager, compiler);
             MemoryInputStream stream(testShaderSource.Data, testShaderSource.Size);
-            IntrusivePointer<DxShader> shader((DxShader*)loader->load(stream, DirectoryPath()));
+            auto shader = makeIntrusive<DxShader>();
+            loader->load(shader.ref(), stream);
   
             Assert::IsNotNull(shader.get());
         }

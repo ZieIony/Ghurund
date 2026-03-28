@@ -1,15 +1,7 @@
 #include "ghepch.h"
 #include "MaterialLoader.h"
 
-#include "core/image/Image.h"
-
-#include <tinyxml2.h>
-
 namespace Ghurund::Engine {
-	Material* MaterialLoader::makeMaterial() {
-		return ghnew Material(memoryManager);
-	}
-
 	void MaterialLoader::onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value) {
 		if (input.Type == InputType::TEXTURE) {
 			TextureInput& colorTextureInput = (TextureInput&)input;
@@ -24,57 +16,46 @@ namespace Ghurund::Engine {
 		}
 	}
 
-	Material* MaterialLoader::loadFromXml(const tinyxml2::XMLElement& xml, const DirectoryPath& workingDir) {
-		AString s = xml.FindAttribute("shader")->Value();
-		FilePath path = FilePath(convertText<char, wchar_t>(s));
-		auto shader = IntrusivePointer(resourceManager.load<Shader>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE));
-		auto material = IntrusivePointer(makeMaterial());
-		material->Shader = shader.get();
-		const tinyxml2::XMLElement* child = xml.FirstChildElement();
-		while (child) {
-			if (child->Name() == AString("Parameter")) {
-				auto nameAttribute = child->FindAttribute("name");
-				auto valueAttribute = child->FindAttribute("value");
-				if (nameAttribute && valueAttribute) {
-					AString name = nameAttribute->Value();
-					auto input = material->getInputs().get(name);
-					if (!input) {
-						auto text = std::format(_T("Shader {} doesn't specify an input named '{}'\n"), path.toString(), convertText<char, tchar>(name));
-						Logger::log(LogType::WARNING, text.c_str());
-					} else {
-						onLoadParameter(material.ref(), workingDir, *input, valueAttribute->Value());
-					}
-				}
-			}
-			child = child->NextSiblingElement();
-		}
-		material->addReference();
-		return material.get();
-	}
-
-	Resource* MaterialLoader::loadInternal(
-		MemoryInputStream& stream,
+	void MaterialLoader::loadInternal(
+		Material& resource,
+		const XMLElement& xml,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
 		LoadOption options
 	) {
-		tinyxml2::XMLDocument doc;
-		doc.Parse((const char*)stream.Data, stream.Size);
-		tinyxml2::XMLElement* xml = doc.RootElement();
-		if (AString("Material") != xml->Name())
-			throw InvalidFormatException();
-
-		return loadFromXml(*xml, workingDir);
+		checkXmlRoot(xml, L"Material");
+	
+		WString* s = xml.findAttribute(L"shader");
+		FilePath path = FilePath(*s);
+		auto shader = IntrusivePointer(resourceManager.load<Shader>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE));
+		resource.init(memoryManager);
+		resource.Shader = shader.get();
+		for(const auto& child:xml.children){
+			if (child->name == L"Parameter") {
+				auto nameAttribute = child->findAttribute(L"name");
+				auto valueAttribute = child->findAttribute(L"value");
+				if (nameAttribute && valueAttribute) {
+					AString name = convertText<wchar_t, char>(*nameAttribute);
+					auto input = resource.getInputs().get(name);
+					if (!input) {
+						auto text = std::format(_T("Shader {} doesn't specify an input named '{}'\n"), path.toString(), convertText<char, tchar>(name));
+						Logger::log(LogType::WARNING, text.c_str());
+					} else {
+						AString value = convertText<wchar_t, char>(*valueAttribute);
+						onLoadParameter(resource, workingDir, *input, value);
+					}
+				}
+			}
+		}
 	}
 
 	void MaterialLoader::saveInternal(
+		Material& resource,
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,
-		Resource& resource,
 		const ResourceFormat& format,
 		SaveOption options
 	) const {
-		auto& material = castResource<Material>(resource);
 		//shaderLoader.save(stream, workingDir, *material.Shader, format, options);
 	}
 }

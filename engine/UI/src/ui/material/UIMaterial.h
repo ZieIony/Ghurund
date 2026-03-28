@@ -40,7 +40,7 @@ namespace Ghurund::UI {
 		UIMaterial(const UIMaterial& other):Material(other), uiInputs(other.uiInputs) {}
 
 	public:
-		UIMaterial(IGPUMemoryManager& memoryManager):Material(memoryManager) {}
+		UIMaterial() {}
 
 		inline UIInputs& getUIInputs() {
 			return uiInputs;

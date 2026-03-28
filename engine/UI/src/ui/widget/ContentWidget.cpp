@@ -4,16 +4,13 @@
 #include "ui/loading/LayoutLoader.h"
 #include "ui/control/InvalidControl.h"
 
-#include <tinyxml2.h>
-
 namespace Ghurund::UI {
-	void ContentWidget::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+	void ContentWidget::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) {
 		__super::loadInternal(loader, workingDir, xml);
-		auto childElement = xml.FirstChildElement();
-		while (childElement) {
-			if (!AString(childElement->Name()).contains(".")) {
+		for (const auto& childElement : xml.children) {
+			if (!childElement->name.contains(L".")) {
 				try {
-					ControlWithConstraints control = loader.loadControl(*this, workingDir, *childElement);
+					ControlWithConstraints control = loader.loadControl(*this, workingDir, childElement.ref());
 					contentConstraints = control.Constraints;
 					Content = control.control.get();
 				} catch (...) {
@@ -21,7 +18,6 @@ namespace Ghurund::UI {
 				}
 				return;
 			}
-			childElement = childElement->NextSiblingElement();
 		}
 	}
 

@@ -13,7 +13,8 @@ namespace Ghurund::Engine::_2D::DirectX {
 		Material* material = nullptr;
 		auto shader = IntrusivePointer<Shader>(resourceManager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(L"/shaders/DirectX/2d/sprite.xml"), DirectoryPath()));
 		if (shader != nullptr) {
-			material = ghnew Material(memoryManager);
+			material = ghnew Material();
+			material->init(memoryManager);
 			material->Shader = shader.get();
 		}
 		return material;
@@ -32,7 +33,8 @@ namespace Ghurund::Engine::_2D::DirectX {
 		Material* material = nullptr;
 		auto shader = IntrusivePointer<Shader>(resourceManager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(L"/shaders/DirectX/2d/sprite.xml"), DirectoryPath()));
 		if (shader != nullptr) {
-			material = ghnew Material(memoryManager);
+			material = ghnew Material();
+			material->init(memoryManager);
 			material->Shader = shader.get();
 		}
 		return material;

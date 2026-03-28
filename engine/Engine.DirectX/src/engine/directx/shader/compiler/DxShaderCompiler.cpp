@@ -105,7 +105,8 @@ namespace Ghurund::Engine::DirectX {
 		}
 	}
 
-	OwnedNotNull<DxShader, RefCountedObjectDeleter> DxShaderCompiler::build(
+	void DxShaderCompiler::build(
+		DxShader& shader,
 		const Array<SharedPointer<DxShaderProgram>>& programs,
 		const List<SamplerInfo>& samplerInfos,
 		ShaderSettings shaderSettings
@@ -133,8 +134,7 @@ namespace Ghurund::Engine::DirectX {
 
 		auto rootSignature = makeRootSignature(constantBuffers, textures, samplers);
 		auto pipelineState = makePipelineState(programs, inputLayout, &rootSignature, shaderSettings);
-		OwnedNotNull<DxShader, RefCountedObjectDeleter> shader(ghnew DxShader());
-		shader->init(
+		shader.init(
 			layout,
 			std::move(rootSignature),
 			std::move(pipelineState),
@@ -142,7 +142,6 @@ namespace Ghurund::Engine::DirectX {
 			textures,
 			shaderSettings.isTransparencyEnabled
 		);
-		return shader;
 	}
 
 	OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> DxShaderCompiler::makePipelineState(

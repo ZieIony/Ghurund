@@ -1,10 +1,7 @@
 #pragma once
 
+#include <core/xml/XMLElement.h>
 #include "ui/constraint/ConstraintSetInitializer.h"
-
-namespace tinyxml2 {
-	class XMLElement;
-}
 
 namespace Ghurund::UI {
 	class LayoutLoader;
@@ -21,7 +18,7 @@ namespace Ghurund::UI {
 			:left(initializer.left.get()), width(initializer.width.get()), right(initializer.right.get()),
 			top(initializer.top.get()), height(initializer.height.get()), bottom(initializer.bottom.get()) {}
 
-		void load(const Type& controlType, LayoutLoader& loader, const tinyxml2::XMLElement& xml);
+		void load(const Type& controlType, LayoutLoader& loader, const XMLElement& xml);
 
 		void merge(const PartialConstraintSet& other);
 

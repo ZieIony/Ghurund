@@ -24,5 +24,7 @@ namespace UnitTest {
 
     public:
 		Ghurund::Core::AString text;
-	};
+
+        static const inline uint32_t VERSION = 0;
+    };
 }

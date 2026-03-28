@@ -8,7 +8,7 @@
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
 
-    class SoundLoader:public Loader {
+    class SoundLoader:public Loader<Sound> {
     private:
         struct AudioData {
             uint8_t* data;
@@ -22,20 +22,13 @@ namespace Ghurund::Engine {
         void loadData(Sound& sound, MemoryInputStream& stream);
 
     protected:
-        virtual Resource* loadInternal(
+        virtual void loadInternal(
+            Sound& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
             LoadOption options
         ) override;
-
-        virtual void saveInternal(
-            MemoryOutputStream& stream,
-            const DirectoryPath& workingDir,
-            Resource& resource,
-            const ResourceFormat& format,
-            SaveOption options
-        ) const override;
 
     public:
         SoundLoader(Audio& audio):audio(audio) {}

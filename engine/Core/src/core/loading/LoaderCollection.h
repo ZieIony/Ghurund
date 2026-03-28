@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Loader.h"
+#include "BaseLoader.h"
 
 #include "core/collection/Map.h"
 #include "core/object/IntrusivePointer.h"
@@ -9,18 +9,18 @@
 namespace Ghurund::Core {
     class LoaderCollection {
     private:
-        Map<const Type*, IntrusivePointer<Loader>> loaders;
+        Map<const Type*, IntrusivePointer<BaseLoader>> loaders;
 
         LoaderCollection& operator=(const LoaderCollection& other) = delete;
 
     public:
         template<typename T>
-        inline void set(Loader& loader) {
+        inline void set(BaseLoader& loader) {
             loader.addReference();
             loaders.put(&(const Ghurund::Core::Type&)T::GET_TYPE(), IntrusivePointer(&loader));
         }
 
-        inline Loader* get(const Type& t) const {
+        inline BaseLoader* get(const Type& t) const {
             for (auto& [type, loader] : loaders) {
                 if (type->isOrExtends(t))
                     return loader.get();
@@ -29,8 +29,8 @@ namespace Ghurund::Core {
         }
 
         template<typename T>
-        inline Loader* get() const {
-            return get(T::GET_TYPE());
+        inline Loader<T>* get() const {
+            return (Loader<T>*)get(T::GET_TYPE());
         }
 
         template<typename T>

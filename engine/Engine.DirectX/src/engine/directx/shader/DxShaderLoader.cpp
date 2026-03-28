@@ -7,10 +7,15 @@
 #include "compiler/DxEntrypointNotFoundException.h"
 
 namespace Ghurund::Engine::DirectX {
-	DxShader* DxShaderLoader::loadFromXml(const XMLElement& xml, const DirectoryPath& workingDir) {
-		if (xml.name != L"Shader")
-			throw InvalidFormatException();
-
+	void DxShaderLoader::loadInternal(
+		DxShader& resource,
+		const XMLElement& xml,
+		const DirectoryPath& workingDir,
+		const ResourceFormat& format,
+		LoadOption options
+	) {
+		checkXmlRoot(xml, L"Shader");
+	
 		auto shaderSource = makeIntrusive<ShaderSource>();
 		auto settingsElementIndex = xml.children.find([](const SharedPointer<XMLElement>& element) { return element->name == L"Settings"; });
 		if (settingsElementIndex != xml.children.Size) {
@@ -95,10 +100,10 @@ namespace Ghurund::Engine::DirectX {
 				shaderSource->programs.add(ghnew DxShaderProgramSourceCode(type, entryPoint, sourceCode));
 			}
 		}
-		return loadFromSource(shaderSource.ref(), workingDir);
+		loadFromSource(shaderSource.ref(), workingDir, resource);
 	}
 
-	DxShader* DxShaderLoader::loadFromSource(NotNull<ShaderSource> shaderSource, const DirectoryPath& workingDir) {
+	void DxShaderLoader::loadFromSource(NotNull<ShaderSource> shaderSource, const DirectoryPath& workingDir, DxShader& shader) {
 		if (!shaderSource->programs.any([](auto& program) { return ((DxShaderProgramSourceCode*)program)->type == DxShaderType::VERTEX; })) {
 			Logger::log(LogType::ERR0R, _T("Vertex shader program is required.\n"));
 			throw DxEntrypointNotFoundException(DxShaderType::VERTEX);
@@ -115,12 +120,10 @@ namespace Ghurund::Engine::DirectX {
 			programs.add(program);
 		}
 		auto array = Array<SharedPointer<DxShaderProgram>>(programs);
-		auto shader = compiler.build(programs, shaderSource->samplers, shaderSource->settings);
-
-		return shader.reset();
+		compiler.build(shader, programs, shaderSource->samplers, shaderSource->settings);
 	}
 
-	DxShader* DxShaderLoader::loadFromHlsl(const AString& sourceCode, const DirectoryPath& workingDir) {
+	void DxShaderLoader::loadFromHlsl(const AString& sourceCode, const DirectoryPath& workingDir, DxShader& shader) {
 		auto shaderSource = makeIntrusive<ShaderSource>();
 
 		for (const DxShaderType& shaderType : DxShaderType::VALUES) {
@@ -129,35 +132,33 @@ namespace Ghurund::Engine::DirectX {
 				shaderSource->programs.add(ghnew DxShaderProgramSourceCode(shaderType, entryPoint, sourceCode));
 		}
 
-		return loadFromSource(shaderSource.ref(), workingDir);
+		loadFromSource(shaderSource.ref() , workingDir, shader);
 	}
 
-	Resource* DxShaderLoader::loadInternal(
+	void DxShaderLoader::loadInternal(
+		DxShader& resource,
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
 		LoadOption options
 	) {
-		AString streamContents = stream.readASCII();
+		auto position = stream.Position;
 		try {
-			XMLDocument document;
-			document.parse(streamContents.Data, streamContents.Size);
-			const XMLElement& root = document.Root;
-			return loadFromXml(root, workingDir);
-		} catch (...) {
-			return loadFromHlsl(streamContents, workingDir);
+			loadFromXml(resource, stream, workingDir, format, options);
+		} catch(...) {
+			stream.Position = position;
+			AString streamContents = stream.readASCII();
+			loadFromHlsl(streamContents, workingDir, resource);
 		}
 	}
 
 	void DxShaderLoader::saveInternal(
+		DxShader& resource,
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,
-		Resource& resource,
 		const ResourceFormat& format,
 		SaveOption options
 	) const {
-		DxShader& shader = castResource<DxShader>(resource);
-
 		writeHeader<DxShader>(stream);
 
 		//stream.writeASCII(shader.sourceCode);

@@ -65,6 +65,8 @@ namespace Ghurund::UI {
         static const inline ResourceFormat FORMAT_OTF = ResourceFormat(L"otf", ResourceFormatOptions::CAN_LOAD);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_TTF, FORMAT_OTF };
+
+        static const inline uint32_t VERSION = 0;
 #pragma endregion
     };
 }

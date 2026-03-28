@@ -1,25 +1,20 @@
 #pragma once
 
+#include "Font.h"
+
 #include "core/loading/Loader.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
-    class FontLoader:public Loader {
+    class FontLoader:public Loader<Font> {
     protected:
-        virtual Resource* loadInternal(
+        virtual void loadInternal(
+            Font& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
             LoadOption options
         ) override;
-
-        virtual void saveInternal(
-            MemoryOutputStream& stream,
-            const DirectoryPath& workingDir,
-            Resource& resource,
-            const ResourceFormat& format,
-            SaveOption options
-        ) const override;
     };
 }

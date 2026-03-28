@@ -4,30 +4,27 @@
 
 #include "core/loading/Loader.h"
 
-#include <tinyxml2.h>
-
 namespace Ghurund::Engine {
 
-	class MaterialLoader:public Ghurund::Core::Loader {
+	class MaterialLoader:public Ghurund::Core::Loader<Material> {
 	protected:
 		ResourceManager& resourceManager;
 		IGPUMemoryManager& memoryManager;
 
-		virtual Material* makeMaterial();
+		virtual void loadInternal(
+			Material& resource,
+			const XMLElement& xml,
+			const DirectoryPath& workingDir,
+			const ResourceFormat& format,
+			LoadOption options
+		) override;
 
 		virtual void onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value);
 
-        virtual Resource* loadInternal(
-            MemoryInputStream& stream,
-            const DirectoryPath& workingDir,
-            const ResourceFormat& format,
-            LoadOption options
-        ) override;
-
 		virtual void saveInternal(
+			Material& resource,
 			MemoryOutputStream& stream,
 			const DirectoryPath& workingDir,
-			Resource& resource,
 			const ResourceFormat& format,
 			SaveOption options
 		) const override;
@@ -38,7 +35,5 @@ namespace Ghurund::Engine {
 			IGPUMemoryManager& memoryManager
 		):resourceManager(resourceManager), memoryManager(memoryManager) {
 		}
-
-		Material* loadFromXml(const tinyxml2::XMLElement& xml, const DirectoryPath& workingDir);
 	};
 }

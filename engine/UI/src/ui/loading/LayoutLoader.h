@@ -10,8 +10,6 @@
 #include "ui/control/Control.h"
 #include "ui/layout/ControlWithConstraints.h"
 #include "ui/text/DocumentElement.h"
-
-#include <tinyxml2.h>
 #include <ui/theme/ThemedValue.h>
 
 namespace Ghurund::UI {
@@ -20,7 +18,7 @@ namespace Ghurund::UI {
 	class TextFormat;
 	class Theme;
 
-	class LayoutLoader :public Ghurund::Core::Loader {
+	class LayoutLoader:public Loader<Control> {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -42,7 +40,8 @@ namespace Ghurund::UI {
 		static inline const AString DEFAULT_CONTROL_NAMESPACE = LayoutLoader::TYPE.Namespace;
 
 	protected:
-		virtual Resource* loadInternal(
+		virtual void loadInternal(
+			Control& resource,
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
@@ -78,23 +77,23 @@ namespace Ghurund::UI {
 			types.put(type.Namespace + "::" + type.Name, constructor);
 		}
 
-		void loadProperties(Object& obj, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
+		void loadProperties(Object& obj, const DirectoryPath& workingDir, const XMLElement& xml);
 
-		void loadProperty(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
+		void loadProperty(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const XMLElement& xml);
 
-		List<ControlWithConstraints> loadControls(ControlParent& parent, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
+		List<ControlWithConstraints> loadControls(ControlParent& parent, const DirectoryPath& workingDir, const XMLElement& xml);
 
-		ControlWithConstraints loadControl(ControlParent& parent, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
+		ControlWithConstraints loadControl(ControlParent& parent, const DirectoryPath& workingDir, const XMLElement& xml);
 
-		Constraint* loadConstraint(const tinyxml2::XMLElement& xml, Orientation orientation);
+		Constraint* loadConstraint(const XMLElement& xml, Orientation orientation);
 
-		Constraint* loadConstraint(const char* str, Orientation orientation);
+		Constraint* loadConstraint(const AString& str, Orientation orientation);
 
 		ThemedTextStyle* loadTextStyle(const char* str);
 
-        void loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment);
+        void loadAlignment(const XMLElement& xml, Alignment* alignment);
 
-        DocumentElement* loadDocumentElement(const tinyxml2::XMLElement& xml) {
+        DocumentElement* loadDocumentElement(const XMLElement& xml) {
             return nullptr;
         }
     };

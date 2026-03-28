@@ -26,15 +26,15 @@ namespace Ghurund::Core {
 			this->size = size;
 		}
 
-		inline void set(size_t bytes) {
-			pointer = bytes;
+		inline void setPosition(size_t position) {
+			pointer = position;
 		}
 
-		inline size_t getBytesRead() const {
+		inline size_t getPosition() const {
 			return pointer;
 		}
 
-		__declspec(property(get = getBytesRead)) size_t BytesRead;
+		__declspec(property(get = getPosition, put = setPosition)) size_t Position;
 
 		inline size_t getSize() const {
 			return size;

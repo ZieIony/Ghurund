@@ -2,16 +2,15 @@
 #include "MeshLoader.h"
 
 namespace Ghurund::Engine::DirectX {
-    Resource* MeshLoader::loadInternal(
+    void MeshLoader::loadInternal(
+        DxMesh& resource,
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
         Ghurund::Core::LoadOption options
     ) {
-        DxMesh* mesh = makeResource<DxMesh>();
-        MeshData* meshData = (MeshData*)meshDataLoader.load(stream, workingDir, format, options);
-        mesh->init(*meshData, memoryManager);
-        meshData->release();
-        return mesh;
+        auto meshData = makeIntrusive<MeshData>();
+        meshDataLoader.load(meshData.ref(), stream, workingDir, format, options);
+        resource.init(meshData.ref(), memoryManager);
     }
 }

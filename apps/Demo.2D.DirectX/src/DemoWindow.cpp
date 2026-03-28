@@ -119,7 +119,7 @@ namespace Demo {
 	//	co_await app.CoroutineScheduler.backgroundThread();
 		auto animationSet = IntrusivePointer<SpriteAnimationSet>(app.ResourceManager.load<SpriteAnimationSet>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/captain.xml")));
 		co_await app.CoroutineScheduler.mainThread();
-		captainSprite->Animation = animationSet->get(animationSet->find("idle"));
+		captainSprite->Animation = animationSet->get(animationSet->find(L"idle"));
 
 		captainSprite->Position = { 0, -0.025f * 2.0f };
 		captainSprite->Size = { 1.6f, 1 };

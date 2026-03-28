@@ -78,25 +78,25 @@ namespace Ghurund::UI {
         }*/
     }
 
-    Guide Guide::load(const tinyxml2::XMLElement& xml) {
-        auto nameAttr = xml.FindAttribute("name");
+    Guide Guide::load(const XMLElement& xml) {
+        auto nameAttr = xml.findAttribute(L"name");
         if (!nameAttr)
             throw InvalidDataException("Attribute 'name' is required for a Guide.");
-        AString name = nameAttr->Value();
-        auto constraintAttr = xml.FindAttribute("constraint");
+        AString name = convertText<wchar_t, char>(*nameAttr);
+        auto constraintAttr = xml.findAttribute(L"constraint");
         if (!constraintAttr)
             throw InvalidDataException("Attribute 'constraint' is required for a Guide.");
-        ControlPath constraint = parse<ControlPath>(constraintAttr->Value());
-        auto valueAttr = xml.FindAttribute("value");
+        ControlPath constraint = parse<ControlPath>(convertText<wchar_t, char>(*constraintAttr));
+        auto valueAttr = xml.findAttribute(L"value");
         float value = 0.0f;
         Type type = Type::PIXELS;
         if (valueAttr) {
-            AString valueStr = valueAttr->Value();
+            AString valueStr = convertText<wchar_t, char>(*valueAttr);
             if (valueStr.endsWith("%")) {
                 value = parse<float>(valueStr.substring(0, valueStr.Length - 1));
                 type = Type::PERCENT;
             } else {
-                value = parse<float>(valueAttr->Value());
+                value = parse<float>(convertText<wchar_t, char>(*valueAttr));
             }
         }
 

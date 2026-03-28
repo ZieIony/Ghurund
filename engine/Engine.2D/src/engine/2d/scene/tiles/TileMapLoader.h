@@ -8,25 +8,18 @@
 namespace Ghurund::Engine::_2D {
     using namespace Ghurund::Core;
 
-    class TileMapLoader:public Loader {
+    class TileMapLoader:public Loader<TileMap> {
     private:
         ResourceManager& resourceManager;
 
     protected:
-        virtual TileMap* loadFromXmlInternal(
-            const tinyxml2::XMLElement& xml,
-            const DirectoryPath& workingDir,
-            LoadOption options
-        ) override;
-
-        virtual TileMap* loadInternal(
-            MemoryInputStream& stream,
+        virtual void loadInternal(
+            TileMap& resource,
+            const XMLElement& xml,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
             LoadOption options
-        ) override {
-            return loadFromXml<TileMap>(stream, workingDir, options);
-        }
+        ) override;
 
     public:
         TileMapLoader(ResourceManager& resourceManager):resourceManager(resourceManager) {}

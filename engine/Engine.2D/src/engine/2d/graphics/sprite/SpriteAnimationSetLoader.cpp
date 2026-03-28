@@ -2,59 +2,46 @@
 #include "SpriteAnimationSetLoader.h"
 
 namespace Ghurund::Engine::_2D {
-	SpriteAnimationSet* SpriteAnimationSetLoader::loadFromXmlInternal(
-		const tinyxml2::XMLElement& xml,
-		const DirectoryPath& workingDir,
-		LoadOption options
-	) {
-		auto animationSet = makeIntrusive<SpriteAnimationSet>();
-		auto animationElement = xml.FirstChildElement("SpriteAnimation");
-		while (animationElement) {
-			auto nameAttribute = animationElement->FindAttribute("name");
-			auto animation = makeIntrusive<SpriteAnimation>();
-			if (nameAttribute)
-				animation->Name = AString(nameAttribute->Value());
-			auto frameElement = animationElement->FirstChildElement("SpriteAnimationFrame");
-			while (frameElement) {
-				auto textureAttribute = frameElement->FindAttribute("texture");
-				if (!textureAttribute)
-					throw InvalidFormatException();
-				auto durationMsAttribute = frameElement->FindAttribute("durationMs");
-				if (!durationMsAttribute)
-					throw InvalidFormatException();
-				auto texturePath = FilePath(convertText<char, wchar_t>(AString(textureAttribute->Value())));
-				auto texture = IntrusivePointer<ITexture>(resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, options));
-				animation->addFrame(texture.ref(), (uint64_t)durationMsAttribute->Int64Value());
-				frameElement = frameElement->NextSiblingElement();
-			}
-			animationSet->add(animation.get());
-			animationElement = animationElement->NextSiblingElement();
-		}
-		animationSet->addReference();
-		return animationSet.get();
-	}
-
-	Resource* SpriteAnimationSetLoader::loadInternal(
-		MemoryInputStream& stream,
+	void SpriteAnimationSetLoader::loadInternal(
+		SpriteAnimationSet& resource,
+		const XMLElement& xml,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
 		LoadOption options
 	) {
-		return loadFromXml<SpriteAnimationSet>(stream, workingDir, options);
+		checkXmlRoot(xml, L"SpriteAnimationSet");
+	
+		for (const auto& animationElement : xml.children) {
+			auto nameAttribute = animationElement->findAttribute(L"name");
+			auto animation = makeIntrusive<SpriteAnimation>();
+			if (nameAttribute)
+				animation->Name = *nameAttribute;
+			for(const auto& frameElement : animationElement->children){
+				auto textureAttribute = frameElement->findAttribute(L"texture");
+				if (!textureAttribute)
+					throw InvalidFormatException();
+				auto durationMsAttribute = frameElement->findAttribute(L"durationMs");
+				if (!durationMsAttribute)
+					throw InvalidFormatException();
+				auto texturePath = FilePath(*textureAttribute);
+				auto texture = IntrusivePointer<ITexture>(resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, options));
+				animation->addFrame(texture.ref(), parse<uint32_t>(convertText<wchar_t, char>(*durationMsAttribute)));
+			}
+			resource.add(animation.get());
+		}
 	}
 
 	void SpriteAnimationSetLoader::saveInternal(
+		SpriteAnimationSet& resource,
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,
-		Resource& resource,
 		const ResourceFormat& format,
 		SaveOption options
 	) const {
-		SpriteAnimationSet& animationSet = castResource<SpriteAnimationSet>(resource);
-		tinyxml2::XMLDocument document;
+		/*tinyxml2::XMLDocument document;
 		auto root = document.NewElement("SpriteAnimationSet");
 		root->SetAttribute("version", SpriteAnimationSet::VERSION);
-		for (auto& animation : animationSet) {
+		for (auto& animation : resource) {
 			auto animationElement = root->InsertNewChildElement("SpriteAnimation");
 			if (animation->Name)
 				animationElement->SetAttribute("name", animation->Name);
@@ -67,6 +54,6 @@ namespace Ghurund::Engine::_2D {
 		tinyxml2::XMLPrinter printer = {};
 		tinyxml2::DynArray< char, 20 > _buffer;
 		document.Print(&printer);
-		stream.writeBytes(printer.CStr(), printer.CStrSize());
+		stream.writeBytes(printer.CStr(), printer.CStrSize());*/
 	}
 }

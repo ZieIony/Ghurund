@@ -52,19 +52,11 @@ namespace Ghurund::Core {
 			return getAbsolutePath(path, workingDir).toString();
 		}
 
-		Loader* getLoader(const Ghurund::Core::Type& type) const;
+		BaseLoader* getLoader(const Ghurund::Core::Type& type) const;
 
 		[[nodiscard]]
 		Resource* load(
-			Loader& loader,
-			const FilePath& path,
-			const DirectoryPath& workingDir,
-			const ResourceFormat& format = ResourceFormat::AUTO,
-			LoadOption options = LoadOption::DEFAULT
-		);
-
-		Resource* loadInternal(
-			Loader& loader,
+			BaseLoader& loader,
 			const FilePath& path,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
@@ -72,7 +64,15 @@ namespace Ghurund::Core {
 		);
 
 		Resource* loadInternal(
-			Loader& loader,
+			BaseLoader& loader,
+			const FilePath& path,
+			const DirectoryPath& workingDir,
+			const ResourceFormat& format,
+			LoadOption options
+		);
+
+		Resource* loadInternal(
+			BaseLoader& loader,
 			const Buffer& buffer,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
@@ -81,7 +81,7 @@ namespace Ghurund::Core {
 
 		void saveInternal(
 			Resource& resource,
-			const Loader& loader,
+			const BaseLoader& loader,
 			Buffer& buffer,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
@@ -136,7 +136,7 @@ namespace Ghurund::Core {
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) {
-			Loader* loader = getLoader(Ghurund::Core::getType<T>());
+			BaseLoader* loader = getLoader(Ghurund::Core::getType<T>());
 			return (T*)load(*loader, path, workingDir, format, options);
 		}
 
@@ -171,7 +171,7 @@ namespace Ghurund::Core {
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) {
-			Loader* loader = getLoader(Ghurund::Core::getType<T>());
+			BaseLoader* loader = getLoader(Ghurund::Core::getType<T>());
 			return (T*)loadInternal(*loader, buffer, workingDir, format, options);
 		}
 
@@ -220,7 +220,7 @@ namespace Ghurund::Core {
 		) const {
 			auto absolutePath = getAbsolutePath(path, workingDir);
 			resource.Path = &absolutePath;
-			const Loader* loader = getLoader(Ghurund::Core::getType<T>());
+			const BaseLoader* loader = getLoader(Ghurund::Core::getType<T>());
 			//Library* library = path.findLibrary(libraries);
 			//if (library) {
 				//auto buffer = path.resolveResource(workingDir, libraries);

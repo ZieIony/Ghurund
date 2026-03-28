@@ -86,6 +86,8 @@ namespace Ghurund::UI {
         static const inline ResourceFormat FORMAT_BIN = ResourceFormat(L"bin", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_XML, FORMAT_BIN };
+
+        static const inline uint32_t VERSION = 0;
 #pragma endregion
     };
 }

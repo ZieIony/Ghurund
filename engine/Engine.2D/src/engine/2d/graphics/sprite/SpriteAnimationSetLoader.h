@@ -4,39 +4,32 @@
 
 #include "core/loading/Loader.h"
 
-#include <tinyxml2.h>
-
 namespace Ghurund::Engine::_2D {
 	using namespace Ghurund::Core;
 
-	class SpriteAnimationSetLoader:public Loader {
+	class SpriteAnimationSetLoader:public Loader<SpriteAnimationSet> {
 	private:
         ResourceManager& resourceManager;
 
-        virtual SpriteAnimationSet* loadFromXmlInternal(
-            const tinyxml2::XMLElement& xml,
-            const DirectoryPath& workingDir,
-            LoadOption options
-        ) override;
-
-    public:
-        List<DirectoryPath> includeDirs;
-
-        SpriteAnimationSetLoader(ResourceManager& resourceManager):resourceManager(resourceManager) {}
-
-        virtual Resource* loadInternal(
-            MemoryInputStream& stream,
+        virtual void loadInternal(
+            SpriteAnimationSet& resource,
+            const XMLElement& xml,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
             LoadOption options
         ) override;
 
         virtual void saveInternal(
+            SpriteAnimationSet& resource,
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
-            Resource& resource,
             const ResourceFormat& format,
             SaveOption options
         ) const override;
+
+    public:
+        List<DirectoryPath> includeDirs;
+
+        SpriteAnimationSetLoader(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 	};
 }

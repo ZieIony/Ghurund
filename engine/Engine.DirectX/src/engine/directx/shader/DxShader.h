@@ -90,7 +90,7 @@ namespace Ghurund::Engine::DirectX {
 
 		inline static const Array<ResourceFormat>& FORMATS = { FORMAT_SHADER, FORMAT_HLSL };
 
-		static const inline uint32_t VERSION = 0;
+		static const inline uint32_t VERSION = 1;
 #pragma endregion
 	};
 }

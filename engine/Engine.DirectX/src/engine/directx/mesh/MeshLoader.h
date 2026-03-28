@@ -8,17 +8,18 @@
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
 
-    class MeshLoader:public Loader {
+    class MeshLoader:public Loader<DxMesh> {
     private:
         DxGPUMemoryManager& memoryManager;
         MeshDataLoader meshDataLoader;
 
     protected:
-        virtual Resource* loadInternal(
+        virtual void loadInternal(
+            DxMesh& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
-            Ghurund::Core::LoadOption options
+            LoadOption options
         ) override;
 
     public:

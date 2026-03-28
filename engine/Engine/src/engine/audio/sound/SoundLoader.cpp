@@ -167,25 +167,13 @@ namespace Ghurund::Engine {
         sound.init(*audio.MasteringVoice, sourceVoice, waveFormat, audioBuffer);
     }
 
-    Resource* SoundLoader::loadInternal(
+    void SoundLoader::loadInternal(
+        Sound& resource,
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
         LoadOption options
     ) {
-        Sound* sound = makeResource<Sound>();
-        loadData(*sound, stream);
-        return sound;
-    }
-
-    void SoundLoader::saveInternal(
-        MemoryOutputStream& stream,
-        const DirectoryPath& workingDir,
-        Resource& resource,
-        const ResourceFormat& format,
-        SaveOption options
-    ) const {
-        Sound& sound = (Sound&)resource;
-        //sound.save(DirectoryPath(_T(".")), stream, options);
+        loadData(resource, stream);
     }
 }

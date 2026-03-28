@@ -6,12 +6,13 @@
 #include "core/exception/Exceptions.h"
 
 namespace Ghurund::Core {
-    class ImageLoader:public Loader {
+    class ImageLoader:public Loader<Image> {
     private:
         IWICImagingFactory* imageFactory = nullptr;
 
     protected:
-        virtual Image* loadInternal(
+        virtual void loadInternal(
+            Image& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
@@ -19,9 +20,9 @@ namespace Ghurund::Core {
         ) override;
 
         virtual void saveInternal(
+            Image& resource,
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
-            Resource& resource,
             const ResourceFormat& format,
             SaveOption options
         ) const override;

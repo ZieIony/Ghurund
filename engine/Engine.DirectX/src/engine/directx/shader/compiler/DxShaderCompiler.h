@@ -68,7 +68,8 @@ namespace Ghurund::Engine::DirectX {
 #endif
 		);
 
-		OwnedNotNull<DxShader, RefCountedObjectDeleter> build(
+		void build(
+			DxShader& shader,
 			const Array<SharedPointer<DxShaderProgram>>& programs,
 			const List<SamplerInfo>& samplerInfos,
 			ShaderSettings shaderSettings

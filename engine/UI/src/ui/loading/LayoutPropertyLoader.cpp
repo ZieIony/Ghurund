@@ -24,7 +24,7 @@ namespace Ghurund::UI {
 		property.setRaw(&obj, layout.get());
 	}
 
-	void LayoutPropertyLoader::loadChildren(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) const {
+	void LayoutPropertyLoader::loadChildren(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const XMLElement& xml) const {
 		std::unique_ptr<ThemedLayout> layout;
 		try {
 			ControlWithConstraints control = layoutLoader.loadControl((ControlParent&)obj, workingDir, xml);

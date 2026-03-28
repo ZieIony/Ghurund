@@ -29,8 +29,11 @@ namespace Ghurund::Core {
 
 				if (!elementStack.Empty)
 					elementStack[elementStack.Size - 1]->children.add(element);
-				if (!empty)
+				if (!empty) {
 					elementStack.add(element);
+				} else if (elementStack.Empty) {
+					root = element;
+				}
 			}
 			break;
 			case XmlNodeType_EndElement:

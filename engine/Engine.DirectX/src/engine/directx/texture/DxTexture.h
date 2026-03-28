@@ -87,6 +87,8 @@ namespace Ghurund::Engine::DirectX {
         static const inline ResourceFormat FORMAT_PNG = ResourceFormat(L"png", ResourceFormatOptions::CAN_LOAD);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_JPG, FORMAT_JPEG, FORMAT_PNG };
+
+        static const inline uint32_t VERSION = 0;
 #pragma endregion
     };
 }

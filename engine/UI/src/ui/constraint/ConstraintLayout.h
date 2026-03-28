@@ -1,7 +1,8 @@
 #pragma once
 
-#include "ui/layout/LayoutManager.h"
 #include "ui/control/ControlGroup.h"
+#include "ui/layout/LayoutManager.h"
+#include <core/xml/XMLElement.h>
 
 namespace Ghurund::UI {
 
@@ -26,7 +27,7 @@ namespace Ghurund::UI {
 		//List<Guide> guides;
 
 	protected:
-		virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
+		virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) override;
 
 		virtual void onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
 

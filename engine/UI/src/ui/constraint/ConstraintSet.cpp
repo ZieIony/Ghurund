@@ -6,35 +6,31 @@
 #include "ui/constraint/SelfConstraint.h"
 #include "ui/loading/LayoutLoader.h"
 
-#include <tinyxml2.h>
-
 namespace Ghurund::UI {
-	void PartialConstraintSet::load(const Type& controlType, LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-		auto childElement = xml.FirstChildElement();
-		const tinyxml2::XMLElement* leftElement = nullptr, * rightElement = nullptr, * widthElement = nullptr;
-		const tinyxml2::XMLElement* topElement = nullptr, * bottomElement = nullptr, * heightElement = nullptr;
-		while (childElement) {
-			if (strcmp(childElement->Name(), std::format("{}.Left", controlType.Name).c_str()) == 0) {
-				leftElement = childElement->ToElement();
-			} else if (strcmp(childElement->Name(), std::format("{}.Right", controlType.Name).c_str()) == 0) {
-				rightElement = childElement->ToElement();
-			} else if (strcmp(childElement->Name(), std::format("{}.Width", controlType.Name).c_str()) == 0) {
-				widthElement = childElement->ToElement();
-			} else if (strcmp(childElement->Name(), std::format("{}.Top", controlType.Name).c_str()) == 0) {
-				topElement = childElement->ToElement();
-			} else if (strcmp(childElement->Name(), std::format("{}.Bottom", controlType.Name).c_str()) == 0) {
-				bottomElement = childElement->ToElement();
-			} else if (strcmp(childElement->Name(), std::format("{}.Height", controlType.Name).c_str()) == 0) {
-				heightElement = childElement->ToElement();
+	void PartialConstraintSet::load(const Type& controlType, LayoutLoader& loader, const XMLElement& xml) {
+		const XMLElement* leftElement = nullptr, * rightElement = nullptr, * widthElement = nullptr;
+		const XMLElement* topElement = nullptr, * bottomElement = nullptr, * heightElement = nullptr;
+		for(const auto& childElement:xml.children) {
+			if (childElement->name == std::format(L"{}.Left", controlType.Name).c_str()) {
+				leftElement = childElement.get();
+			} else if (childElement->name == std::format(L"{}.Right", controlType.Name).c_str()) {
+				rightElement = childElement.get();
+			} else if (childElement->name == std::format(L"{}.Width", controlType.Name).c_str()) {
+				widthElement = childElement.get();
+			} else if (childElement->name == std::format(L"{}.Top", controlType.Name).c_str()) {
+				topElement = childElement.get();
+			} else if (childElement->name == std::format(L"{}.Bottom", controlType.Name).c_str()) {
+				bottomElement = childElement.get();
+			} else if (childElement->name == std::format(L"{}.Height", controlType.Name).c_str()) {
+				heightElement = childElement.get();
 			}
-			childElement = childElement->NextSiblingElement();
 		}
-		auto leftAttr = xml.FindAttribute("left");
-		auto rightAttr = xml.FindAttribute("right");
-		auto widthAttr = xml.FindAttribute("width");
-		auto topAttr = xml.FindAttribute("top");
-		auto bottomAttr = xml.FindAttribute("bottom");
-		auto heightAttr = xml.FindAttribute("height");
+		auto leftAttr = xml.findAttribute(L"left");
+		auto rightAttr = xml.findAttribute(L"right");
+		auto widthAttr = xml.findAttribute(L"width");
+		auto topAttr = xml.findAttribute(L"top");
+		auto bottomAttr = xml.findAttribute(L"bottom");
+		auto heightAttr = xml.findAttribute(L"height");
 
 		if (leftAttr && leftElement)
 			throw InvalidDataException(std::format("A combination of both - 'left' attribute and '{}.Left' child is invalid.", controlType.Name).c_str());
@@ -52,32 +48,32 @@ namespace Ghurund::UI {
 		if (leftElement) {
 			left.set(loader.loadConstraint(*leftElement, Orientation::HORIZONTAL));
 		} else  if (leftAttr) {
-			left.set(loader.loadConstraint(leftAttr->Value(), Orientation::HORIZONTAL));
+			left.set(loader.loadConstraint(convertText<wchar_t, char>(*leftAttr), Orientation::HORIZONTAL));
 		}
 		if (rightElement) {
 			right.set(loader.loadConstraint(*rightElement, Orientation::HORIZONTAL));
 		} else if (rightAttr) {
-			right.set(loader.loadConstraint(rightAttr->Value(), Orientation::HORIZONTAL));
+			right.set(loader.loadConstraint(convertText<wchar_t, char>(*rightAttr), Orientation::HORIZONTAL));
 		}
 		if (widthElement) {
 			width.set(loader.loadConstraint(*widthElement, Orientation::HORIZONTAL));
 		} else if (widthAttr) {
-			width.set(loader.loadConstraint(widthAttr->Value(), Orientation::HORIZONTAL));
+			width.set(loader.loadConstraint(convertText<wchar_t, char>(*widthAttr), Orientation::HORIZONTAL));
 		}
 		if (topElement) {
 			top.set(loader.loadConstraint(*topElement, Orientation::VERTICAL));
 		} else if (topAttr) {
-			top.set(loader.loadConstraint(topAttr->Value(), Orientation::VERTICAL));
+			top.set(loader.loadConstraint(convertText<wchar_t, char>(*topAttr), Orientation::VERTICAL));
 		}
 		if (bottomElement) {
 			bottom.set(loader.loadConstraint(*bottomElement, Orientation::VERTICAL));
 		} else if (bottomAttr) {
-			bottom.set(loader.loadConstraint(bottomAttr->Value(), Orientation::VERTICAL));
+			bottom.set(loader.loadConstraint(convertText<wchar_t, char>(*bottomAttr), Orientation::VERTICAL));
 		}
 		if (heightElement) {
 			height.set(loader.loadConstraint(*heightElement, Orientation::VERTICAL));
 		} else if (heightAttr) {
-			height.set(loader.loadConstraint(heightAttr->Value(), Orientation::VERTICAL));
+			height.set(loader.loadConstraint(convertText<wchar_t, char>(*heightAttr), Orientation::VERTICAL));
 		}
 	}
 
