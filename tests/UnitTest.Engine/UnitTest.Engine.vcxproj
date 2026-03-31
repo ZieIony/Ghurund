@@ -103,6 +103,7 @@
     <ClInclude Include="src\utepch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\test\audio\SoundTest.cpp" />
     <ClCompile Include="src\test\directx\mesh\DxMeshTest.cpp" />
     <ClCompile Include="src\test\directx\shader\DxParameterTest.cpp" />
     <ClCompile Include="src\test\directx\shader\DxShaderCompilerTest.cpp" />

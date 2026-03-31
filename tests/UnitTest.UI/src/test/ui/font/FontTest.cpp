@@ -26,7 +26,10 @@ public:
     }
 
     TEST_METHOD(Font_init) {
-        ResourceManager resourceManager;
+        Timer timer;
+        CoroutineThreadPool threadPool = CoroutineThreadPool(4);
+        CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
+        ResourceManager resourceManager = coroutineScheduler;
         IntrusivePointer<FontLoader> fontLoader;
         IntrusivePointer<ImageLoader> imageLoader;
         fontLoader.set(ghnew FontLoader());

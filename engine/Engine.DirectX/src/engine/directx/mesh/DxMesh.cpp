@@ -13,16 +13,12 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	void DxMesh::init(const MeshData& mesh, DxGPUMemoryManager& memoryManager) {
-		if (!mesh.Valid)
-			throw InvalidParamException("Mesh is not valid.\n");
 		memoryManager.resetUpload();
 
 		initVertexBuffers(mesh.VertexStreams, mesh.VertexCount, memoryManager);
 		initIndexBuffer(mesh.Indices, mesh.IndexCount, memoryManager);
 
 		memoryManager.executeUploads();
-
-		uploaded = true;
 	}
 
 	void DxMesh::initVertexBuffers(const Array<VertexStream>& vertexStreams, uint32_t vertexCount, DxGPUMemoryManager& memoryManager) {

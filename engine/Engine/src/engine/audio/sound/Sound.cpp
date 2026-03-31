@@ -6,7 +6,7 @@
 
 #include <xaudio2.h>
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     using namespace Ghurund::Core;
     using Microsoft::WRL::ComPtr;
 
@@ -18,16 +18,18 @@ namespace Ghurund {
     }
 
     void Sound::invalidate() {
-        sourceVoice->DestroyVoice();
-        sourceVoice = nullptr;
+        __super::invalidate();
 
-        CoTaskMemFree(waveFormat);
-        waveFormat = nullptr;
-
+        if (sourceVoice) {
+            sourceVoice->DestroyVoice();
+            sourceVoice = nullptr;
+        }
+        if (waveFormat) {
+            CoTaskMemFree(waveFormat);
+            waveFormat = nullptr;
+        }
         delete audioBuffer.pAudioData;
         memset(&audioBuffer, 0, sizeof(XAUDIO2_BUFFER));
-
-        __super::invalidate();
     }
 
     void Sound::play() {

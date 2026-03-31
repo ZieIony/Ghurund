@@ -29,6 +29,7 @@ namespace Ghurund::Core {
 #pragma endregion
 
 	private:
+		bool valid = false;
 		FilePath* path = nullptr;
 
 	protected:
@@ -43,13 +44,19 @@ namespace Ghurund::Core {
 		~Resource();
 
 	public:
-		virtual void invalidate() {}
-
-		virtual bool isValid() const {
-			return true;
+		virtual void invalidate() {
+			valid = false;
 		}
 
-		__declspec(property(get = isValid)) bool Valid;
+		inline void validate() {
+			valid = true;
+		}
+
+		virtual bool getIsValid() const {
+			return valid;
+		}
+
+		__declspec(property(get = getIsValid)) bool IsValid;
 
 		const FilePath* getPath() const {
 			return path;

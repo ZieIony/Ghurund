@@ -26,6 +26,10 @@ namespace Ghurund::Core {
             return File(this->path / FilePath(path)).Exists;
         }
 
+        virtual FilePath getAbsolutePath(const WString& path) const override {
+            return this->path / FilePath(path);
+        }
+
         virtual SharedPointer<Buffer> get(const WString& path) const override {
             File file(this->path / FilePath(path));
             if (!file.Exists)

@@ -3,11 +3,26 @@
 
 #include "core/EnumOperators.h"
 #include "core/io/File.h"
-#include "core/Timer.h"
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core {
+	FilePath ResourceManager::resolvePath(const FilePath& path, const DirectoryPath& workingDir) const {
+		FilePath absolutePath = getAbsolutePath(path, workingDir);
+		WString pathStr = absolutePath.toString();
+		if (pathStr.startsWith(LIB_PROTOCOL)) {
+			size_t afterLibName = pathStr.find(Path::SEPARATOR, LIB_PROTOCOL.Size);
+			const WString libName = pathStr.substring(LIB_PROTOCOL.Length, afterLibName);
+			const WString relativePath = pathStr.substring(afterLibName + 1);
+			const Library* library = libraries.get(libName);
+			if (!library)
+				throw InvalidParamException();
+			return library->getAbsolutePath(relativePath);
+		} else {
+			return absolutePath;
+		}
+	}
+
 	SharedPointer<Buffer> ResourceManager::resolveResource(const FilePath& path, const DirectoryPath& workingDir) const {
 		FilePath absolutePath = getAbsolutePath(path, workingDir);
 		WString pathStr = absolutePath.toString();
@@ -47,18 +62,7 @@ namespace Ghurund::Core {
 		const ResourceFormat& format,
 		LoadOption options
 	) {
-		const WString cacheKey = getCacheKey(path, workingDir);
-		auto iterator = resourceCache.find(cacheKey);
-		SharedPointer<Buffer> buffer;
-		if (iterator == resourceCache.end()) {
-			Logger::log(LogType::INFO, std::format(_T("loading {} from resource\n"), path).c_str());
-			buffer = resolveResource(path, workingDir);
-			resourceCache.put(cacheKey, buffer);
-		} else {
-			Logger::log(LogType::INFO, std::format(_T("loading {} from cache\n"), path).c_str());
-			buffer = iterator->value;
-		}
-
+		SharedPointer<Buffer> buffer = resolveResource(path, workingDir);
 		return loadInternal(loader, *buffer.get(), getLocalDir(path, workingDir), format, options);
 	}
 
@@ -69,12 +73,6 @@ namespace Ghurund::Core {
 		const ResourceFormat& format,
 		LoadOption options
 	) {
-		if (buffer.Size == 0) {
-			auto message = std::format(_T("the buffer is empty\n"));
-			Logger::log(LogType::ERR0R, message.c_str());
-			AString exMessage = convertText<tchar, char>(String(message.c_str()));
-			throw InvalidParamException(exMessage.Data);
-		}
 		MemoryInputStream stream(buffer.Data, buffer.Size);
 		IntrusivePointer<Resource> resource;
 		try {
@@ -85,29 +83,8 @@ namespace Ghurund::Core {
 			throw exception;
 		}
 
-		/*if (hotReloadEnabled && !(options & LoadOption::DONT_WATCH)) {
-			watcher.addFile(path, [this, &loader, &resource](const FilePath& path, const FileChange& fileChange) {
-				if (fileChange == FileChange::MODIFIED) {
-					section.enter();
-					bool found = false;
-					for (size_t i = 0; i < reloadQueue.Size; i++) {
-						if (reloadQueue[i]->Resource.Path == resource.Path) {
-							found = true;
-							break;
-						}
-					}
-					if (!found) {
-						resource.Valid = false;
-						reloadQueue.add(ghnew ReloadTask(loader, resource));
-					}
-					section.leave();
-				}
-			});
-		}*/
-		//if (!(options & LoadOption::DONT_CACHE))
-			//resources.add(*resource);
-
 		resource->addReference();
+		resource->validate();
 		return resource.get();
 	}
 
@@ -129,6 +106,15 @@ namespace Ghurund::Core {
 		buffer.setData(stream.Data, stream.BytesWritten);
 	}
 
+	CoroutineTask ResourceManager::reloadResource(Resource& resource) {
+		co_await scheduler.nextUpdate();
+		resource.invalidate();
+		co_await scheduler.backgroundThread();
+		reload(resource);
+		co_await scheduler.nextUpdate();
+		resource.validate();
+	}
+
 	Resource* ResourceManager::load(
 		BaseLoader& loader,
 		const FilePath& path,
@@ -140,20 +126,22 @@ namespace Ghurund::Core {
 		Resource* resource = resources.get(cacheKey);
 		if (!resource) {
 			resource = loadInternal(loader, path, workingDir, format, options);
+			auto absolutePath = getAbsolutePath(path, workingDir);
+			resource->Path = &absolutePath;
+			if ((options & LoadOption::DONT_CACHE) != LoadOption::DONT_CACHE)
+				resources.add(cacheKey, *resource);
+			try {
+				if ((options & LoadOption::DONT_WATCH) != LoadOption::DONT_WATCH)
+					watcher.addFile(resolvePath(path, workingDir));
+			} catch (...) {}
 		} else {
 			resource->addReference();
 		}
-		auto absolutePath = getAbsolutePath(path, workingDir);
-		resource->Path = &absolutePath;
-		if ((options & LoadOption::DONT_CACHE) != LoadOption::DONT_CACHE)
-			resources.add(cacheKey, *resource);
 		return resource;
 	}
 
 	const Ghurund::Core::Type& ResourceManager::GET_TYPE() {
-		static const auto CONSTRUCTOR = Constructor<ResourceManager>();
 		static const Ghurund::Core::Type TYPE = TypeBuilder<ResourceManager>()
-			.withConstructor(CONSTRUCTOR)
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;
@@ -161,35 +149,38 @@ namespace Ghurund::Core {
 
 	const DirectoryPath ResourceManager::ENGINE_LIB = DirectoryPath(std::format(L"{}{}", LIB_PROTOCOL, ENGINE_LIB_NAME).c_str());
 
-	ResourceManager::ResourceManager() {
-		loadingThread.start();
-	}
-
-	ResourceManager::~ResourceManager() {
-		loadingThread.finish();
-	}
-
-	void ResourceManager::reload() {
-		if (!hotReloadEnabled)
-			return;
-
-		if (!reloadQueue.Empty) {
-			Timer timer;
-			timer.tick();
-			ticks_t startTime = timer.Ticks;
-			Logger::log(LogType::INFO, _T("hot reload started\n"));
-			for (size_t i = 0; i < reloadQueue.Size; i++) {
-				ReloadTask* task = reloadQueue.get(i);
-				task->execute();    // TODO: try to reload in place
-				delete task;
-			}
-			timer.tick();
-			ticks_t finishTime = timer.Ticks;
-			float dt = (float)((double)(finishTime - startTime) * 1000 / (double)timer.Frequency);
-			auto text = std::format(_T("hot reload finished in %fms\n"), dt);
-			Logger::log(LogType::INFO, text.c_str());
+	void ResourceManager::reload(Resource& resource) {
+		auto path = *resource.Path;
+		auto workingDir = DirectoryPath();
+		auto loader = getLoader(resource.Type);
+		SharedPointer<Buffer> buffer = resolveResource(path, workingDir);
+		MemoryInputStream stream(buffer->Data, buffer->Size);
+		try {
+			loader->load(resource, stream, getLocalDir(path, workingDir), ResourceFormat::AUTO);
+		} catch (std::exception& exception) {
+			auto text = std::format(_T("failed to reload resource `{}`\n"), resource.toString());
+			Logger::log(LogType::ERR0R, text.c_str());
+			throw exception;
 		}
-		reloadQueue.clear();
+	}
+
+	void ResourceManager::setHotReloadEnabled(bool enabled) {
+		this->hotReloadEnabled = enabled;
+		if (enabled) {
+			watcher.fileChanged += [this](FileWatcher&, const FileChange& change)->bool {
+				if (change.Type != FileChangeType::MODIFIED) {
+					resources.remove(change.Path.toString());
+					watcher.removeFile(change.Path);
+					return true;
+				}
+				auto resource = IntrusivePointer(resources.get(change.Path.toString()));
+				resource->addReference();
+				onResourceChanged(resource.ref());
+				return true;
+			};
+		} else {
+			watcher.fileChanged.clear();
+		}
 	}
 
 	/*Status ResourceManager::save(MemoryOutputStream& stream, Resource& resource, const DirectoryPath& workingDir,const ResourceFormat* format, SaveOption options) const {

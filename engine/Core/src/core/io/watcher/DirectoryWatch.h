@@ -1,13 +1,14 @@
 #pragma once
 
 #include "FileChange.h"
+
 #include "core/Buffer.h"
-#include "core/collection/Map.h"
+#include "core/collection/Set.h"
 #include "core/io/DirectoryPath.h"
 #include "core/io/FilePath.h"
 #include "core/math/MathUtils.h"
-#include "core/threading/WorkerThread.h"
 #include "core/string/String.h"
+#include <core/Event.h>
 
 namespace Ghurund::Core {
     class DirectoryWatch {
@@ -17,13 +18,15 @@ namespace Ghurund::Core {
         DirectoryPath directory;
         Buffer buffer;
 
-        Map<WString, std::function<void(const FilePath &path, const FileChange&)>> files;
+        Set<WString> files;
 
-        void fileChanged(Buffer &buffer);
+        void onFileChanged(Buffer &buffer);
 
         static void CALLBACK notificationCompletion(DWORD errorCode, DWORD numberOfBytesTransfered, LPOVERLAPPED overlapped);
 
     public:
+        Event<DirectoryWatch, const FileChange&> fileChanged = *this;
+
         DirectoryWatch(const DirectoryPath &dir):directory(dir), buffer(Buffer(10_KB)) {
             overlapped.hEvent = this;
 
@@ -33,15 +36,19 @@ namespace Ghurund::Core {
 
         ~DirectoryWatch();
 
-        void addFile(const FilePath &path, std::function<void(const FilePath &path, const FileChange&)> fileChangedHandler) {
-            files.put(path.FileName.Data, fileChangedHandler);
+        inline bool containsFile(const FilePath& path) {
+            return files.contains(path.FileName.Data);
         }
 
-        void removeFile(const FilePath &path) {
+        inline void addFile(const FilePath &path) {
+            files.put(path.FileName.Data);
+        }
+
+        inline void removeFile(const FilePath &path) {
             files.remove(path.FileName.Data);
         }
 
-        size_t getFileCount() {
+        inline size_t getFileCount() {
             return files.Size;
         }
 

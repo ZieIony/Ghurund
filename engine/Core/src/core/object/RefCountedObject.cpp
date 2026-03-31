@@ -20,7 +20,7 @@ namespace Ghurund::Core {
             const auto& info = typeid(*this);
             auto text = std::format(
                 _T("[{:#x}] {} ({}) release refCount={}. The object may have been deleted or is being released in its destructor\n"),
-                (address_t)this, AString(GET_TYPE().Name), AString(info.name()), referenceCount
+                (address_t)this, AString(Type.Name), AString(info.name()), referenceCount
             );
             Logger::log(LogType::WARNING, text.c_str());
         }
@@ -34,17 +34,18 @@ namespace Ghurund::Core {
         criticalSection.leave();
 
         if (referenceCount) {
+            // TODO: typeid(..) and getType() don't work correctly in destructors
             const auto& info = typeid(*this);
             if (referenceCount == 1) {
                 auto text = std::format(
                     _T("[{:#x}] {} ({}) delete refCount=1. This deletion could be replaced with RefCountedObject::release() call\n"),
-                    (address_t)this, AString(GET_TYPE().Name), AString(info.name())
+                    (address_t)this, AString(Type.Name), AString(info.name())
                 );
                 Logger::log(LogType::WARNING, text.c_str());
             } else {
                 auto text = std::format(
                     _T("[{:#x}] {} ({}) delete refCount={}. The object may still be in use. Consider replacing deletion with RefCountedObject::release() call\n"),
-                    (address_t)this, AString(GET_TYPE().Name), AString(info.name()), referenceCount
+                    (address_t)this, AString(Type.Name), AString(info.name()), referenceCount
                 );
                 Logger::log(LogType::WARNING, text.c_str());
             }

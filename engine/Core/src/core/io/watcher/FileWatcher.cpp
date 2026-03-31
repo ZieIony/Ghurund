@@ -1,54 +1,54 @@
 #include "ghcpch.h"
 #include "FileWatcher.h"
 
-#include "core/io/File.h"
-
-#include <process.h>
-
 namespace Ghurund::Core {
-    void FileWatcher::readChangesProc(ULONG_PTR arg) {
-        DirectoryWatch* watch = (DirectoryWatch*)arg;
-        watch->readChanges();
-    }
+	void FileWatcher::readChangesProc(ULONG_PTR arg) {
+		DirectoryWatch* watch = (DirectoryWatch*)arg;
+		watch->readChanges();
+	}
 
-    FileWatcher::FileWatcher() {
-        // TODO: fix thread finishing before it starts
-        //thread.start();
-    }
+	FileWatcher::FileWatcher() {
+		// TODO: fix thread finishing before it starts
+		thread.start();
+	}
 
-    FileWatcher::~FileWatcher() {
-        while (!watches.Empty) {
-            delete watches.begin()->value;
-        }
-        //thread.finish();
-    }
+	FileWatcher::~FileWatcher() {
+		watches.clear();
+		thread.finish();
+	}
 
-    void FileWatcher::addFile(const FilePath& path, std::function<void(const FilePath& path, const FileChange&)> fileChangedHandler) {
-        WString dir = path.Directory.toString();
+	void FileWatcher::addFile(const FilePath& path) {
+		WString dir = path.Directory.toString();
 
-        if (!watches.contains(dir)) {
-            DirectoryWatch* watch = ghnew DirectoryWatch(dir);
-            watches.put(dir, watch);
+		if (!watches.contains(dir)) {
+			auto watch = makeShared<DirectoryWatch>(dir);
+			watches.put(dir, watch);
+			watch->fileChanged += [this](DirectoryWatch&, const FileChange& change)->bool {
+				fileChanged(change);
+				return true;
+			};
 
-            watch->addFile(path, fileChangedHandler);
+			watch->addFile(path);
 
-            thread.post(readChangesProc, (ULONG_PTR)watch);
-        } else {
-            watches.get(dir)->addFile(path, fileChangedHandler);
-        }
-    }
+			thread.post(readChangesProc, (ULONG_PTR)watch.get());
+		} else {
+			watches.get(dir)->addFile(path);
+		}
+	}
 
-    void FileWatcher::removeFile(const FilePath& path) {
-        WString dir = path.Directory.toString();
+	void FileWatcher::removeFile(const FilePath& path) {
+		WString dir = path.Directory.toString();
 
-        if (!watches.contains(dir))
-            return;
+		if (!watches.contains(dir))
+			return;
 
-        DirectoryWatch* watch = watches.get(dir);
-        watch->removeFile(path);
-        if (watch->FileCount == 0) {
-            watches.remove(dir);
-            delete watch;
-        }
-    }
+		auto watch = watches.get(dir);
+		watch->removeFile(path);
+		if (watch->FileCount == 0)
+			watches.remove(dir);
+	}
+
+	void FileWatcher::clearFiles() {
+		watches.clear();
+	}
 }

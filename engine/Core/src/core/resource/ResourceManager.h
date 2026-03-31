@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ReloadTask.h"
 #include "Resource.h"
 #include "ResourceCollection.h"
 #include "ResourceFormat.h"
@@ -15,7 +14,7 @@
 #include "core/object/Noncopyable.h"
 #include "core/object/Object.h"
 #include "core/reflection/Type.h"
-#include "core/threading/WorkerThread.h"
+#include <core/coroutine/CoroutineScheduler.h>
 
 
 namespace Ghurund::Core {
@@ -33,23 +32,20 @@ namespace Ghurund::Core {
 #pragma endregion
 
 	private:
-		FileWatcher watcher;
 		ResourceCollection resources;
-		mutable Map<WString, SharedPointer<Buffer>> resourceCache;
 		LibraryCollection libraries;
 		LoaderCollection loaders;
 
-		WorkerThread loadingThread;
-		List<ReloadTask*> reloadQueue;
-		bool hotReloadEnabled
-#ifdef _DEBUG
-			= true;
-#else
-			= false;
-#endif
+		CoroutineScheduler& scheduler;
+		FileWatcher watcher;
+		bool hotReloadEnabled = false;
 
 		inline WString getCacheKey(const FilePath& path, const DirectoryPath& workingDir) const {
-			return getAbsolutePath(path, workingDir).toString();
+			try {
+				return resolvePath(path, workingDir).toString();
+			} catch (...) {
+				return getAbsolutePath(path, workingDir).toString();
+			}
 		}
 
 		BaseLoader* getLoader(const Ghurund::Core::Type& type) const;
@@ -88,14 +84,27 @@ namespace Ghurund::Core {
 			SaveOption options
 		) const;
 
+		void onResourceChanged(Resource& resource) {
+			scheduler.launch(reloadResource(resource));
+		}
+
+		CoroutineTask reloadResource(Resource& resource);
+
 	public:
 		inline static const WString ENGINE_LIB_NAME = L"Ghurund";
 		static const DirectoryPath ENGINE_LIB;
 		inline static const WString LIB_PROTOCOL = L"lib://";
 
-		ResourceManager();
+		ResourceManager(CoroutineScheduler& scheduler):scheduler(scheduler) {
+			HotReloadEnabled
+#ifdef _DEBUG
+			= true;
+#else
+			= false;
+#endif
+		}
 
-		~ResourceManager();
+		FilePath resolvePath(const FilePath& path, const DirectoryPath& workingDir) const;
 
 		SharedPointer<Buffer> resolveResource(const FilePath& path, const DirectoryPath& workingDir) const;
 
@@ -115,7 +124,6 @@ namespace Ghurund::Core {
 
 		inline void clearCache() {
 			resources.clear();
-			resourceCache.clear();
 		}
 
 		inline void removeFromCache(Resource* resource, DirectoryPath workingDir) {
@@ -126,7 +134,7 @@ namespace Ghurund::Core {
 			}
 		}
 
-		void reload();
+		void reload(Resource& resource);
 
 		template<Derived<Resource> T>
 		[[nodiscard]]
@@ -140,29 +148,6 @@ namespace Ghurund::Core {
 			return (T*)load(*loader, path, workingDir, format, options);
 		}
 
-		template<class T>
-		void loadAsync(
-			const FilePath& path,
-			const DirectoryPath& workingDir = DirectoryPath(),
-			const ResourceFormat& format = ResourceFormat::AUTO,
-			std::function<void(T*)> onLoaded = nullptr,
-			std::function<void(std::exception)> onError = nullptr,
-			LoadOption options = LoadOption::DEFAULT
-		) {
-			IntrusivePointer<Task> task = makeIntrusive<Task>(path, [this, path, workingDir, format, onLoaded, onError, options] {
-				try {
-					T* resource = load<T>(path, workingDir, format, options);
-					if (onLoaded)
-						onLoaded((T*)resource);
-				} catch (std::exception& e) {
-					if (onError)
-						onError(e);
-					throw e;
-				}
-				});
-			loadingThread.post(task.get());
-		}
-
 		template<Derived<Resource> T>
 		[[nodiscard]]
 		T* load(
@@ -174,29 +159,6 @@ namespace Ghurund::Core {
 			BaseLoader* loader = getLoader(Ghurund::Core::getType<T>());
 			return (T*)loadInternal(*loader, buffer, workingDir, format, options);
 		}
-
-		/*template<class T>
-		void loadAsync(
-			const Buffer& buffer,	// TODO: copy buffer?
-			const DirectoryPath& workingDir,
-			const ResourceFormat* format = ResourceFormat::AUTO,
-			std::function<void(T*)> onLoaded = nullptr,
-			std::function<void(std::exception)> onError = nullptr,
-			LoadOption options = LoadOption::DEFAULT
-		) {
-			IntrusivePointer<Task> task = makeIntrusive<Task>(path, [this, path, workingDir, format, onLoaded, onError, options] {
-				try {
-					T* resource = load(file, format, options);
-					if (onLoaded)
-						onLoaded((T*)resource);
-				} catch (std::exception& e) {
-					if (onError)
-						onError(e);
-					throw e;
-				}
-				});
-			loadingThread.post(task.get());
-		}*/
 
 		template<Derived<Resource> T>
 		void save(
@@ -233,9 +195,7 @@ namespace Ghurund::Core {
 			//}
 		}
 
-		inline void setHotReloadEnabled(bool enabled) {
-			this->hotReloadEnabled = enabled;
-		}
+		void setHotReloadEnabled(bool enabled);
 
 		inline bool isHotReloadEnabled() const {
 			return hotReloadEnabled;

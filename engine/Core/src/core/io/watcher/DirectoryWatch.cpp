@@ -3,10 +3,9 @@
 
 #include "core/logging/Formatter.h"
 #include "core/logging/Logger.h"
-#include "core/threading/FunctionQueue.h"
 
 namespace Ghurund::Core {
-    void DirectoryWatch::fileChanged(Buffer& buffer) {
+    void DirectoryWatch::onFileChanged(Buffer& buffer) {
         int offset = 0;
         while (true) {
             FILE_NOTIFY_INFORMATION& fni = *(FILE_NOTIFY_INFORMATION*)(buffer.Data + offset);
@@ -14,9 +13,9 @@ namespace Ghurund::Core {
 
             if (files.contains(fileName)) {
                 DWORD action = fni.Action;
-                const FileChange& change = FileChange::fromValue((FileChangeEnum)action);
                 auto filePath = directory / FilePath(fileName);
-                files.get(fileName)(filePath, change);
+                FileChange change = FileChange(filePath, (FileChangeType)action);
+                fileChanged(change);
             }
 
             if (fni.NextEntryOffset == 0)
@@ -39,7 +38,7 @@ namespace Ghurund::Core {
         Buffer buffer2(watch->buffer);
         //watch->buffer.reset(numberOfBytesTransfered);
         watch->readChanges();
-        watch->fileChanged(buffer2);
+        watch->onFileChanged(buffer2);
     }
 
     DirectoryWatch::~DirectoryWatch() {

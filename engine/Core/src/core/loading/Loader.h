@@ -62,7 +62,7 @@ namespace Ghurund::Core {
 			try {
 				AString streamContents = stream.readASCII();
 				XMLDocument document;
-				document.parse(streamContents.Data, streamContents.Size);
+				document.parse(streamContents.Data, (uint32_t)streamContents.Size);
 				const XMLElement& root = document.Root;
 				loadInternal(resource, root, workingDir, format, options);
 			} catch (const std::exception& e) {
@@ -125,7 +125,7 @@ namespace Ghurund::Core {
 		) override {
 			if (!format.canLoad)
 				throw FormatNotSupportedException(format);
-			if (resource.Valid)
+			if (resource.IsValid)
 				resource.invalidate();
 			T& typedResource = castResource<T>(resource);
 			loadInternal(typedResource, stream, workingDir, format, options);
@@ -140,7 +140,7 @@ namespace Ghurund::Core {
 		) override {
 			if (!format.canLoad)
 				throw FormatNotSupportedException(format);
-			if (resource.Valid)
+			if (resource.IsValid)
 				resource.invalidate();
 			T& typedResource = castResource<T>(resource);
 			loadInternal(typedResource, root, workingDir, format, options);

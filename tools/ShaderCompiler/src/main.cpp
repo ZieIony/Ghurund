@@ -27,7 +27,10 @@ int main() {
 		return 2;
 	}
 
-	ResourceManager resourceManager;
+	Timer timer;
+	CoroutineThreadPool threadPool = CoroutineThreadPool(4);
+	CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
+	ResourceManager resourceManager = coroutineScheduler;
 	DxGraphics graphics;
 	graphics.init();
 	DxShaderCompiler compiler(graphics);

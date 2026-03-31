@@ -112,7 +112,10 @@ public:
 		//Ghurund::Core::getType<std::unique_ptr<Ghurund::UI::DrawableAttr>>();
 		Ghurund::Core::getType<std::unique_ptr<TextDocument>>();
 
-		ResourceManager resourceManager;
+		Timer timer;
+		CoroutineThreadPool threadPool = CoroutineThreadPool(4);
+		CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
+		ResourceManager resourceManager = coroutineScheduler;
 		//TestDrawableFactory drawableFactory;
 		ConstraintFactory constraintFactory;
 		//auto layoutLoader = makeIntrusive<LayoutLoader>(resourceManager, drawableFactory, textFormatFactory, constraintFactory);

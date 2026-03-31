@@ -52,8 +52,8 @@ namespace Ghurund::Engine::DirectX {
             __super::invalidate();
         }
 
-        virtual bool isValid() {
-			return image != nullptr && image->Valid && __super::Valid && uploaded;
+        virtual bool getIsValid() const override {
+			return __super::getIsValid() && image != nullptr && image->IsValid && uploaded;
         }
 
         void init(DxGraphics& graphics, CommandList& commandList, Ghurund::Core::Image& image, TextureType textureType);

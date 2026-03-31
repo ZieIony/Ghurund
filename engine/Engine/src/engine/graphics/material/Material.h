@@ -59,8 +59,8 @@ namespace Ghurund::Engine {
             __super::invalidate();
         }
 
-        virtual bool isValid() const override {
-            return shader != nullptr && shader->Valid && __super::Valid;
+        virtual bool getIsValid() const override {
+            return __super::getIsValid() && shader != nullptr && shader->IsValid;
         }
 
         inline MaterialInputCollection& getInputs() {
@@ -69,7 +69,7 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getInputs)) MaterialInputCollection& Inputs;
         
-        Shader* getShader() {
+        inline Shader* getShader() const {
             return shader;
         }
 
@@ -84,7 +84,7 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getShader, put = setShader)) Shader* Shader;
 
-        bool getIsTransparencyEnabled() const {
+        inline bool getIsTransparencyEnabled() const {
             return shader->IsTransparencyEnabled;
         }
 

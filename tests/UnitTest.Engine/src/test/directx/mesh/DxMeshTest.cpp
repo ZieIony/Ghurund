@@ -17,6 +17,13 @@ namespace UnitTest {
     using namespace std;
 
     TEST_CLASS(DxMeshTest) {
+private:
+            Timer timer;
+            CoroutineThreadPool threadPool = CoroutineThreadPool(4);
+            CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
+            ResourceManager resourceManager = coroutineScheduler;
+            DxGraphics graphics;
+
 public:
 
     TEST_METHOD(DxMesh_init) {
@@ -29,15 +36,13 @@ public:
             auto mesh = makeIntrusive<MeshData>();
             mesh->init({ posStream }, (uint32_t)vertices.Size, indices);
             auto dxMesh = makeIntrusive<DxMesh>();
-            ResourceManager resourceManager;
-            DxGraphics graphics;
             graphics.init();
             auto commandList = makeIntrusive<CommandList>();
             commandList->init(graphics, graphics.CopyQueue);
             DxGPUMemoryManager memoryManager(graphics, commandList.ref());
             dxMesh->init(*mesh.get(), memoryManager);
 
-            Assert::IsTrue(mesh->Valid);
+            Assert::IsTrue(mesh->IsValid);
         }
     }
     };

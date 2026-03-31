@@ -36,8 +36,6 @@ namespace Ghurund::Engine::DirectX {
 #pragma endregion
 
     protected:
-        bool uploaded = false;
-
         List<VertexRole> roles;
         List<ComPtr<ID3D12Resource>> vertexBuffers;
         List<D3D12_VERTEX_BUFFER_VIEW> vertexBuffersView;
@@ -54,7 +52,6 @@ namespace Ghurund::Engine::DirectX {
         virtual void init(const MeshData& mesh, DxGPUMemoryManager& memoryManager);
 
         virtual void invalidate() override {
-            uploaded = false;
             vertexBuffers.clear();
             vertexBuffersView.clear();
             /*for(auto& buffer:vertexBuffers)
@@ -64,8 +61,8 @@ namespace Ghurund::Engine::DirectX {
             __super::invalidate();
         }
 
-        virtual bool isValid() const override {
-			return __super::isValid() && vertexBuffers[0].Get() && indexBuffer.Get() && uploaded;
+        virtual bool getIsValid() const override {
+			return __super::getIsValid() && vertexBuffers[0].Get() && indexBuffer.Get();
         }
 
         void draw(CommandList& commandList, const Array<VertexRole>& layout);

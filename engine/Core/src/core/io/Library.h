@@ -1,5 +1,7 @@
 #pragma once
 
+#include "FilePath.h"
+
 #include "core/Buffer.h"
 #include "core/object/SharedPointer.h"
 #include "core/string/String.h"
@@ -21,6 +23,8 @@ namespace Ghurund::Core {
         __declspec(property(get = getName)) WString& Name;
 
         virtual bool contains(const WString& path) const = 0;
+
+        virtual FilePath getAbsolutePath(const WString& path) const = 0;
 
         virtual SharedPointer<Buffer> get(const WString& path) const = 0;
 

@@ -23,7 +23,7 @@ namespace Ghurund::Core {
 
 		Settings settings;
 
-		ResourceManager resourceManager;
+		ResourceManager resourceManager = coroutineScheduler;
 
 		FeatureProvider features = *this;
 

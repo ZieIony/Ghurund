@@ -40,14 +40,15 @@ namespace Ghurund::Core {
 		void init(const Buffer& data, const IntSize& size, DXGI_FORMAT format);
 
 		virtual void invalidate() override {
+			__super::invalidate();
 			format = {};
 			size = {};
 			pixelSize = 0, rowPitch = 0;
 			imageData.resize(0);
 		}
 
-		virtual bool isValid() const override {
-			return __super::isValid() && imageData.Size != 0;
+		virtual bool getIsValid() const override {
+			return __super::getIsValid() && imageData.Size != 0;
 		}
 
 		Buffer& getData() {

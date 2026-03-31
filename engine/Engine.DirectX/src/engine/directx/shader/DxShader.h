@@ -57,8 +57,8 @@ namespace Ghurund::Engine::DirectX {
 
 		virtual void invalidate() override;
 
-		virtual bool isValid() const {
-			return pipelineState != nullptr && rootSignature != nullptr && __super::isValid();
+		virtual bool getIsValid() const override {
+			return __super::getIsValid() && pipelineState != nullptr && rootSignature != nullptr;
 		}
 
 		void init(

@@ -24,12 +24,8 @@ namespace Ghurund::Core {
             return false;
         }
 
-        virtual ResourcePath getResourcePath(const WString& path) const override {
-            return ResourcePath(Name, path);
-        }
-
-        virtual ResourcePath getResourcePath(const size_t index) const override {
-            throw NotImplementedException();
+        virtual FilePath getAbsolutePath(const WString& path) const override {
+            throw NotSupportedException();
         }
 
         virtual SharedPointer<Buffer> get(const WString& name) const override {

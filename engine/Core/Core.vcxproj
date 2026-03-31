@@ -258,7 +258,6 @@
     <ClInclude Include="src\core\reflection\UniqueProperty.h" />
     <ClInclude Include="src\core\reflection\Visibility.h" />
     <ClInclude Include="src\core\resource\LoadOption.h" />
-    <ClInclude Include="src\core\resource\ReloadTask.h" />
     <ClInclude Include="src\core\resource\Resource.h" />
     <ClInclude Include="src\core\resource\ResourceCollection.h" />
     <ClInclude Include="src\core\resource\ResourceFormat.h" />
@@ -318,7 +317,6 @@
     <ClCompile Include="src\core\io\File.cpp" />
     <ClCompile Include="src\core\io\FilePath.cpp" />
     <ClCompile Include="src\core\io\watcher\DirectoryWatch.cpp" />
-    <ClCompile Include="src\core\io\watcher\FileChange.cpp" />
     <ClCompile Include="src\core\io\watcher\FileWatcher.cpp" />
     <ClCompile Include="src\core\loading\BaseLoader.cpp" />
     <ClCompile Include="src\core\logging\LogType.cpp" />

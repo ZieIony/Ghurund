@@ -139,11 +139,11 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	void DxShader::invalidate() {
+		__super::invalidate();
+
 		finalize();
 
 		rootSignature = nullptr;
 		pipelineState = nullptr;
-
-		__super::invalidate();
 	}
 }

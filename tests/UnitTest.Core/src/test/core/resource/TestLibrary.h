@@ -17,6 +17,10 @@ namespace UnitTest {
 			return true;
 		}
 
+		virtual FilePath getAbsolutePath(const WString& path) const override {
+			throw NotSupportedException();
+		}
+
 		virtual SharedPointer<Buffer> get(const WString& path) const override {
 			getCalls++;
 			return buffer;

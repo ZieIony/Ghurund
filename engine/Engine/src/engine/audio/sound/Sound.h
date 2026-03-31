@@ -1,13 +1,13 @@
 #pragma once
 
+#include "core/object/NotNull.h"
 #include "core/resource/Resource.h"
 
 #include <xaudio2.h>
 #include <x3daudio.h>
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     using namespace Ghurund::Core;
-    using Microsoft::WRL::ComPtr;
 
     class Sound: public Resource {
 #pragma region reflection
@@ -28,7 +28,7 @@ namespace Ghurund {
         IXAudio2SourceVoice* sourceVoice = nullptr;
         XAUDIO2_VOICE_DETAILS inputDetails;
         WAVEFORMATEX* waveFormat = nullptr;
-        XAUDIO2_BUFFER audioBuffer;
+        XAUDIO2_BUFFER audioBuffer = {};
         bool loop = false;
 
     public:
@@ -43,8 +43,8 @@ namespace Ghurund {
 
 		virtual void invalidate() override;
 
-        virtual bool isValid() const override {
-			return __super::isValid() && sourceVoice;
+        virtual bool getIsValid() const override {
+			return __super::getIsValid() && sourceVoice;
 		}
 
         void init(

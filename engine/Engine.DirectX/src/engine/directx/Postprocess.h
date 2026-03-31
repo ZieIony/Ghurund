@@ -26,8 +26,8 @@ namespace Ghurund::Engine::DirectX {
             __super::invalidate();
         }
 
-        virtual bool isValid() const override {
-            return __super::isValid();
+        virtual bool getIsValid() const override {
+            return __super::getIsValid();
         }
 
         void process(DxTexture* texture, RenderTarget* renderTarget) {}

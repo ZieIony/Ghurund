@@ -22,8 +22,10 @@ namespace UnitTest {
 
     TEST_CLASS(TextBlockTest) {
 private:
-    ResourceManager resourceManager;
     Timer timer;
+    CoroutineThreadPool threadPool = CoroutineThreadPool(4);
+    CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
+    ResourceManager resourceManager = coroutineScheduler;
     Window* window;
     UIContext* context;
     FontLoader* fontLoader;
