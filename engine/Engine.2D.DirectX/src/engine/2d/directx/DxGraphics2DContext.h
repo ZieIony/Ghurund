@@ -21,8 +21,9 @@ namespace Ghurund::Engine::_2D::DirectX {
 	public:
 		DxGraphics2DContext(
 			DxGPUMemoryManager& memoryManager,
-			ResourceManager& resourceManager
-		):memoryManager(memoryManager), resourceManager(resourceManager) {
+			ResourceManager& resourceManager,
+			Ghurund::Core::CoroutineScheduler& coroutineScheduler
+		):IGraphics2DContext(coroutineScheduler), memoryManager(memoryManager), resourceManager(resourceManager) {
 			spriteMeshData = makeIntrusive<SpriteMeshData>();
 			spriteMeshData->init();
 		}

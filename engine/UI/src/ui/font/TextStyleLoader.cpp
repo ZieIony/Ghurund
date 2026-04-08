@@ -79,6 +79,7 @@ namespace Ghurund::UI {
 			}
 		}
 		textStyle.init(fontMetrics, atlas.ref(), kerning);
+		co_return;
 	}
 
 	CoroutineTask<void> TextStyleLoader::loadFromBin(TextStyle& textStyle, MemoryInputStream& stream, const DirectoryPath& workingDir) const {

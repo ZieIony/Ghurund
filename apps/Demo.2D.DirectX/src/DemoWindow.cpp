@@ -29,7 +29,7 @@ namespace Demo {
 	void DemoWindow::init() {
 		DxGraphicsFeature* graphicsFeature = app.Features.get<DxGraphicsFeature>();
 
-		context2d = makeShared<DxGraphics2DContext>(graphicsFeature->MemoryManager, app.ResourceManager);
+		context2d = makeShared<DxGraphics2DContext>(graphicsFeature->MemoryManager, app.ResourceManager, app.CoroutineScheduler);
 
 		camera = makeIntrusive<Camera2D>();
 		camera->ViewSize = { 8, 6 };

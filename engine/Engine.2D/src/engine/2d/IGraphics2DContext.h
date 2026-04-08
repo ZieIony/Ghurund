@@ -6,7 +6,18 @@
 
 namespace Ghurund::Engine::_2D {
 	class IGraphics2DContext {
+	private:
+		CoroutineScheduler& coroutineScheduler;
+
 	public:
+		IGraphics2DContext(CoroutineScheduler& coroutineScheduler):coroutineScheduler(coroutineScheduler) {}
+
+		inline CoroutineScheduler& getCoroutineScheduler() {
+			return coroutineScheduler;
+		}
+
+		__declspec(property(get = getCoroutineScheduler)) CoroutineScheduler& CoroutineScheduler;
+
 		virtual Mesh* makeSpriteMesh() = 0;
 
 		virtual CoroutineTask<IntrusivePointer<Material>> makeSpriteMaterial() = 0;

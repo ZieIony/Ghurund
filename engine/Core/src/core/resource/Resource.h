@@ -4,6 +4,7 @@
 
 #include "core/io/FilePath.h"
 #include "core/object/RefCountedObject.h"
+#include <core/Event.h>
 
 namespace Ghurund::Core {
 	struct DataSize {
@@ -44,12 +45,16 @@ namespace Ghurund::Core {
 		~Resource();
 
 	public:
+		Event<Resource> validChanged = *this;
+
 		virtual void invalidate() {
 			valid = false;
+			validChanged();
 		}
 
 		inline void validate() {
 			valid = true;
+			validChanged();
 		}
 
 		virtual bool getIsValid() const {

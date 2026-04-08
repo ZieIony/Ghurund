@@ -24,12 +24,20 @@ namespace Ghurund::Engine::_2D {
 
 	private:
 		TileMap* tileMap = nullptr;
+		EventHandler<Resource> tileMapChanged = [this](Resource& resource)->bool {
+			if (!resource.IsValid) {
+				uninit();
+			} else {
+				Owner->Context->CoroutineScheduler.launch(init());
+			}
+			return false;
+		};
+
 		Mesh* mesh = nullptr;
 		Material* material = nullptr;
 		SpriteInputs inputs;
 
 		inline void uninitTileMapComponent() {
-			Components.clear();
 			safeRelease(mesh);
 			safeRelease(material);
 		};
@@ -54,7 +62,11 @@ namespace Ghurund::Engine::_2D {
 		}
 
 		inline void setTileMap(TileMap* tileMap) {
+			if (this->tileMap)
+				this->tileMap->validChanged -= tileMapChanged;
 			setPointer(this->tileMap, tileMap);
+			if (tileMap)
+				tileMap->validChanged += tileMapChanged;
 			if (material && tileMap)
 				inputs.ColorTexture = tileMap->TileSet->TextureAtlas->get();
 		}
