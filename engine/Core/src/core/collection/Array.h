@@ -146,6 +146,7 @@ namespace Ghurund::Core {
                 return *this;
             size = other.size;
             other.size = 0;
+            delete[](char*)v;
             v = other.v;
             other.v = nullptr;
             return *this;
