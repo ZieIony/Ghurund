@@ -2,7 +2,7 @@
 #include "SpriteAnimationSetLoader.h"
 
 namespace Ghurund::Engine::_2D {
-	void SpriteAnimationSetLoader::loadInternal(
+	CoroutineTask<void> SpriteAnimationSetLoader::loadInternal(
 		SpriteAnimationSet& resource,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
@@ -24,7 +24,7 @@ namespace Ghurund::Engine::_2D {
 				if (!durationMsAttribute)
 					throw InvalidFormatException();
 				auto texturePath = FilePath(*textureAttribute);
-				auto texture = IntrusivePointer<ITexture>(resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, options));
+				auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, options);
 				animation->addFrame(texture.ref(), parse<uint32_t>(convertText<wchar_t, char>(*durationMsAttribute)));
 			}
 			resource.add(animation.get());

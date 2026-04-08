@@ -52,7 +52,7 @@ namespace Ghurund::UI {
 		stream.writeUInt32(0);
 	}
 
-	void TextStyleLoader::loadFromXml(TextStyle& textStyle, const XMLElement& xml, const DirectoryPath& workingDir) {
+	CoroutineTask<void> TextStyleLoader::loadFromXml(TextStyle& textStyle, const XMLElement& xml, const DirectoryPath& workingDir) {
 		IntrusivePointer<FontAtlas> atlas;
 		FontMetrics fontMetrics = {};
 		KerningPairs kerning;
@@ -61,8 +61,8 @@ namespace Ghurund::UI {
 			if (child->name == L"Atlas") {
 				if (atlas != nullptr)
 					throw InvalidFormatException("Atlas can appear only once in TextStyle");
-				IntrusivePointer<FontAtlas> atlas;
-				fontAtlasLoader.load(atlas.ref(), child.ref(), workingDir);
+				// TODO: load using resourceManager
+				//IntrusivePointer<FontAtlas> atlas = co_await resourceManager.load<FontAtlas>(atlas.ref(), child.ref(), workingDir);
 			} else if (child->name == L"Kerning") {
 				if (kerningFound)
 					throw InvalidFormatException("Kerning can appear only once in TextStyle");
@@ -81,9 +81,9 @@ namespace Ghurund::UI {
 		textStyle.init(fontMetrics, atlas.ref(), kerning);
 	}
 
-	void TextStyleLoader::loadFromBin(TextStyle& textStyle, MemoryInputStream& stream, const DirectoryPath& workingDir) const {
+	CoroutineTask<void> TextStyleLoader::loadFromBin(TextStyle& textStyle, MemoryInputStream& stream, const DirectoryPath& workingDir) const {
 		FilePath path = FilePath(stream.readUnicode());
-		IntrusivePointer<FontAtlas> atlas = IntrusivePointer<FontAtlas>(resourceManager.load<FontAtlas>(path, workingDir));
+		IntrusivePointer<FontAtlas> atlas = co_await resourceManager.load<FontAtlas>(path, workingDir);
 		auto kerning = loadKerning(stream);
 		FontMetrics fontMetrics = *(FontMetrics*)stream.readBytes(sizeof(FontMetrics));
 		textStyle.init(fontMetrics, atlas.ref(), kerning);
@@ -132,7 +132,7 @@ namespace Ghurund::UI {
 		stream.writeBytes(&textStyle.FontMetrics, sizeof(FontMetrics));
 	}
 
-	void TextStyleLoader::loadInternal(
+	CoroutineTask<void> TextStyleLoader::loadInternal(
 		TextStyle& resource,
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
@@ -141,21 +141,23 @@ namespace Ghurund::UI {
 	) {
 		if (format == ResourceFormat::AUTO) {
 			auto position = stream.Position;
-			try{
+			try {
 				XMLDocument doc;
 				doc.parse(stream.Data, stream.Size);
-				loadFromXml(resource, doc.Root, workingDir);
-			} catch(...) {
-				stream.Position = position;
-				loadFromBin(resource, stream, workingDir);
+				co_await loadFromXml(resource, doc.Root, workingDir);
+				co_return;
+			} catch (...) {
 			}
+			stream.Position = position;
+			co_await loadFromBin(resource, stream, workingDir);
 		} else if (format == TextStyle::FORMAT_XML) {
 			XMLDocument doc;
 			doc.parse(stream.Data, stream.Size);
-			loadFromXml(resource, doc.Root, workingDir);
+			co_await loadFromXml(resource, doc.Root, workingDir);
 		} else {
-			loadFromBin(resource, stream, workingDir);
+			co_await loadFromBin(resource, stream, workingDir);
 		}
+		co_return;
 	}
 
 	void TextStyleLoader::saveInternal(

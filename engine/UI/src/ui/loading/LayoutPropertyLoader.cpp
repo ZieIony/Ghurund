@@ -16,7 +16,9 @@ namespace Ghurund::UI {
 			layout.reset(ghnew ThemedLayout(layoutKey));
 		} else {
 			FilePath path = FilePath(convertText<char, wchar_t>(s));
-			auto control = IntrusivePointer(resourceManager.load<Control>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE));
+			auto coroutine = resourceManager.load<Control>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE);
+			coroutine.resume();
+			auto control = coroutine.Result;
 			layout.reset(ghnew ThemedLayout(control));
 		}
 		if (!layout)

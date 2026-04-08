@@ -15,7 +15,7 @@ namespace Ghurund::Engine {
         void loadMesh(MeshData& mesh, MemoryInputStream& stream);
 
     protected:
-        virtual void loadInternal(
+        virtual CoroutineTask<void> loadInternal(
             MeshData& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,

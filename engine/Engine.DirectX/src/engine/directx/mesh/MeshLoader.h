@@ -14,7 +14,7 @@ namespace Ghurund::Engine::DirectX {
         MeshDataLoader meshDataLoader;
 
     protected:
-        virtual void loadInternal(
+        virtual CoroutineTask<void> loadInternal(
             DxMesh& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,

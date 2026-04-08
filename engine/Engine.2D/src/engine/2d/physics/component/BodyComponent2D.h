@@ -71,8 +71,8 @@ namespace Ghurund::Engine::_2D {
 			updateSize();
 		}
 
-		virtual void onInit() override {
-			__super::onInit();
+		virtual CoroutineTask<void> onInit() override {
+			co_await __super::onInit();
 			b2BodyDef bodyDef = b2DefaultBodyDef();
 			bodyDef.position = { 0.0f, 0.0f };
 			id = b2CreateBody(world->Id, &bodyDef);

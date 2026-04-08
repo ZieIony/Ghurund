@@ -2,7 +2,7 @@
 #include "TileMapLoader.h"
 
 namespace Ghurund::Engine::_2D {
-	void TileMapLoader::loadInternal(
+	CoroutineTask<void> TileMapLoader::loadInternal(
 		TileMap& resource,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
@@ -15,7 +15,7 @@ namespace Ghurund::Engine::_2D {
 		if (!tileSetAttribute)
 			throw InvalidDataException();
 		auto tileSetPath = FilePath(*tileSetAttribute);
-		auto tileSet = IntrusivePointer<TileSet>(resourceManager.load<TileSet>(tileSetPath, workingDir, ResourceFormat::AUTO, options));
+		auto tileSet = co_await resourceManager.load<TileSet>(tileSetPath, workingDir, ResourceFormat::AUTO, options);
 
 		IntSize size = [&] {
 			auto sizeAttribute = xml.findAttribute(L"size");
@@ -43,5 +43,6 @@ namespace Ghurund::Engine::_2D {
 				resource.set({ (uint32_t)x, (uint32_t)y }, parse<uint32_t>(tile));
 			}
 		}
+		co_return;
 	}
 }

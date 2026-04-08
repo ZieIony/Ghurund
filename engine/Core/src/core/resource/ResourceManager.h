@@ -1,10 +1,12 @@
 #pragma once
 
 #include "Resource.h"
+#include "ResourceAwaiter.h"
 #include "ResourceCollection.h"
 #include "ResourceFormat.h"
 
 #include "core/Buffer.h"
+#include "core/coroutine/CoroutineScheduler.h"
 #include "core/io/File.h"
 #include "core/io/FilePath.h"
 #include "core/io/LibraryCollection.h"
@@ -14,8 +16,6 @@
 #include "core/object/Noncopyable.h"
 #include "core/object/Object.h"
 #include "core/reflection/Type.h"
-#include <core/coroutine/CoroutineScheduler.h>
-
 
 namespace Ghurund::Core {
 	class ResourceManager:public Noncopyable, public Object {
@@ -37,6 +37,7 @@ namespace Ghurund::Core {
 		LoaderCollection loaders;
 
 		CoroutineScheduler& scheduler;
+		Bag<ResourceAwaiter> resourceAwaiters;
 		FileWatcher watcher;
 		bool hotReloadEnabled = false;
 
@@ -51,7 +52,7 @@ namespace Ghurund::Core {
 		BaseLoader* getLoader(const Ghurund::Core::Type& type) const;
 
 		[[nodiscard]]
-		Resource* load(
+		CoroutineTask<IntrusivePointer<Resource>> load(
 			BaseLoader& loader,
 			const FilePath& path,
 			const DirectoryPath& workingDir,
@@ -59,7 +60,7 @@ namespace Ghurund::Core {
 			LoadOption options
 		);
 
-		Resource* loadInternal(
+		CoroutineTask<IntrusivePointer<Resource>> loadInternal(
 			BaseLoader& loader,
 			const FilePath& path,
 			const DirectoryPath& workingDir,
@@ -67,7 +68,7 @@ namespace Ghurund::Core {
 			LoadOption options
 		);
 
-		Resource* loadInternal(
+		CoroutineTask<IntrusivePointer<Resource>> loadInternal(
 			BaseLoader& loader,
 			const Buffer& buffer,
 			const DirectoryPath& workingDir,
@@ -88,7 +89,7 @@ namespace Ghurund::Core {
 			scheduler.launch(reloadResource(resource));
 		}
 
-		CoroutineTask reloadResource(Resource& resource);
+		CoroutineTask<void> reloadResource(Resource& resource);
 
 	public:
 		inline static const WString ENGINE_LIB_NAME = L"Ghurund";
@@ -134,30 +135,34 @@ namespace Ghurund::Core {
 			}
 		}
 
-		void reload(Resource& resource);
+		CoroutineTask<void> reload(Resource& resource);
 
 		template<Derived<Resource> T>
 		[[nodiscard]]
-		T* load(
+		CoroutineTask<IntrusivePointer<T>> load(
 			const FilePath& path,
 			const DirectoryPath& workingDir = DirectoryPath(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) {
 			BaseLoader* loader = getLoader(Ghurund::Core::getType<T>());
-			return (T*)load(*loader, path, workingDir, format, options);
+			IntrusivePointer<Resource> resource = co_await load(*loader, path, workingDir, format, options);
+			resource->addReference();
+			co_return IntrusivePointer<T>((T*)resource.get());
 		}
 
 		template<Derived<Resource> T>
 		[[nodiscard]]
-		T* load(
+		CoroutineTask<IntrusivePointer<T>> load(
 			const Buffer& buffer,
 			const DirectoryPath& workingDir = DirectoryPath(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) {
 			BaseLoader* loader = getLoader(Ghurund::Core::getType<T>());
-			return (T*)loadInternal(*loader, buffer, workingDir, format, options);
+			IntrusivePointer<Resource> resource = co_await loadInternal(*loader, buffer, workingDir, format, options);
+			resource->addReference();
+			co_return IntrusivePointer<T>((T*)resource.get());
 		}
 
 		template<Derived<Resource> T>

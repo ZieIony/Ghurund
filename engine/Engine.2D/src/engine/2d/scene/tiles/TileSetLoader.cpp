@@ -2,7 +2,7 @@
 #include "TileSetLoader.h"
 
 namespace Ghurund::Engine::_2D {
-	void TileSetLoader::loadInternal(
+	CoroutineTask<void> TileSetLoader::loadInternal(
 		TileSet& resource,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
@@ -15,7 +15,7 @@ namespace Ghurund::Engine::_2D {
 		if (!textureAttribute)
 			throw InvalidDataException();
 		auto texturePath = FilePath(*textureAttribute);
-		auto texture = IntrusivePointer<ITexture>(resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, options));
+		auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, options);
 
 		auto tileSizeAttribute = xml.findAttribute(L"tileSize");
 		if (!tileSizeAttribute)

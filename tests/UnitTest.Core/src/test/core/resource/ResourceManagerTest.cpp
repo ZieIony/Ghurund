@@ -38,7 +38,13 @@ public:
 			size_t getCalls = library.getCalls;
 			size_t loadCalls = testLoader->loadCalls;
 
-			IntrusivePointer<TestResource> resource(resourceManager.load<TestResource>(FilePath(L"lib://test/testpath"), DirectoryPath()));
+			IntrusivePointer<TestResource> resource = [&] {
+				auto path = FilePath(L"lib://test/testpath");
+				auto dir = DirectoryPath();
+				auto coroutine = resourceManager.load<TestResource>(path, dir);
+				coroutine.resume();
+				return coroutine.Result;
+			}();
 			Assert::AreEqual(resource->text, AString("test"));
 			Assert::AreEqual(getCalls + 1, library.getCalls);
 			Assert::AreEqual(loadCalls + 1, testLoader->loadCalls);
@@ -56,8 +62,18 @@ public:
 			size_t getCalls = library.getCalls;
 			size_t loadCalls = testLoader->loadCalls;
 
-			IntrusivePointer<TestResource> resource(resourceManager.load<TestResource>(FilePath(L"lib://test/testpath"), DirectoryPath()));
-			IntrusivePointer<TestResource> resource2(resourceManager.load<TestResource>(FilePath(L"lib://test/testpath"), DirectoryPath()));
+			auto path = FilePath(L"lib://test/testpath");
+			auto dir = DirectoryPath();
+			IntrusivePointer<TestResource> resource = [&] {
+				auto coroutine = resourceManager.load<TestResource>(path, dir);
+				coroutine.resume();
+				return coroutine.Result;
+			}();
+			IntrusivePointer<TestResource> resource2 = [&] {
+				auto coroutine2 = resourceManager.load<TestResource>(path, dir);
+				coroutine2.resume();
+				return coroutine2.Result;
+			}();
 			Assert::IsTrue(resource.get() == resource2.get());
 			Assert::AreEqual(getCalls + 1, library.getCalls);
 			Assert::AreEqual(loadCalls + 1, testLoader->loadCalls);
@@ -77,7 +93,11 @@ public:
 
 			Buffer buffer((const void*)"test", 5);
 
-			IntrusivePointer<TestResource> resource(resourceManager.load<TestResource>(buffer, DirectoryPath()));
+			IntrusivePointer<TestResource> resource = [&] {
+				auto coroutine = resourceManager.load<TestResource>(buffer, DirectoryPath());
+				coroutine.resume();
+				return coroutine.Result;
+			}();
 			Assert::AreEqual(resource->text, AString("test"));
 			Assert::AreEqual(getCalls, library.getCalls);
 			Assert::AreEqual(loadCalls + 1, testLoader->loadCalls);

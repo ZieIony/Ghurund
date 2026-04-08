@@ -3,7 +3,7 @@
 #include "OglMesh.h"
 
 namespace Ghurund::Engine::OpenGL {
-    void OglMeshLoader::loadInternal(
+    CoroutineTask<void> OglMeshLoader::loadInternal(
         OglMesh& resource,
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
@@ -11,7 +11,7 @@ namespace Ghurund::Engine::OpenGL {
         Ghurund::Core::LoadOption options
     ) {
         auto meshData = makeIntrusive<MeshData>();
-        meshDataLoader.load(meshData.ref(), stream, workingDir, format, options);
+        co_await meshDataLoader.load(meshData.ref(), stream, workingDir, format, options);
         resource.init(meshData.ref());
     }
 }

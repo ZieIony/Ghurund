@@ -9,16 +9,16 @@ namespace Ghurund::Engine::_2D {
 	public:
 		virtual Mesh* makeSpriteMesh() = 0;
 
-		virtual Material* makeSpriteMaterial() = 0;
+		virtual CoroutineTask<IntrusivePointer<Material>> makeSpriteMaterial() = 0;
 
 		virtual Mesh* makeTileMapMesh(IntSize tileMapSize, Array<TileInfo>& tiles) = 0;
 
-		virtual Material* makeTileMapMaterial() = 0;
+		virtual CoroutineTask<IntrusivePointer<Material>> makeTileMapMaterial() = 0;
 
-		virtual Material* makeBoxVisualizationMaterial() = 0;
+		virtual CoroutineTask<IntrusivePointer<Material>> makeBoxVisualizationMaterial() = 0;
 
-		virtual Material* makeCapsuleVisualizationMaterial() = 0;
+		virtual CoroutineTask<IntrusivePointer<Material>> makeCapsuleVisualizationMaterial() = 0;
 
-		virtual Material* makeSegmentVisualizationMaterial() = 0;
+		virtual CoroutineTask<IntrusivePointer<Material>> makeSegmentVisualizationMaterial() = 0;
 	};
 }

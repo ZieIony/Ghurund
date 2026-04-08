@@ -8,12 +8,12 @@ namespace Ghurund::UI {
     Control* MenuBarItemAdapter::makeControl(size_t type) const {
         Button* button = ghnew Button();
         auto layoutPath = ResourceManager::ENGINE_LIB / FilePath(L"/layouts/ButtonIconLayout.xml");
-        Control* layout = resourceManager.load<Control>(layoutPath);
-        button->Layout = layout;
+        //Control* layout = resourceManager.load<Control>(layoutPath);
+        //button->Layout = layout;
         //DrawableView* drawableView = ghnew DrawableView();
         //drawableView->Name = "drawableView";
         //button->Content = drawableView;
-        layout->release();
+        //layout->release();
         return button;
     }
     

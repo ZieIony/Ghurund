@@ -9,8 +9,8 @@ namespace Ghurund::Engine::_2D {
 		return TYPE;
 	}
 
-	void TileMapComponent::onInit() {
-		__super::onInit();
+	CoroutineTask<void> TileMapComponent::onInit() {
+		co_await __super::onInit();
 		Array<TileInfo> tiles = tileMap->Size.Width * tileMap->Size.Height;
 		uint32_t tileIndex = 0;
 		for (TileInfo& tileInfo : tiles) {
@@ -25,6 +25,6 @@ namespace Ghurund::Engine::_2D {
 			tileIndex++;
 		}
 		mesh = Owner->Context->makeTileMapMesh(tileMap->Size, tiles);
-		Material = IntrusivePointer(Owner->Context->makeTileMapMaterial()).get();
+		Material = (co_await Owner->Context->makeTileMapMaterial()).get();
 	}
 }

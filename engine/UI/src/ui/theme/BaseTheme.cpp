@@ -19,10 +19,14 @@ namespace Ghurund::UI {
 		auto textStylePathStr = std::format(L"resources/textStyles/lato_{}_{}.bin", style, (uint16_t)size);
 		auto textStylePath = FilePath(textStylePathStr.c_str());
 		if (File(textStylePath).exists()) {
-			textStyle.set(resourceManager.load<TextStyle>(textStylePath, DirectoryPath(), TextStyle::FORMAT_BIN));
+			auto coroutine = resourceManager.load<TextStyle>(textStylePath, DirectoryPath(), TextStyle::FORMAT_BIN);
+			coroutine.resume();
+			textStyle.set(coroutine.Result.get());
 		} else {
 			auto fontPathStr = std::format(L"resources/fonts/lato_{}.ttf", style);
-			auto font = IntrusivePointer<Font>(resourceManager.load<Font>(FilePath(fontPathStr.c_str())));
+			auto coroutine = resourceManager.load<Font>(FilePath(fontPathStr.c_str()));
+			coroutine.resume();
+			auto font = coroutine.Result;
 			textStyle.set(ghnew TextStyle());
 			textStyle->init(font.ref(), size);
 			resourceManager.save(textStyle.ref(), textStylePath, DirectoryPath(), TextStyle::FORMAT_BIN);

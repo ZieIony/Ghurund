@@ -55,7 +55,7 @@ namespace Ghurund::Core {
 		return loader;
 	}
 
-	Resource* ResourceManager::loadInternal(
+	CoroutineTask<IntrusivePointer<Resource>> ResourceManager::loadInternal(
 		BaseLoader& loader,
 		const FilePath& path,
 		const DirectoryPath& workingDir,
@@ -63,10 +63,12 @@ namespace Ghurund::Core {
 		LoadOption options
 	) {
 		SharedPointer<Buffer> buffer = resolveResource(path, workingDir);
-		return loadInternal(loader, *buffer.get(), getLocalDir(path, workingDir), format, options);
+		auto localDir = getLocalDir(path, workingDir);
+		auto resource = co_await loadInternal(loader, buffer.ref(), localDir, format, options);
+		co_return resource;
 	}
 
-	Resource* ResourceManager::loadInternal(
+	CoroutineTask<IntrusivePointer<Resource>> ResourceManager::loadInternal(
 		BaseLoader& loader,
 		const Buffer& buffer,
 		const DirectoryPath& workingDir,
@@ -76,16 +78,15 @@ namespace Ghurund::Core {
 		MemoryInputStream stream(buffer.Data, buffer.Size);
 		IntrusivePointer<Resource> resource;
 		try {
-			resource = IntrusivePointer(loader.load(stream, workingDir, format, options));
+			resource = co_await loader.load(stream, workingDir, format, options);
 		} catch (std::exception& exception) {
 			auto text = std::format(_T("failed to load resource\n"));
 			Logger::log(LogType::ERR0R, text.c_str());
 			throw exception;
 		}
 
-		resource->addReference();
 		resource->validate();
-		return resource.get();
+		co_return resource;
 	}
 
 	void ResourceManager::saveInternal(
@@ -106,16 +107,16 @@ namespace Ghurund::Core {
 		buffer.setData(stream.Data, stream.BytesWritten);
 	}
 
-	CoroutineTask ResourceManager::reloadResource(Resource& resource) {
+	CoroutineTask<void> ResourceManager::reloadResource(Resource& resource) {
 		co_await scheduler.nextUpdate();
 		resource.invalidate();
 		co_await scheduler.backgroundThread();
-		reload(resource);
+		co_await reload(resource);
 		co_await scheduler.nextUpdate();
 		resource.validate();
 	}
 
-	Resource* ResourceManager::load(
+	CoroutineTask<IntrusivePointer<Resource>> ResourceManager::load(
 		BaseLoader& loader,
 		const FilePath& path,
 		const DirectoryPath& workingDir,
@@ -123,13 +124,13 @@ namespace Ghurund::Core {
 		LoadOption options
 	) {
 		const WString cacheKey = getCacheKey(path, workingDir);
-		Resource* resource = resources.get(cacheKey);
-		if (!resource) {
-			resource = loadInternal(loader, path, workingDir, format, options);
+		IntrusivePointer<Resource> resource = IntrusivePointer(resources.get(cacheKey));
+		if (resource == nullptr) {
+			resource = co_await loadInternal(loader, path, workingDir, format, options);
 			auto absolutePath = getAbsolutePath(path, workingDir);
 			resource->Path = &absolutePath;
 			if ((options & LoadOption::DONT_CACHE) != LoadOption::DONT_CACHE)
-				resources.add(cacheKey, *resource);
+				resources.add(cacheKey, resource.ref());
 			try {
 				if ((options & LoadOption::DONT_WATCH) != LoadOption::DONT_WATCH)
 					watcher.addFile(resolvePath(path, workingDir));
@@ -137,7 +138,7 @@ namespace Ghurund::Core {
 		} else {
 			resource->addReference();
 		}
-		return resource;
+		co_return resource;
 	}
 
 	const Ghurund::Core::Type& ResourceManager::GET_TYPE() {
@@ -149,14 +150,14 @@ namespace Ghurund::Core {
 
 	const DirectoryPath ResourceManager::ENGINE_LIB = DirectoryPath(std::format(L"{}{}", LIB_PROTOCOL, ENGINE_LIB_NAME).c_str());
 
-	void ResourceManager::reload(Resource& resource) {
+	CoroutineTask<void> ResourceManager::reload(Resource& resource) {
 		auto path = *resource.Path;
 		auto workingDir = DirectoryPath();
 		auto loader = getLoader(resource.Type);
 		SharedPointer<Buffer> buffer = resolveResource(path, workingDir);
 		MemoryInputStream stream(buffer->Data, buffer->Size);
 		try {
-			loader->load(resource, stream, getLocalDir(path, workingDir), ResourceFormat::AUTO);
+			co_await loader->load(resource, stream, getLocalDir(path, workingDir), ResourceFormat::AUTO);
 		} catch (std::exception& exception) {
 			auto text = std::format(_T("failed to reload resource `{}`\n"), resource.toString());
 			Logger::log(LogType::ERR0R, text.c_str());

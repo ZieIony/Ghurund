@@ -26,7 +26,7 @@ namespace Ghurund::Engine::OpenGL {
 		}
 	}
 
-	void OglShaderLoader::loadInternal(
+	CoroutineTask<void> OglShaderLoader::loadInternal(
 		OglShader& resource,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
@@ -39,6 +39,7 @@ namespace Ghurund::Engine::OpenGL {
 		auto fragmentProgram = loadShaderProgramFromXml(xml, workingDir, OglShaderType::FRAGMENT);
 		compiler.build(resource, *vertexProgram.get(), *fragmentProgram.get());
 		//bool isTransparencyEnabled = sourceCode.find("isTransparencyEnabled") != sourceCode.Size;
+		co_return;
 	}
 
 	void OglShaderLoader::saveInternal(

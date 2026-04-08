@@ -12,7 +12,7 @@ namespace Ghurund::Engine::_2D {
 		return TYPE;
 	}
 
-	void BoxComponent2D::onInit() {
+	CoroutineTask<void> BoxComponent2D::onInit() {
 		if (isVisualized) {
 			if (visualizationComponent) {
 				Components.remove(visualizationComponent);
@@ -20,10 +20,10 @@ namespace Ghurund::Engine::_2D {
 			}
 			visualizationComponent = ghnew VisualizationComponent2D();
 			visualizationComponent->Mesh = IntrusivePointer<Mesh>(Owner->Context->makeSpriteMesh()).get();
-			visualizationComponent->Material = IntrusivePointer<Material>(Owner->Context->makeBoxVisualizationMaterial()).get();
+			visualizationComponent->Material = (co_await Owner->Context->makeBoxVisualizationMaterial()).get();
 			Components.add(visualizationComponent);
 		}
-		__super::onInit();
+		co_await __super::onInit();
 	
 		b2Polygon box = b2MakeBox(fabs(scale.x * size.Width) / 2, fabs(scale.y * size.Height) / 2);
 		b2ShapeDef shapeDef = b2DefaultShapeDef();

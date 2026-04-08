@@ -13,6 +13,8 @@
 #include "core/resource/ResourceFormat.h"
 #include "core/resource/SaveOption.h"
 #include <core/xml/XMLElement.h>
+#include "core/coroutine/CoroutineTask.h"
+#include "core/object/IntrusivePointer.h"
 
 #include <cstdint>
 
@@ -78,7 +80,7 @@ namespace Ghurund::Core {
 
 		virtual ~BaseLoader() = 0 {}
 
-		virtual void load(
+		virtual CoroutineTask<void> load(
 			Resource& resource,
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir = DirectoryPath(),
@@ -86,18 +88,18 @@ namespace Ghurund::Core {
 			LoadOption options = LoadOption::DEFAULT
 		) = 0;
 
-		virtual Resource* load(
+		virtual CoroutineTask<IntrusivePointer<Resource>> load(
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir = DirectoryPath(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) {
-			Resource* resource = makeResource();
-			load(*resource, stream, workingDir, format, options);
-			return resource;
+			auto resource = IntrusivePointer(makeResource());
+			co_await load(resource.ref(), stream, workingDir, format, options);
+			co_return resource;
 		}
 
-		virtual void load(
+		virtual CoroutineTask<void> load(
 			Resource& resource,
 			const XMLElement& xml,
 			const DirectoryPath& workingDir = DirectoryPath(),
@@ -105,15 +107,15 @@ namespace Ghurund::Core {
 			LoadOption options = LoadOption::DEFAULT
 		) = 0;
 
-		virtual Resource* load(
+		virtual CoroutineTask<IntrusivePointer<Resource>> load(
 			const XMLElement& xml,
 			const DirectoryPath& workingDir = DirectoryPath(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) {
-			Resource* resource = makeResource();
-			load(*resource, xml, workingDir, format, options);
-			return resource;
+			auto resource = IntrusivePointer(makeResource());
+			co_await load(resource.ref(), xml, workingDir, format, options);
+			co_return resource;
 		}
 
 		virtual void save(

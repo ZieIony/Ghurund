@@ -13,7 +13,7 @@ namespace Ghurund::Engine {
         ResourceManager& resourceManager;
 
     protected:
-        virtual void loadInternal(
+        virtual CoroutineTask<void> loadInternal(
             TextureAtlas& resource,
             const XMLElement& xml,
             const DirectoryPath& workingDir,

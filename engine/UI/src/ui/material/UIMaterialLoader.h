@@ -12,7 +12,7 @@ namespace Ghurund::UI {
 			return UIMaterial::TYPE;
 		}
 
-		virtual void onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value) override;
+		virtual CoroutineTask<void> onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value) override;
 
 	public:
 		UIMaterialLoader(

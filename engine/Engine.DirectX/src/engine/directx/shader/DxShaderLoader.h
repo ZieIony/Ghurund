@@ -29,7 +29,7 @@ namespace Ghurund::Engine::DirectX {
         void loadFromHlsl(const AString& sourceCode, const DirectoryPath& workingDir, DxShader& shader);
 
     protected:
-        virtual void loadInternal(
+        virtual CoroutineTask<void> loadInternal(
             DxShader& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
@@ -37,7 +37,7 @@ namespace Ghurund::Engine::DirectX {
             LoadOption options
         ) override;
 
-        virtual void loadInternal(
+        virtual CoroutineTask<void> loadInternal(
             DxShader& resource,
             const XMLElement& xml,
             const DirectoryPath& workingDir,

@@ -51,7 +51,7 @@ namespace Ghurund::Core {
 			return T::VERSION;
 		}
 
-		inline void loadFromXml(
+		inline CoroutineTask<void> loadFromXml(
 			T& resource,
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
@@ -64,24 +64,24 @@ namespace Ghurund::Core {
 				XMLDocument document;
 				document.parse(streamContents.Data, (uint32_t)streamContents.Size);
 				const XMLElement& root = document.Root;
-				loadInternal(resource, root, workingDir, format, options);
-			} catch (const std::exception& e) {
+				co_await loadInternal(resource, root, workingDir, format, options);
+			} catch (const std::exception&) {
 				stream.Position = streamPosition;
-				throw e;
+				throw;
 			}
 		}
 
-		virtual void loadInternal(
+		virtual CoroutineTask<void> loadInternal(
 			T& resource,
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
 			LoadOption options
 		) {
-			loadFromXml(resource, stream, workingDir, format, options);
+			co_await loadFromXml(resource, stream, workingDir, format, options);
 		}
 
-		virtual void loadInternal(
+		virtual CoroutineTask<void> loadInternal(
 			T& resource,
 			const XMLElement& xml,
 			const DirectoryPath& workingDir,
@@ -116,7 +116,7 @@ namespace Ghurund::Core {
 
 		virtual ~Loader() = 0 {}
 
-		virtual void load(
+		virtual CoroutineTask<void> load(
 			Resource& resource,
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir = DirectoryPath(),
@@ -128,10 +128,10 @@ namespace Ghurund::Core {
 			if (resource.IsValid)
 				resource.invalidate();
 			T& typedResource = castResource<T>(resource);
-			loadInternal(typedResource, stream, workingDir, format, options);
+			co_await loadInternal(typedResource, stream, workingDir, format, options);
 		}
 
-		virtual void load(
+		virtual CoroutineTask<void> load(
 			Resource& resource,
 			const XMLElement& root,
 			const DirectoryPath& workingDir = DirectoryPath(),
@@ -143,7 +143,7 @@ namespace Ghurund::Core {
 			if (resource.IsValid)
 				resource.invalidate();
 			T& typedResource = castResource<T>(resource);
-			loadInternal(typedResource, root, workingDir, format, options);
+			co_await loadInternal(typedResource, root, workingDir, format, options);
 		}
 
 		virtual void save(

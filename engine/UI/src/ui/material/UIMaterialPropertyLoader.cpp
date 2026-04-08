@@ -12,7 +12,9 @@ namespace Ghurund::UI {
 			themedMaterial.reset(ghnew ThemedMaterial(key));
 		} else {
 			FilePath path = FilePath(convertText<char, wchar_t>(s));
-			auto material = IntrusivePointer<UIMaterial>(resourceManager.load<UIMaterial>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE));
+			auto coroutine = resourceManager.load<UIMaterial>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE);
+			coroutine.resume();
+			auto material = coroutine.Result;
 			themedMaterial.reset(ghnew ThemedMaterial(material.get()));
 		}
 		property.setRaw(&obj, &themedMaterial);

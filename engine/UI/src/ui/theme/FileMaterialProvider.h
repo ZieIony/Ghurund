@@ -23,7 +23,9 @@ namespace Ghurund::UI {
 		virtual UIMaterial* get() override {
 			if (cached != nullptr)
 				return (UIMaterial*)cached->clone();
-			cached = IntrusivePointer<UIMaterial>(resourceManager.load<UIMaterial>(resourcePath));
+			auto coroutine = resourceManager.load<UIMaterial>(resourcePath);
+			coroutine.resume();
+			cached = coroutine.Result;
 			return cached.get();
 		}
 	};

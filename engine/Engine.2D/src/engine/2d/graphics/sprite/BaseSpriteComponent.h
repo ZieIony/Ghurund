@@ -46,10 +46,10 @@ namespace Ghurund::Engine::_2D {
 		float alpha = 1.0f;
 		SpriteInputs inputs;
 
-		virtual void onInit() {
-			__super::onInit();
+		virtual CoroutineTask<void> onInit() override {
+			co_await __super::onInit();
 			Mesh = IntrusivePointer(Owner->Context->makeSpriteMesh()).get();
-			Material = IntrusivePointer(Owner->Context->makeSpriteMaterial()).get();
+			Material = (co_await Owner->Context->makeSpriteMaterial()).get();
 		}
 
 		virtual void onUninit() {

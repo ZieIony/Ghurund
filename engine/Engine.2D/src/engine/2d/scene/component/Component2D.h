@@ -8,7 +8,7 @@
 namespace Ghurund::Engine::_2D {
 	class Entity2D;
 
-	class Component2D:public Component, public Initializable {
+	class Component2D:public Component, public AsyncInitializable {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {

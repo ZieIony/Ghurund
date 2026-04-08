@@ -27,11 +27,11 @@ public:
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
             std::thread::id backgroundId = mainId;
 
-            auto inner = [&] -> CoroutineTask {
+            auto inner = [&] -> CoroutineTask<void> {
                 co_await scheduler.mainThread();
             };
 
-            auto task = [&] -> CoroutineTask {
+            auto task = [&] -> CoroutineTask<void> {
                 co_await scheduler.backgroundThread();
                 auto id = std::this_thread::get_id();
                 co_await inner();
@@ -46,6 +46,35 @@ public:
             auto currentId = std::this_thread::get_id();
             Assert::IsTrue(backgroundId != mainId);
             Assert::IsTrue(currentId == mainId);
+        }
+    }
+
+    TEST_METHOD(CoroutineTask_return) {
+        MemoryGuard guard;
+        {
+            uint32_t result;
+            CoroutineThreadPool threadPool(1);
+            Timer timer;
+            CoroutineScheduler scheduler(threadPool, timer);
+            // let the thread pool start
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+            auto inner = [&] -> CoroutineTask<uint32_t> {
+                co_await scheduler.mainThread();
+                co_return (uint32_t)5;
+            };
+
+            auto task = [&] -> CoroutineTask<void> {
+                co_await scheduler.backgroundThread();
+                result = co_await inner();
+            }();
+            task.resume();
+
+            // let the coroutines get thread id
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            scheduler.update();
+            scheduler.update();
+            Assert::IsTrue(5 == result);
         }
     }
     };

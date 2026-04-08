@@ -21,7 +21,7 @@ namespace Ghurund::Engine::OpenGL {
     public:
         OglShaderLoader(OglShaderCompiler& compiler):compiler(compiler) {}
 
-        virtual void loadInternal(
+        virtual CoroutineTask<void> loadInternal(
             OglShader& resource,
             const XMLElement& xml,
             const DirectoryPath& workingDir,

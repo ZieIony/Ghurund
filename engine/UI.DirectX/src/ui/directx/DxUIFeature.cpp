@@ -33,7 +33,7 @@ namespace Ghurund::UI::DirectX {
         resourceManager.Loaders.set<Ghurund::UI::Font>(*fontLoader.get());
         auto fontAtlasLoader = makeIntrusive<FontAtlasLoader>(resourceManager);
         resourceManager.Loaders.set<FontAtlas>(fontAtlasLoader.ref());
-        auto textStyleLoader = makeIntrusive<TextStyleLoader>(resourceManager, fontAtlasLoader.ref());
+        auto textStyleLoader = makeIntrusive<TextStyleLoader>(resourceManager);
         resourceManager.Loaders.set<TextStyle>(textStyleLoader.ref());
 
         auto materialLoader = makeIntrusive<UIMaterialLoader>(resourceManager, memoryManager);

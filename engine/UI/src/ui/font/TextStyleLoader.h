@@ -12,18 +12,17 @@ namespace Ghurund::UI {
 	class TextStyleLoader:public Loader<TextStyle> {
 	private:
 		ResourceManager& resourceManager;
-		FontAtlasLoader& fontAtlasLoader;
 
-		void loadFromXml(TextStyle& textStyle, const XMLElement& xml, const DirectoryPath& workingDir);
+		CoroutineTask<void> loadFromXml(TextStyle& textStyle, const XMLElement& xml, const DirectoryPath& workingDir);
 
-		void loadFromBin(TextStyle& textStyle, MemoryInputStream& stream, const DirectoryPath& workingDir) const;
+		CoroutineTask<void> loadFromBin(TextStyle& textStyle, MemoryInputStream& stream, const DirectoryPath& workingDir) const;
 
 		void saveToXml(TextStyle& textStyle, XMLDocument& document, XMLElement& xml, const DirectoryPath& workingDir) const;
 
 		void saveToBin(TextStyle& textStyle, MemoryOutputStream& stream, const DirectoryPath& workingDir) const;
 
 	protected:
-		virtual void loadInternal(
+		virtual CoroutineTask<void> loadInternal(
 			TextStyle& resource,
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
@@ -40,9 +39,6 @@ namespace Ghurund::UI {
 		) const override;
 
 	public:
-		TextStyleLoader(
-			ResourceManager& resourceManager,
-			FontAtlasLoader& fontAtlasLoader
-		):resourceManager(resourceManager), fontAtlasLoader(fontAtlasLoader) {}
+		TextStyleLoader(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 	};
 }

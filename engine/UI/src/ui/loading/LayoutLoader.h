@@ -40,7 +40,7 @@ namespace Ghurund::UI {
 		static inline const AString DEFAULT_CONTROL_NAMESPACE = LayoutLoader::TYPE.Namespace;
 
 	protected:
-		virtual void loadInternal(
+		virtual CoroutineTask<void> loadInternal(
 			Control& resource,
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,

@@ -39,7 +39,7 @@ public:
             // let the thread pool start
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
             List<std::thread::id> ids;
-            auto task = [&] -> CoroutineTask {
+            auto task = [&] -> CoroutineTask<void> {
                 co_await threadPool.schedule();
                 auto id = std::this_thread::get_id();
                 co_await scheduler.nextUpdate();

@@ -15,7 +15,7 @@
 namespace Ghurund::Core {
 	class CoroutineScheduler {
 	private:
-		Bag<CoroutineTask> tasks;
+		Bag<CoroutineTask<void>> tasks;
 		Bag<std::coroutine_handle<>> fromAnotherThread;
 		Bag<DelayedUpdateAwaiter> delayedUpdateAwaiters;
 		Bag<std::coroutine_handle<>> updateAwaiters;
@@ -51,7 +51,7 @@ namespace Ghurund::Core {
 			return threadPool.schedule();
 		}
 
-		inline void launch(CoroutineTask task) {
+		inline void launch(CoroutineTask<void> task) {
 			tasks.add(task);
 			task.resume();
 		}

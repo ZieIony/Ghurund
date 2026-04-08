@@ -25,9 +25,9 @@ namespace Ghurund::Engine::_2D {
 		Component2DCollection components = *this;
 
 	protected:
-		virtual void onInit() {
+		virtual CoroutineTask<void> onInit() override {
 			for (auto& component : components)
-				component->init();
+				co_await component->init();
 		};
 
 		inline void uninitComponent2DGroup() {

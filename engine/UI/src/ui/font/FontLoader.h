@@ -9,7 +9,7 @@ namespace Ghurund::UI {
 
     class FontLoader:public Loader<Font> {
     protected:
-        virtual void loadInternal(
+        virtual CoroutineTask<void> loadInternal(
             Font& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,

@@ -53,13 +53,13 @@ namespace Demo {
 
 		void init();
 
-		CoroutineTask initScene();
+		CoroutineTask<void> initScene();
 
-		CoroutineTask initGround();
+		CoroutineTask<void> initGround();
 
-		CoroutineTask initCaptain();
+		CoroutineTask<void> initCaptain();
 
-		CoroutineTask jumpDelayed();
+		CoroutineTask<void> jumpDelayed();
 
 		virtual bool onKeyEvent(const KeyEventArgs& args) override;
 

@@ -37,11 +37,13 @@ public:
         resourceManager.Loaders.set<Font>(fontLoader.ref());
         fontAtlasLoader = makeIntrusive<FontAtlasLoader>(resourceManager);
         resourceManager.Loaders.set<FontAtlas>(fontAtlasLoader.ref());
-        textStyleLoader = makeIntrusive<TextStyleLoader>(resourceManager, fontAtlasLoader.ref());
+        textStyleLoader = makeIntrusive<TextStyleLoader>(resourceManager);
         resourceManager.Loaders.set<TextStyle>(textStyleLoader.ref());
 
         FilePath path = Ghurund::Core::FilePath(L"../../resources/textStyles\\lato_medium_12.bin");
-        textStyle = Ghurund::Core::IntrusivePointer<TextStyle>(resourceManager.load<TextStyle>(path, DirectoryPath()));
+        auto coroutine = resourceManager.load<TextStyle>(path, DirectoryPath());
+        coroutine.resume();
+        textStyle = coroutine.Result;
     }
 
     ~TextLayoutTest() {

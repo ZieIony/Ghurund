@@ -7,7 +7,7 @@
 #include "compiler/DxEntrypointNotFoundException.h"
 
 namespace Ghurund::Engine::DirectX {
-	void DxShaderLoader::loadInternal(
+	CoroutineTask<void> DxShaderLoader::loadInternal(
 		DxShader& resource,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
@@ -101,6 +101,7 @@ namespace Ghurund::Engine::DirectX {
 			}
 		}
 		loadFromSource(shaderSource.ref(), workingDir, resource);
+		co_return;
 	}
 
 	void DxShaderLoader::loadFromSource(NotNull<ShaderSource> shaderSource, const DirectoryPath& workingDir, DxShader& shader) {
@@ -135,7 +136,7 @@ namespace Ghurund::Engine::DirectX {
 		loadFromSource(shaderSource.ref() , workingDir, shader);
 	}
 
-	void DxShaderLoader::loadInternal(
+	CoroutineTask<void> DxShaderLoader::loadInternal(
 		DxShader& resource,
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
@@ -144,12 +145,13 @@ namespace Ghurund::Engine::DirectX {
 	) {
 		auto position = stream.Position;
 		try {
-			loadFromXml(resource, stream, workingDir, format, options);
+			co_await loadFromXml(resource, stream, workingDir, format, options);
 		} catch(...) {
 			stream.Position = position;
 			AString streamContents = stream.readASCII();
 			loadFromHlsl(streamContents, workingDir, resource);
 		}
+		co_return;
 	}
 
 	void DxShaderLoader::saveInternal(

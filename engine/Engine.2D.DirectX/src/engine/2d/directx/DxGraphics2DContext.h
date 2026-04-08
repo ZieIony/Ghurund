@@ -29,22 +29,22 @@ namespace Ghurund::Engine::_2D::DirectX {
 
 		virtual Mesh* makeSpriteMesh() override;
 
-		virtual Material* makeSpriteMaterial() override;
+		virtual CoroutineTask<IntrusivePointer<Material>> makeSpriteMaterial() override;
 
 		virtual Mesh* makeTileMapMesh(IntSize tileMapSize, Array<TileInfo>& tiles) override;
 
-		virtual Material* makeTileMapMaterial() override;
+		virtual CoroutineTask<IntrusivePointer<Material>> makeTileMapMaterial() override;
 
-		virtual Material* makeBoxVisualizationMaterial() override {
-			return resourceManager.load<Material>(ResourceManager::ENGINE_LIB / FilePath(L"materials/DirectX/2d/box.xml"));
+		virtual CoroutineTask<IntrusivePointer<Material>> makeBoxVisualizationMaterial() override {
+			co_return co_await resourceManager.load<Material>(ResourceManager::ENGINE_LIB / FilePath(L"materials/DirectX/2d/box.xml"));
 		}
 
-		virtual Material* makeCapsuleVisualizationMaterial() override {
-			return resourceManager.load<Material>(ResourceManager::ENGINE_LIB / FilePath(L"materials/DirectX/2d/capsule.xml"));
+		virtual CoroutineTask<IntrusivePointer<Material>> makeCapsuleVisualizationMaterial() override {
+			co_return co_await resourceManager.load<Material>(ResourceManager::ENGINE_LIB / FilePath(L"materials/DirectX/2d/capsule.xml"));
 		}
 
-		virtual Material* makeSegmentVisualizationMaterial() override {
-			 return resourceManager.load<Material>(ResourceManager::ENGINE_LIB / FilePath(L"materials/DirectX/2d/segment.xml"));
+		virtual CoroutineTask<IntrusivePointer<Material>> makeSegmentVisualizationMaterial() override {
+			co_return co_await resourceManager.load<Material>(ResourceManager::ENGINE_LIB / FilePath(L"materials/DirectX/2d/segment.xml"));
 		}
 	};
 }

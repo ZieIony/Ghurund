@@ -12,7 +12,7 @@ namespace Ghurund::Engine::_2D {
 		return TYPE;
 	}
 
-	void SegmentComponent2D::onInit() {
+	CoroutineTask<void> SegmentComponent2D::onInit() {
 		if (isVisualized) {
 			if (visualizationComponent) {
 				Components.remove(visualizationComponent);
@@ -20,10 +20,10 @@ namespace Ghurund::Engine::_2D {
 			}
 			visualizationComponent = ghnew VisualizationComponent2D();
 			visualizationComponent->Mesh = IntrusivePointer<Mesh>(Owner->Context->makeSpriteMesh()).get();
-			visualizationComponent->Material = IntrusivePointer<Material>(Owner->Context->makeSegmentVisualizationMaterial()).get();
+			visualizationComponent->Material = (co_await Owner->Context->makeSegmentVisualizationMaterial()).get();
 			Components.add(visualizationComponent);
 		}
-		__super::onInit();
+		co_await __super::onInit();
 	
 		b2Segment segment;
 		segment.point1 = { -0.5, 0 };

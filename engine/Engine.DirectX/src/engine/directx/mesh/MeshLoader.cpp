@@ -2,7 +2,7 @@
 #include "MeshLoader.h"
 
 namespace Ghurund::Engine::DirectX {
-    void MeshLoader::loadInternal(
+    CoroutineTask<void> MeshLoader::loadInternal(
         DxMesh& resource,
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
@@ -10,7 +10,7 @@ namespace Ghurund::Engine::DirectX {
         Ghurund::Core::LoadOption options
     ) {
         auto meshData = makeIntrusive<MeshData>();
-        meshDataLoader.load(meshData.ref(), stream, workingDir, format, options);
+        co_await meshDataLoader.load(meshData.ref(), stream, workingDir, format, options);
         resource.init(meshData.ref(), memoryManager);
     }
 }

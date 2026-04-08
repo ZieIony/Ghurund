@@ -11,7 +11,7 @@ namespace UnitTest {
     public:
         size_t loadCalls = 0;
 
-        virtual void loadInternal(
+        virtual CoroutineTask<void> loadInternal(
             TestResource& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
@@ -20,6 +20,7 @@ namespace UnitTest {
         ) override {
             loadCalls++;
             resource.text = stream.readASCII();
+            co_return;
         }
     };
 }

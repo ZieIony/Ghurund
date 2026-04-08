@@ -32,7 +32,7 @@ namespace Ghurund::Engine::_2D {
 		};
 
 	protected:
-		virtual void onInit();
+		virtual CoroutineTask<void> onInit() override;
 
 		virtual void onUninit() {
 			uninitBoxComponent2D();

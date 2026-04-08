@@ -58,7 +58,7 @@ namespace Ghurund::UI {
 		}
 	}
 
-	void LayoutLoader::loadInternal(
+    CoroutineTask<void> LayoutLoader::loadInternal(
         Control& resource,
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
@@ -77,6 +77,7 @@ namespace Ghurund::UI {
 		AString type = namespaceName + "::" + convertText<wchar_t, char>(child.name);
 
         resource.load(*this, workingDir, child);
+        co_return;
     }
 
     void LayoutLoader::loadProperties(Object& obj, const DirectoryPath& workingDir, const XMLElement& xml) {
@@ -142,9 +143,9 @@ namespace Ghurund::UI {
             if (layoutAttr) {
                 WString s = *layoutAttr;
                 try {
-                    IntrusivePointer<Control> control(resourceManager.load<Control>(
-                        FilePath(s), workingDir, Control::FORMAT_XML, LoadOption::DONT_CACHE)
-                    );
+                    auto coroutine = resourceManager.load<Control>(FilePath(s), workingDir, Control::FORMAT_XML, LoadOption::DONT_CACHE);
+                    coroutine.resume();
+                    IntrusivePointer<Control> control = coroutine.Result;
                     PartialConstraintSet loadedConstraints;
                     loadedConstraints.load(control->Type, *this, xml);
                     PartialConstraintSet constraints = parent.makeDefaultConstraints();

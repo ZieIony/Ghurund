@@ -12,7 +12,7 @@ namespace Ghurund::Engine::_2D {
 		return TYPE;
 	}
 
-	void CapsuleComponent2D::onInit() {
+	CoroutineTask<void> CapsuleComponent2D::onInit() {
 		if (isVisualized) {
 			if (visualizationComponent) {
 				Components.remove(visualizationComponent);
@@ -20,10 +20,10 @@ namespace Ghurund::Engine::_2D {
 			}
 			visualizationComponent = ghnew VisualizationComponent2D();
 			visualizationComponent->Mesh = IntrusivePointer<Mesh>(Owner->Context->makeSpriteMesh()).get();
-			visualizationComponent->Material = IntrusivePointer<Material>(Owner->Context->makeCapsuleVisualizationMaterial()).get();
+			visualizationComponent->Material = (co_await Owner->Context->makeCapsuleVisualizationMaterial()).get();
 			Components.add(visualizationComponent);
 		}
-		__super::onInit();
+		co_await __super::onInit();
 
 		b2Capsule capsule;
 		capsule.radius = 1;

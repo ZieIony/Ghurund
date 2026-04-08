@@ -34,7 +34,7 @@ namespace Ghurund::Engine::_2D {
 			safeRelease(material);
 		};
 
-		virtual void onInit();
+		virtual CoroutineTask<void> onInit();
 
 		virtual void onUninit() {
 			uninitTileMapComponent();

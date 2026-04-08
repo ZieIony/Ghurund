@@ -40,7 +40,9 @@ public:
 
 		auto latoMediumPath = ResourceManager::ENGINE_LIB / FilePath(L"/fonts\\lato_bold.ttf");
         IntrusivePointer<Font> font = makeIntrusive<Font>();
-        Ghurund::Core::IntrusivePointer<Ghurund::UI::Font> latoMediumFont(resourceManager.load<Ghurund::UI::Font>(latoMediumPath, DirectoryPath()));
+        auto coroutine = resourceManager.load<Ghurund::UI::Font>(latoMediumPath, DirectoryPath());
+        coroutine.resume();
+        Ghurund::Core::IntrusivePointer<Ghurund::UI::Font> latoMediumFont = coroutine.Result;
         //resourceManager.save(*latoMediumFont.get()->Atlas, FilePath(_T("../../test.bmp")));
     }
     };

@@ -12,7 +12,7 @@ namespace Ghurund::UI {
 		ResourceManager& resourceManager;
 
 	protected:
-		virtual void loadInternal(
+		virtual CoroutineTask<void> loadInternal(
 			FontAtlas& resource,
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
@@ -31,9 +31,9 @@ namespace Ghurund::UI {
 	public:
 		FontAtlasLoader(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 
-		void loadFromBin(MemoryInputStream& stream, const DirectoryPath& workingDir, FontAtlas& fontAtlas);
+		CoroutineTask<void> loadFromBin(MemoryInputStream& stream, const DirectoryPath& workingDir, FontAtlas& fontAtlas);
 
-		void loadFromXml(const XMLElement& xml, const DirectoryPath& workingDir, FontAtlas& fontAtlas);
+		CoroutineTask<void> loadFromXml(const XMLElement& xml, const DirectoryPath& workingDir, FontAtlas& fontAtlas);
 
 		void saveToXml(FontAtlas& atlas, XMLDocument& document, XMLElement& xml, const DirectoryPath& workingDir) const;
 

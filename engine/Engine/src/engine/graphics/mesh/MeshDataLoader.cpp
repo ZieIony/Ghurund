@@ -144,7 +144,7 @@ namespace Ghurund::Engine {
 		mesh.init(vertexStreams, vertexCount, Buffer(data, indexCount * indexSize), indexCount);
 	}
 
-	void MeshDataLoader::loadInternal(
+	CoroutineTask<void> MeshDataLoader::loadInternal(
 		MeshData& resource,
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
@@ -162,6 +162,7 @@ namespace Ghurund::Engine {
 				throw InvalidFormatException();
 			}
 		}
+		co_return;
 	}
 
 	void MeshDataLoader::saveInternal(

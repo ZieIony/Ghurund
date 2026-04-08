@@ -6,9 +6,9 @@
 #include "core/math/Size.h"
 
 namespace Ghurund::UI {
-	void FontAtlasLoader::loadFromBin(MemoryInputStream& stream, const DirectoryPath& workingDir, FontAtlas& fontAtlas) {
+	CoroutineTask<void> FontAtlasLoader::loadFromBin(MemoryInputStream& stream, const DirectoryPath& workingDir, FontAtlas& fontAtlas) {
 		FilePath path = FilePath(stream.readUnicode());
-		auto image = IntrusivePointer<Image>(resourceManager.load<Image>(path, workingDir, ResourceFormat::AUTO));
+		auto image = co_await resourceManager.load<Image>(path, workingDir, ResourceFormat::AUTO);
 
 		size_t glyphCount = stream.readUInt64();
 		Map<wchar_t, GlyphMetrics> glyphs;
@@ -21,9 +21,9 @@ namespace Ghurund::UI {
 		fontAtlas.init(image.ref(), glyphs);
 	}
 
-	void FontAtlasLoader::loadFromXml(const XMLElement& xml, const DirectoryPath& workingDir, FontAtlas& fontAtlas) {
+	CoroutineTask<void> FontAtlasLoader::loadFromXml(const XMLElement& xml, const DirectoryPath& workingDir, FontAtlas& fontAtlas) {
 		FilePath path = FilePath(*xml.findAttribute(L"image"));
-		auto image = IntrusivePointer<Image>(resourceManager.load<Image>(path, workingDir, ResourceFormat::AUTO));
+		auto image = co_await resourceManager.load<Image>(path, workingDir, ResourceFormat::AUTO);
 
 		Map<wchar_t, GlyphMetrics> glyphs;
 		for(const auto& child: xml.children) {
@@ -98,7 +98,7 @@ namespace Ghurund::UI {
 		}
 	}
 
-	void FontAtlasLoader::loadInternal(
+	CoroutineTask<void> FontAtlasLoader::loadInternal(
 		FontAtlas& resource,
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
@@ -107,18 +107,19 @@ namespace Ghurund::UI {
 	) {
 		if (format == ResourceFormat::AUTO) {
 			XMLDocument doc;
-			try{
+			try {
 				doc.parse(stream.Data, stream.Size);
-				loadFromXml(doc.Root, workingDir, resource);
-			} catch(...) {
-				loadFromBin(stream, workingDir, resource);
+				co_await loadFromXml(doc.Root, workingDir, resource);
+				co_return;
+			} catch (...) {
 			}
+			co_await loadFromBin(stream, workingDir, resource);
 		} else if (format == FontAtlas::FORMAT_XML) {
 			XMLDocument doc;
 			doc.parse(stream.Data, stream.Size);
-			loadFromXml(doc.Root, workingDir, resource);
+			co_await loadFromXml(doc.Root, workingDir, resource);
 		} else {
-			loadFromBin(stream, workingDir, resource);
+			co_await loadFromBin(stream, workingDir, resource);
 		}
 	}
 

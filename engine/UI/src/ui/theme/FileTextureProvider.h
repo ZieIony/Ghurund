@@ -22,7 +22,9 @@ namespace Ghurund::UI {
 		virtual IntrusivePointer<ITexture> get() override {
 			if (cached != nullptr)
 				return IntrusivePointer<ITexture>((ITexture*)cached->clone());
-			cached = IntrusivePointer<ITexture>(resourceManager.load<ITexture>(resourcePath));
+			auto coroutine = resourceManager.load<ITexture>(resourcePath);
+			coroutine.resume();
+			cached = coroutine.Result;
 			return cached;
 		}
 	};

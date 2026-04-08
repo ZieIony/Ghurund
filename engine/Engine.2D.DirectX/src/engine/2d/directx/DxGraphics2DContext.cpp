@@ -9,15 +9,15 @@ namespace Ghurund::Engine::_2D::DirectX {
 		return mesh.get();
 	}
 	
-	Material* DxGraphics2DContext::makeSpriteMaterial() {
-		Material* material = nullptr;
-		auto shader = IntrusivePointer<Shader>(resourceManager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(L"/shaders/DirectX/2d/sprite.xml"), DirectoryPath()));
+	CoroutineTask<IntrusivePointer<Material>> DxGraphics2DContext::makeSpriteMaterial() {
+		IntrusivePointer<Material> material;
+		auto shader = co_await resourceManager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(L"/shaders/DirectX/2d/sprite.xml"), DirectoryPath());
 		if (shader != nullptr) {
-			material = ghnew Material();
+			material = makeIntrusive<Material>();
 			material->init(memoryManager);
 			material->Shader = shader.get();
 		}
-		return material;
+		co_return material;
 	}
 	
 	Mesh* DxGraphics2DContext::makeTileMapMesh(IntSize tileMapSize, Array<TileInfo>& tiles) {
@@ -29,14 +29,14 @@ namespace Ghurund::Engine::_2D::DirectX {
 		return mesh.get();
 	}
 	
-	Material* DxGraphics2DContext::makeTileMapMaterial() {
-		Material* material = nullptr;
-		auto shader = IntrusivePointer<Shader>(resourceManager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(L"/shaders/DirectX/2d/sprite.xml"), DirectoryPath()));
+	CoroutineTask<IntrusivePointer<Material>> DxGraphics2DContext::makeTileMapMaterial() {
+		IntrusivePointer<Material> material;
+		auto shader = co_await resourceManager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(L"/shaders/DirectX/2d/sprite.xml"), DirectoryPath());
 		if (shader != nullptr) {
-			material = ghnew Material();
+			material = makeIntrusive<Material>();
 			material->init(memoryManager);
 			material->Shader = shader.get();
 		}
-		return material;
+		co_return material;
 	}
 }

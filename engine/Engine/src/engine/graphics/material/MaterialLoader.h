@@ -11,7 +11,7 @@ namespace Ghurund::Engine {
 		ResourceManager& resourceManager;
 		IGPUMemoryManager& memoryManager;
 
-		virtual void loadInternal(
+		virtual CoroutineTask<void> loadInternal(
 			Material& resource,
 			const XMLElement& xml,
 			const DirectoryPath& workingDir,
@@ -19,7 +19,7 @@ namespace Ghurund::Engine {
 			LoadOption options
 		) override;
 
-		virtual void onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value);
+		virtual CoroutineTask<void> onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value);
 
 		virtual void saveInternal(
 			Material& resource,

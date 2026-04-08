@@ -40,7 +40,9 @@ public:
         fontLoader = ghnew FontLoader();
         resourceManager.Loaders.set<Font>(*fontLoader);
         FilePath path = Ghurund::Core::FilePath(L"../../resources/fonts\\lato_medium.ttf");
-        latoMediumFont = Ghurund::Core::IntrusivePointer<Font>(resourceManager.load<Font>(path, DirectoryPath()));
+        auto coroutine = resourceManager.load<Font>(path, DirectoryPath());
+        coroutine.resume();
+        latoMediumFont = coroutine.Result;
     }
 
     ~TextBlockTest() {

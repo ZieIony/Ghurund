@@ -14,7 +14,7 @@ namespace Ghurund::Engine::DirectX {
 		CommandList& commandList;
 
     protected:
-        virtual void loadInternal(
+        virtual CoroutineTask<void> loadInternal(
             DxTexture& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
@@ -22,7 +22,7 @@ namespace Ghurund::Engine::DirectX {
             LoadOption options
         ) override {
             auto image = makeIntrusive<Image>();
-            imageLoader.load(image.ref(), stream, workingDir, format, options);
+            co_await imageLoader.load(image.ref(), stream, workingDir, format, options);
             resource.init(graphics, commandList, image.ref(), TextureType::COLOR);
         }
 

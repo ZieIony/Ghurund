@@ -26,7 +26,7 @@ public:
             // let the thread pool start
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
             std::thread::id backgroundId, emptyId;
-            scheduler.launch([&] -> CoroutineTask {
+            scheduler.launch([&] -> CoroutineTask<void> {
                 co_await scheduler.backgroundThread();
                 auto id = std::this_thread::get_id();
                 co_await scheduler.mainThread();
@@ -52,7 +52,7 @@ public:
             // let the thread pool start
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
             std::thread::id delayId, emptyId;
-            scheduler.launch([&] -> CoroutineTask {
+            scheduler.launch([&] -> CoroutineTask<void> {
                 co_await scheduler.delay(10);
                 auto id = std::this_thread::get_id();
                 co_await scheduler.mainThread();
@@ -79,7 +79,7 @@ public:
             // let the thread pool start
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
             std::thread::id delayId, emptyId;
-            scheduler.launch([&] -> CoroutineTask {
+            scheduler.launch([&] -> CoroutineTask<void> {
                 co_await scheduler.delayedUpdate(10);
                 delayId = std::this_thread::get_id();
             }());

@@ -101,6 +101,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\resource\ResourceAwaiter.h" />
     <ClInclude Include="src\core\xml\XMLDocument.h" />
     <ClInclude Include="src\core\xml\XMLElement.h" />
     <ClInclude Include="src\core\loading\Loader.h" />

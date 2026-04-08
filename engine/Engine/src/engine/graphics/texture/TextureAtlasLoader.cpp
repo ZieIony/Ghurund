@@ -2,7 +2,7 @@
 #include "TextureAtlasLoader.h"
 
 namespace Ghurund::Engine {
-	void TextureAtlasLoader::loadInternal(
+	CoroutineTask<void> TextureAtlasLoader::loadInternal(
 		TextureAtlas& resource,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
@@ -15,7 +15,7 @@ namespace Ghurund::Engine {
 		if (!textureAttribute)
 			throw InvalidDataException();
 		auto texturePath = FilePath(*textureAttribute);
-		auto texture = IntrusivePointer<ITexture>(resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, options));
+		auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, options);
 
 		IntSize size = [&] {
 			auto sizeAttribute = xml.findAttribute(L"size");
@@ -28,5 +28,6 @@ namespace Ghurund::Engine {
 		}();
 
 		resource.init(texture.ref(), size);
+		co_return;
 	}
 }
