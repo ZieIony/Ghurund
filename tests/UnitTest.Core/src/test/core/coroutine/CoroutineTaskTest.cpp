@@ -2,9 +2,9 @@
 #include "CppUnitTest.h"
 
 #include <test/utils/MemoryGuard.h>
-#include <core/coroutine/CoroutineThreadPool.h>
-#include <core/coroutine/CoroutineTask.h>
-#include <core/coroutine/CoroutineScheduler.h>
+#include "core/coroutine/CoroutineThreadPool.h"
+#include "core/coroutine/CoroutineTask.h"
+#include "core/coroutine/CoroutineScheduler.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

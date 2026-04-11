@@ -2,10 +2,10 @@
 #include "CppUnitTest.h"
 
 #include "engine/graphics/mesh/MeshData.h"
-#include <engine/directx/mesh/DxMesh.h>
-#include <engine/directx/DxGraphics.h>
+#include "engine/directx/mesh/DxMesh.h"
+#include "engine/directx/DxGraphics.h"
 #include "test/utils/MemoryGuard.h"
-#include <engine/directx/shader/compiler/DxShaderCompiler.h>
+#include "engine/directx/shader/compiler/DxShaderCompiler.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

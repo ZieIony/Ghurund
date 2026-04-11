@@ -48,7 +48,7 @@ namespace Ghurund::Core {
             return;
 
         StackTrace stacktrace(GetCurrentProcess());
-        StackTrace::Entry entry = stacktrace[1];
+        StackTraceEntry entry = stacktrace[1];
 
         std::basic_string<tchar> fileLine = std::format(_T("{0}({1:d}): [{2:#x} {3}(..)]"), entry.fileName, entry.fileLine, entry.address, entry.name);
 
@@ -62,7 +62,7 @@ namespace Ghurund::Core {
             return;
 
         StackTrace stacktrace(GetCurrentProcess());
-        StackTrace::Entry entry = stacktrace[1];
+        StackTraceEntry entry = stacktrace[1];
 
         std::basic_string<tchar> fileLine = std::format(_T("{0}({1:d}): [{2:#x} {3}(..)]"), entry.fileName, entry.fileLine, entry.address, entry.name);
 

@@ -1,12 +1,12 @@
 #include "utepch.h"
 #include "CppUnitTest.h"
 
-#include <engine/opengl/shader/OglShaderCompiler.h>
+#include "engine/opengl/shader/OglShaderCompiler.h"
 #include "test/utils/MemoryGuard.h"
 
 #include "TestShaderSources.h"
-#include <engine/opengl/shader/OglCompilationException.h>
-#include <engine/opengl/OglGraphics.h>
+#include "engine/opengl/shader/OglCompilationException.h"
+#include "engine/opengl/OglGraphics.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

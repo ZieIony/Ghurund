@@ -71,14 +71,7 @@ namespace Ghurund::Engine {
         virtual void onPaint(RenderingContext& renderingContext) {}
 
     public:
-		GameWindow(Ghurund::Core::Application& app, WindowStyle style = SystemWindow::DEFAULT_WINDOW_STYLE):ApplicationWindow(app, style) {
-            viewportSizeParameter = makeIntrusive<Int2Parameter>("viewportSize");
-            parameterManager.Parameters.put(viewportSizeParameter.get());
-            timeParameter = makeIntrusive<FloatParameter>("time");
-            parameterManager.Parameters.put(timeParameter.get());
-            mousePosParameter = makeIntrusive<Int2Parameter>("mousePos");
-            ParameterManager.Parameters.put(mousePosParameter.get());
-        }
+		GameWindow(Ghurund::Core::Application& app, WindowStyle style = SystemWindow::DEFAULT_WINDOW_STYLE);
 
         inline LayerList& getLayers() {
             return layers;
@@ -86,7 +79,7 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getLayers)) LayerList& Layers;
 
-        Renderer* getRenderer() const {
+        inline Renderer* getRenderer() const {
             return renderer;
         }
 
@@ -105,13 +98,13 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getRenderer, put = setRenderer)) Renderer* Renderer;
 
-        ActionMapping& getActionMapping() {
+        inline ActionMapping& getActionMapping() {
             return actionMapping;
         }
 
         __declspec(property(get = getActionMapping)) ActionMapping& ActionMapping;
 
-        ParameterManager& getParameterManager() {
+        inline ParameterManager& getParameterManager() {
             return parameterManager;
         }
 

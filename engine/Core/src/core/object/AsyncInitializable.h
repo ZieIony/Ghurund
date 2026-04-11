@@ -1,17 +1,21 @@
 #pragma once
 
+#include "core/coroutine/CoroutineTask.h"
+
 namespace Ghurund::Core {
-    class Initializable {
+    class AsyncInitializable {
     private:
         bool isInitialized = false;
 
     protected:
-        virtual void onInit() {};
+        virtual CoroutineTask<void> onInit() {
+            co_return;
+        };
 
         virtual void onUninit() {};
 
     public:
-        virtual ~Initializable() = 0 {};
+        virtual ~AsyncInitializable() = 0 {};
 
         inline bool getIsInitialized() const {
             return isInitialized;
@@ -19,10 +23,10 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getIsInitialized)) bool IsInitialized;
 
-        inline void init() {
+        inline CoroutineTask<void> init() {
             if (isInitialized)
-                return;
-            onInit();
+                co_return;
+            co_await onInit();
             isInitialized = true;
         }
 

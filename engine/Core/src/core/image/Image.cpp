@@ -43,5 +43,4 @@ namespace Ghurund::Core {
 
         return TYPE;
     }
-
 }

@@ -31,7 +31,7 @@ namespace Ghurund::Core {
         static CriticalSection criticalSection;
         static bool pointersListResizeLocked;
 
-        List<StackTrace::Entry> stacktrace;
+        List<StackTraceEntry> stacktrace;
 
         void checkReferenceCount() const;
 #endif

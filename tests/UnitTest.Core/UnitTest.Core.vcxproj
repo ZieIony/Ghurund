@@ -108,13 +108,13 @@
     <ClInclude Include="src\utcpch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\test\core\application\SettingsTest.cpp" />
     <ClCompile Include="src\test\TestEnum.cpp" />
     <ClCompile Include="src\test\core\BufferTest.cpp" />
     <ClCompile Include="src\test\core\ColorTest.cpp" />
     <ClCompile Include="src\test\core\DataParsingTest.cpp" />
     <ClCompile Include="src\test\core\EnumTest.cpp" />
     <ClCompile Include="src\test\core\ObservableTest.cpp" />
+    <ClCompile Include="src\test\core\application\SettingsTest.cpp" />
     <ClCompile Include="src\test\core\collection\ArrayIteratorTest.cpp" />
     <ClCompile Include="src\test\core\collection\ArrayTest.cpp" />
     <ClCompile Include="src\test\core\collection\BagTest.cpp" />

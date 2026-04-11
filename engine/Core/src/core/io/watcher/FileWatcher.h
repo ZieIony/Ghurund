@@ -4,7 +4,7 @@
 #include "core/threading/APCThread.h"
 #include "DirectoryWatch.h"
 #include "FileChange.h"
-#include <core/Event.h>
+#include "core/Event.h"
 
 namespace Ghurund::Core {
     class FileWatcher {

@@ -33,5 +33,4 @@ namespace Ghurund::Core {
     auto get(const Tuple<First, Rest...>& t) -> decltype(GetImpl<index, First, Rest...>::value(&t)) {
         return GetImpl<index, First, Rest...>::value(&t);
     }
-
 }

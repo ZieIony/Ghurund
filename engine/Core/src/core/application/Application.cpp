@@ -16,9 +16,15 @@ namespace Ghurund::Core {
         resourceManager.clearCache();
 
         features.uninit();
+
+        // TODO: cancel and destroy coroutines
+        OleUninitialize();
     }
 
     void Application::onInit() {
+        if (FAILED(OleInitialize(nullptr)))
+            throw CallFailedException("failed to initialize COM and OLE");
+
         resourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"./resources")));
 
         //parameterManager->initDefaultTextures(*resourceContext);
@@ -34,14 +40,14 @@ namespace Ghurund::Core {
     }
 
     void Application::run(const Ghurund::Core::Settings* settings) {
-        if (running)
+        if (isRunning)
             return;
 
         if (settings)
             this->settings = *settings;
 
         init();
-        running = true;
+        isRunning = true;
 
         timer.tick();
 
@@ -56,7 +62,7 @@ namespace Ghurund::Core {
             paint();
         }
 
-        running = false;
+        isRunning = false;
         uninit();
     }
 

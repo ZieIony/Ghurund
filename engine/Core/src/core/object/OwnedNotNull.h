@@ -1,7 +1,6 @@
 #pragma once
 
 #include "DefaultDeleter.h"
-#include "Object.h"
 #include "core/concepts/Concepts.h"
 #include "core/exception/NullPointerException.h"
 

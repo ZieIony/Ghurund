@@ -4,13 +4,13 @@
 
 #include "core/Colors.h"
 #include "core/window/DisplayManager.h"
-#include <engine/2d/graphics/sprite/AnimatedSpriteComponent.h>
-#include <engine/2d/physics/component/BoxComponent2D.h>
+#include "engine/2d/graphics/sprite/AnimatedSpriteComponent.h"
+#include "engine/2d/physics/component/BoxComponent2D.h"
 //#include "engine/2d/entity/CameraComponent2D.h"
 #include "ui/theme/LightTheme.h"
-#include <engine/2d/physics/component/CapsuleComponent2D.h>
-#include <engine/2d/physics/component/SegmentComponent2D.h>
-#include <engine/2d/scene/tiles/TileMapComponent.h>
+#include "engine/2d/physics/component/CapsuleComponent2D.h"
+#include "engine/2d/physics/component/SegmentComponent2D.h"
+#include "engine/2d/scene/tiles/TileMapComponent.h"
 
 namespace Demo {
 	DemoWindow::DemoWindow(

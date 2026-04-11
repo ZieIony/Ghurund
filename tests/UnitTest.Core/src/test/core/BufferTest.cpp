@@ -3,8 +3,8 @@
 
 #include <test/utils/MemoryGuard.h>
 #include <DirectXMath.h>
-#include <core/collection/Array.h>
-#include <core/Buffer.h>
+#include "core/collection/Array.h"
+#include "core/Buffer.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

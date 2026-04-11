@@ -52,6 +52,15 @@ namespace Ghurund::Engine {
         return __super::onFocusedChanged();
     }
 
+    GameWindow::GameWindow(Ghurund::Core::Application& app, WindowStyle style):ApplicationWindow(app, style) {
+        viewportSizeParameter = makeIntrusive<Int2Parameter>("viewportSize");
+        parameterManager.Parameters.put(viewportSizeParameter.get());
+        timeParameter = makeIntrusive<FloatParameter>("time");
+        parameterManager.Parameters.put(timeParameter.get());
+        mousePosParameter = makeIntrusive<Int2Parameter>("mousePos");
+        ParameterManager.Parameters.put(mousePosParameter.get());
+    }
+
     void GameWindow::update() {
         timeParameter->Value = Timer.ScaledTime;
         layers.update(Timer.TimeMs);

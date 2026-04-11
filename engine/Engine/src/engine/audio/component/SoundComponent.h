@@ -1,7 +1,7 @@
 #pragma once
 
-#include <engine/audio/sound/Sound.h>
-#include <engine/game/Component.h>
+#include "engine/audio/sound/Sound.h"
+#include "engine/game/Component.h"
 
 namespace Ghurund::Engine {
 	class SoundComponent:public Component {

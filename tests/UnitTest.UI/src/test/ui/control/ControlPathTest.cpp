@@ -1,12 +1,13 @@
 #include "utuipch.h"
 #include "CppUnitTest.h"
+
 #include "test/utils/TestUtils.h"
 
+#include "ui/constraint/ConstraintLayout.h"
 #include "ui/control/ControlGroup.h"
 #include "ui/control/ControlPath.h"
 
 #include <format>
-#include <ui/constraint/ConstraintLayout.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

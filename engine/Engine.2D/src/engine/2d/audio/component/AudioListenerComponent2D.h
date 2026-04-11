@@ -1,6 +1,6 @@
 #pragma once
 
-#include <engine/2d/scene/component/Component2D.h>
+#include "engine/2d/scene/component/Component2D.h"
 
 #include <x3daudio.h>
 

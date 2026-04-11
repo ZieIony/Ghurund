@@ -1,13 +1,13 @@
 ﻿#pragma once
 
+#include "engine/2d/Graphics2DFeature.h"
+#include "engine/2d/Graphics2DFeatureFactory.h"
 #include "engine/application/GameApplication.h"
 #include "engine/directx/DxGraphicsFeature.h"
 #include "engine/directx/DxGraphicsFeatureFactory.h"
 #include "engine/directx/DxRenderer.h"
-#include <ui/directx/DxUIFeature.h>
-#include <ui/directx/DxUIFeatureFactory.h>
-#include <engine/2d/Graphics2DFeature.h>
-#include <engine/2d/Graphics2DFeatureFactory.h>
+#include "ui/directx/DxUIFeature.h"
+#include "ui/directx/DxUIFeatureFactory.h"
 
 namespace Demo {
     using namespace Ghurund::Engine;

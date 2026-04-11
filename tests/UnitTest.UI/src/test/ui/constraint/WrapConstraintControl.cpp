@@ -1,10 +1,10 @@
 #include "utuipch.h"
 #include "CppUnitTest.h"
+
 #include "test/ui/UITestUtils.h"
 #include "test/utils/MemoryGuard.h"
 #include "test/utils/TestLogOutput.h"
-
-#include <ui/control/ControlGroup.h>
+#include "ui/control/ControlGroup.h"
 
 using namespace Ghurund::UI;
 using namespace UnitTest::Utils;

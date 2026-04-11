@@ -2,10 +2,10 @@
 #include "CppUnitTest.h"
 #include "test/utils/MemoryGuard.h"
 
-#include <core/application/Settings.h>
+#include "core/application/Settings.h"
 #include "core/DataParsing.h"
 #include "core/math/Int.h"
-#include <core/string/TextConversionUtils.h>
+#include "core/string/TextConversionUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

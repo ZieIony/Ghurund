@@ -7,10 +7,10 @@
 #include "core/reflection/StandardTypes.h"
 #include "test/utils/MemoryGuard.h"
 #include "test/utils/TestUtils.h"
-#include <core/coroutine/CoroutineScheduler.h>
-#include <core/resource/ResourceManager.h>
-#include <engine/audio/sound/Sound.h>
-#include <engine/audio/sound/SoundLoader.h>
+#include "core/coroutine/CoroutineScheduler.h"
+#include "core/resource/ResourceManager.h"
+#include "engine/audio/sound/Sound.h"
+#include "engine/audio/sound/SoundLoader.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

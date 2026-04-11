@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 
 #include "engine/game/action/ActionMapping.h"
-#include <core/object/IntrusivePointer.h>
+#include "core/object/IntrusivePointer.h"
 
 #include "TestGameAction.h"
 #include "test/utils/MemoryGuard.h"

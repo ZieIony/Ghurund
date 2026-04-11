@@ -1,17 +1,18 @@
 #include "utuipch.h"
 #include "CppUnitTest.h"
-#include "test/utils/TestUtils.h"
+
+#include "test/ui/UITestUtils.h"
 #include "test/utils/MemoryGuard.h"
 #include "test/utils/TestLogOutput.h"
-#include "test/ui/UITestUtils.h"
+#include "test/utils/TestUtils.h"
 
 #include "ui/constraint/ConstraintFactory.h"
-#include "ui/loading/LayoutLoader.h"
 #include "ui/constraint/ConstraintGraph.h"
-#include "ui/constraint/SiblingConstraint.h"
+#include "ui/constraint/ConstraintLayout.h"
 #include "ui/constraint/ParentConstraint.h"
-#include <ui/control/ControlContainer.h>
-#include <ui/constraint/ConstraintLayout.h>
+#include "ui/constraint/SiblingConstraint.h"
+#include "ui/control/ControlContainer.h"
+#include "ui/loading/LayoutLoader.h"
 
 using namespace Ghurund::UI;
 using namespace UnitTest::Utils;

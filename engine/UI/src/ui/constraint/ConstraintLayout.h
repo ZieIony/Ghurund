@@ -2,7 +2,7 @@
 
 #include "ui/control/ControlGroup.h"
 #include "ui/layout/LayoutManager.h"
-#include <core/xml/XMLElement.h>
+#include "core/xml/XMLElement.h"
 
 namespace Ghurund::UI {
 

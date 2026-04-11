@@ -1,9 +1,9 @@
 #pragma once
 
+#include "core/Color.h"
 #include "core/string/String.h"
-#include <core/Color.h>
-#include <engine/graphics/texture/ITexture.h>
-#include <ui/font/TextStyle.h>
+#include "engine/graphics/texture/ITexture.h"
+#include "ui/font/TextStyle.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Engine;

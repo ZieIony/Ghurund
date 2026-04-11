@@ -1,14 +1,15 @@
 ﻿#include "utuipch.h"
 #include "CppUnitTest.h"
+
 #include "test/utils/TestUtils.h"
 
 #include "core/Colors.h"
+#include "core/image/ImageLoader.h"
 #include "core/resource/ResourceManager.h"
 #include "core/window/SystemWindow.h"
-#include "ui/text/TextLayout.h"
 #include "ui/font/FontLoader.h"
-#include <ui/font/TextStyleLoader.h>
-#include <core/image/ImageLoader.h>
+#include "ui/font/TextStyleLoader.h"
+#include "ui/text/TextLayout.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

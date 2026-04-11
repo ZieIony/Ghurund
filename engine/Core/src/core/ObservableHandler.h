@@ -60,5 +60,4 @@ public:
             lambda(args);
         }
     };
-
 }

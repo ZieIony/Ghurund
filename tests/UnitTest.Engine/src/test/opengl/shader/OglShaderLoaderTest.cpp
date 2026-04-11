@@ -4,9 +4,9 @@
 #include "core/object/IntrusivePointer.h"
 
 #include "TestShaderSources.h"
-#include <core/object/SharedPointer.h>
-#include <engine/opengl/OglGraphics.h>
-#include <engine/opengl/shader/OglShaderLoader.h>
+#include "core/object/SharedPointer.h"
+#include "engine/opengl/OglGraphics.h"
+#include "engine/opengl/shader/OglShaderLoader.h"
 #include "test/utils/TestUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

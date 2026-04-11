@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/math/Size.h>
+#include "core/math/Size.h"
 #include "engine/graphics/mesh/MeshData.h"
 
 namespace Ghurund::Engine::_2D {

@@ -5,11 +5,11 @@
 #include "engine/2d/scene/Scene2D.h"
 #include "engine/2d/physics/World2D.h"
 #include "engine/2d/scene/camera/Camera2D.h"
-#include <engine/2d/scene/Entity2D.h>
-#include <engine/2d/scene/camera/CameraComponent2D.h>
-#include <engine/2d/directx/DxGraphics2DContext.h>
-#include <core/coroutine/CoroutineTask.h>
-#include <engine/audio/sound/Sound.h>
+#include "engine/2d/scene/Entity2D.h"
+#include "engine/2d/scene/camera/CameraComponent2D.h"
+#include "engine/2d/directx/DxGraphics2DContext.h"
+#include "core/coroutine/CoroutineTask.h"
+#include "engine/audio/sound/Sound.h"
 #include "engine/2d/audio/AudioWorld2D.h"
 
 namespace Demo {

@@ -3,7 +3,7 @@
 #include "core/math/Size.h"
 #include "core/object/NotNull.h"
 #include "core/resource/Resource.h"
-#include <engine/graphics/texture/TextureAtlas.h>
+#include "engine/graphics/texture/TextureAtlas.h"
 
 namespace Ghurund::Engine::_2D {
 	using namespace Ghurund::Core;

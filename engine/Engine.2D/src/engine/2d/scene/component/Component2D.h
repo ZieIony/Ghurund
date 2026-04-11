@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/object/AsyncInitializable.h"
 #include "core/Timer.h"
 #include "engine/game/Component.h"
 #include "engine/graphics/rendering/RenderGroup.h"

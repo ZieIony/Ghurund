@@ -1,19 +1,26 @@
 #pragma once
 
-#include "Common.h"
 #include "core/string/String.h"
 
 #include <cstdint>
-#include <Windows.h>
-#include <psapi.h>
 
 namespace Ghurund::Core {
+	struct ProcessorInfo {
+		uint16_t cores, logicalProcessors;
+		AString architecture;
+	};
+
+	struct MemoryInfo {
+		uint64_t totalKb;
+		size_t file, paged, nonPaged, workingSet;
+	};
+
 	class SystemInfo {
 	private:
 		SystemInfo() = delete;
 
 		template<typename Type>
-		static uint8_t countSetBits(Type n) {
+		static inline uint8_t countSetBits(Type n) {
 			unsigned int count = 0;
 			while (n) {
 				n &= (n - 1);
@@ -22,86 +29,11 @@ namespace Ghurund::Core {
 			return count;
 		}
 
-		static AString getProcessorArchitecture() {
-			SYSTEM_INFO siSysInfo;
-			GetSystemInfo(&siSysInfo);
-			switch (siSysInfo.wProcessorArchitecture) {
-			case PROCESSOR_ARCHITECTURE_AMD64:
-				return "x64";
-			case PROCESSOR_ARCHITECTURE_IA32_ON_WIN64:
-				return "WOW64";
-				break;
-			case PROCESSOR_ARCHITECTURE_IA64:
-				return "Intel Itanium Processor Family (IPF)";
-			case PROCESSOR_ARCHITECTURE_INTEL:
-				return "x86";
-				break;
-			default:
-				return "unknown";
-			}
-		}
+		static AString getProcessorArchitecture();
 
 	public:
-		struct ProcessorInfo {
-			uint16_t cores, logicalProcessors;
-			AString architecture;
-		};
+		static ProcessorInfo getProcessorInfo();
 
-		struct MemoryInfo {
-			uint64_t totalKb;
-			size_t file, paged, nonPaged, workingSet;
-		};
-
-		static ProcessorInfo getProcessorInfo() {
-			ProcessorInfo info = {};
-			SYSTEM_LOGICAL_PROCESSOR_INFORMATION* buffer = nullptr, * ptr = nullptr;
-			DWORD returnLength = 0;
-			DWORD byteOffset = 0;
-
-			DWORD rc = GetLogicalProcessorInformation(buffer, &returnLength);
-			buffer = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION*)ghnew uint8_t[returnLength];
-			rc = GetLogicalProcessorInformation(buffer, &returnLength);
-
-			ptr = buffer;
-
-			while (byteOffset + sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION) <= returnLength) {
-				switch (ptr->Relationship) {
-				case RelationProcessorCore:
-					info.cores++;
-					info.logicalProcessors += countSetBits(ptr->ProcessorMask);
-					break;
-				default:
-					break;
-				}
-				byteOffset += sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
-				ptr++;
-			}
-
-			delete[] buffer;
-
-			info.architecture = getProcessorArchitecture();
-
-			return info;
-		}
-
-		static MemoryInfo getMemoryInfo() {
-			MemoryInfo info = {};
-
-			ULONGLONG total;
-			GetPhysicallyInstalledSystemMemory(&total);
-			info.totalKb = total;
-
-			HANDLE hProcess = GetCurrentProcess();
-			PROCESS_MEMORY_COUNTERS pmc;
-
-			if (GetProcessMemoryInfo(hProcess, &pmc, sizeof(pmc))) {
-				info.file = pmc.PagefileUsage;
-				info.paged = pmc.QuotaPagedPoolUsage;
-				info.nonPaged = pmc.QuotaNonPagedPoolUsage;
-				info.workingSet = pmc.WorkingSetSize;
-			}
-
-			return info;
-		}
+		static MemoryInfo getMemoryInfo();
 	};
 }

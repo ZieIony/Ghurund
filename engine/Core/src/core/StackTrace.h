@@ -5,6 +5,28 @@
 #include <dbghelp.h>
 
 namespace Ghurund::Core {
+    struct StackTraceEntry {
+        uint64_t address = 0;
+        AString name;
+        WString fileName;
+        uint32_t fileLine = 0;
+
+        StackTraceEntry() {}
+
+        StackTraceEntry(
+            const StackTraceEntry& other
+        ):address(other.address), name(other.name), fileName(other.fileName), fileLine(other.fileLine) {}
+
+        StackTraceEntry(
+            StackTraceEntry&& other
+        ) noexcept:
+            address(std::move(other.address)),
+            name(std::move(other.name)),
+            fileName(std::move(other.fileName)),
+            fileLine(std::move(other.fileLine)) {
+        }
+    };
+
     class StackTrace {
     private:
         static const inline uint16_t MAX_FRAMES_TO_CAPTURE = 64;
@@ -15,28 +37,7 @@ namespace Ghurund::Core {
         _SYMBOL_INFO* symbol;
 
     public:
-        struct Entry {
-            uint64_t address = 0;
-            AString name;
-            WString fileName;
-            uint32_t fileLine = 0;
-
-            Entry() {}
-
-            Entry(const Entry& other):address(other.address), name(other.name), fileName(other.fileName), fileLine(other.fileLine) {}
-
-            Entry(Entry&& other) noexcept
-                :address(std::move(other.address)), name(std::move(other.name)), fileName(std::move(other.fileName)), fileLine(std::move(other.fileLine)) {}
-        };
-
-        StackTrace(HANDLE process):process(process) {
-            numberOfFrames = CaptureStackBackTrace(1, MAX_FRAMES_TO_CAPTURE, stack, nullptr);
-
-            constexpr int symbolStructSize = sizeof(SYMBOL_INFO) + MAX_SYM_NAME * sizeof(TCHAR);
-            symbol = (SYMBOL_INFO*)(ghnew uint8_t[symbolStructSize]);
-            symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
-            symbol->MaxNameLen = MAX_SYM_NAME;
-        }
+        StackTrace(HANDLE process);
 
         ~StackTrace() {
             delete[](uint8_t*)symbol;
@@ -48,32 +49,9 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getSize)) uint16_t Size;
 
-        inline Entry get(uint16_t index) const {
-            DWORD64 address = (DWORD64)stack[index];
-            Entry entry;
+        StackTraceEntry get(uint16_t index) const;
 
-            DWORD64 displacement = 0;
-            if (SymFromAddr(process, address, &displacement, symbol)) {
-                entry.address = symbol->Address;
-                entry.name = AString(symbol->Name, symbol->NameLen);
-            } else {
-                DWORD error = GetLastError();
-            }
-
-            DWORD displacement2 = 0;
-            IMAGEHLP_LINEW64 line = {};  // IMAGEHLP_LINEW uses char instead of wchar_t
-            line.SizeOfStruct = sizeof(IMAGEHLP_LINEW64);
-            if (SymGetLineFromAddrW64(process, address, &displacement2, &line)) {
-                entry.fileName = line.FileName;
-                entry.fileLine = line.LineNumber;
-            } else {
-                DWORD error = GetLastError();
-            }
-
-            return entry;
-        }
-
-        inline Entry operator[](uint16_t index) const {
+        inline StackTraceEntry operator[](uint16_t index) const {
             return get(index);
         }
     };

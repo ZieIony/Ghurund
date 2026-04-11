@@ -2,9 +2,9 @@
 
 #include "Ghurund.Engine.OpenGL.h"
 
-#include <engine/opengl/OGlRenderer.h>
+#include "engine/opengl/OGlRenderer.h"
 #include "SampleWindow.h"
-#include <engine/opengl/OglGraphics.h>
+#include "engine/opengl/OglGraphics.h"
 
 namespace Samples {
     using namespace Ghurund::Engine;

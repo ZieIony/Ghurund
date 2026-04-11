@@ -3,11 +3,11 @@
 #include "engine/graphics/material/Material.h"
 #include "engine/graphics/mesh/Mesh.h"
 #include "engine/2d/IGraphics2DContext.h"
-#include <engine/directx/memory/DxGPUMemoryManager.h>
-#include <engine/graphics/mesh/SpriteMeshData.h>
-#include <engine/directx/mesh/DxMesh.h>
-#include <engine/2d/graphics/mesh/TileMapMeshData.h>
-#include <engine/directx/shader/DxShader.h>
+#include "engine/directx/memory/DxGPUMemoryManager.h"
+#include "engine/graphics/mesh/SpriteMeshData.h"
+#include "engine/directx/mesh/DxMesh.h"
+#include "engine/2d/graphics/mesh/TileMapMeshData.h"
+#include "engine/directx/shader/DxShader.h"
 
 namespace Ghurund::Engine::_2D::DirectX {
 	using namespace Ghurund::Engine::DirectX;

@@ -12,7 +12,7 @@
 #include "core/resource/Resource.h"
 #include "core/resource/ResourceFormat.h"
 #include "core/resource/SaveOption.h"
-#include <core/xml/XMLDocument.h>
+#include "core/xml/XMLDocument.h"
 
 #include <cstdint>
 

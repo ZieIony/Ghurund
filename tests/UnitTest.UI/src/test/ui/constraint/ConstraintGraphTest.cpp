@@ -1,18 +1,19 @@
 #include "utuipch.h"
 #include "CppUnitTest.h"
-#include "test/utils/TestUtils.h"
+
 #include "test/utils/MemoryGuard.h"
 #include "test/utils/TestLogOutput.h"
+#include "test/utils/TestUtils.h"
 
 #include "ui/constraint/Constraint.h"
 #include "ui/constraint/ConstraintGraph.h"
+#include "ui/constraint/ConstraintLayout.h"
+#include "ui/constraint/ParentConstraint.h"
+#include "ui/constraint/SelfConstraint.h"
 #include "ui/constraint/ValueConstraint.h"
 #include "ui/constraint/WrapConstraint.h"
-#include "ui/constraint/ParentConstraint.h"
 
 #include <format>
-#include <ui/constraint/ConstraintLayout.h>
-#include <ui/constraint/SelfConstraint.h>
 
 using namespace UnitTest::Utils;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

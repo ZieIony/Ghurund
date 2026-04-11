@@ -5,6 +5,8 @@
 #include "core/loading/Loader.h"
 #include "core/exception/Exceptions.h"
 
+#include <wincodec.h>
+
 namespace Ghurund::Core {
     class ImageLoader:public Loader<Image> {
     private:

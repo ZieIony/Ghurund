@@ -1,5 +1,6 @@
 #include "utuipch.h"
 #include "CppUnitTest.h"
+
 #include "test/utils/MemoryGuard.h"
 #include "test/utils/TestLogOutput.h"
 #include "test/utils/TestUtils.h"
@@ -7,13 +8,13 @@
 #include "core/reflection/StandardTypes.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/constraint/ConstraintGraph.h"
+#include "ui/constraint/ParentConstraint.h"
+#include "ui/constraint/SiblingConstraint.h"
+#include "ui/control/ControlGroup.h"
+#include "ui/control/ImageScaleMode.h"
 #include "ui/loading/LayoutLoader.h"
-#include <ui/constraint/ParentConstraint.h>
-#include <ui/constraint/SiblingConstraint.h>
-#include <ui/control/ControlGroup.h>
-#include <ui/text/TextDocument.h>
-#include <ui/control/ImageScaleMode.h>
-#include <ui/theme/ThemedValue.h>
+#include "ui/text/TextDocument.h"
+#include "ui/theme/ThemedValue.h"
 
 using namespace Ghurund::UI;
 using namespace UnitTest::Utils;

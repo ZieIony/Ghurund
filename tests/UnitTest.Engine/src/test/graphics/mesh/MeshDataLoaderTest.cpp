@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 
 #include "engine/graphics/mesh/MeshData.h"
-#include <engine/graphics/mesh/MeshDataLoader.h>
+#include "engine/graphics/mesh/MeshDataLoader.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

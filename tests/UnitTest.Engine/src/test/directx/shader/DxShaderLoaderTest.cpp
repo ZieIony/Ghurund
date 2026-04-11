@@ -2,11 +2,11 @@
 #include "CppUnitTest.h"
 
 #include "core/object/IntrusivePointer.h"
-#include <engine/directx/DxGraphics.h>
-#include <engine/directx/shader/DxShaderLoader.h>
+#include "engine/directx/DxGraphics.h"
+#include "engine/directx/shader/DxShaderLoader.h"
 
 #include "test/utils/TestUtils.h"
-#include <engine/directx/shader/compiler/DxEntrypointNotFoundException.h>
+#include "engine/directx/shader/compiler/DxEntrypointNotFoundException.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

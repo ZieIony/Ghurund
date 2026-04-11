@@ -3,12 +3,12 @@
 #include "Settings.h"
 #include "WindowCollection.h"
 
+#include "core/coroutine/CoroutineScheduler.h"
 #include "core/feature/FeatureProvider.h"
 #include "core/object/Initializable.h"
 #include "core/object/Noncopyable.h"
-#include "core/Timer.h"
 #include "core/resource/ResourceManager.h"
-#include "core/coroutine/CoroutineScheduler.h"
+#include "core/Timer.h"
 
 namespace Ghurund::Core {
 	class Application:public Noncopyable, public Initializable {
@@ -21,7 +21,7 @@ namespace Ghurund::Core {
 		CoroutineThreadPool threadPool = CoroutineThreadPool(4);
 		CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
 
-		bool running = false;
+		bool isRunning = false;
 
 		Settings settings;
 
@@ -40,33 +40,22 @@ namespace Ghurund::Core {
 
 		void uninitApplication();
 
-		Application& operator=(const Application& other) = delete;
-
 	protected:
 		virtual void onInit();
 
 		virtual void onUninit();
 
 	public:
-		Application() {
-			CoInitialize(nullptr);
-			OleInitialize(nullptr);
-		}
-
 		virtual ~Application() {
 			if (IsInitialized)
 				uninitApplication();
-
-			// TODO: cancel and destroy coroutines
-			OleUninitialize();
-			CoUninitialize();
 		}
 
-		inline bool isRunning() {
-			return running;
+		inline bool getIsRunning() {
+			return isRunning;
 		}
 
-		__declspec(property(get = isRunning)) bool Running;
+		__declspec(property(get = getIsRunning)) bool IsRunning;
 
 		void run(const Settings* val = nullptr);
 

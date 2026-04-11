@@ -45,7 +45,7 @@ namespace Ghurund::Core {
                 chainHandler->Owner->remove(*chainHandler.get());
         }
 
-        void bind(Observable<T>& observable) {
+        inline void bind(Observable<T>& observable) {
             if (chainHandler != nullptr && chainHandler->Owner)
                 chainHandler->Owner->remove(*chainHandler.get());
             chainHandler.set(ghnew ObservableHandler<T>([&](const T& val) {
@@ -54,7 +54,7 @@ namespace Ghurund::Core {
             observable.add(chainHandler);
         }
 
-        void unbind() {
+        inline void unbind() {
             if (chainHandler != nullptr && chainHandler->Owner)
                 chainHandler->Owner->remove(*chainHandler.get());
         }

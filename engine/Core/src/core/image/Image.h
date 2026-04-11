@@ -11,8 +11,6 @@
 #include <dxgi1_4.h>
 #pragma warning(pop)
 
-#include <wincodec.h>
-
 namespace Ghurund::Core {
 	template<>
 	const Type& getType<DXGI_FORMAT>();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Feature.h"
+
 #include "core/Factory.h"
 
 namespace Ghurund::Core {

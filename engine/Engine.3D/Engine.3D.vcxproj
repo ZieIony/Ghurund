@@ -92,9 +92,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Ghurund.Engine.3D.h" />
     <ClInclude Include="src\engine\3d\audio\component\AudioListenerComponent3D.h" />
     <ClInclude Include="src\engine\3d\audio\component\SoundComponent3D.h" />
-    <ClInclude Include="src\Ghurund.Engine.3D.h" />
     <ClInclude Include="src\engine\3d\entity\Component.h" />
     <ClInclude Include="src\engine\3d\entity\Drawable3DComponent.h" />
     <ClInclude Include="src\engine\3d\entity\Entity.h" />

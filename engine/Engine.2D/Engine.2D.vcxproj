@@ -98,13 +98,13 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\2d\audio\AudioWorld2D.h" />
-    <ClInclude Include="src\engine\2d\audio\component\AudioListenerComponent2D.h" />
-    <ClInclude Include="src\engine\2d\audio\component\SoundComponent2D.h" />
     <ClInclude Include="src\Ghurund.Engine.2D.h" />
     <ClInclude Include="src\engine\2d\Graphics2DFeature.h" />
     <ClInclude Include="src\engine\2d\Graphics2DFeatureFactory.h" />
     <ClInclude Include="src\engine\2d\IGraphics2DContext.h" />
+    <ClInclude Include="src\engine\2d\audio\AudioWorld2D.h" />
+    <ClInclude Include="src\engine\2d\audio\component\AudioListenerComponent2D.h" />
+    <ClInclude Include="src\engine\2d\audio\component\SoundComponent2D.h" />
     <ClInclude Include="src\engine\2d\graphics\mesh\TileMapMeshData.h" />
     <ClInclude Include="src\engine\2d\graphics\sprite\AnimatedSpriteComponent.h" />
     <ClInclude Include="src\engine\2d\graphics\sprite\BaseSpriteComponent.h" />
@@ -137,10 +137,10 @@
     <ClInclude Include="src\ghe2dpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\2d\Graphics2DFeature.cpp" />
     <ClCompile Include="src\engine\2d\audio\AudioWorld2D.cpp" />
     <ClCompile Include="src\engine\2d\audio\component\AudioListenerComponent2D.cpp" />
     <ClCompile Include="src\engine\2d\audio\component\SoundComponent2D.cpp" />
-    <ClCompile Include="src\engine\2d\Graphics2DFeature.cpp" />
     <ClCompile Include="src\engine\2d\graphics\mesh\TileMapMeshData.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\AnimatedSpriteComponent.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\BaseSpriteComponent.cpp" />

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <engine/audio/sound/Sound.h>
-#include <engine/2d/scene/component/Component2D.h>
+#include "engine/audio/sound/Sound.h"
+#include "engine/2d/scene/component/Component2D.h"
 
 #include <x3daudio.h>
 

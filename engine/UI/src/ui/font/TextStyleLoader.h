@@ -4,7 +4,7 @@
 #include "TextStyle.h"
 
 #include "core/loading/Loader.h"
-#include <core/xml/XMLElement.h>
+#include "core/xml/XMLElement.h"
 
 namespace Ghurund::UI {
 	using namespace Ghurund::Core;

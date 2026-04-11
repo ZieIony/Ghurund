@@ -8,7 +8,7 @@
 #include "core/io/FilePath.h"
 #include "core/math/MathUtils.h"
 #include "core/string/String.h"
-#include <core/Event.h>
+#include "core/Event.h"
 
 namespace Ghurund::Core {
     class DirectoryWatch {

@@ -101,11 +101,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
-    <ClInclude Include="src\core\resource\ResourceAwaiter.h" />
-    <ClInclude Include="src\core\xml\XMLDocument.h" />
-    <ClInclude Include="src\core\xml\XMLElement.h" />
-    <ClInclude Include="src\core\loading\Loader.h" />
-    <ClInclude Include="src\core\xml\XMLReader.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -213,6 +208,7 @@
     <ClInclude Include="src\core\io\watcher\FileChange.h" />
     <ClInclude Include="src\core\io\watcher\FileWatcher.h" />
     <ClInclude Include="src\core\loading\BaseLoader.h" />
+    <ClInclude Include="src\core\loading\Loader.h" />
     <ClInclude Include="src\core\loading\LoaderCollection.h" />
     <ClInclude Include="src\core\loading\PrimitivePropertyLoaders.h" />
     <ClInclude Include="src\core\loading\PropertyLoader.h" />
@@ -233,6 +229,7 @@
     <ClInclude Include="src\core\math\Rect.h" />
     <ClInclude Include="src\core\math\Size.h" />
     <ClInclude Include="src\core\math\Vector.h" />
+    <ClInclude Include="src\core\object\AsyncInitializable.h" />
     <ClInclude Include="src\core\object\DefaultDeleter.h" />
     <ClInclude Include="src\core\object\Initializable.h" />
     <ClInclude Include="src\core\object\IntrusivePointer.h" />
@@ -260,6 +257,7 @@
     <ClInclude Include="src\core\reflection\Visibility.h" />
     <ClInclude Include="src\core\resource\LoadOption.h" />
     <ClInclude Include="src\core\resource\Resource.h" />
+    <ClInclude Include="src\core\resource\ResourceAwaiter.h" />
     <ClInclude Include="src\core\resource\ResourceCollection.h" />
     <ClInclude Include="src\core\resource\ResourceFormat.h" />
     <ClInclude Include="src\core\resource\ResourceManager.h" />
@@ -296,10 +294,15 @@
     <ClInclude Include="src\core\window\WindowMessage.h" />
     <ClInclude Include="src\core\window\WindowProc.h" />
     <ClInclude Include="src\core\window\WindowStyle.h" />
+    <ClInclude Include="src\core\xml\XMLDocument.h" />
+    <ClInclude Include="src\core\xml\XMLElement.h" />
+    <ClInclude Include="src\core\xml\XMLReader.h" />
     <ClInclude Include="src\ghcpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\Color.cpp" />
+    <ClCompile Include="src\core\StackTrace.cpp" />
+    <ClCompile Include="src\core\SystemInfo.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
     <ClCompile Include="src\core\allocation\SimpleBufferStrategy.cpp" />
