@@ -71,7 +71,7 @@ namespace Ghurund::Engine::_2D {
 			return ghnew T(*this, world);
 		}
 
-		inline void update(const Timer& timer) {
+		virtual void update(const Timer& timer) {
 			XMFLOAT4X4 identity;
 			XMStoreFloat4x4(&identity, XMMatrixIdentity());
 			rootComponent->update(identity, timer);

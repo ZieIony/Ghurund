@@ -4,13 +4,6 @@
 
 #include "core/Colors.h"
 #include "core/window/DisplayManager.h"
-#include "engine/2d/graphics/sprite/AnimatedSpriteComponent.h"
-#include "engine/2d/physics/component/BoxComponent2D.h"
-//#include "engine/2d/entity/CameraComponent2D.h"
-#include "ui/theme/LightTheme.h"
-#include "engine/2d/physics/component/CapsuleComponent2D.h"
-#include "engine/2d/physics/component/SegmentComponent2D.h"
-#include "engine/2d/scene/tiles/TileMapComponent.h"
 
 namespace Demo {
 	DemoWindow::DemoWindow(
@@ -47,10 +40,6 @@ namespace Demo {
 	}
 
 	CoroutineTask<void> DemoWindow::initScene() {
-		thudSound = co_await app.ResourceManager.load<Sound>(ResourceManager::ENGINE_LIB / FilePath(L"test/sounds/thud.wav"));
-		//audioListenerComponent = IntrusivePointer(audioWorld->makeAudioListenerComponent());
-		//soundComponent = IntrusivePointer(audioWorld->makeSoundComponent());
-		//soundComponent->Sound = thudSound.get();
 		ground = co_await world.spawnEntity<Ground>();
 		captain = co_await world.spawnEntity<Captain>();
 		captain->RootComponent->Position = { 0, 2 };
@@ -93,7 +82,7 @@ namespace Demo {
 			BodyComponent2D& body = (BodyComponent2D&)*captain->RootComponent;
 			body.applyForce({ 0, 1000 });
 		} else if (args.KeyCode == 'q') {
-			thudSound->play();
+			captain->playSound();
 		} else if (args.KeyCode == 'a') {
 			BodyComponent2D& body = (BodyComponent2D&)*captain->RootComponent;
 			body.applyForce({ -500, 0 });
@@ -115,11 +104,7 @@ namespace Demo {
 	void DemoWindow::update() {
 		__super::update();
 		scene->update(Timer);
-		if (captain.get() && captain->RootComponent) {
-			//audioListenerComponent->Position = captain->RootComponent->Position;
-			//audioListenerComponent->Direction = { captain->RootComponent->Scale.x, 0 };
-			audioWorld->update();
-		}
+		audioWorld->update();
 
 		auto text = std::format(_T("fps: {:.2f}"), Timer.FramesPerSecond);
 		Title = String(text.c_str());

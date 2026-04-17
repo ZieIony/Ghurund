@@ -19,7 +19,7 @@ namespace Ghurund::Engine::_2D {
 		for (auto& component : soundComponents) {
 			if (!component->Sound)
 				continue;
-			component->Sound->DSPSettings = audio.calculateDSPSettings(audioListenerComponent->Listener, component->Emitter);
+			component->Sound->DSPSettings = audio.calculateDSPSettings(audioListenerComponent->Listener.get(), component->Emitter.get());
 		}
 	}
 }

@@ -4,10 +4,8 @@
 #include "engine/application/GameWindow.h"
 #include "engine/2d/scene/Scene2D.h"
 #include "engine/2d/physics/Simulation2D.h"
-#include "engine/2d/scene/Entity2D.h"
 #include "engine/2d/directx/DxGraphics2DContext.h"
 #include "core/coroutine/CoroutineTask.h"
-#include "engine/audio/sound/Sound.h"
 #include "engine/2d/audio/AudioWorld2D.h"
 #include "engine/2d/World2D.h"
 #include "Captain.h"
@@ -33,10 +31,6 @@ namespace Demo {
 		IntrusivePointer<Captain> captain;
 		IntrusivePointer<Ground> ground;
 		float direction = 1;
-
-		IntrusivePointer<Sound> thudSound;
-		IntrusivePointer<AudioListenerComponent2D> audioListenerComponent;
-		IntrusivePointer<SoundComponent2D> soundComponent;
 
 	public:
 		DemoWindow(

@@ -5,6 +5,8 @@
 #include "core/string/String.h"
 #include "engine/graphics/shader/ValueConstant.h"
 
+#include <DirectXMath.h>
+
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
 

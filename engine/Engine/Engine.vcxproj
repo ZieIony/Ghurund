@@ -92,6 +92,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\audio\AudioListener.h" />
+    <ClInclude Include="src\engine\audio\sound\SoundEmitter.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameApplication.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />

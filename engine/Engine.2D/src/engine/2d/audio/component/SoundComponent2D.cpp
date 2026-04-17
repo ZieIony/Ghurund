@@ -20,15 +20,4 @@ namespace Ghurund::Engine::_2D {
 
 		return TYPE;
 	}
-	
-	SoundComponent2D::SoundComponent2D(NotNull<Entity2D> owner, World2D& world):Component2D(owner, world) {
-		memset(&emitter, 0, sizeof(emitter));
-		emitter.pCone = nullptr;
-		emitter.InnerRadius = 2.0f;
-		emitter.InnerRadiusAngle = X3DAUDIO_PI / 4.0f;
-		emitter.ChannelRadius = 1.0f;
-		emitter.pVolumeCurve = (X3DAUDIO_DISTANCE_CURVE*)&X3DAudioDefault_LinearCurve;
-		emitter.CurveDistanceScaler = 5.0f;
-		emitter.DopplerScaler = 1.0;
-	}
 }

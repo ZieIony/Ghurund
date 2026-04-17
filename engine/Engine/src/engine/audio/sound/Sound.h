@@ -109,11 +109,11 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getLoop, put = setLoop)) bool Loop;
 
-        inline uint32_t getChannels() const {
+        inline uint32_t getChannelCount() const {
             return inputDetails.InputChannels;
         }
 
-        __declspec(property(get = getChannels)) uint32_t Channels;
+        __declspec(property(get = getChannelCount)) uint32_t ChannelCount;
 
         inline uint32_t getSampleRate() const {
             return inputDetails.InputSampleRate;
