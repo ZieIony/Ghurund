@@ -2,7 +2,6 @@
 
 #include "engine/2d/scene/component/BaseTransformComponent2D.h"
 #include "engine/2d/scene/component/VisualizationComponent2D.h"
-#include "engine/2d/physics/World2D.h"
 
 #include <box2d.h>
 #include <DirectXMath.h>
@@ -13,6 +12,8 @@ namespace Ghurund::Engine::_2D {
 	enum class BodyType {
 		STATIC = b2_staticBody, KINEMATIC = b2_kinematicBody, DYNAMIC = b2_dynamicBody
 	};
+
+	class Simulation2D;
 
 	class BodyComponent2D:public BaseTransformComponent2D {
 #pragma region reflection
@@ -28,7 +29,7 @@ namespace Ghurund::Engine::_2D {
 #pragma endregion
 
 	private:
-		World2D* world;
+		Simulation2D& simulation;
 		b2BodyId id;
 
 	protected:
@@ -71,12 +72,7 @@ namespace Ghurund::Engine::_2D {
 			updateSize();
 		}
 
-		virtual CoroutineTask<void> onInit() override {
-			co_await __super::onInit();
-			b2BodyDef bodyDef = b2DefaultBodyDef();
-			bodyDef.position = { 0.0f, 0.0f };
-			id = b2CreateBody(world->Id, &bodyDef);
-		}
+		virtual CoroutineTask<void> onInit() override;
 
 		inline void uninitBodyComponent2D() {
 			b2DestroyBody(id);
@@ -90,20 +86,12 @@ namespace Ghurund::Engine::_2D {
 		virtual void updateSize() = 0;
 
 	public:
+		BodyComponent2D(NotNull<Entity2D> owner, World2D& world);
+
 		virtual ~BodyComponent2D() = 0 {
 			if (IsInitialized)
 				uninitBodyComponent2D();
 		}
-
-		inline void setWorld(World2D* world) {
-			this->world = world;
-		}
-
-		inline World2D* getWorld() const {
-			return world;
-		}
-
-		__declspec(property(get = getWorld, put = setWorld)) World2D* World;
 
 		inline b2BodyId getId() const {
 			return id;

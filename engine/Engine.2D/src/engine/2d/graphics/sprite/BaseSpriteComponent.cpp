@@ -1,12 +1,20 @@
 #include "ghe2dpch.h"
 #include "BaseSpriteComponent.h"
 
+#include "engine/2d/World2D.h"
+
 namespace Ghurund::Engine::_2D {
 		const Ghurund::Core::Type& BaseSpriteComponent::GET_TYPE() {
 			static const Ghurund::Core::Type TYPE = TypeBuilder<BaseSpriteComponent>()
 				.withSupertype(__super::GET_TYPE());
 
 			return TYPE;
+		}
+
+		CoroutineTask<void> BaseSpriteComponent::onInit() {
+			co_await __super::onInit();
+			Mesh = IntrusivePointer(Owner->World.context->makeSpriteMesh()).get();
+			Material = (co_await Owner->World.context->makeSpriteMaterial()).get();
 		}
 		
 		void BaseSpriteComponent::draw(RenderGroup& group) {

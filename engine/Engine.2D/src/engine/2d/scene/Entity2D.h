@@ -9,15 +9,17 @@
 namespace Ghurund::Engine::_2D {
 	using namespace Ghurund::Core;
 
-	class Entity2D:public RefCountedObject, public Initializable {
+	class World2D;
+
+	class Entity2D:public RefCountedObject, public AsyncInitializable {
 	private:
+		World2D& world;
 		WString name;
 		BaseTransformComponent2D* rootComponent = nullptr;
-		IGraphics2DContext* context = nullptr;
 
 	protected:
-		virtual void onInit() {
-			rootComponent->init();
+		virtual CoroutineTask<void> onInit() override {
+			co_await rootComponent->init();
 		};
 
 		inline void uninitEntity2D() {
@@ -29,6 +31,8 @@ namespace Ghurund::Engine::_2D {
 		};
 
 	public:
+		Entity2D(World2D& world):world(world) {}
+
 		~Entity2D() {
 			if (IsInitialized)
 				uninitEntity2D();
@@ -36,29 +40,11 @@ namespace Ghurund::Engine::_2D {
 				rootComponent->release();
 		}
 
-		inline void setContext(IGraphics2DContext* context) {
-			this->context = context;
+		inline World2D& getWorld() {
+			return world;
 		}
 
-		inline IGraphics2DContext* getContext() const {
-			return context;
-		}
-
-		__declspec(property(get = getContext, put = setContext)) IGraphics2DContext* Context;
-
-		inline BaseTransformComponent2D* getRootComponent() {
-			return rootComponent;
-		}
-
-		inline void setRootComponent(BaseTransformComponent2D* component) {
-			if (rootComponent)
-				rootComponent->Owner = nullptr;
-			setPointer(rootComponent, component);
-			if (rootComponent)
-				rootComponent->Owner = this;
-		}
-
-		__declspec(property(get = getRootComponent, put = setRootComponent)) BaseTransformComponent2D* RootComponent;
+		__declspec(property(get = getWorld)) World2D& World;
 
 		inline WString& getName() {
 			return name;
@@ -69,6 +55,21 @@ namespace Ghurund::Engine::_2D {
 		}
 
 		__declspec(property(get = getName, put = setName)) WString& Name;
+
+		inline BaseTransformComponent2D* getRootComponent() {
+			return rootComponent;
+		}
+
+		inline void setRootComponent(BaseTransformComponent2D* component) {
+			setPointer(rootComponent, component);
+		}
+
+		__declspec(property(get = getRootComponent, put = setRootComponent)) BaseTransformComponent2D* RootComponent;
+
+		template<Derived<Component2D> T>
+		inline T* makeComponent() {
+			return ghnew T(*this, world);
+		}
 
 		inline void update(const Timer& timer) {
 			XMFLOAT4X4 identity;

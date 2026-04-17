@@ -3,10 +3,7 @@
 
 namespace Ghurund::Engine::_2D {
 	const Ghurund::Core::Type& CameraComponent2D::GET_TYPE() {
-		static const auto CONSTRUCTOR = Constructor<CameraComponent2D>();
-
 		static const Ghurund::Core::Type TYPE = TypeBuilder<CameraComponent2D>()
-			.withConstructor(CONSTRUCTOR)
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;

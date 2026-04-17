@@ -21,7 +21,7 @@ namespace Ghurund::Engine::_2D {
 		return TYPE;
 	}
 	
-	SoundComponent2D::SoundComponent2D() {
+	SoundComponent2D::SoundComponent2D(NotNull<Entity2D> owner, World2D& world):Component2D(owner, world) {
 		memset(&emitter, 0, sizeof(emitter));
 		emitter.pCone = nullptr;
 		emitter.InnerRadius = 2.0f;

@@ -2,7 +2,6 @@
 
 #include "BodyComponent2D.h"
 #include "engine/2d/scene/Entity2D.h"
-#include "engine/2d/physics/World2D.h"
 
 #include <box2d.h>
 
@@ -42,6 +41,8 @@ namespace Ghurund::Engine::_2D {
 		virtual void updateSize() override;
 
 	public:
+		CapsuleComponent2D(NotNull<Entity2D> owner, World2D& world):BodyComponent2D(owner, world) {}
+	
 		~CapsuleComponent2D() {
 			if (IsInitialized)
 				uninitCapsuleComponent2D();

@@ -1,23 +1,23 @@
 #pragma once
 
+#include "component/BodyComponent2D.h"
+
 #include <box2d.h>
 
 namespace Ghurund::Engine::_2D {
-	using namespace ::DirectX;
-
-	class World2D {
+	class Simulation2D {
 	private:
 		b2WorldId id;
 		static const uint16_t subStepCount = 4;
 
 	public:
-		World2D() {
+		Simulation2D() {
 			b2WorldDef worldDef = b2DefaultWorldDef();
 			worldDef.gravity = { 0.0f, -10.0f };
 			id = b2CreateWorld(&worldDef);
 		}
 
-		~World2D() {
+		~Simulation2D() {
 			b2DestroyWorld(id);
 		}
 

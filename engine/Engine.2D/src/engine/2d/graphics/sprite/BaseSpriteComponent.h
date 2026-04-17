@@ -46,11 +46,7 @@ namespace Ghurund::Engine::_2D {
 		float alpha = 1.0f;
 		SpriteInputs inputs;
 
-		virtual CoroutineTask<void> onInit() override {
-			co_await __super::onInit();
-			Mesh = IntrusivePointer(Owner->Context->makeSpriteMesh()).get();
-			Material = (co_await Owner->Context->makeSpriteMaterial()).get();
-		}
+		virtual CoroutineTask<void> onInit() override;
 
 		virtual void onUninit() {
 			uninitBaseSpriteComponent();
@@ -58,6 +54,8 @@ namespace Ghurund::Engine::_2D {
 		};
 
 	public:
+		BaseSpriteComponent(NotNull<Entity2D> owner, World2D& world):TransformComponent2D(owner, world) {}
+
 		virtual ~BaseSpriteComponent() = 0 {
 			if (IsInitialized)
 				uninitBaseSpriteComponent();

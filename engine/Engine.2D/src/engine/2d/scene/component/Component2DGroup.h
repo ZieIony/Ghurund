@@ -38,6 +38,8 @@ namespace Ghurund::Engine::_2D {
 		};
 
 	public:
+		Component2DGroup(NotNull<Entity2D> owner, World2D& world):Component2D(owner, world) {}
+	
 		~Component2DGroup() {
 			if (IsInitialized)
 				uninitComponent2DGroup();

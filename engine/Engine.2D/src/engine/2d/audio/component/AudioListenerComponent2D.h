@@ -22,7 +22,7 @@ namespace Ghurund::Engine::_2D {
 		X3DAUDIO_LISTENER listener = {};
 
 	public:
-		AudioListenerComponent2D();
+		AudioListenerComponent2D(NotNull<Entity2D> owner, World2D& world);
 
         inline void setPosition(const XMFLOAT2& pos) {
             listener.Position.x = pos.x;

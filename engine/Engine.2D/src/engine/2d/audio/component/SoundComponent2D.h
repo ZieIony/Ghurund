@@ -46,7 +46,7 @@ namespace Ghurund::Engine::_2D {
         X3DAUDIO_EMITTER emitter = {};
 
 	public:
-        SoundComponent2D();
+        SoundComponent2D(NotNull<Entity2D> owner, World2D& world);
 
         ~SoundComponent2D() {
             if (sound)

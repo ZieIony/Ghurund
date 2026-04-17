@@ -4,6 +4,7 @@
 
 #include "engine/2d/scene/component/TransformComponent2D.h"
 #include "engine/2d/graphics/sprite/SpriteComponent.h"
+#include "engine/2d/World2D.h"
 
 namespace Ghurund::Engine::_2D {
 	using namespace Ghurund::Core;
@@ -28,7 +29,7 @@ namespace Ghurund::Engine::_2D {
 			if (!resource.IsValid) {
 				uninit();
 			} else {
-				Owner->Context->CoroutineScheduler.launch(init());
+				Owner->World.app->CoroutineScheduler.launch(init());
 			}
 			return false;
 		};
@@ -50,6 +51,8 @@ namespace Ghurund::Engine::_2D {
 		};
 
 	public:
+		TileMapComponent(NotNull<Entity2D> owner, World2D& world):TransformComponent2D(owner, world) {}
+
 		~TileMapComponent() {
 			if (IsInitialized)
 				uninitTileMapComponent();

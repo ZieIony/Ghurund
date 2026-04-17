@@ -3,14 +3,15 @@
 #include "DemoApplication.h"
 #include "engine/application/GameWindow.h"
 #include "engine/2d/scene/Scene2D.h"
-#include "engine/2d/physics/World2D.h"
-#include "engine/2d/scene/camera/Camera2D.h"
+#include "engine/2d/physics/Simulation2D.h"
 #include "engine/2d/scene/Entity2D.h"
-#include "engine/2d/scene/camera/CameraComponent2D.h"
 #include "engine/2d/directx/DxGraphics2DContext.h"
 #include "core/coroutine/CoroutineTask.h"
 #include "engine/audio/sound/Sound.h"
 #include "engine/2d/audio/AudioWorld2D.h"
+#include "engine/2d/World2D.h"
+#include "Captain.h"
+#include <Ground.h>
 
 namespace Demo {
 	using namespace Ghurund;
@@ -25,12 +26,12 @@ namespace Demo {
 
 		SharedPointer<DxGraphics2DContext> context2d;
 		Set<RenderGroup> renderGroups;
+		World2D world;
 		IntrusivePointer<Scene2D> scene;
-		SharedPointer<World2D> world;
+		SharedPointer<Simulation2D> simulation;
 		SharedPointer<AudioWorld2D> audioWorld;
-		IntrusivePointer<Entity2D> captain, ground;
-		IntrusivePointer<Camera2D> camera;
-		IntrusivePointer<CameraComponent2D> cameraComponent;
+		IntrusivePointer<Captain> captain;
+		IntrusivePointer<Ground> ground;
 		float direction = 1;
 
 		IntrusivePointer<Sound> thudSound;
@@ -46,18 +47,13 @@ namespace Demo {
 		~DemoWindow() {
 			captain.set(nullptr);
 			ground.set(nullptr);
-			camera.set(nullptr);
 			scene.set(nullptr);
-			world.set(nullptr);
+			simulation.set(nullptr);
 		}
 
 		void init();
 
 		CoroutineTask<void> initScene();
-
-		CoroutineTask<void> initGround();
-
-		CoroutineTask<void> initCaptain();
 
 		CoroutineTask<void> jumpDelayed();
 
@@ -65,7 +61,7 @@ namespace Demo {
 
 		virtual void fixedUpdate() override {
 			__super::fixedUpdate();
-			world->simulate(Timer.FixedFrameTime);
+			simulation->simulate(Timer.FixedFrameTime);
 		}
 
 		virtual void update() override;

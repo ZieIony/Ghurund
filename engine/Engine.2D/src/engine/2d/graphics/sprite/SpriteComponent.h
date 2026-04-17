@@ -24,6 +24,8 @@ namespace Ghurund::Engine::_2D {
 		ITexture* colorTexture = nullptr;
 
 	public:
+		SpriteComponent(NotNull<Entity2D> owner, World2D& world):BaseSpriteComponent(owner, world) {}
+
 		virtual ~SpriteComponent() {
 			if (colorTexture)
 				colorTexture->release();

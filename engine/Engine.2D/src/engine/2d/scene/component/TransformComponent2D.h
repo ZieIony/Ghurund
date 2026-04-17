@@ -50,5 +50,8 @@ namespace Ghurund::Engine::_2D {
 			scale.x = x;
 			scale.y = y;
 		}
+
+	public:
+		TransformComponent2D(NotNull<Entity2D> owner, World2D& world):BaseTransformComponent2D(owner, world) {}
 	};
 }

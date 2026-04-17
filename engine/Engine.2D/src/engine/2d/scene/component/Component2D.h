@@ -7,6 +7,7 @@
 
 namespace Ghurund::Engine::_2D {
 	class Entity2D;
+	class World2D;
 
 	class Component2D:public Component, public AsyncInitializable {
 #pragma region reflection
@@ -24,9 +25,11 @@ namespace Ghurund::Engine::_2D {
 	protected:
 		float drawOrder = 0;
 		Component2D* parent = nullptr;
-		Entity2D* owner = nullptr;
+		Entity2D& owner;
 
 	public:
+		Component2D(NotNull<Entity2D> owner, World2D& world):owner(owner.ref()) {}
+
 		virtual ~Component2D() = 0 {
 		}
 
@@ -40,15 +43,11 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getParent, put = setParent)) Component2D* Parent;
 
-		inline Entity2D* getOwner() const {
+		inline NotNull<Entity2D> getOwner() const {
 			return owner;
 		}
 
-		inline void setOwner(Entity2D* owner) {
-			this->owner = owner;
-		}
-
-		__declspec(property(get = getOwner, put = setOwner)) Entity2D* Owner;
+		__declspec(property(get = getOwner)) NotNull<Entity2D> Owner;
 
 		virtual void update(const XMFLOAT4X4& parentTransformation, const Timer& timer) {}
 

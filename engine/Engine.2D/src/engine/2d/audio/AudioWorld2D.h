@@ -9,26 +9,21 @@ namespace Ghurund::Engine::_2D {
 	class AudioWorld2D {
 	private:
 		Audio& audio;
-		List<IntrusivePointer<SoundComponent2D>> soundComponents;
 		AudioListenerComponent2D* audioListenerComponent = nullptr;
 
 	public:
+		// TODO: make a proper collection
+		List<IntrusivePointer<SoundComponent2D>> soundComponents;
+
 		AudioWorld2D(Audio& audio):audio(audio) {}
 
 		~AudioWorld2D();
 
-		inline SoundComponent2D* makeSoundComponent() {
-			auto component = makeIntrusive<SoundComponent2D>();
-			soundComponents.add(component);
-			component->addReference();
-			return component.get();
+		inline void setAudioListener(AudioListenerComponent2D* component) {
+			setPointer(audioListenerComponent, component);
 		}
 
-		inline AudioListenerComponent2D* makeAudioListenerComponent() {
-			AudioListenerComponent2D* component = ghnew AudioListenerComponent2D();
-			setPointer(audioListenerComponent, component);
-			return component;
-		}
+		__declspec(property(put = setAudioListener)) AudioListenerComponent2D* AudioListener;
 
 		void update();
 	};

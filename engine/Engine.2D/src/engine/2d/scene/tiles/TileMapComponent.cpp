@@ -24,7 +24,7 @@ namespace Ghurund::Engine::_2D {
 			tileInfo.texCoordBottomRight = { texCoords.z, texCoords.w };
 			tileIndex++;
 		}
-		mesh = Owner->Context->makeTileMapMesh(tileMap->Size, tiles);
-		Material = (co_await Owner->Context->makeTileMapMaterial()).get();
+		mesh = Owner->World.context->makeTileMapMesh(tileMap->Size, tiles);
+		Material = (co_await Owner->World.context->makeTileMapMaterial()).get();
 	}
 }

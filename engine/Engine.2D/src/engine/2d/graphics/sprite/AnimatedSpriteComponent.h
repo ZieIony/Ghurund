@@ -21,6 +21,8 @@ namespace Ghurund::Engine::_2D {
 		SpriteAnimation* animation = nullptr;
 
 	public:
+		AnimatedSpriteComponent(NotNull<Entity2D> owner, World2D& world):BaseSpriteComponent(owner, world) {}
+
 		~AnimatedSpriteComponent() {
 			if (animation)
 				animation->release();

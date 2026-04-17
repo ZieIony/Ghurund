@@ -1,12 +1,12 @@
 #include "ghe2dpch.h"
 #include "BoxComponent2D.h"
 
+#include "engine/2d/scene/Entity2D.h"
+#include "engine/2d/World2D.h"
+
 namespace Ghurund::Engine::_2D {
 	const Ghurund::Core::Type& BoxComponent2D::GET_TYPE() {
-		static const auto CONSTRUCTOR = Constructor<BoxComponent2D>();
-
 		static const Ghurund::Core::Type TYPE = TypeBuilder<BoxComponent2D>()
-			.withConstructor(CONSTRUCTOR)
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;
@@ -18,9 +18,9 @@ namespace Ghurund::Engine::_2D {
 				Components.remove(visualizationComponent);
 				visualizationComponent->release();
 			}
-			visualizationComponent = ghnew VisualizationComponent2D();
-			visualizationComponent->Mesh = IntrusivePointer<Mesh>(Owner->Context->makeSpriteMesh()).get();
-			visualizationComponent->Material = (co_await Owner->Context->makeBoxVisualizationMaterial()).get();
+			visualizationComponent = Owner->makeComponent<VisualizationComponent2D>();
+			visualizationComponent->Mesh = IntrusivePointer<Mesh>(Owner->World.context->makeSpriteMesh()).get();
+			visualizationComponent->Material = (co_await Owner->World.context->makeBoxVisualizationMaterial()).get();
 			Components.add(visualizationComponent);
 		}
 		co_await __super::onInit();

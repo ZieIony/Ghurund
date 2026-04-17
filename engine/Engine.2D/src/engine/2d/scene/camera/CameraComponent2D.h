@@ -21,12 +21,8 @@ namespace Ghurund::Engine::_2D {
 		Camera2D* camera;
 
 	public:
-		CameraComponent2D() {
+		CameraComponent2D(NotNull<Entity2D> owner, World2D& world):TransformComponent2D(owner, world) {
 			camera = ghnew Camera2D();
-		}
-
-		CameraComponent2D(NotNull<Camera2D> camera):camera(camera.get()) {
-			camera->addReference();
 		}
 
 		~CameraComponent2D() {

@@ -29,106 +29,30 @@ namespace Demo {
 	void DemoWindow::init() {
 		DxGraphicsFeature* graphicsFeature = app.Features.get<DxGraphicsFeature>();
 
-		context2d = makeShared<DxGraphics2DContext>(graphicsFeature->MemoryManager, app.ResourceManager, app.CoroutineScheduler);
+		context2d = makeShared<DxGraphics2DContext>(graphicsFeature->MemoryManager, app.ResourceManager);
 
-		camera = makeIntrusive<Camera2D>();
-		camera->ViewSize = { 8, 6 };
-		camera->setPositionUp({ 0, 0 });
-		cameraComponent = makeIntrusive<CameraComponent2D>(camera.ref());
-
-		world = makeShared<World2D>();
+		simulation = makeShared<Simulation2D>();
 		scene = makeIntrusive<Scene2D>(context2d.ref());
 
 		AudioFeature* audioFeature = app.Features.get<AudioFeature>();
 		audioWorld = makeShared<AudioWorld2D>(audioFeature->Audio);
+
+		world.app = &app;
+		world.audioWorld = audioWorld.get();
+		world.simulation = simulation.get();
+		world.scene = scene.get();
+		world.context = context2d.get();
 
 		app.CoroutineScheduler.launch(initScene());
 	}
 
 	CoroutineTask<void> DemoWindow::initScene() {
 		thudSound = co_await app.ResourceManager.load<Sound>(ResourceManager::ENGINE_LIB / FilePath(L"test/sounds/thud.wav"));
-		audioListenerComponent = IntrusivePointer(audioWorld->makeAudioListenerComponent());
-		soundComponent = IntrusivePointer(audioWorld->makeSoundComponent());
-		soundComponent->Sound = thudSound.get();
-		co_await initGround();
-		co_await initCaptain();
-	}
-
-	CoroutineTask<void> DemoWindow::initGround() {
-		ground = makeIntrusive<Entity2D>();
-		ground->Context = context2d.get();
-
-		{
-			auto groundBox = makeIntrusive<BoxComponent2D>();
-			groundBox->World = world.get();
-			groundBox->Owner = ground.get();
-			co_await groundBox->init();
-			groundBox->Type = BodyType::STATIC;
-			groundBox->Position = { 0, 0 };
-			groundBox->Size = { 5, 1 };
-			ground->RootComponent = groundBox.get();
-		}
-
-		{
-			auto segmentBox = makeIntrusive<SegmentComponent2D>();
-			segmentBox->World = world.get();
-			segmentBox->Owner = ground.get();
-			co_await segmentBox->init();
-			segmentBox->Type = BodyType::STATIC;
-			segmentBox->Position = { 0, -0.1f };
-			segmentBox->Size = { 12, 1 };
-			ground->RootComponent->Components.add(segmentBox.get());
-		}
-
-		{
-			//co_await app.CoroutineScheduler.mainThread();
-		//	co_await app.CoroutineScheduler.backgroundThread();
-			auto tileMap = IntrusivePointer<TileMap>(co_await app.ResourceManager.load<TileMap>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/terrainTileMap.xml")));
-			//co_await app.CoroutineScheduler.mainThread();
-			auto tileMapComponent = makeIntrusive<TileMapComponent>();
-			tileMapComponent->TileMap = tileMap.get();
-			tileMapComponent->Owner = ground.get();
-			co_await tileMapComponent->init();
-			tileMapComponent->Position = { 0.0f, -1.0f };
-			ground->RootComponent->Components.add(tileMapComponent.get());
-		}
-
-		ground->init();
-		scene->Entities.add(ground);
-	}
-
-	CoroutineTask<void> DemoWindow::initCaptain() {
-		DxGraphicsFeature* graphicsFeature = app.Features.get<DxGraphicsFeature>();
-
-		captain = makeIntrusive<Entity2D>();
-		captain->Context = context2d.get();
-
-		auto captainCapsule = makeIntrusive<CapsuleComponent2D>();
-		captainCapsule->World = world.get();
-		captainCapsule->Owner = captain.get();
-		co_await captainCapsule->init();
-		captainCapsule->Type = BodyType::DYNAMIC;
-		captainCapsule->IsRotationFixed = true;
-		captainCapsule->Size = { 0.35f, 0.7f };
-
-		auto captainSprite = makeIntrusive<AnimatedSpriteComponent>();
-		captainSprite->Owner = captain.get();
-		co_await captainSprite->init();
-
-		//co_await app.CoroutineScheduler.mainThread();
-	//	co_await app.CoroutineScheduler.backgroundThread();
-		auto animationSet = IntrusivePointer<SpriteAnimationSet>(co_await app.ResourceManager.load<SpriteAnimationSet>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/captain.xml")));
-		//co_await app.CoroutineScheduler.mainThread();
-		captainSprite->Animation = animationSet->get(animationSet->find(L"idle"));
-
-		captainSprite->Position = { 0, -0.025f * 2.0f };
-		captainSprite->Size = { 1.6f, 1 };
-
-		captainCapsule->Components.add(captainSprite.get());
-		captainCapsule->Components.add(cameraComponent.get());
-		captain->RootComponent = captainCapsule.get();
-		captain->init();
-		scene->Entities.add(captain);
+		//audioListenerComponent = IntrusivePointer(audioWorld->makeAudioListenerComponent());
+		//soundComponent = IntrusivePointer(audioWorld->makeSoundComponent());
+		//soundComponent->Sound = thudSound.get();
+		ground = co_await world.spawnEntity<Ground>();
+		captain = co_await world.spawnEntity<Captain>();
 		captain->RootComponent->Position = { 0, 2 };
 	}
 
@@ -192,8 +116,8 @@ namespace Demo {
 		__super::update();
 		scene->update(Timer);
 		if (captain.get() && captain->RootComponent) {
-			audioListenerComponent->Position = captain->RootComponent->Position;
-			audioListenerComponent->Direction = { captain->RootComponent->Scale.x, 0 };
+			//audioListenerComponent->Position = captain->RootComponent->Position;
+			//audioListenerComponent->Direction = { captain->RootComponent->Scale.x, 0 };
 			audioWorld->update();
 		}
 
@@ -203,7 +127,7 @@ namespace Demo {
 
 	void DemoWindow::onPaint(RenderingContext& renderingContext) {
 		RenderGroup _2dGroup(0, DrawOrder::BACK_TO_FRONT);
-		_2dGroup.Camera = camera.get();
+		_2dGroup.Camera = scene->Camera;
 		scene->draw(_2dGroup);
 		renderGroups.put(_2dGroup);
 

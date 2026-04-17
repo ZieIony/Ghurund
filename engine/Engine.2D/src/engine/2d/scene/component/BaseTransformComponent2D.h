@@ -37,6 +37,8 @@ namespace Ghurund::Engine::_2D {
 		virtual void setScaleInternal(float x, float y) = 0;
 
 	public:
+		BaseTransformComponent2D(NotNull<Entity2D> owner, World2D& world):Component2DGroup(owner, world) {}
+
 		inline const XMFLOAT4X4& getLocalTransformation() const {
 			return localTransformation;
 		}

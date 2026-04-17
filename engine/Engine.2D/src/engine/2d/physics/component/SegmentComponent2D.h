@@ -1,8 +1,6 @@
 #pragma once
 
 #include "BodyComponent2D.h"
-#include "engine/2d/scene/Entity2D.h"
-#include "engine/2d/physics/World2D.h"
 
 #include <box2d.h>
 
@@ -42,6 +40,8 @@ namespace Ghurund::Engine::_2D {
 		virtual void updateSize() override;
 
 	public:
+		SegmentComponent2D(NotNull<Entity2D> owner, World2D& world):BodyComponent2D(owner, world) {}
+	
 		~SegmentComponent2D() {
 			if (IsInitialized)
 				uninitSegmentComponent2D();
