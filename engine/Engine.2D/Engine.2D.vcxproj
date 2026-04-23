@@ -98,6 +98,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\2d\graphics\sprite\SpriteAnimator.h" />
     <ClInclude Include="src\engine\2d\World2D.h" />
     <ClInclude Include="src\Ghurund.Engine.2D.h" />
     <ClInclude Include="src\engine\2d\Graphics2DFeature.h" />
@@ -146,7 +147,9 @@
     <ClCompile Include="src\engine\2d\graphics\sprite\AnimatedSpriteComponent.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\BaseSpriteComponent.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\SpriteAnimation.cpp" />
+    <ClCompile Include="src\engine\2d\graphics\sprite\SpriteAnimationSet.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\SpriteAnimationSetLoader.cpp" />
+    <ClCompile Include="src\engine\2d\graphics\sprite\SpriteAnimator.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\SpriteComponent.cpp" />
     <ClCompile Include="src\engine\2d\physics\component\BodyComponent2D.cpp" />
     <ClCompile Include="src\engine\2d\physics\component\BoxComponent2D.cpp" />

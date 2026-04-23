@@ -1,112 +1,41 @@
 #pragma once
 
-#include "core/exception/Exceptions.h"
-#include "core/logging/Logger.h"
-#include "core/collection/List.h"
-#include "core/threading/CriticalSection.h"
+#include "MachineState.h"
+#include "StateTransition.h"
 
-#include <format>
+#include "core/object/NotNull.h"
+#include <core/collection/Map.h>
+#include <core/object/IntrusivePointer.h>
 
 namespace Ghurund::Core {
-	enum class StateMachineEdgeMode {
-		REQUIRED, SAME_STATE_ALLOWED, ANY_STATE_ALLOWED
-	};
-
-	template<typename T>
 	class StateMachine {
 	private:
-		struct S {
-			std::function<void()> onStateEntered;
-			std::function<void()> onStateLeave;
-
-			S() {}
-
-			S(std::function<void()> onStateEntered, std::function<void()> onStateLeave)
-				:onStateEntered(onStateEntered), onStateLeave(onStateLeave) {}
-		};
-
-		T initialState;
-		T currentState;
-		Map<T, S> states;
-		Map<T, Map<T, std::function<void()>>> edges;
-		StateMachineEdgeMode mode;
+		MachineState* currentState = nullptr;
+		// TODO: use HashMap
+		Map<WString, IntrusivePointer<MachineState>> states;
+		Map<WString, Map<WString, IntrusivePointer<StateTransition>>> transitions;
 
 	public:
-		StateMachine(const T& initialState, StateMachineEdgeMode mode = StateMachineEdgeMode::REQUIRED):
-			initialState(initialState), currentState(initialState), mode(mode) {
+		inline void putState(NotNull<MachineState> state) {
+			auto pointer = IntrusivePointer(state.get());
+			pointer->addReference();
+			states.put(state->Name, pointer);
 		}
 
-		inline void addState(const T& state, std::function<void()> onStateEntered = nullptr, std::function<void()> onStateLeave = nullptr) {
-			states.put(state, S(onStateEntered, onStateLeave));
-		}
+		void putTransition(NotNull<StateTransition> transition);
 
-		inline void addEdge(const T& from, const T& to, std::function<void()> onStateChanged = nullptr) {
-			const auto& f = edges.find(from);
-			if (f != edges.end()) {
-				f->value.put(to, onStateChanged);
-			} else {
-				Map<T, std::function<void()>> map;
-				map.put(to, onStateChanged);
-				edges.put(from, map);
-			}
-		}
-
-		inline T getState() const {
+		inline MachineState* getCurrentState() const {
 			return currentState;
 		}
 
-		void setState(const T& state) {
-			S& cs = states[currentState];
-			const auto& from = edges.find(currentState);
-			if (from != edges.end()) {
-				const auto& to = from->value.find(state);
-				if (to != from->value.end()) {
-					const auto& ns = states.find(state);
-					if (ns != states.end()) {
-						if (cs.onStateLeave)
-							cs.onStateLeave();
-						currentState = state;
-						auto& onStateChanged = to->value;
-						if (onStateChanged)
-							onStateChanged();
-						if (ns->value.onStateEntered)
-							ns->value.onStateEntered();
-						return;
-					}
-				}
-			}
+		__declspec(property(get = getCurrentState)) MachineState* CurrentState;
 
-			if (mode == StateMachineEdgeMode::SAME_STATE_ALLOWED && state == currentState) {
-				if (cs.onStateLeave)
-					cs.onStateLeave();
-				if (cs.onStateEntered)
-					cs.onStateEntered();
-				return;
-			}
+		void jumpToState(const WString& name);
 
-			if (mode == StateMachineEdgeMode::ANY_STATE_ALLOWED) {
-				auto ns = states.find(state);
-				if (ns != states.end()) {
-					if (cs.onStateLeave)
-						cs.onStateLeave();
-					currentState = state;
-					if (ns->value.onStateEntered)
-						ns->value.onStateEntered();
-					return;
-				}
-			}
+		void goToState(const WString& name);
 
-			/*auto message = std::format(_T("No edge for specified states: {0} -> {1}\n"), currentState.state, state);
-			Logger::log(LogType::WARNING, message.c_str());
-			AString exMessage = convertText<tchar, char>(String(message.c_str()));
-			throw InvalidParamException(exMessage.Data);*/
-			throw InvalidParamException("No edge for specified states");
-		}
+		bool update();
 
-		__declspec(property(get = getState, put = setState)) T State;
-
-		inline void reset() {
-			currentState = initialState;
-		}
+		void reset(const WString& name);
 	};
 }

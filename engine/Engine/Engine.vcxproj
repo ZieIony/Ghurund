@@ -92,6 +92,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\animation\Animation.h" />
+    <ClInclude Include="src\engine\animation\AnimationSet.h" />
+    <ClInclude Include="src\engine\animation\Animator.h" />
+    <ClInclude Include="src\engine\animation\AnimatorState.h" />
     <ClInclude Include="src\engine\audio\AudioListener.h" />
     <ClInclude Include="src\engine\audio\sound\SoundEmitter.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
@@ -187,6 +191,7 @@
     <ClInclude Include="src\ghepch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\animation\Animation.cpp" />
     <ClCompile Include="src\engine\application\GameWindow.cpp" />
     <ClCompile Include="src\engine\application\LayerList.cpp" />
     <ClCompile Include="src\engine\audio\Audio.cpp" />

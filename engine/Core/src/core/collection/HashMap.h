@@ -64,7 +64,7 @@ namespace Ghurund::Core {
             h[i] = hashCode(key);
         }
 
-        inline Value& get(Key& key)const {
+        inline Value& get(const Key& key)const {
             int keyHash = hashCode(key);
             for (size_t i = 0; i < M::size; i++) {
                 if (h[i] == keyHash && M::k[i] == key)

@@ -7,4 +7,12 @@
 		<SpriteAnimationFrame texture="Idle Sword 04.png" duration="0.1"/>
 		<SpriteAnimationFrame texture="Idle Sword 05.png" duration="0.1"/>
 	</SpriteAnimation>
+	<SpriteAnimation name="walking">
+		<SpriteAnimationFrame texture="Run Sword 01.png" duration="0.1"/>
+		<SpriteAnimationFrame texture="Run Sword 02.png" duration="0.1"/>
+		<SpriteAnimationFrame texture="Run Sword 03.png" duration="0.1"/>
+		<SpriteAnimationFrame texture="Run Sword 04.png" duration="0.1"/>
+		<SpriteAnimationFrame texture="Run Sword 05.png" duration="0.1"/>
+		<SpriteAnimationFrame texture="Run Sword 06.png" duration="0.1"/>
+	</SpriteAnimation>
 </SpriteAnimationSet>

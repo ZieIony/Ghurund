@@ -3,6 +3,7 @@
 #include "core/object/IntrusivePointer.h"
 #include "core/object/NotNull.h"
 #include "engine/graphics/texture/ITexture.h"
+#include "engine/animation/Animator.h"
 
 namespace Ghurund::Engine::_2D {
 	using namespace Ghurund::Core;
@@ -15,7 +16,7 @@ namespace Ghurund::Engine::_2D {
 	// TODO: replace this with a proper collection
 	using SpriteAnimationFrameList = List<SpriteAnimationFrame>;
 
-	class SpriteAnimation:public RefCountedObject {
+	class SpriteAnimation:public Animation {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -29,36 +30,11 @@ namespace Ghurund::Engine::_2D {
 #pragma endregion
 
 	private:
-		WString* name = nullptr;
 		List<SpriteAnimationFrame> frames;
 		uint16_t currentFrame = 0;
 		float duration = 0, frameTimeOffset = 0;
-		bool loop = true;
 
 	public:
-		~SpriteAnimation() {
-			delete name;
-		}
-
-		inline const Ghurund::Core::WString* getName() const {
-			return name;
-		}
-
-		inline void setName(const WString* name) {
-			if (this->name)
-				delete this->name;
-			if (name)
-				this->name = ghnew WString(*name);
-		}
-
-		inline void setName(const WString& name) {
-			if (this->name)
-				delete this->name;
-			this->name = ghnew WString(name);
-		}
-
-		__declspec(property(get = getName, put = setName)) const Ghurund::Core::WString* Name;
-
 		inline SpriteAnimationFrameList& getFrames() {
 			return frames;
 		}
@@ -78,16 +54,6 @@ namespace Ghurund::Engine::_2D {
 			}
 			duration += frameDuration * textures.Size;
 		}
-
-		inline bool getIsLooped() const {
-			return loop;
-		}
-
-		inline void setIsLooped(bool loop) {
-			this->loop = loop;
-		}
-
-		__declspec(property(get = getIsLooped, put = setIsLooped)) bool IsLooped;
 
 		void update(float dt);
 

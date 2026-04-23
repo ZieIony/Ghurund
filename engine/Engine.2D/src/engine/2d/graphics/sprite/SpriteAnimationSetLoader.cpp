@@ -12,13 +12,14 @@ namespace Ghurund::Engine::_2D {
 		LoadOption options
 	) {
 		checkXmlRoot(xml, L"SpriteAnimationSet");
-	
+
 		for (const auto& animationElement : xml.children) {
 			auto nameAttribute = animationElement->findAttribute(L"name");
+			if (!nameAttribute)
+				throw InvalidFormatException();
 			auto animation = makeIntrusive<SpriteAnimation>();
-			if (nameAttribute)
-				animation->Name = *nameAttribute;
-			for(const auto& frameElement : animationElement->children){
+			animation->Name = *nameAttribute;
+			for (const auto& frameElement : animationElement->children) {
 				auto textureAttribute = frameElement->findAttribute(L"texture");
 				if (!textureAttribute)
 					throw InvalidFormatException();

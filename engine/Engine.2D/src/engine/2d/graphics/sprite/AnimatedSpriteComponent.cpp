@@ -11,6 +11,10 @@ namespace Ghurund::Engine::_2D {
 	
 	void AnimatedSpriteComponent::update(const XMFLOAT4X4& parentTransformation, const Timer& timer) {
 		__super::update(parentTransformation, timer);
+		if (animator) {
+			animator->update();
+			Animation = animator->CurrentState->Animation;
+		}
 		if (animation) {
 			animation->update(timer.ScaledFrameTime);
 			if (material)

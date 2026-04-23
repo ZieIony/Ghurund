@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core/math/Size.h"
-#include "core/state/State.h"
 #include "MouseEvents.h"
 #include "ui/control/ControlParent.h"
 
@@ -71,7 +70,7 @@ namespace Ghurund::UI {
             owner.mouseMotionEvent -= mouseMotionEventHandler;
         }
 
-        State<bool> isHovered = false, isFocused = false, isPressed = false;
+        bool isHovered = false, isFocused = false, isPressed = false;
         Event<InteractionHandler, MousePressedEventArgs> pressed = *this;
         Event<InteractionHandler> canceled = *this;
         Event<InteractionHandler, MouseClickedEventArgs> clicked = *this;

@@ -12,8 +12,24 @@ namespace UnitTest {
 	using namespace Ghurund::Core;
 	using namespace std;
 
-	enum class TestEnum {
-		IDLE, IN_PROGRESS, SUCCESS, ERR0R
+	class TestStateIdle:public MachineState {
+	public:
+		TestStateIdle():MachineState(_T("idle"), true) {}
+	};
+
+	class TestStateInProgress:public MachineState {
+	public:
+		TestStateInProgress():MachineState(_T("inProgress"), false) {}
+	};
+
+	class TestStateSuccess:public MachineState {
+	protected:
+		TestStateSuccess():MachineState(_T("success"), false) {}
+	};
+
+	class TestStateError:public MachineState {
+	protected:
+		TestStateError():MachineState(_T("error"), true) {}
 	};
 
 	TEST_CLASS(StateMachineTest) {
@@ -22,120 +38,12 @@ namespace UnitTest {
 		TEST_METHOD(StateMachine_required) {
 			MemoryGuard guard;
 			{
-				StateMachine<TestEnum> machine(TestEnum::IDLE, StateMachineEdgeMode::REQUIRED);
-				machine.addState(TestEnum::IN_PROGRESS);
-				machine.addEdge(TestEnum::IDLE, TestEnum::IN_PROGRESS);
-				machine.State = TestEnum::IN_PROGRESS;
-			}
-		}
-
-		TEST_METHOD(StateMachine_requiredNoEdge) {
-			MemoryGuard guard;
-			{
-				StateMachine<TestEnum> machine(TestEnum::IDLE, StateMachineEdgeMode::REQUIRED);
-				machine.addState(TestEnum::IN_PROGRESS);
-				Assert::ExpectException<InvalidParamException>([&] {
-					machine.State = TestEnum::IN_PROGRESS;
-				});
-			}
-		}
-
-		TEST_METHOD(StateMachine_requiredSameState) {
-			MemoryGuard guard;
-			{
-				StateMachine<TestEnum> machine(TestEnum::IDLE, StateMachineEdgeMode::REQUIRED);
-				machine.addState(TestEnum::IDLE);
-				Assert::ExpectException<InvalidParamException>([&] {
-					machine.State = TestEnum::IDLE;
-				});
-			}
-		}
-
-		TEST_METHOD(StateMachine_requiredNoState) {
-			MemoryGuard guard;
-			{
-				StateMachine<TestEnum> machine(TestEnum::IDLE, StateMachineEdgeMode::REQUIRED);
-				Assert::ExpectException<InvalidParamException>([&] {
-					machine.State = TestEnum::IN_PROGRESS;
-				});
-			}
-		}
-
-		TEST_METHOD(StateMachine_same) {
-			MemoryGuard guard;
-			{
-				StateMachine<TestEnum> machine(TestEnum::IDLE, StateMachineEdgeMode::SAME_STATE_ALLOWED);
-				machine.addState(TestEnum::IN_PROGRESS);
-				machine.addEdge(TestEnum::IDLE, TestEnum::IN_PROGRESS);
-				machine.State = TestEnum::IN_PROGRESS;
-			}
-		}
-
-		TEST_METHOD(StateMachine_sameNoEdge) {
-			MemoryGuard guard;
-			{
-				StateMachine<TestEnum> machine(TestEnum::IDLE, StateMachineEdgeMode::SAME_STATE_ALLOWED);
-				machine.addState(TestEnum::IN_PROGRESS);
-				Assert::ExpectException<InvalidParamException>([&] {
-					machine.State = TestEnum::IN_PROGRESS;
-				});
-			}
-		}
-
-		TEST_METHOD(StateMachine_sameSameState) {
-			MemoryGuard guard;
-			{
-				StateMachine<TestEnum> machine(TestEnum::IDLE, StateMachineEdgeMode::SAME_STATE_ALLOWED);
-				machine.addState(TestEnum::IDLE);
-				machine.State = TestEnum::IDLE;
-			}
-		}
-
-		TEST_METHOD(StateMachine_sameNoState) {
-			MemoryGuard guard;
-			{
-				StateMachine<TestEnum> machine(TestEnum::IDLE, StateMachineEdgeMode::SAME_STATE_ALLOWED);
-				Assert::ExpectException<InvalidParamException>([&] {
-					machine.State = TestEnum::IN_PROGRESS;
-				});
-			}
-		}
-
-		TEST_METHOD(StateMachine_any) {
-			MemoryGuard guard;
-			{
-				StateMachine<TestEnum> machine(TestEnum::IDLE, StateMachineEdgeMode::ANY_STATE_ALLOWED);
-				machine.addState(TestEnum::IN_PROGRESS);
-				machine.addEdge(TestEnum::IDLE, TestEnum::IN_PROGRESS);
-				machine.State = TestEnum::IN_PROGRESS;
-			}
-		}
-
-		TEST_METHOD(StateMachine_anyNoEdge) {
-			MemoryGuard guard;
-			{
-				StateMachine<TestEnum> machine(TestEnum::IDLE, StateMachineEdgeMode::ANY_STATE_ALLOWED);
-				machine.addState(TestEnum::IN_PROGRESS);
-				machine.State = TestEnum::IN_PROGRESS;
-			}
-		}
-
-		TEST_METHOD(StateMachine_anySameState) {
-			MemoryGuard guard;
-			{
-				StateMachine<TestEnum> machine(TestEnum::IDLE, StateMachineEdgeMode::ANY_STATE_ALLOWED);
-				machine.addState(TestEnum::IDLE);
-				machine.State = TestEnum::IDLE;
-			}
-		}
-
-		TEST_METHOD(StateMachine_anyNoState) {
-			MemoryGuard guard;
-			{
-				StateMachine<TestEnum> machine(TestEnum::IDLE, StateMachineEdgeMode::ANY_STATE_ALLOWED);
-				Assert::ExpectException<InvalidParamException>([&] {
-					machine.State = TestEnum::IN_PROGRESS;
-				});
+				StateMachine machine;
+				machine.putState(ghnew TestStateIdle());
+				machine.putState(ghnew TestStateInProgress());
+				machine.putTransition(ghnew StateTransition(_T("idle"), _T("inProgress")));
+				machine.reset(_T("idle"));
+				machine.goToState(_T("inProgress"));
 			}
 		}
 	};

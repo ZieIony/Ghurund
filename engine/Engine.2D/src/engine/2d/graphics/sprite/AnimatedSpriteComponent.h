@@ -2,6 +2,7 @@
 
 #include "BaseSpriteComponent.h"
 #include "SpriteAnimation.h"
+#include "SpriteAnimator.h"
 
 namespace Ghurund::Engine::_2D {
 	class AnimatedSpriteComponent:public BaseSpriteComponent {
@@ -19,6 +20,7 @@ namespace Ghurund::Engine::_2D {
 
 	protected:
 		SpriteAnimation* animation = nullptr;
+		SpriteAnimator* animator = nullptr;
 
 	public:
 		AnimatedSpriteComponent(NotNull<Entity2D> owner, World2D& world):BaseSpriteComponent(owner, world) {}
@@ -26,6 +28,8 @@ namespace Ghurund::Engine::_2D {
 		~AnimatedSpriteComponent() {
 			if (animation)
 				animation->release();
+			if (animator)
+				animator->release();
 		}
 
 		inline SpriteAnimation* getAnimation() {
@@ -37,6 +41,16 @@ namespace Ghurund::Engine::_2D {
 		}
 
 		__declspec(property(get = getAnimation, put = setAnimation)) SpriteAnimation* Animation;
+
+		inline SpriteAnimator* getAnimator() {
+			return animator;
+		}
+
+		inline void setAnimator(SpriteAnimator* animator) {
+			setPointer(this->animator, animator);
+		}
+
+		__declspec(property(get = getAnimator, put = setAnimator)) SpriteAnimator* Animator;
 
 		virtual void update(const XMFLOAT4X4& parentTransformation, const Timer& timer) override;
 	};

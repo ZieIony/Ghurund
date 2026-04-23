@@ -130,6 +130,19 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getSize, put = setSize)) const FloatSize& Size;
 
+		inline XMFLOAT2 getLinearVelocity() const {
+			auto vec = b2Body_GetLinearVelocity(id);
+			return { vec.x, vec.y };
+		}
+
+		__declspec(property(get = getLinearVelocity)) XMFLOAT2 LinearVelocity;
+
+		inline float getAngularVelocity() const {
+			return b2Body_GetAngularVelocity(id);
+		}
+
+		__declspec(property(get = getAngularVelocity)) float AngularVelocity;
+
 		inline void applyForce(const XMFLOAT2& force) {
 			b2Body_ApplyForceToCenter(id, { force.x, force.y }, true);
 		}

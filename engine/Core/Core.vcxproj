@@ -101,6 +101,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\state\MachineState.h" />
+    <ClInclude Include="src\core\state\StateTransition.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -263,7 +265,6 @@
     <ClInclude Include="src\core\resource\ResourceManager.h" />
     <ClInclude Include="src\core\resource\SaveOption.h" />
     <ClInclude Include="src\core\resource\TextResource.h" />
-    <ClInclude Include="src\core\state\State.h" />
     <ClInclude Include="src\core\state\StateMachine.h" />
     <ClInclude Include="src\core\string\FixedString.h" />
     <ClInclude Include="src\core\string\GenericString.h" />
@@ -302,6 +303,7 @@
   <ItemGroup>
     <ClCompile Include="src\core\Color.cpp" />
     <ClCompile Include="src\core\StackTrace.cpp" />
+    <ClCompile Include="src\core\state\StateMachine.cpp" />
     <ClCompile Include="src\core\SystemInfo.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
@@ -334,7 +336,6 @@
     <ClCompile Include="src\core\resource\ResourceCollection.cpp" />
     <ClCompile Include="src\core\resource\ResourceFormat.cpp" />
     <ClCompile Include="src\core\resource\ResourceManager.cpp" />
-    <ClCompile Include="src\core\state\State.cpp" />
     <ClCompile Include="src\core\string\GenericString.cpp" />
     <ClCompile Include="src\core\threading\FunctionQueue.cpp" />
     <ClCompile Include="src\core\threading\ThreadPoolExecutor.cpp" />
