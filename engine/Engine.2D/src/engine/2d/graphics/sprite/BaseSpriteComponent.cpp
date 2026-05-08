@@ -19,7 +19,7 @@ namespace Ghurund::Engine::_2D {
 		
 		void BaseSpriteComponent::draw(RenderGroup& group) {
 		if (mesh && material) {
-			auto w = XMMatrixScaling(size.Width, size.Height, 1) * XMLoadFloat4x4(&worldTransformation);
+			auto w = XMMatrixTranslation(offset.x, offset.y, 0) * XMMatrixScaling(size.Width, size.Height, 1) * XMLoadFloat4x4(&Owner->Transform.WorldTransformation);
 			XMFLOAT4X4 world;
 			XMStoreFloat4x4(&world, XMMatrixTranspose(w));
 

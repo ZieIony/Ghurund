@@ -9,8 +9,7 @@ namespace Ghurund::Engine::_2D {
 		return TYPE;
 	}
 	
-	void AnimatedSpriteComponent::update(const XMFLOAT4X4& parentTransformation, const Timer& timer) {
-		__super::update(parentTransformation, timer);
+	void AnimatedSpriteComponent::update(const Timer& timer) {
 		if (animator) {
 			animator->update();
 			Animation = animator->CurrentState->Animation;

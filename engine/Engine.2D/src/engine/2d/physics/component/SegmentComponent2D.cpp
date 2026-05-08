@@ -12,33 +12,48 @@ namespace Ghurund::Engine::_2D {
 		return TYPE;
 	}
 
+	void SegmentComponent2D::uninitSegmentComponent2D() {
+		Owner->Transform.scaleChanged -= scaleChangedHandler;
+		if (visualizationComponent) {
+			Owner->Components.remove(visualizationComponent);
+			visualizationComponent->release();
+			visualizationComponent = nullptr;
+		}
+	}
+
 	CoroutineTask<void> SegmentComponent2D::onInit() {
 		if (isVisualized) {
 			if (visualizationComponent) {
-				Components.remove(visualizationComponent);
+				Owner->Components.remove(visualizationComponent);
 				visualizationComponent->release();
 			}
 			visualizationComponent = Owner->makeComponent<VisualizationComponent2D>();
 			visualizationComponent->Mesh = IntrusivePointer<Mesh>(Owner->World.context->makeSpriteMesh()).get();
 			visualizationComponent->Material = (co_await Owner->World.context->makeSegmentVisualizationMaterial()).get();
-			Components.add(visualizationComponent);
+			Owner->Components.add(visualizationComponent);
 		}
 		co_await __super::onInit();
 	
-		b2Segment segment;
-		segment.point1 = { -0.5, 0 };
-		segment.point2 = { 0.5, 0 };
+		b2Segment segment = makeSegment();
 		b2ShapeDef shapeDef = b2DefaultShapeDef();
 		shapeId = b2CreateSegmentShape(Id, &shapeDef, &segment);
+
+		Owner->Transform.scaleChanged += scaleChangedHandler;
 	}
 
-	void SegmentComponent2D::updateSize() {
-		b2Segment segment;
-		float w = fabs(scale.x * size.Width) / 2;
-		segment.point1 = { -w, 0 };
-		segment.point2 = { w, 0 };
-		b2Shape_SetSegment(shapeId, &segment);
-		scale.y = 0.02f;
-		size.Height = 1;
+	void SegmentComponent2D::update(const Timer& timer) {
+		if (visualizationComponent) {
+			XMFLOAT4X4 world;
+			auto w = XMMatrixScaling(width, 0.02f, 1);
+			if (BodyType == BodyType::STATIC) {
+				auto rotation = XMMatrixRotationZ(Rotation / 180 * XM_PI);
+				auto translation = XMMatrixTranslation(Position.x, Position.y, 0);
+				w = w * rotation * translation;
+			}
+			w = w * XMLoadFloat4x4(&Owner->Transform.WorldTransformation);
+			XMStoreFloat4x4(&world, w);
+			visualizationComponent->Transformation = world;
+			visualizationComponent->Extents = { width / 2, 0.02f };
+		}
 	}
 }

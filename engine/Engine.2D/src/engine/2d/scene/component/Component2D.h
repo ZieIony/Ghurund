@@ -33,23 +33,15 @@ namespace Ghurund::Engine::_2D {
 		virtual ~Component2D() = 0 {
 		}
 
-		inline Component2D* getParent() const {
-			return parent;
-		}
-
-		inline void setParent(Component2D* parent) {
-			this->parent = parent;
-		}
-
-		__declspec(property(get = getParent, put = setParent)) Component2D* Parent;
-
 		inline NotNull<Entity2D> getOwner() const {
 			return owner;
 		}
 
 		__declspec(property(get = getOwner)) NotNull<Entity2D> Owner;
 
-		virtual void update(const XMFLOAT4X4& parentTransformation, const Timer& timer) {}
+		virtual void fixedUpdate(const Timer& timer) {}
+
+		virtual void update(const Timer& timer) {}
 
 		virtual void draw(RenderGroup& group) {}
 	};

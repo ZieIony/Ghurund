@@ -31,7 +31,7 @@ namespace Ghurund::Engine::_2D {
 			}
 		}();
 		VisualizationInputs inputs;
-		XMFLOAT4X4 worldTransformation = Ghurund::Core::MATRIX_IDENTITY;
+		XMFLOAT4X4 worldTransformation = Ghurund::Core::makeIdentityMatrix();
 		XMFLOAT2 extents = { 0, 0 };
 
 	public:

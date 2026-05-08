@@ -15,9 +15,9 @@ namespace Demo {
 	CoroutineTask<void> Captain::onInit() {
 		capsuleComponent = IntrusivePointer(makeComponent<CapsuleComponent2D>());
 		co_await capsuleComponent->init();
-		capsuleComponent->Type = BodyType::DYNAMIC;
+		capsuleComponent->BodyType = BodyType::DYNAMIC;
 		capsuleComponent->IsRotationFixed = true;
-		capsuleComponent->Size = { 0.35f, 0.7f };
+		capsuleComponent->setHeightRadius(0.7f, 0.2f);
 
 		captainSprite = IntrusivePointer(makeComponent<AnimatedSpriteComponent>());
 		co_await captainSprite->init();
@@ -33,8 +33,7 @@ namespace Demo {
 		animator->reset(L"idle");
 
 		captainSprite->Animator = animator.get();
-
-		captainSprite->Position = { 0, -0.025f * 2.0f };
+		captainSprite->Offset = { 0, -0.05f };
 		captainSprite->Size = { 1.6f, 1 };
 
 		cameraComponent = IntrusivePointer(makeComponent<CameraComponent2D>());
@@ -50,10 +49,10 @@ namespace Demo {
 		soundComponent->Sound = thudSound.get();
 		World.audioWorld->soundComponents.add(soundComponent);
 
-		capsuleComponent->Components.add(captainSprite.get());
-		capsuleComponent->Components.add(cameraComponent.get());
-		capsuleComponent->Components.add(audioListenerComponent.get());
-		RootComponent = capsuleComponent.get();
+		Components.add(captainSprite.get());
+		Components.add(cameraComponent.get());
+		Components.add(audioListenerComponent.get());
+		Components.add(capsuleComponent.get());
 
 		co_await __super::onInit();
 	}
@@ -64,7 +63,7 @@ namespace Demo {
 	void Captain::update(const Timer& timer) {
 		__super::update(timer);
 		// TODO: position update should be automatic
-		audioListenerComponent->Position = RootComponent->Position;
-		audioListenerComponent->Direction = { RootComponent->Scale.x, 0 };
+		audioListenerComponent->Position = Transform.Position;
+		audioListenerComponent->Direction = { Transform.Scale.x, 0 };
 	}
 }

@@ -2,7 +2,7 @@
 
 #include "TileMap.h"
 
-#include "engine/2d/scene/component/TransformComponent2D.h"
+#include "engine/2d/scene/component/Component2D.h"
 #include "engine/2d/graphics/sprite/SpriteComponent.h"
 #include "engine/2d/World2D.h"
 
@@ -10,7 +10,7 @@ namespace Ghurund::Engine::_2D {
 	using namespace Ghurund::Core;
 	using namespace ::DirectX;
 
-	class TileMapComponent:public TransformComponent2D {
+	class TileMapComponent:public Component2D {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -26,12 +26,8 @@ namespace Ghurund::Engine::_2D {
 	private:
 		TileMap* tileMap = nullptr;
 		EventHandler<Resource> tileMapChanged = [this](Resource& resource)->bool {
-			if (!resource.IsValid) {
-				uninit();
-			} else {
-				Owner->World.app->CoroutineScheduler.launch(init());
-			}
-			return false;
+			reloadResource();
+			return true;
 		};
 
 		Mesh* mesh = nullptr;
@@ -50,8 +46,10 @@ namespace Ghurund::Engine::_2D {
 			__super::onUninit();
 		};
 
+		void reloadResource();
+
 	public:
-		TileMapComponent(NotNull<Entity2D> owner, World2D& world):TransformComponent2D(owner, world) {}
+		TileMapComponent(NotNull<Entity2D> owner, World2D& world):Component2D(owner, world) {}
 
 		~TileMapComponent() {
 			if (IsInitialized)
@@ -87,17 +85,6 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(put = setMaterial)) Material* Material;
 
-		virtual void draw(RenderGroup& group) override {
-			if (mesh && material) {
-				auto w = XMLoadFloat4x4(&worldTransformation);
-				XMFLOAT4X4 world;
-				XMStoreFloat4x4(&world, XMMatrixTranspose(w));
-
-				inputs.Transformation = world;
-				group.objects.add(DrawPacket(mesh, material, drawOrder));
-			}
-
-			__super::draw(group);
-		}
+		virtual void draw(RenderGroup& group) override;
 	};
 }

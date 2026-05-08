@@ -44,6 +44,20 @@ namespace Demo {
 			thudSound->play();
 		}
 
+		inline void jump() {
+			capsuleComponent->applyForce({ 0, 100 });
+		}
+
+		inline void moveLeft() {
+			capsuleComponent->applyForce({ -50, 0 });
+			Transform.Scale = { -1, 1 };
+		}
+
+		inline void moveRight() {
+			capsuleComponent->applyForce({ 50, 0 });
+			Transform.Scale = { 1, 1 };
+		}
+
 		virtual void update(const Timer& timer) override;
 	};
 }

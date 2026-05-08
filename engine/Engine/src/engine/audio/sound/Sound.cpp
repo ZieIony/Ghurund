@@ -47,4 +47,11 @@ namespace Ghurund::Engine {
             throw CallFailedException();
         }
 	}
+    
+    void Sound::setDSPSettings(const X3DAUDIO_DSP_SETTINGS& dspSettings) {
+        if (FAILED(sourceVoice->SetOutputMatrix(masteringVoice, inputDetails.InputChannels, outputDetails.InputChannels, dspSettings.pMatrixCoefficients)))
+            Logger::log(LogType::WARNING, _T("SetOutputMatrix() failed.\n"));
+        if (FAILED(sourceVoice->SetFrequencyRatio(dspSettings.DopplerFactor)))
+            Logger::log(LogType::WARNING, _T("SetFrequencyRatio() failed.\n"));
+    }
 }

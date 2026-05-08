@@ -133,12 +133,7 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getVolume, put = setVolume)) float Volume;
 
-        inline void setDSPSettings(const X3DAUDIO_DSP_SETTINGS& dspSettings) {
-            if (FAILED(sourceVoice->SetOutputMatrix(masteringVoice, inputDetails.InputChannels, outputDetails.InputChannels, dspSettings.pMatrixCoefficients)))
-                Logger::log(LogType::WARNING, _T("SetOutputMatrix() failed.\n"));
-			if (FAILED(sourceVoice->SetFrequencyRatio(dspSettings.DopplerFactor)))
-				Logger::log(LogType::WARNING, _T("SetFrequencyRatio() failed.\n"));
-        }
+        void setDSPSettings(const X3DAUDIO_DSP_SETTINGS& dspSettings);
 
         __declspec(property(put = setDSPSettings)) const X3DAUDIO_DSP_SETTINGS& DSPSettings;
 

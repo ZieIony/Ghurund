@@ -24,5 +24,15 @@ namespace Ghurund::Engine::_2D {
 			scene->Entities.add(entity);
 			co_return entity;
 		}
+
+		inline void fixedUpdate(const Timer& timer) {
+			simulation->simulate(timer.FixedFrameTime);
+			scene->fixedUpdate(timer);
+		}
+
+		inline void update(const Timer& timer) {
+			scene->update(timer);
+			audioWorld->update();
+		}
 	};
 }

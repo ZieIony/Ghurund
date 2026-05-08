@@ -104,6 +104,7 @@
     <ClCompile Include="src\Captain.cpp" />
     <ClCompile Include="src\DemoApplication.cpp" />
     <ClCompile Include="src\DemoWindow.cpp" />
+    <ClCompile Include="src\Ground.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>

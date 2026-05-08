@@ -1,10 +1,10 @@
 #pragma once
 
-#include "engine/2d/scene/component/BaseTransformComponent2D.h"
+#include "engine/2d/scene/component/TransformComponent2D.h"
 
 #include "core/object/RefCountedObject.h"
 #include "engine/graphics/rendering/RenderGroup.h"
-#include "engine/2d/IGraphics2DContext.h"
+#include "component/Component2DCollection.h"
 
 namespace Ghurund::Engine::_2D {
 	using namespace Ghurund::Core;
@@ -15,15 +15,20 @@ namespace Ghurund::Engine::_2D {
 	private:
 		World2D& world;
 		WString name;
-		BaseTransformComponent2D* rootComponent = nullptr;
+		TransformComponent2D* transformComponent = nullptr;
+		Component2DCollection components;
 
 	protected:
 		virtual CoroutineTask<void> onInit() override {
-			co_await rootComponent->init();
+			co_await transformComponent->init();
+			for(auto& component:components)
+				co_await component->init();
 		};
 
 		inline void uninitEntity2D() {
-			rootComponent->uninit();
+			for (auto& component : components)
+				component->uninit();
+			transformComponent->uninit();
 		};
 
 		virtual void onUninit() {
@@ -31,13 +36,16 @@ namespace Ghurund::Engine::_2D {
 		};
 
 	public:
-		Entity2D(World2D& world):world(world) {}
+		Entity2D(World2D& world):world(world) {
+			transformComponent = makeComponent<TransformComponent2D>();
+			components.add(transformComponent);
+		}
 
 		~Entity2D() {
 			if (IsInitialized)
 				uninitEntity2D();
-			if (rootComponent)
-				rootComponent->release();
+			components.clear();
+			transformComponent->release();
 		}
 
 		inline World2D& getWorld() {
@@ -56,29 +64,38 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getName, put = setName)) WString& Name;
 
-		inline BaseTransformComponent2D* getRootComponent() {
-			return rootComponent;
+		inline TransformComponent2D& getTransform() {
+			return *transformComponent;
 		}
 
-		inline void setRootComponent(BaseTransformComponent2D* component) {
-			setPointer(rootComponent, component);
+		__declspec(property(get = getTransform)) TransformComponent2D& Transform;
+
+		inline Component2DCollection& getComponents() {
+			return components;
 		}
 
-		__declspec(property(get = getRootComponent, put = setRootComponent)) BaseTransformComponent2D* RootComponent;
+		__declspec(property(get = getComponents)) Component2DCollection& Components;
 
 		template<Derived<Component2D> T>
 		inline T* makeComponent() {
 			return ghnew T(*this, world);
 		}
 
+		virtual void fixedUpdate(const Timer& timer) {
+			transformComponent->fixedUpdate(timer);
+			for (auto& component : components)
+				component->fixedUpdate(timer);
+		}
+
 		virtual void update(const Timer& timer) {
-			XMFLOAT4X4 identity;
-			XMStoreFloat4x4(&identity, XMMatrixIdentity());
-			rootComponent->update(identity, timer);
+			transformComponent->update(timer);
+			for (auto& component : components)
+				component->update(timer);
 		}
 
 		inline void draw(RenderGroup& group) {
-			rootComponent->draw(group);
+			for (auto& component : components)
+				component->draw(group);
 		}
 	};
 }

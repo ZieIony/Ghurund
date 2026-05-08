@@ -124,10 +124,8 @@
     <ClInclude Include="src\engine\2d\scene\Scene2D.h" />
     <ClInclude Include="src\engine\2d\scene\camera\Camera2D.h" />
     <ClInclude Include="src\engine\2d\scene\camera\CameraComponent2D.h" />
-    <ClInclude Include="src\engine\2d\scene\component\BaseTransformComponent2D.h" />
     <ClInclude Include="src\engine\2d\scene\component\Component2D.h" />
     <ClInclude Include="src\engine\2d\scene\component\Component2DCollection.h" />
-    <ClInclude Include="src\engine\2d\scene\component\Component2DGroup.h" />
     <ClInclude Include="src\engine\2d\scene\component\TransformComponent2D.h" />
     <ClInclude Include="src\engine\2d\scene\component\VisualizationComponent2D.h" />
     <ClInclude Include="src\engine\2d\scene\component\VisualizationInputs.h" />
@@ -158,9 +156,7 @@
     <ClCompile Include="src\engine\2d\scene\Scene2D.cpp" />
     <ClCompile Include="src\engine\2d\scene\camera\Camera2D.cpp" />
     <ClCompile Include="src\engine\2d\scene\camera\CameraComponent2D.cpp" />
-    <ClCompile Include="src\engine\2d\scene\component\BaseTransformComponent2D.cpp" />
     <ClCompile Include="src\engine\2d\scene\component\Component2D.cpp" />
-    <ClCompile Include="src\engine\2d\scene\component\Component2DGroup.cpp" />
     <ClCompile Include="src\engine\2d\scene\component\TransformComponent2D.cpp" />
     <ClCompile Include="src\engine\2d\scene\component\VisualizationComponent2D.cpp" />
     <ClCompile Include="src\engine\2d\scene\tiles\TileMapComponent.cpp" />

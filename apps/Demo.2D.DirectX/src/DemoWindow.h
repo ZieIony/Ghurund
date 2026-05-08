@@ -49,13 +49,11 @@ namespace Demo {
 
 		CoroutineTask<void> initScene();
 
-		CoroutineTask<void> jumpDelayed();
-
 		virtual bool onKeyEvent(const KeyEventArgs& args) override;
 
 		virtual void fixedUpdate() override {
 			__super::fixedUpdate();
-			simulation->simulate(Timer.FixedFrameTime);
+			world.fixedUpdate(Timer);
 		}
 
 		virtual void update() override;

@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Camera2D.h"
-#include "engine/2d/scene/component/TransformComponent2D.h"
+
+#include "engine/2d/scene/component/Component2D.h"
 
 namespace Ghurund::Engine::_2D {
-	class CameraComponent2D:public TransformComponent2D {
+	class CameraComponent2D:public Component2D {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -21,7 +22,7 @@ namespace Ghurund::Engine::_2D {
 		Camera2D* camera;
 
 	public:
-		CameraComponent2D(NotNull<Entity2D> owner, World2D& world):TransformComponent2D(owner, world) {
+		CameraComponent2D(NotNull<Entity2D> owner, World2D& world):Component2D(owner, world) {
 			camera = ghnew Camera2D();
 		}
 
@@ -40,6 +41,6 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getCamera, put = setCamera)) Camera2D* Camera;
 
-		virtual void update(const XMFLOAT4X4& parentTransformation, const Timer& timer) override;
+		virtual void update(const Timer& timer) override;
 	};
 }

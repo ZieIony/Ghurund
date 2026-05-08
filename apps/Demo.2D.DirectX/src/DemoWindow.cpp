@@ -42,17 +42,7 @@ namespace Demo {
 	CoroutineTask<void> DemoWindow::initScene() {
 		ground = co_await world.spawnEntity<Ground>();
 		captain = co_await world.spawnEntity<Captain>();
-		captain->RootComponent->Position = { 0, 2 };
-	}
-
-	CoroutineTask<void> DemoWindow::jumpDelayed() {
-		co_await app.CoroutineScheduler.delayedUpdate(1000);
-		BodyComponent2D& body = (BodyComponent2D&)*captain->RootComponent;
-		body.applyForce({ 0, 1000 });
-		co_await app.CoroutineScheduler.delayedUpdate(1000);
-		body.applyForce({ 1000, 0 });
-		co_await app.CoroutineScheduler.delayedUpdate(1000);
-		body.applyForce({ -1000, 0 });
+		captain->Components.get<BodyComponent2D>()->Position = {0, 2};
 	}
 
 	bool DemoWindow::onKeyEvent(const KeyEventArgs& args) {
@@ -76,24 +66,17 @@ namespace Demo {
 			auto currentMode = DisplayManager::getDisplayMode();
 			ClientSize = currentMode.size;
 			Position = { 0, 0 };
-		} else if (args.KeyCode == 'e') {
-			jumpDelayed();
 		} else if (args.KeyCode == 'w') {
-			BodyComponent2D& body = (BodyComponent2D&)*captain->RootComponent;
-			body.applyForce({ 0, 1000 });
+			captain->jump();
 		} else if (args.KeyCode == 'q') {
 			captain->playSound();
 		} else if (args.KeyCode == 'a') {
-			BodyComponent2D& body = (BodyComponent2D&)*captain->RootComponent;
-			body.applyForce({ -500, 0 });
-			captain->RootComponent->Scale = { -1, 1 };
+			captain->moveLeft();
 		} else if (args.KeyCode == 'd') {
-			BodyComponent2D& body = (BodyComponent2D&)*captain->RootComponent;
-			body.applyForce({ 500, 0 });
-			captain->RootComponent->Scale = { 1, 1 };
+			captain->moveRight();
 		} else if (args.KeyCode == 't') {
 			Logger::print(LogType::INFO, _T("\n"));
-			Logger::print(LogType::INFO, captain->RootComponent->printTree().Data);
+			//Logger::print(LogType::INFO, captain->printTree().Data);
 			Logger::print(LogType::INFO, _T("\n"));
 		} else if (args.KeyCode == 'p') {
 			Timer.TimeScale = Timer.TimeScale == 1.0f ? 0.1f : 1.0f;
@@ -103,8 +86,7 @@ namespace Demo {
 
 	void DemoWindow::update() {
 		__super::update();
-		scene->update(Timer);
-		audioWorld->update();
+		world.update(Timer);
 
 		auto text = std::format(_T("fps: {:.2f}"), Timer.FramesPerSecond);
 		Title = String(text.c_str());

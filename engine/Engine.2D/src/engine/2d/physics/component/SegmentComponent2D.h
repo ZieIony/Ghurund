@@ -2,6 +2,8 @@
 
 #include "BodyComponent2D.h"
 
+#include "engine/2d/scene/component/TransformComponent2D.h"
+
 #include <box2d.h>
 
 namespace Ghurund::Engine::_2D {
@@ -20,14 +22,27 @@ namespace Ghurund::Engine::_2D {
 
 	private:
 		b2ShapeId shapeId;
+		float width = 1.0f;
 
-		inline void uninitSegmentComponent2D() {
-			if (visualizationComponent) {
-				Components.remove(visualizationComponent);
-				visualizationComponent->release();
-				visualizationComponent = nullptr;
-			}
+		EventHandler<TransformComponent2D> scaleChangedHandler = [&](TransformComponent2D& transform) -> bool {
+			updateShape();
+			return true;
 		};
+
+		inline b2Segment makeSegment() {
+			b2Segment segment;
+			float w = fabs(scale.x * width) / 2;
+			segment.point1 = { -w, 0 };
+			segment.point2 = { w, 0 };
+			return segment;
+		}
+
+		inline void updateShape() {
+			b2Segment segment = makeSegment();
+			b2Shape_SetSegment(shapeId, &segment);
+		}
+
+		void uninitSegmentComponent2D();
 
 	protected:
 		virtual CoroutineTask<void> onInit() override;
@@ -37,8 +52,6 @@ namespace Ghurund::Engine::_2D {
 			__super::onUninit();
 		};
 
-		virtual void updateSize() override;
-
 	public:
 		SegmentComponent2D(NotNull<Entity2D> owner, World2D& world):BodyComponent2D(owner, world) {}
 	
@@ -46,5 +59,18 @@ namespace Ghurund::Engine::_2D {
 			if (IsInitialized)
 				uninitSegmentComponent2D();
 		}
+
+		inline float getWidth() const {
+			return width;
+		}
+
+		inline void setWidth(float width) {
+			this->width = width;
+			updateShape();
+		}
+
+		__declspec(property(get = getWidth, put = setWidth)) float Width;
+
+		virtual void update(const Timer& timer) override;
 	};
 }

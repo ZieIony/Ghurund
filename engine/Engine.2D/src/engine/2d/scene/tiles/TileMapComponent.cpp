@@ -1,6 +1,8 @@
 #include "ghe2dpch.h"
 #include "TileMapComponent.h"
 
+#include "core/application/Application.h"
+
 namespace Ghurund::Engine::_2D {
 	const Ghurund::Core::Type& TileMapComponent::GET_TYPE() {
 		static const Ghurund::Core::Type TYPE = TypeBuilder<TileMapComponent>()
@@ -26,5 +28,26 @@ namespace Ghurund::Engine::_2D {
 		}
 		mesh = Owner->World.context->makeTileMapMesh(tileMap->Size, tiles);
 		Material = (co_await Owner->World.context->makeTileMapMaterial()).get();
+	}
+
+	void TileMapComponent::reloadResource() {
+		if (tileMap && !tileMap->IsValid) {
+			uninit();
+		} else {
+			Owner->World.app->CoroutineScheduler.launch(init());
+		}
+	}
+	
+	void TileMapComponent::draw(RenderGroup& group) {
+		if (mesh && material) {
+			auto w = XMLoadFloat4x4(&Owner->Transform.WorldTransformation);
+			XMFLOAT4X4 world;
+			XMStoreFloat4x4(&world, XMMatrixTranspose(w));
+
+			inputs.Transformation = world;
+			group.objects.add(DrawPacket(mesh, material, drawOrder));
+		}
+
+		__super::draw(group);
 	}
 }

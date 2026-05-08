@@ -49,6 +49,11 @@ namespace Ghurund::Engine::_2D {
 
         __declspec(property(get = getEntities)) List<IntrusivePointer<Entity2D>>& Entities;
 
+        inline void fixedUpdate(const Timer& timer) {
+            for (auto& entity : entities)
+                entity->fixedUpdate(timer);
+        }
+
         inline void update(const Timer& timer) {
             for (auto& entity : entities)
                 entity->update(timer);

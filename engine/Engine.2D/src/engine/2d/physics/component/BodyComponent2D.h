@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/2d/scene/component/BaseTransformComponent2D.h"
+#include "engine/2d/scene/component/Component2D.h"
 #include "engine/2d/scene/component/VisualizationComponent2D.h"
 
 #include <box2d.h>
@@ -15,7 +15,7 @@ namespace Ghurund::Engine::_2D {
 
 	class Simulation2D;
 
-	class BodyComponent2D:public BaseTransformComponent2D {
+	class BodyComponent2D:public Component2D {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -37,40 +37,8 @@ namespace Ghurund::Engine::_2D {
 		VisualizationComponent2D* visualizationComponent = nullptr;
 
 		XMFLOAT2 scale = { 1, 1 };
-		FloatSize size = { 1, 1 };
 
-		virtual XMFLOAT2 getPositionInternal() const override {
-			b2Vec2 position = b2Body_GetPosition(id);
-			return { position.x, position.y };
-		}
-
-		virtual void setPositionInternal(float x, float y) override {
-			b2Rot rotation = b2Body_GetRotation(id);
-			b2Body_SetTransform(id, { x, y }, rotation);
-			b2Body_SetLinearVelocity(id, { 0, 0 });
-			b2Body_SetAngularVelocity(id, 0);
-		}
-
-		virtual float getRotationInternal() const override {
-			b2Rot rotation = b2Body_GetRotation(id);
-			return b2Rot_GetAngle(rotation) / DirectX::XM_PI * 180.0f;
-		}
-
-		virtual void setRotationInternal(float rotation) override {
-			b2Vec2 position = b2Body_GetPosition(id);
-			float radians = DirectX::XM_PI * rotation / 180.0f;
-			b2Body_SetTransform(id, position, { cosf(radians), sinf(radians) });
-		}
-
-		virtual XMFLOAT2 getScaleInternal() const override {
-			return scale;
-		}
-
-		virtual void setScaleInternal(float x, float y) override {
-			scale.x = x;
-			scale.y = y;
-			updateSize();
-		}
+		bool interpolateTransform = true;
 
 		virtual CoroutineTask<void> onInit() override;
 
@@ -82,8 +50,6 @@ namespace Ghurund::Engine::_2D {
 			uninitBodyComponent2D();
 			__super::onUninit();
 		};
-
-		virtual void updateSize() = 0;
 
 	public:
 		BodyComponent2D(NotNull<Entity2D> owner, World2D& world);
@@ -99,15 +65,56 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getId)) b2BodyId Id;
 
-		inline void setType(BodyType type) {
+		inline void setBodyType(BodyType type) {
 			b2Body_SetType(id, (b2BodyType)type);
 		}
 
-		inline BodyType getType() const {
-			return (BodyType)b2Body_GetType(id);
+		inline BodyType getBodyType() const {
+			return (Ghurund::Engine::_2D::BodyType)b2Body_GetType(id);
 		}
 
-		__declspec(property(get = getType, put = setType)) BodyType Type;
+		__declspec(property(get = getBodyType, put = setBodyType)) BodyType BodyType;
+
+		inline XMFLOAT2 getPosition() const {
+			b2Vec2 position = b2Body_GetPosition(id);
+			return { position.x, position.y };
+		}
+
+		inline void setPosition(float x, float y) {
+			b2Rot rotation = b2Body_GetRotation(id);
+			b2Body_SetTransform(id, { x, y }, rotation);
+			b2Body_SetLinearVelocity(id, { 0, 0 });
+			b2Body_SetAngularVelocity(id, 0);
+		}
+
+		inline void setPosition(const XMFLOAT2& pos) {
+			setPosition(pos.x, pos.y);
+		}
+
+		__declspec(property(get = getPosition, put = setPosition)) const XMFLOAT2& Position;
+
+		inline float getRotation() const {
+			b2Rot rotation = b2Body_GetRotation(id);
+			return b2Rot_GetAngle(rotation) / DirectX::XM_PI * 180.0f;
+		}
+
+		inline void setRotation(float rotation) {
+			b2Vec2 position = b2Body_GetPosition(id);
+			float radians = DirectX::XM_PI * rotation / 180.0f;
+			b2Body_SetTransform(id, position, { cosf(radians), sinf(radians) });
+		}
+
+		__declspec(property(get = getRotation, put = setRotation)) float Rotation;
+
+		inline bool getInterpolateTransform() const {
+			return interpolateTransform;
+		}
+
+		inline void setInterpolateTransform(bool interpolateTranform) {
+			this->interpolateTransform = interpolateTranform;
+		}
+
+		__declspec(property(get = getInterpolateTransform, put = setInterpolateTransform)) bool InterpolateTransform;
 
 		inline void setIsRotationFixed(bool fixed) {
 			b2Body_SetFixedRotation(id, fixed);
@@ -118,17 +125,6 @@ namespace Ghurund::Engine::_2D {
 		}
 
 		__declspec(property(get = getIsRotationFixed, put = setIsRotationFixed)) bool IsRotationFixed;
-
-		inline void setSize(const FloatSize& size) {
-			this->size = size;
-			updateSize();
-		}
-
-		inline const FloatSize& getSize() const {
-			return size;
-		}
-
-		__declspec(property(get = getSize, put = setSize)) const FloatSize& Size;
 
 		inline XMFLOAT2 getLinearVelocity() const {
 			auto vec = b2Body_GetLinearVelocity(id);
@@ -147,6 +143,6 @@ namespace Ghurund::Engine::_2D {
 			b2Body_ApplyForceToCenter(id, { force.x, force.y }, true);
 		}
 
-		virtual void update(const XMFLOAT4X4& parentTransformation, const Timer& timer) override;
+		virtual void fixedUpdate(const Timer& timer) override;
 	};
 }

@@ -2,6 +2,8 @@
 
 #include "BodyComponent2D.h"
 
+#include "engine/2d/scene/component/TransformComponent2D.h"
+
 #include <box2d.h>
 
 namespace Ghurund::Engine::_2D {
@@ -20,14 +22,23 @@ namespace Ghurund::Engine::_2D {
 
 	private:
 		b2ShapeId shapeId;
+		FloatSize size = { 1, 1 };
 
-		inline void uninitBoxComponent2D() {
-			if (visualizationComponent) {
-				Components.remove(visualizationComponent);
-				visualizationComponent->release();
-				visualizationComponent = nullptr;
-			}
+		EventHandler<TransformComponent2D> scaleChangedHandler = [&](TransformComponent2D& transform) -> bool {
+			updateShape();
+			return true;
 		};
+
+		inline b2Polygon makeBox() {
+			return b2MakeBox(fabs(scale.x * size.Width) / 2, fabs(scale.y * size.Height) / 2);
+		}
+
+		inline void updateShape() {
+			b2Polygon box = makeBox();
+			b2Shape_SetPolygon(shapeId, &box);
+		}
+
+		void uninitBoxComponent2D();;
 
 	protected:
 		virtual CoroutineTask<void> onInit() override;
@@ -37,8 +48,6 @@ namespace Ghurund::Engine::_2D {
 			__super::onUninit();
 		};
 
-		virtual void updateSize() override;
-
 	public:
 		BoxComponent2D(NotNull<Entity2D> owner, World2D& world):BodyComponent2D(owner, world) {}
 	
@@ -47,8 +56,23 @@ namespace Ghurund::Engine::_2D {
 				uninitBoxComponent2D();
 		}
 
+		inline const FloatSize& getSize() const {
+			return size;
+		}
+
+		inline void setSize(const FloatSize& size) {
+			if (this->size != size) {
+				this->size = size;
+				updateShape();
+			}
+		}
+
+		__declspec(property(get = getSize, put = setSize)) const FloatSize& Size;
+
 		//inline void setMass(float massKg) {
 		//	b2Shape_SetDensity()
 		//}
+
+		virtual void update(const Timer& timer) override;
 	};
 }

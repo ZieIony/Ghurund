@@ -4,11 +4,14 @@
 #include <DirectXMath.h>
 
 namespace Ghurund::Core {
-	static inline const ::DirectX::XMFLOAT4X4 MATRIX_IDENTITY = [] {
-		::DirectX::XMFLOAT4X4 identity;
-		::DirectX::XMStoreFloat4x4(&identity, ::DirectX::XMMatrixIdentity());
+	static inline const ::DirectX::XMFLOAT4X4 makeIdentityMatrix() {
+		static ::DirectX::XMFLOAT4X4 identity = [] -> ::DirectX::XMFLOAT4X4 {
+			::DirectX::XMFLOAT4X4 identity;
+			::DirectX::XMStoreFloat4x4(&identity, ::DirectX::XMMatrixIdentity());
+			return identity;
+		}();
 		return identity;
-	}();
+	};
 
 	struct Matrix3x2 {
 		union {
@@ -25,7 +28,7 @@ namespace Ghurund::Core {
 	};
 
 	inline ::DirectX::XMFLOAT4X4 makeSaturationMatrix(float sat) {
-		::DirectX::XMFLOAT4X4 m = MATRIX_IDENTITY;
+		::DirectX::XMFLOAT4X4 m = makeIdentityMatrix();
 
 		float invSat = 1 - sat;
 		float R = 0.213f * invSat;

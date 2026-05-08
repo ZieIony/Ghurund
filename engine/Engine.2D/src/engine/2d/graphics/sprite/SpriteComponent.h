@@ -37,8 +37,7 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(put = setColorTexture)) ITexture* ColorTexture;
 
-		virtual void update(const XMFLOAT4X4& parentTransformation, const Timer& timer) override {
-			__super::update(parentTransformation, timer);
+		virtual void update(const Timer& timer) override {
 			// TODO: don't update static parameters every frame (not only colorTexture)
 			inputs.ColorTexture = colorTexture;
 		}

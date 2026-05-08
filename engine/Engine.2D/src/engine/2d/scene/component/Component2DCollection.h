@@ -10,12 +10,9 @@ namespace Ghurund::Engine::_2D {
 	class Component2DCollection {
 	private:
 		List<Component2D*> components;
-		Component2D& owner;
 
 	public:
 		Event<Component2DCollection> collectionChanged = *this;
-
-		Component2DCollection(Component2D& owner):owner(owner) {}
 
 		~Component2DCollection() {
 			clear();
@@ -24,7 +21,6 @@ namespace Ghurund::Engine::_2D {
 		inline void add(NotNull<Component2D> component) {
 			components.add(component.get());
 			component->addReference();
-			component->Parent = &owner;
 			collectionChanged();
 		}
 
@@ -32,7 +28,6 @@ namespace Ghurund::Engine::_2D {
 			for (Component2D* component : components) {
 				this->components.add(component);
 				component->addReference();
-				component->Parent = &owner;
 			}
 			collectionChanged();
 		}
@@ -41,7 +36,6 @@ namespace Ghurund::Engine::_2D {
 			for (Component2D* component : components) {
 				this->components.add(component);
 				component->addReference();
-				component->Parent = &owner;
 			}
 			collectionChanged();
 		}
@@ -49,12 +43,10 @@ namespace Ghurund::Engine::_2D {
 		inline void insert(size_t i, NotNull<Component2D> component) {
 			components.insert(i, component.get());
 			component->addReference();
-			component->Parent = &owner;
 			collectionChanged();
 		}
 
 		inline void remove(Component2D* component) {
-			component->Parent = nullptr;
 			components.remove(component);
 			component->release();
 			collectionChanged();
@@ -62,7 +54,6 @@ namespace Ghurund::Engine::_2D {
 
 		inline void removeAt(size_t index) {
 			auto& component = components.get(index);
-			component->Parent = nullptr;
 			components.removeAt(index);
 			component->release();
 			collectionChanged();
@@ -91,7 +82,7 @@ namespace Ghurund::Engine::_2D {
 			return components.end();
 		}
 
-		virtual size_t getSize() const {
+		inline size_t getSize() const {
 			return components.getSize();
 		}
 
@@ -101,16 +92,35 @@ namespace Ghurund::Engine::_2D {
 			Component2D* component = components[i];
 			if (component == e)
 				return;
-			component->Parent = nullptr;
 			component->release();
 			components.set(i, e);
 			e->addReference();
-			e->Parent = &owner;
 			collectionChanged();
 		}
 
-		virtual Component2D* get(size_t i) {
+		inline Component2D* get(size_t i) {
 			return components.get(i);
+		}
+
+		template<typename T>
+		inline T* get() {
+			for (auto& component : components) {
+				if (component->Type.isOrExtends(T::TYPE))
+					return (T*)component;
+			}
+			return nullptr;
+		}
+
+		template<typename T>
+		inline T* get(size_t i) {
+			size_t found = 0;
+			for (auto& component : components) {
+				if (component->Type.isOrExtends(T::TYPE))
+					found++;
+				if (found == i)
+					return (T*)component;
+			}
+			return nullptr;
 		}
 
 		/*inline size_t indexOf(const Component2D* component) const {

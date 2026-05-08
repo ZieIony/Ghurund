@@ -4,7 +4,7 @@
 
 #include "core/Colors.h"
 #include "core/math/Size.h"
-#include "engine/2d/scene/component/TransformComponent2D.h"
+#include "engine/2d/scene/component/Component2D.h"
 #include "engine/2d/scene/Entity2D.h"
 #include "engine/graphics/material/Material.h"
 #include "engine/graphics/mesh/Mesh.h"
@@ -14,7 +14,7 @@
 namespace Ghurund::Engine::_2D {
 	using namespace Ghurund::Core;
 
-	class BaseSpriteComponent:public TransformComponent2D {
+	class BaseSpriteComponent:public Component2D {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -32,6 +32,7 @@ namespace Ghurund::Engine::_2D {
 		BoundingOrientedBox transformedBoundingBox;
 		bool culled = false;
 		bool selectable = true, visible = true, cullingEnabled = true;
+		XMFLOAT2 offset;
 		FloatSize size = { 1, 1 };
 
 		inline void uninitBaseSpriteComponent() {
@@ -54,7 +55,7 @@ namespace Ghurund::Engine::_2D {
 		};
 
 	public:
-		BaseSpriteComponent(NotNull<Entity2D> owner, World2D& world):TransformComponent2D(owner, world) {}
+		BaseSpriteComponent(NotNull<Entity2D> owner, World2D& world):Component2D(owner, world) {}
 
 		virtual ~BaseSpriteComponent() = 0 {
 			if (IsInitialized)
@@ -87,12 +88,28 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(put = setAlpha)) float Alpha;
 
-		inline void setSize(const FloatSize& size) {
-			this->size = size;
+		inline const XMFLOAT2& getOffset() const {
+			return offset;
 		}
+
+		inline void setOffset(float x, float y) {
+			offset.x = x;
+			offset.y = y;
+		}
+
+		inline void setOffset(const XMFLOAT2& offset) {
+			this->offset.x = offset.x;
+			this->offset.y = offset.y;
+		}
+
+		__declspec(property(get = getOffset, put = setOffset)) const XMFLOAT2& Offset;
 
 		inline const FloatSize& getSize() const {
 			return size;
+		}
+
+		inline void setSize(const FloatSize& size) {
+			this->size = size;
 		}
 
 		__declspec(property(get = getSize, put = setSize)) const FloatSize& Size;

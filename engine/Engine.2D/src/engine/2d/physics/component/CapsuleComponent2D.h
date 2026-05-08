@@ -1,7 +1,8 @@
 #pragma once
 
 #include "BodyComponent2D.h"
-#include "engine/2d/scene/Entity2D.h"
+
+#include "engine/2d/scene/component/TransformComponent2D.h"
 
 #include <box2d.h>
 
@@ -21,14 +22,29 @@ namespace Ghurund::Engine::_2D {
 
 	private:
 		b2ShapeId shapeId;
+		float height = 1.0f, radius = 0.25f;
 
-		inline void uninitCapsuleComponent2D() {
-			if (visualizationComponent) {
-				Components.remove(visualizationComponent);
-				visualizationComponent->release();
-				visualizationComponent = nullptr;
-			}
+		EventHandler<TransformComponent2D> scaleChangedHandler = [&](TransformComponent2D& transform) -> bool {
+			updateShape();
+			return true;
 		};
+
+		inline b2Capsule makeCapsule() {
+			b2Capsule capsule;
+			float h = std::max(0.001f, fabs(scale.y * height));
+			float r = std::min(h / 2 - 0.001f, fabs(scale.x * radius));
+			capsule.radius = r;
+			capsule.center1 = { 0, -h / 2 + r };
+			capsule.center2 = { 0, h / 2 - r };
+			return capsule;
+		}
+
+		inline void updateShape() {
+			b2Capsule capsule = makeCapsule();
+			b2Shape_SetCapsule(shapeId, &capsule);
+		}
+
+		void uninitCapsuleComponent2D();
 
 	protected:
 		virtual CoroutineTask<void> onInit() override;
@@ -38,8 +54,6 @@ namespace Ghurund::Engine::_2D {
 			__super::onUninit();
 		};
 
-		virtual void updateSize() override;
-
 	public:
 		CapsuleComponent2D(NotNull<Entity2D> owner, World2D& world):BodyComponent2D(owner, world) {}
 	
@@ -47,5 +61,27 @@ namespace Ghurund::Engine::_2D {
 			if (IsInitialized)
 				uninitCapsuleComponent2D();
 		}
+
+		inline float getHeight() const {
+			return height;
+		}
+
+		__declspec(property(get = getHeight)) float Height;
+
+		inline float getRadius() const {
+			return radius;
+		}
+
+		__declspec(property(get = getRadius)) float Radius;
+
+		inline void setHeightRadius(float height, float radius) {
+			if (this->height != height || this->radius != radius) {
+				this->height = height;
+				this->radius = radius;
+				updateShape();
+			}
+		}
+
+		virtual void update(const Timer& timer) override;
 	};
 }

@@ -52,6 +52,6 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getAnimator, put = setAnimator)) SpriteAnimator* Animator;
 
-		virtual void update(const XMFLOAT4X4& parentTransformation, const Timer& timer) override;
+		virtual void update(const Timer& timer) override;
 	};
 }
