@@ -19,6 +19,7 @@ namespace Ghurund::Core {
 		}
 
 		bool await_suspend(std::coroutine_handle<> handle) {
+			// TODO: this operation needs to be synchronized
 			threadAwaiters.add(handle);
 			return true;
 		}

@@ -146,7 +146,7 @@ namespace UnitTest {
 			MemoryGuard guard;
 			{
 				Tree<MapTraits<uint32_t, TreeTestValue>> tree;
-				tree[1] = {'a'};
+				tree[1] = { 'a' };
 
 				Assert::AreEqual(tree.Size, (size_t)1);
 				Assert::AreEqual(tree.Empty, false);
@@ -357,6 +357,37 @@ namespace UnitTest {
 #ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
 #endif
+			}
+		}
+
+		TEST_METHOD(Tree_removeAll) {
+			MemoryGuard guard;
+			{
+				Tree<SetTraits<uint32_t>> tree = { 1, 2, 3, 5, 20, 4, 7, 14, 22, 6 };
+				tree.removeAll({ 2, 5, 20, 4, 7 });
+#ifdef _DEBUG
+				Assert::IsTrue(tree.verify());
+#endif
+
+				Assert::AreEqual(tree.Size, (size_t)5);
+				Assert::AreEqual(tree.Empty, false);
+				Assert::IsTrue(tree.contains(1u));
+				Assert::IsFalse(tree.contains(2u));
+				Assert::IsTrue(tree.contains(3u));
+			}
+			{
+				Tree<SetTraits<uint32_t>> tree = { 1, 2, 3, 5, 20, 4, 7, 14, 22, 6 };
+				List<uint32_t> toRemove = { 2, 5, 20, 4, 7 };
+				tree.removeAll(toRemove);
+#ifdef _DEBUG
+				Assert::IsTrue(tree.verify());
+#endif
+
+				Assert::AreEqual(tree.Size, (size_t)5);
+				Assert::AreEqual(tree.Empty, false);
+				Assert::IsTrue(tree.contains(1u));
+				Assert::IsFalse(tree.contains(2u));
+				Assert::IsTrue(tree.contains(3u));
 			}
 		}
 

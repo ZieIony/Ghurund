@@ -111,6 +111,8 @@
     <ClCompile Include="src\test\entity\BoxComponentTest.cpp" />
     <ClCompile Include="src\test\game\action\ActionMappingTest.cpp" />
     <ClCompile Include="src\test\game\action\FloatGameActionTest.cpp" />
+    <ClCompile Include="src\test\game\tag\TagCollectionTest.cpp" />
+    <ClCompile Include="src\test\game\tag\TagManagerTest.cpp" />
     <ClCompile Include="src\test\graphics\material\MaterialTest.cpp" />
     <ClCompile Include="src\test\graphics\mesh\MeshDataLoaderTest.cpp" />
     <ClCompile Include="src\test\graphics\mesh\MeshDataTest.cpp" />

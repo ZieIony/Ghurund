@@ -470,6 +470,29 @@ namespace Ghurund::Core {
 			size--;
 		}
 
+		template<Iterable<key_t> CollectionType>
+		inline void removeAll(const CollectionType& keyCollection) {
+			for (auto& key : keyCollection) {
+				Node* node = findNode(key);
+				if (!node)
+					continue;
+
+				deleteNode(node);
+				size--;
+			}
+		}
+
+		inline void removeAll(const std::initializer_list<key_t>& keyList) {
+			for (auto& key : keyList) {
+				Node* node = findNode(key);
+				if (!node)
+					continue;
+
+				deleteNode(node);
+				size--;
+			}
+		}
+
 		inline iterator find(const key_t& key) {
 			return iterator(findNode(key));
 		}

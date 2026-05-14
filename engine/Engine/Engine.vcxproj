@@ -98,6 +98,9 @@
     <ClInclude Include="src\engine\animation\AnimatorState.h" />
     <ClInclude Include="src\engine\audio\AudioListener.h" />
     <ClInclude Include="src\engine\audio\sound\SoundEmitter.h" />
+    <ClInclude Include="src\engine\game\tag\Tag.h" />
+    <ClInclude Include="src\engine\game\tag\TagCollection.h" />
+    <ClInclude Include="src\engine\game\tag\TagManager.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameApplication.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
@@ -202,6 +205,7 @@
     <ClCompile Include="src\engine\editor\ThumbnailRenderer.cpp" />
     <ClCompile Include="src\engine\game\Component.cpp" />
     <ClCompile Include="src\engine\game\action\ActionMapping.cpp" />
+    <ClCompile Include="src\engine\game\tag\TagManager.cpp" />
     <ClCompile Include="src\engine\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\engine\graphics\GraphicsFeature.cpp" />
     <ClCompile Include="src\engine\graphics\material\Material.cpp" />

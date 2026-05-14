@@ -299,11 +299,11 @@ namespace Ghurund::Core {
 			return v[i];
 		}
 
-		bool operator==(const GenericString& string) const {
+		inline bool operator==(const GenericString& string) const {
 			return size == string.size && size != 0 && memcmp(v, string.v, Length * sizeof(T)) == 0;
 		}
 
-		bool operator==(const T* str) const {
+		inline bool operator==(const T* str) const {
 			return lengthOf(str) == Length && memcmp(v, str, Length * sizeof(T)) == 0;
 		}
 
@@ -473,7 +473,7 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = isEmpty)) bool Empty;
 
-		std::strong_ordering operator<=>(const GenericString<T>& string) const {
+		constexpr std::strong_ordering operator<=>(const GenericString<T>& string) const {
 			int order = lexicographicalStrCompare<T>(v, string.Data);
 			if (order < 0) {
 				return std::strong_ordering::less;

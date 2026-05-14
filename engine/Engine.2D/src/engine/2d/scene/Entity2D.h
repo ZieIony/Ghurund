@@ -3,8 +3,9 @@
 #include "engine/2d/scene/component/TransformComponent2D.h"
 
 #include "core/object/RefCountedObject.h"
-#include "engine/graphics/rendering/RenderGroup.h"
 #include "component/Component2DCollection.h"
+#include "engine/graphics/rendering/RenderGroup.h"
+#include "engine/game/tag/TagCollection.h"
 
 namespace Ghurund::Engine::_2D {
 	using namespace Ghurund::Core;
@@ -15,6 +16,7 @@ namespace Ghurund::Engine::_2D {
 	private:
 		World2D& world;
 		WString name;
+		TagCollection tags;
 		TransformComponent2D* transformComponent = nullptr;
 		Component2DCollection components;
 
@@ -63,6 +65,12 @@ namespace Ghurund::Engine::_2D {
 		}
 
 		__declspec(property(get = getName, put = setName)) WString& Name;
+
+		inline TagCollection& getTags() {
+			return tags;
+		}
+
+		__declspec(property(get = getTags)) TagCollection& Tags;
 
 		inline TransformComponent2D& getTransform() {
 			return *transformComponent;
