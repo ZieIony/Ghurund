@@ -106,12 +106,12 @@ namespace Ghurund::Core {
 
 		template<Derived<T> R>
 		inline auto operator<=>(const IntrusivePointer<R>& other) const {
-			return pointer <=> other.get();
+			return pointer->operator<=>(other.ref());
 		}
 
 		template<Derived<T> R>
 		inline bool operator==(const IntrusivePointer<R>& other) const {
-			return pointer == other.get();
+			return pointer->operator==(other.ref());
 		}
 
 		inline bool operator==(const nullptr_t& other) const {

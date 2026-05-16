@@ -74,6 +74,14 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getReferenceCount)) uint32_t ReferenceCount;
 
+        constexpr std::strong_ordering operator<=>(const RefCountedObject& other) const noexcept {
+            return this <=> &other;
+        }
+
+        constexpr bool operator==(const RefCountedObject& other) const {
+            return this == &other;
+        }
+
         virtual String toString() const override;
 
 #ifdef _DEBUG
