@@ -22,7 +22,7 @@ namespace Demo {
 		captainSprite = IntrusivePointer(makeComponent<AnimatedSpriteComponent>());
 		co_await captainSprite->init();
 
-		auto animationSet = co_await World.app->ResourceManager.load<SpriteAnimationSet>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/captain.xml"));
+		auto animationSet = co_await World.app.ResourceManager.load<SpriteAnimationSet>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/captain.xml"));
 		captainSprite->Animation = animationSet->get(animationSet->find(L"idle"));
 
 		animator = makeIntrusive<SpriteAnimator>();
@@ -39,15 +39,15 @@ namespace Demo {
 		cameraComponent = IntrusivePointer(makeComponent<CameraComponent2D>());
 		cameraComponent->Camera->ViewSize = { 8, 6 };
 		cameraComponent->Camera->setPositionUp({ 0, 0 });
-		World.scene->Camera = cameraComponent->Camera;
+		World.Scene.Camera = cameraComponent->Camera;
 
-		thudSound = co_await World.app->ResourceManager.load<Sound>(ResourceManager::ENGINE_LIB / FilePath(L"test/sounds/thud.wav"));
+		thudSound = co_await World.app.ResourceManager.load<Sound>(ResourceManager::ENGINE_LIB / FilePath(L"test/sounds/thud.wav"));
 		audioListenerComponent = IntrusivePointer(makeComponent<AudioListenerComponent2D>());
-		World.audioWorld->AudioListener = audioListenerComponent.get();
+		World.AudioSystem->AudioListener = audioListenerComponent.get();
 
 		soundComponent = IntrusivePointer(makeComponent<SoundComponent2D>());
 		soundComponent->Sound = thudSound.get();
-		World.audioWorld->soundComponents.add(soundComponent);
+		World.AudioSystem->soundComponents.add(soundComponent);
 
 		Components.add(captainSprite.get());
 		Components.add(cameraComponent.get());

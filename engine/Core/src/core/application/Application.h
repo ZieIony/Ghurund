@@ -45,6 +45,10 @@ namespace Ghurund::Core {
 
 		virtual void onUninit();
 
+		virtual void onFixedUpdate();
+
+		virtual void onUpdate();
+
 	public:
 		virtual ~Application() {
 			if (IsInitialized)

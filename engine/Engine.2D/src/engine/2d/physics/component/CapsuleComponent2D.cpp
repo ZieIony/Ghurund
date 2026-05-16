@@ -27,8 +27,8 @@ namespace Ghurund::Engine::_2D {
 				visualizationComponent->release();
 			}
 			visualizationComponent = Owner->makeComponent<VisualizationComponent2D>();
-			visualizationComponent->Mesh = IntrusivePointer<Mesh>(Owner->World.context->makeSpriteMesh()).get();
-			visualizationComponent->Material = (co_await Owner->World.context->makeCapsuleVisualizationMaterial()).get();
+			visualizationComponent->Mesh = IntrusivePointer<Mesh>(Owner->World.context.makeSpriteMesh()).get();
+			visualizationComponent->Material = (co_await Owner->World.context.makeCapsuleVisualizationMaterial()).get();
 			Owner->Components.add(visualizationComponent);
 		}
 		co_await __super::onInit();

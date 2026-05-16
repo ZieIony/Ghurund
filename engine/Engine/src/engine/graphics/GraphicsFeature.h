@@ -25,6 +25,11 @@ namespace Ghurund::Engine {
 
         void uninitGraphicsFeature();
 
+    protected:
+        virtual void onInit() override;
+
+        virtual void onUninit() override;
+
     public:
         GraphicsFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 
@@ -32,9 +37,5 @@ namespace Ghurund::Engine {
             if (IsInitialized)
                 uninitGraphicsFeature();
         }
-
-        virtual void onInit() override;
-
-        virtual void onUninit() override;
     };
 }

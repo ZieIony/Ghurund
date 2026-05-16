@@ -12,7 +12,6 @@ namespace Ghurund::Engine::_2D {
 	}
 
 	CoroutineTask<void> TileMapComponent::onInit() {
-		co_await __super::onInit();
 		Array<TileInfo> tiles = tileMap->Size.Width * tileMap->Size.Height;
 		uint32_t tileIndex = 0;
 		for (TileInfo& tileInfo : tiles) {
@@ -26,15 +25,15 @@ namespace Ghurund::Engine::_2D {
 			tileInfo.texCoordBottomRight = { texCoords.z, texCoords.w };
 			tileIndex++;
 		}
-		mesh = Owner->World.context->makeTileMapMesh(tileMap->Size, tiles);
-		Material = (co_await Owner->World.context->makeTileMapMaterial()).get();
+		mesh = Owner->World.context.makeTileMapMesh(tileMap->Size, tiles);
+		Material = (co_await Owner->World.context.makeTileMapMaterial()).get();
 	}
 
 	void TileMapComponent::reloadResource() {
 		if (tileMap && !tileMap->IsValid) {
 			uninit();
 		} else {
-			Owner->World.app->CoroutineScheduler.launch(init());
+			Owner->World.app.CoroutineScheduler.launch(init());
 		}
 	}
 	

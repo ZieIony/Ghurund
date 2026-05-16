@@ -13,7 +13,7 @@ namespace Ghurund::Engine::_2D {
 		STATIC = b2_staticBody, KINEMATIC = b2_kinematicBody, DYNAMIC = b2_dynamicBody
 	};
 
-	class Simulation2D;
+	class PhysicsSystem2D;
 
 	class BodyComponent2D:public Component2D {
 #pragma region reflection
@@ -29,7 +29,7 @@ namespace Ghurund::Engine::_2D {
 #pragma endregion
 
 	private:
-		Simulation2D& simulation;
+		PhysicsSystem2D& physicsSystem;
 		b2BodyId id;
 
 	protected:
@@ -48,7 +48,6 @@ namespace Ghurund::Engine::_2D {
 
 		virtual void onUninit() {
 			uninitBodyComponent2D();
-			__super::onUninit();
 		};
 
 	public:

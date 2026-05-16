@@ -24,24 +24,15 @@ namespace Demo {
 
 		context2d = makeShared<DxGraphics2DContext>(graphicsFeature->MemoryManager, app.ResourceManager);
 
-		simulation = makeShared<Simulation2D>();
-		scene = makeIntrusive<Scene2D>(context2d.ref());
-
-		AudioFeature* audioFeature = app.Features.get<AudioFeature>();
-		audioWorld = makeShared<AudioWorld2D>(audioFeature->Audio);
-
-		world.app = &app;
-		world.audioWorld = audioWorld.get();
-		world.simulation = simulation.get();
-		world.scene = scene.get();
-		world.context = context2d.get();
+		world = ghnew World2D(app, context2d.ref());
+		world->init();
 
 		app.CoroutineScheduler.launch(initScene());
 	}
 
 	CoroutineTask<void> DemoWindow::initScene() {
-		ground = co_await world.spawnEntity<Ground>();
-		captain = co_await world.spawnEntity<Captain>();
+		ground = co_await world->spawnEntity<Ground>();
+		captain = co_await world->spawnEntity<Captain>();
 		captain->Components.get<BodyComponent2D>()->Position = {0, 2};
 	}
 
@@ -86,16 +77,15 @@ namespace Demo {
 
 	void DemoWindow::update() {
 		__super::update();
-		world.update(Timer);
 
 		auto text = std::format(_T("fps: {:.2f}"), Timer.FramesPerSecond);
 		Title = String(text.c_str());
 	}
 
 	void DemoWindow::onPaint(RenderingContext& renderingContext) {
-		RenderGroup _2dGroup(0, DrawOrder::BACK_TO_FRONT);
-		_2dGroup.Camera = scene->Camera;
-		scene->draw(_2dGroup);
+		RenderGroup _2dGroup(DrawGroup(0, DrawOrder::BACK_TO_FRONT));
+		_2dGroup.Camera = world->Scene.Camera;
+		world->draw(_2dGroup);
 		renderGroups.put(_2dGroup);
 
 		renderingContext.clear(BackgroundColor);

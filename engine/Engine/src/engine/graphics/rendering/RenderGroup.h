@@ -1,30 +1,24 @@
 #pragma once
 
 #include "DrawPacket.h"
+
 #include "engine/graphics/ICamera.h"
-
 #include "core/collection/List.h"
+#include "engine/application/DrawGroup.h"
 
-#include <cstdint>
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
 
-	enum class DrawOrder:int8_t {
-		BACK_TO_FRONT = -1, FRONT_TO_BACK = 1
-	};
-
 	class RenderGroup {
 	private:
-		uint32_t order;
-		DrawOrder drawOrder;
+		DrawGroup group;
 		ICamera* camera = nullptr;
 
 	public:
 		List<DrawPacket> objects;
 
-		// TODO: is this draw order correct?
-		RenderGroup(uint32_t order, DrawOrder drawOrder = DrawOrder::FRONT_TO_BACK):order(order), drawOrder(drawOrder) {}
+		RenderGroup(DrawGroup group):group(group) {}
 
 		~RenderGroup() {
 			if (camera)
@@ -32,11 +26,11 @@ namespace Ghurund::Engine {
 		}
 
 		// TODO: get sorted objects from here
-		inline DrawOrder getDrawOrder() const {
-			return drawOrder;
+		inline DrawGroup getDrawGroup() const {
+			return group;
 		}
 
-		__declspec(property(get = getDrawOrder)) DrawOrder DrawOrder;
+		__declspec(property(get = getDrawGroup)) DrawGroup DrawGroup;
 
 		inline void setCamera(ICamera* camera) {
 			setPointer(this->camera, camera);
@@ -49,7 +43,7 @@ namespace Ghurund::Engine {
 		__declspec(property(get = getCamera, put = setCamera)) ICamera* Camera;
 
 		inline auto operator<=>(const RenderGroup& other) const {
-			return order <=> other.order;
+			return group.DrawOrder <=> other.group.DrawOrder;
 		}
 	};
 }

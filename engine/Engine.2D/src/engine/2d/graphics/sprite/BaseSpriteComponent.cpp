@@ -12,9 +12,8 @@ namespace Ghurund::Engine::_2D {
 		}
 
 		CoroutineTask<void> BaseSpriteComponent::onInit() {
-			co_await __super::onInit();
-			Mesh = IntrusivePointer(Owner->World.context->makeSpriteMesh()).get();
-			Material = (co_await Owner->World.context->makeSpriteMaterial()).get();
+			Mesh = IntrusivePointer(Owner->World.context.makeSpriteMesh()).get();
+			Material = (co_await Owner->World.context.makeSpriteMaterial()).get();
 		}
 		
 		void BaseSpriteComponent::draw(RenderGroup& group) {

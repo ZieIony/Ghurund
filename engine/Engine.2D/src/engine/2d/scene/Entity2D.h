@@ -1,22 +1,31 @@
 #pragma once
 
-#include "engine/2d/scene/component/TransformComponent2D.h"
-
-#include "core/object/RefCountedObject.h"
+#include "core/object/AsyncInitializable.h"
 #include "component/Component2DCollection.h"
+#include "engine/2d/scene/component/TransformComponent2D.h"
+#include "engine/game/GameObject.h"
 #include "engine/graphics/rendering/RenderGroup.h"
-#include "engine/game/tag/TagCollection.h"
 
 namespace Ghurund::Engine::_2D {
 	using namespace Ghurund::Core;
 
 	class World2D;
 
-	class Entity2D:public RefCountedObject, public AsyncInitializable {
+	class Entity2D:public GameObject, public AsyncInitializable {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Entity2D::GET_TYPE();
+#pragma endregion
+
 	private:
 		World2D& world;
-		WString name;
-		TagCollection tags;
 		TransformComponent2D* transformComponent = nullptr;
 		Component2DCollection components;
 
@@ -41,6 +50,7 @@ namespace Ghurund::Engine::_2D {
 		Entity2D(World2D& world):world(world) {
 			transformComponent = makeComponent<TransformComponent2D>();
 			components.add(transformComponent);
+			drawGroup = DrawGroup(DrawGroup::DEFAULT_GROUP_ORDER, DrawOrder::BACK_TO_FRONT);
 		}
 
 		~Entity2D() {
@@ -55,22 +65,6 @@ namespace Ghurund::Engine::_2D {
 		}
 
 		__declspec(property(get = getWorld)) World2D& World;
-
-		inline WString& getName() {
-			return name;
-		}
-
-		inline void setName(const WString& name) {
-			this->name = name;
-		}
-
-		__declspec(property(get = getName, put = setName)) WString& Name;
-
-		inline TagCollection& getTags() {
-			return tags;
-		}
-
-		__declspec(property(get = getTags)) TagCollection& Tags;
 
 		inline TransformComponent2D& getTransform() {
 			return *transformComponent;
@@ -89,21 +83,10 @@ namespace Ghurund::Engine::_2D {
 			return ghnew T(*this, world);
 		}
 
-		virtual void fixedUpdate(const Timer& timer) {
-			transformComponent->fixedUpdate(timer);
-			for (auto& component : components)
-				component->fixedUpdate(timer);
-		}
+		virtual void fixedUpdate(const Timer& timer) override;
 
-		virtual void update(const Timer& timer) {
-			transformComponent->update(timer);
-			for (auto& component : components)
-				component->update(timer);
-		}
+		virtual void update(const Timer& timer) override;
 
-		inline void draw(RenderGroup& group) {
-			for (auto& component : components)
-				component->draw(group);
-		}
+		virtual void draw(RenderGroup& group) override;
 	};
 }

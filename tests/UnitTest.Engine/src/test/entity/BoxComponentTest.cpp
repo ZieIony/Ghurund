@@ -5,7 +5,6 @@
 #include "core/reflection/StandardTypes.h"
 #include "engine/2d/physics/component/BoxComponent2D.h"
 #include "test/utils/MemoryGuard.h"
-#include "engine/2d/physics/Simulation2D.h"
 #include "engine/2d/World2D.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -19,12 +18,11 @@ namespace UnitTest {
 
     TEST_CLASS(BoxComponentTest) {
 private:
-    World2D world;
-    Simulation2D simulation;
+    World2D* world;
 
     template<typename T>
     T* makeComponent() {
-        auto coroutine = world.spawnEntity<Entity2D>();
+        auto coroutine = world->spawnEntity<Entity2D>();
         coroutine.resume();
         auto owner = coroutine.Result;
         return owner->makeComponent<BoxComponent2D>();
@@ -32,7 +30,8 @@ private:
 
 public:
     BoxComponentTest() {
-        world.simulation = &simulation;
+        //context2d = makeShared<DxGraphics2DContext>(graphicsFeature->MemoryManager, app.ResourceManager);
+        //world = makeShared<World2D>(app, context);
     }
 
     TEST_METHOD(BoxComponent_doubleInit) {

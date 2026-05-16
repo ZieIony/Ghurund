@@ -1,8 +1,8 @@
 #include "ghe2dpch.h"
-#include "AudioWorld2D.h"
+#include "AudioSystem2D.h"
 
 namespace Ghurund::Engine::_2D {
-	AudioWorld2D::~AudioWorld2D() {
+	AudioSystem2D::~AudioSystem2D() {
 		for (auto& component : soundComponents) {
 			if (!component->Sound)
 				continue;
@@ -12,7 +12,7 @@ namespace Ghurund::Engine::_2D {
 			audioListenerComponent->release();
 	}
 	
-	void AudioWorld2D::update() {
+	void AudioSystem2D::update(const Timer& timer) {
 		if (!audioListenerComponent)
 			return;
 

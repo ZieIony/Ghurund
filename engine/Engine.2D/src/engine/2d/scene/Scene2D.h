@@ -5,6 +5,8 @@
 #include "core/resource/Resource.h"
 #include "engine/2d/IGraphics2DContext.h"
 #include "camera/Camera2D.h"
+#include <engine/game/GameObjectDrawCollection.h>
+#include <engine/game/GameObjectUpdateCollection.h>
 
 namespace Ghurund::Engine::_2D {
     class Scene2D:public Resource {
@@ -23,14 +25,24 @@ namespace Ghurund::Engine::_2D {
     private:
         IGraphics2DContext& context;
         Camera2D* camera = nullptr;
+        GameObjectUpdateCollection& gameObjectsUpdate;
+        GameObjectDrawCollection gameObjectsDraw;
         List<IntrusivePointer<Entity2D>> entities;
 
     public:
-        Scene2D(IGraphics2DContext& context):context(context) {}
+        Scene2D(
+            IGraphics2DContext& context,
+            GameObjectUpdateCollection& gameObjectsUpdate
+		):context(context), gameObjectsUpdate(gameObjectsUpdate) {
+		}
 
         ~Scene2D() {
             if (camera)
                 camera->release();
+            for (auto& entity : entities) {
+                gameObjectsUpdate.remove(entity);
+                gameObjectsDraw.remove(entity);
+            }
         }
 
         inline Camera2D* getCamera() const {
@@ -43,26 +55,16 @@ namespace Ghurund::Engine::_2D {
 
         __declspec(property(get = getCamera, put = setCamera)) Camera2D* Camera;
 
-        inline List<IntrusivePointer<Entity2D>>& getEntities() {
-            return entities;
+        inline void add(IntrusivePointer<Entity2D> entity) {
+            entities.add(entity);
+            gameObjectsDraw.add(entity);
+            gameObjectsUpdate.add(entity);
         }
 
-        __declspec(property(get = getEntities)) List<IntrusivePointer<Entity2D>>& Entities;
-
-        inline void fixedUpdate(const Timer& timer) {
-            for (auto& entity : entities)
-                entity->fixedUpdate(timer);
+        inline void draw(RenderGroup& rg) {
+            gameObjectsDraw.draw(rg);
         }
 
-        inline void update(const Timer& timer) {
-            for (auto& entity : entities)
-                entity->update(timer);
-        }
-
-        inline void draw(RenderGroup& group) {
-            for (auto& entity : entities)
-                entity->draw(group);
-        }
 #pragma region formats
     protected:
         virtual const Array<ResourceFormat>& getFormatsImpl() const override {

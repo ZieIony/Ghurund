@@ -42,7 +42,7 @@ namespace Ghurund::Engine::DirectX {
 
 			// TODO: sort on insertion
 			group.objects.sort([&](const DrawPacket& first, const DrawPacket& second) -> bool {
-				return (first.Order - second.Order) * (int8_t)group.DrawOrder > 0;
+				return (first.Order - second.Order) * (int8_t)group.DrawGroup.DrawOrder > 0;
 			});
 			for (auto& packet : group.objects) {
 				auto mesh = (DxMesh*)packet.Mesh;

@@ -24,7 +24,7 @@ namespace Demo {
 
 		{
 			tileMapComponent = IntrusivePointer(makeComponent<TileMapComponent>());
-			tileMap = co_await World.app->ResourceManager.load<TileMap>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/terrainTileMap.xml"));
+			tileMap = co_await World.app.ResourceManager.load<TileMap>(ResourceManager::ENGINE_LIB / FilePath(L"test/images/terrainTileMap.xml"));
 			tileMapComponent->TileMap = tileMap.get();
 			co_await tileMapComponent->init();
 			Components.add(tileMapComponent.get());

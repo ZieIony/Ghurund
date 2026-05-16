@@ -51,7 +51,6 @@ namespace Ghurund::Engine::_2D {
 
 		virtual void onUninit() {
 			uninitBaseSpriteComponent();
-			__super::onUninit();
 		};
 
 	public:

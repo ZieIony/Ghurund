@@ -150,5 +150,4 @@ namespace Ghurund::Engine::DirectX {
     void DxGraphics::onUninit() {
         uninitGraphics();
     }
-
 }

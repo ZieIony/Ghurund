@@ -44,15 +44,16 @@ namespace Ghurund::Engine::DirectX {
         void uninitGraphics();
         void uninitDevice();
 
+    protected:
+        virtual void onInit() override;
+
+        virtual void onUninit() override;
+
     public:
         ~DxGraphics() {
             if(IsInitialized)
                 uninitGraphics();
         }
-
-        virtual void onInit() override;
-
-        virtual void onUninit() override;
 
         ID3D12Device* getDevice() {
             return device;

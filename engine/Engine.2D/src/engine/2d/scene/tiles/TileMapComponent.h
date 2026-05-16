@@ -43,7 +43,6 @@ namespace Ghurund::Engine::_2D {
 
 		virtual void onUninit() {
 			uninitTileMapComponent();
-			__super::onUninit();
 		};
 
 		void reloadResource();

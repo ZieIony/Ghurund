@@ -3,10 +3,8 @@
 #include "DemoApplication.h"
 #include "engine/application/GameWindow.h"
 #include "engine/2d/scene/Scene2D.h"
-#include "engine/2d/physics/Simulation2D.h"
 #include "engine/2d/directx/DxGraphics2DContext.h"
 #include "core/coroutine/CoroutineTask.h"
-#include "engine/2d/audio/AudioWorld2D.h"
 #include "engine/2d/World2D.h"
 #include "Captain.h"
 #include <Ground.h>
@@ -24,10 +22,7 @@ namespace Demo {
 
 		SharedPointer<DxGraphics2DContext> context2d;
 		Set<RenderGroup> renderGroups;
-		World2D world;
-		IntrusivePointer<Scene2D> scene;
-		SharedPointer<Simulation2D> simulation;
-		SharedPointer<AudioWorld2D> audioWorld;
+		World2D* world = nullptr;
 		IntrusivePointer<Captain> captain;
 		IntrusivePointer<Ground> ground;
 		float direction = 1;
@@ -41,8 +36,7 @@ namespace Demo {
 		~DemoWindow() {
 			captain.set(nullptr);
 			ground.set(nullptr);
-			scene.set(nullptr);
-			simulation.set(nullptr);
+			delete world;
 		}
 
 		void init();
@@ -50,11 +44,6 @@ namespace Demo {
 		CoroutineTask<void> initScene();
 
 		virtual bool onKeyEvent(const KeyEventArgs& args) override;
-
-		virtual void fixedUpdate() override {
-			__super::fixedUpdate();
-			world.fixedUpdate(Timer);
-		}
 
 		virtual void update() override;
 

@@ -84,11 +84,19 @@ namespace Ghurund::Core {
         frameTimeReminder += timer.ScaledFrameTime;
         while (frameTimeReminder >= timer.FixedFrameTime) {
             frameTimeReminder -= timer.FixedFrameTime;
-            coroutineScheduler.fixedUpdate();
-            for (auto window : windows)
-                window->fixedUpdate();
+            onFixedUpdate();
         }
 
+        onUpdate();
+    }
+
+    void Application::onFixedUpdate() {
+        coroutineScheduler.fixedUpdate();
+        for (auto window : windows)
+            window->fixedUpdate();
+    }
+
+    void Application::onUpdate() {
         coroutineScheduler.update();
         for (auto window : windows)
             window->update();

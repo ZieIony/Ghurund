@@ -1,23 +1,28 @@
 #pragma once
 
 #include "engine/audio/Audio.h"
-
+#include "engine/game/system/System.h"
 #include "component/SoundComponent2D.h"
 #include "component/AudioListenerComponent2D.h"
 
 namespace Ghurund::Engine::_2D {
-	class AudioWorld2D {
+	class AudioSystem2D:public System {
 	private:
 		Audio& audio;
 		AudioListenerComponent2D* audioListenerComponent = nullptr;
+
+	protected:
+		virtual bool getUsesFixedUpdateInternal() const override {
+			return false;
+		}
 
 	public:
 		// TODO: make a proper collection
 		List<IntrusivePointer<SoundComponent2D>> soundComponents;
 
-		AudioWorld2D(Audio& audio):audio(audio) {}
+		AudioSystem2D(Audio& audio):audio(audio) {}
 
-		~AudioWorld2D();
+		~AudioSystem2D();
 
 		inline void setAudioListener(AudioListenerComponent2D* component) {
 			setPointer(audioListenerComponent, component);
@@ -25,6 +30,6 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(put = setAudioListener)) AudioListenerComponent2D* AudioListener;
 
-		void update();
+		virtual void update(const Timer& timer) override;
 	};
 }
