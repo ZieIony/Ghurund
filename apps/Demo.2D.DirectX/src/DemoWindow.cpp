@@ -4,6 +4,7 @@
 
 #include "core/Colors.h"
 #include "core/window/DisplayManager.h"
+#include <FpsSystem.h>
 
 namespace Demo {
 	DemoWindow::DemoWindow(
@@ -20,14 +21,17 @@ namespace Demo {
 	}
 
 	void DemoWindow::init() {
-		DxGraphicsFeature* graphicsFeature = app.Features.get<DxGraphicsFeature>();
+		auto fpsSystem = makeIntrusive<FpsSystem>(*this);
+		Systems.add(fpsSystem);
 
-		context2d = makeShared<DxGraphics2DContext>(graphicsFeature->MemoryManager, app.ResourceManager);
+		DxGraphicsFeature* graphicsFeature = Application.Features.get<DxGraphicsFeature>();
+
+		context2d = makeShared<DxGraphics2DContext>(graphicsFeature->MemoryManager, Application.ResourceManager);
 
 		world = ghnew World2D(app, context2d.ref());
 		world->init();
 
-		app.CoroutineScheduler.launch(initScene());
+		Application.CoroutineScheduler.launch(initScene());
 	}
 
 	CoroutineTask<void> DemoWindow::initScene() {
@@ -51,7 +55,7 @@ namespace Demo {
 		} else if (args.KeyCode == VK_BACK) {
 			DisplayManager::revertDisplayMode();
 		} else if (args.KeyCode == VK_ESCAPE) {
-			app.quit();
+			Application.quit();
 		} else if (args.KeyCode == 'f') {
 			Style = WindowStyle::FULLSCREEN;
 			auto currentMode = DisplayManager::getDisplayMode();
@@ -73,13 +77,6 @@ namespace Demo {
 			Timer.TimeScale = Timer.TimeScale == 1.0f ? 0.1f : 1.0f;
 		}
 		return true;
-	}
-
-	void DemoWindow::update() {
-		__super::update();
-
-		auto text = std::format(_T("fps: {:.2f}"), Timer.FramesPerSecond);
-		Title = String(text.c_str());
 	}
 
 	void DemoWindow::onPaint(RenderingContext& renderingContext) {

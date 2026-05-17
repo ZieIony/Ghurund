@@ -98,6 +98,7 @@
     <ClInclude Include="src\CaptainStates.h" />
     <ClInclude Include="src\DemoApplication.h" />
     <ClInclude Include="src\DemoWindow.h" />
+    <ClInclude Include="src\FpsSystem.h" />
     <ClInclude Include="src\Ground.h" />
   </ItemGroup>
   <ItemGroup>

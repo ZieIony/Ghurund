@@ -19,16 +19,6 @@ namespace Ghurund::Engine {
         List<GameObject> preUpdateQueue, postUpdateQueue;
 
     protected:
-        virtual void onInit() override {
-            __super::onInit();
-            systems.init();
-        }
-
-        virtual void onUninit() override {
-            systems.uninit();
-            __super::onUninit();
-        }
-
         virtual void onFixedUpdate() override {
             gameObjects.preFixedUpdate(Timer);
             __super::onFixedUpdate();

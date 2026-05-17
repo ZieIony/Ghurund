@@ -45,8 +45,6 @@ namespace Demo {
 
 		virtual bool onKeyEvent(const KeyEventArgs& args) override;
 
-		virtual void update() override;
-
 		virtual void onPaint(RenderingContext& renderingContext) override;
 	};
 }

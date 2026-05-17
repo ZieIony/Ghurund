@@ -2,8 +2,8 @@
 
 #include "LayerList.h"
 
-#include "core/application/Application.h"
 #include "core/application/ApplicationWindow.h"
+#include "engine/application/GameApplication.h"
 #include "engine/game/action/ActionMapping.h"
 #include "engine/graphics/rendering/Renderer.h"
 #include "engine/parameter/ParameterManager.h"
@@ -28,6 +28,7 @@ namespace Ghurund::Engine {
     private:
         ParameterManager parameterManager;
         LayerList layers;
+        SystemCollection systems;
         Renderer* renderer = nullptr;
         std::unique_ptr<RenderingContext> renderingContext = nullptr;
         ActionMapping actionMapping;
@@ -71,13 +72,19 @@ namespace Ghurund::Engine {
         virtual void onPaint(RenderingContext& renderingContext) {}
 
     public:
-		GameWindow(Ghurund::Core::Application& app, WindowStyle style = SystemWindow::DEFAULT_WINDOW_STYLE);
+		GameWindow(GameApplication& app, WindowStyle style = SystemWindow::DEFAULT_WINDOW_STYLE);
 
         inline LayerList& getLayers() {
             return layers;
         }
 
         __declspec(property(get = getLayers)) LayerList& Layers;
+
+        inline SystemCollection& getSystems() {
+            return systems;
+        }
+
+        __declspec(property(get = getSystems)) SystemCollection& Systems;
 
         inline Renderer* getRenderer() const {
             return renderer;

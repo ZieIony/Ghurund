@@ -23,7 +23,7 @@ namespace Ghurund::Engine::_2D {
 
 		inline void uninitWorld2D() {
 			scene.set(nullptr);
-			systems.uninit();
+			systems.clear();
 			physicsSystem.set(nullptr);
 			audioSystem.set(nullptr);
 		}

@@ -13,7 +13,6 @@ namespace Ghurund::Engine::_2D {
 		}
 		physicsSystem.set(ghnew PhysicsSystem2D());
 		systems.add(physicsSystem);
-		systems.init();
 		scene = makeIntrusive<Scene2D>(context, app.GameObjects);
 	}
 

@@ -4,6 +4,7 @@
 #include "core/reflection/Property.h"
 
 #include <windowsx.h>
+#include "GameApplication.h"
 
 namespace Ghurund::Engine {
     const Ghurund::Core::Type& GameWindow::GET_TYPE() {
@@ -52,7 +53,7 @@ namespace Ghurund::Engine {
         return __super::onFocusedChanged();
     }
 
-    GameWindow::GameWindow(Ghurund::Core::Application& app, WindowStyle style):ApplicationWindow(app, style) {
+    GameWindow::GameWindow(GameApplication& app, WindowStyle style):ApplicationWindow(app, style), systems(app.GameObjects) {
         viewportSizeParameter = makeIntrusive<Int2Parameter>("viewportSize");
         parameterManager.Parameters.put(viewportSizeParameter.get());
         timeParameter = makeIntrusive<FloatParameter>("time");
