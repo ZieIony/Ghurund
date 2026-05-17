@@ -4,19 +4,19 @@
 #include "engine/2d/World2D.h"
 
 namespace Ghurund::Engine::_2D {
-		const Ghurund::Core::Type& BaseSpriteComponent::GET_TYPE() {
-			static const Ghurund::Core::Type TYPE = TypeBuilder<BaseSpriteComponent>()
-				.withSupertype(__super::GET_TYPE());
+	const Ghurund::Core::Type& BaseSpriteComponent::GET_TYPE() {
+		static const Ghurund::Core::Type TYPE = TypeBuilder<BaseSpriteComponent>()
+			.withSupertype(__super::GET_TYPE());
 
-			return TYPE;
-		}
+		return TYPE;
+	}
 
-		CoroutineTask<void> BaseSpriteComponent::onInit() {
-			Mesh = IntrusivePointer(Owner->World.context.makeSpriteMesh()).get();
-			Material = (co_await Owner->World.context.makeSpriteMaterial()).get();
-		}
-		
-		void BaseSpriteComponent::draw(RenderGroup& group) {
+	CoroutineTask<void> BaseSpriteComponent::onInit() {
+		Mesh = IntrusivePointer(Owner->World.context.makeSpriteMesh()).get();
+		Material = (co_await Owner->World.context.makeSpriteMaterial()).get();
+	}
+
+	void BaseSpriteComponent::draw(RenderGroup& group) {
 		if (mesh && material) {
 			auto w = XMMatrixTranslation(offset.x, offset.y, 0) * XMMatrixScaling(size.Width, size.Height, 1) * XMLoadFloat4x4(&Owner->Transform.WorldTransformation);
 			XMFLOAT4X4 world;

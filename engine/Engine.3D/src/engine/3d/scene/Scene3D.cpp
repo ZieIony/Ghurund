@@ -1,11 +1,10 @@
-#include "ghepch.h"
-
-#include "Scene.h"
+#include "ghe3dpch.h"
+#include "Scene3D.h"
 
 #include "core/resource/Resource.h"
 #include "core/reflection/TypeBuilder.h"
 
-namespace Ghurund::Engine {
+namespace Ghurund::Engine::_3D {
 	using namespace Ghurund::Core;
 
 	/*void Scene::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
@@ -32,8 +31,8 @@ namespace Ghurund::Engine {
 		throw NotImplementedException();
 	}*/
 	
-	const Ghurund::Core::Type& Scene::GET_TYPE() {
-		static const Ghurund::Core::Type TYPE = TypeBuilder<Scene>()
+	const Ghurund::Core::Type& Scene3D::GET_TYPE() {
+		static const Ghurund::Core::Type TYPE = TypeBuilder<Scene3D>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;

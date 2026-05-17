@@ -21,11 +21,11 @@
 #pragma comment(lib, "PhysXPvdSDK_static_32.lib")
 #endif
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class Application;
 }
 
-namespace Ghurund {
+namespace Ghurund::Engine::_3D {
     using namespace physx;
 
     class Physics:public Ghurund::Core::Feature {

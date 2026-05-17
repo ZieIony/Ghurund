@@ -1,6 +1,6 @@
 #pragma once
 
-#include "component/BodyComponent2D.h"
+#include "component/RigidBodyComponent2D.h"
 #include "engine/game/system/System.h"
 
 #include <box2d.h>

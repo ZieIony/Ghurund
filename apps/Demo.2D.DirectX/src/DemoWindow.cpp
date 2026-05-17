@@ -33,7 +33,7 @@ namespace Demo {
 	CoroutineTask<void> DemoWindow::initScene() {
 		ground = co_await world->spawnEntity<Ground>();
 		captain = co_await world->spawnEntity<Captain>();
-		captain->Components.get<BodyComponent2D>()->Position = {0, 2};
+		captain->Components.get<RigidBodyComponent2D>()->Position = {0, 2};
 	}
 
 	bool DemoWindow::onKeyEvent(const KeyEventArgs& args) {

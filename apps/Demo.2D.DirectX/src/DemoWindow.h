@@ -1,13 +1,13 @@
 #pragma once
 
 #include "DemoApplication.h"
+#include "Captain.h"
+#include <Ground.h>
+
 #include "engine/application/GameWindow.h"
-#include "engine/2d/scene/Scene2D.h"
 #include "engine/2d/directx/DxGraphics2DContext.h"
 #include "core/coroutine/CoroutineTask.h"
 #include "engine/2d/World2D.h"
-#include "Captain.h"
-#include <Ground.h>
 
 namespace Demo {
 	using namespace Ghurund;

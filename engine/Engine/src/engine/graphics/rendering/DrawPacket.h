@@ -23,12 +23,12 @@ namespace Ghurund::Engine {
 			material->addReference();
 		}
 
-		DrawPacket(const DrawPacket& other):mesh(other.mesh), material(other.material), order(order) {
+		DrawPacket(const DrawPacket& other):mesh(other.mesh), material(other.material), order(other.order) {
 			mesh->addReference();
 			material->addReference();
 		}
 
-		DrawPacket(DrawPacket&& other):mesh(other.mesh), material(other.material), order(order) {
+		DrawPacket(DrawPacket&& other) noexcept:mesh(other.mesh), material(other.material), order(other.order) {
 			other.mesh = nullptr;
 			other.material = nullptr;
 		}
@@ -69,7 +69,7 @@ namespace Ghurund::Engine {
 			return *this;
 		}
 
-		inline DrawPacket& operator=(DrawPacket&& other) {
+		inline DrawPacket& operator=(DrawPacket&& other) noexcept {
 			if (this == &other)
 				return *this;
 			mesh = other.mesh;

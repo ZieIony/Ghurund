@@ -1,13 +1,13 @@
 #pragma once
 
-#include "BodyComponent2D.h"
+#include "RigidBodyComponent2D.h"
 
 #include "engine/2d/scene/component/TransformComponent2D.h"
 
 #include <box2d.h>
 
 namespace Ghurund::Engine::_2D {
-	class BoxComponent2D:public BodyComponent2D {
+	class BoxComponent2D:public RigidBodyComponent2D {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -49,7 +49,7 @@ namespace Ghurund::Engine::_2D {
 		};
 
 	public:
-		BoxComponent2D(NotNull<Entity2D> owner, World2D& world):BodyComponent2D(owner, world) {}
+		BoxComponent2D(NotNull<Entity2D> owner, World2D& world):RigidBodyComponent2D(owner, world) {}
 	
 		~BoxComponent2D() {
 			if (IsInitialized)

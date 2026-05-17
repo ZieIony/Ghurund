@@ -1,4 +1,4 @@
-#include "ghepch.h"
+#include "ghe3dpch.h"
 #include "Physics.h"
 
 #include "core/exception/Exceptions.h"
@@ -7,7 +7,7 @@
 
 #include <PxPhysicsAPI.h>
 
-namespace Ghurund {
+namespace Ghurund::Engine::_3D {
     using namespace Ghurund::Core;
     using namespace physx;
 

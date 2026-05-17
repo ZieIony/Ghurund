@@ -1,17 +1,19 @@
 #pragma once
 
-#pragma warning(push, 0)
-#include <PxPhysicsAPI.h>
-#include <PxScene.h>
-#include <extensions/PxDefaultCpuDispatcher.h>
-#pragma warning(pop)
-
 #include "Physics.h"
 
-namespace Ghurund {
+#include "engine/game/system/System.h"
+
+#pragma warning(push, 0)
+#include <extensions/PxDefaultCpuDispatcher.h>
+#include <PxPhysicsAPI.h>
+#include <PxScene.h>
+#pragma warning(pop)
+
+namespace Ghurund::Engine::_3D {
 	using namespace physx;
 
-	class PhysicsSystem {
+	class PhysicsSystem3D:public System {
 	private:
 		PxDefaultCpuDispatcher* dispatcher = nullptr;
 		PxScene* scene = nullptr;
@@ -30,7 +32,5 @@ namespace Ghurund {
 			scene->simulate(dt);
 			scene->fetchResults(true);
 		}
-
 	};
-
 }

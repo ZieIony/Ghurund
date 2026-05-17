@@ -1,4 +1,4 @@
-#include "ghepch.h"
+#include "ghe3dpch.h"
 #include "CameraController.h"
 
 #include "core/window/SystemWindow.h"
@@ -6,8 +6,8 @@
 #include <DirectXMath.h>
 //#include <entt.hpp>
 
-#include "Camera.h"
-#include "CameraComponent.h"
+#include "Camera3D.h"
+#include "CameraComponent3D.h"
 
 namespace Ghurund::Engine {
 	using namespace std;

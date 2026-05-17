@@ -17,19 +17,19 @@ namespace Ghurund::Engine::DirectX {
 		):resourceManager(resourceManager) { }
 
 		virtual ITexture* makeDefaultDiffuse() const override {
-			return resourceManager.load<ITexture>(ResourceManager::ENGINE_LIB / FilePath(L"/textures/diffuse.png"));
+			return nullptr;	// resourceManager.load<ITexture>(ResourceManager::ENGINE_LIB / FilePath(L"/textures/diffuse.png"));
 		}
 
 		virtual ITexture* makeDefaultSpecular() const override {
-			return resourceManager.load<ITexture>(ResourceManager::ENGINE_LIB / FilePath(L"/textures/specular.png"));
+			return nullptr;	// resourceManager.load<ITexture>(ResourceManager::ENGINE_LIB / FilePath(L"/textures/specular.png"));
 		}
 
 		virtual ITexture* makeDefaultNormal() const override {
-			return resourceManager.load<ITexture>(ResourceManager::ENGINE_LIB / FilePath(L"/textures/normal.png"));
+			return nullptr;	// resourceManager.load<ITexture>(ResourceManager::ENGINE_LIB / FilePath(L"/textures/normal.png"));
 		}
 
 		virtual ITexture* makeChecker() const override {
-			return resourceManager.load<ITexture>(ResourceManager::ENGINE_LIB / FilePath(L"/textures/checker.png"));
+			return nullptr;	// resourceManager.load<ITexture>(ResourceManager::ENGINE_LIB / FilePath(L"/textures/checker.png"));
 		}
 	};
 }

@@ -3,7 +3,7 @@
 #include "core/object/RefCountedObject.h"
 #include "core/reflection/Type.h"
 
-namespace Ghurund::Engine {
+namespace Ghurund::Engine::_3D {
     using namespace Ghurund::Core;
 
     class Light: public RefCountedObject {

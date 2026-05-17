@@ -92,38 +92,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\animation\Animation.h" />
     <ClInclude Include="src\engine\animation\AnimationSet.h" />
     <ClInclude Include="src\engine\animation\Animator.h" />
     <ClInclude Include="src\engine\animation\AnimatorState.h" />
-    <ClInclude Include="src\engine\application\UpdateGroup.h" />
-    <ClInclude Include="src\engine\audio\AudioListener.h" />
-    <ClInclude Include="src\engine\audio\sound\SoundEmitter.h" />
-    <ClInclude Include="src\engine\game\GameObject.h" />
-    <ClInclude Include="src\engine\game\GameObjectUpdateCollection.h" />
-    <ClInclude Include="src\engine\game\GameObjectDrawCollection.h" />
-    <ClInclude Include="src\engine\game\system\System.h" />
-    <ClInclude Include="src\engine\game\system\SystemCollection.h" />
-    <ClInclude Include="src\engine\game\tag\Tag.h" />
-    <ClInclude Include="src\engine\game\tag\TagCollection.h" />
-    <ClInclude Include="src\engine\game\tag\TagManager.h" />
     <ClInclude Include="src\engine\application\DrawGroup.h" />
-    <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\application\GameApplication.h" />
     <ClInclude Include="src\engine\application\GameWindow.h" />
     <ClInclude Include="src\engine\application\Layer.h" />
     <ClInclude Include="src\engine\application\LayerList.h" />
+    <ClInclude Include="src\engine\application\UpdateGroup.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />
     <ClInclude Include="src\engine\audio\AudioFeature.h" />
     <ClInclude Include="src\engine\audio\AudioFeatureFactory.h" />
+    <ClInclude Include="src\engine\audio\AudioListener.h" />
     <ClInclude Include="src\engine\audio\component\SoundComponent.h" />
     <ClInclude Include="src\engine\audio\sound\Sound.h" />
+    <ClInclude Include="src\engine\audio\sound\SoundEmitter.h" />
     <ClInclude Include="src\engine\audio\sound\SoundLoader.h" />
     <ClInclude Include="src\engine\editor\CameraUtils.h" />
     <ClInclude Include="src\engine\editor\EditorComponent.h" />
     <ClInclude Include="src\engine\editor\ObservableObject.h" />
     <ClInclude Include="src\engine\editor\ThumbnailRenderer.h" />
     <ClInclude Include="src\engine\game\Component.h" />
+    <ClInclude Include="src\engine\game\GameObject.h" />
+    <ClInclude Include="src\engine\game\GameObjectDrawCollection.h" />
+    <ClInclude Include="src\engine\game\GameObjectUpdateCollection.h" />
     <ClInclude Include="src\engine\game\action\ActionMapping.h" />
     <ClInclude Include="src\engine\game\action\BaseDispatchInputTask.h" />
     <ClInclude Include="src\engine\game\action\BaseGameAction.h" />
@@ -138,6 +133,11 @@
     <ClInclude Include="src\engine\game\sky\AdvancedSky.h" />
     <ClInclude Include="src\engine\game\sky\BasicSky.h" />
     <ClInclude Include="src\engine\game\sky\Sky.h" />
+    <ClInclude Include="src\engine\game\system\System.h" />
+    <ClInclude Include="src\engine\game\system\SystemCollection.h" />
+    <ClInclude Include="src\engine\game\tag\Tag.h" />
+    <ClInclude Include="src\engine\game\tag\TagCollection.h" />
+    <ClInclude Include="src\engine\game\tag\TagManager.h" />
     <ClInclude Include="src\engine\graphics\DrawableComponents.h" />
     <ClInclude Include="src\engine\graphics\DrawingSystem.h" />
     <ClInclude Include="src\engine\graphics\GraphicsFeature.h" />
@@ -211,8 +211,8 @@
     <ClCompile Include="src\engine\audio\sound\SoundLoader.cpp" />
     <ClCompile Include="src\engine\editor\ThumbnailRenderer.cpp" />
     <ClCompile Include="src\engine\game\Component.cpp" />
-    <ClCompile Include="src\engine\game\action\ActionMapping.cpp" />
     <ClCompile Include="src\engine\game\GameObject.cpp" />
+    <ClCompile Include="src\engine\game\action\ActionMapping.cpp" />
     <ClCompile Include="src\engine\game\system\System.cpp" />
     <ClCompile Include="src\engine\game\tag\TagManager.cpp" />
     <ClCompile Include="src\engine\graphics\DrawableComponents.cpp" />

@@ -7,7 +7,6 @@
 #include <engine/directx/shader/DxShaderProvider.h>
 #include <engine/graphics/material/MaterialProvider.h>
 #include <engine/directx/texture/DxTextureProvider.h>
-#include <engine/graphics/mesh/QuadMeshData.h>
 
 namespace Demo {
 	DemoWindow::DemoWindow(
@@ -21,23 +20,27 @@ namespace Demo {
 		BackgroundColor = &Colors::LIGHT_SKY_BLUE;
 
 		DxGraphicsFeature* graphicsFeature = app.Features.get<DxGraphicsFeature>();
-		auto commandList = makeIntrusive<CommandList>();
-		commandList->init(graphicsFeature->Graphics, graphicsFeature->Graphics.DirectQueue);
 
 		DxShaderProvider shaderProvider(app.ResourceManager);
 		DxTextureProvider textureProvider(app.ResourceManager);
 		MaterialProvider materialProvider(shaderProvider, textureProvider, graphicsFeature->MemoryManager);
 
-		IntrusivePointer<DxShader> shader = IntrusivePointer(app.ResourceManager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(L"shaders/DirectX/2d/sprite.xml")));
-		IntrusivePointer<Material> material = makeIntrusive<Material>(graphicsFeature->MemoryManager);
-		material->Shader = shader.get();
+		init();
+	}
 
-		IntrusivePointer<QuadMeshData> meshData = makeIntrusive<QuadMeshData>();
-		meshData->init();
-		IntrusivePointer<DxMesh> mesh = makeIntrusive<DxMesh>();
-		mesh->init(meshData.ref(), graphicsFeature->MemoryManager);
+	void DemoWindow::init() {
+		DxGraphicsFeature* graphicsFeature = app.Features.get<DxGraphicsFeature>();
 
-		scene.set(ghnew Scene());
+		context3d = makeShared<DxGraphics3DContext>(graphicsFeature->MemoryManager, app.ResourceManager);
+
+		world = ghnew World3D(app, context3d.ref());
+		world->init();
+
+		app.CoroutineScheduler.launch(initScene());
+	}
+
+	CoroutineTask<void> DemoWindow::initScene() {
+		co_return;
 	}
 
 	bool DemoWindow::onKeyEvent(const KeyEventArgs& args) {
@@ -55,7 +58,7 @@ namespace Demo {
 		} else if (args.KeyCode == VK_BACK) {
 			DisplayManager::revertDisplayMode();
 		} else if (args.KeyCode == VK_ESCAPE) {
-			close();
+			app.quit();
 		} else if (args.KeyCode == 'f') {
 			Style = WindowStyle::FULLSCREEN;
 			auto currentMode = DisplayManager::getDisplayMode();
@@ -68,15 +71,18 @@ namespace Demo {
 		return true;
 	}
 
-	void DemoWindow::update(uint64_t time) {
-		__super::update(time);
-		scene->update(time);
+	void DemoWindow::update() {
+		__super::update();
+
+		auto text = std::format(_T("fps: {:.2f}"), Timer.FramesPerSecond);
+		Title = String(text.c_str());
 	}
-	
+
 	void DemoWindow::onPaint(RenderingContext& renderingContext) {
-		RenderGroup _2dGroup(0, DrawOrder::BACK_TO_FRONT);
-		scene->draw(_2dGroup);
-		renderGroups.put(_2dGroup);
+		RenderGroup _3dGroup(DrawGroup(0, DrawOrder::FRONT_TO_BACK));
+		_3dGroup.Camera = world->Scene.Camera;
+		world->draw(_3dGroup);
+		renderGroups.put(_3dGroup);
 
 		renderingContext.clear(BackgroundColor);
 		renderingContext.draw(renderGroups, ParameterManager);

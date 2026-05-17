@@ -58,7 +58,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;..\..\engine\Engine.DirectX\src;..\..\engine\Engine\src;..\..\engine\UI\src;..\..\engine\UI.DirectX\src;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;..\..\engine\Engine\src;..\..\engine\Engine.DirectX\src;..\..\engine\Engine.3D\src;..\..\engine\Engine.3D.DirectX\src;..\..\engine\UI\src;..\..\engine\UI.DirectX\src;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -76,7 +76,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;..\..\engine\Engine.DirectX\src;..\..\engine\Engine\src;..\..\engine\UI\src;..\..\engine\UI.DirectX\src;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;..\..\engine\Engine\src;..\..\engine\Engine.DirectX\src;..\..\engine\Engine.3D\src;..\..\engine\Engine.3D.DirectX\src;..\..\engine\UI\src;..\..\engine\UI.DirectX\src;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -106,11 +106,17 @@
     <ProjectReference Include="..\..\engine\Core\Core.vcxproj">
       <Project>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\engine\Engine\Engine.vcxproj">
+      <Project>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\engine\Engine.DirectX\Engine.DirectX.vcxproj">
       <Project>{BC80A119-A84E-951F-91E2-05467D4F7184}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\engine\Engine\Engine.vcxproj">
-      <Project>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</Project>
+    <ProjectReference Include="..\..\engine\Engine.3D\Engine.3D.vcxproj">
+      <Project>{80488BD1-ECB2-3F48-35F1-F0EDA19A1D9D}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\engine\Engine.3D.DirectX\Engine.3D.DirectX.vcxproj">
+      <Project>{61D60D4E-CDEC-0BE4-1664-970582B9DC6B}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\engine\UI\UI.vcxproj">
       <Project>{83755900-6F01-880B-D8AF-880BC45A880B}</Project>

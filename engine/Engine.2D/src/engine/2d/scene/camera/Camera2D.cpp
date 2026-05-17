@@ -1,8 +1,6 @@
 #include "ghe2dpch.h"
 #include "Camera2D.h"
 
-#include "core/io/MemoryInputStream.h"
-#include "core/io/MemoryOutputStream.h"
 #include "core/reflection/TypeBuilder.h"
 #include "engine/parameter/ParameterManager.h"
 
@@ -50,10 +48,12 @@ namespace Ghurund::Engine::_2D {
 		XMMATRIX viewTemp, projTemp, viewProjTemp, viewProjInvTemp;
 		XMFLOAT4X4 viewTransposed, projTransposed, viewProjTransposed, viewProjInvTransposed;
 		XMFLOAT3 dir = { 0, 0, 1 };
+	
 		viewTemp = XMMatrixLookToLH(XMLoadFloat3(&pos), XMLoadFloat3(&dir), XMLoadFloat3(&up));
 		XMStoreFloat4x4(&view, viewTemp);
 		projTemp = XMMatrixOrthographicLH((float)viewSize.Width, (float)viewSize.Height, zNear, zFar);
 		XMStoreFloat4x4(&proj, projTemp);
+	
 		viewProjTemp = viewTemp * projTemp;
 		XMStoreFloat4x4(&viewProj, viewProjTemp);
 		viewProjInvTemp = XMMatrixInverse(nullptr, viewProjTemp);

@@ -15,7 +15,7 @@ namespace Ghurund::Engine::_2D {
 
 	class PhysicsSystem2D;
 
-	class BodyComponent2D:public Component2D {
+	class RigidBodyComponent2D:public Component2D {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -25,7 +25,7 @@ namespace Ghurund::Engine::_2D {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = BodyComponent2D::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = RigidBodyComponent2D::GET_TYPE();
 #pragma endregion
 
 	private:
@@ -51,9 +51,9 @@ namespace Ghurund::Engine::_2D {
 		};
 
 	public:
-		BodyComponent2D(NotNull<Entity2D> owner, World2D& world);
+		RigidBodyComponent2D(NotNull<Entity2D> owner, World2D& world);
 
-		virtual ~BodyComponent2D() = 0 {
+		virtual ~RigidBodyComponent2D() = 0 {
 			if (IsInitialized)
 				uninitBodyComponent2D();
 		}

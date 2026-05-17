@@ -10,9 +10,9 @@ namespace Ghurund::Engine::_2D {
 	}
 
 	void TransformComponent2D::update(const Timer& timer) {
-		auto scaling = XMMatrixScaling(Scale.x, Scale.y, 1);
-		auto rotation = XMMatrixRotationZ(Rotation / 180 * XM_PI);
-		auto translation = XMMatrixTranslation(Position.x, Position.y, 0);
+		auto scaling = XMMatrixScaling(scale.x, scale.y, 1);
+		auto rotation = XMMatrixRotationZ(this->rotation / 180 * XM_PI);
+		auto translation = XMMatrixTranslation(position.x, position.y, 0);
 		auto local = scaling * rotation * translation;
 		XMStoreFloat4x4(&localTransformation, local);
 

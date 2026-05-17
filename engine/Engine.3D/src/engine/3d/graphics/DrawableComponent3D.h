@@ -1,12 +1,11 @@
 #pragma once
 
-#include "engine/entity/3d/Transform3DComponent.h"
-#include "engine/entity/Component.h"
+#include "engine/3d/scene/component/TransformComponent3D.h"
 
 #include <DirectXCollision.h>
 
 namespace Ghurund::Engine {
-	class Drawable3DComponent:public Transform3DComponent{
+	class Drawable3DComponent:public TransformComponent3D {
 	private:
 		BoundingBox boundingBox;
 		BoundingOrientedBox transformedBoundingBox;

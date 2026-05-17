@@ -1,17 +1,15 @@
 #pragma once
 
 #include "core/math/Size.h"
-#include <core/resource/LoadOption.h>
-#include <core/resource/SaveOption.h>
-#include "engine/parameter/ParameterCollection.h"
+#include "engine/graphics/ICamera.h"
 #include "engine/parameter/ValueParameter.h"
 
 #include <DirectXMath.h>
 
-namespace Ghurund::Engine {
+namespace Ghurund::Engine::_3D {
 	using namespace ::DirectX;
 
-	class Camera: public RefCountedObject {
+	class Camera3D: public ICamera {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -21,7 +19,7 @@ namespace Ghurund::Engine {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Camera::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = Camera3D::GET_TYPE();
 #pragma endregion
 
 	private:
@@ -44,7 +42,6 @@ namespace Ghurund::Engine {
 		inline static const AString VIEW_PROJECTION = "viewProjection";
 		inline static const AString VIEW_PROJECTION_INV = "viewProjectionInv";
 
-		ParameterCollection parameters;
 		Float3Parameter* parameterDirection = nullptr, * parameterPosition = nullptr, * parameterTarget = nullptr;
 		Float3Parameter* parameterUp = nullptr, * parameterRight = nullptr;
 		FloatParameter* parameterFov = nullptr;
@@ -53,19 +50,15 @@ namespace Ghurund::Engine {
 		MatrixParameter* parameterViewProjection = nullptr, * parameterViewProjectionInv = nullptr;
 
 	public:
-		Camera();
+		Camera3D();
 
-		~Camera();
-
-		inline ParameterCollection& getParameters() {
-			return parameters;
-		}
-
-		__declspec(property(get = getParameters)) ParameterCollection& Parameters;
-
-		void rebuild();
+		~Camera3D();
 
 		void calcMouseRay(const XMINT2& mousePos, XMFLOAT3& rayPos, XMFLOAT3& rayDir) const;
+
+		virtual void update() override;
+
+		virtual void apply(ParameterManager& parameterManager) override;
 
 		inline const XMFLOAT3& getPosition() const {
 			return pos;

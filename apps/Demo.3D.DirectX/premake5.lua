@@ -4,8 +4,10 @@ project "Demo.3D.DirectX"
 
 	dependson {
 		"Core",
-		"Engine.DirectX",
 		"Engine",
+		"Engine.DirectX",
+		"Engine.3D",
+		"Engine.3D.DirectX",
 		"UI",
 		"UI.DirectX"
 	}
@@ -18,12 +20,12 @@ project "Demo.3D.DirectX"
 	includedirs {
 		"src",
 		includeDir["Core"],
-		includeDir["Engine.DirectX"],
 		includeDir["Engine"],
+		includeDir["Engine.DirectX"],
+		includeDir["Engine.3D"],
+		includeDir["Engine.3D.DirectX"],
 		includeDir["UI"],
 		includeDir["UI.DirectX"],
-		includeDir["entt"],
-		includeDir["CRC"],
 		includeDir["PhysX"],
 		includeDir["PhysX.Shared"],
 		includeDir["DirectX"]
@@ -31,8 +33,10 @@ project "Demo.3D.DirectX"
 
 	links {
 		"Core",
-		"Engine.DirectX",
 		"Engine",
+		"Engine.DirectX",
+		"Engine.3D",
+		"Engine.3D.DirectX",
 		"UI",
 		"UI.DirectX"
 	}

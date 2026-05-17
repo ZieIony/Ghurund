@@ -1,43 +1,15 @@
-#include "ghepch.h"
-#include "Camera.h"
+#include "ghe3dpch.h"
+#include "Camera3D.h"
 
-#include "core/io/MemoryInputStream.h"
-#include "core/io/MemoryOutputStream.h"
 #include "core/reflection/TypeBuilder.h"
+#include "engine/parameter/ParameterManager.h"
 
 #include <DirectXMath.h>
 
-namespace Ghurund::Engine {
+namespace Ghurund::Engine::_3D {
 	using namespace ::DirectX;
 
-	void Camera::rebuild() {
-		XMMATRIX view2, proj2, viewProj2;
-		view2 = XMMatrixLookAtLH(XMLoadFloat3(&pos), XMLoadFloat3(&target), XMLoadFloat3(&up));
-		XMStoreFloat4x4(&view, XMMatrixTranspose(view2));
-		if (pers) {
-			proj2 = XMMatrixPerspectiveFovLH(fov, getAspect(), zNear, zFar);
-		} else {
-			proj2 = XMMatrixOrthographicLH((float)viewSize.Width, (float)viewSize.Height, zNear, zFar);
-		}
-		XMStoreFloat4x4(&proj, XMMatrixTranspose(proj2));
-		viewProj2 = view2 * proj2;
-		XMStoreFloat4x4(&viewProj, XMMatrixTranspose(viewProj2));
-		XMStoreFloat4x4(&viewProjInv, XMMatrixTranspose(XMMatrixInverse(nullptr, viewProj2)));
-
-		parameterDirection->Value = dir;
-		parameterPosition->Value = pos;
-		parameterUp->Value = up;
-		parameterRight->Value = right;
-		parameterFov->Value = fov;
-		parameterZNear->Value = zNear;
-		parameterZFar->Value = zFar;
-		parameterView->Value = view;
-		parameterProjection->Value = proj;
-		parameterViewProjection->Value = viewProj;
-		parameterViewProjectionInv->Value = viewProjInv;
-	}
-
-	Camera::Camera():
+	Camera3D::Camera3D():
 		viewSize({ 640, 480 }),
 		fov(XM_PI / 4),
 		zNear(0.1f),
@@ -53,23 +25,23 @@ namespace Ghurund::Engine {
 		float rotation = 0.0f;
 		//setPositionTargetUp(XMFLOAT3(sin(rotation) * 600, 200, cos(rotation) * 600), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
 
-		parameters.put(parameterDirection = ghnew Float3Parameter(CAMERA_DIRECTION));
-		parameters.put(parameterPosition = ghnew Float3Parameter(CAMERA_POSITION));
-		parameters.put(parameterTarget = ghnew Float3Parameter(CAMERA_TARGET));
-		parameters.put(parameterUp = ghnew Float3Parameter(CAMERA_UP));
-		parameters.put(parameterRight = ghnew Float3Parameter(CAMERA_RIGHT));
+		parameterDirection = ghnew Float3Parameter(CAMERA_DIRECTION);
+		parameterPosition = ghnew Float3Parameter(CAMERA_POSITION);
+		parameterTarget = ghnew Float3Parameter(CAMERA_TARGET);
+		parameterUp = ghnew Float3Parameter(CAMERA_UP);
+		parameterRight = ghnew Float3Parameter(CAMERA_RIGHT);
 
-		parameters.put(parameterFov = ghnew FloatParameter(FOV));
-		parameters.put(parameterZNear = ghnew FloatParameter(ZNEAR));
-		parameters.put(parameterZFar = ghnew FloatParameter(ZFAR));
+		parameterFov = ghnew FloatParameter(FOV);
+		parameterZNear = ghnew FloatParameter(ZNEAR);
+		parameterZFar = ghnew FloatParameter(ZFAR);
 
-		parameters.put(parameterView = ghnew MatrixParameter(VIEW));
-		parameters.put(parameterProjection = ghnew MatrixParameter(PROJECTION));
-		parameters.put(parameterViewProjection = ghnew MatrixParameter(VIEW_PROJECTION));
-		parameters.put(parameterViewProjectionInv = ghnew MatrixParameter(VIEW_PROJECTION_INV));
+		parameterView = ghnew MatrixParameter(VIEW);
+		parameterProjection = ghnew MatrixParameter(PROJECTION);
+		parameterViewProjection = ghnew MatrixParameter(VIEW_PROJECTION);
+		parameterViewProjectionInv = ghnew MatrixParameter(VIEW_PROJECTION_INV);
 	}
 
-	Camera::~Camera() {
+	Camera3D::~Camera3D() {
 		parameterDirection->release();
 		parameterPosition->release();
 		parameterTarget->release();
@@ -86,7 +58,57 @@ namespace Ghurund::Engine {
 		parameterViewProjectionInv->release();
 	}
 
-	void Camera::calcMouseRay(const XMINT2& mousePos, XMFLOAT3& rayPos, XMFLOAT3& rayDir)const {
+	void Camera3D::update() {
+		XMMATRIX viewTemp, projTemp, viewProjTemp, viewProjInvTemp;
+		XMFLOAT4X4 viewTransposed, projTransposed, viewProjTransposed, viewProjInvTransposed;
+	
+		viewTemp = XMMatrixLookAtLH(XMLoadFloat3(&pos), XMLoadFloat3(&target), XMLoadFloat3(&up));
+		XMStoreFloat4x4(&view, XMMatrixTranspose(viewTemp));
+		if (pers) {
+			projTemp = XMMatrixPerspectiveFovLH(fov, getAspect(), zNear, zFar);
+		} else {
+			projTemp = XMMatrixOrthographicLH((float)viewSize.Width, (float)viewSize.Height, zNear, zFar);
+		}
+		XMStoreFloat4x4(&proj, projTemp);
+	
+		viewProjTemp = viewTemp * projTemp;
+		XMStoreFloat4x4(&viewProj, viewProjTemp);
+		viewProjInvTemp = XMMatrixInverse(nullptr, viewProjTemp);
+		XMStoreFloat4x4(&viewProjInv, viewProjInvTemp);
+
+		parameterDirection->Value = dir;
+		parameterPosition->Value = pos;
+		parameterUp->Value = up;
+		parameterRight->Value = right;
+		parameterFov->Value = fov;
+		parameterZNear->Value = zNear;
+		parameterZFar->Value = zFar;
+
+		XMStoreFloat4x4(&viewTransposed, XMMatrixTranspose(viewTemp));
+		parameterView->Value = viewTransposed;
+		XMStoreFloat4x4(&projTransposed, XMMatrixTranspose(projTemp));
+		parameterProjection->Value = projTransposed;
+		XMStoreFloat4x4(&viewProjTransposed, XMMatrixTranspose(viewProjTemp));
+		parameterViewProjection->Value = viewProjTransposed;
+		XMStoreFloat4x4(&viewProjInvTransposed, XMMatrixTranspose(viewProjInvTemp));
+		parameterViewProjectionInv->Value = viewProjInvTransposed;
+	}
+
+	void Camera3D::apply(ParameterManager& parameterManager) {
+		parameterManager.Parameters.put(parameterPosition);
+		parameterManager.Parameters.put(parameterUp);
+		parameterManager.Parameters.put(parameterRight);
+
+		parameterManager.Parameters.put(parameterZNear);
+		parameterManager.Parameters.put(parameterZFar);
+
+		parameterManager.Parameters.put(parameterView);
+		parameterManager.Parameters.put(parameterProjection);
+		parameterManager.Parameters.put(parameterViewProjection);
+		parameterManager.Parameters.put(parameterViewProjectionInv);
+	}
+
+	void Camera3D::calcMouseRay(const XMINT2& mousePos, XMFLOAT3& rayPos, XMFLOAT3& rayDir)const {
 		XMFLOAT3 v = { (float)mousePos.x, (float)mousePos.y, 0 };
 		XMVECTOR rayPos2 = XMVector3Unproject(XMLoadFloat3(&v),
 			0, 0, (float)viewSize.Width, (float)viewSize.Height, 0, 1,
@@ -105,7 +127,7 @@ namespace Ghurund::Engine {
 		XMStoreFloat3(&rayDir, XMVector3Normalize(rayTarget2 - rayPos2));
 	}
 
-	void Camera::setPositionTargetUp(const XMFLOAT3& pos, const XMFLOAT3& target, const XMFLOAT3& up) {
+	void Camera3D::setPositionTargetUp(const XMFLOAT3& pos, const XMFLOAT3& target, const XMFLOAT3& up) {
 		this->pos = pos;
 		this->target = target;
 
@@ -119,7 +141,7 @@ namespace Ghurund::Engine {
 		XMStoreFloat3(&this->up, XMVector3Normalize(uv));
 	}
 
-	void Camera::setPositionDirectionDistanceUp(const XMFLOAT3& pos, const XMFLOAT3& dir, float dist, const XMFLOAT3& up) {
+	void Camera3D::setPositionDirectionDistanceUp(const XMFLOAT3& pos, const XMFLOAT3& dir, float dist, const XMFLOAT3& up) {
 		this->pos = pos;
 		XMVECTOR dv = XMVector3Normalize(XMLoadFloat3(&dir));
 		XMStoreFloat3(&target, XMLoadFloat3(&pos) + dv * dist);
@@ -132,7 +154,7 @@ namespace Ghurund::Engine {
 		XMStoreFloat3(&this->up, XMVector3Normalize(uv));
 	}
 
-	void Camera::setRotation(float yaw, float pitch, float roll) {
+	void Camera3D::setRotation(float yaw, float pitch, float roll) {
 		XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
 		XMVECTOR dv = XMVectorSet(0, 0, dist == 0 ? -1 : -dist, 0);
 		dv = XMVector3TransformNormal(dv, rotation);
@@ -140,7 +162,7 @@ namespace Ghurund::Engine {
 		setPositionTargetUp(pos, target, up);
 	}
 
-	void Camera::setOrbit(float yaw, float pitch, float roll) {
+	void Camera3D::setOrbit(float yaw, float pitch, float roll) {
 		XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
 		XMVECTOR dv = XMVectorSet(0, 0, dist == 0 ? -1 : -dist, 0);
 		dv = XMVector3TransformNormal(dv, rotation);
@@ -149,19 +171,19 @@ namespace Ghurund::Engine {
 		setPositionTargetUp(pos, target, up);
 	}
 
-	void Camera::rotate(float yaw, float pitch, float roll) {
+	void Camera3D::rotate(float yaw, float pitch, float roll) {
 		XMFLOAT3 rotation = getRotation();
 
 		setRotation(rotation.x + yaw, rotation.y + pitch, rotation.z + roll);
 	}
 
-	void Camera::orbit(float yaw, float pitch, float roll) {
+	void Camera3D::orbit(float yaw, float pitch, float roll) {
 		XMFLOAT3 rotation = getRotation();
 
 		setOrbit(rotation.x + yaw, rotation.y + pitch, rotation.z + roll);
 	}
 
-	void Camera::pan(float x, float y) {
+	void Camera3D::pan(float x, float y) {
 		XMVECTOR rv = XMLoadFloat3(&right);
 		XMVECTOR uv = XMLoadFloat3(&up);
 		XMStoreFloat3(&target, XMLoadFloat3(&target) + rv * x + uv * y);
@@ -170,7 +192,7 @@ namespace Ghurund::Engine {
 		this->pos = pos;
 	}
 
-	void Camera::zoom(float z) {
+	void Camera3D::zoom(float z) {
 		XMVECTOR dv = XMLoadFloat3(&dir);
 		XMVECTOR pv = XMLoadFloat3(&pos);
 		XMVECTOR pv2 = pv + dv * z;
@@ -218,8 +240,8 @@ namespace Ghurund::Engine {
 		stream.writeBoolean(pers);
 	}*/
 
-	const Ghurund::Core::Type& Camera::GET_TYPE() {
-		static const Ghurund::Core::Type TYPE = TypeBuilder<Camera>()
+	const Ghurund::Core::Type& Camera3D::GET_TYPE() {
+		static const Ghurund::Core::Type TYPE = TypeBuilder<Camera3D>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;

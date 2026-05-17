@@ -11,7 +11,7 @@ namespace Ghurund::Engine::DirectX {
 		ResourceManager& manager;
 
 		inline DxShader* load(const WString& fileName) {
-			return manager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(fileName), DirectoryPath());
+			return nullptr;	// manager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(fileName), DirectoryPath());
 		}
 
 		DxShaderProvider& operator=(const DxShaderProvider& other) = delete;
