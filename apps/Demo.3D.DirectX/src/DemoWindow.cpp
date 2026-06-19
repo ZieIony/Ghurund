@@ -40,7 +40,7 @@ namespace Demo {
 	}
 
 	CoroutineTask<void> DemoWindow::initScene() {
-		co_return;
+		co_await app.ResourceManager.load<DxMesh>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"models/cube.fbx"));
 	}
 
 	bool DemoWindow::onKeyEvent(const KeyEventArgs& args) {

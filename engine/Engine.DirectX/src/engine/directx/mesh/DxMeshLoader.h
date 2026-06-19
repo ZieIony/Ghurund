@@ -8,10 +8,10 @@
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
 
-    class MeshLoader:public Loader<DxMesh> {
+    class DxMeshLoader:public Loader<DxMesh> {
     private:
         DxGPUMemoryManager& memoryManager;
-        MeshDataLoader meshDataLoader;
+        IntrusivePointer<MeshDataLoader> meshDataLoader;
 
     protected:
         virtual CoroutineTask<void> loadInternal(
@@ -23,6 +23,9 @@ namespace Ghurund::Engine::DirectX {
         ) override;
 
     public:
-        MeshLoader(DxGPUMemoryManager& memoryManager):memoryManager(memoryManager) {}
+        DxMeshLoader(
+            DxGPUMemoryManager& memoryManager
+		):memoryManager(memoryManager), meshDataLoader(makeIntrusive<MeshDataLoader>()) {
+		}
     };
 }

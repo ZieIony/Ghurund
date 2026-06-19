@@ -57,7 +57,7 @@
       <PrecompiledHeaderFile>ghepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;..\..\libs\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -68,6 +68,9 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>..\..\libs\assimp\lib\debug\assimp-vc143-mtd.lib;..\..\libs\assimp\lib\debug\pugixml.lib;..\..\libs\assimp\lib\debug\poly2tri.lib;..\..\libs\assimp\lib\debug\kubazip.lib;..\..\libs\assimp\lib\debug\minizip.lib;..\..\libs\assimp\lib\debug\polyclipping.lib;..\..\libs\assimp\lib\debug\zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
     <ClCompile>
@@ -75,7 +78,7 @@
       <PrecompiledHeaderFile>ghepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;..\..\libs\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -90,6 +93,9 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Lib>
+      <AdditionalDependencies>..\..\libs\assimp\lib\release\assimp-vc143-mt.lib;..\..\libs\assimp\lib\release\pugixml.lib;..\..\libs\assimp\lib\release\poly2tri.lib;..\..\libs\assimp\lib\release\kubazip.lib;..\..\libs\assimp\lib\release\minizip.lib;..\..\libs\assimp\lib\release\polyclipping.lib;..\..\libs\assimp\lib\release\zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Ghurund.Engine.h" />
@@ -164,6 +170,7 @@
     <ClInclude Include="src\engine\graphics\mesh\Mesh.h" />
     <ClInclude Include="src\engine\graphics\mesh\MeshData.h" />
     <ClInclude Include="src\engine\graphics\mesh\MeshDataLoader.h" />
+    <ClInclude Include="src\engine\graphics\mesh\MeshDataLoaderLegacy.h" />
     <ClInclude Include="src\engine\graphics\mesh\MeshProcessor.h" />
     <ClInclude Include="src\engine\graphics\mesh\PlaneMeshData.h" />
     <ClInclude Include="src\engine\graphics\mesh\QuadMeshData.h" />
@@ -236,6 +243,7 @@
     <ClCompile Include="src\engine\graphics\mesh\CubeMeshData.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\MeshData.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\MeshDataLoader.cpp" />
+    <ClCompile Include="src\engine\graphics\mesh\MeshDataLoaderLegacy.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\SphereMeshData.cpp" />
     <ClCompile Include="src\engine\graphics\rendering\Renderer.cpp" />
     <ClCompile Include="src\engine\graphics\rendering\RenderingStatistics.cpp" />

@@ -5,95 +5,52 @@
 #include "core/object/IntrusivePointer.h"
 #include "core/exception/Exceptions.h"
 
+#include <assimp/Importer.hpp>      // C++ importer interface
+#include <assimp/scene.h>           // Output data structure
+#include <assimp/postprocess.h>     // Post processing flags
+
 #include <cstdlib>
 
 namespace Ghurund::Engine {
 
-	void MeshDataLoader::loadObj(MeshData& mesh, MemoryInputStream& stream) {
-		List<XMFLOAT3> objPositions;
-		List<XMFLOAT3> objNormals;
-		List<XMFLOAT2> objTexCoords;
-		List<ObjVert> objVerts;
+	void MeshDataLoader::loadAssimp(MeshData& mesh, MemoryInputStream& stream) {
 
-		AString obj((char*)stream.Data, stream.Size);
-		Array<AString> lines = obj.split("\n");
-		for (AString& line : lines) {
-			if (line.startsWith("#")) {
-				continue;
-			} else if (line.startsWith("v ")) {
-				Array<AString> pos = line.substring(2).trim().split(" ");
-				XMFLOAT3 v((float)atof(pos[0].Data), (float)atof(pos[1].Data), -(float)atof(pos[2].Data));
-				objPositions.add(v);
-			} else if (line.startsWith("vn ")) {
-				Array<AString> normal = line.substring(2).trim().split(" ");
-				XMFLOAT3 v((float)atof(normal[0].Data), (float)atof(normal[1].Data), -(float)atof(normal[2].Data));
-				objNormals.add(v);
-			} else if (line.startsWith("vt ")) {
-				Array<AString> texCoord = line.substring(2).trim().split(" ");
-				XMFLOAT2 v((float)atof(texCoord[0].Data), 1 - (float)atof(texCoord[1].Data));
-				objTexCoords.add(v);
-			} else if (line.startsWith("f ")) {
-				// TODO: add support for faces without normals or textures
-				// TODO: add support for more than 3 indices in one face
-				Array<AString> face = line.substring(2).trim().split(" ");
-				if (face.Size != 3)
-					throw InvalidFormatException("only triangles are supported");
+		Assimp::Importer importer;
 
-				for (size_t i = 0; i < face.Size; i++) {
-					Array<AString> vert = face[i].split("/");
-					objVerts.add(ObjVert{
-						(uint32_t)(atoi(vert[0].Data) - 1),	// in obj indices start from 1, not from 0
-						(uint32_t)(atoi(vert[1].Data) - 1),
-						(uint32_t)(atoi(vert[2].Data) - 1),
-						0
-						});
-				}
-				/*Array<AString> vert = line.substring(2).trim().split(" ");
+		const aiScene* scene = importer.ReadFileFromMemory(stream.Data, stream.Available,
+			aiProcess_CalcTangentSpace |
+			aiProcess_Triangulate |
+			aiProcess_JoinIdenticalVertices |
+			aiProcess_SortByPType,
+			"fbx");
 
-				triangleIndices.add((unsigned int)triangleVertices.Size);
-				triangleIndices.add((unsigned int)(triangleVertices.Size + 2));
-				triangleIndices.add((unsigned int)(triangleVertices.Size + 1));
-				for (size_t j = 3; j < vert.Size; j++) {
-					triangleIndices.add((unsigned int)triangleVertices.Size);
-					triangleIndices.add((unsigned int)(j - 3 + triangleVertices.Size + 3));
-					triangleIndices.add((unsigned int)(j - 3 + triangleVertices.Size + 2));
-				}
-				for (size_t j = 0; j < vert.Size; j++) {
-					Array<AString> face = vert[j].split("/");
-					Vertex3D v(objVerts[atoi(face[0].Data) - 1], objNorms[atoi(face[2].Data) - 1], objTexCoords[atoi(face[1].Data) - 1]);
-					triangleVertices.add(v);
-				}*/
-			}
+		if (!scene) {
+			AString errorMessage = importer.GetErrorString();
+			String message = convertText<char, tchar>(errorMessage);
+			Logger::log(LogType::ERR0R, message.Data);
+			throw CallFailedException();
 		}
 
 		List<XMFLOAT3> positions;
 		List<XMFLOAT3> normals;
 		List<XMFLOAT2> texCoords;
 		List<uint32_t> indices;
-		for (size_t i = 0; i < objVerts.Size; i++) {
-			auto& vert = objVerts[i];
 
-			bool alreadyExists = false;
-			for (size_t j = 0; j < i; j++) {
-				if (vert.posIndex == objVerts[j].posIndex && vert.normalIndex == objVerts[j].normalIndex && vert.texCoordIndex == objVerts[j].texCoordIndex) {
-					vert.vertexIndex = objVerts[j].vertexIndex;
-					alreadyExists = true;
-					break;
-				}
+		for (size_t i = 0; i < scene->mNumMeshes; i++) {
+			auto aiMesh = scene->mMeshes[i];
+			for (size_t j = 0; j < aiMesh->mNumVertices; j++) {
+				auto& aiVertex = aiMesh->mVertices[j];
+				positions.add({ aiVertex.x, aiVertex.y, aiVertex.z });
+				auto& aiNormal = aiMesh->mNormals[j];
+				normals.add({ aiNormal.x, aiNormal.y, aiNormal.z });
+				auto& aiTexCoord = aiMesh->mTextureCoords[0][j];
+				texCoords.add({ aiTexCoord.x, aiTexCoord.y });
 			}
-
-			if (!alreadyExists) {
-				vert.vertexIndex = (uint32_t)positions.Size;
-				positions.add(objPositions[vert.posIndex]);
-				normals.add(objNormals[vert.normalIndex]);
-				texCoords.add(objTexCoords[vert.texCoordIndex]);
+			for (size_t k = 0; k < aiMesh->mNumFaces; k++) {
+				auto& aiFace = aiMesh->mFaces[k];
+				indices.addAll({ aiFace.mIndices[0], aiFace.mIndices[1], aiFace.mIndices[2] });
 			}
-
-			indices.add(vert.vertexIndex);
 		}
-
-		/*computeBoundingBox();
-		generateTangents();*/
 
 		if (positions.Empty || normals.Empty || texCoords.Empty) {
 			auto message = std::format(_T("One or more empty streams (positions: {}, normals: {}, texCoords)\n"), positions.Size, normals.Size, texCoords.Size);
@@ -107,9 +64,6 @@ namespace Ghurund::Engine {
 			VertexStream{Buffer(&normals[0], sizeof(XMFLOAT3) * normals.Size), sizeof(XMFLOAT3), VertexRole::NORMAL},
 			VertexStream{Buffer(&texCoords[0], sizeof(XMFLOAT2) * texCoords.Size), sizeof(XMFLOAT2), VertexRole::TEXCOORD},
 		};
-
-		//IndexType indexType = indices.Size <= std::numeric_limits<uint16_t>::max() ? IndexType::INT16 : IndexType::INT32;
-		//Buffer indexBuffer(((uint32_t)indexType) * indices.Size);
 
 		mesh.init(
 			vertexStreams,
@@ -137,10 +91,6 @@ namespace Ghurund::Engine {
 		uint32_t indexSize = stream.readUInt32();
 		const void* data = stream.readBytes(indexCount * indexSize);
 
-		//XMFLOAT3 center = stream.read<XMFLOAT3>();
-		//XMFLOAT3 extents = stream.read<XMFLOAT3>();
-		//boundingBox = ::DirectX::BoundingBox(center, extents);
-
 		mesh.init(vertexStreams, vertexCount, Buffer(data, indexCount * indexSize), indexCount);
 	}
 
@@ -151,17 +101,7 @@ namespace Ghurund::Engine {
 		const Ghurund::Core::ResourceFormat& format,
 		Ghurund::Core::LoadOption options
 	) {
-		size_t bytesRead = stream.Position;
-		try {
-			loadMesh(resource, stream);
-		} catch (...) {
-			stream.Position = bytesRead;
-			try {
-				loadObj(resource, stream);
-			} catch (...) {
-				throw InvalidFormatException();
-			}
-		}
+		loadAssimp(resource, stream);
 		co_return;
 	}
 

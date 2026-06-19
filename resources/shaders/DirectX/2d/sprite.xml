@@ -5,7 +5,7 @@
 		<Sampler name="pointSampler" filter="point"/>
 	</Samplers>
 	<Programs>
-		<Program type="vertex" path="2d_vs.hlsl"/>
+		<Program type="vertex" path="basic_vs.hlsl"/>
 		<Program type="pixel" path="sprite_ps.hlsl"/>
 	</Programs>
 </Shader>

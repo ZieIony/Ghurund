@@ -1,4 +1,4 @@
-#include "ute2dpch.h"
+#include "ute3dpch.h"
 #include "CppUnitTest.h"
 
 #include "core/object/IntrusivePointer.h"
@@ -17,7 +17,7 @@ namespace UnitTest {
     using namespace UnitTest::Utils;
     using namespace std;
 
-    TEST_CLASS(DxShaders2DTest) {
+    TEST_CLASS(DxShaders3DTest) {
 private:
     Timer timer;
     CoroutineThreadPool threadPool = CoroutineThreadPool(4);
@@ -40,18 +40,18 @@ private:
     }
 
 public:
-    TEST_CLASS_INITIALIZE(DxShaders2DTest_initialize) {
+    TEST_CLASS_INITIALIZE(DxShaders3DTest_initialize) {
         Ghurund::Core::Logger::init(make_unique<UnitTest::Utils::TestLogOutput>());
     }
 
-    TEST_METHOD(DxShaders2D_loadAll) {
+    TEST_METHOD(DxShaders3D_loadAll) {
         DxGraphics graphics;
 		graphics.init();
 
 		DxShaderCompiler compiler(graphics);
 		auto loader = makeIntrusive<DxShaderLoader>(resourceManager, compiler);
         loader->includeDirs.add(DirectoryPath(L"../../resources/shaders/DirectX/include").AbsolutePath);
-        DirectoryPath shaderDirectory = DirectoryPath(L"../../resources/shaders/DirectX/2d").AbsolutePath;
+        DirectoryPath shaderDirectory = DirectoryPath(L"../../resources/shaders/DirectX/3d").AbsolutePath;
 		auto files = shaderDirectory.Files;
         if (files.Size == 0) {
             auto message = std::format(L"No files found in {}", shaderDirectory.toString().Data);
@@ -59,7 +59,7 @@ public:
         }
 		for (const File& file : files) {
             // TODO: compile single hlsl files too
-            if (file.Path.Extension != L"xml")
+			if (file.Path.Extension != L"xml")
                 continue;
             if (!tryLoadShader(loader.ref(), File(shaderDirectory / file.Path))) {
                 auto message = std::format(L"Failed to load shader {}", file.Path.toString().Data);

@@ -116,7 +116,7 @@
     <ClInclude Include="src\engine\directx\memory\GPUResourcePointer.h" />
     <ClInclude Include="src\engine\directx\memory\HeapAllocator.h" />
     <ClInclude Include="src\engine\directx\mesh\DxMesh.h" />
-    <ClInclude Include="src\engine\directx\mesh\MeshLoader.h" />
+    <ClInclude Include="src\engine\directx\mesh\DxMeshLoader.h" />
     <ClInclude Include="src\engine\directx\shader\DxConstantBuffer.h" />
     <ClInclude Include="src\engine\directx\shader\DxShader.h" />
     <ClInclude Include="src\engine\directx\shader\DxShaderLoader.h" />
@@ -162,7 +162,7 @@
     <ClCompile Include="src\engine\directx\memory\GPUResourcePointer.cpp" />
     <ClCompile Include="src\engine\directx\memory\HeapAllocator.cpp" />
     <ClCompile Include="src\engine\directx\mesh\DxMesh.cpp" />
-    <ClCompile Include="src\engine\directx\mesh\MeshLoader.cpp" />
+    <ClCompile Include="src\engine\directx\mesh\DxMeshLoader.cpp" />
     <ClCompile Include="src\engine\directx\shader\DxConstantBuffer.cpp" />
     <ClCompile Include="src\engine\directx\shader\DxShader.cpp" />
     <ClCompile Include="src\engine\directx\shader\DxShaderLoader.cpp" />

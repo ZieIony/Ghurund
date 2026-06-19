@@ -33,6 +33,7 @@ includeDir["CRC"] = "%{libsDir}/CRCpp/inc"
 includeDir["DirectX"] = "%{libsDir}"
 includeDir["GLEW"] = "%{libsDir}/glew-2.1.0/include"
 includeDir["GLFW"] = "%{libsDir}/glfw-3.3.6/include"
+includeDir["assimp"] = "%{libsDir}/assimp/include"
 
 libraryDir = {}
 libraryDir["msdfgen_Debug"] = "%{libsDir}/msdfgen/x64/Debug Library"
@@ -43,6 +44,7 @@ libraryDir["PhysX_Debug"] = "%{libsDir}/PhysX/physx/bin/win.x86_64.vc141.mt/debu
 libraryDir["PhysX_Release"] = "%{libsDir}/PhysX/physx/bin/win.x86_64.vc141.mt/release"
 libraryDir["GLEW"] = "%{libsDir}/glew-2.1.0/lib/Release/x64"
 libraryDir["GLFW"] = "%{libsDir}/glfw-3.3.6/lib-vc2022"
+libraryDir["assimp"] = "%{libsDir}/assimp/lib"
 
 library = {}
 library["msdfgen_Debug"] = "%{libraryDir.msdfgen_Debug}/msdfgen.lib"
@@ -63,6 +65,22 @@ library["PhysXPvdSDK_Release"] = "%{libraryDir.PhysX_Release}/PhysXPvdSDK_static
 
 library["GLEW"] = "%{libraryDir.GLEW}/glew32.lib"
 library["GLFW"] = "%{libraryDir.GLFW}/glfw3_mt.lib"
+library["assimp_Debug"] = "%{libraryDir.assimp}/debug/assimp-vc143-mtd.lib"
+library["assimp_Release"] = "%{libraryDir.assimp}/release/assimp-vc143-mt.lib"
+library["draco_Debug"] = "%{libraryDir.assimp}/debug/draco.lib"
+library["draco_Release"] = "%{libraryDir.assimp}/release/draco.lib"
+library["kubazip_Debug"] = "%{libraryDir.assimp}/debug/kubazip.lib"
+library["kubazip_Release"] = "%{libraryDir.assimp}/release/kubazip.lib"
+library["minizip_Debug"] = "%{libraryDir.assimp}/debug/minizip.lib"
+library["minizip_Release"] = "%{libraryDir.assimp}/release/minizip.lib"
+library["poly2tri_Debug"] = "%{libraryDir.assimp}/debug/poly2tri.lib"
+library["poly2tri_Release"] = "%{libraryDir.assimp}/release/poly2tri.lib"
+library["polyclipping_Debug"] = "%{libraryDir.assimp}/debug/polyclipping.lib"
+library["polyclipping_Release"] = "%{libraryDir.assimp}/release/polyclipping.lib"
+library["pugixml_Debug"] = "%{libraryDir.assimp}/debug/pugixml.lib"
+library["pugixml_Release"] = "%{libraryDir.assimp}/release/pugixml.lib"
+library["zlib_Debug"] = "%{libraryDir.assimp}/debug/zlibd.lib"
+library["zlib_Release"] = "%{libraryDir.assimp}/release/zlib.lib"
 
 libdirs = libraryDir
 

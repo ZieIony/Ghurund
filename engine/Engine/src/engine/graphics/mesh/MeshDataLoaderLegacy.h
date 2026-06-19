@@ -5,17 +5,16 @@
 #include "core/loading/Loader.h"
 
 namespace Ghurund::Engine {
-    class MeshDataLoader:public Loader<MeshData> {
+    class MeshDataLoaderLegacy:public Loader<MeshData> {
     private:
         struct ObjVert {
             uint32_t posIndex, texCoordIndex, normalIndex, vertexIndex;
         };
 
-        void loadAssimp(MeshData& mesh, MemoryInputStream& stream);
+        void loadObj(MeshData& mesh, MemoryInputStream& stream);
         void loadMesh(MeshData& mesh, MemoryInputStream& stream);
 
     protected:
-        [[nodiscard]]
         virtual CoroutineTask<void> loadInternal(
             MeshData& resource,
             MemoryInputStream& stream,

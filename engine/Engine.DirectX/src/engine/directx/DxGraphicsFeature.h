@@ -6,6 +6,7 @@
 #include "core/feature/Feature.h"
 #include "shader/compiler/DxShaderCompiler.h"
 #include "texture/DxTextureLoader.h"
+#include "mesh/DxMeshLoader.h"
 
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
@@ -30,6 +31,7 @@ namespace Ghurund::Engine::DirectX {
         ResourceManager& resourceManager;
         SharedPointer<DxShaderCompiler> shaderCompiler;
         IntrusivePointer<ImageLoader> imageLoader;
+        IntrusivePointer<DxMeshLoader> meshLoader;
 
         void uninitGraphicsFeature();
 

@@ -40,6 +40,9 @@ namespace Ghurund::Engine::DirectX {
 		memoryManager = ghnew DxGPUMemoryManager(graphics, commandList.ref());
 		auto materialLoader = makeIntrusive<MaterialLoader>(resourceManager, *memoryManager);
 		resourceManager.Loaders.set<Material>(materialLoader.ref());
+
+		meshLoader = makeIntrusive<DxMeshLoader>(*memoryManager);
+		resourceManager.Loaders.set<DxMesh>(meshLoader.ref());
 	}
 
 	void DxGraphicsFeature::onUninit() {
