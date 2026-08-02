@@ -2,8 +2,6 @@
 
 #include "RigidBodyComponent2D.h"
 
-#include "engine/2d/scene/component/TransformComponent2D.h"
-
 #include <box2d.h>
 
 namespace Ghurund::Engine::_2D {
@@ -21,12 +19,8 @@ namespace Ghurund::Engine::_2D {
 #pragma endregion
 
 	private:
-		b2ShapeId shapeId;
+		b2ShapeId shapeId = {};
 		float height = 1.0f, radius = 0.25f;
-
-		EventHandler<TransformComponent2D, void> scaleChangedHandler = [this](auto& sender) {
-			updateShape();
-		};
 
 		inline b2Capsule makeCapsule() {
 			b2Capsule capsule;
@@ -36,11 +30,6 @@ namespace Ghurund::Engine::_2D {
 			capsule.center1 = { 0, -h / 2 + r };
 			capsule.center2 = { 0, h / 2 - r };
 			return capsule;
-		}
-
-		inline void updateShape() {
-			b2Capsule capsule = makeCapsule();
-			b2Shape_SetCapsule(shapeId, &capsule);
 		}
 
 		void uninitCapsuleComponent2D();
@@ -54,11 +43,16 @@ namespace Ghurund::Engine::_2D {
 		};
 
 	public:
-		CapsuleComponent2D(NotNull<Entity2D> owner, World2D& world):RigidBodyComponent2D(owner, world) {}
+		CapsuleComponent2D(NotNull<Entity2D> owner):RigidBodyComponent2D(owner) {}
 	
 		~CapsuleComponent2D() {
 			if (IsInitialized)
 				uninitCapsuleComponent2D();
+		}
+
+		inline void updateShape() {
+			b2Capsule capsule = makeCapsule();
+			b2Shape_SetCapsule(shapeId, &capsule);
 		}
 
 		inline float getHeight() const {

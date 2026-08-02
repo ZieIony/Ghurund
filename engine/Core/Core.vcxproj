@@ -303,6 +303,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\Color.cpp" />
+    <ClCompile Include="src\core\io\DirectoryLibrary.cpp" />
     <ClCompile Include="src\core\object\NamedObject.cpp" />
     <ClCompile Include="src\core\StackTrace.cpp" />
     <ClCompile Include="src\core\SystemInfo.cpp" />

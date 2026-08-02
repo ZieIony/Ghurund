@@ -2,8 +2,6 @@
 
 #include "RigidBodyComponent2D.h"
 
-#include "engine/2d/scene/component/TransformComponent2D.h"
-
 #include <box2d.h>
 
 namespace Ghurund::Engine::_2D {
@@ -21,20 +19,11 @@ namespace Ghurund::Engine::_2D {
 #pragma endregion
 
 	private:
-		b2ShapeId shapeId;
+		b2ShapeId shapeId = {};
 		FloatSize size = { 1, 1 };
-
-		EventHandler<TransformComponent2D, void> scaleChangedHandler = [&](TransformComponent2D& transform) {
-			updateShape();
-		};
 
 		inline b2Polygon makeBox() {
 			return b2MakeBox(fabs(scale.x * size.Width) / 2, fabs(scale.y * size.Height) / 2);
-		}
-
-		inline void updateShape() {
-			b2Polygon box = makeBox();
-			b2Shape_SetPolygon(shapeId, &box);
 		}
 
 		void uninitBoxComponent2D();;
@@ -48,11 +37,16 @@ namespace Ghurund::Engine::_2D {
 		};
 
 	public:
-		BoxComponent2D(NotNull<Entity2D> owner, World2D& world):RigidBodyComponent2D(owner, world) {}
+		BoxComponent2D(NotNull<Entity2D> owner):RigidBodyComponent2D(owner) {}
 	
 		~BoxComponent2D() {
 			if (IsInitialized)
 				uninitBoxComponent2D();
+		}
+
+		inline void updateShape() {
+			b2Polygon box = makeBox();
+			b2Shape_SetPolygon(shapeId, &box);
 		}
 
 		inline const FloatSize& getSize() const {

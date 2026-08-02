@@ -73,7 +73,7 @@ namespace Ghurund::Core {
                 if (v.get().Value == value)
                     return v.get();
             }
-            throw InvalidParamException();
+            throw std::invalid_argument("enum value doesn't exist");
         }
 
         static inline const EnumType& fromName(const AString& name) {
@@ -81,7 +81,7 @@ namespace Ghurund::Core {
                 if (v.get().Name == name)
                     return v.get();
             }
-            throw InvalidParamException();
+            throw std::invalid_argument(std::format("enum value \"{}\" doesn't exist", name.Data));
         }
 
         Enum(const Enum& other):value(other.value), name(other.name) {}

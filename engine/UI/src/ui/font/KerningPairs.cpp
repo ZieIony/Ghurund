@@ -10,16 +10,16 @@ namespace Ghurund::UI {
 		DWORD result = GetKerningPairs(hdc, -1, nullptr);
 		if (result == GDI_ERROR) {
 			auto errorCode = GetLastError();
-			throw InvalidParamException();
+			throw std::invalid_argument("invalid hdc - no kerning info for the selected font");
 		} else if (result == 0) {
-			Logger::log(LogType::INFO, _T("No kerning info for this font.\n"));
+			Logger::log(LogType::INFO, _T("No kerning info for the selected font.\n"));
 			return;
 		}
 		Array<KERNINGPAIR> kerningPairs(result);
 		result = GetKerningPairs(hdc, (DWORD)kerningPairs.Size, &kerningPairs[0]);
 		if (result == GDI_ERROR) {
 			auto errorCode = GetLastError();
-			throw InvalidParamException();
+			throw std::invalid_argument("invalid hdc - couldn't get kerning pairs");
 		}
 		for (auto& kerningPair : kerningPairs)
 			add(kerningPair.wFirst, kerningPair.wSecond, kerningPair.iKernAmount);

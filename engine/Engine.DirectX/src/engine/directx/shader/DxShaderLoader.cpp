@@ -70,7 +70,7 @@ namespace Ghurund::Engine::DirectX {
 						auto programType = convertText<wchar_t, char>(programTypeAttributeIterator->value);
 						try {
 							return DxShaderType::fromName(programType.toUpperCase());
-						} catch (InvalidParamException e) {
+						} catch (std::invalid_argument e) {
 							auto message = std::format("Invalid program type '{}'.", programType);
 							throw InvalidDataException(message.c_str());
 						}

@@ -2,8 +2,6 @@
 
 #include "RigidBodyComponent2D.h"
 
-#include "engine/2d/scene/component/TransformComponent2D.h"
-
 #include <box2d.h>
 
 namespace Ghurund::Engine::_2D {
@@ -21,12 +19,8 @@ namespace Ghurund::Engine::_2D {
 #pragma endregion
 
 	private:
-		b2ShapeId shapeId;
+		b2ShapeId shapeId = {};
 		float width = 1.0f;
-
-		EventHandler<TransformComponent2D, void> scaleChangedHandler = [&](auto& sender) {
-			updateShape();
-		};
 
 		inline b2Segment makeSegment() {
 			b2Segment segment;
@@ -34,11 +28,6 @@ namespace Ghurund::Engine::_2D {
 			segment.point1 = { -w, 0 };
 			segment.point2 = { w, 0 };
 			return segment;
-		}
-
-		inline void updateShape() {
-			b2Segment segment = makeSegment();
-			b2Shape_SetSegment(shapeId, &segment);
 		}
 
 		void uninitSegmentComponent2D();
@@ -52,11 +41,16 @@ namespace Ghurund::Engine::_2D {
 		};
 
 	public:
-		SegmentComponent2D(NotNull<Entity2D> owner, World2D& world):RigidBodyComponent2D(owner, world) {}
+		SegmentComponent2D(NotNull<Entity2D> owner):RigidBodyComponent2D(owner) {}
 	
 		~SegmentComponent2D() {
 			if (IsInitialized)
 				uninitSegmentComponent2D();
+		}
+
+		inline void updateShape() {
+			b2Segment segment = makeSegment();
+			b2Shape_SetSegment(shapeId, &segment);
 		}
 
 		inline float getWidth() const {

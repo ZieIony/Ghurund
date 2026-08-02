@@ -34,9 +34,11 @@ namespace Ghurund::Engine::_2D {
 			co_await transformComponent->init();
 			for(auto& component:components)
 				co_await component->init();
+			isValid = true;
 		};
 
 		inline void uninitEntity2D() {
+			invalidate();
 			for (auto& component : components)
 				component->uninit();
 			transformComponent->uninit();
@@ -80,7 +82,7 @@ namespace Ghurund::Engine::_2D {
 
 		template<Derived<Component2D> T>
 		inline T* makeComponent() {
-			return ghnew T(*this, world);
+			return ghnew T(*this);
 		}
 
 		virtual void fixedUpdate(const Timer& timer) override;

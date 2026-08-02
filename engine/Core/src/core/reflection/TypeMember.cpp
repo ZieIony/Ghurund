@@ -7,6 +7,6 @@
 namespace Ghurund::Core {
     void TypeMember::checkParameter(size_t index, const Type& expectedType, const Type& actualType) const {
         if (expectedType != actualType)
-            throw InvalidParamException(std::format("Parameter {} of type '{}' should be of type '{}'.\n", index, actualType, expectedType).c_str());
+            throw std::invalid_argument(std::format("Parameter {} of type '{}' should be of type '{}'.\n", index, actualType, expectedType).c_str());
     }
 }

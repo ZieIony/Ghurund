@@ -73,7 +73,7 @@ namespace Ghurund::UI {
 			const Core::Type& type = T::TYPE;
 			const BaseConstructor* constructor = type.Constructors.findBySignature<>();
 			if (!constructor)
-				throw InvalidParamException("the type doesn't have a zero-parameter constructor");
+				throw std::invalid_argument("the type doesn't have a zero-parameter constructor");
 			types.put(type.Namespace + "::" + type.Name, constructor);
 		}
 

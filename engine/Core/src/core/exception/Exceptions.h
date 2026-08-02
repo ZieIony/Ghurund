@@ -31,11 +31,6 @@ namespace Ghurund::Core {
         InvalidStateException(const char* message = nullptr):std::exception(message) {}
     };
 
-    class InvalidParamException:public std::exception {
-    public:
-        InvalidParamException(const char* message = nullptr):std::exception(message) {}
-    };
-
     class IOException:public std::exception {
     public:
         IOException(const char* message = nullptr):std::exception(message) {}

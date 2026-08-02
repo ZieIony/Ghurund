@@ -37,7 +37,7 @@ namespace Ghurund::Engine {
         case InputType::MATRIX:
             return ghnew ValueInput<MatrixParameter>(valueInput);
         }
-        throw InvalidParamException();
+        throw std::invalid_argument("invalid valueInput type");
     }
 
     void Material::initInputs() {

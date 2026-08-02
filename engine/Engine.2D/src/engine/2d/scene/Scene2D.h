@@ -61,6 +61,12 @@ namespace Ghurund::Engine::_2D {
             gameObjectsUpdate.add(entity);
         }
 
+        inline void remove(IntrusivePointer<Entity2D> entity) {
+            entities.remove(entity);
+            gameObjectsDraw.remove(entity);
+            gameObjectsUpdate.remove(entity);
+        }
+
         inline void draw(RenderGroup& rg) {
             gameObjectsDraw.draw(rg);
         }

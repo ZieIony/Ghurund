@@ -91,11 +91,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\test\utils\MemoryGuard.h" />
+    <ClInclude Include="src\test\utils\ObjectGuard.h" />
     <ClInclude Include="src\test\utils\TestLogOutput.h" />
     <ClInclude Include="src\test\utils\TestUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\test\utils\MemoryGuard.cpp" />
+    <ClCompile Include="src\test\utils\ObjectGuard.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\engine\Core\Core.vcxproj">

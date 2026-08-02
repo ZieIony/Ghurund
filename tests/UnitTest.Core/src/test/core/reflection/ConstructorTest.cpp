@@ -74,7 +74,7 @@ public:
             Utils::MemoryGuard guard;
             {
                 const BaseConstructor* constructor = getType<UnitTest::TestClass>().Constructors.findBySignature<uint32_t>();
-                Assert::ExpectException<InvalidParamException>([&] {
+                Assert::ExpectException<std::invalid_argument>([&] {
                     UnitTest::TestClass* obj = (UnitTest::TestClass*)constructor->invokeRaw(1.0f);
                 });
             }

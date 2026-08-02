@@ -67,8 +67,14 @@ namespace Ghurund::Engine::_2D {
 		inline CoroutineTask<IntrusivePointer<T>> spawnEntity() {
 			auto entity = makeIntrusive<T>(*this);
 			co_await entity->init();
-			scene->add(entity);
 			co_return entity;
+		}
+
+		template<Derived<Entity2D> T>
+		inline CoroutineTask<void> destroyEntity(IntrusivePointer<T> entity) {
+			entity->invalidate();
+			co_await app.CoroutineScheduler.nextUpdate();
+			entity->uninit();
 		}
 
 		inline void draw(RenderGroup& group) {

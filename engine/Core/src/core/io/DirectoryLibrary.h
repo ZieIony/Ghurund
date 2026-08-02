@@ -30,14 +30,7 @@ namespace Ghurund::Core {
             return this->path / FilePath(path);
         }
 
-        virtual SharedPointer<Buffer> get(const WString& path) const override {
-            File file(this->path / FilePath(path));
-            if (!file.Exists)
-                throw InvalidParamException();
-            auto buffer = SharedPointer(ghnew Buffer());
-            file.read(*buffer.get());
-            return buffer;
-        }
+        virtual SharedPointer<Buffer> get(const WString& path) const override;
 
         virtual SharedPointer<Buffer> get(const size_t index) const override {
             File file(path.Files[index]);

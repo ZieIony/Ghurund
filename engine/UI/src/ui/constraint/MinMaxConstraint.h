@@ -39,7 +39,7 @@ namespace Ghurund::UI {
 
 		inline void setMin(float min) {
 			if (min > max)
-				throw InvalidParamException();
+				throw std::invalid_argument("min has to be less than or equal to max");
 			this->min = min;
 			value = std::max(value, min);
 		}
@@ -52,7 +52,7 @@ namespace Ghurund::UI {
 
 		inline void setMax(float max) {
 			if (max < min)
-				throw InvalidParamException();
+				throw std::invalid_argument("max has to be greater than or equal to min");
 			this->max = max;
 			value = std::min(value, min);
 		}

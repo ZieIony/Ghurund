@@ -108,14 +108,14 @@ namespace Ghurund::UI {
 		virtual const ConstraintSet& getConstraints(const Control& child) const override {
 			size_t index = children.find(&child);
 			if (index == children.Size)
-				throw InvalidParamException("control is not the child of this container");
+				throw std::invalid_argument("control is not the child of this container");
 			return children[index].Constraints;
 		}
 
 		virtual ConstraintSet& getConstraints(Control& child) override {
 			size_t index = children.find(&child);
 			if (index == children.Size)
-				throw InvalidParamException("control is not the child of this container");
+				throw std::invalid_argument("control is not the child of this container");
 			return children[index].Constraints;
 		}
 
@@ -123,7 +123,7 @@ namespace Ghurund::UI {
 		virtual void setConstraints(const Control& child, const ConstraintSet& set) override {
 			size_t index = children.find(&child);
 			if (index == children.Size)
-				throw InvalidParamException("control is not the child of this container");
+				throw std::invalid_argument("control is not the child of this container");
 			children[index].Constraints = set;
 		}
 

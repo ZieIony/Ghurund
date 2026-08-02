@@ -22,7 +22,7 @@ namespace Ghurund::Engine::_2D {
 		Camera2D* camera;
 
 	public:
-		CameraComponent2D(NotNull<Entity2D> owner, World2D& world):Component2D(owner, world) {
+		CameraComponent2D(NotNull<Entity2D> owner):Component2D(owner) {
 			camera = ghnew Camera2D();
 		}
 

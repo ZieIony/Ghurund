@@ -21,7 +21,7 @@ namespace Ghurund::Engine::DirectX {
 				memcpy((void*)*ppData, buffer->Data, buffer->Size);
 				*pBytes = (UINT)buffer->Size;
 				return S_OK;
-			} catch (InvalidParamException e) {
+			} catch (std::invalid_argument e) {
 			}
 			auto text = std::format(_T("Include {} could not be found in {}.\n"), filePath, shaderDir);
 			Logger::log(LogType::ERR0R, text.c_str());
@@ -37,7 +37,7 @@ namespace Ghurund::Engine::DirectX {
 					memcpy((void*)*ppData, buffer->Data, buffer->Size);
 					*pBytes = (UINT)buffer->Size;
 					return S_OK;
-				} catch (InvalidParamException e) {
+				} catch (std::invalid_argument e) {
 				}
 			}
 			auto text = std::format(_T("Include {} could not be found in system include dirs.\n"), filePath);

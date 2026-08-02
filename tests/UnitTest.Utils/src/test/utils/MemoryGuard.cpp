@@ -1,8 +1,14 @@
 #include "MemoryGuard.h"
 
+#include "core/logging/Logger.h"
+
 #include <format>
 
+#include "CppUnitTest.h"
+
 namespace UnitTest::Utils {
+    using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+  
     int reportHook(int reportType, char* message, int* returnValue) {
         Logger::WriteMessage(message);
         return 0;

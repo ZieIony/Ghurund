@@ -6,6 +6,8 @@
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 
+#include "core/logging/Formatter.h"
+
 namespace Ghurund::Core {
 	FilePath ResourceManager::resolvePath(const FilePath& path, const DirectoryPath& workingDir) const {
 		FilePath absolutePath = getAbsolutePath(path, workingDir);
@@ -16,7 +18,7 @@ namespace Ghurund::Core {
 			const WString relativePath = pathStr.substring(afterLibName + 1);
 			const Library* library = libraries.get(libName);
 			if (!library)
-				throw InvalidParamException();
+				throw std::invalid_argument(std::format("library \"{}\" doesn't exist", libName));
 			return library->getAbsolutePath(relativePath);
 		} else {
 			return absolutePath;
@@ -35,7 +37,7 @@ namespace Ghurund::Core {
 		} else {
 			File file(absolutePath);
 			if (!file.Exists)
-				throw InvalidParamException();
+				throw std::invalid_argument(std::format("path \"{}\" doesn't exist", pathStr));
 			auto buffer = SharedPointer(ghnew Buffer());
 			file.read(*buffer.get());
 			return buffer;

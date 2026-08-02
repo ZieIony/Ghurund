@@ -19,11 +19,11 @@ namespace Ghurund::Engine::_2D {
 		co_return;
 	}
 
-	RigidBodyComponent2D::RigidBodyComponent2D(NotNull<Entity2D> owner, World2D& world):Component2D(owner, world), physicsSystem(world.PhysicsSystem) {}
+	RigidBodyComponent2D::RigidBodyComponent2D(NotNull<Entity2D> owner):Component2D(owner), physicsSystem(owner->World.PhysicsSystem) {}
 
 	void RigidBodyComponent2D::fixedUpdate(const Timer& timer) {
 		if (BodyType != BodyType::STATIC) {
-			auto& transform = Owner->Transform;
+			auto& transform = Owner.Transform;
 			transform.Position = Position;
 			transform.Rotation = Rotation;
 		}

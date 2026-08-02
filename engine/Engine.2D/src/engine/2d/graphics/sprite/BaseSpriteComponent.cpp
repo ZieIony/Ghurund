@@ -12,13 +12,13 @@ namespace Ghurund::Engine::_2D {
 	}
 
 	CoroutineTask<void> BaseSpriteComponent::onInit() {
-		Mesh = IntrusivePointer(Owner->World.context.makeSpriteMesh()).get();
-		Material = (co_await Owner->World.context.makeSpriteMaterial()).get();
+		Mesh = IntrusivePointer(Owner.World.context.makeSpriteMesh()).get();
+		Material = (co_await Owner.World.context.makeSpriteMaterial()).get();
 	}
 
 	void BaseSpriteComponent::draw(RenderGroup& group) {
 		if (mesh && material) {
-			auto w = XMMatrixTranslation(offset.x, offset.y, 0) * XMMatrixScaling(size.Width, size.Height, 1) * XMLoadFloat4x4(&Owner->Transform.WorldTransformation);
+			auto w = XMMatrixTranslation(offset.x, offset.y, 0) * XMMatrixScaling(size.Width, size.Height, 1) * XMLoadFloat4x4(&Owner.Transform.WorldTransformation);
 			XMFLOAT4X4 world;
 			XMStoreFloat4x4(&world, XMMatrixTranspose(w));
 

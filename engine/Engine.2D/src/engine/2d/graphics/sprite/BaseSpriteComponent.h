@@ -54,7 +54,7 @@ namespace Ghurund::Engine::_2D {
 		};
 
 	public:
-		BaseSpriteComponent(NotNull<Entity2D> owner, World2D& world):Component2D(owner, world) {}
+		BaseSpriteComponent(NotNull<Entity2D> owner):Component2D(owner) {}
 
 		virtual ~BaseSpriteComponent() = 0 {
 			if (IsInitialized)

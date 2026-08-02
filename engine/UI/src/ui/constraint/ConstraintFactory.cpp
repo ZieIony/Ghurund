@@ -213,16 +213,16 @@ namespace Ghurund::UI {
 		Orientation orientation
 	) const {
 		if (!path && !offset)
-			throw InvalidParamException("A constraint needs 'path', 'offset' or both to be defined.");
+			throw std::invalid_argument("A constraint needs 'path', 'offset' or both to be defined.");
 		if (path) {
 			float ratioValue = ratio ? parse<float>(*ratio) : 1.0f;
 			if (ratioValue <= 0.0f)
-				throw InvalidParamException("Ratio cannot be less than or equal to 0.0f.");
+				throw std::invalid_argument("Ratio cannot be less than or equal to 0.0f.");
 			float offsetValue = offset ? parse<float>(*offset) : 0.0f;
 			float minValue = min ? parse<float>(*min) : 0.0f;
 			float maxValue = max ? parse<float>(*max) : std::numeric_limits<float>::max();
 			if (minValue > maxValue)
-				throw InvalidParamException("Min cannot be larger than max.");
+				throw std::invalid_argument("Min cannot be larger than max.");
 
 			if (path->startsWith("Parent.")) {
 				return parseParentConstraint(*path, ratioValue, offsetValue, minValue, maxValue);

@@ -48,7 +48,7 @@ namespace Ghurund::Engine::_2D {
 		void reloadResource();
 
 	public:
-		TileMapComponent(NotNull<Entity2D> owner, World2D& world):Component2D(owner, world) {}
+		TileMapComponent(NotNull<Entity2D> owner):Component2D(owner) {}
 
 		~TileMapComponent() {
 			if (IsInitialized)

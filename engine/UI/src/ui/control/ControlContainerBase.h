@@ -74,7 +74,7 @@ namespace Ghurund::UI {
 
 		virtual void setConstraints(const Control& control, const ConstraintSet& set) override {
 			if (&control != child)
-				throw InvalidParamException("control is not the child of this container");
+				throw std::invalid_argument("control is not the child of this container");
 			constraints = set;
 		}
 

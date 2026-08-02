@@ -22,6 +22,8 @@ namespace Ghurund::Engine {
 #pragma endregion
 
     protected:
+        bool isValid = false;
+
         virtual bool getUsesFixedUpdateInternal() const {
             return true;
         }
@@ -36,6 +38,8 @@ namespace Ghurund::Engine {
 
     public:
         bool isEnabled = true;
+    
+        // TODO: remove tags from GameObject
         TagCollection tags;
         UpdateGroup updateGroup;
         DrawGroup drawGroup;
@@ -63,5 +67,15 @@ namespace Ghurund::Engine {
         __declspec(property(get = getUsesDraw)) bool UsesDraw;
 
         virtual void draw(RenderGroup& group) {}
+
+        inline bool getIsValid() const {
+            return isValid;
+        }
+
+        __declspec(property(get = getIsValid)) bool IsValid;
+
+        inline void invalidate() {
+            isValid = false;
+        }
 	};
 }

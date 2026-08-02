@@ -51,7 +51,7 @@ namespace Ghurund::Engine::_2D {
 		};
 
 	public:
-		RigidBodyComponent2D(NotNull<Entity2D> owner, World2D& world);
+		RigidBodyComponent2D(NotNull<Entity2D> owner);
 
 		virtual ~RigidBodyComponent2D() = 0 {
 			if (IsInitialized)

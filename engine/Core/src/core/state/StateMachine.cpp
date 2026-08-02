@@ -23,7 +23,7 @@ namespace Ghurund::Core {
 		if (it == states.end()) {
 			auto message = std::format(_T("There is no state \"{}\"."), name);
 			Logger::log(LogType::ERR0R, message.c_str());
-			throw InvalidParamException("name");
+			throw std::invalid_argument("name");
 		}
 
 		auto nextState = it->value;
@@ -31,7 +31,7 @@ namespace Ghurund::Core {
 		if (!nextState->IsJumpable) {
 			auto message = std::format(_T("State \"{}\" is not jumpable."), name);
 			Logger::log(LogType::ERR0R, message.c_str());
-			throw InvalidParamException("name");
+			throw std::invalid_argument("name");
 		}
 		currentState->leave();
 		currentState = nextState.get();
@@ -43,7 +43,7 @@ namespace Ghurund::Core {
 		if (it == states.end()) {
 			auto message = std::format(_T("There is no state \"{}\"."), name);
 			Logger::log(LogType::ERR0R, message.c_str());
-			throw InvalidParamException("name");
+			throw std::invalid_argument("name");
 		}
 
 		auto nextState = it->value;
@@ -64,7 +64,7 @@ namespace Ghurund::Core {
 		if (!nextState->IsJumpable) {
 			auto message = std::format(_T("There is no transition between states \"{}\" and \"{}\", and state \"{}\" is not jumpable."), currentState->Name, name, name);
 			Logger::log(LogType::ERR0R, message.c_str());
-			throw InvalidParamException("name");
+			throw std::invalid_argument("name");
 		}
 		currentState->leave();
 		currentState = nextState.get();
@@ -95,7 +95,7 @@ namespace Ghurund::Core {
 		if (it == states.end()) {
 			auto message = std::format(_T("There is no state \"{}\"."), name);
 			Logger::log(LogType::ERR0R, message.c_str());
-			throw InvalidParamException("name");
+			throw std::invalid_argument("name");
 		}
 
 		currentState = it->value.get();

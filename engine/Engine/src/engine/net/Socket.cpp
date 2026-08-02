@@ -10,7 +10,7 @@ namespace Ghurund::Net {
         this->id = id;
         if (id == INVALID_SOCKET) {
             Logger::log(LogType::ERR0R, _T("socket is invalid"));
-            throw InvalidParamException();
+            throw std::invalid_argument("socket is invalid");
         }
 
         u_long enabled = 1;

@@ -21,7 +21,7 @@ namespace Ghurund::Engine::_2D {
 		return TYPE;
 	}
     
-    AudioListenerComponent2D::AudioListenerComponent2D(NotNull<Entity2D> owner, World2D& world):Component2D(owner, world) {
+    AudioListenerComponent2D::AudioListenerComponent2D(NotNull<Entity2D> owner):Component2D(owner) {
         memset(&listener, 0, sizeof(listener));
         listener.Direction = { 1, 0, 0 };
         listener.Up = { 0, 1, 0 };

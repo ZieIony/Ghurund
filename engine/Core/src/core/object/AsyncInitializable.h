@@ -23,6 +23,7 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getIsInitialized)) bool IsInitialized;
 
+        [[nodiscard]]
         inline CoroutineTask<void> init() {
             if (isInitialized)
                 co_return;

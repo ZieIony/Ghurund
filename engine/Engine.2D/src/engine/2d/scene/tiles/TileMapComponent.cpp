@@ -25,21 +25,21 @@ namespace Ghurund::Engine::_2D {
 			tileInfo.texCoordBottomRight = { texCoords.z, texCoords.w };
 			tileIndex++;
 		}
-		mesh = Owner->World.context.makeTileMapMesh(tileMap->Size, tiles);
-		Material = (co_await Owner->World.context.makeTileMapMaterial()).get();
+		mesh = Owner.World.context.makeTileMapMesh(tileMap->Size, tiles);
+		Material = (co_await Owner.World.context.makeTileMapMaterial()).get();
 	}
 
 	void TileMapComponent::reloadResource() {
 		if (tileMap && !tileMap->IsValid) {
 			uninit();
 		} else {
-			Owner->World.app.CoroutineScheduler.launch(init());
+			Owner.World.app.CoroutineScheduler.launch(init());
 		}
 	}
 	
 	void TileMapComponent::draw(RenderGroup& group) {
 		if (mesh && material) {
-			auto w = XMLoadFloat4x4(&Owner->Transform.WorldTransformation);
+			auto w = XMLoadFloat4x4(&Owner.Transform.WorldTransformation);
 			XMFLOAT4X4 world;
 			XMStoreFloat4x4(&world, XMMatrixTranspose(w));
 

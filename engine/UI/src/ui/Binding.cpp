@@ -33,7 +33,7 @@ namespace Ghurund::UI {
             path.addAll(AString(m[1].str().c_str()).split("/"));
             propertyName = m[2].str().c_str();
         } else {
-            throw InvalidParamException(std::format("Invalid binding string: '{}'", attrValue).c_str());
+            throw std::invalid_argument(std::format("Invalid binding string: '{}'", attrValue).c_str());
         }
 
         size_t propIndex = target.Type.Properties.find([&](const BaseProperty& prop) {

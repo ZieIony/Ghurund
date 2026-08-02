@@ -1,6 +1,7 @@
 #include "ghe2dpch.h"
 #include "CapsuleComponent2D.h"
 
+#include "engine/2d/scene/component/TransformComponent2D.h"
 #include "engine/2d/World2D.h"
 
 namespace Ghurund::Engine::_2D {
@@ -12,9 +13,8 @@ namespace Ghurund::Engine::_2D {
 	}
 
 	void CapsuleComponent2D::uninitCapsuleComponent2D() {
-		Owner->Transform.scaleChanged -= scaleChangedHandler;
 		if (visualizationComponent) {
-			Owner->Components.remove(visualizationComponent);
+			Owner.Components.remove(visualizationComponent);
 			visualizationComponent->release();
 			visualizationComponent = nullptr;
 		}
@@ -23,21 +23,19 @@ namespace Ghurund::Engine::_2D {
 	CoroutineTask<void> CapsuleComponent2D::onInit() {
 		if (isVisualized) {
 			if (visualizationComponent) {
-				Owner->Components.remove(visualizationComponent);
+				Owner.Components.remove(visualizationComponent);
 				visualizationComponent->release();
 			}
-			visualizationComponent = Owner->makeComponent<VisualizationComponent2D>();
-			visualizationComponent->Mesh = IntrusivePointer<Mesh>(Owner->World.context.makeSpriteMesh()).get();
-			visualizationComponent->Material = (co_await Owner->World.context.makeCapsuleVisualizationMaterial()).get();
-			Owner->Components.add(visualizationComponent);
+			visualizationComponent = Owner.makeComponent<VisualizationComponent2D>();
+			visualizationComponent->Mesh = IntrusivePointer<Mesh>(Owner.World.context.makeSpriteMesh()).get();
+			visualizationComponent->Material = (co_await Owner.World.context.makeCapsuleVisualizationMaterial()).get();
+			Owner.Components.add(visualizationComponent);
 		}
 		co_await __super::onInit();
 
 		b2Capsule capsule = makeCapsule();
 		b2ShapeDef shapeDef = b2DefaultShapeDef();
 		shapeId = b2CreateCapsuleShape(Id, &shapeDef, &capsule);
-
-		Owner->Transform.scaleChanged += scaleChangedHandler;
 	}
 	
 	void CapsuleComponent2D::update(const Timer& timer) {
@@ -49,7 +47,7 @@ namespace Ghurund::Engine::_2D {
 				auto translation = XMMatrixTranslation(Position.x, Position.y, 0);
 				w = w * rotation * translation;
 			}
-			w = w * XMLoadFloat4x4(&Owner->Transform.WorldTransformation);
+			w = w * XMLoadFloat4x4(&Owner.Transform.WorldTransformation);
 			XMStoreFloat4x4(&world, w);
 			visualizationComponent->Transformation = world;
 			visualizationComponent->Extents = { radius, height / 2 };

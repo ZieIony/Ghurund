@@ -144,7 +144,7 @@ namespace Ghurund::UI {
 			MAT2 mat = { { 0, 1 },{ 0, 0 },{ 0, 0 },{ 0, 1 } };
 			DWORD result = GetGlyphOutline(hdc, c, GGO_METRICS, &glyphMetrics, 0, nullptr, &mat);
 			if (result == GDI_ERROR)
-				throw InvalidParamException();
+				throw std::invalid_argument("invalid hdc - no glyph outline");
 
 			GlyphMetrics glyph = {
 				.shapeSize = {
@@ -221,12 +221,12 @@ namespace Ghurund::UI {
 			MAT2 mat = { {0, 1}, {0, 0}, {0, 0}, {0, 1} };
 			DWORD result = GetGlyphOutline(hdc, c, GGO_NATIVE, &glyphMetrics, 0, nullptr, &mat);
 			if (result == GDI_ERROR)
-				throw InvalidParamException();
+				throw std::invalid_argument("invalid hdc - no glyph outline");
 			DWORD size = result;
 			Buffer glyphOutlineData(size);
 			result = GetGlyphOutline(hdc, c, GGO_NATIVE, &glyphMetrics, (DWORD)glyphOutlineData.Size, glyphOutlineData.Data, &mat);
 			if (result == GDI_ERROR)
-				throw InvalidParamException();
+				throw std::invalid_argument("invalid hdc - no glyph outline");
 
 			XMFLOAT2 topLeft;
 			msdfgen::Shape shape = shapeFromPolygonData(glyphOutlineData.Data, (DWORD)glyphOutlineData.Size, topLeft);

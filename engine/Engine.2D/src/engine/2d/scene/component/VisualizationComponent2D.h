@@ -35,7 +35,7 @@ namespace Ghurund::Engine::_2D {
 		XMFLOAT2 extents = { 0, 0 };
 
 	public:
-		VisualizationComponent2D(NotNull<Entity2D> owner, World2D& world):Component2D(owner, world) {}
+		VisualizationComponent2D(NotNull<Entity2D> owner):Component2D(owner) {}
 
 		~VisualizationComponent2D();
 

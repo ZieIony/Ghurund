@@ -66,13 +66,13 @@ namespace Ghurund::UI {
 
 	const ConstraintSet& ControlContainerBase::getConstraints(const Control& control) const {
 		if (&control != child)
-			throw InvalidParamException("control is not the child of this container");
+			throw std::invalid_argument("control is not the child of this container");
 		return constraints;
 	}
 
 	ConstraintSet& ControlContainerBase::getConstraints(Control& control) {
 		if (&control != child)
-			throw InvalidParamException("control is not the child of this container");
+			throw std::invalid_argument("control is not the child of this container");
 		return constraints;
 	}
 

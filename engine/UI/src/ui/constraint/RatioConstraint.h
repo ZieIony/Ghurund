@@ -39,7 +39,7 @@ namespace Ghurund::UI {
 
 		inline void setRatio(float ratio) {
 			if (ratio <= 0.0f)
-				throw InvalidParamException();
+				throw std::invalid_argument("radio has to be greater than 0.0");
 			this->ratio = ratio;
 		}
 

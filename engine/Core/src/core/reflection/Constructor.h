@@ -35,7 +35,7 @@ namespace Ghurund::Core {
         void* invokeRaw() const {
             Array<std::reference_wrapper<const Type>> currentParameters;
             if (currentParameters.Size != Parameters.Size)
-                throw InvalidParamException(std::format("{} parameters expected, {} provided.\n", Parameters.Size, currentParameters.Size).c_str());
+                throw std::invalid_argument(std::format("{} parameters expected, {} provided.\n", Parameters.Size, currentParameters.Size).c_str());
             return invokeRawInternal(nullptr);
         }
 
@@ -50,7 +50,7 @@ namespace Ghurund::Core {
         void* invokeRawWithAllocator(Allocator& allocator) const {
             Array<std::reference_wrapper<const Type>> currentParameters;
             if (currentParameters.Size != Parameters.Size)
-                throw InvalidParamException(std::format("{} parameters expected, {} provided.\n", Parameters.Size, currentParameters.Size).c_str());
+                throw std::invalid_argument(std::format("{} parameters expected, {} provided.\n", Parameters.Size, currentParameters.Size).c_str());
             return invokeRawInternalWithAllocator(allocator, nullptr);
         }
 

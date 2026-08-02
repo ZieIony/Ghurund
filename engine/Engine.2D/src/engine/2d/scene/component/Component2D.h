@@ -28,16 +28,16 @@ namespace Ghurund::Engine::_2D {
 		Entity2D& owner;
 
 	public:
-		Component2D(NotNull<Entity2D> owner, World2D& world):owner(owner.ref()) {}
+		Component2D(NotNull<Entity2D> owner):owner(owner.ref()) {}
 
 		virtual ~Component2D() = 0 {
 		}
 
-		inline NotNull<Entity2D> getOwner() const {
+		inline Entity2D& getOwner() const {
 			return owner;
 		}
 
-		__declspec(property(get = getOwner)) NotNull<Entity2D> Owner;
+		__declspec(property(get = getOwner)) Entity2D& Owner;
 
 		virtual void fixedUpdate(const Timer& timer) {}
 
