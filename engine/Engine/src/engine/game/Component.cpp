@@ -6,8 +6,6 @@
 
 namespace Ghurund::Engine {
 	const Ghurund::Core::Type& Component::GET_TYPE() {
-		static auto PROPERTY_NAME = Property<Component, const AString*>("Name", & getName, (void(Component::*)(const AString*)) & setName);
-
 		static const Ghurund::Core::Type TYPE = TypeBuilder<Component>()
 			.withProperty(PROPERTY_NAME)
 			.withSupertype(__super::GET_TYPE());

@@ -12,7 +12,7 @@ namespace Ghurund::Engine::_3D {
 		List<Component3D*> components;
 
 	public:
-		Event<Component3DCollection> collectionChanged = *this;
+		Event<Component3DCollection, void> collectionChanged = *this;
 
 		~Component3DCollection() {
 			clear();

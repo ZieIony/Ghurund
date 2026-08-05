@@ -99,6 +99,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\test\game\action\TestGameAction.h" />
+    <ClInclude Include="src\test\game\behavior\TestDecorators.h" />
+    <ClInclude Include="src\test\game\behavior\TestNodes.h" />
     <ClInclude Include="src\test\opengl\shader\TestShaderSources.h" />
     <ClInclude Include="src\utepch.h" />
   </ItemGroup>
@@ -111,6 +113,11 @@
     <ClCompile Include="src\test\entity\BoxComponentTest.cpp" />
     <ClCompile Include="src\test\game\action\ActionMappingTest.cpp" />
     <ClCompile Include="src\test\game\action\FloatGameActionTest.cpp" />
+    <ClCompile Include="src\test\game\behavior\BehaviorTreeNodeTest.cpp" />
+    <ClCompile Include="src\test\game\behavior\BehaviorTreeTest.cpp" />
+    <ClCompile Include="src\test\game\behavior\NodeDecoratorTest.cpp" />
+    <ClCompile Include="src\test\game\behavior\SelectorNodeTest.cpp" />
+    <ClCompile Include="src\test\game\behavior\SequenceNodeTest.cpp" />
     <ClCompile Include="src\test\game\tag\TagCollectionTest.cpp" />
     <ClCompile Include="src\test\game\tag\TagManagerTest.cpp" />
     <ClCompile Include="src\test\graphics\material\MaterialTest.cpp" />

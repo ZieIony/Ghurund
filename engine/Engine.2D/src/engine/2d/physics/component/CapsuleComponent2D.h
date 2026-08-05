@@ -24,9 +24,8 @@ namespace Ghurund::Engine::_2D {
 		b2ShapeId shapeId;
 		float height = 1.0f, radius = 0.25f;
 
-		EventHandler<TransformComponent2D> scaleChangedHandler = [&](TransformComponent2D& transform) -> bool {
+		EventHandler<TransformComponent2D, void> scaleChangedHandler = [this](auto& sender) {
 			updateShape();
-			return true;
 		};
 
 		inline b2Capsule makeCapsule() {

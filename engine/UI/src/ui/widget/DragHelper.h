@@ -16,6 +16,6 @@ namespace Ghurund::UI {
 
         DragHelper(Control& handle, Control& content);
 
-        Event<Control> dragged;
+        Event<Control, void> dragged;
     };
 }

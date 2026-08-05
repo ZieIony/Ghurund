@@ -29,9 +29,9 @@ namespace Ghurund::Engine::_2D {
 		XMFLOAT4X4 worldTransformation = Ghurund::Core::makeIdentityMatrix();
 
 	public:
-		Event<TransformComponent2D> positionChanged = *this;
-		Event<TransformComponent2D> rotationChanged = *this;
-		Event<TransformComponent2D> scaleChanged = *this;
+		Event<TransformComponent2D, void> positionChanged = *this;
+		Event<TransformComponent2D, void> rotationChanged = *this;
+		Event<TransformComponent2D, void> scaleChanged = *this;
 
 		TransformComponent2D(NotNull<Entity2D> owner, World2D& world):Component2D(owner, world) {}
 

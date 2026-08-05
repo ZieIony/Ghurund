@@ -36,9 +36,9 @@ namespace Ghurund::Net {
         }
 
     public:
-        Event<Server, Connection> onConnected = *this;
-        Event<Server, ClientDisconnection> onDisconnected = *this;
-        Event<Server, Connection> onNewClientConnection = *this;
+        Event<Server, void, Connection> onConnected = *this;
+        Event<Server, void, ClientDisconnection> onDisconnected = *this;
+        Event<Server, bool, Connection> onNewClientConnection = *this;
 
         ~Server();
 

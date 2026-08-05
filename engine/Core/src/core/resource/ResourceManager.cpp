@@ -168,11 +168,10 @@ namespace Ghurund::Core {
 	void ResourceManager::setHotReloadEnabled(bool enabled) {
 		this->hotReloadEnabled = enabled;
 		if (enabled) {
-			watcher.fileChanged += [this](FileWatcher&, const FileChange& change)->bool {
+			watcher.fileChanged += [this](FileWatcher&, const FileChange& change) {
 				if (change.Type != FileChangeType::MODIFIED) {
 					resources.remove(change.Path.toString());
 					watcher.removeFile(change.Path);
-					return true;
 				}
 				auto resource = IntrusivePointer(resources.get(change.Path.toString()));
 				resource->addReference();

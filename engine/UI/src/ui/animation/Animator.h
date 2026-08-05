@@ -21,7 +21,7 @@ namespace Ghurund::UI {
 		State state = State::IDLE;
 
 	public:
-		Event<Animator, float> progressChanged = Event<Animator, float>(*this);
+		Event<Animator, void, float> progressChanged = *this;
 
 		void start(const Animation& animation) {
 			this->animation = &animation;
@@ -34,8 +34,7 @@ namespace Ghurund::UI {
 			start(animation);
 			progressChanged += [this, &animation, &variable](Animator& animator, float progress) {
 				variable = lerp<Type>(animation.InitialValue, animation.TargetValue, progress);
-				return true;
-				};
+			};
 		}
 
 		void update(uint64_t time) {

@@ -22,7 +22,7 @@ namespace Ghurund::Core {
         Application& app;
 
     protected:
-        const EventHandler<Window> DEFAULT_QUIT_APP_WINDOW_CLOSED_HANDLER = [this](Window& window) {
+        const EventHandler<Window, bool> DEFAULT_QUIT_APP_WINDOW_CLOSED_HANDLER = [this](Window& window) {
             window.Visible = false;
             app.quit();
             return true;

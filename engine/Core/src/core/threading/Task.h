@@ -17,10 +17,10 @@ namespace Ghurund::Core {
         List<SharedPointer<Task>> dependencies;
         void* tag = nullptr;
         ExecutionStatus executionStatus = ExecutionStatus::NOT_STARTED;
-        Event<Task, ExecutionStatus> statusChanged = *this;
 
     public:
         WString name;
+        Event<Task, void, ExecutionStatus> statusChanged = *this;
      
         Task(std::function<void()> function):function(function) {}
 
@@ -83,12 +83,6 @@ namespace Ghurund::Core {
         }
 
         __declspec(property(get = getTag, put = setTag)) void* Tag;
-
-        inline Event<Task, Ghurund::Core::ExecutionStatus>& getOnExecutionStatusChanged() {
-            return statusChanged;
-        }
-
-        __declspec(property(get = getOnExecutionStatusChanged)) Event<Task, Ghurund::Core::ExecutionStatus>& OnExecutionStatusChanged;
     };
 
     class TaskGroup {

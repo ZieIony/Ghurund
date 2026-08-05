@@ -24,9 +24,8 @@ namespace Ghurund::Engine::_2D {
 		b2ShapeId shapeId;
 		float width = 1.0f;
 
-		EventHandler<TransformComponent2D> scaleChangedHandler = [&](TransformComponent2D& transform) -> bool {
+		EventHandler<TransformComponent2D, void> scaleChangedHandler = [&](auto& sender) {
 			updateShape();
-			return true;
 		};
 
 		inline b2Segment makeSegment() {

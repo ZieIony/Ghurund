@@ -45,7 +45,7 @@ namespace Ghurund::Core {
 		~Resource();
 
 	public:
-		Event<Resource> validChanged = *this;
+		Event<Resource, void> validChanged = *this;
 
 		virtual void invalidate() {
 			valid = false;

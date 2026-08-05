@@ -24,9 +24,8 @@ namespace Ghurund::Engine::_2D {
 		b2ShapeId shapeId;
 		FloatSize size = { 1, 1 };
 
-		EventHandler<TransformComponent2D> scaleChangedHandler = [&](TransformComponent2D& transform) -> bool {
+		EventHandler<TransformComponent2D, void> scaleChangedHandler = [&](TransformComponent2D& transform) {
 			updateShape();
-			return true;
 		};
 
 		inline b2Polygon makeBox() {

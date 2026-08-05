@@ -3,11 +3,12 @@
 #include "core/string/String.h"
 #include "core/object/Initializable.h"
 #include "core/object/RefCountedObject.h"
+#include "core/object/NamedObject.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
 
-	class Component:public RefCountedObject {
+	class Component:public RefCountedObject, public AStringNamedObject {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -20,32 +21,8 @@ namespace Ghurund::Engine {
 		inline static const Ghurund::Core::Type& TYPE = Component::GET_TYPE();
 #pragma endregion
 
-	protected:
-		Ghurund::Core::AString* name = nullptr;
-
 	public:
-		virtual ~Component() = 0 {
-			delete name;
-		}
-
-		inline const Ghurund::Core::AString* getName() const {
-			return name;
-		}
-
-		inline void setName(const AString* name) {
-			if (this->name)
-				delete this->name;
-			if (name)
-				this->name = ghnew AString(*name);
-		}
-
-		inline void setName(const AString& name) {
-			if (this->name)
-				delete this->name;
-			this->name = ghnew AString(name);
-		}
-
-		__declspec(property(get = getName, put = setName)) const Ghurund::Core::AString* Name;
+		virtual ~Component() = 0 {}
 
 #ifdef _DEBUG
 		virtual String printTree() const;

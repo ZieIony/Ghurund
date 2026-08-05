@@ -17,7 +17,7 @@ namespace Ghurund::UI {
 		virtual ~MenuItem() {}
 	};
 
-	typedef EventHandler<Control> ClickEventHandler;
+	typedef EventHandler<Control, bool> ClickEventHandler;
 
 	class ButtonMenuItem:public MenuItem {
 	/*private:

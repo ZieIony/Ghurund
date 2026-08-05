@@ -17,8 +17,8 @@ namespace Ghurund::Core {
 		std::atomic_flag busy, running, finishing;
 
 	public:
-		Event<WorkerThread, bool> runningChanged = *this;
-		Event<WorkerThread, bool> busyChanged = *this;
+		Event<WorkerThread, void, bool> runningChanged = *this;
+		Event<WorkerThread, void, bool> busyChanged = *this;
 
 		virtual ~WorkerThread() {
 			if (running.test() && !finishing.test())

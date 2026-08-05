@@ -3,10 +3,10 @@
 
 namespace Ghurund::UI {
 	void BindableProperty::bindTo(BindableProperty& source) {
-		EventHandler<BindableProperty, void*> propertyChangedHandler = EventHandler<BindableProperty, void*>([&](BindableProperty&, void* value) {
+		EventHandler<BindableProperty, bool, void*> propertyChangedHandler = [&](BindableProperty&, void* value) {
 			set(value);
 			return true;
-		});
+		};
 		source.propertyChanged += propertyChangedHandler;
 		auto binding = ghnew Binding(&source, propertyChangedHandler);
 		bindings.add(binding);

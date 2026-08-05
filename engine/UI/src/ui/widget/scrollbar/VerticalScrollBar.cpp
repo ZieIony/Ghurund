@@ -50,7 +50,7 @@ namespace Ghurund::UI {
             Scroll -= 10;
             if (scroll != prevScroll) {
                 track->repaint();
-                OnScrolled();
+                onScrolled();
             }
             return true;
         };
@@ -59,13 +59,13 @@ namespace Ghurund::UI {
             Scroll += 10;
             if (scroll != prevScroll) {
                 track->repaint();
-                OnScrolled();
+                onScrolled();
             }
             return true;
         };
         dragHelper->dragged += [this](Control& control) {
             updateScroll();
-            OnScrolled();
+            onScrolled();
             return true;
         };
     }

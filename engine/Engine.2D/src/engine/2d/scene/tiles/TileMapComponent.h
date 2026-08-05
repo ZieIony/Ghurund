@@ -25,7 +25,7 @@ namespace Ghurund::Engine::_2D {
 
 	private:
 		TileMap* tileMap = nullptr;
-		EventHandler<Resource> tileMapChanged = [this](Resource& resource)->bool {
+		EventHandler<Resource, void> tileMapChanged = [this](Resource& resource)->bool {
 			reloadResource();
 			return true;
 		};

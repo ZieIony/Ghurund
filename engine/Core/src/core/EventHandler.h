@@ -1,85 +1,90 @@
 #pragma once
 
+#include "core/concepts/Concepts.h"
+
 #include <functional>
 
 namespace Ghurund::Core {
-    template <class...> class EventHandler;
+    template <class SenderType, typename ReturnType, typename...> class EventHandler;
 
-    template<class SenderType>
-    class EventHandler<SenderType> {
+    template<class SenderType, typename ReturnType>
+    class EventHandler<SenderType, ReturnType> {
     private:
         static inline uint32_t ID = 1;
 
         uint32_t id = 0;
-        std::function<bool(SenderType& sender)> lambda;
+        std::function<ReturnType(SenderType& sender)> function;
 
     public:
         EventHandler() {}
 
-        EventHandler(const std::function<bool(SenderType& sender)>& lambda, uint32_t id = ID++) {
-            this->lambda = lambda;
+        template<Callable<ReturnType, SenderType&> Type>
+        EventHandler(Type function, uint32_t id = ID++) {
+            this->function = std::forward<Type>(function);
             this->id = id;
         }
 
         EventHandler(const EventHandler& handler) {
             id = handler.id;
-            lambda = handler.lambda;
+            function = handler.function;
         }
 
         EventHandler(EventHandler&& handler) noexcept {
             id = handler.id;
-            lambda = std::move(handler.lambda);
+            function = std::move(handler.function);
         }
 
         bool operator==(const EventHandler& handler) const {
             return id == handler.id;
         }
 
-        inline bool operator()(SenderType& sender) {
-            return lambda(sender);
+        inline ReturnType operator()(SenderType& sender) {
+            return function(sender);
         }
 
         EventHandler& operator=(const EventHandler& handler) {
             id = handler.id;
-            lambda = handler.lambda;
+            function = handler.function;
             return *this;
         }
     };
 
-    template<class SenderType, class Type>
-    class EventHandler<SenderType, Type> {
+    template<class SenderType, typename ReturnType, typename ArgsType>
+    class EventHandler<SenderType, ReturnType, ArgsType> {
     private:
         static inline uint32_t ID = 0;
 
         uint32_t id = 0;
-        std::function<bool(SenderType& sender, const Type& args)> lambda;
+        std::function<ReturnType(SenderType& sender, const ArgsType& args)> function;
 
     public:
-        EventHandler(std::function<bool(SenderType& sender, const Type& args)> lambda, uint32_t id = ID++) {
-            this->lambda = lambda;
+        template<Callable<ReturnType, SenderType&, const ArgsType&> Type>
+        EventHandler(Type&& function, uint32_t id = ID++) {
+            this->function = std::forward<Type>(function);
+            this->id = id;
         }
 
         EventHandler(const EventHandler& handler) {
             id = handler.id;
-            lambda = handler.lambda;
+            function = handler.function;
         }
 
         EventHandler(EventHandler&& handler) noexcept {
             id = handler.id;
-            lambda = std::move(handler.lambda);
+            function = std::move(handler.function);
         }
 
         bool operator==(const EventHandler& handler) const {
             return id == handler.id;
         }
 
-        inline bool operator()(SenderType& sender, const Type& args) {
-            return lambda(sender, args);
+        inline ReturnType operator()(SenderType& sender, const ArgsType& args) {
+            return function(sender, args);
         }
 
         EventHandler& operator=(const EventHandler& handler) {
             id = handler.id;
-            lambda = handler.lambda;
+            function = handler.function;
             return *this;
         }
     };

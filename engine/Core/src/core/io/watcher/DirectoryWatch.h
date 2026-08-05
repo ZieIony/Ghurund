@@ -25,7 +25,7 @@ namespace Ghurund::Core {
         static void CALLBACK notificationCompletion(DWORD errorCode, DWORD numberOfBytesTransfered, LPOVERLAPPED overlapped);
 
     public:
-        Event<DirectoryWatch, const FileChange&> fileChanged = *this;
+        Event<DirectoryWatch, void, const FileChange&> fileChanged = *this;
 
         DirectoryWatch(const DirectoryPath &dir):directory(dir), buffer(Buffer(10_KB)) {
             overlapped.hEvent = this;

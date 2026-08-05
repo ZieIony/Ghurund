@@ -52,7 +52,7 @@ namespace Ghurund::UI {
 		virtual bool onMouseWheelEvent(const MouseWheelEventArgs& event) override;
 
 	public:
-		Event<ControlContainerBase> childChanged = *this;
+		Event<ControlContainerBase, void> childChanged = *this;
 
 		inline Control* getChild() {
 			return child;

@@ -92,6 +92,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\game\behavior\BehaviorTree.h" />
+    <ClInclude Include="src\engine\game\behavior\BehaviorTreeNode.h" />
+    <ClInclude Include="src\engine\game\behavior\Blackboard.h" />
+    <ClInclude Include="src\engine\game\NamedIntrusiveOrderedObservableCollection.h" />
+    <ClInclude Include="src\engine\game\behavior\NodeDecorator.h" />
+    <ClInclude Include="src\engine\game\behavior\SelectorNode.h" />
+    <ClInclude Include="src\engine\game\behavior\SequenceNode.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\animation\Animation.h" />
     <ClInclude Include="src\engine\animation\AnimationSet.h" />
@@ -210,6 +217,11 @@
     <ClCompile Include="src\engine\audio\sound\Sound.cpp" />
     <ClCompile Include="src\engine\audio\sound\SoundLoader.cpp" />
     <ClCompile Include="src\engine\editor\ThumbnailRenderer.cpp" />
+    <ClCompile Include="src\engine\game\behavior\BehaviorTree.cpp" />
+    <ClCompile Include="src\engine\game\behavior\BehaviorTreeNode.cpp" />
+    <ClCompile Include="src\engine\game\behavior\NodeDecorator.cpp" />
+    <ClCompile Include="src\engine\game\behavior\SelectorNode.cpp" />
+    <ClCompile Include="src\engine\game\behavior\SequenceNode.cpp" />
     <ClCompile Include="src\engine\game\Component.cpp" />
     <ClCompile Include="src\engine\game\GameObject.cpp" />
     <ClCompile Include="src\engine\game\action\ActionMapping.cpp" />

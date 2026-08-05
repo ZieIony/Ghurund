@@ -101,6 +101,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\object\NamedObject.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -302,6 +303,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\Color.cpp" />
+    <ClCompile Include="src\core\object\NamedObject.cpp" />
     <ClCompile Include="src\core\StackTrace.cpp" />
     <ClCompile Include="src\core\SystemInfo.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />

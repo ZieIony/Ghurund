@@ -9,7 +9,7 @@ namespace Ghurund::UI {
 
 	struct Binding {
 		BindableProperty * source;
-		EventHandler<BindableProperty, void*> propertyChangedHandler;
+		EventHandler<BindableProperty, bool, void*> propertyChangedHandler;
 	};
 
 	class BindableProperty {
@@ -17,9 +17,10 @@ namespace Ghurund::UI {
 		List<Binding*> bindings;
 		RefCountedObject& owner;
 		const BaseProperty& property;
-		Event<BindableProperty, void*> propertyChanged = *this;
 
 	public:
+		Event<BindableProperty, void, void*> propertyChanged = *this;
+
 		BindableProperty(RefCountedObject& owner, const BaseProperty& property):owner(owner), property(property) {}
 
 		BindableProperty(const BindableProperty& other):owner(owner), property(property) {}
@@ -33,12 +34,6 @@ namespace Ghurund::UI {
 		}
 
 		__declspec(property(get = getName)) const AString& Name;
-
-		inline const Event<BindableProperty, void*>& getPropertyChanged() const {
-			return propertyChanged;
-		}
-
-		__declspec(property(get = getPropertyChanged)) const Event<BindableProperty, void*>& PropertyChanged;
 
 		inline void set(const void* value) const {
 			property.setRaw(&owner, value);

@@ -20,7 +20,7 @@ namespace Ghurund::UI {
         virtual void onStateChanged() override;
 
     public:
-        Event<RadioButton, bool> checkedChanged = *this;
+        Event<RadioButton, bool, bool> checkedChanged = *this;
 
         RadioButton() {
             interactionHandler.clicked += [this](InteractionHandler&, const MouseClickedEventArgs&) {

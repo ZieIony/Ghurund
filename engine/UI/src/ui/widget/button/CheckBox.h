@@ -24,7 +24,7 @@ namespace Ghurund::UI {
 		virtual void onStateChanged() override;
 
 	public:
-		Event<CheckBox, bool> checkedChanged = *this;
+		Event<CheckBox, bool, bool> checkedChanged = *this;
 
 		CheckBox() {
 			interactionHandler.clicked += [this](InteractionHandler&, const MouseClickedEventArgs&) {
@@ -38,7 +38,7 @@ namespace Ghurund::UI {
             if (this->checked != checked) {
                 this->checked = checked;
                 dispatchStateChanged();
-				isCheckedProperty.PropertyChanged(&checked);
+				isCheckedProperty.propertyChanged(&checked);
                 checkedChanged(checked);
             }
         }

@@ -23,9 +23,8 @@ namespace Ghurund::Core {
 		if (!watches.contains(dir)) {
 			auto watch = makeShared<DirectoryWatch>(dir);
 			watches.put(dir, watch);
-			watch->fileChanged += [this](DirectoryWatch&, const FileChange& change)->bool {
+			watch->fileChanged += [this](DirectoryWatch&, const FileChange& change) {
 				fileChanged(change);
-				return true;
 			};
 
 			watch->addFile(path);

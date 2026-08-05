@@ -29,7 +29,7 @@ namespace Ghurund::UI {
 		virtual void onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
 
 	public:
-		Event<Control> onScrolled = Event<Control>(*this);
+		Event<Control, void> onScrolled = *this;
 
 		inline ItemAdapter& getItemAdapter() {
 			return *itemAdapter;

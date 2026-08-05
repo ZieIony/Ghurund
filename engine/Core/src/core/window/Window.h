@@ -69,11 +69,11 @@ namespace Ghurund::Core {
         }
 
     public:
-        Event<Window> positionChanged = *this;
-        Event<Window> sizeChanged = *this;
-        Event<Window> visibleChanged = *this;
-        Event<Window> focusedChanged = *this;
-        Event<Window> closed = *this;
+        Event<Window, bool> positionChanged = *this;
+        Event<Window, bool> sizeChanged = *this;
+        Event<Window, bool> visibleChanged = *this;
+        Event<Window, bool> focusedChanged = *this;
+        Event<Window, bool> closed = *this;
 
         Window(Window* parent = nullptr) {
             this->parent = parent;

@@ -32,12 +32,20 @@ namespace Ghurund::Core {
 			D()(ptr);
 		}
 
-		inline T* operator()() {
+		inline T* operator()() const {
+			return ptr;
+		}
+
+		inline T* get() const {
 			return ptr;
 		}
 
 		inline T* operator&() {
 			return ptr;
+		}
+
+		inline T& ref() {
+			return *ptr;
 		}
 
 		inline T& operator*() {

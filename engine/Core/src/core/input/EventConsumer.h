@@ -41,13 +41,13 @@ namespace Ghurund::Core {
         }
 
     public:
-        Event<EventConsumer, GamepadButtonEventArgs> gamepadButtonEvent = *this;
-        Event<EventConsumer, GamepadStickEventArgs> gamepadStickEvent = *this;
-        Event<EventConsumer, GamepadTriggerEventArgs> gamepadTriggerEvent = *this;
-        Event<EventConsumer, KeyEventArgs> keyEvent = *this;
-        Event<EventConsumer, MouseButtonEventArgs> mouseButtonEvent = *this;
-        Event<EventConsumer, MouseMotionEventArgs> mouseMotionEvent = *this;
-        Event<EventConsumer, MouseWheelEventArgs> mouseWheelEvent = *this;
+        Event<EventConsumer, bool, GamepadButtonEventArgs> gamepadButtonEvent = *this;
+        Event<EventConsumer, bool, GamepadStickEventArgs> gamepadStickEvent = *this;
+        Event<EventConsumer, bool, GamepadTriggerEventArgs> gamepadTriggerEvent = *this;
+        Event<EventConsumer, bool, KeyEventArgs> keyEvent = *this;
+        Event<EventConsumer, bool, MouseButtonEventArgs> mouseButtonEvent = *this;
+        Event<EventConsumer, bool, MouseMotionEventArgs> mouseMotionEvent = *this;
+        Event<EventConsumer, bool, MouseWheelEventArgs> mouseWheelEvent = *this;
 
         inline bool dispatchKeyEvent(const KeyEventArgs& event) {
             bool result = onKeyEvent(event);

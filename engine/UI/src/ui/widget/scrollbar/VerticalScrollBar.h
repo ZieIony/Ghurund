@@ -22,7 +22,6 @@ namespace Ghurund::UI {
 
         float scroll = 0;
         float maxScroll = 100;
-        Event<Control> onScrolled = Event<Control>(*this);
 
         void updateBar();
 
@@ -39,6 +38,8 @@ namespace Ghurund::UI {
         }
 
     public:
+        Event<Control, void> onScrolled = *this;
+        
         ~VerticalScrollBar() {
             delete dragHelper;
         }
@@ -64,14 +65,6 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getMaxScroll, put = setMaxScroll)) float MaxScroll;
-
-        inline Event<Control>& getOnScrolled() {
-            return onScrolled;
-        }
-
-        __declspec(property(get = getOnScrolled)) Event<Control>& OnScrolled;
-
-        
 
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();

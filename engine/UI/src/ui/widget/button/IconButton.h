@@ -46,7 +46,7 @@ namespace Ghurund::UI {
 		virtual void onLayoutChanged() override;
 
 	public:
-		Event<IconButton, MouseClickedEventArgs> clicked = *this;
+		Event<IconButton, bool, MouseClickedEventArgs> clicked = *this;
 
 		IconButton() {
 			Focusable = true;

@@ -136,11 +136,11 @@ namespace Ghurund::UI {
 	public:
 		BindablePropertyCollection bindableProperties;
 
-		Event<Control> sizeChanged = *this;
-		Event<Control> stateChanged = *this;
-		Event<Control> materialChanged = *this;
-		Event<Control> themeChanged = *this;
-		Event<Control> contextChanged = *this;
+		Event<Control, void> sizeChanged = *this;
+		Event<Control, void> stateChanged = *this;
+		Event<Control, void> materialChanged = *this;
+		Event<Control, void> themeChanged = *this;
+		Event<Control, void> contextChanged = *this;
 
 		Control() {
 			bindableProperties.add(isEnabledProperty);
@@ -181,7 +181,7 @@ namespace Ghurund::UI {
 				enabledInput->Value = enabled ? 1.0f : 0.0f;
 			if (!enabled && Focused)
 				clearFocus();
-			isEnabledProperty.PropertyChanged(&enabled);	// not always a different value
+			isEnabledProperty.propertyChanged(&enabled);	// not always a different value
 			dispatchStateChanged();
 		}
 

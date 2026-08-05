@@ -68,10 +68,10 @@ namespace Ghurund::Core {
         }
 
     public:
-        Event<Ghurund::Core::Window> draggedOver = *this;
-        Event<Ghurund::Core::Window> dragLeft = *this;
-        Event<Ghurund::Core::Window, Array<FilePath*>&> dragEntered = *this;
-        Event<Ghurund::Core::Window, Array<FilePath*>&> dropped = *this;
+        Event<Ghurund::Core::Window, void> draggedOver = *this;
+        Event<Ghurund::Core::Window, void> dragLeft = *this;
+        Event<Ghurund::Core::Window, void, Array<FilePath*>&> dragEntered = *this;
+        Event<Ghurund::Core::Window, void, Array<FilePath*>&> dropped = *this;
 
         SystemWindow(Ghurund::Core::Timer& timer, WindowStyle style = DEFAULT_WINDOW_STYLE);
 

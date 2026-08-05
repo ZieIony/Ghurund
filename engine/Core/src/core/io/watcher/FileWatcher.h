@@ -15,7 +15,7 @@ namespace Ghurund::Core {
         static void CALLBACK readChangesProc(__in  ULONG_PTR arg);
 
     public:
-        Event<FileWatcher, const FileChange&> fileChanged = *this;
+        Event<FileWatcher, void, const FileChange&> fileChanged = *this;
 
         FileWatcher();
 

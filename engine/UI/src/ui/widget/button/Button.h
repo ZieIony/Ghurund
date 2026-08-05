@@ -24,7 +24,7 @@ namespace Ghurund::UI {
 		Button(const Button& button):ContentWidget(button) {}
 
 	public:
-		Event<Button, MouseClickedEventArgs> clicked = *this;
+		Event<Button, bool, MouseClickedEventArgs> clicked = *this;
 
 		Button() {
 			Focusable = true;

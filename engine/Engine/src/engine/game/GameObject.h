@@ -1,13 +1,14 @@
 #pragma once
 
 #include "core/object/RefCountedObject.h"
+#include "core/object/NamedObject.h"
 #include "core/Timer.h"
 #include "engine/game/tag/TagCollection.h"
 #include "engine/application/UpdateGroup.h"
 #include "engine/graphics/rendering/RenderGroup.h"
 
 namespace Ghurund::Engine {
-	class GameObject:public RefCountedObject {
+	class GameObject:public RefCountedObject, public WStringNamedObject {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -35,7 +36,6 @@ namespace Ghurund::Engine {
 
     public:
         bool isEnabled = true;
-        WString name;
         TagCollection tags;
         UpdateGroup updateGroup;
         DrawGroup drawGroup;

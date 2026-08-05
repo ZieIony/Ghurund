@@ -20,8 +20,6 @@ namespace Ghurund::UI {
 #pragma endregion
 
     private:
-        Event<TextField> onTextChanged = Event<TextField>(*this);
-
         void onReturn();
 
         void onBackspace();
@@ -53,15 +51,11 @@ namespace Ghurund::UI {
         ~TextField() {}
 
     public:
+        Event<TextField, void> onTextChanged = *this;
+
         TextField() {
             Focusable = true;
         }
-
-        inline Event<TextField>& getOnTextChanged() {
-            return onTextChanged;
-        }
-
-        __declspec(property(get = getOnTextChanged)) Event<TextField>& OnTextChanged;
 
         void deleteSelection();
 

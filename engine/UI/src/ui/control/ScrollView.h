@@ -40,7 +40,7 @@ namespace Ghurund::UI {
         virtual bool onMouseWheelEvent(const MouseWheelEventArgs& event);
 
     public:
-        Event<Control> onScrolled = *this;
+        Event<Control, bool> onScrolled = *this;
 
         inline const XMFLOAT2& getScroll() const {
             return scroll;

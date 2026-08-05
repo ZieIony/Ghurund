@@ -15,8 +15,6 @@ namespace Ghurund::Net {
         uint16_t id = 0;
 
         bool connected = false;
-        Event<Client> onConnected = *this;
-        Event<Client, DisconnectionReason> onDisconnected = *this;
 
         virtual size_t getMessageSize(void* data, size_t size) override;
 
@@ -32,6 +30,9 @@ namespace Ghurund::Net {
         }
 
     public:
+        Event<Client, void> onConnected = *this;
+        Event<Client, void, DisconnectionReason> onDisconnected = *this;
+
         ~Client();
 
         void connect(const tchar* address, uint16_t port);
@@ -49,18 +50,6 @@ namespace Ghurund::Net {
         }
 
         __declspec(property(get = getSocket)) Ghurund::Net::Socket& Socket;
-
-        inline Event<Client>& getOnConnected() {
-            return onConnected;
-        }
-
-        __declspec(property(get = getOnConnected)) Event<Client>& OnConnected;
-
-        inline Event<Client, DisconnectionReason>& getOnDisconnected() {
-            return onDisconnected;
-        }
-
-        __declspec(property(get = getOnDisconnected)) Event<Client, DisconnectionReason>& OnDisconnected;
 
         template<typename MessageType>
         void send(MessageType* message) {

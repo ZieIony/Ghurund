@@ -12,37 +12,37 @@ namespace Ghurund::Engine::_2D {
 		List<Component2D*> components;
 
 	public:
-		Event<Component2DCollection> collectionChanged = *this;
+		Event<Component2DCollection, void> collectionChanged = *this;
 
 		~Component2DCollection() {
 			clear();
 		}
 
 		inline void add(NotNull<Component2D> component) {
-			components.add(component.get());
 			component->addReference();
+			components.add(component.get());
 			collectionChanged();
 		}
 
 		inline void addAll(const List<Component2D*>& components) {
 			for (Component2D* component : components) {
-				this->components.add(component);
 				component->addReference();
+				this->components.add(component);
 			}
 			collectionChanged();
 		}
 
 		inline void addAll(const std::initializer_list<Component2D*>& components) {
 			for (Component2D* component : components) {
-				this->components.add(component);
 				component->addReference();
+				this->components.add(component);
 			}
 			collectionChanged();
 		}
 
 		inline void insert(size_t i, NotNull<Component2D> component) {
-			components.insert(i, component.get());
 			component->addReference();
+			components.insert(i, component.get());
 			collectionChanged();
 		}
 

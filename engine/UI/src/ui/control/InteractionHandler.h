@@ -13,20 +13,20 @@ namespace Ghurund::UI {
         MousePressed buttons;
         Ghurund::Core::FloatSize size = { 0, 0 };
 
-        EventHandler<Control> stateChangedHandler = [this](Control& control) {
+        EventHandler<Control, bool> stateChangedHandler = [this](Control& control) {
             isFocused = (bool)control.Focused;
             return true;
         };
 
-        EventHandler<EventConsumer, KeyEventArgs> keyEventHandler = [this](EventConsumer& control, const KeyEventArgs& event) {
+        EventHandler<EventConsumer, bool, KeyEventArgs> keyEventHandler = [this](EventConsumer& control, const KeyEventArgs& event) {
             return onKeyEvent(event);
         };
 
-        EventHandler<EventConsumer, MouseButtonEventArgs> mouseButtonEventHandler = [this](EventConsumer& control, const MouseButtonEventArgs& event) {
+        EventHandler<EventConsumer, bool, MouseButtonEventArgs> mouseButtonEventHandler = [this](EventConsumer& control, const MouseButtonEventArgs& event) {
             return onMouseButtonEvent(event);
         };
 
-        EventHandler<EventConsumer, MouseMotionEventArgs> mouseMotionEventHandler = [this](EventConsumer& control, const MouseMotionEventArgs& event) {
+        EventHandler<EventConsumer, bool, MouseMotionEventArgs> mouseMotionEventHandler = [this](EventConsumer& control, const MouseMotionEventArgs& event) {
             return onMouseMotionEvent(event);
         };
 
@@ -36,18 +36,18 @@ namespace Ghurund::UI {
 
         bool onMouseMotionEvent(const MouseMotionEventArgs& event);
 
-        EventHandler<InteractionHandler, MousePressedEventArgs> pressHandler = [this](InteractionHandler&, const MousePressedEventArgs& args) {
+        EventHandler<InteractionHandler, bool, MousePressedEventArgs> pressHandler = [this](InteractionHandler&, const MousePressedEventArgs& args) {
             owner.Parent->CapturedChild = &owner;
             owner.requestFocus();
             return true;
         };
 
-        EventHandler<InteractionHandler> cancelHandler = [this](InteractionHandler&) {
+        EventHandler<InteractionHandler, bool> cancelHandler = [this](InteractionHandler&) {
             owner.Parent->CapturedChild = nullptr;
             return true;
         };
 
-        EventHandler<InteractionHandler, MouseClickedEventArgs> clickHandler = [this](InteractionHandler&, const MouseClickedEventArgs& args) {
+        EventHandler<InteractionHandler, bool, MouseClickedEventArgs> clickHandler = [this](InteractionHandler&, const MouseClickedEventArgs& args) {
             owner.Parent->CapturedChild = nullptr;
             return true;
         };
@@ -71,8 +71,8 @@ namespace Ghurund::UI {
         }
 
         bool isHovered = false, isFocused = false, isPressed = false;
-        Event<InteractionHandler, MousePressedEventArgs> pressed = *this;
-        Event<InteractionHandler> canceled = *this;
-        Event<InteractionHandler, MouseClickedEventArgs> clicked = *this;
+        Event<InteractionHandler, bool, MousePressedEventArgs> pressed = *this;
+        Event<InteractionHandler, bool> canceled = *this;
+        Event<InteractionHandler, bool, MouseClickedEventArgs> clicked = *this;
     };
 }

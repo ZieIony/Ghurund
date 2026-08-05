@@ -21,15 +21,16 @@ namespace Ghurund::UI {
     private:
         Control* header = nullptr;
 
-        Event<ExpandableContainer> expandedChanged = *this;
         bool expanded;
-        EventHandler<CheckBox> checkedChangedHandler = [this](CheckBox&) {
+        EventHandler<CheckBox, bool> checkedChangedHandler = [this](CheckBox&) {
             Expanded = !Expanded;
             expandedChanged();
             return true;
         };
 
     public:
+        Event<ExpandableContainer, bool> expandedChanged = *this;
+
         inline void setExpanded(bool expanded) {
             this->expanded = expanded;
             dispatchStateChanged();
@@ -40,12 +41,6 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = isExpanded, put = setExpanded)) bool Expanded;
-
-        inline Event<ExpandableContainer>& getExpandedChanged() {
-            return expandedChanged;
-        }
-
-        __declspec(property(get = getExpandedChanged)) Event<ExpandableContainer>& ExpandedChanged;
 
         inline Control* getHeader() {
             return header;

@@ -10,7 +10,7 @@ namespace Ghurund::UI {
 		ControlParent& owner;
 
 	public:
-		Event<ControlCollection> collectionChanged = *this;
+		Event<ControlCollection, void> collectionChanged = *this;
 
 		ControlCollection(ControlParent& owner):owner(owner) {}
 
