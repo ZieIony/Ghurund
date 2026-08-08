@@ -101,6 +101,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\concepts\Callable.h" />
+    <ClInclude Include="src\core\concepts\Derived.h" />
+    <ClInclude Include="src\core\concepts\Qualified.h" />
     <ClInclude Include="src\core\object\NamedObject.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
@@ -159,7 +162,7 @@
     <ClInclude Include="src\core\collection\iterator\ReverseListNodeIterator.h" />
     <ClInclude Include="src\core\collection\iterator\ReverseTreeNodeIterator.h" />
     <ClInclude Include="src\core\collection\iterator\TreeNodeIterator.h" />
-    <ClInclude Include="src\core\concepts\Concepts.h" />
+    <ClInclude Include="src\core\concepts\IsPtr.h" />
     <ClInclude Include="src\core\concepts\Iterable.h" />
     <ClInclude Include="src\core\coroutine\CoroutineScheduler.h" />
     <ClInclude Include="src\core\coroutine\CoroutineTask.h" />

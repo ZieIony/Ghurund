@@ -5,7 +5,6 @@
 
 #include "core/collection/LinkedList.h"
 #include "core/collection/Stack.h"
-#include "core/concepts/Concepts.h"
 
 #include <iostream>
 #include <vector>

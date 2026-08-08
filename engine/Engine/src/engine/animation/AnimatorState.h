@@ -6,7 +6,7 @@
 #include "core/object/NotNull.h"
 #include <core/state/MachineState.h>
 #include <core/string/String.h>
-#include "core/concepts/Concepts.h"
+#include "core/concepts/Derived.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/concepts/Concepts.h"
+#include "core/concepts/Derived.h"
 #include "core/object/IntrusivePointer.h"
 #include "engine/2d/scene/component/Component2D.h"
 #include "engine/2d/World2D.h"

@@ -2,7 +2,7 @@
 
 #include "RefCountedObject.h"
 #include "Common.h"
-#include "core/concepts/Concepts.h"
+#include "core/concepts/Derived.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core {

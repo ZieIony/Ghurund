@@ -2,7 +2,7 @@
 
 #include "Common.h"
 #include "RefCountedObject.h"
-#include "core/concepts/Concepts.h"
+#include "core/concepts/Derived.h"
 
 namespace Ghurund::Core {
 	template<typename T>

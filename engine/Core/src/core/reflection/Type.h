@@ -5,7 +5,8 @@
 #include "TypeModifier.h"
 #include "core/collection/List.h"
 #include "core/string/String.h"
-#include "core/concepts/Concepts.h"
+#include "core/concepts/IsPtr.h"
+#include "core/concepts/Qualified.h"
 #include "BaseType.h"
 #include "ConstructorCollection.h"
 

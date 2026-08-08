@@ -6,7 +6,6 @@
 #include "core/string/String.h"
 #include "core/string/StringView.h"
 #include "core/string/TextConversionUtils.h"
-#include "core/concepts/Concepts.h"
 
 #include <format>
 

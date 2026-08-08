@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/collection/Map.h"
+#include "core/concepts/Callable.h"
 #include "core/object/OwnedNotNull.h"
 #include "core/object/SharedPointer.h"
 #include "core/reflection/StandardTypes.h"

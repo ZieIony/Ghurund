@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/allocation/Allocator.h"
-#include "core/concepts/Concepts.h"
+#include "core/concepts/Derived.h"
 #include "core/exception/FormatNotSupportedException.h"
 #include "core/io/MemoryInputStream.h"
 #include "core/io/MemoryOutputStream.h"

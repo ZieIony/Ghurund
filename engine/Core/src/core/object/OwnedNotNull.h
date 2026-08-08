@@ -1,7 +1,7 @@
 #pragma once
 
 #include "DefaultDeleter.h"
-#include "core/concepts/Concepts.h"
+#include "core/concepts/Derived.h"
 #include "core/exception/NullPointerException.h"
 
 namespace Ghurund::Core {
