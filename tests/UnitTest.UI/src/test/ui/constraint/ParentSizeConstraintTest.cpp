@@ -55,8 +55,8 @@ public:
 
 			root->resolveConstraints();
 
-			Assert::AreEqual(100.0f, group->getConstraints(*child.get()).Width.Value);
-			Assert::AreEqual(80.0f, group->getConstraints(*child.get()).Height.Value);
+			Assert::AreEqual(100.0f, group->getConstraints(child.ref()).Width.Value);
+			Assert::AreEqual(80.0f, group->getConstraints(child.ref()).Height.Value);
 		}
 	}
 
@@ -68,7 +68,7 @@ public:
 			root->Theme = &theme;
 			auto group = makeIntrusive<ControlGroup>();
 			root->Child = group.get();
-			root->setConstraints(*group.get(), makeConstraints({
+			root->setConstraints(group.ref(), makeConstraints({
 				.width = makeIntrusive<ContentWidthConstraint>(),
 				.height = makeIntrusive<ContentHeightConstraint>()
 				}));
@@ -83,10 +83,10 @@ public:
 
 			root->resolveConstraints();
 
-			Assert::AreEqual(50.0f, root->getConstraints(*group.get()).Width.Value);
-			Assert::AreEqual(40.0f, root->getConstraints(*group.get()).Height.Value);
-			Assert::AreEqual(50.0f, group->getConstraints(*child.get()).Width.Value);
-			Assert::AreEqual(40.0f, group->getConstraints(*child.get()).Height.Value);
+			Assert::AreEqual(50.0f, root->getConstraints(group.ref()).Width.Value);
+			Assert::AreEqual(40.0f, root->getConstraints(group.ref()).Height.Value);
+			Assert::AreEqual(50.0f, group->getConstraints(child.ref()).Width.Value);
+			Assert::AreEqual(40.0f, group->getConstraints(child.ref()).Height.Value);
 		}
 	}*/
 

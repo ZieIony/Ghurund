@@ -38,8 +38,8 @@ namespace Ghurund::Core {
 			File file(absolutePath);
 			if (!file.Exists)
 				throw std::invalid_argument(std::format("path \"{}\" doesn't exist", pathStr));
-			auto buffer = SharedPointer(ghnew Buffer());
-			file.read(*buffer.get());
+			auto buffer = makeShared<Buffer>();
+			file.read(buffer.ref());
 			return buffer;
 		}
 	}

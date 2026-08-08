@@ -74,24 +74,24 @@ namespace Ghurund::UI {
     struct BoldSpan:public DocumentElementGroup {
         IntrusivePointer<Font> font;
 
-        BoldSpan(Font* font, float size, bool italic):font(font) {
+        BoldSpan(NotNull<Font> font, float size, bool italic):font(font.get()) {
             font->addReference();
         }
 
         virtual void draw(RenderGroup& group, const Font& parentFormat, const Color& color) const override {
-            __super::draw(group, *font.get(), color);
+            __super::draw(group, font.ref(), color);
         }
     };
 
     struct ItalicSpan:public DocumentElementGroup {
         IntrusivePointer<Font> font;
 
-        ItalicSpan(Font* font, float size, uint32_t weight):font(font) {
+        ItalicSpan(NotNull<Font> font, float size, uint32_t weight):font(font.get()) {
             font->addReference();
         }
 
         virtual void draw(RenderGroup& group, const Font& parentFormat, const Color& color) const override {
-            __super::draw(group, *font.get(), color);
+            __super::draw(group, font.ref(), color);
         }
     };
 

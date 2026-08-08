@@ -64,7 +64,7 @@ float4 pixelMain(DefaultPixel input): SV_Target{
     Timer timer;
     CoroutineThreadPool threadPool = CoroutineThreadPool(4);
     CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
-    ResourceManager resourceManager = coroutineScheduler;
+    ResourceManager resourceManager = ResourceManager(coroutineScheduler);
 
     public:
 
@@ -102,7 +102,7 @@ float4 pixelMain(DefaultPixel input): SV_Target{
             auto outShader= makeIntrusive<Shader>();
             outShader->sourceCode = testShaderSource;
             MemoryOutputStream outStream;
-            loader->save(outStream, DirectoryPath(), *outShader.get());
+            loader->save(outStream, DirectoryPath(), outShader.ref());
 
             MemoryInputStream inStream(outStream.Data, outStream.BytesWritten);
             IntrusivePointer<ShaderCode> inShaderCode(loader->load(inStream, DirectoryPath()));

@@ -18,20 +18,20 @@ namespace Ghurund::Net {
 	void Server::onReliableMessage(SharedPointer<Connection>& connection, Message& message) {
 		ClientMessageType messageType = (ClientMessageType)((ClientMessage&)message).messageType;
 		if (messageType == ClientMessageType::CONNECT) {
-			if (onNewClientConnection(*connection.get())) {
+			if (onNewClientConnection(connection.ref())) {
 				connection->Connected = true;
-				send(*connection.get(), ghnew ServerAcceptMessage(connection->Id));
+				send(connection.ref(), ghnew ServerAcceptMessage(connection->Id));
 			} else {
 				connection->Connected = false;
-				send(*connection.get(), ghnew ServerRejectMessage());
+				send(connection.ref(), ghnew ServerRejectMessage());
 			}
-			onConnected(*connection.get());
+			onConnected(connection.ref());
 			return;
 		} else if (messageType == ClientMessageType::DISCONNECT) {
 			auto c = connection;
 			connections.remove(connection);
 			spareIds.add(connection->Id);
-			onDisconnected(ClientDisconnection{ *c.get(), DisconnectionReason::CLIENT });
+			onDisconnected(ClientDisconnection{ c.ref(), DisconnectionReason::CLIENT });
 			return;
 		}
 		throw InvalidDataException();

@@ -15,7 +15,7 @@ namespace UnitTest {
 	public:
 		void resolveConstraints() {
 			ConstraintGraph graph;
-			__super::resolveConstraints(graph, *widthConstraint.get(), *heightConstraint.get());
+			__super::resolveConstraints(graph, widthConstraint.ref(), heightConstraint.ref());
 			graph.sort();
 			graph.evaluate();
 		}

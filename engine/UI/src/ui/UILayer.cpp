@@ -35,7 +35,7 @@ namespace Ghurund::UI {
         graph.clear();
         graph.add(rootViewWidth.get());
         graph.add(rootViewHeight.get());
-        rootView->resolveConstraints(graph, *rootViewWidth.get(), *rootViewHeight.get());
+        rootView->resolveConstraints(graph, rootViewWidth.ref(), rootViewHeight.ref());
         graph.sort();
         graph.evaluate();
         rootView->layout(0, 0, rootViewWidth->Value, rootViewHeight->Value);

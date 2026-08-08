@@ -88,7 +88,7 @@ public:
 			auto child = makeIntrusive<Control>();
 			auto group = makeIntrusive<ControlContainer>();
 			group->Child = child.get();
-			group->setConstraints(*child.get(), makeConstraints({
+			group->setConstraints(child.ref(), makeConstraints({
 				.width = 100.0f,
 				.height = 75.0f
 				}));

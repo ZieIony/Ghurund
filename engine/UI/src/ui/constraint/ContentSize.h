@@ -16,13 +16,13 @@ namespace Ghurund::UI {
 		}
 
 		inline Constraint& getWidth() {
-			return *width.get();
+			return width.ref();
 		}
 
 		__declspec(property(get = getWidth)) Constraint& Width;
 
 		inline Constraint& getHeight() {
-			return *height.get();
+			return height.ref();
 		}
 
 		__declspec(property(get = getHeight)) Constraint& Height;

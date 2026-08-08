@@ -55,7 +55,7 @@ namespace UnitTest {
             auto outShader= makeIntrusive<Shader>();
             outShader->sourceCode = testShaderSource;
             MemoryOutputStream outStream;
-            loader->save(outStream, DirectoryPath(), *outShader.get());
+            loader->save(outStream, DirectoryPath(), outShader.ref());
 
             MemoryInputStream inStream(outStream.Data, outStream.BytesWritten);
             IntrusivePointer<ShaderCode> inShaderCode(loader->load(inStream, DirectoryPath()));

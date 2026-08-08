@@ -386,5 +386,16 @@ namespace UnitTest {
                 Assert::IsTrue(list == list2);
             }
         }
+
+        TEST_METHOD(LinkedList_comparisonNotEqual) {
+            MemoryGuard guard;
+            {
+                LinkedList<uint32_t> list = { 1, 2, 3 };
+                LinkedList<uint32_t> list2 = { 1, 2 };
+
+                Assert::IsFalse(list == list2);
+                Assert::IsFalse(list2 == list);
+            }
+        }
     };
 }

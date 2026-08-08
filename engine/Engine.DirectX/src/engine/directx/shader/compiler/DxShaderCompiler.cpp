@@ -115,7 +115,7 @@ namespace Ghurund::Engine::DirectX {
 		List<DxTextureConstantInfo*> textures;
 		List<Sampler*> samplers;
 		for (auto& program : programs)
-			initConstants(*program.get(), samplerInfos, constantBuffers, textures, samplers);
+			initConstants(program.ref(), samplerInfos, constantBuffers, textures, samplers);
 
 		D3D12_INPUT_LAYOUT_DESC inputLayout;
 		for (auto& program : programs) {

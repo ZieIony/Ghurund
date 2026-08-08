@@ -30,11 +30,26 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = getCurrentState)) MachineState* CurrentState;
 
-		void jumpToState(const WString& name);
+		// TODO: implement this directly
+		inline void jumpTo(const MachineState& state) {
+			jumpTo(state.Name);
+		}
 
-		void goToState(const WString& name);
+		void jumpTo(const WString& name);
+
+		// TODO: implement this directly
+		inline void goTo(const MachineState& state) {
+			goTo(state.Name);
+		}
+
+		void goTo(const WString& name);
 
 		bool update();
+
+		// TODO: implement this directly
+		inline void reset(const MachineState& state) {
+			reset(state.Name);
+		}
 
 		void reset(const WString& name);
 	};

@@ -30,7 +30,7 @@ namespace Ghurund::UI::DirectX {
         constraintFactory = ghnew Ghurund::UI::ConstraintFactory();
 
         auto fontLoader = makeIntrusive<FontLoader>();
-        resourceManager.Loaders.set<Ghurund::UI::Font>(*fontLoader.get());
+        resourceManager.Loaders.set<Ghurund::UI::Font>(fontLoader.ref());
         auto fontAtlasLoader = makeIntrusive<FontAtlasLoader>(resourceManager);
         resourceManager.Loaders.set<FontAtlas>(fontAtlasLoader.ref());
         auto textStyleLoader = makeIntrusive<TextStyleLoader>(resourceManager);

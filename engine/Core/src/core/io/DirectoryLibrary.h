@@ -34,8 +34,8 @@ namespace Ghurund::Core {
 
         virtual SharedPointer<Buffer> get(const size_t index) const override {
             File file(path.Files[index]);
-            auto buffer = SharedPointer(ghnew Buffer());
-            file.read(*buffer.get());
+            auto buffer = makeShared<Buffer>();
+            file.read(buffer.ref());
             return buffer;
         }
 

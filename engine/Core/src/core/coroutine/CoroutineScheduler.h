@@ -9,11 +9,12 @@
 
 #include "core/collection/Bag.h"
 #include "core/Timer.h"
+#include "core/object/Noncopyable.h"
 
 #include <mutex>
 
 namespace Ghurund::Core {
-	class CoroutineScheduler {
+	class CoroutineScheduler:public Noncopyable {
 	private:
 		Bag<CoroutineTask<void>> tasks;
 		Bag<std::coroutine_handle<>> fromAnotherThread;

@@ -29,13 +29,13 @@ public:
         Timer timer;
         CoroutineThreadPool threadPool = CoroutineThreadPool(4);
         CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
-        ResourceManager resourceManager = coroutineScheduler;
+        ResourceManager resourceManager = ResourceManager(coroutineScheduler);
         IntrusivePointer<FontLoader> fontLoader;
         IntrusivePointer<ImageLoader> imageLoader;
         fontLoader.set(ghnew FontLoader());
         imageLoader.set(ghnew ImageLoader());
-        resourceManager.Loaders.set<Font>(*fontLoader.get());
-        resourceManager.Loaders.set<Image>(*imageLoader.get());
+        resourceManager.Loaders.set<Font>(fontLoader.ref());
+        resourceManager.Loaders.set<Image>(imageLoader.ref());
         resourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(ResourceManager::ENGINE_LIB_NAME, DirectoryPath() / DirectoryPath(L"../../../resources")));
 
 		auto latoMediumPath = ResourceManager::ENGINE_LIB / FilePath(L"/fonts\\lato_bold.ttf");

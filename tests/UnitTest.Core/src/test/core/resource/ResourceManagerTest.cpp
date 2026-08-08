@@ -4,6 +4,7 @@
 #include "TestResource.h"
 #include "TestLibrary.h"
 #include "test/utils/MemoryGuard.h"
+#include "test/utils/ObjectGuard.h"
 
 #include "core/resource/ResourceManager.h"
 #include "core/string/TextConversionUtils.h"
@@ -19,18 +20,19 @@ private:
 	Timer timer;
 	CoroutineThreadPool threadPool = CoroutineThreadPool(4);
 	CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
-	ResourceManager resourceManager = coroutineScheduler;
+	ResourceManager resourceManager = ResourceManager(coroutineScheduler);
 	IntrusivePointer<TestLoader> testLoader;
 
 public:
 	ResourceManagerTest() {
 		testLoader = makeIntrusive<TestLoader>();
-		resourceManager.Loaders.set<TestResource>(*testLoader.get());
+		resourceManager.Loaders.set<TestResource>(testLoader.ref());
 		resourceManager.Libraries.add(std::make_unique<TestLibrary>());
 	}
 
 	TEST_METHOD(ResourceManager_loadFileFromLibrary) {
-		MemoryGuard guard;
+		MemoryGuard mg;
+		ObjectGuard og;
 		{
 			resourceManager.clearCache();
 
@@ -54,7 +56,8 @@ public:
 	}
 
 	TEST_METHOD(ResourceManager_loadCached) {
-		MemoryGuard guard;
+		MemoryGuard mg;
+		ObjectGuard og;
 		{
 			resourceManager.clearCache();
 
@@ -83,7 +86,8 @@ public:
 	}
 
 	TEST_METHOD(ResourceManager_loadFromBuffer) {
-		MemoryGuard guard;
+		MemoryGuard mg;
+		ObjectGuard og;
 		{
 			resourceManager.clearCache();
 

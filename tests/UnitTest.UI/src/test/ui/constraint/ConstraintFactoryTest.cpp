@@ -116,11 +116,11 @@ public:
 		Timer timer;
 		CoroutineThreadPool threadPool = CoroutineThreadPool(4);
 		CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
-		ResourceManager resourceManager = coroutineScheduler;
+		ResourceManager resourceManager = ResourceManager(coroutineScheduler);
 		//TestDrawableFactory drawableFactory;
 		ConstraintFactory constraintFactory;
 		//auto layoutLoader = makeIntrusive<LayoutLoader>(resourceManager, drawableFactory, textFormatFactory, constraintFactory);
-		//resourceManager.Loaders.set<Control>(*layoutLoader.get());
+		//resourceManager.Loaders.set<Control>(layoutLoader.ref());
 
 #ifdef _DEBUG
 		RefCountedObject::reservePointers(1500);
@@ -152,7 +152,7 @@ public:
 			ConstraintGraph graph;
 			auto width = makeIntrusive<ValueConstraint>(100.0f);
 			auto height = makeIntrusive<ValueConstraint>(100.0f);
-			controlGroup->resolveConstraints(graph, *width.get(), *height.get());
+			controlGroup->resolveConstraints(graph, width.ref(), height.ref());
 			graph.sort();
 			graph.evaluate();
 

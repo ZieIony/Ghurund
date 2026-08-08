@@ -1,7 +1,6 @@
 #include "ghcpch.h"
 #include "StateMachine.h"
 
-#include "core/exception/Exceptions.h"
 #include "core/logging/Logger.h"
 
 namespace Ghurund::Core {
@@ -18,7 +17,7 @@ namespace Ghurund::Core {
 		}
 	}
 
-	void StateMachine::jumpToState(const WString& name) {
+	void StateMachine::jumpTo(const WString& name) {
 		auto it = states.find(name);
 		if (it == states.end()) {
 			auto message = std::format(_T("There is no state \"{}\"."), name);
@@ -38,7 +37,7 @@ namespace Ghurund::Core {
 		currentState->enter();
 	}
 
-	void StateMachine::goToState(const WString& name) {
+	void StateMachine::goTo(const WString& name) {
 		auto it = states.find(name);
 		if (it == states.end()) {
 			auto message = std::format(_T("There is no state \"{}\"."), name);

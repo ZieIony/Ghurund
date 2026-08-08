@@ -122,7 +122,7 @@ public:
             }));
             Assert::Fail(L"observable adds handler_ptr and removes bare handler - fix observable");
             observable.add(handler);
-            observable.remove(*handler.get());
+            observable.remove(handler.ref());
 
             observable = username;
 

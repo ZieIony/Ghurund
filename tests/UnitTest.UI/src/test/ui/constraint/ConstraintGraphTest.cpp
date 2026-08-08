@@ -151,7 +151,7 @@ public:
 			ConstraintGraph graph;
 			auto width = makeIntrusive<ValueConstraint>(100.0f);
 			auto height = makeIntrusive<ValueConstraint>(100.0f);
-			controlGroup->resolveConstraints(graph, *width.get(), *height.get());
+			controlGroup->resolveConstraints(graph, width.ref(), height.ref());
 			graph.sort();
 			graph.evaluate();
 			Assert::AreEqual(25.0f, constraints.Left.Value);

@@ -29,9 +29,9 @@ public:
         auto content = makeIntrusive<Control>();
         layout->Children.add(content.get());
         ControlPath path = ControlPath::parse("Parent");
-        Control* result = path.resolve(*content.get());
+        Control* result = path.resolve(content.ref());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*layout.get(), *result);
+        Assert::AreSame<Control>(layout.ref(), *result);
     }
 
     TEST_METHOD(resolveParentContainer) {
@@ -39,15 +39,15 @@ public:
         auto content = makeIntrusive<Control>();
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("Parent");
-        Control* result = path.resolve(*content.get());
+        Control* result = path.resolve(content.ref());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*layout.get(), *result);
+        Assert::AreSame<Control>(layout.ref(), *result);
     }
 
     TEST_METHOD(resolveEmptyParent) {
         auto content = makeIntrusive<Control>();
         ControlPath path = ControlPath::parse("Parent");
-        Control* result = path.resolve(*content.get());
+        Control* result = path.resolve(content.ref());
         Assert::IsNull(result);
     }
 
@@ -57,9 +57,9 @@ public:
         content->Name = "color";
         layout->Children.add(content.get());
         ControlPath path = ControlPath::parse("'color'");
-        Control* result = path.resolve(*layout.get());
+        Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content.get(), *result);
+        Assert::AreSame<Control>(content.ref(), *result);
     }
 
     TEST_METHOD(resolveNameContainer) {
@@ -68,22 +68,22 @@ public:
         content->Name = "color";
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("'color'");
-        Control* result = path.resolve(*layout.get());
+        Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content.get(), *result);
+        Assert::AreSame<Control>(content.ref(), *result);
     }
 
     TEST_METHOD(resolveMissingNameGroup) {
         auto layout = makeIntrusive<ConstraintLayout>();
         ControlPath path = ControlPath::parse("'color'");
-        Control* result = path.resolve(*layout.get());
+        Control* result = path.resolve(layout.ref());
         Assert::IsNull(result);
     }
 
     TEST_METHOD(resolveMissingNameContainer) {
         auto layout = makeIntrusive<ConstraintLayout>();
         ControlPath path = ControlPath::parse("'color'");
-        Control* result = path.resolve(*layout.get());
+        Control* result = path.resolve(layout.ref());
         Assert::IsNull(result);
     }
 
@@ -93,9 +93,9 @@ public:
         auto content2 = makeIntrusive<Control>();
         layout->Children = { content.get(), content2.get() };
         ControlPath path = ControlPath::parse("[1]");
-        Control* result = path.resolve(*layout.get());
+        Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content2.get(), *result);
+        Assert::AreSame<Control>(content2.ref(), *result);
     }
 
     TEST_METHOD(resolveNegativeIndexGroup) {
@@ -104,9 +104,9 @@ public:
         auto content2 = makeIntrusive<Control>();
         layout->Children = { content.get(), content2.get() };
         ControlPath path = ControlPath::parse("[-1]");
-        Control* result = path.resolve(*layout.get());
+        Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content2.get(), *result);
+        Assert::AreSame<Control>(content2.ref(), *result);
     }
 
     TEST_METHOD(resolveIndexMissingGroup) {
@@ -115,7 +115,7 @@ public:
         auto content2 = makeIntrusive<Control>();
         layout->Children = { content.get(), content2.get() };
         ControlPath path = ControlPath::parse("[2]");
-        Control* result = path.resolve(*layout.get());
+        Control* result = path.resolve(layout.ref());
         Assert::IsNull(result);
     }
 
@@ -125,7 +125,7 @@ public:
         auto content2 = makeIntrusive<Control>();
         layout->Children = { content.get(), content2.get() };
         ControlPath path = ControlPath::parse("[-3]");
-        Control* result = path.resolve(*layout.get());
+        Control* result = path.resolve(layout.ref());
         Assert::IsNull(result);
     }
 
@@ -135,9 +135,9 @@ public:
         content->Name = "color";
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("[0]");
-        Control* result = path.resolve(*layout.get());
+        Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content.get(), *result);
+        Assert::AreSame<Control>(content.ref(), *result);
     }
 
     // [0] is the only valid index for containers
@@ -147,7 +147,7 @@ public:
         content->Name = "color";
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("[-1]");
-        Control* result = path.resolve(*layout.get());
+        Control* result = path.resolve(layout.ref());
         Assert::IsNull(result);
     }
 
@@ -157,7 +157,7 @@ public:
         content->Name = "color";
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("[1]");
-        Control* result = path.resolve(*layout.get());
+        Control* result = path.resolve(layout.ref());
         Assert::IsNull(result);
     }
 
@@ -167,7 +167,7 @@ public:
         content->Name = "color";
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("[-2]");
-        Control* result = path.resolve(*layout.get());
+        Control* result = path.resolve(layout.ref());
         Assert::IsNull(result);
     }
 
@@ -177,9 +177,9 @@ public:
         content->Name = "color";
         layout->Children.add(content.get());
         ControlPath path = ControlPath::parse("Parent.'color'");
-        Control* result = path.resolve(*content.get());
+        Control* result = path.resolve(content.ref());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content.get(), *result);
+        Assert::AreSame<Control>(content.ref(), *result);
     }
 
     TEST_METHOD(resolveParentNameContainer) {
@@ -188,9 +188,9 @@ public:
         content->Name = "color";
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("Parent.'color'");
-        Control* result = path.resolve(*content.get());
+        Control* result = path.resolve(content.ref());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content.get(), *result);
+        Assert::AreSame<Control>(content.ref(), *result);
     }
 
     TEST_METHOD(resolveParentIndexGroup) {
@@ -198,9 +198,9 @@ public:
         auto content = makeIntrusive<Control>();
         layout->Children.add(content.get());
         ControlPath path = ControlPath::parse("Parent[0]");
-        Control* result = path.resolve(*content.get());
+        Control* result = path.resolve(content.ref());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content.get(), *result);
+        Assert::AreSame<Control>(content.ref(), *result);
     }
 
     TEST_METHOD(resolveParentIndexContainer) {
@@ -208,9 +208,9 @@ public:
         auto content = makeIntrusive<Control>();
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("Parent[0]");
-        Control* result = path.resolve(*content.get());
+        Control* result = path.resolve(content.ref());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content.get(), *result);
+        Assert::AreSame<Control>(content.ref(), *result);
     }
 
     TEST_METHOD(resolveNameIndexGroup) {
@@ -221,9 +221,9 @@ public:
         auto content = makeIntrusive<Control>();
         mid->Children = { content.get() };
         ControlPath path = ControlPath::parse("'container'[0]");
-        Control* result = path.resolve(*layout.get());
+        Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content.get(), *result);
+        Assert::AreSame<Control>(content.ref(), *result);
     }
 
     TEST_METHOD(resolveNameIndexContainer) {
@@ -234,9 +234,9 @@ public:
         auto content = makeIntrusive<Control>();
         mid->Child = content.get();
         ControlPath path = ControlPath::parse("'container'[0]");
-        Control* result = path.resolve(*layout.get());
+        Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content.get(), *result);
+        Assert::AreSame<Control>(content.ref(), *result);
     }
 
     TEST_METHOD(resolveComplex1) {
@@ -245,9 +245,9 @@ public:
         container->Name = "container";
         layout->Child = container.get();
         ControlPath path = ControlPath::parse("'container'.Parent[0]");
-        Control* result = path.resolve(*layout.get());
+        Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*container.get(), *result);
+        Assert::AreSame<Control>(container.ref(), *result);
     }
 
     TEST_METHOD(resolveComplex2) {
@@ -259,9 +259,9 @@ public:
         content->Name = "color";
         mid->Child = content.get();
         ControlPath path = ControlPath::parse("'container'.'color'");
-        Control* result = path.resolve(*layout.get());
+        Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content.get(), *result);
+        Assert::AreSame<Control>(content.ref(), *result);
     }
 
     TEST_METHOD(resolveComplex3) {
@@ -271,9 +271,9 @@ public:
         auto content = makeIntrusive<Control>();
         mid->Child = content.get();
         ControlPath path = ControlPath::parse("Parent.Parent");
-        Control* result = path.resolve(*content.get());
+        Control* result = path.resolve(content.ref());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*layout.get(), *result);
+        Assert::AreSame<Control>(layout.ref(), *result);
     }
 
     TEST_METHOD(resolveInvalidPathNoQuotationMarks) {

@@ -37,7 +37,7 @@ namespace Ghurund::Engine::OpenGL {
 
 		auto vertexProgram = loadShaderProgramFromXml(xml, workingDir, OglShaderType::VERTEX);
 		auto fragmentProgram = loadShaderProgramFromXml(xml, workingDir, OglShaderType::FRAGMENT);
-		compiler.build(resource, *vertexProgram.get(), *fragmentProgram.get());
+		compiler.build(resource, vertexProgram.ref(), fragmentProgram.ref());
 		//bool isTransparencyEnabled = sourceCode.find("isTransparencyEnabled") != sourceCode.Size;
 		co_return;
 	}

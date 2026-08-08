@@ -65,7 +65,7 @@ float4 pixelMain(DefaultPixel input): SV_Target{
     Timer timer;
     CoroutineThreadPool threadPool = CoroutineThreadPool(4);
     CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
-    ResourceManager resourceManager = coroutineScheduler;
+    ResourceManager resourceManager = ResourceManager(coroutineScheduler);
     DxGraphics graphics;
     SharedPointer<DxShaderCompiler> shaderCompiler;
 

@@ -21,7 +21,7 @@ private:
             Timer timer;
             CoroutineThreadPool threadPool = CoroutineThreadPool(4);
             CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
-            ResourceManager resourceManager = coroutineScheduler;
+            ResourceManager resourceManager = ResourceManager(coroutineScheduler);
             DxGraphics graphics;
 
 public:
@@ -40,7 +40,7 @@ public:
             auto commandList = makeIntrusive<CommandList>();
             commandList->init(graphics, graphics.CopyQueue);
             DxGPUMemoryManager memoryManager(graphics, commandList.ref());
-            dxMesh->init(*mesh.get(), memoryManager);
+            dxMesh->init(mesh.ref(), memoryManager);
 
             Assert::IsTrue(mesh->IsValid);
         }

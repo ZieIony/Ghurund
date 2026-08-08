@@ -11,7 +11,7 @@ namespace UnitTest::Utils {
         auto widthConstraint = Ghurund::Core::makeIntrusive<Ghurund::UI::ValueConstraint>(width);
         auto heightConstraint = Ghurund::Core::makeIntrusive<Ghurund::UI::ValueConstraint>(height);
         Ghurund::UI::ConstraintGraph graph;
-        control->resolveConstraints(graph, *widthConstraint.get(), *heightConstraint.get());
+        control->resolveConstraints(graph, widthConstraint.ref(), heightConstraint.ref());
         graph.sort();
         graph.evaluate();
         control->layout(0, 0, width, height);

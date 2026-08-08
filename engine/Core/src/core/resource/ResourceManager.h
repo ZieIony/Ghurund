@@ -96,7 +96,7 @@ namespace Ghurund::Core {
 		static const DirectoryPath ENGINE_LIB;
 		inline static const WString LIB_PROTOCOL = L"lib://";
 
-		ResourceManager(CoroutineScheduler& scheduler):scheduler(scheduler) {
+		explicit ResourceManager(CoroutineScheduler& scheduler):scheduler(scheduler) {
 			HotReloadEnabled
 #ifdef _DEBUG
 			= true;

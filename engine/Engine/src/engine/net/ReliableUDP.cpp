@@ -175,7 +175,7 @@ namespace Ghurund::Net {
 				Logger::log(LogType::INFO, _T("disconnected because number of retries was exceeded\n"));
 				SharedPointer<Connection> c = connection;
 				connections.remove(connection);
-				onConnectionLost(*c.get());
+				onConnectionLost(c.ref());
 				return;
 			}
 			if (message->time == 0) {
@@ -230,7 +230,7 @@ namespace Ghurund::Net {
 		}
 		for (auto& connection : connections) {
 			if (connection->LastSeen + REFRESH_PERIOD_MS < time && connection->MessagesSent.Empty)
-				send(*connection.get(), ghnew RefreshMessage());
+				send(connection.ref(), ghnew RefreshMessage());
 		}
 	}
 }

@@ -42,12 +42,12 @@ namespace Ghurund::Core {
 
         ~BindableObservable() {
             if (chainHandler != nullptr && chainHandler->Owner)
-                chainHandler->Owner->remove(*chainHandler.get());
+                chainHandler->Owner->remove(chainHandler.ref());
         }
 
         inline void bind(Observable<T>& observable) {
             if (chainHandler != nullptr && chainHandler->Owner)
-                chainHandler->Owner->remove(*chainHandler.get());
+                chainHandler->Owner->remove(chainHandler.ref());
             chainHandler.set(ghnew ObservableHandler<T>([&](const T& val) {
                 Observable<T>::Value = val;
             }));
@@ -56,7 +56,7 @@ namespace Ghurund::Core {
 
         inline void unbind() {
             if (chainHandler != nullptr && chainHandler->Owner)
-                chainHandler->Owner->remove(*chainHandler.get());
+                chainHandler->Owner->remove(chainHandler.ref());
         }
     };
 }

@@ -30,8 +30,8 @@ public:
     TEST_METHOD(ColorView_clone) {
         auto original = makeIntrusive<Control>();
         IntrusivePointer<Control> clone((Control*)original->clone());
-        Assert::AreNotSame(*original.get(), *clone.get());
-        Assert::AreEqual(*original.get(), *clone.get());
+        Assert::AreNotSame(original.ref(), clone.ref());
+        Assert::AreEqual(original.ref(), clone.ref());
     }
     };
 }

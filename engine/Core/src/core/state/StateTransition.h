@@ -12,6 +12,8 @@ namespace Ghurund::Core {
 		virtual void onExecute() {}
 
 	public:
+		StateTransition(const MachineState& from, const MachineState& to):from(from.Name), to(to.Name) {}
+
 		StateTransition(const WString& from, const WString& to):from(from), to(to) {}
 
 		virtual ~StateTransition() {};

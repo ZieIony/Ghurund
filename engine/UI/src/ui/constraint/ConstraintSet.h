@@ -49,45 +49,45 @@ namespace Ghurund::UI {
 		}
 
 		inline Constraint& getLeft() {
-			return *left.get();
+			return left.ref();
 		}
 
 		__declspec(property(get = getLeft)) Constraint& Left;
 
 		inline Constraint& getRight() {
-			return *right.get();
+			return right.ref();
 		}
 
 		__declspec(property(get = getRight)) Constraint& Right;
 
 		inline const Constraint& getWidth() const {
-			return *width.get();
+			return width.ref();
 		}
 
 		inline Constraint& getWidth() {
-			return *width.get();
+			return width.ref();
 		}
 
 		__declspec(property(get = getWidth)) Constraint& Width;
 
 		inline Constraint& getTop() {
-			return *top.get();
+			return top.ref();
 		}
 
 		__declspec(property(get = getTop)) Constraint& Top;
 
 		inline Constraint& getBottom() {
-			return *bottom.get();
+			return bottom.ref();
 		}
 
 		__declspec(property(get = getBottom)) Constraint& Bottom;
 
 		inline const Constraint& getHeight() const {
-			return *height.get();
+			return height.ref();
 		}
 
 		inline Constraint& getHeight() {
-			return *height.get();
+			return height.ref();
 		}
 
 		__declspec(property(get = getHeight)) Constraint& Height;

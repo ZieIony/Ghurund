@@ -30,7 +30,7 @@ namespace Ghurund::Core {
         //parameterManager->initDefaultTextures(*resourceContext);
 
         auto imageLoader = makeIntrusive<ImageLoader>();
-        resourceManager.Loaders.set<Image>(*imageLoader.get());
+        resourceManager.Loaders.set<Image>(imageLoader.ref());
 
         features.init();
     }

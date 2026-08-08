@@ -322,7 +322,7 @@ namespace Ghurund::Core {
                 return true;
             if (size != other.size)
                 return false;
-            for (auto iter = begin(), iter2 = other.begin(); iter != end(), iter2 != other.end(); ++iter, ++iter2) {
+            for (auto iter = begin(), iter2 = other.begin(); iter != end() || iter2 != other.end(); ++iter, ++iter2) {
                 if (*iter != *iter2)
                     return false;
             }
@@ -350,5 +350,4 @@ namespace Ghurund::Core {
             size = 0;
         }
     };
-
 }
