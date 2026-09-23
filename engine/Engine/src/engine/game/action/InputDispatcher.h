@@ -3,14 +3,16 @@
 #include "BaseInputDispatcher.h"
 #include "DispatchInputTask.h"
 
+#include "core/object/NotNull.h"
+
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
 
 	template<typename T>
 	class InputDispatcher:public BaseInputDispatcher<T> {
 	public:
-		InputDispatcher(GameAction<T>* action, uint8_t priority)
-			:BaseInputDispatcher<T>(IntrusivePointer<BaseGameAction>((BaseGameAction*)action), priority) {
+		InputDispatcher(NotNull<GameAction<T>> action, uint8_t priority)
+			:BaseInputDispatcher<T>(IntrusivePointer<BaseGameAction>((BaseGameAction*)action.get()), priority) {
 			action->addReference();
 		}
 

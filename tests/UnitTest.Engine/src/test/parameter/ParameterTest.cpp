@@ -49,9 +49,9 @@ public:
     }
 
     TEST_METHOD(Parameter_defaultValue) {
-        const AString playerIndexName = "playerIndex";
-        const AString viewportSizeName = "viewportSize";
-        const AString teamColorName = "teamColor";
+        const AString playerIndexName = "gh_playerIndex";
+        const AString viewportSizeName = "gh_viewportSize";
+        const AString teamColorName = "gh_teamColor";
         ParameterManager parameterManager;
         {
             auto playerIndexParameter = makeIntrusive<IntParameter>(playerIndexName, 3);
@@ -60,7 +60,7 @@ public:
             auto viewportSizeParameter = makeIntrusive<Int2Parameter>(viewportSizeName, ::DirectX::XMINT2(800, 600));
             parameterManager.Parameters.put(viewportSizeParameter.get());
 
-            auto teamColorParameter = makeIntrusive<Float4Parameter>(teamColorName, Colors::MINT_CREAM.toVector());
+            auto teamColorParameter = makeIntrusive<Float4Parameter>(teamColorName, Colors::MINT_CREAM.toFloat4());
             parameterManager.Parameters.put(teamColorParameter.get());
         }
 
@@ -68,7 +68,8 @@ public:
         {
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/defaultParams.hlsl");
 
-            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, "pixelMain", DxShaderType::PIXEL));
+            auto shaderSource = DxShaderProgramSourceCode(DxShaderType::PIXEL, testShaderSource, "/shaders/DirectX/defaultParams.hlsl");
+            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(shaderSource));
             List<ConstantBuffer*> constantBuffers;
             List<TextureConstant*> textures;
             List<Sampler*> samplers;
@@ -116,7 +117,8 @@ public:
         MemoryGuard guard;
         {
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/defaultParams.hlsl");
-            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(testShaderSource, "pixelMain", DxShaderType::PIXEL));
+            auto shaderSource = DxShaderProgramSourceCode(DxShaderType::PIXEL, testShaderSource, "/shaders/DirectX/defaultParams.hlsl");
+            SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(shaderSource));
             List<ConstantBuffer*> constantBuffers;
             List<TextureConstant*> textures;
             List<Sampler*> samplers;

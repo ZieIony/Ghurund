@@ -43,9 +43,11 @@ namespace Ghurund::Core {
 
 		template<Derived<T> R>
 		IntrusivePointer(IntrusivePointer<R>&& other) noexcept {
-			// TODO: this doesn't work because pointer is private in other template uses
-			pointer = other.pointer;
-			other.pointer = nullptr;
+			// a trick to move pointer that is private in other template uses
+			pointer = other.get();
+			if (pointer)
+				pointer->addReference();
+			other.set(nullptr);
 		}
 
 		explicit IntrusivePointer(T* p) {

@@ -4,6 +4,7 @@
 #include "Common.h"
 #include "Formatter.h"
 #include "core/StackTrace.h"
+#include "DebugConsoleLogOutput.h"
 
 #include <dbghelp.h>
 

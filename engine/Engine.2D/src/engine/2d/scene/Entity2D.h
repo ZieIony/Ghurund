@@ -89,6 +89,6 @@ namespace Ghurund::Engine::_2D {
 
 		virtual void update(const Timer& timer) override;
 
-		virtual void draw(RenderGroup& group) override;
+		virtual void queueDraw(RenderGroup& group) override;
 	};
 }

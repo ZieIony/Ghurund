@@ -66,7 +66,7 @@ namespace Ghurund::UI {
         LoadOption options
     ) {
         XMLDocument doc;
-		doc.parse(stream.Data, stream.Size);
+		doc.parse(stream.Data, (UINT)stream.Size);
         // TODO: check root name and version
 
         const XMLElement& child = doc.Root;
@@ -117,7 +117,7 @@ namespace Ghurund::UI {
         if (propertyAttr) {
             loader->loadAttr(obj, property, workingDir, convertText<wchar_t, char>(*propertyAttr));
         } else if (propertyElement) {
-            if (!propertyElement->value.Empty) {
+            if (!propertyElement->value.IsEmpty) {
                 loader->loadAttr(obj, property, workingDir, convertText<wchar_t, char>(propertyElement->value));
             } else if (propertyElement->attributes.Empty && !propertyElement->children.Empty) {
                 loader->loadChildren(obj, property, workingDir, propertyElement->children[0].ref());
@@ -213,7 +213,7 @@ namespace Ghurund::UI {
 
     ThemedTextStyle* LayoutLoader::loadTextStyle(const char* str) {
         AString s = str;
-        s.replace('\\', '/');
+        s.replaceAll('\\', '/');
         if (s.startsWith(FILE_PROTOCOL)) {
             //auto font = ghnew Font()
         } else if (s.startsWith(THEME_TEXT_STYLE)) {

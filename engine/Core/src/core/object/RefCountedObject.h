@@ -42,9 +42,7 @@ namespace Ghurund::Core {
     protected:
         RefCountedObject(const RefCountedObject& pointer) = delete;
 
-        virtual ~RefCountedObject()
-        //    = 0  // TODO: a destructor cannot be abstract
-        ;
+        virtual ~RefCountedObject() = 0;
 
     public:
         RefCountedObject();

@@ -1,5 +1,6 @@
 #include "core/application/CommandLine.h"
 #include "core/logging/Logger.h"
+#include "core/logging/CallbackLogOutput.h"
 #include "core/object/IntrusivePointer.h"
 #include "engine/directx/DxGraphics.h"
 #include "engine/directx/shader/compiler/DxCompilationException.h"
@@ -42,13 +43,16 @@ int main() {
 	if (filePath.Extension == L"hlsl") {
 		try {
 			AString sourceCode = AString((const char*)buffer.Data, buffer.Size);
+			AString sourceName = convertText<wchar_t, char>(filePath.toString());
 			List<DirectoryPath> includeDirs;
-			includeDirs.add(DirectoryPath() / DirectoryPath(L"./resources/shaders/DirectX/include"));
+			includeDirs.add(ResourceManager::ENGINE_LIB_PATH / DirectoryPath(L"/resources/shaders/DirectX/include"));
 			CompilerInclude include(resourceManager, filePath.Directory, includeDirs);
 			if (sourceCode.contains(DxShaderType::VERTEX.EntryPoint)) {
-				compiler.compile(sourceCode, DxShaderType::VERTEX.EntryPoint, DxShaderType::VERTEX, &include, true);
+				auto shaderSource = DxShaderProgramSourceCode(DxShaderType::VERTEX, sourceCode, sourceName);
+				compiler.compile(shaderSource, &include, true);
 			} else if (sourceCode.contains(DxShaderType::PIXEL.EntryPoint)) {
-				compiler.compile(sourceCode, DxShaderType::PIXEL.EntryPoint, DxShaderType::PIXEL, &include, true);
+				auto shaderSource = DxShaderProgramSourceCode(DxShaderType::PIXEL, sourceCode, sourceName);
+				compiler.compile(shaderSource, &include, true);
 			} else {
 				Logger::print(LogType::ERR0R, _T("The provided file doesn't contain an expected entry point.\n"));
 				return 3;
@@ -62,7 +66,7 @@ int main() {
 	} else {
 		try {
 			auto loader = makeIntrusive<DxShaderLoader>(resourceManager, compiler);
-			loader->includeDirs.add(DirectoryPath() / DirectoryPath(L"./resources/shaders/DirectX/include"));
+			loader->includeDirs.add(DirectoryPath(L"./resources/shaders/DirectX/include").AbsolutePath);
 			MemoryInputStream stream(buffer.Data, buffer.Size);
 			auto shader = makeIntrusive<DxShader>();
 			loader->load(shader.ref(), stream);

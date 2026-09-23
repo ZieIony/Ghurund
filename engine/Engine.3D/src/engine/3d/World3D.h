@@ -71,8 +71,8 @@ namespace Ghurund::Engine::_3D {
 			co_return entity;
 		}
 
-		inline void draw(RenderGroup& group) {
-			scene->draw(group);
+		inline void queueDraw(RenderGroup& group) {
+			scene->queueDraw(group);
 		}
 	};
 }

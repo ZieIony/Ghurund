@@ -14,7 +14,7 @@ namespace Ghurund::Engine {
 			Float4Input& float4Input = (Float4Input&)input;
 			// TODO: load theme attributes or do binding
 			if (value.startsWith("#"))
-				float4Input.Value = Color::parse(value).toVector();
+				float4Input.Value = Color::parse(value).toFloat4();
 		}
 		co_return;
 	}

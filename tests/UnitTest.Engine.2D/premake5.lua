@@ -37,11 +37,11 @@ project "UnitTest.Engine.2D"
 
 	links {
 		"Core",
-		"UnitTest.Utils",
 		"Engine",
 		"Engine.2D",
 		"Engine.DirectX",
-		"Engine.OpenGL"
+		"Engine.OpenGL",
+		"UnitTest.Utils"
 	}
 		
 	filter "configurations:Debug"

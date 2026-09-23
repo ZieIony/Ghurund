@@ -42,14 +42,12 @@ namespace Ghurund::Engine {
 
     void Material::initInputs() {
         for (auto& bi : shader->BufferConstants) {
-            size_t size = 0;
             for (auto& vi : bi.ValueConstants) {
-                size += vi.Size;
                 auto input = makeInput(vi);
                 valueInputs.add(input);
                 inputs.add(input);
             }
-            constantBuffers.add(IntrusivePointer(memoryManager->makeConstantBuffer(size)));
+            constantBuffers.add(IntrusivePointer(memoryManager->makeConstantBuffer(bi.Size)));
         }
         for (auto& vi : shader->ValueConstants) {
             auto input = makeInput(vi);

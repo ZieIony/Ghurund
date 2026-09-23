@@ -7,7 +7,7 @@
 namespace Ghurund::UI {
     Control* ToolbarItemAdapter::makeControl(size_t type) const {
         Button* button = ghnew Button();
-        auto layoutPath = ResourceManager::ENGINE_LIB / FilePath(L"/layouts/ButtonIconLayout.xml");
+        auto layoutPath = ResourceManager::ENGINE_LIB_PATH / FilePath(L"/layouts/ButtonIconLayout.xml");
         //Control* layout = resourceManager.load<Control>(layoutPath);
         //button->Layout = layout;
         //DrawableView* drawableView = ghnew DrawableView();

@@ -29,7 +29,7 @@ namespace Ghurund::Engine::_2D {
 
 		resource.init(tileSet.ref(), size);
 
-		if (xml.value.Empty)
+		if (xml.value.IsEmpty)
 			throw InvalidDataException();
 		auto tilesContent = convertText<wchar_t, char>(xml.value);
 		auto tileRows = tilesContent.trim().split("\n");

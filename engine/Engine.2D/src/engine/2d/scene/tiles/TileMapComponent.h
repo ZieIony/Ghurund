@@ -84,6 +84,6 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(put = setMaterial)) Material* Material;
 
-		virtual void draw(RenderGroup& group) override;
+		virtual void queueDraw(RenderGroup& group) override;
 	};
 }

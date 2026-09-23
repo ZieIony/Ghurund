@@ -92,13 +92,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\game\behavior\BehaviorTree.h" />
-    <ClInclude Include="src\engine\game\behavior\BehaviorTreeNode.h" />
-    <ClInclude Include="src\engine\game\behavior\Blackboard.h" />
-    <ClInclude Include="src\engine\game\NamedIntrusiveOrderedObservableCollection.h" />
-    <ClInclude Include="src\engine\game\behavior\NodeDecorator.h" />
-    <ClInclude Include="src\engine\game\behavior\SelectorNode.h" />
-    <ClInclude Include="src\engine\game\behavior\SequenceNode.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\animation\Animation.h" />
     <ClInclude Include="src\engine\animation\AnimationSet.h" />
@@ -126,6 +119,8 @@
     <ClInclude Include="src\engine\game\GameObject.h" />
     <ClInclude Include="src\engine\game\GameObjectDrawCollection.h" />
     <ClInclude Include="src\engine\game\GameObjectUpdateCollection.h" />
+    <ClInclude Include="src\engine\game\NamedIntrusiveOrderedObservableCollection.h" />
+    <ClInclude Include="src\engine\game\StaticDrawable.h" />
     <ClInclude Include="src\engine\game\action\ActionMapping.h" />
     <ClInclude Include="src\engine\game\action\BaseDispatchInputTask.h" />
     <ClInclude Include="src\engine\game\action\BaseGameAction.h" />
@@ -137,6 +132,12 @@
     <ClInclude Include="src\engine\game\action\InputDispatcher.h" />
     <ClInclude Include="src\engine\game\action\OverwriteInputDispatcher.h" />
     <ClInclude Include="src\engine\game\action\TransformedInputDispatcher.h" />
+    <ClInclude Include="src\engine\game\behavior\BehaviorTree.h" />
+    <ClInclude Include="src\engine\game\behavior\BehaviorTreeNode.h" />
+    <ClInclude Include="src\engine\game\behavior\Blackboard.h" />
+    <ClInclude Include="src\engine\game\behavior\NodeDecorator.h" />
+    <ClInclude Include="src\engine\game\behavior\SelectorNode.h" />
+    <ClInclude Include="src\engine\game\behavior\SequenceNode.h" />
     <ClInclude Include="src\engine\game\sky\AdvancedSky.h" />
     <ClInclude Include="src\engine\game\sky\BasicSky.h" />
     <ClInclude Include="src\engine\game\sky\Sky.h" />
@@ -145,7 +146,6 @@
     <ClInclude Include="src\engine\game\tag\Tag.h" />
     <ClInclude Include="src\engine\game\tag\TagCollection.h" />
     <ClInclude Include="src\engine\game\tag\TagManager.h" />
-    <ClInclude Include="src\engine\graphics\DrawableComponents.h" />
     <ClInclude Include="src\engine\graphics\DrawingSystem.h" />
     <ClInclude Include="src\engine\graphics\GraphicsFeature.h" />
     <ClInclude Include="src\engine\graphics\GraphicsFeatureFactory.h" />
@@ -217,17 +217,17 @@
     <ClCompile Include="src\engine\audio\sound\Sound.cpp" />
     <ClCompile Include="src\engine\audio\sound\SoundLoader.cpp" />
     <ClCompile Include="src\engine\editor\ThumbnailRenderer.cpp" />
+    <ClCompile Include="src\engine\game\Component.cpp" />
+    <ClCompile Include="src\engine\game\GameObject.cpp" />
+    <ClCompile Include="src\engine\game\StaticDrawable.cpp" />
+    <ClCompile Include="src\engine\game\action\ActionMapping.cpp" />
     <ClCompile Include="src\engine\game\behavior\BehaviorTree.cpp" />
     <ClCompile Include="src\engine\game\behavior\BehaviorTreeNode.cpp" />
     <ClCompile Include="src\engine\game\behavior\NodeDecorator.cpp" />
     <ClCompile Include="src\engine\game\behavior\SelectorNode.cpp" />
     <ClCompile Include="src\engine\game\behavior\SequenceNode.cpp" />
-    <ClCompile Include="src\engine\game\Component.cpp" />
-    <ClCompile Include="src\engine\game\GameObject.cpp" />
-    <ClCompile Include="src\engine\game\action\ActionMapping.cpp" />
     <ClCompile Include="src\engine\game\system\System.cpp" />
     <ClCompile Include="src\engine\game\tag\TagManager.cpp" />
-    <ClCompile Include="src\engine\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\engine\graphics\GraphicsFeature.cpp" />
     <ClCompile Include="src\engine\graphics\material\Material.cpp" />
     <ClCompile Include="src\engine\graphics\material\MaterialLoader.cpp" />

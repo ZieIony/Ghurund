@@ -95,6 +95,7 @@ namespace Ghurund::Engine::_3D {
 	}
 
 	void Camera3D::apply(ParameterManager& parameterManager) {
+		parameterManager.Parameters.put(parameterDirection);
 		parameterManager.Parameters.put(parameterPosition);
 		parameterManager.Parameters.put(parameterUp);
 		parameterManager.Parameters.put(parameterRight);
@@ -187,18 +188,23 @@ namespace Ghurund::Engine::_3D {
 		XMVECTOR rv = XMLoadFloat3(&right);
 		XMVECTOR uv = XMLoadFloat3(&up);
 		XMStoreFloat3(&target, XMLoadFloat3(&target) + rv * x + uv * y);
-		XMFLOAT3 pos;
 		XMStoreFloat3(&pos, XMLoadFloat3(&pos) + rv * x + uv * y);
-		this->pos = pos;
+	}
+
+	void Camera3D::move(float d, float r, float u) {
+		XMVECTOR dv = XMLoadFloat3(&dir);
+		XMVECTOR rv = XMLoadFloat3(&right);
+		XMVECTOR uv = XMLoadFloat3(&up);
+		XMVECTOR mv = dv * d + rv * r + uv * u;
+		XMStoreFloat3(&target, XMLoadFloat3(&target) + mv);
+		XMStoreFloat3(&pos, XMLoadFloat3(&pos) + mv);
 	}
 
 	void Camera3D::zoom(float z) {
 		XMVECTOR dv = XMLoadFloat3(&dir);
 		XMVECTOR pv = XMLoadFloat3(&pos);
 		XMVECTOR pv2 = pv + dv * z;
-		XMFLOAT3 pos;
 		XMStoreFloat3(&pos, pv2);
-		this->pos = pos;
 		XMStoreFloat(&dist, XMVector3Length(XMLoadFloat3(&target) - pv2));
 	}
 

@@ -67,6 +67,6 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(put = setExtents)) const XMFLOAT2& Extents;
 
-		virtual void draw(RenderGroup& group) override;
+		virtual void queueDraw(RenderGroup& group) override;
 	};
 }

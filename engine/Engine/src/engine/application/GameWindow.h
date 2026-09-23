@@ -33,6 +33,10 @@ namespace Ghurund::Engine {
         std::unique_ptr<RenderingContext> renderingContext = nullptr;
         ActionMapping actionMapping;
 
+        inline static const AString VIEWPORT_SIZE = "gh_viewportSize";
+        inline static const AString TIME = "gh_time";
+        inline static const AString MOUSE_POS = "gh_mousePos";
+
         IntrusivePointer<Int2Parameter> viewportSizeParameter;
         IntrusivePointer<FloatParameter> timeParameter;
         IntrusivePointer<Int2Parameter> mousePosParameter;

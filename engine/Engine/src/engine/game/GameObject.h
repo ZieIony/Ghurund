@@ -66,7 +66,7 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getUsesDraw)) bool UsesDraw;
 
-        virtual void draw(RenderGroup& group) {}
+        virtual void queueDraw(RenderGroup& group) {}
 
         inline bool getIsValid() const {
             return isValid;

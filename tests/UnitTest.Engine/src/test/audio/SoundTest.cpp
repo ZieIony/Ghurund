@@ -52,7 +52,7 @@ public:
         {
             auto thudSound = [&] {
                 auto path = FilePath(L"../../resources/test/sounds/thud.wav");
-                auto dir = DirectoryPath();
+                auto dir = DirectoryPath::getCurrentDirectory();
                 auto coroutine = resourceManager.load<Sound>(path, dir, ResourceFormat::AUTO, LoadOption::DONT_WATCH | LoadOption::DONT_CACHE);
                 coroutine.resume();
                 return coroutine.Result;

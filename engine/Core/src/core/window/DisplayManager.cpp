@@ -40,14 +40,14 @@ namespace Ghurund::Core {
 	}
 
 	List<DisplayMode> DisplayManager::enumDisplayModes(const String* deviceName) {
-		size_t i = 0;
+		DWORD modeIndex = 0;
 		List<DisplayMode> modes;
 		const tchar* deviceNameStr = deviceName ? deviceName->Data : nullptr;
 		while (true) {
 			DEVMODE devMode = {};
 			devMode.dmSize = sizeof(DEVMODE);
 			devMode.dmDriverExtra = 0;
-			if (!EnumDisplaySettings(deviceNameStr, i, &devMode))
+			if (!EnumDisplaySettings(deviceNameStr, modeIndex, &devMode))
 				break;
 			modes.add({
 				devMode.dmBitsPerPel,
@@ -56,7 +56,7 @@ namespace Ghurund::Core {
 				devMode.dmDisplayFrequency,
 				{ devMode.dmPosition.x, devMode.dmPosition.y }
 			});
-			i++;
+			modeIndex++;
 		}
 		return modes;
 	}

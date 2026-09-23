@@ -72,14 +72,14 @@ namespace Ghurund::UI {
             auto theme = Theme;
             if (tintInput && theme) {
                 this->tint.resolve(*theme);
-                tintInput->Value = this->tint.get().toVector();
+                tintInput->Value = this->tint.get().toFloat4();
             }
         }
 
 		inline void setTint(const Color& tint) {
 			this->tint = tint;
 			if (tintInput)
-				tintInput->Value = tint.toVector();
+				tintInput->Value = tint.toFloat4();
 		}
 
         __declspec(property(put = setTint)) const Color& Tint;

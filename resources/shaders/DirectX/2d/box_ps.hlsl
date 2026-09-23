@@ -10,6 +10,6 @@ cbuffer pixelConstants: register(b1) {
 }
 
 float4 pixelMain(Pixel2D input): SV_Target {
-    float dist = sdRect(input.texCoord * extents * 2, extents);
+    float dist = sdfRect(input.texCoord * extents * 2, extents);
     return float4(color.rgb, (step(-2, dist) * 0.75 + 0.25) * step(dist, 0));
 }

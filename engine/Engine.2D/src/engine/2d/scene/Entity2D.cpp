@@ -21,8 +21,8 @@ namespace Ghurund::Engine::_2D {
 			component->update(timer);
 	}
 	
-	void Entity2D::draw(RenderGroup& group) {
+	void Entity2D::queueDraw(RenderGroup& group) {
 		for (auto& component : components)
-			component->draw(group);
+			component->queueDraw(group);
 	}
 }

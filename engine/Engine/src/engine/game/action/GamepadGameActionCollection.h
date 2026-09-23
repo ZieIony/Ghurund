@@ -16,7 +16,7 @@ namespace Ghurund::Engine {
         GamepadGameActionCollection& operator=(GamepadGameActionCollection&& other) = delete;
 
     public:
-        inline void put(uint8_t gamepad, const K& key, GameAction<V>& action, uint8_t priority = 0) {
+        inline void put(uint8_t gamepad, const K& key, NotNull<GameAction<V>> action, uint8_t priority = 0) {
             actions[gamepad].put(key, action, priority);
         }
 
@@ -24,7 +24,7 @@ namespace Ghurund::Engine {
         inline void put(
             uint8_t gamepad,
             const K& key,
-            GameAction<To>& action,
+            NotNull<GameAction<To>> action,
             T transformer,
             uint8_t priority = 0
         ) {

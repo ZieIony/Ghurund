@@ -9,17 +9,6 @@
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
 
-    struct DxShaderProgramSourceCode:public ShaderProgramSourceCode {
-        DxShaderType type = DxShaderType::VERTEX;
-        AString entryPoint;
-
-        DxShaderProgramSourceCode(
-            DxShaderType type,
-            const AString& entryPoint,
-            const AString& sourceCode
-        ):ShaderProgramSourceCode(sourceCode), type(type), entryPoint(entryPoint) {}
-    };
-
 	class DxShaderLoader:public Loader<DxShader> {
 	private:
         ResourceManager& resourceManager;

@@ -77,8 +77,8 @@ namespace Ghurund::Engine::_2D {
 			entity->uninit();
 		}
 
-		inline void draw(RenderGroup& group) {
-			scene->draw(group);
+		inline void queueDraw(RenderGroup& group) {
+			scene->queueDraw(group);
 		}
 	};
 }

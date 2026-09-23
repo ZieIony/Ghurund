@@ -7,6 +7,7 @@
 #pragma warning(pop)
 
 namespace Ghurund::Engine::DirectX {
+	using namespace Ghurund::Core;
 	using namespace DirectX;
 
 	class ShaderConstant {

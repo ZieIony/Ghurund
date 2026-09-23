@@ -119,7 +119,7 @@ namespace Ghurund::Core {
 		virtual CoroutineTask<void> load(
 			Resource& resource,
 			MemoryInputStream& stream,
-			const DirectoryPath& workingDir = DirectoryPath(),
+			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) override {
@@ -149,7 +149,7 @@ namespace Ghurund::Core {
 		virtual void save(
 			Resource& resource,
 			MemoryOutputStream& stream,
-			const DirectoryPath& workingDir = DirectoryPath(),
+			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			SaveOption options = SaveOption::DEFAULT
 		) const override {
@@ -162,7 +162,7 @@ namespace Ghurund::Core {
 		virtual void save(
 			Resource& resource,
 			const XMLElement& root,
-			const DirectoryPath& workingDir = DirectoryPath(),
+			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			SaveOption options = SaveOption::DEFAULT
 		) const override {

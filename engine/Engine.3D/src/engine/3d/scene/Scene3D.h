@@ -61,8 +61,8 @@ namespace Ghurund::Engine::_3D {
             gameObjectsUpdate.add(entity);
         }
 
-        inline void draw(RenderGroup& rg) {
-            gameObjectsDraw.draw(rg);
+        inline void queueDraw(RenderGroup& rg) {
+            gameObjectsDraw.queueDraw(rg);
         }
 
 #pragma region formats

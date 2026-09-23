@@ -98,8 +98,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\test\2d\scene\ComponentTestUtils.h" />
     <ClInclude Include="src\test\2d\Test2DContext.h" />
+    <ClInclude Include="src\test\2d\scene\ComponentTestUtils.h" />
     <ClInclude Include="src\ute2dpch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +108,7 @@
     <ClCompile Include="src\test\2d\scene\SegmentComponentTest.cpp" />
     <ClCompile Include="src\test\2d\scene\TransformComponent2DTest.cpp" />
     <ClCompile Include="src\test\2d\scene\World2DTest.cpp" />
+    <ClCompile Include="src\test\2d\shaders\DxShaders2DTest.cpp" />
     <ClCompile Include="src\ute2dpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -115,9 +116,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\engine\Core\Core.vcxproj">
       <Project>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\UnitTest.Utils\UnitTest.Utils.vcxproj">
-      <Project>{64D57912-50A3-6D18-3937-DE3E25A4497D}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\engine\Engine\Engine.vcxproj">
       <Project>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</Project>
@@ -130,6 +128,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\engine\Engine.OpenGL\Engine.OpenGL.vcxproj">
       <Project>{EE6FA103-5A30-1D3A-236B-66B78FEA6116}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\UnitTest.Utils\UnitTest.Utils.vcxproj">
+      <Project>{64D57912-50A3-6D18-3937-DE3E25A4497D}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

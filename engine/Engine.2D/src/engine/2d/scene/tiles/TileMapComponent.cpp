@@ -37,7 +37,7 @@ namespace Ghurund::Engine::_2D {
 		}
 	}
 	
-	void TileMapComponent::draw(RenderGroup& group) {
+	void TileMapComponent::queueDraw(RenderGroup& group) {
 		if (mesh && material) {
 			auto w = XMLoadFloat4x4(&Owner.Transform.WorldTransformation);
 			XMFLOAT4X4 world;
@@ -46,7 +46,5 @@ namespace Ghurund::Engine::_2D {
 			inputs.Transformation = world;
 			group.objects.add(DrawPacket(mesh, material, drawOrder));
 		}
-
-		__super::draw(group);
 	}
 }

@@ -3,22 +3,13 @@
 #include "FilePath.h"
 #include "core/collection/List.h"
 
-#include <pathcch.h>
-
 namespace Ghurund::Core {
 
 	class DirectoryPath:public Path {
-	public:
-		DirectoryPath():Path([]->WString {
-			DWORD bufferLength = GetCurrentDirectoryW(0, nullptr);
-			Array<wchar_t> buffer(bufferLength);
-			GetCurrentDirectoryW(bufferLength, &buffer[0]);
-			auto path = WString(&buffer[0], bufferLength - 1);
-			if (!path.endsWith(L"/"))
-				path.add(L'/');
-			return path;
-		}()) {}
+	private:
+		WString combineStr(const WString& str) const;
 
+	public:
 		DirectoryPath(const WString& path):Path(path) {
 			if (!this->path.endsWith(L"/"))
 				this->path.add(L'/');
@@ -42,21 +33,21 @@ namespace Ghurund::Core {
 			return *this;
 		}
 
+		static DirectoryPath getCurrentDirectory();
+
 		inline DirectoryPath getRelativePath(const DirectoryPath& dir) const {
 			if (path.startsWith(dir.toString().Data))
 				return path.substring(dir.Length);
 			return path;
 		}
 
-		//DirectoryPath getAbsolutePath() const;
+		//__declspec(property(get = getRelativePath)) DirectoryPath RelativePath;
 
-		//__declspec(property(get = getAbsolutePath)) DirectoryPath AbsolutePath;
+		DirectoryPath getAbsolutePath() const;
 
-		inline DirectoryPath combine(const DirectoryPath& dir) const {
-			wchar_t destPath[MAX_PATH];
-			PathCchCombine(destPath, MAX_PATH, path.Data, dir.toString().Data);
-			return DirectoryPath(destPath);
-		}
+		__declspec(property(get = getAbsolutePath)) DirectoryPath AbsolutePath;
+
+		DirectoryPath combine(const DirectoryPath& dir) const;
 
 		inline DirectoryPath operator/(const DirectoryPath& dir) const {
 			return combine(dir);
@@ -64,7 +55,9 @@ namespace Ghurund::Core {
 
 		FilePath combine(const FilePath& file) const;
 
-		FilePath operator/(const FilePath& file) const;
+		inline FilePath operator/(const FilePath& file) const {
+			return combine(file);
+		}
 
 		List<DirectoryPath> getDirectories() const;
 

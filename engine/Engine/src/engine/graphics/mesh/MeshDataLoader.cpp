@@ -113,9 +113,9 @@ namespace Ghurund::Engine {
 
 		mesh.init(
 			vertexStreams,
-			positions.Size,
+			(uint32_t)positions.Size,
 			Buffer(&indices[0], sizeof(uint32_t) * indices.Size),
-			indices.Size
+			(uint32_t)indices.Size
 		);
 	}
 
@@ -175,9 +175,9 @@ namespace Ghurund::Engine {
 		writeHeader<MeshData>(stream);
 
 		stream.writeUInt32(resource.VertexCount);
-		stream.writeUInt32(resource.VertexStreams.Size);
+		stream.writeUInt32((uint32_t)resource.VertexStreams.Size);
 		for (auto& vertexStream : resource.VertexStreams) {
-			stream.writeUInt32(vertexStream.data.Size);
+			stream.writeUInt32((uint32_t)vertexStream.data.Size);
 			stream.writeBytes(vertexStream.data.Data, vertexStream.data.Size);
 			stream.writeUInt32(vertexStream.vertexSize);
 			stream.write<uint16_t>((uint16_t)(vertexStream.role));

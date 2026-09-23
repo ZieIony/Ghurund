@@ -10,10 +10,10 @@ namespace Ghurund::Engine {
 
 	public:
 		TransformedInputDispatcher(
-			GameAction<To>* action,
+			NotNull<GameAction<To>> action,
 			T transformer,
 			uint8_t priority
-		):BaseInputDispatcher<From>(IntrusivePointer<BaseGameAction>((BaseGameAction*)action), priority), transformer(transformer) {
+		):BaseInputDispatcher<From>(IntrusivePointer<BaseGameAction>((BaseGameAction*)action.get()), priority), transformer(transformer) {
 			action->addReference();
 		}
 

@@ -121,6 +121,7 @@
     <ClInclude Include="src\engine\directx\shader\DxShader.h" />
     <ClInclude Include="src\engine\directx\shader\DxShaderLoader.h" />
     <ClInclude Include="src\engine\directx\shader\DxShaderProvider.h" />
+    <ClInclude Include="src\engine\directx\shader\DxShaderSource.h" />
     <ClInclude Include="src\engine\directx\shader\DxShaderType.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\CompilationTarget.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\CompilerInclude.h" />
@@ -170,6 +171,7 @@
     <ClCompile Include="src\engine\directx\shader\compiler\CompilerInclude.cpp" />
     <ClCompile Include="src\engine\directx\shader\compiler\DxShaderCompiler.cpp" />
     <ClCompile Include="src\engine\directx\shader\variables\BufferConstant.cpp" />
+    <ClCompile Include="src\engine\directx\shader\variables\Sampler.cpp" />
     <ClCompile Include="src\engine\directx\texture\DxTexture.cpp" />
     <ClCompile Include="src\ghedxpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

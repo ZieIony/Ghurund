@@ -42,6 +42,6 @@ namespace Ghurund::Engine::_3D {
 
 		virtual void update(const Timer& timer) {}
 
-		virtual void draw(RenderGroup& group) {}
+		virtual void queueDraw(RenderGroup& group) {}
 	};
 }

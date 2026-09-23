@@ -81,7 +81,7 @@ namespace Demo {
 	void DemoWindow::onPaint(RenderingContext& renderingContext) {
 		RenderGroup _3dGroup(DrawGroup(0, DrawOrder::FRONT_TO_BACK));
 		_3dGroup.Camera = world->Scene.Camera;
-		world->draw(_3dGroup);
+		world->queueDraw(_3dGroup);
 		renderGroups.put(_3dGroup);
 
 		renderingContext.clear(BackgroundColor);

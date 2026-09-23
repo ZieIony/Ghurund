@@ -33,11 +33,11 @@ namespace Ghurund::Engine {
 			}
 		}
 
-		inline void draw(RenderGroup& rg) {
+		inline void queueDraw(RenderGroup& rg) {
 			for (auto& group : drawObjects) {
 				for (auto& object : group.second) {
 					if (object->isEnabled)
-						object->draw(rg);
+						object->queueDraw(rg);
 				}
 			}
 		}

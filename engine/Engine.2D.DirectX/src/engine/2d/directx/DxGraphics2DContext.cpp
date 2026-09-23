@@ -1,6 +1,9 @@
 #include "ghe2ddxpch.h"
 #include "DxGraphics2DContext.h"
 
+#include "engine/directx/shader/DxShader.h"
+#include "engine/directx/mesh/DxMesh.h"
+
 namespace Ghurund::Engine::_2D::DirectX {
 	Mesh* DxGraphics2DContext::makeSpriteMesh() {
 		auto mesh = makeIntrusive<DxMesh>();
@@ -11,7 +14,7 @@ namespace Ghurund::Engine::_2D::DirectX {
 	
 	CoroutineTask<IntrusivePointer<Material>> DxGraphics2DContext::makeSpriteMaterial() {
 		IntrusivePointer<Material> material;
-		auto shader = co_await resourceManager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(L"/shaders/DirectX/2d/sprite.xml"), DirectoryPath());
+		auto shader = co_await resourceManager.load<DxShader>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"/shaders/DirectX/2d/sprite.xml"));
 		if (shader != nullptr) {
 			material = makeIntrusive<Material>();
 			material->init(memoryManager);
@@ -31,7 +34,7 @@ namespace Ghurund::Engine::_2D::DirectX {
 	
 	CoroutineTask<IntrusivePointer<Material>> DxGraphics2DContext::makeTileMapMaterial() {
 		IntrusivePointer<Material> material;
-		auto shader = co_await resourceManager.load<DxShader>(ResourceManager::ENGINE_LIB / FilePath(L"/shaders/DirectX/2d/sprite.xml"), DirectoryPath());
+		auto shader = co_await resourceManager.load<DxShader>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"/shaders/DirectX/2d/sprite.xml"));
 		if (shader != nullptr) {
 			material = makeIntrusive<Material>();
 			material->init(memoryManager);

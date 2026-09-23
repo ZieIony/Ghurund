@@ -15,6 +15,7 @@ namespace Ghurund::Engine {
 	class BufferConstant {
 	private:
 		const AString name;
+		uint32_t size;
 		Array<ValueConstant> valueConstants;
 
 	public:
@@ -22,19 +23,26 @@ namespace Ghurund::Engine {
 
 		BufferConstant(
 			const AString& name,
+			uint32_t size,
 			Array<ValueConstant> valueConstants
-		):name(name), valueConstants(valueConstants) {
+		):name(name), size(size), valueConstants(valueConstants) {
 		}
 
-		BufferConstant(const BufferConstant& other):name(other.name), valueConstants(other.valueConstants) {}
+		BufferConstant(const BufferConstant& other):name(other.name), size(other.size), valueConstants(other.valueConstants) {}
 
-		BufferConstant(BufferConstant&& other) noexcept:name(other.name), valueConstants(other.valueConstants) {}
+		BufferConstant(BufferConstant&& other) noexcept:name(other.name), size(other.size), valueConstants(other.valueConstants) {}
 
 		inline const AString& getName() const {
 			return name;
 		}
 
 		__declspec(property(get = getName)) const AString& Name;
+
+		inline uint32_t getSize() const {
+			return size;
+		}
+
+		__declspec(property(get = getSize)) uint32_t Size;
 
 		inline const Array<ValueConstant>& getValueConstants() const {
 			return valueConstants;

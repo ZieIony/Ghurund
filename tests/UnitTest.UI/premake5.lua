@@ -8,6 +8,7 @@ project "UnitTest.UI"
 		"Core",
 		"UI",
 		"Engine",
+		"Engine.DirectX",
 		"UnitTest.Utils"
 	}
 
@@ -18,16 +19,18 @@ project "UnitTest.UI"
 
 	includedirs {
 		"src",
-		includeDir["UnitTest.Utils"],
 		includeDir["Core"],
+		includeDir["Engine"],
+		includeDir["Engine.DirectX"],
+		includeDir["UnitTest.Utils"],
 		includeDir["UI"],
-		includeDir["DirectX"],
-		includeDir["Engine"]
+		includeDir["DirectX"]
 	}
 
 	links {
 		"Core",
-		"UnitTest.Utils",
+		"Engine",
+		"Engine.DirectX",
 		"UI",
-		"Engine"
+		"UnitTest.Utils"
 	}

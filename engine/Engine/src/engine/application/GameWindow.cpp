@@ -47,18 +47,18 @@ namespace Ghurund::Engine {
         if (Focused) {
             layers.restoreFocus();
         } else {
-            Input->releaseAllKeysAndButtons();
             layers.clearFocus();
         }
         return __super::onFocusedChanged();
     }
 
     GameWindow::GameWindow(GameApplication& app, WindowStyle style):ApplicationWindow(app, style), systems(app.GameObjects) {
-        viewportSizeParameter = makeIntrusive<Int2Parameter>("viewportSize");
+        viewportSizeParameter = makeIntrusive<Int2Parameter>(VIEWPORT_SIZE);
         parameterManager.Parameters.put(viewportSizeParameter.get());
-        timeParameter = makeIntrusive<FloatParameter>("time");
+        timeParameter = makeIntrusive<FloatParameter>(TIME);
         parameterManager.Parameters.put(timeParameter.get());
-        mousePosParameter = makeIntrusive<Int2Parameter>("mousePos");
+        mousePosParameter = makeIntrusive<Int2Parameter>(MOUSE_POS);
+        mousePosParameter->Value = { 0, 0 };
         ParameterManager.Parameters.put(mousePosParameter.get());
     }
 

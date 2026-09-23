@@ -83,14 +83,14 @@ namespace Ghurund::Core {
 		virtual CoroutineTask<void> load(
 			Resource& resource,
 			MemoryInputStream& stream,
-			const DirectoryPath& workingDir = DirectoryPath(),
+			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) = 0;
 
 		virtual CoroutineTask<IntrusivePointer<Resource>> load(
 			MemoryInputStream& stream,
-			const DirectoryPath& workingDir = DirectoryPath(),
+			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) {
@@ -102,14 +102,14 @@ namespace Ghurund::Core {
 		virtual CoroutineTask<void> load(
 			Resource& resource,
 			const XMLElement& xml,
-			const DirectoryPath& workingDir = DirectoryPath(),
+			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) = 0;
 
 		virtual CoroutineTask<IntrusivePointer<Resource>> load(
 			const XMLElement& xml,
-			const DirectoryPath& workingDir = DirectoryPath(),
+			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) {
@@ -121,7 +121,7 @@ namespace Ghurund::Core {
 		virtual void save(
 			Resource& resource,
 			MemoryOutputStream& stream,
-			const DirectoryPath& workingDir = DirectoryPath(),
+			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			SaveOption options = SaveOption::DEFAULT
 		) const = 0;
@@ -129,7 +129,7 @@ namespace Ghurund::Core {
 		virtual void save(
 			Resource& resource,
 			const XMLElement& xml,
-			const DirectoryPath& workingDir = DirectoryPath(),
+			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			SaveOption options = SaveOption::DEFAULT
 		) const = 0;

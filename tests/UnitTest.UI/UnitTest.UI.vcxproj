@@ -59,7 +59,7 @@
       <PrecompiledHeaderFile>utuipch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\UnitTest.Utils\src;..\..\engine\Core\src;..\..\engine\UI\src;..\..\libs;..\..\engine\Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;..\..\engine\Engine\src;..\..\engine\Engine.DirectX\src;..\UnitTest.Utils\src;..\..\engine\UI\src;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -78,7 +78,7 @@
       <PrecompiledHeaderFile>utuipch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\UnitTest.Utils\src;..\..\engine\Core\src;..\..\engine\UI\src;..\..\libs;..\..\engine\Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;..\..\engine\Engine\src;..\..\engine\Engine.DirectX\src;..\UnitTest.Utils\src;..\..\engine\UI\src;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -117,6 +117,7 @@
     <ClCompile Include="src\test\ui\control\ControlPathTest.cpp" />
     <ClCompile Include="src\test\ui\control\TextBlockTest.cpp" />
     <ClCompile Include="src\test\ui\font\FontTest.cpp" />
+    <ClCompile Include="src\test\ui\shaders\DxShadersUITest.cpp" />
     <ClCompile Include="src\test\ui\text\TextLayoutTest.cpp" />
     <ClCompile Include="src\test\ui\theme\ThemedValuePropertyTest.cpp" />
     <ClCompile Include="src\test\ui\widget\WidgetTest.cpp" />
@@ -128,14 +129,17 @@
     <ProjectReference Include="..\..\engine\Core\Core.vcxproj">
       <Project>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\UnitTest.Utils\UnitTest.Utils.vcxproj">
-      <Project>{64D57912-50A3-6D18-3937-DE3E25A4497D}</Project>
+    <ProjectReference Include="..\..\engine\Engine\Engine.vcxproj">
+      <Project>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\engine\Engine.DirectX\Engine.DirectX.vcxproj">
+      <Project>{BC80A119-A84E-951F-91E2-05467D4F7184}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\engine\UI\UI.vcxproj">
       <Project>{83755900-6F01-880B-D8AF-880BC45A880B}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\engine\Engine\Engine.vcxproj">
-      <Project>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</Project>
+    <ProjectReference Include="..\UnitTest.Utils\UnitTest.Utils.vcxproj">
+      <Project>{64D57912-50A3-6D18-3937-DE3E25A4497D}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

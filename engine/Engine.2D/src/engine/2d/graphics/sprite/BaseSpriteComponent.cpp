@@ -16,7 +16,7 @@ namespace Ghurund::Engine::_2D {
 		Material = (co_await Owner.World.context.makeSpriteMaterial()).get();
 	}
 
-	void BaseSpriteComponent::draw(RenderGroup& group) {
+	void BaseSpriteComponent::queueDraw(RenderGroup& group) {
 		if (mesh && material) {
 			auto w = XMMatrixTranslation(offset.x, offset.y, 0) * XMMatrixScaling(size.Width, size.Height, 1) * XMLoadFloat4x4(&Owner.Transform.WorldTransformation);
 			XMFLOAT4X4 world;
@@ -27,7 +27,5 @@ namespace Ghurund::Engine::_2D {
 			inputs.Alpha = alpha;
 			group.objects.add(DrawPacket(mesh, material, drawOrder));
 		}
-
-		__super::draw(group);
 	}
 }

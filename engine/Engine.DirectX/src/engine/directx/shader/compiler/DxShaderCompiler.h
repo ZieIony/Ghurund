@@ -11,6 +11,7 @@
 #include "engine/directx/shader/variables/Sampler.h"
 #include "engine/directx/shader/variables/TextureConstant.h"
 #include "engine/graphics/mesh/VertexStream.h"
+#include "engine/directx/shader/DxShaderSource.h"
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
@@ -60,7 +61,7 @@ namespace Ghurund::Engine::DirectX {
 			List<Sampler*>& samplers
 		);
 
-		DxShaderProgram* compile(const AString& sourceCode, AString entryPoint, const DxShaderType& shaderType, CompilerInclude* include = nullptr, bool debug =
+		DxShaderProgram* compile(const DxShaderProgramSourceCode& shaderSource, CompilerInclude* include = nullptr, bool debug =
 #ifdef _DEBUG
 			true
 #else

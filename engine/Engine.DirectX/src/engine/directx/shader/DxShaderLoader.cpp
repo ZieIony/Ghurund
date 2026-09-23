@@ -86,18 +86,42 @@ namespace Ghurund::Engine::DirectX {
 						return type.EntryPoint;
 					}
 				}();
-				AString sourceCode = [&] {
+				FilePath path = [&] {
 					auto pathAttributeIterator = programElement->attributes.find(L"path");
 					if (pathAttributeIterator != programElement->attributes.end()) {
-						auto path = FilePath(pathAttributeIterator->value);
-						auto buffer = resourceManager.resolveResource(path, workingDir);
-						return AString((const char*)buffer->Data, buffer->Size);
+						return FilePath(pathAttributeIterator->value);
 					} else {
 						auto message = std::format("Missing program path for program type '{}'.", type.Name);
 						throw InvalidDataException(message.c_str());
 					}
 				}();
-				shaderSource->programs.add(ghnew DxShaderProgramSourceCode(type, entryPoint, sourceCode));
+				AString sourceCode = [&] {
+					auto buffer = resourceManager.resolveResource(path, workingDir);
+					return AString((const char*)buffer->Data, buffer->Size);
+				}();
+				AString sourceName = [&] {
+					auto sourceNameAttributeIterator = programElement->attributes.find(L"sourceName");
+					if (sourceNameAttributeIterator != programElement->attributes.end()) {
+						return convertText<wchar_t, char>(sourceNameAttributeIterator->value);
+					} else {
+						// TODO: does this work with library paths?
+						if (path.IsAbsolute) {
+							return convertText<wchar_t, char>(path.toString());
+						} else if (resource.Path != nullptr) {
+							if (resource.Path->IsAbsolute) {
+								auto absolutePath = resourceManager.resolvePath(path, resource.Path->Directory);
+								return convertText<wchar_t, char>(absolutePath.toString());
+							} else {
+								auto absoluteResourcePath = resourceManager.resolvePath(*resource.Path, workingDir);
+								auto absolutePath = resourceManager.resolvePath(path, absoluteResourcePath.Directory);
+								return convertText<wchar_t, char>(absolutePath.toString());
+							}
+						} else {
+							return AString("[unnamed shader]");
+						}
+					}
+				}();
+				shaderSource->programs.add(ghnew DxShaderProgramSourceCode(type, sourceCode, sourceName));
 			}
 		}
 		loadFromSource(shaderSource.ref(), workingDir, resource);
@@ -105,11 +129,11 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	void DxShaderLoader::loadFromSource(NotNull<ShaderSource> shaderSource, const DirectoryPath& workingDir, DxShader& shader) {
-		if (!shaderSource->programs.any([](auto& program) { return ((DxShaderProgramSourceCode*)program)->type == DxShaderType::VERTEX; })) {
+		if (!shaderSource->programs.any([](auto& program) { return ((DxShaderProgramSourceCode*)program)->shaderType == DxShaderType::VERTEX; })) {
 			Logger::log(LogType::ERR0R, _T("Vertex shader program is required.\n"));
 			throw DxEntrypointNotFoundException(DxShaderType::VERTEX);
 		}
-		if (!shaderSource->programs.any([](auto& program) { return ((DxShaderProgramSourceCode*)program)->type == DxShaderType::PIXEL; })) {
+		if (!shaderSource->programs.any([](auto& program) { return ((DxShaderProgramSourceCode*)program)->shaderType == DxShaderType::PIXEL; })) {
 			Logger::log(LogType::ERR0R, _T("Pixel shader program is required.\n"));
 			throw DxEntrypointNotFoundException(DxShaderType::PIXEL);
 		}
@@ -117,11 +141,12 @@ namespace Ghurund::Engine::DirectX {
 		List<SharedPointer<DxShaderProgram>> programs;
 		for (auto sourceCode : shaderSource->programs) {
 			auto dxSourceCode = (DxShaderProgramSourceCode*)sourceCode;
-			auto program = SharedPointer<DxShaderProgram>(compiler.compile(dxSourceCode->sourceCode, dxSourceCode->entryPoint, dxSourceCode->type, &include));
+			auto program = SharedPointer<DxShaderProgram>(compiler.compile(*dxSourceCode, &include));
 			programs.add(program);
 		}
 		auto array = Array<SharedPointer<DxShaderProgram>>(programs);
 		compiler.build(shader, programs, shaderSource->samplers, shaderSource->settings);
+		shader.validate();
 	}
 
 	void DxShaderLoader::loadFromHlsl(const AString& sourceCode, const DirectoryPath& workingDir, DxShader& shader) {
@@ -129,8 +154,10 @@ namespace Ghurund::Engine::DirectX {
 
 		for (const DxShaderType& shaderType : DxShaderType::VALUES) {
 			AString entryPoint = shaderType.getEntryPoint();
-			if (sourceCode.contains(entryPoint))
-				shaderSource->programs.add(ghnew DxShaderProgramSourceCode(shaderType, entryPoint, sourceCode));
+			if (sourceCode.contains(entryPoint)) {
+				AString sourceName = shader.Path ? convertText<wchar_t, char>(shader.Path->toString()) : AString("[unnamed shader]");
+				shaderSource->programs.add(ghnew DxShaderProgramSourceCode(shaderType, entryPoint, sourceCode, sourceName));
+			}
 		}
 
 		loadFromSource(shaderSource.ref() , workingDir, shader);

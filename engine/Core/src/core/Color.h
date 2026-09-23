@@ -121,8 +121,12 @@ namespace Ghurund::Core {
 			return value;
 		}
 
-		inline ::DirectX::XMFLOAT4 toVector() const {
+		inline ::DirectX::XMFLOAT4 toFloat4() const {
 			return { r, g, b, a };
+		}
+
+		inline ::DirectX::XMFLOAT3 toFloat3() const {
+			return { r, g, b };
 		}
 
 		inline Color toLinear() const {

@@ -67,8 +67,8 @@ namespace Ghurund::Engine::_2D {
             gameObjectsUpdate.remove(entity);
         }
 
-        inline void draw(RenderGroup& rg) {
-            gameObjectsDraw.draw(rg);
+        inline void queueDraw(RenderGroup& rg) {
+            gameObjectsDraw.queueDraw(rg);
         }
 
 #pragma region formats

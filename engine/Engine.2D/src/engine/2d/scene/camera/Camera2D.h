@@ -27,15 +27,15 @@ namespace Ghurund::Engine::_2D {
 		float zNear, zFar;
 		IntSize viewSize;
 
-		inline static const AString CAMERA_POSITION = "cameraPosition";
-		inline static const AString CAMERA_UP = "cameraUp";
-		inline static const AString CAMERA_RIGHT = "cameraRight";
-		inline static const AString ZNEAR = "zNear";
-		inline static const AString ZFAR = "zFar";
-		inline static const AString VIEW = "view";
-		inline static const AString PROJECTION = "projection";
-		inline static const AString VIEW_PROJECTION = "viewProjection";
-		inline static const AString VIEW_PROJECTION_INV = "viewProjectionInv";
+		inline static const AString CAMERA_POSITION = "gh_cameraPosition";
+		inline static const AString CAMERA_UP = "gh_cameraUp";
+		inline static const AString CAMERA_RIGHT = "gh_cameraRight";
+		inline static const AString ZNEAR = "gh_zNear";
+		inline static const AString ZFAR = "gh_zFar";
+		inline static const AString VIEW = "gh_view";
+		inline static const AString PROJECTION = "gh_projection";
+		inline static const AString VIEW_PROJECTION = "gh_viewProjection";
+		inline static const AString VIEW_PROJECTION_INV = "gh_viewProjectionInv";
 
 		Float3Parameter* parameterPosition = nullptr, * parameterUp = nullptr, * parameterRight = nullptr;
 		FloatParameter* parameterZNear = nullptr, * parameterZFar = nullptr;

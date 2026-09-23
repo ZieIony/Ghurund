@@ -50,7 +50,7 @@ namespace Ghurund::Engine::DirectX {
 		indexBuffer = memoryManager.makeIndexBuffer(buffer);
 
 		indexBufferView.BufferLocation = indexBuffer->GetGPUVirtualAddress();
-		uint8_t indexSize = buffer.Size / indexCount;
+		size_t indexSize = buffer.Size / indexCount;
 		if (indexSize == 4) {
 			indexBufferView.Format = DXGI_FORMAT_R32_UINT;
 		} else if (indexSize == 2) {
@@ -59,7 +59,8 @@ namespace Ghurund::Engine::DirectX {
 			Logger::log(LogType::ERR0R, _T("index size not supported\n"));
 			throw InvalidDataException("index size not supported");
 		}
-		indexBufferView.SizeInBytes = indexBufferSize;
+		// TODO: check max buffer size
+		indexBufferView.SizeInBytes = (UINT)indexBufferSize;
 	}
 
 	void DxMesh::draw(CommandList& commandList, const Array<VertexRole>& layout) {
@@ -76,7 +77,7 @@ namespace Ghurund::Engine::DirectX {
 				}
 			}
 		}
-		list->IASetVertexBuffers(0, bufferViews.Size, &bufferViews[0]);
+		list->IASetVertexBuffers(0, (UINT)bufferViews.Size, &bufferViews[0]);
 
 		list->IASetIndexBuffer(&indexBufferView);
 		list->DrawIndexedInstanced(indexCount, 1, 0, 0, 0);

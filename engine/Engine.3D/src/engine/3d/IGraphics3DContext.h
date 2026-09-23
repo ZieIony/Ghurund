@@ -1,5 +1,6 @@
 #pragma once
 
+#include "engine/graphics/mesh/Mesh.h"
 #include "engine/graphics/material/Material.h"
 #include "core/coroutine/CoroutineTask.h"
 
@@ -8,6 +9,8 @@ namespace Ghurund::Engine::_3D {
 
 	class IGraphics3DContext {
 	public:
+		virtual CoroutineTask<IntrusivePointer<Mesh>> makeQuadMesh() = 0;
+
 		virtual CoroutineTask<IntrusivePointer<Material>> makeBoxVisualizationMaterial() = 0;
 
 		virtual CoroutineTask<IntrusivePointer<Material>> makeCapsuleVisualizationMaterial() = 0;

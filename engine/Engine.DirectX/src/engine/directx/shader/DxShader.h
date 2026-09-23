@@ -47,7 +47,7 @@ namespace Ghurund::Engine::DirectX {
 			D3D_SHADER_VARIABLE_CLASS _class,
 			D3D_SHADER_VARIABLE_TYPE type,
 			const AString& name,
-			uint16_t size
+			size_t size
 		);
 
 		void applyInputs(CommandList& commandList);

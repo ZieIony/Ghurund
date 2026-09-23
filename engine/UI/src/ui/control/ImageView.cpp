@@ -25,7 +25,7 @@ namespace Ghurund::UI {
             imageInput = (TextureInput*)material->Inputs.get("image");
             imageInput->Value = image.get().get();
             tintInput = (Float4Input*)material->Inputs.get("tint");
-            tintInput->Value = tint.get().toVector();
+            tintInput->Value = tint.get().toFloat4();
         } else {
             imageInput = nullptr;
             tintInput = nullptr;

@@ -40,8 +40,8 @@ namespace Ghurund::UI {
 			uint8_t* endPoly = ptr + header.cb;
 			ptr += sizeof(TTPOLYGONHEADER);
 			msdfgen::Point2 start = fromFixed(header.pfxStart);
-			topLeft.x = std::min<float>(topLeft.x, start.x);
-			topLeft.y = std::min<float>(topLeft.y, start.y);
+			topLeft.x = std::min<float>(topLeft.x, (float)start.x);
+			topLeft.y = std::min<float>(topLeft.y, (float)start.y);
 			msdfgen::Point2 current = start;
 
 			// read primitives of this polygon
@@ -55,8 +55,8 @@ namespace Ghurund::UI {
 					for (size_t j = 0; j < curve->cpfx; j++) {
 						msdfgen::Point2 p2 = fromFixed(curve->apfx[j]);
 						contour.addEdge(new msdfgen::LinearSegment({ current.x, current.y }, { p2.x, p2.y }));
-						topLeft.x = std::min<float>(topLeft.x, p2.x);
-						topLeft.y = std::min<float>(topLeft.y, p2.y);
+						topLeft.x = std::min<float>(topLeft.x, (float)p2.x);
+						topLeft.y = std::min<float>(topLeft.y, (float)p2.y);
 						current = p2;
 					}
 				} else if (curve->wType == TT_PRIM_QSPLINE) {
@@ -70,10 +70,10 @@ namespace Ghurund::UI {
 							p3 = fromFixed(curve->apfx[j + 1]);
 						}
 						contour.addEdge(new msdfgen::QuadraticSegment({ current.x, current.y }, { p2.x, p2.y }, { p3.x, p3.y }));
-						topLeft.x = std::min<float>(topLeft.x, p2.x);
-						topLeft.y = std::min<float>(topLeft.y, p2.y);
-						topLeft.x = std::min<float>(topLeft.x, p3.x);
-						topLeft.y = std::min<float>(topLeft.y, p3.y);
+						topLeft.x = std::min<float>(topLeft.x, (float)p2.x);
+						topLeft.y = std::min<float>(topLeft.y, (float)p2.y);
+						topLeft.x = std::min<float>(topLeft.x, (float)p3.x);
+						topLeft.y = std::min<float>(topLeft.y, (float)p3.y);
 						current = p3;
 					}
 				} else if (curve->wType == TT_PRIM_CSPLINE) {
@@ -82,12 +82,12 @@ namespace Ghurund::UI {
 						msdfgen::Point2 p3 = fromFixed(curve->apfx[j + 1]);
 						msdfgen::Point2 p4 = fromFixed(curve->apfx[j + 2]);
 						contour.addEdge(new msdfgen::CubicSegment(current, p2, p3, p4));
-						topLeft.x = std::min<float>(topLeft.x, p2.x);
-						topLeft.y = std::min<float>(topLeft.y, p2.y);
-						topLeft.x = std::min<float>(topLeft.x, p3.x);
-						topLeft.y = std::min<float>(topLeft.y, p3.y);
-						topLeft.x = std::min<float>(topLeft.x, p4.x);
-						topLeft.y = std::min<float>(topLeft.y, p4.y);
+						topLeft.x = std::min<float>(topLeft.x, (float)p2.x);
+						topLeft.y = std::min<float>(topLeft.y, (float)p2.y);
+						topLeft.x = std::min<float>(topLeft.x, (float)p3.x);
+						topLeft.y = std::min<float>(topLeft.y, (float)p3.y);
+						topLeft.x = std::min<float>(topLeft.x, (float)p4.x);
+						topLeft.y = std::min<float>(topLeft.y, (float)p4.y);
 						current = p4;
 					}
 				} else {

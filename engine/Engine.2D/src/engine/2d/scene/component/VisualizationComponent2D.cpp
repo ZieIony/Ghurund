@@ -16,7 +16,7 @@ namespace Ghurund::Engine::_2D {
 			material->release();
 	}
 	
-	void VisualizationComponent2D::draw(RenderGroup& group) {
+	void VisualizationComponent2D::queueDraw(RenderGroup& group) {
 		auto w = XMLoadFloat4x4(&worldTransformation);
 		XMFLOAT4X4 world;
 		XMStoreFloat4x4(&world, XMMatrixTranspose(w));

@@ -9,10 +9,10 @@ namespace Ghurund::Core {
 		WString path;
 
 	public:
-		static const inline wchar_t SEPARATOR = L'/';
+		static const inline WString SEPARATOR = L"/";
 
 		Path(const WString& path):path(path) {
-			this->path.replace(L'\\', L'/');
+			this->path.replaceAll(L'\\', L'/');
 		}
 
 		Path(Path&& path) noexcept {
@@ -44,6 +44,10 @@ namespace Ghurund::Core {
 		}
 
 		__declspec(property(get = getLength)) size_t Length;
+
+		bool getIsAbsolute() const;
+
+		__declspec(property(get = getIsAbsolute)) bool IsAbsolute;
 
 		bool operator==(const Path& otherPath) const {
 			return path == otherPath.path;

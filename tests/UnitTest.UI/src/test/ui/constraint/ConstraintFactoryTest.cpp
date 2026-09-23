@@ -137,7 +137,7 @@ public:
 </ControlGroup>)";
 			Buffer buffer(xml.Data, xml.Length);
 
-			auto coroutine = resourceManager.load<ControlGroup>(buffer, DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE);
+			auto coroutine = resourceManager.load<ControlGroup>(buffer, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, LoadOption::DONT_CACHE);
 			coroutine.resume();
 			IntrusivePointer<ControlGroup> controlGroup = coroutine.Result;
 			Control* control = controlGroup->find<Control>();

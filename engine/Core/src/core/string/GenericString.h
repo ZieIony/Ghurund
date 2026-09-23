@@ -155,14 +155,14 @@ namespace Ghurund::Core {
 			return v[i];
 		}
 
-		inline void replace(T from, T to) {
+		inline void replaceAll(T from, T to) {
 			for (size_t i = 0; i < size; i++) {
 				if (v[i] == from)
 					v[i] = to;
 			}
 		}
 
-		inline void replace(const T* from, const T* to) {
+		inline void replaceAll(const T* from, const T* to) {
 			size_t fromLength = lengthOf(from);
 			size_t toLength = lengthOf(to);
 			size_t next = 0;
@@ -178,6 +178,10 @@ namespace Ghurund::Core {
 				memcpy(v + next, to, toLength * sizeof(T));
 				next += toLength;
 			}
+		}
+
+		inline void replaceAll(const GenericString<T>& from, const GenericString<T>& to) {
+			replaceAll(from.Data, to.Data);
 		}
 
 		inline void insert(size_t pos, T str) {
@@ -208,7 +212,7 @@ namespace Ghurund::Core {
 		}
 
 		inline void insert(size_t pos, const GenericString<T>& str) {
-			if (str.Empty)
+			if (str.IsEmpty)
 				return;
 			size_t len = str.Length;
 			fit(size + len);
@@ -467,11 +471,11 @@ namespace Ghurund::Core {
 			return memcmp(&v[Length - l], str.Data, l * sizeof(T)) == 0;
 		}
 
-		inline bool isEmpty() const {
+		inline bool getIsEmpty() const {
 			return size == 1;
 		}
 
-		__declspec(property(get = isEmpty)) bool Empty;
+		__declspec(property(get = getIsEmpty)) bool IsEmpty;
 
 		constexpr std::strong_ordering operator<=>(const GenericString<T>& string) const {
 			int order = lexicographicalStrCompare<T>(v, string.Data);

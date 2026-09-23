@@ -33,7 +33,7 @@ namespace Ghurund::Engine::DirectX {
 		D3D_SHADER_VARIABLE_CLASS _class,
 		D3D_SHADER_VARIABLE_TYPE type,
 		const AString& name,
-		uint16_t size
+		size_t size
 	) {
 		if (_class == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_SCALAR) {
 			if (type == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_INT) {
@@ -87,7 +87,7 @@ namespace Ghurund::Engine::DirectX {
 			DxTexture* texture = (DxTexture*)textureConstants[i].Value;
 			if (!texture) {
 				auto text = std::format(_T("No value for constant '{}'.\n"), textureConstantInfos[i]->Name);
-				Logger::logOnce(LogType::WARNING, text.c_str(), i);
+				Logger::logOnce(LogType::WARNING, text.c_str(), (uint32_t)i);
 				continue;
 			}
 			texture->set(commandList, textureConstantInfos[i]->BindSlot);
@@ -117,7 +117,7 @@ namespace Ghurund::Engine::DirectX {
 				);
 				cbInputs.add(ValueConstant(v.name, type, v.size, v.offset, v.defaultValue));
 			}
-			bufferConstants.add(BufferConstant(cb->Name, cbInputs));
+			bufferConstants.add(BufferConstant(cb->Name, cb->Size, cbInputs));
 		}
 		this->textureConstantInfos = textureConstantInfos;
 		for (auto& t : textureConstantInfos)

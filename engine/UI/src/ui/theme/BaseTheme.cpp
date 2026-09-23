@@ -19,7 +19,7 @@ namespace Ghurund::UI {
 		auto textStylePathStr = std::format(L"resources/textStyles/lato_{}_{}.bin", style, (uint16_t)size);
 		auto textStylePath = FilePath(textStylePathStr.c_str());
 		if (File(textStylePath).exists()) {
-			auto coroutine = resourceManager.load<TextStyle>(textStylePath, DirectoryPath(), TextStyle::FORMAT_BIN);
+			auto coroutine = resourceManager.load<TextStyle>(textStylePath, DirectoryPath::getCurrentDirectory(), TextStyle::FORMAT_BIN);
 			coroutine.resume();
 			textStyle.set(coroutine.Result.get());
 		} else {
@@ -29,23 +29,23 @@ namespace Ghurund::UI {
 			auto font = coroutine.Result;
 			textStyle.set(ghnew TextStyle());
 			textStyle->init(font.ref(), size);
-			resourceManager.save(textStyle.ref(), textStylePath, DirectoryPath(), TextStyle::FORMAT_BIN);
+			resourceManager.save(textStyle.ref(), textStylePath, DirectoryPath::getCurrentDirectory(), TextStyle::FORMAT_BIN);
 		}
 		return textStyle;
 	};
 
 	BaseTheme::BaseTheme(Ghurund::Core::ResourceManager& resourceManager):Theme(), resourceManager(resourceManager) {
 
-		auto buttonLayoutPath = ResourceManager::ENGINE_LIB / FilePath(L"/layouts/ButtonLayout.xml");
+		auto buttonLayoutPath = ResourceManager::ENGINE_LIB_PATH / FilePath(L"/layouts/ButtonLayout.xml");
 		Layouts.put(LayoutKey(Button::GET_TYPE().Name), makeShared<FileLayoutProvider>(resourceManager, buttonLayoutPath));
-		auto checkBoxLayoutPath = ResourceManager::ENGINE_LIB / FilePath(L"/layouts/CheckBoxLayout.xml");
+		auto checkBoxLayoutPath = ResourceManager::ENGINE_LIB_PATH / FilePath(L"/layouts/CheckBoxLayout.xml");
 		Layouts.put(LayoutKey(CheckBox::GET_TYPE().Name), makeShared<FileLayoutProvider>(resourceManager, checkBoxLayoutPath));
-		auto radioLayoutPath = ResourceManager::ENGINE_LIB / FilePath(L"/layouts/RadioButtonLayout.xml");
+		auto radioLayoutPath = ResourceManager::ENGINE_LIB_PATH / FilePath(L"/layouts/RadioButtonLayout.xml");
 		Layouts.put(LayoutKey(RadioButton::GET_TYPE().Name), makeShared<FileLayoutProvider>(resourceManager, radioLayoutPath));
-		auto expandableContainerLayoutPath = ResourceManager::ENGINE_LIB / FilePath(L"/layouts/ExpandableContainer.xml");
+		auto expandableContainerLayoutPath = ResourceManager::ENGINE_LIB_PATH / FilePath(L"/layouts/ExpandableContainer.xml");
 		Layouts.put(LayoutKey(ExpandableContainer::GET_TYPE().Name), makeShared<FileLayoutProvider>(resourceManager, expandableContainerLayoutPath));
 
-		auto imageViewMaterialPath = ResourceManager::ENGINE_LIB / FilePath(L"/materials/DirectX/ui/ImageView.xml");
+		auto imageViewMaterialPath = ResourceManager::ENGINE_LIB_PATH / FilePath(L"/materials/DirectX/ui/ImageView.xml");
 		Materials.put(ImageView::GET_TYPE().Name, makeShared<FileMaterialProvider>(resourceManager, imageViewMaterialPath));
 
 		TextStyles.put(Theme::TEXT_STYLE_BUTTON, makeTextStyle(L"medium", 12.0f));
@@ -53,22 +53,22 @@ namespace Ghurund::UI {
 		TextStyles.put(Theme::TEXT_STYLE_TEXT_PRIMARY, makeTextStyle(L"regular", 12.0f));
 		TextStyles.put(Theme::TEXT_STYLE_TEXT_SECONDARY, makeTextStyle(L"regular", 12.0f));
 
-		auto checkboxCheckedPath = ResourceManager::ENGINE_LIB / FilePath(L"/icons\\checkbox checked 18.png");
+		auto checkboxCheckedPath = ResourceManager::ENGINE_LIB_PATH / FilePath(L"/icons\\checkbox checked 18.png");
 		Textures.put(Theme::TEXTURE_CHECKBOX_CHECKED, makeShared<FileTextureProvider>(resourceManager, checkboxCheckedPath));
-		auto checkBoxUncheckedPath = ResourceManager::ENGINE_LIB / FilePath(L"/icons\\checkbox unchecked 18.png");
+		auto checkBoxUncheckedPath = ResourceManager::ENGINE_LIB_PATH / FilePath(L"/icons\\checkbox unchecked 18.png");
 		Textures.put(Theme::TEXTURE_CHECKBOX_UNCHECKED, makeShared<FileTextureProvider>(resourceManager, checkBoxUncheckedPath));
-		auto radioCheckedPath = ResourceManager::ENGINE_LIB / FilePath(L"/icons\\radiobutton checked 18.png");
+		auto radioCheckedPath = ResourceManager::ENGINE_LIB_PATH / FilePath(L"/icons\\radiobutton checked 18.png");
 		Textures.put(Theme::TEXTURE_RADIOBUTTON_CHECKED, makeShared<FileTextureProvider>(resourceManager, radioCheckedPath));
-		auto radioUncheckedPath = ResourceManager::ENGINE_LIB / FilePath(L"/icons\\radiobutton unchecked 18.png");
+		auto radioUncheckedPath = ResourceManager::ENGINE_LIB_PATH / FilePath(L"/icons\\radiobutton unchecked 18.png");
 		Textures.put(Theme::TEXTURE_RADIOBUTTON_UNCHECKED, makeShared<FileTextureProvider>(resourceManager, radioUncheckedPath));
-		auto arrowUpPath = ResourceManager::ENGINE_LIB / FilePath(L"/icons\\arrow up 18.png");
+		auto arrowUpPath = ResourceManager::ENGINE_LIB_PATH / FilePath(L"/icons\\arrow up 18.png");
 		Textures.put(Theme::TEXTURE_ARROWUP, makeShared<FileTextureProvider>(resourceManager, arrowUpPath));
-		auto arrowDownPath = ResourceManager::ENGINE_LIB / FilePath(L"/icons\\arrow down 18.png");
+		auto arrowDownPath = ResourceManager::ENGINE_LIB_PATH / FilePath(L"/icons\\arrow down 18.png");
 		Textures.put(Theme::TEXTURE_ARROWDOWN, makeShared<FileTextureProvider>(resourceManager, arrowDownPath));
-		auto arrowRightPath = ResourceManager::ENGINE_LIB / FilePath(L"/icons\\arrow right 18.png");
+		auto arrowRightPath = ResourceManager::ENGINE_LIB_PATH / FilePath(L"/icons\\arrow right 18.png");
 		Textures.put(Theme::TEXTURE_ARROWRIGHT, makeShared<FileTextureProvider>(resourceManager, arrowRightPath));
 
-		auto materialTextPath = ResourceManager::ENGINE_LIB / FilePath(L"/materials/directx/ui/text.xml");
+		auto materialTextPath = ResourceManager::ENGINE_LIB_PATH / FilePath(L"/materials/directx/ui/text.xml");
 		Materials.put(Theme::MATERIAL_TEXT, makeShared<FileMaterialProvider>(resourceManager, materialTextPath));
 	}
 }

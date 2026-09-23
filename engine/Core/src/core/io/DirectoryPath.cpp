@@ -1,24 +1,39 @@
 #include "ghcpch.h"
 #include "DirectoryPath.h"
 
-#include "core/logging/Formatter.h"
-#include "core/logging/Logger.h"
+#include <pathcch.h>
+#include <shlwapi.h>
+
+#pragma comment(lib, "shlwapi.lib")
 
 namespace Ghurund::Core {
-    /*DirectoryPath DirectoryPath::getAbsolutePath() const {
+    DirectoryPath DirectoryPath::getCurrentDirectory() {
+        DWORD bufferLength = GetCurrentDirectoryW(0, nullptr);
+        Array<wchar_t> buffer(bufferLength);
+        GetCurrentDirectoryW(bufferLength, &buffer[0]);
+        auto path = WString(&buffer[0], bufferLength - 1);
+        if (!path.endsWith(L"/"))
+            path.add(L'/');
+        return DirectoryPath(path);
+    }
+
+    DirectoryPath DirectoryPath::getAbsolutePath() const {
         DWORD bufferLength = (DWORD)(GetCurrentDirectory(0, nullptr) + path.Size + 2); // slash and string terminator
         wchar_t fullPath[MAX_PATH];
         GetFullPathNameW(path.Data, bufferLength, fullPath, nullptr);
         DirectoryPath absolutePath(fullPath);
         return absolutePath;
-    }*/
+    }
 
     List<DirectoryPath> DirectoryPath::getDirectories() const {
         List<DirectoryPath> directories;
         WIN32_FIND_DATAW ffd;
         HANDLE hFind = INVALID_HANDLE_VALUE;
+        WString query = path + L"*";
 
-        hFind = FindFirstFileW(path.Data, &ffd);
+        hFind = FindFirstFileW(query.Data, &ffd);
+        if (hFind == INVALID_HANDLE_VALUE)
+            return {};
 
         do {
             if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
@@ -34,8 +49,11 @@ namespace Ghurund::Core {
         List<FilePath> directories;
         WIN32_FIND_DATAW ffd;
         HANDLE hFind = INVALID_HANDLE_VALUE;
+        WString query = path + L"*";
 
-        hFind = FindFirstFileW(path.Data, &ffd);
+        hFind = FindFirstFileW(query.Data, &ffd);
+        if (hFind == INVALID_HANDLE_VALUE)
+            return {};
 
         do {
             if (!(ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
@@ -47,33 +65,30 @@ namespace Ghurund::Core {
         return directories;
     }
 
+    WString DirectoryPath::combineStr(const WString& str) const {
+        wchar_t destPath[MAX_PATH];
+        DWORD size = MAX_PATH;
+        WString pathStr = path;
+        WString dirStr = str;
+        if (pathStr.startsWith(ResourceManager::LIB_PROTOCOL)) {
+            UrlCombineW(pathStr.Data, dirStr.Data, destPath, &size, 0);
+        } else {
+            pathStr.replaceAll(Path::SEPARATOR, L"\\");
+            dirStr.replaceAll(Path::SEPARATOR, L"\\");
+            PathCchCombine(destPath, MAX_PATH, pathStr.Data, dirStr.Data);
+        }
+        return WString(destPath);
+    }
+
+    DirectoryPath DirectoryPath::combine(const DirectoryPath& dir) const {
+        if (dir.IsAbsolute)
+            return dir;
+        return DirectoryPath(combineStr(dir.toString()));
+    }
+
     FilePath DirectoryPath::combine(const FilePath& file) const {
         if (file.IsAbsolute)
             return file;
-        auto absolutePath = path;
-        auto& fileStr = file.toString();
-        if (fileStr.startsWith(Path::SEPARATOR)) {
-            absolutePath.add(fileStr.Data + 1, fileStr.Length);
-        } else {
-            absolutePath.add(fileStr);
-        }
-        while (true) {
-            size_t index = absolutePath.find(L"/..");
-			if (index == absolutePath.Length)
-                break;
-			if (index == 0)
-                throw InvalidDataException();  // there's something wrong with the path
-            size_t prev = absolutePath.findLast(L"/", index - 1);
-            if (prev > index)
-                throw InvalidDataException();  // there's something wrong with the path
-            absolutePath.remove(prev, index - prev + 3);
-        }
-        absolutePath.removeAll(L"./");
-        return FilePath(absolutePath);
+        return FilePath(combineStr(file.toString()));
     }
-
-    FilePath DirectoryPath::operator/(const FilePath& file) const {
-        return combine(file);
-    }
-
 }

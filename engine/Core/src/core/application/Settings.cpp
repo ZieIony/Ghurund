@@ -5,9 +5,9 @@
 #include "core/xml/XMLDocument.h"
 
 namespace Ghurund::Core {
-    void Settings::load(const void* data, uint32_t size) {
+    void Settings::load(const void* data, size_t size) {
         XMLDocument doc;
-        doc.parse(data, size);
+        doc.parse(data, (uint32_t)size);
         const XMLElement& root = doc.Root;
         for (auto& child : root.children) {
             WString name = child->attributes[L"name"];

@@ -150,11 +150,11 @@ namespace Ghurund::Core {
 		return TYPE;
 	}
 
-	const DirectoryPath ResourceManager::ENGINE_LIB = DirectoryPath(std::format(L"{}{}", LIB_PROTOCOL, ENGINE_LIB_NAME).c_str());
+	const DirectoryPath ResourceManager::ENGINE_LIB_PATH = DirectoryPath(std::format(L"{}{}", LIB_PROTOCOL, ENGINE_LIB_NAME).c_str());
 
 	CoroutineTask<void> ResourceManager::reload(Resource& resource) {
 		auto path = *resource.Path;
-		auto workingDir = DirectoryPath();
+		auto workingDir = DirectoryPath::getCurrentDirectory();
 		auto loader = getLoader(resource.Type);
 		SharedPointer<Buffer> buffer = resolveResource(path, workingDir);
 		MemoryInputStream stream(buffer->Data, buffer->Size);

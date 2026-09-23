@@ -16,8 +16,8 @@ namespace Ghurund::Engine {
         MatrixParameter* parameterWorldIT = nullptr;
 
     public:
-        inline static const AString WORLD = "world";
-        inline static const AString WORLD_IT = "worldIT";
+        inline static const AString WORLD = "gh_world";
+        inline static const AString WORLD_IT = "gh_worldIT";
 
         DrawingSystem() {
             parameterWorld = ghnew MatrixParameter(WORLD);

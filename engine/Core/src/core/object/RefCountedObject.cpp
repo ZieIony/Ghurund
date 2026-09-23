@@ -94,7 +94,7 @@ namespace Ghurund::Core {
                 auto text = std::format(_T("\n[{:#x}] {}\n"), (address_t)p, p->toString());
                 Logger::print(LogType::INFO, text.c_str());
                 for (StackTraceEntry& e : p->stacktrace) {
-                    if (e.fileName.Empty || !e.address || e.name.Empty)
+                    if (e.fileName.IsEmpty || !e.address || e.name.IsEmpty)
                         continue;
                     auto entryText = std::format(_T("{0}({1:d}): [{2:#x} {3}(..)]\n"), e.fileName, e.fileLine, e.address, e.name);
                     Logger::print(LogType::INFO, entryText.c_str());

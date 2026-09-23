@@ -26,7 +26,7 @@ namespace Ghurund::Engine::_2D {
 		):worldInput(other.worldInput), colorInput(other.colorInput) {}
 
 		inline void init(MaterialInputCollection& inputs) {
-			worldInput = (MatrixInput*)inputs.get("world");
+			worldInput = (MatrixInput*)inputs.get(MatrixInput::INPUT_NAME_WORLD);
 			colorInput = (Float4Input*)inputs.get("color");
 			extentsInput = (Float2Input*)inputs.get("extents");
 		}
@@ -38,7 +38,7 @@ namespace Ghurund::Engine::_2D {
 		__declspec(property(put = setTransformation)) const XMFLOAT4X4& Transformation;
 
 		inline void setColor(const Color& color) {
-			colorInput->Value = color.toVector();
+			colorInput->Value = color.toFloat4();
 		}
 
 		__declspec(property(put = setColor)) const Color& Color;

@@ -16,6 +16,8 @@ namespace Ghurund::Engine {
 		ValueConstant& shaderConstant;
 
 	public:
+		inline static const AString INPUT_NAME_WORLD = "gh_world";
+	
 		BaseValueInput(ValueConstant& shaderConstant):MaterialInput(true), value(ghnew int8_t[shaderConstant.Size]), shaderConstant(shaderConstant) {}
 
 		BaseValueInput(const BaseValueInput& other):MaterialInput(other), value(ghnew int8_t[other.shaderConstant.Size]), shaderConstant(other.shaderConstant) {

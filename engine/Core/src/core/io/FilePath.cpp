@@ -3,8 +3,6 @@
 
 #include "core/logging/Formatter.h"
 
-#include <regex>
-
 namespace Ghurund::Core {
     DirectoryPath FilePath::getDirectory() const {
         return DirectoryPath(path.substring(0, path.findLast(Path::SEPARATOR)));
@@ -14,13 +12,6 @@ namespace Ghurund::Core {
         if (path.startsWith(dir.toString()))
             return FilePath(path.substring(0, dir.toString().Length));
         return *this;
-    }
-
-    bool FilePath::isAbsolute() const {
-        std::wregex regex(L"lib://.*|.:.*");
-        std::wsmatch m;
-        std::wstring s = path.Data;
-        return std::regex_match(s, m, regex);
     }
 
     /*FilePath FilePath::getAbsolutePath() const {

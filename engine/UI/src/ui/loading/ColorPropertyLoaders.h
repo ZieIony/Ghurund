@@ -13,7 +13,7 @@ namespace Ghurund::UI {
         std::unique_ptr<ThemedColor> loadThemedColor(const AString& text) const {
             AString s = text;
             s = s.trim();
-            s.replace('\\', '/');
+            s.replaceAll('\\', '/');
             if (s.startsWith("#")) {
                 return std::make_unique<ThemedColor>(Color::parse(s));
             } else if (s.startsWith(THEME_COLOR)) {

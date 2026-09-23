@@ -29,7 +29,7 @@ namespace Ghurund::Engine::_2D {
 		}
 
 		inline void init(MaterialInputCollection& inputs) {
-			worldInput = (MatrixInput*)inputs.get("world");
+			worldInput = (MatrixInput*)inputs.get(MatrixInput::INPUT_NAME_WORLD);
 			colorTextureInput = (TextureInput*)inputs.get("colorTexture");
 			tintInput = (Float3Input*)inputs.get("tint");
 			alphaInput = (FloatInput*)inputs.get("alpha");

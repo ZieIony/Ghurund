@@ -33,6 +33,9 @@ namespace Ghurund::Engine::DirectX {
         }
 
 		virtual void setValue(const void* value, size_t size, size_t offset) override {
+#ifdef _DEBUG
+            _ASSERTE(offset + size <= Size);
+#endif
 			memcpy((uint8_t*)buffer->Data + offset, value, size);
 		}
 

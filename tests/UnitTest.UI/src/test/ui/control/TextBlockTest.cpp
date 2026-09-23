@@ -40,7 +40,7 @@ public:
         fontLoader = ghnew FontLoader();
         resourceManager.Loaders.set<Font>(*fontLoader);
         FilePath path = Ghurund::Core::FilePath(L"../../resources/fonts\\lato_medium.ttf");
-        auto coroutine = resourceManager.load<Font>(path, DirectoryPath());
+        auto coroutine = resourceManager.load<Font>(path);
         coroutine.resume();
         latoMediumFont = coroutine.Result;
     }

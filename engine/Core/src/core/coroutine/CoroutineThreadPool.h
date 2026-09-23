@@ -33,6 +33,7 @@ namespace Ghurund::Core {
 
         void enqueueTask(std::coroutine_handle<> coro) noexcept {
             std::unique_lock<std::mutex> lock(mutex);
+            // TODO: unique_lock must be locked manually (check all uses in the project), also maybe replace with lock_guard?
             coroutines.add(coro);
             conditionVariable.notify_one();
         }

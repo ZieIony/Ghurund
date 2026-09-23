@@ -16,12 +16,12 @@ namespace Ghurund::Core {
 
 			if (msg >= WM_KEYFIRST && msg <= WM_KEYLAST) {
 				if (msg == WM_KEYDOWN) {
-					uint8_t c = MapVirtualKey(wm.wParam, MAPVK_VK_TO_CHAR);
+					uint8_t c = MapVirtualKey((UINT)wm.wParam, MAPVK_VK_TO_CHAR);
 					keys[c].isDown = true;
 					keys[c].pressedTime = time;
 					consumer.dispatchKeyEvent(KeyEventArgs(KeyAction::PRESSED, c, 0, time));
 				} else if (msg == WM_KEYUP) {
-					uint8_t c = MapVirtualKey(wm.wParam, MAPVK_VK_TO_CHAR);
+					uint8_t c = MapVirtualKey((UINT)wm.wParam, MAPVK_VK_TO_CHAR);
 					keys[c].isDown = false;
 					consumer.dispatchKeyEvent(KeyEventArgs(KeyAction::RELEASED, c, 0, time));
 				} else if (msg == WM_CHAR) {
@@ -126,7 +126,7 @@ namespace Ghurund::Core {
 		EventConsumer* c = &consumer;
 		for (size_t i = 0; i < keys.Size; i++) {
 			if (keys[i].isDown)
-				c->dispatchKeyEvent(KeyEventArgs(KeyAction::DOWN, i, keys[i].pressedTime, time));
+				c->dispatchKeyEvent(KeyEventArgs(KeyAction::DOWN, (uint8_t)i, keys[i].pressedTime, time));
 		}
 	}
 

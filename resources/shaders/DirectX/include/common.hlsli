@@ -6,6 +6,9 @@
 #define CULL_MODE_BACK 3
 
 static const float PI = 3.14159265f;
+static const float E = 2.71828182f;
+static const float EPSILON = 0.00001f;
+static const float MAX_FLOAT = 3.402823466e+38;
 
 static const matrix MATRIX_IDENTITY = {
     { 1, 0, 0, 0 },
@@ -48,9 +51,9 @@ float getSpecularIntensity(float3 vertexPos, float3 normalNormalized, float3 cam
 	
 float3x3 getWorldToTangent(float3 normal, float3 tangent, float4x4 world){
     float3x3 worldToTangentSpace;
-    worldToTangentSpace[0] = mul(tangent, world);
-    worldToTangentSpace[1] = mul(cross(tangent, normal), world);
-    worldToTangentSpace[2] = mul(normal, world);
+    worldToTangentSpace[0] = mul(tangent, (float3x3)world);
+    worldToTangentSpace[1] = mul(cross(tangent, normal), (float3x3)world);
+    worldToTangentSpace[2] = mul(normal, (float3x3)world);
 	return worldToTangentSpace;
 }
 

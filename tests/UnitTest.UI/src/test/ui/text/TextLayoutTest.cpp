@@ -42,7 +42,7 @@ public:
         resourceManager.Loaders.set<TextStyle>(textStyleLoader.ref());
 
         FilePath path = Ghurund::Core::FilePath(L"../../resources/textStyles\\lato_medium_12.bin");
-        auto coroutine = resourceManager.load<TextStyle>(path, DirectoryPath());
+        auto coroutine = resourceManager.load<TextStyle>(path);
         coroutine.resume();
         textStyle = coroutine.Result;
     }

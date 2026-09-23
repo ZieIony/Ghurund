@@ -15,7 +15,7 @@ namespace Ghurund::Engine {
 		const InputType type;
 		const size_t size, offset;
 		const void* defaultValue;
-		const void* value = nullptr;
+		void* value = nullptr;
 
 	public:
 		ValueConstant(
@@ -24,15 +24,21 @@ namespace Ghurund::Engine {
 			size_t size,
 			size_t offset,
 			const void* defaultValue
-		):name(name), type(type), size(size), offset(offset), defaultValue([&]->const void* {
-			if (defaultValue != nullptr) {
-				void* copy = ghnew int8_t[size];
-				memcpy(copy, defaultValue, size);
-				return copy;
-			} else {
-				return nullptr;
-			}
-		}()) {
+		):
+			name(name),
+			type(type),
+			size(size),
+			offset(offset),
+			value(ghnew uint8_t[size]),
+			defaultValue([&]->const void* {
+				if (defaultValue != nullptr) {
+					void* copy = ghnew int8_t[size];
+					memcpy(copy, defaultValue, size);
+					return copy;
+				} else {
+					return nullptr;
+				}
+			}()) {
 		}
 
 		ValueConstant(const ValueConstant& other):
@@ -40,6 +46,11 @@ namespace Ghurund::Engine {
 			type(other.type),
 			size(other.size),
 			offset(other.offset),
+			value([&]->void* {
+				auto copy = ghnew uint8_t[size];
+				memcpy(copy, other.value, size);
+				return copy;
+			}()),
 			defaultValue([&]->const void* {
 			if (other.defaultValue != nullptr) {
 				void* copy = ghnew int8_t[size];
@@ -56,11 +67,14 @@ namespace Ghurund::Engine {
 			type(other.type),
 			size(other.size),
 			offset(other.offset),
+			value(other.value),
 			defaultValue(other.defaultValue) {
+			other.value = nullptr;
 			other.defaultValue = nullptr;
 		}
 
 		~ValueConstant() {
+			delete value;
 			delete defaultValue;
 		}
 
@@ -93,7 +107,7 @@ namespace Ghurund::Engine {
 		}
 
 		inline void setValue(const void* value) {
-			this->value = value;
+			memcpy(this->value, value, size);
 		}
 
 		__declspec(property(get = getValue, put = setValue)) const void* Value;

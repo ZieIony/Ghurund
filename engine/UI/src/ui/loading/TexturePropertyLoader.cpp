@@ -6,7 +6,7 @@
 namespace Ghurund::UI {
 	void TexturePropertyLoader::loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const {
 		AString s = text;
-		s.replace(L'\\', L'/');
+		s.replaceAll(L'\\', L'/');
 		std::unique_ptr<ThemedTexture> themedTexture;
 		if (s.startsWith(THEME_TEXTURE)) {
 			TextureKey imageKey = s.substring(lengthOf(THEME_TEXTURE));

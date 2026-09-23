@@ -42,7 +42,7 @@ public:
 
 			IntrusivePointer<TestResource> resource = [&] {
 				auto path = FilePath(L"lib://test/testpath");
-				auto dir = DirectoryPath();
+				auto dir = DirectoryPath::getCurrentDirectory();
 				auto coroutine = resourceManager.load<TestResource>(path, dir);
 				coroutine.resume();
 				return coroutine.Result;
@@ -66,7 +66,7 @@ public:
 			size_t loadCalls = testLoader->loadCalls;
 
 			auto path = FilePath(L"lib://test/testpath");
-			auto dir = DirectoryPath();
+			auto dir = DirectoryPath::getCurrentDirectory();
 			IntrusivePointer<TestResource> resource = [&] {
 				auto coroutine = resourceManager.load<TestResource>(path, dir);
 				coroutine.resume();
@@ -98,7 +98,7 @@ public:
 			Buffer buffer((const void*)"test", 5);
 
 			IntrusivePointer<TestResource> resource = [&] {
-				auto coroutine = resourceManager.load<TestResource>(buffer, DirectoryPath());
+				auto coroutine = resourceManager.load<TestResource>(buffer);
 				coroutine.resume();
 				return coroutine.Result;
 			}();

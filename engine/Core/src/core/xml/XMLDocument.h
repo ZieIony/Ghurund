@@ -29,7 +29,7 @@ namespace Ghurund::Core {
         }
 
     public:
-		void parse(const void* data, uint32_t size);
+		void parse(const void* data, size_t size);
 
         inline const XMLElement& getRoot() const {
             return root.ref();

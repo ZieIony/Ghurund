@@ -77,13 +77,15 @@ namespace Ghurund::Engine::DirectX {
 		return DXGI_FORMAT_UNKNOWN;
 	}
 
-	DxShaderProgram* DxShaderCompiler::compile(const AString& sourceCode, AString entryPoint, const DxShaderType& shaderType, CompilerInclude* include, bool debug) {
+	DxShaderProgram* DxShaderCompiler::compile(
+		const DxShaderProgramSourceCode& shaderSource, CompilerInclude* include, bool debug
+	) {
 		unsigned int compileFlags = debug ? D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION : 0;
 
 		ID3DBlob* errorBlob;
 		ComPtr<ID3DBlob> shader;
-		AString target = makeCompilationTarget(shaderType);
-		HRESULT hr = D3DCompile(sourceCode.Data, sourceCode.Length, nullptr, nullptr, include, entryPoint.Data, target.Data, compileFlags, 0, &shader, &errorBlob);
+		AString target = makeCompilationTarget(shaderSource.shaderType);
+		HRESULT hr = D3DCompile(shaderSource.sourceCode.Data, shaderSource.sourceCode.Length, shaderSource.sourceName.Data, nullptr, include, shaderSource.entryPoint.Data, target.Data, compileFlags, 0, &shader, &errorBlob);
 		if (FAILED(hr)) {
 			if (errorBlob == nullptr) {
 				Logger::log(LogType::ERR0R, _T("Unknown error while compiling shader\n"));
@@ -94,14 +96,14 @@ namespace Ghurund::Engine::DirectX {
 				if (errorMessages.contains("entrypoint not found")) {
 					return nullptr;
 				} else {
-					auto text = std::format(_T("Error while compiling shader:\n%s\n"), errorMessages);
+					auto text = std::format(_T("Error while compiling shader:\n{}\n"), errorMessages);
 					Logger::log(LogType::ERR0R, text.c_str());
 					throw DxCompilationException(hr, errorMessages.Data);
 				}
 			}
 		} else {
 			auto sourceCode = Buffer(shader->GetBufferPointer(), shader->GetBufferSize());
-			return ghnew DxShaderProgram(shaderType, sourceCode, entryPoint);
+			return ghnew DxShaderProgram(shaderSource.shaderType, sourceCode, shaderSource.entryPoint);
 		}
 	}
 

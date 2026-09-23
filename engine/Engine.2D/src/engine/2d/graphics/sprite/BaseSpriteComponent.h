@@ -113,7 +113,7 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getSize, put = setSize)) const FloatSize& Size;
 
-		virtual void draw(RenderGroup& group) override;
+		virtual void queueDraw(RenderGroup& group) override;
 
 		/*bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {
 			return mesh->intersects(pos, dir, dist);

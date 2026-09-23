@@ -46,7 +46,7 @@ namespace Ghurund::Core {
             values.put(name, value);
         }
 
-        void load(const void* data, uint32_t size);
+        void load(const void* data, size_t size);
 
         void load(const FilePath& path);
 

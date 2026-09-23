@@ -63,7 +63,8 @@ namespace Ghurund::Core {
 
         virtual bool onFocusedChanged() override {
             __super::onFocusedChanged();
-            input.releaseAllKeysAndButtons();
+			if (!Focused)
+                input.releaseAllKeysAndButtons();
             return true;
         }
 

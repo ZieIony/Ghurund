@@ -93,7 +93,7 @@ namespace Ghurund::Core {
 
 	public:
 		inline static const WString ENGINE_LIB_NAME = L"Ghurund";
-		static const DirectoryPath ENGINE_LIB;
+		static const DirectoryPath ENGINE_LIB_PATH;
 		inline static const WString LIB_PROTOCOL = L"lib://";
 
 		explicit ResourceManager(CoroutineScheduler& scheduler):scheduler(scheduler) {
@@ -110,7 +110,13 @@ namespace Ghurund::Core {
 		SharedPointer<Buffer> resolveResource(const FilePath& path, const DirectoryPath& workingDir) const;
 
 		static inline FilePath getAbsolutePath(const FilePath& path, const DirectoryPath& workingDir) {
-			return path.IsAbsolute ? path : (workingDir / path);
+			if (path.IsAbsolute) {
+				return path;
+			} else if (workingDir.IsAbsolute) {
+				return workingDir / path;
+			} else {
+				return workingDir.AbsolutePath / path;
+			}
 		}
 
 		static inline DirectoryPath getLocalDir(const FilePath& path, const DirectoryPath& workingDir) {
@@ -141,7 +147,7 @@ namespace Ghurund::Core {
 		[[nodiscard]]
 		CoroutineTask<IntrusivePointer<T>> load(
 			const FilePath& path,
-			const DirectoryPath& workingDir = DirectoryPath(),
+			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) {
@@ -155,7 +161,7 @@ namespace Ghurund::Core {
 		[[nodiscard]]
 		CoroutineTask<IntrusivePointer<T>> load(
 			const Buffer& buffer,
-			const DirectoryPath& workingDir = DirectoryPath(),
+			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) {
@@ -168,7 +174,7 @@ namespace Ghurund::Core {
 		template<Derived<Resource> T>
 		void save(
 			T& resource,
-			const DirectoryPath& workingDir = DirectoryPath(),
+			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			SaveOption options = SaveOption::DEFAULT
 		) const {
@@ -181,7 +187,7 @@ namespace Ghurund::Core {
 		void save(
 			T& resource,
 			const FilePath& path,
-			const DirectoryPath& workingDir = DirectoryPath(),
+			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			SaveOption options = SaveOption::DEFAULT
 		) const {

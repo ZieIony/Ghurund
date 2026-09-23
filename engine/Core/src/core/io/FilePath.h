@@ -78,9 +78,5 @@ namespace Ghurund::Core {
 		//FilePath getAbsolutePath() const;
 
 		//__declspec(property(get = getAbsolutePath)) FilePath AbsolutePath;
-
-		bool isAbsolute() const;
-
-		__declspec(property(get = isAbsolute)) bool IsAbsolute;
 	};
 }
