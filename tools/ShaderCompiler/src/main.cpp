@@ -1,4 +1,5 @@
 #include "core/application/CommandLine.h"
+#include "core/io/DirectoryLibrary.h"
 #include "core/logging/Logger.h"
 #include "core/logging/CallbackLogOutput.h"
 #include "core/object/IntrusivePointer.h"
@@ -6,7 +7,6 @@
 #include "engine/directx/shader/compiler/DxCompilationException.h"
 #include "engine/directx/shader/compiler/DxShaderCompiler.h"
 #include "engine/directx/shader/DxShaderLoader.h"
-#include "Ghurund.Engine.h"
 
 using namespace Ghurund::Core;
 using namespace Ghurund::Engine::DirectX;
@@ -32,6 +32,7 @@ int main() {
 	CoroutineThreadPool threadPool = CoroutineThreadPool(4);
 	CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
 	ResourceManager resourceManager = ResourceManager(coroutineScheduler);
+	resourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"./resources")));
 	DxGraphics graphics;
 	graphics.init();
 	DxShaderCompiler compiler(graphics);
@@ -43,17 +44,25 @@ int main() {
 	if (filePath.Extension == L"hlsl") {
 		try {
 			AString sourceCode = AString((const char*)buffer.Data, buffer.Size);
+			bool hasEntry = false;
+
 			AString sourceName = convertText<wchar_t, char>(filePath.toString());
 			List<DirectoryPath> includeDirs;
-			includeDirs.add(ResourceManager::ENGINE_LIB_PATH / DirectoryPath(L"/resources/shaders/DirectX/include"));
+			includeDirs.add(ResourceManager::ENGINE_LIB_PATH / DirectoryPath(L"/shaders/DirectX/include"));
 			CompilerInclude include(resourceManager, filePath.Directory, includeDirs);
-			if (sourceCode.contains(DxShaderType::VERTEX.EntryPoint)) {
-				auto shaderSource = DxShaderProgramSourceCode(DxShaderType::VERTEX, sourceCode, sourceName);
+
+			for (auto shaderType : DxShaderType::VALUES) {
+				if (!sourceCode.contains(shaderType.get().EntryPoint))
+					continue;
+
+				auto message = std::format(_T("Compiling {}...\n"), shaderType.get().TypeName);
+				Logger::print(LogType::INFO, message.c_str());
+				auto shaderSource = DxShaderProgramSourceCode(shaderType, sourceCode, sourceName);
 				compiler.compile(shaderSource, &include, true);
-			} else if (sourceCode.contains(DxShaderType::PIXEL.EntryPoint)) {
-				auto shaderSource = DxShaderProgramSourceCode(DxShaderType::PIXEL, sourceCode, sourceName);
-				compiler.compile(shaderSource, &include, true);
-			} else {
+				hasEntry = true;
+			}
+
+			if (!hasEntry) {
 				Logger::print(LogType::ERR0R, _T("The provided file doesn't contain an expected entry point.\n"));
 				return 3;
 			}
@@ -66,7 +75,7 @@ int main() {
 	} else {
 		try {
 			auto loader = makeIntrusive<DxShaderLoader>(resourceManager, compiler);
-			loader->includeDirs.add(DirectoryPath(L"./resources/shaders/DirectX/include").AbsolutePath);
+			loader->includeDirs.add(DirectoryPath(L"./shaders/DirectX/include").AbsolutePath);
 			MemoryInputStream stream(buffer.Data, buffer.Size);
 			auto shader = makeIntrusive<DxShader>();
 			auto coroutine = loader->load(shader.ref(), stream);
@@ -78,6 +87,6 @@ int main() {
 			return 5;
 		}
 	}
-	Logger::print(LogType::INFO, _T("Compilation completed without erros.\n"));
+	Logger::print(LogType::INFO, _T("Compilation completed without errors.\n"));
 	return 0;
 }
