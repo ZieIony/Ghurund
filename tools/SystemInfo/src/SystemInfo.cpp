@@ -1,8 +1,8 @@
 #include "core/SystemInfo.h"
 #include "core/object/IntrusivePointer.h"
 #include "core/logging/Logger.h"
-#include "engine/directx/graphics/Graphics.h"
-#include "Ghurund.Engine.h"
+#include "core/logging/StandardConsoleLogOutput.h"
+#include "engine/directx/DxGraphics.h"
 
 using namespace Ghurund::Core;
 using namespace Ghurund::Engine::DirectX;
@@ -26,15 +26,16 @@ int main() {
 	);
 	Logger::print(LogType::INFO, textMem.c_str());
 
-	auto graphics = makeIntrusive<Graphics>();
-	graphics->init();
-	for (auto& adapter : graphics->Adapters) {
+	DxGraphics graphics;
+	graphics.init();
+	for (auto& adapter : graphics.Adapters) {
 		auto vmem = adapter->DedicatedVideoMemory;
 		auto sharedmem = adapter->SharedSystemMemory;
 		auto textAdapter = std::format(
-			_T("video adapter: {}\ndedicated video memory: {}MB ({}b), shared memory: {}MB ({}b)\n"),
-			adapter->Name, vmem / MB,
-			vmem, sharedmem / MB, sharedmem
+			_T("video adapter: {}\ndedicated video memory: {}MB ({}B), shared memory: {}MB ({}B)\n"),
+			adapter->Name,
+			vmem / MB, vmem,
+			sharedmem / MB, sharedmem
 		);
 		Logger::print(LogType::INFO, textAdapter.c_str());
 		for (auto& output : adapter->Outputs) {

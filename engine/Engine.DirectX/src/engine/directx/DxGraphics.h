@@ -50,6 +50,9 @@ namespace Ghurund::Engine::DirectX {
         virtual void onUninit() override;
 
     public:
+        // for some reason, when this constructor is not defined here, VS complains about it being deleted
+        DxGraphics() {}
+
         ~DxGraphics() {
             if(IsInitialized)
                 uninitGraphics();
