@@ -22,7 +22,9 @@ namespace Ghurund::UI {
 
 	void UIMaterialPropertyLoader::loadElement(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const XMLElement& xml) const {
 		auto material = makeIntrusive<UIMaterial>();
-		materialLoader.load(material.ref(), xml, workingDir);
+		// TODO: make this method a coroutine
+		auto coroutine = materialLoader.load(material.ref(), xml, workingDir);
+		coroutine.resume();
 		std::unique_ptr<ThemedMaterial> themedMaterial = std::make_unique<ThemedMaterial>(material.get());
 		property.setRaw(&obj, &themedMaterial);
 	}

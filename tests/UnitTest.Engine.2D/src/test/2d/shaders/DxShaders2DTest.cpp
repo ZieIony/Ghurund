@@ -6,6 +6,7 @@
 #include "engine/directx/shader/DxShaderLoader.h"
 
 #include "test/utils/TestLogOutput.h"
+#include "test/utils/TestUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -13,6 +14,7 @@ namespace UnitTest {
     using namespace Ghurund::Core;
     using namespace Ghurund::Engine;
     using namespace Ghurund::Engine::DirectX;
+    using namespace UnitTest::Utils;
     using namespace std;
 
     TEST_CLASS(DxShaders2DTest) {
@@ -30,8 +32,7 @@ private:
         shader->setPath(&file.Path);
         try {
             DirectoryPath workingDir = file.Path.Directory;
-            auto coroutine = shaderLoader.load(shader.ref(), stream, workingDir);
-            coroutine.resume();
+            runCoroutineBlocking(shaderLoader.load(shader.ref(), stream, workingDir));
         } catch (std::exception e) {
             return false;
         }

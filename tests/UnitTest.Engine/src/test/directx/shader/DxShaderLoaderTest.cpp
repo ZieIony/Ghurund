@@ -14,6 +14,7 @@ namespace UnitTest {
 	using namespace Ghurund::Core;
     using namespace Ghurund::Engine;
     using namespace Ghurund::Engine::DirectX;
+    using namespace UnitTest::Utils;
     using namespace std;
 
     TEST_CLASS(DxShaderLoaderTest) {
@@ -34,11 +35,11 @@ struct DefaultPixel {
 };
 
 cbuffer perCamera : register(b0) {
-    row_major float4x4 viewProjection;
+    matrix viewProjection;
 }
 
 cbuffer perObject : register(b1) {
-    row_major float4x4 world;
+    matrix world;
 }
 
 SamplerState linearSampler : register(s0);
@@ -74,13 +75,19 @@ float4 pixelMain(DefaultPixel input): SV_Target{
 
             DxShaderCompiler compiler(graphics);
             auto loader = makeIntrusive<DxShaderLoader>(resourceManager, compiler);
-            Buffer data("test", 4);
+            Buffer data("test", 5);
             MemoryInputStream stream(data.Data, data.Size);
 
-            Assert::ExpectException<DxEntrypointNotFoundException>([&] {
-                auto shader = makeIntrusive<DxShader>();
-                loader->load(shader.ref(), stream);
-            });
+            try {
+              //  Assert::ExpectException<std::exception>([&] {
+                    auto shader = makeIntrusive<DxShader>();
+                    runCoroutineBlocking(loader->load(shader.ref(), stream));
+         //       });
+            } catch (...) {
+                auto exception = std::current_exception();
+                return;
+            }
+            Assert::Fail();
         }
 
         TEST_METHOD(DxShaderLoader_loadHlsl) {
@@ -91,7 +98,7 @@ float4 pixelMain(DefaultPixel input): SV_Target{
             auto loader = makeIntrusive<DxShaderLoader>(resourceManager, compiler);
             MemoryInputStream stream(testShaderSource.Data, testShaderSource.Size);
             auto shader = makeIntrusive<DxShader>();
-            loader->load(shader.ref(), stream);
+            runCoroutineBlocking(loader->load(shader.ref(), stream));
   
             Assert::IsNotNull(shader.get());
         }

@@ -32,7 +32,7 @@ namespace UnitTest {
 
             Assert::ExpectException<InvalidFormatException>([&] {
                 auto shader = makeIntrusive<OglShader>();
-                loader->load(shader.ref(), stream);
+                runCoroutineBlocking(loader->load(shader.ref(), stream));
             });
         }
 
@@ -44,7 +44,7 @@ namespace UnitTest {
             IntrusivePointer<OglShaderLoader> loader(ghnew OglShaderLoader(compiler));
             MemoryInputStream stream(TEST_OPENGL_SHADER_SOURCE.Data, TEST_OPENGL_SHADER_SOURCE.Size);
             auto shader = makeIntrusive<OglShader>();
-            loader->load(shader.ref(), stream);
+            runCoroutineBlocking(loader->load(shader.ref(), stream));
 
             Assert::IsNotNull(shader.get());
         }

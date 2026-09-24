@@ -51,6 +51,7 @@ namespace Ghurund::Core {
 			return T::VERSION;
 		}
 
+		[[nodiscard]]
 		inline CoroutineTask<void> loadFromXml(
 			T& resource,
 			MemoryInputStream& stream,
@@ -65,12 +66,14 @@ namespace Ghurund::Core {
 				document.parse(streamContents.Data, (uint32_t)streamContents.Size);
 				const XMLElement& root = document.Root;
 				co_await loadInternal(resource, root, workingDir, format, options);
-			} catch (const std::exception&) {
+			} catch (...) {
 				stream.Position = streamPosition;
-				throw;
+				std::exception_ptr exception = std::current_exception();
+				std::rethrow_exception(exception);
 			}
 		}
 
+		[[nodiscard]]
 		virtual CoroutineTask<void> loadInternal(
 			T& resource,
 			MemoryInputStream& stream,
@@ -81,6 +84,7 @@ namespace Ghurund::Core {
 			co_await loadFromXml(resource, stream, workingDir, format, options);
 		}
 
+		[[nodiscard]]
 		virtual CoroutineTask<void> loadInternal(
 			T& resource,
 			const XMLElement& xml,
@@ -116,6 +120,7 @@ namespace Ghurund::Core {
 
 		virtual ~Loader() = 0 {}
 
+		[[nodiscard]]
 		virtual CoroutineTask<void> load(
 			Resource& resource,
 			MemoryInputStream& stream,
@@ -131,6 +136,7 @@ namespace Ghurund::Core {
 			co_await loadInternal(typedResource, stream, workingDir, format, options);
 		}
 
+		[[nodiscard]]
 		virtual CoroutineTask<void> load(
 			Resource& resource,
 			const XMLElement& root,

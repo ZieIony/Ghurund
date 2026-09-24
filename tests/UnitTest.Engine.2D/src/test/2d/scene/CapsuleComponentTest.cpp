@@ -10,6 +10,7 @@
 #include <test/2d/Test2DContext.h>
 #include "ComponentTestUtils.h"
 #include "test/utils/ObjectGuard.h"
+#include "test/utils/TestUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -56,10 +57,8 @@ namespace UnitTest {
             {
                 auto component = makeComponent<TestCapsuleComponent2D>(world.ref());
 
-                auto coroutine = component->init();
-                coroutine.resume();
-                auto coroutine2 = component->init();
-                coroutine2.resume();
+                runCoroutineBlocking(component->init());
+                runCoroutineBlocking(component->init());
 
                 destroyComponent(world.ref(), component);
             }

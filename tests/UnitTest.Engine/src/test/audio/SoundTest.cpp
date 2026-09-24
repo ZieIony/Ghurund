@@ -50,13 +50,12 @@ public:
     TEST_METHOD(Sound_doubleInvalidate) {
         MemoryGuard guard;
         {
-            auto thudSound = [&] {
-                auto path = FilePath(L"../../resources/test/sounds/thud.wav");
-                auto dir = DirectoryPath::getCurrentDirectory();
-                auto coroutine = resourceManager.load<Sound>(path, dir, ResourceFormat::AUTO, LoadOption::DONT_WATCH | LoadOption::DONT_CACHE);
-                coroutine.resume();
-                return coroutine.Result;
-            }();
+            auto path = FilePath(L"../../resources/test/sounds/thud.wav");
+            auto dir = DirectoryPath::getCurrentDirectory();
+
+            auto thudSound = runCoroutineBlocking(
+                resourceManager.load<Sound>(path, dir, ResourceFormat::AUTO, LoadOption::DONT_WATCH | LoadOption::DONT_CACHE)
+            );
             thudSound->invalidate();
             thudSound->invalidate();
         }

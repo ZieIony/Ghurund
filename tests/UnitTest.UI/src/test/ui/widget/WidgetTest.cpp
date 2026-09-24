@@ -24,9 +24,10 @@ public:
     TEST_METHOD(emptyWidget) {
         MemoryGuard guard;
         {
-            auto button = makeIntrusive<Button>();
+            //auto button = makeIntrusive<Button>();
 
-            Assert::IsNull(button->Theme);
+            Assert::Fail();
+            //Assert::IsNull(button->Theme);
             //Assert::IsNull(button->Layout);
             //Assert::IsNull(button->Content);
         }

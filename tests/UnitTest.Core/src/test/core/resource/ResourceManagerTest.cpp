@@ -5,9 +5,9 @@
 #include "TestLibrary.h"
 #include "test/utils/MemoryGuard.h"
 #include "test/utils/ObjectGuard.h"
+#include "test/utils/TestUtils.h"
 
 #include "core/resource/ResourceManager.h"
-#include "core/string/TextConversionUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -24,34 +24,37 @@ private:
 	IntrusivePointer<TestLoader> testLoader;
 
 public:
-	ResourceManagerTest() {
+	TEST_METHOD_INITIALIZE(ResourceManagerTest_initialize) {
 		testLoader = makeIntrusive<TestLoader>();
 		resourceManager.Loaders.set<TestResource>(testLoader.ref());
 		resourceManager.Libraries.add(std::make_unique<TestLibrary>());
+	}
+
+	TEST_METHOD_CLEANUP(ResourceManagerTest_cleanup) {
+		resourceManager.clearCache();
+		resourceManager.Loaders.clear();
+		resourceManager.Libraries.clear();
+		testLoader.set(nullptr);
 	}
 
 	TEST_METHOD(ResourceManager_loadFileFromLibrary) {
 		MemoryGuard mg;
 		ObjectGuard og;
 		{
-			resourceManager.clearCache();
-
 			TestLibrary& library = (TestLibrary&)resourceManager.Libraries.get(0);
 			size_t getCalls = library.getCalls;
 			size_t loadCalls = testLoader->loadCalls;
 
-			IntrusivePointer<TestResource> resource = [&] {
-				auto path = FilePath(L"lib://test/testpath");
-				auto dir = DirectoryPath::getCurrentDirectory();
-				auto coroutine = resourceManager.load<TestResource>(path, dir);
-				coroutine.resume();
-				return coroutine.Result;
-			}();
+			auto path = FilePath(L"lib://test/testpath");
+			auto dir = DirectoryPath::getCurrentDirectory();
+
+			IntrusivePointer<TestResource> resource = runCoroutineBlocking(
+				resourceManager.load<TestResource>(path, dir, ResourceFormat::AUTO, LoadOption::DONT_CACHE)
+			);
+
 			Assert::AreEqual(resource->text, AString("test"));
 			Assert::AreEqual(getCalls + 1, library.getCalls);
 			Assert::AreEqual(loadCalls + 1, testLoader->loadCalls);
-
-			resourceManager.clearCache();
 		}
 	}
 
@@ -59,28 +62,20 @@ public:
 		MemoryGuard mg;
 		ObjectGuard og;
 		{
-			resourceManager.clearCache();
-
 			TestLibrary& library = (TestLibrary&)resourceManager.Libraries.get(0);
 			size_t getCalls = library.getCalls;
 			size_t loadCalls = testLoader->loadCalls;
 
 			auto path = FilePath(L"lib://test/testpath");
 			auto dir = DirectoryPath::getCurrentDirectory();
-			IntrusivePointer<TestResource> resource = [&] {
-				auto coroutine = resourceManager.load<TestResource>(path, dir);
-				coroutine.resume();
-				return coroutine.Result;
-			}();
-			IntrusivePointer<TestResource> resource2 = [&] {
-				auto coroutine2 = resourceManager.load<TestResource>(path, dir);
-				coroutine2.resume();
-				return coroutine2.Result;
-			}();
+
+			IntrusivePointer<TestResource> resource = runCoroutineBlocking(resourceManager.load<TestResource>(path, dir));
+			IntrusivePointer<TestResource> resource2 = runCoroutineBlocking(resourceManager.load<TestResource>(path, dir));
+
 			Assert::IsTrue(resource.get() == resource2.get());
 			Assert::AreEqual(getCalls + 1, library.getCalls);
 			Assert::AreEqual(loadCalls + 1, testLoader->loadCalls);
-	
+
 			resourceManager.clearCache();
 		}
 	}
@@ -89,31 +84,20 @@ public:
 		MemoryGuard mg;
 		ObjectGuard og;
 		{
-			resourceManager.clearCache();
-
 			TestLibrary& library = (TestLibrary&)resourceManager.Libraries.get(0);
 			size_t getCalls = library.getCalls;
 			size_t loadCalls = testLoader->loadCalls;
 
 			Buffer buffer((const void*)"test", 5);
 
-			IntrusivePointer<TestResource> resource = [&] {
-				auto coroutine = resourceManager.load<TestResource>(buffer);
-				coroutine.resume();
-				return coroutine.Result;
-			}();
+			IntrusivePointer<TestResource> resource = runCoroutineBlocking(
+				resourceManager.load<TestResource>(buffer, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, LoadOption::DONT_CACHE)
+			);
+
 			Assert::AreEqual(resource->text, AString("test"));
 			Assert::AreEqual(getCalls, library.getCalls);
 			Assert::AreEqual(loadCalls + 1, testLoader->loadCalls);
-
-			resourceManager.clearCache();
 		}
 	}
 	};
-}
-
-namespace Microsoft::VisualStudio::CppUnitTestFramework {
-	template<> static std::wstring ToString<Ghurund::Core::AString>(const Ghurund::Core::AString& t) {
-		return convertText<char, wchar_t>(t).Data;
-	}
 }

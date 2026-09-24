@@ -17,6 +17,7 @@ namespace UnitTest {
     using namespace Ghurund;
     using namespace Ghurund::Core;
     using namespace Ghurund::UI;
+    using namespace UnitTest::Utils;
 
     TEST_CLASS(TextLayoutTest) {
 private:
@@ -42,9 +43,7 @@ public:
         resourceManager.Loaders.set<TextStyle>(textStyleLoader.ref());
 
         FilePath path = Ghurund::Core::FilePath(L"../../resources/textStyles\\lato_medium_12.bin");
-        auto coroutine = resourceManager.load<TextStyle>(path);
-        coroutine.resume();
-        textStyle = coroutine.Result;
+        textStyle = runCoroutineBlocking(resourceManager.load<TextStyle>(path));
     }
 
     ~TextLayoutTest() {

@@ -137,9 +137,9 @@ public:
 </ControlGroup>)";
 			Buffer buffer(xml.Data, xml.Length);
 
-			auto coroutine = resourceManager.load<ControlGroup>(buffer, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, LoadOption::DONT_CACHE);
-			coroutine.resume();
-			IntrusivePointer<ControlGroup> controlGroup = coroutine.Result;
+			IntrusivePointer<ControlGroup> controlGroup = runCoroutineBlocking(
+				resourceManager.load<ControlGroup>(buffer, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, LoadOption::DONT_CACHE)
+			);
 			Control* control = controlGroup->find<Control>();
 
 			ConstraintSet& constraints = controlGroup->getConstraints(*control);

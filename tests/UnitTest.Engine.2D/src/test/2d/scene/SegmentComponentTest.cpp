@@ -56,10 +56,8 @@ namespace UnitTest {
             {
                 auto component = makeComponent<TestSegmentComponent2D>(world.ref());
 
-                auto coroutine = component->init();
-                coroutine.resume();
-                auto coroutine2 = component->init();
-                coroutine2.resume();
+                runCoroutineBlocking(component->init());
+                runCoroutineBlocking(component->init());
 
                 destroyComponent(world.ref(), component);
             }
@@ -71,9 +69,8 @@ namespace UnitTest {
             ObjectGuard guard;
             {
                 auto component = makeComponent<TestSegmentComponent2D>(world.ref());
+                runCoroutineBlocking(component->init());
 
-                auto coroutine = component->init();
-                coroutine.resume();
                 component->Position = { 100, 30 };
                 Assert::AreEqual(100.0f, component->Position.x);
                 Assert::AreEqual(30.0f, component->Position.y);
@@ -87,9 +84,8 @@ namespace UnitTest {
             ObjectGuard guard;
             {
                 auto component = makeComponent<TestSegmentComponent2D>(world.ref());
+                runCoroutineBlocking(component->init());
 
-                auto coroutine = component->init();
-                coroutine.resume();
                 component->Width = 100;
                 Assert::AreEqual(100.0f, component->Width);
 
@@ -102,9 +98,8 @@ namespace UnitTest {
             ObjectGuard guard;
             {
                 auto component = makeComponent<TestSegmentComponent2D>(world.ref());
+                runCoroutineBlocking(component->init());
 
-                auto coroutine = component->init();
-                coroutine.resume();
                 component->Rotation = 90.0f;
                 Assert::AreEqual(90.0f, component->Rotation);
 

@@ -4,9 +4,11 @@
 
 #include "core/math/Point.h"
 #include "core/math/Size.h"
-#include "core/string/TextConversionUtils.h"
-#include "TestLogOutput.h"
 #include "core/object/RefCountedObject.h"
+#include "core/string/TextConversionUtils.h"
+#include "core/coroutine/CoroutineTask.h"
+
+#include "TestLogOutput.h"
 
 #include <format>
 #include <initializer_list>
@@ -120,4 +122,13 @@ namespace UnitTest::Utils {
 		}
 		return true;
 	}
+
+	template<typename ResultType>
+	ResultType runCoroutineBlocking(CoroutineTask<ResultType> coroutine) {
+		coroutine.resume();
+		return coroutine.Result;
+	}
+
+	template<>
+	void runCoroutineBlocking(CoroutineTask<void> coroutine);
 }

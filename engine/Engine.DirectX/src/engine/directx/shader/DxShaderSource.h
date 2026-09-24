@@ -20,6 +20,10 @@ namespace Ghurund::Engine::DirectX {
 			shaderType(shaderType),
 			entryPoint(entryPoint.IsEmpty ? shaderType.EntryPoint : entryPoint),
 			sourceName(sourceName) {
+#ifdef _DEBUG
+			_ASSERTE(sourceName.Length < sourceCode.Length);
+			_ASSERTE(entryPoint.Length < sourceCode.Length);
+#endif
 		}
 	};
 }

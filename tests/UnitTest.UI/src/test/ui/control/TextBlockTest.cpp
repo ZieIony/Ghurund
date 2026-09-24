@@ -19,6 +19,7 @@ namespace UnitTest {
     using namespace Ghurund;
     using namespace Ghurund::Core;
     using namespace Ghurund::UI;
+    using namespace UnitTest::Utils;
 
     TEST_CLASS(TextBlockTest) {
 private:
@@ -40,9 +41,9 @@ public:
         fontLoader = ghnew FontLoader();
         resourceManager.Loaders.set<Font>(*fontLoader);
         FilePath path = Ghurund::Core::FilePath(L"../../resources/fonts\\lato_medium.ttf");
-        auto coroutine = resourceManager.load<Font>(path);
-        coroutine.resume();
-        latoMediumFont = coroutine.Result;
+        latoMediumFont = runCoroutineBlocking(
+            resourceManager.load<Font>(path)
+        );
     }
 
     ~TextBlockTest() {

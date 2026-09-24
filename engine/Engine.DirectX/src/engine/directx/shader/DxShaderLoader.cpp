@@ -156,7 +156,7 @@ namespace Ghurund::Engine::DirectX {
 			AString entryPoint = shaderType.getEntryPoint();
 			if (sourceCode.contains(entryPoint)) {
 				AString sourceName = shader.Path ? convertText<wchar_t, char>(shader.Path->toString()) : AString("[unnamed shader]");
-				shaderSource->programs.add(ghnew DxShaderProgramSourceCode(shaderType, entryPoint, sourceCode, sourceName));
+				shaderSource->programs.add(ghnew DxShaderProgramSourceCode(shaderType, sourceCode, sourceName));
 			}
 		}
 
@@ -178,7 +178,6 @@ namespace Ghurund::Engine::DirectX {
 			AString streamContents = stream.readASCII();
 			loadFromHlsl(streamContents, workingDir, resource);
 		}
-		co_return;
 	}
 
 	void DxShaderLoader::saveInternal(

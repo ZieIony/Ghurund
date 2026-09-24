@@ -7,16 +7,18 @@
 #include "engine/directx/DxGraphics.h"
 #include "engine/directx/shader/DxShaderLoader.h"
 #include "engine/parameter/ValueParameter.h"
-#include "test/utils/MemoryGuard.h"
 #include "engine/graphics/material/Material.h"
+
+#include "test/utils/MemoryGuard.h"
+#include "test/utils/TestUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTest {
-    using namespace UnitTest::Utils;
     using namespace Ghurund::Core;
     using namespace Ghurund::Engine;
     using namespace Ghurund::Engine::DirectX;
+    using namespace UnitTest::Utils;
     using namespace std;
 
     TEST_CLASS(MaterialTest) {
@@ -56,7 +58,7 @@ public:
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/ui.hlsl");
             MemoryInputStream stream(testShaderSource.Data, testShaderSource.Size);
             auto shader = makeIntrusive<DxShader>();
-            shaderLoader->load(shader.ref(), stream);
+            runCoroutineBlocking(shaderLoader->load(shader.ref(), stream));
             auto material = makeIntrusive<Material>();
             material->init(memoryManager.ref());
             material->Shader = shader.get();
@@ -69,7 +71,7 @@ public:
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/ui.hlsl");
             MemoryInputStream stream(testShaderSource.Data, testShaderSource.Size);
             auto shader = makeIntrusive<DxShader>();
-            shaderLoader->load(shader.ref(), stream);
+            runCoroutineBlocking(shaderLoader->load(shader.ref(), stream));
             auto material = makeIntrusive<Material>();
             material->init(memoryManager.ref());
             material->Shader = shader.get();

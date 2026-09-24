@@ -65,6 +65,8 @@ namespace Ghurund::Core {
 			}
 
 			void unhandled_exception() {
+				if (continuation == std::noop_coroutine())
+					std::rethrow_exception(exception);
 				exception = std::current_exception();
 			}
 
@@ -165,6 +167,8 @@ namespace Ghurund::Core {
 
 			void unhandled_exception() {
 				exception = std::current_exception();
+				if (continuation == std::noop_coroutine())
+					std::rethrow_exception(exception);
 			}
 
 			void getValue() {

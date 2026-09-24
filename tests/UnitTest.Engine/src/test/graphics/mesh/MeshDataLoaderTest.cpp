@@ -4,10 +4,13 @@
 #include "engine/graphics/mesh/MeshData.h"
 #include "engine/graphics/mesh/MeshDataLoader.h"
 
+#include "test/utils/TestUtils.h"
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTest {
     using namespace Ghurund::Engine;
+    using namespace UnitTest::Utils;
     using namespace std;
 
     TEST_CLASS(MeshDataLoaderTest) {
@@ -66,7 +69,7 @@ f 5/6/6 1/12/6 8/11/6
 
             Assert::ExpectException<InvalidFormatException>([&] {
                 auto meshData = makeIntrusive<MeshData>();
-                loader->load(meshData.ref(), stream);
+                runCoroutineBlocking(loader->load(meshData.ref(), stream));
             });
         }
 
@@ -74,7 +77,7 @@ f 5/6/6 1/12/6 8/11/6
             IntrusivePointer<MeshDataLoader> loader(ghnew MeshDataLoader());
             MemoryInputStream stream(data.Data, data.Size);
             auto mesh = makeIntrusive<MeshData>();
-            loader->load(mesh.ref(), stream);
+            runCoroutineBlocking(loader->load(mesh.ref(), stream));
 
             Assert::AreEqual(24u, mesh->VertexCount);
             Assert::AreEqual(36u, mesh->IndexCount);
@@ -95,7 +98,7 @@ f 5/6/6 1/12/6 8/11/6
 
             MemoryInputStream inStream(outStream.Data, outStream.BytesWritten);
             auto inMesh = makeIntrusive<MeshData>();
-            loader->load(inMesh.ref(), inStream);
+            runCoroutineBlocking(loader->load(inMesh.ref(), inStream));
 
             Assert::AreEqual(outMesh->VertexCount, inMesh->VertexCount);
             Assert::AreEqual(outMesh->IndexCount, inMesh->IndexCount);

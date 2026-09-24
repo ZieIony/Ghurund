@@ -77,5 +77,20 @@ public:
             Assert::IsTrue(5 == result);
         }
     }
+
+    TEST_METHOD(CoroutineTask_throw) {
+        MemoryGuard guard;
+        {
+            try {
+				auto coroutine = [] -> CoroutineTask<void> {
+					throw std::exception();
+					co_return;
+				}();
+                coroutine.resume();
+                Assert::Fail();
+            } catch (...) {
+            }
+        }
+    }
     };
 }

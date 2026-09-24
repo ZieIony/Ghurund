@@ -10,6 +10,7 @@
 #include <test/2d/Test2DContext.h>
 #include "ComponentTestUtils.h"
 #include "test/utils/ObjectGuard.h"
+#include "test/utils/TestUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -56,10 +57,8 @@ public:
         {
             auto component = makeComponent<TestBoxComponent2D>(world.ref());
 
-            auto coroutine = component->init();
-            coroutine.resume();
-            auto coroutine2 = component->init();
-            coroutine2.resume();
+            runCoroutineBlocking(component->init());
+            runCoroutineBlocking(component->init());
 
             destroyComponent(world.ref(), component);
         }
@@ -72,8 +71,7 @@ public:
         {
             auto component = makeComponent<TestBoxComponent2D>(world.ref());
 
-            auto coroutine = component->init();
-            coroutine.resume();
+            runCoroutineBlocking(component->init());
             component->Position = { 100, 30 };
             Assert::AreEqual(100.0f, component->Position.x);
             Assert::AreEqual(30.0f, component->Position.y);
@@ -88,8 +86,7 @@ public:
         {
             auto component = makeComponent<TestBoxComponent2D>(world.ref());
 
-            auto coroutine = component->init();
-            coroutine.resume();
+            runCoroutineBlocking(component->init());
             component->Size = { 100, 30 };
             Assert::AreEqual(100.0f, component->Size.Width);
             Assert::AreEqual(30.0f, component->Size.Height);
@@ -104,8 +101,7 @@ public:
         {
             auto component = makeComponent<TestBoxComponent2D>(world.ref());
 
-            auto coroutine = component->init();
-            coroutine.resume();
+            runCoroutineBlocking(component->init());
             component->Rotation = 90.0f;
             Assert::AreEqual(90.0f, component->Rotation);
 

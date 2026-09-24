@@ -48,10 +48,8 @@ public:
         {
             auto component = makeComponent<TransformComponent2D>(world.ref());
 
-            auto coroutine = component->init();
-            coroutine.resume();
-            auto coroutine2 = component->init();
-            coroutine2.resume();
+            runCoroutineBlocking(component->init());
+            runCoroutineBlocking(component->init());
 
             destroyComponent(world.ref(), component);
         }
@@ -63,8 +61,7 @@ public:
         ObjectGuard guard;
         {
             auto component = makeComponent<TransformComponent2D>(world.ref());
-            auto coroutine = component->init();
-            coroutine.resume();
+            runCoroutineBlocking(component->init());
 
             component->Position = { 100, 30 };
             Assert::AreEqual(100.0f, component->Position.x);
@@ -93,8 +90,7 @@ public:
         ObjectGuard guard;
         {
             auto component = makeComponent<TransformComponent2D>(world.ref());
-            auto coroutine = component->init();
-            coroutine.resume();
+            runCoroutineBlocking(component->init());
 
             component->Scale = { 2, 3 };
             Assert::AreEqual(2.0f, component->Scale.x);
@@ -123,8 +119,7 @@ public:
         ObjectGuard guard;
         {
             auto component = makeComponent<TransformComponent2D>(world.ref());
-            auto coroutine = component->init();
-            coroutine.resume();
+            runCoroutineBlocking(component->init());
 
             component->Rotation = 90.0f;
             Assert::AreEqual(90.0f, component->Rotation);

@@ -69,7 +69,8 @@ int main() {
 			loader->includeDirs.add(DirectoryPath(L"./resources/shaders/DirectX/include").AbsolutePath);
 			MemoryInputStream stream(buffer.Data, buffer.Size);
 			auto shader = makeIntrusive<DxShader>();
-			loader->load(shader.ref(), stream);
+			auto coroutine = loader->load(shader.ref(), stream);
+			coroutine.resume();
 		} catch (const DxCompilationException& exception) {
 			AString message = exception.what();
 			String tmessage = convertText<char, tchar>(message);

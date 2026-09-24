@@ -98,6 +98,7 @@
   <ItemGroup>
     <ClCompile Include="src\test\utils\MemoryGuard.cpp" />
     <ClCompile Include="src\test\utils\ObjectGuard.cpp" />
+    <ClCompile Include="src\test\utils\TestUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\engine\Core\Core.vcxproj">
