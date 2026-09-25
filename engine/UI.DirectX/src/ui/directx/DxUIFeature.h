@@ -39,7 +39,8 @@ namespace Ghurund::UI::DirectX {
             DxGPUMemoryManager& memoryManager
         ):resourceManager(resourceManager), graphics(graphics), memoryManager(memoryManager) {}
 
-        virtual void onInit() override;
+        [[nodiscard]]
+        virtual CoroutineTask<void> onInit() override;
 
         virtual void onUninit() override;
 

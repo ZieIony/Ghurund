@@ -98,8 +98,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\3d\Graphics3DFeature.h" />
     <ClInclude Include="src\Ghurund.Engine.3D.h" />
-    <ClInclude Include="src\engine\3d\IGraphics3DContext.h" />
     <ClInclude Include="src\engine\3d\World3D.h" />
     <ClInclude Include="src\engine\3d\audio\AudioSystem3D.h" />
     <ClInclude Include="src\engine\3d\audio\component\AudioListenerComponent3D.h" />
@@ -121,6 +121,7 @@
     <ClInclude Include="src\ghe3dpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\3d\Graphics3DFeature.cpp" />
     <ClCompile Include="src\engine\3d\World3D.cpp" />
     <ClCompile Include="src\engine\3d\audio\AudioSystem3D.cpp" />
     <ClCompile Include="src\engine\3d\audio\component\AudioListenerComponent3D.cpp" />

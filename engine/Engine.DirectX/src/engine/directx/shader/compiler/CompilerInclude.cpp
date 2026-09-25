@@ -16,7 +16,8 @@ namespace Ghurund::Engine::DirectX {
 		case D3D_INCLUDE_LOCAL: // #include "FILE"
 		{
 			try {
-				auto buffer = resourceManager.resolveResource(filePath, shaderDir);
+				auto absolutePath = resourceManager.getAbsoluteOrLibPath(filePath, shaderDir);
+				auto buffer = resourceManager.resolveResource(absolutePath);
 				*ppData = ghnew byte[buffer->Size];
 				memcpy((void*)*ppData, buffer->Data, buffer->Size);
 				*pBytes = (UINT)buffer->Size;
@@ -32,7 +33,8 @@ namespace Ghurund::Engine::DirectX {
 			bool found = false;
 			for (auto& systemDir : systemDirs) {
 				try {
-					auto buffer = resourceManager.resolveResource(filePath, systemDir);
+					auto absolutePath = resourceManager.getAbsoluteOrLibPath(filePath, systemDir);
+					auto buffer = resourceManager.resolveResource(absolutePath);
 					*ppData = ghnew byte[buffer->Size];
 					memcpy((void*)*ppData, buffer->Data, buffer->Size);
 					*pBytes = (UINT)buffer->Size;

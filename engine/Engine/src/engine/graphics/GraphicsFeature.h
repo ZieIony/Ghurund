@@ -2,6 +2,8 @@
 
 #include "core/feature/Feature.h"
 #include "texture/TextureAtlasLoader.h"
+#include "engine/resource/IGraphicsResourceFactory.h"
+#include "memory/IGPUMemoryManager.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
@@ -20,22 +22,32 @@ namespace Ghurund::Engine {
 #pragma endregion
 
     private:
-        ResourceManager& resourceManager;
         IntrusivePointer<TextureAtlasLoader> textureAtlasLoader;
 
         void uninitGraphicsFeature();
 
     protected:
-        virtual void onInit() override;
+        [[nodiscard]]
+        virtual CoroutineTask<void> onInit() override;
 
         virtual void onUninit() override;
 
+        virtual IGraphicsResourceFactory& getResourceFactoryInternal() = 0;
+
     public:
+        ResourceManager& resourceManager;
+        
         GraphicsFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 
         ~GraphicsFeature() {
             if (IsInitialized)
                 uninitGraphicsFeature();
         }
+
+        inline IGraphicsResourceFactory& getResourceFactory() {
+            return getResourceFactoryInternal();
+        }
+
+        __declspec(property(get = getResourceFactory)) IGraphicsResourceFactory& ResourceFactory;
     };
 }

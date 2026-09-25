@@ -100,8 +100,6 @@
   <ItemGroup>
     <ClInclude Include="src\Ghurund.Engine.2D.h" />
     <ClInclude Include="src\engine\2d\Graphics2DFeature.h" />
-    <ClInclude Include="src\engine\2d\Graphics2DFeatureFactory.h" />
-    <ClInclude Include="src\engine\2d\IGraphics2DContext.h" />
     <ClInclude Include="src\engine\2d\World2D.h" />
     <ClInclude Include="src\engine\2d\audio\AudioSystem2D.h" />
     <ClInclude Include="src\engine\2d\audio\component\AudioListenerComponent2D.h" />

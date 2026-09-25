@@ -8,16 +8,15 @@
 #include "core/io/MemoryInputStream.h"
 #include "core/io/MemoryOutputStream.h"
 #include "core/reflection/Type.h"
-#include "core/resource/LoadOption.h"
+#include "core/resource/LoadOptions.h"
 #include "core/resource/Resource.h"
 #include "core/resource/ResourceFormat.h"
-#include "core/resource/SaveOption.h"
+#include "core/resource/SaveOptions.h"
 #include "core/xml/XMLDocument.h"
 
 #include <cstdint>
 
 namespace Ghurund::Core {
-	class ResourceManager;
 	class DirectoryPath;
 
 	template<Derived<Resource> T>
@@ -57,7 +56,7 @@ namespace Ghurund::Core {
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
-			LoadOption options
+			LoadOptions options
 		) {
 			auto streamPosition = stream.Position;
 			try {
@@ -79,7 +78,7 @@ namespace Ghurund::Core {
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
-			LoadOption options
+			LoadOptions options
 		) {
 			co_await loadFromXml(resource, stream, workingDir, format, options);
 		}
@@ -90,7 +89,7 @@ namespace Ghurund::Core {
 			const XMLElement& xml,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
-			LoadOption options
+			LoadOptions options
 		) {
 			throw NotSupportedException();
 		}
@@ -100,7 +99,7 @@ namespace Ghurund::Core {
 			MemoryOutputStream& stream,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
-			SaveOption options
+			SaveOptions options
 		) const {
 			throw NotSupportedException();
 		}
@@ -110,7 +109,7 @@ namespace Ghurund::Core {
 			const XMLElement& xml,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
-			SaveOption options
+			SaveOptions options
 		) const {
 			throw NotSupportedException();
 		}
@@ -126,7 +125,7 @@ namespace Ghurund::Core {
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			LoadOption options = LoadOption::DEFAULT
+			LoadOptions options = {}
 		) override {
 			if (!format.canLoad)
 				throw FormatNotSupportedException(format);
@@ -142,7 +141,7 @@ namespace Ghurund::Core {
 			const XMLElement& root,
 			const DirectoryPath& workingDir = DirectoryPath(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			LoadOption options = LoadOption::DEFAULT
+			LoadOptions options = {}
 		) override {
 			if (!format.canLoad)
 				throw FormatNotSupportedException(format);
@@ -157,7 +156,7 @@ namespace Ghurund::Core {
 			MemoryOutputStream& stream,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			SaveOption options = SaveOption::DEFAULT
+			SaveOptions options = {}
 		) const override {
 			if (!format.canSave)
 				throw FormatNotSupportedException(format);
@@ -170,7 +169,7 @@ namespace Ghurund::Core {
 			const XMLElement& root,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			SaveOption options = SaveOption::DEFAULT
+			SaveOptions options = {}
 		) const override {
 			if (!format.canSave)
 				throw FormatNotSupportedException(format);

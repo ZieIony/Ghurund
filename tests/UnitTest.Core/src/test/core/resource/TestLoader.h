@@ -16,7 +16,7 @@ namespace UnitTest {
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
-            LoadOption options
+            LoadOptions options
         ) override {
             loadCalls++;
             resource.text = stream.readASCII();

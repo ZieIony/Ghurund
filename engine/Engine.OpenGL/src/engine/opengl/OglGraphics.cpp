@@ -19,7 +19,7 @@ namespace Ghurund::Engine::OpenGL {
 		glfwTerminate();
 	}
 	
-	void OglGraphics::onInit() {
+	CoroutineTask<void> OglGraphics::onInit() {
 		glfwInit();
 
 		Timer timer;
@@ -32,5 +32,7 @@ namespace Ghurund::Engine::OpenGL {
 		context->startFrame();
 
 		glewInit();
+
+		co_return;
 	}
 }

@@ -16,9 +16,10 @@ namespace Ghurund::Engine {
 		textureAtlasLoader.set(nullptr);
 	}
 
-	void GraphicsFeature::onInit() {
+	CoroutineTask<void> GraphicsFeature::onInit() {
 		textureAtlasLoader = makeIntrusive<TextureAtlasLoader>(resourceManager);
 		resourceManager.Loaders.set<TextureAtlas>(textureAtlasLoader.ref());
+		co_return;
 	}
 
 	void GraphicsFeature::onUninit() {

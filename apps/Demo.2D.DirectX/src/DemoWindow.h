@@ -5,7 +5,6 @@
 #include <Ground.h>
 
 #include "engine/application/GameWindow.h"
-#include "engine/2d/directx/DxGraphics2DContext.h"
 #include "core/coroutine/CoroutineTask.h"
 #include "engine/2d/World2D.h"
 
@@ -20,7 +19,6 @@ namespace Demo {
 	private:
 		DemoApplication& app;
 
-		SharedPointer<DxGraphics2DContext> context2d;
 		Set<RenderGroup> renderGroups;
 		World2D* world = nullptr;
 		IntrusivePointer<Captain> captain;

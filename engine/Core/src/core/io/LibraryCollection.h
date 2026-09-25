@@ -12,6 +12,9 @@ namespace Ghurund::Core {
         LibraryCollection& operator=(const LibraryCollection& other) = delete;
 
     public:
+        // VS complains without this explicit declaration
+        LibraryCollection() {}
+
         ~LibraryCollection() {
             libs.deleteItems();
         }

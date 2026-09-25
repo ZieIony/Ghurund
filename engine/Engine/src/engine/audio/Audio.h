@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/feature/Feature.h"
+#include "core/object/Initializable.h"
 
 #include <wrl\client.h>
 

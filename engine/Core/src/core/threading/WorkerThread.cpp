@@ -19,7 +19,7 @@ namespace Ghurund::Core {
                 }
                 SharedPointer<Task> task;
                 {
-                    SectionLock lock(section);
+                    std::unique_lock lock(mutex);
                     if (queue.Empty)
                         break;
                     task = queue.front();

@@ -1,18 +1,17 @@
 #pragma once
 
-#include "ConcurrentTaskQueue.h"
 #include "Thread.h"
 #include "Task.h"
 #include "Waitable.h"
-#include "core/object/RefCountedObject.h"
-#include "core/collection/List.h"
-#include "core/string/String.h"
+#include "core/collection/Queue.h"
+
+#include <mutex>
 
 namespace Ghurund::Core {
 	class WorkerThread:public Thread {
 	private:
 		Queue<SharedPointer<Task>> queue;
-		mutable CriticalSection section;
+		mutable std::mutex mutex;
 		Waitable waitable;
 		std::atomic_flag busy, running, finishing;
 
@@ -32,13 +31,13 @@ namespace Ghurund::Core {
 		}
 
 		inline void post(SharedPointer<Task> task) {
-			SectionLock lock(section);
+			std::unique_lock lock(mutex);
 			queue.add(task);
 			waitable.notify();
 		}
 
 		inline Queue<SharedPointer<Task>> getTasks() const {
-			SectionLock lock(section);
+			std::unique_lock lock(mutex);
 			Queue<SharedPointer<Task>> copy = queue;
 			return queue;
 		}

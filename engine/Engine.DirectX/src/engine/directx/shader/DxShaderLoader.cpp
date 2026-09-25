@@ -12,7 +12,7 @@ namespace Ghurund::Engine::DirectX {
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
-		LoadOption options
+		LoadOptions options
 	) {
 		checkXmlRoot(xml, L"Shader");
 	
@@ -96,7 +96,8 @@ namespace Ghurund::Engine::DirectX {
 					}
 				}();
 				AString sourceCode = [&] {
-					auto buffer = resourceManager.resolveResource(path, workingDir);
+					auto absolutePath = resourceManager.getAbsoluteOrLibPath(path, workingDir);
+					auto buffer = resourceManager.resolveResource(absolutePath);
 					return AString((const char*)buffer->Data, buffer->Size);
 				}();
 				AString sourceName = [&] {
@@ -104,16 +105,15 @@ namespace Ghurund::Engine::DirectX {
 					if (sourceNameAttributeIterator != programElement->attributes.end()) {
 						return convertText<wchar_t, char>(sourceNameAttributeIterator->value);
 					} else {
-						// TODO: does this work with library paths?
-						if (path.IsAbsolute) {
+						if (path.IsAbsolute || path.IsLibrary) {
 							return convertText<wchar_t, char>(path.toString());
 						} else if (resource.Path != nullptr) {
-							if (resource.Path->IsAbsolute) {
-								auto absolutePath = resourceManager.resolvePath(path, resource.Path->Directory);
+							if (resource.Path->IsAbsolute || resource.Path->IsLibrary) {
+								auto absolutePath = resourceManager.getAbsoluteOrLibPath(path, resource.Path->Directory);
 								return convertText<wchar_t, char>(absolutePath.toString());
 							} else {
-								auto absoluteResourcePath = resourceManager.resolvePath(*resource.Path, workingDir);
-								auto absolutePath = resourceManager.resolvePath(path, absoluteResourcePath.Directory);
+								auto absoluteResourcePath = resourceManager.getAbsoluteOrLibPath(*resource.Path, workingDir);
+								auto absolutePath = resourceManager.getAbsoluteOrLibPath(path, absoluteResourcePath.Directory);
 								return convertText<wchar_t, char>(absolutePath.toString());
 							}
 						} else {
@@ -168,7 +168,7 @@ namespace Ghurund::Engine::DirectX {
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
-		LoadOption options
+		LoadOptions options
 	) {
 		auto position = stream.Position;
 		try {
@@ -185,7 +185,7 @@ namespace Ghurund::Engine::DirectX {
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
-		SaveOption options
+		SaveOptions options
 	) const {
 		writeHeader<DxShader>(stream);
 

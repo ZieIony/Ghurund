@@ -24,13 +24,13 @@ namespace Ghurund::Engine {
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
-		LoadOption options
+		LoadOptions options
 	) {
 		checkXmlRoot(xml, L"Material");
 	
 		WString* s = xml.findAttribute(L"shader");
 		FilePath path = FilePath(*s);
-		auto shader = co_await resourceManager.load<Shader>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE);
+		auto shader = co_await resourceManager.load<Shader>(path, workingDir);
 		resource.init(memoryManager);
 		resource.Shader = shader.get();
 		for(const auto& child:xml.children){
@@ -57,7 +57,7 @@ namespace Ghurund::Engine {
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
-		SaveOption options
+		SaveOptions options
 	) const {
 		//shaderLoader.save(stream, workingDir, *material.Shader, format, options);
 	}

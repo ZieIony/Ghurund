@@ -98,7 +98,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\test\2d\Test2DContext.h" />
     <ClInclude Include="src\test\2d\scene\ComponentTestUtils.h" />
     <ClInclude Include="src\ute2dpch.h" />
   </ItemGroup>

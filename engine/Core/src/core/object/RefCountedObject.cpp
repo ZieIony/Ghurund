@@ -12,7 +12,7 @@
 namespace Ghurund::Core {
 #ifdef _DEBUG
     List<RefCountedObject*> RefCountedObject::pointers;
-    CriticalSection RefCountedObject::criticalSection;
+    std::mutex RefCountedObject::mutex;
     bool RefCountedObject::pointersListResizeLocked = false;
 
     void RefCountedObject::checkReferenceCount() const {
@@ -29,9 +29,10 @@ namespace Ghurund::Core {
 
     RefCountedObject::~RefCountedObject() {
 #ifdef _DEBUG
-        criticalSection.enter();
-        pointers.remove(this);
-        criticalSection.leave();
+        {
+            std::unique_lock lock(mutex);
+            pointers.remove(this);
+        }
 
         if (referenceCount) {
             // TODO: typeid(..) and getType() don't work correctly in destructors
@@ -63,7 +64,7 @@ namespace Ghurund::Core {
     RefCountedObject::RefCountedObject() {
 #ifdef _DEBUG
         {
-            SectionLock lock(criticalSection);
+            std::unique_lock lock(mutex);
             if (pointers.Size == pointers.Capacity) {
                 if (pointersListResizeLocked)
                     throw InvalidStateException("cannot resize pointers list");
@@ -84,7 +85,7 @@ namespace Ghurund::Core {
 
 #ifdef _DEBUG
     void RefCountedObject::dumpPointers() {
-        SectionLock lock(criticalSection);
+        std::unique_lock lock(mutex);
         if (pointers.Empty) {
             Logger::log(LogType::INFO, _T("no allocated pointers\n"));
         } else {

@@ -4,6 +4,7 @@
 #include "engine/2d/scene/component/TransformComponent2D.h"
 #include "engine/2d/scene/Entity2D.h"
 #include "engine/2d/World2D.h"
+#include "engine/2d/Graphics2DFeature.h"
 
 namespace Ghurund::Engine::_2D {
 	const Ghurund::Core::Type& BoxComponent2D::GET_TYPE() {
@@ -28,8 +29,8 @@ namespace Ghurund::Engine::_2D {
 				visualizationComponent->release();
 			}
 			visualizationComponent = Owner.makeComponent<VisualizationComponent2D>();
-			visualizationComponent->Mesh = IntrusivePointer<Mesh>(Owner.World.context.makeSpriteMesh()).get();
-			visualizationComponent->Material = (co_await Owner.World.context.makeBoxVisualizationMaterial()).get();
+			visualizationComponent->Mesh = Owner.World.app.ResourceManager.get<Ghurund::Engine::Mesh>(Graphics2DFeature::MESH_SPRITE).get();;
+			visualizationComponent->Material = Owner.World.app.ResourceManager.get<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_BOX_VISUALIZATION).get();
 			Owner.Components.add(visualizationComponent);
 		}
 		co_await __super::onInit();

@@ -32,12 +32,10 @@ namespace Ghurund::Engine::_3D {
 
 	public:
 		GameApplication& app;
-		IGraphics3DContext& context;
 		
 		World3D(
-			GameApplication& app,
-			IGraphics3DContext& context
-		):app(app), context(context), systems(app.GameObjects) {
+			GameApplication& app
+		):app(app), systems(app.GameObjects) {
 		}
 
 		~World3D() {

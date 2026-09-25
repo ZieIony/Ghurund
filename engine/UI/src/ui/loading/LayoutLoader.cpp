@@ -63,7 +63,7 @@ namespace Ghurund::UI {
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
-        LoadOption options
+        LoadOptions options
     ) {
         XMLDocument doc;
 		doc.parse(stream.Data, (UINT)stream.Size);
@@ -143,7 +143,7 @@ namespace Ghurund::UI {
             if (layoutAttr) {
                 WString s = *layoutAttr;
                 try {
-                    auto coroutine = resourceManager.load<Control>(FilePath(s), workingDir, Control::FORMAT_XML, LoadOption::DONT_CACHE);
+                    auto coroutine = resourceManager.load<Control>(FilePath(s), workingDir, Control::FORMAT_XML, nullptr, { .cache = false });
                     coroutine.resume();
                     IntrusivePointer<Control> control = coroutine.Result;
                     PartialConstraintSet loadedConstraints;

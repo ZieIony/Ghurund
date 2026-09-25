@@ -2,14 +2,12 @@
 
 #include "DxTexture.h"
 
-#include "core/image/ImageLoader.h"
-
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
 
     class DxTextureLoader:public Loader<DxTexture> {
     private:
-        ImageLoader& imageLoader;
+        ResourceManager& resourceManager;
         DxGraphics& graphics;
 		CommandList& commandList;
 
@@ -19,18 +17,18 @@ namespace Ghurund::Engine::DirectX {
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
-            LoadOption options
+            LoadOptions options
         ) override {
-            auto image = makeIntrusive<Image>();
-            co_await imageLoader.load(image.ref(), stream, workingDir, format, options);
+            // TODO: load image properly, so it can be cached
+            auto image = co_await resourceManager.load<Image>(stream, workingDir, format, nullptr, { .cache = false });
             resource.init(graphics, commandList, image.ref(), TextureType::COLOR);
         }
 
     public:
         DxTextureLoader(
-            ImageLoader& imageLoader,
+            ResourceManager& resourceManager,
             DxGraphics& graphics,
             CommandList& commandList
-        ):imageLoader(imageLoader), graphics(graphics), commandList(commandList) {}
+        ):resourceManager(resourceManager), graphics(graphics), commandList(commandList) {}
     };
 }

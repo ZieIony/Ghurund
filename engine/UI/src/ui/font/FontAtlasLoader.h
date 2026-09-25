@@ -17,7 +17,7 @@ namespace Ghurund::UI {
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
-			LoadOption options
+			LoadOptions options
 		) override;
 
 		virtual void saveInternal(
@@ -25,7 +25,7 @@ namespace Ghurund::UI {
 			MemoryOutputStream& stream,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
-			SaveOption options
+			SaveOptions options
 		) const override;
 
 	public:

@@ -7,7 +7,7 @@ namespace Ghurund::Engine::_2D {
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
-		LoadOption options
+		LoadOptions options
 	) {
 		checkXmlRoot(xml, L"TileSet");
 	
@@ -15,7 +15,7 @@ namespace Ghurund::Engine::_2D {
 		if (!textureAttribute)
 			throw InvalidDataException();
 		auto texturePath = FilePath(*textureAttribute);
-		auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, options);
+		auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, nullptr, options);
 
 		auto tileSizeAttribute = xml.findAttribute(L"tileSize");
 		if (!tileSizeAttribute)

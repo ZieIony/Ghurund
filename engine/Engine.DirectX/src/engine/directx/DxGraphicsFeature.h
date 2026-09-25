@@ -7,11 +7,13 @@
 #include "shader/compiler/DxShaderCompiler.h"
 #include "texture/DxTextureLoader.h"
 #include "mesh/DxMeshLoader.h"
+#include "engine/graphics/GraphicsFeature.h"
+#include "resource/DxGraphicsResourceFactory.h"
 
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
 
-    class DxGraphicsFeature: public Ghurund::Core::Feature {
+    class DxGraphicsFeature: public GraphicsFeature {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -28,22 +30,27 @@ namespace Ghurund::Engine::DirectX {
         DxGraphics graphics;
         IntrusivePointer<CommandList> commandList;
         DxGPUMemoryManager* memoryManager = nullptr;
-        ResourceManager& resourceManager;
         SharedPointer<DxShaderCompiler> shaderCompiler;
-        IntrusivePointer<ImageLoader> imageLoader;
         IntrusivePointer<DxMeshLoader> meshLoader;
+        DxGraphicsResourceFactory* resourceFactory = nullptr;
 
         void uninitGraphicsFeature();
 
+    protected:
+        virtual IGraphicsResourceFactory& getResourceFactoryInternal() override {
+            return *resourceFactory;
+        }
+
     public:
-        DxGraphicsFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
+        DxGraphicsFeature(ResourceManager& resourceManager):GraphicsFeature(resourceManager) {}
 
         ~DxGraphicsFeature() {
             if (IsInitialized)
                 uninitGraphicsFeature();
         }
 
-        virtual void onInit() override;
+        [[nodiscard]]
+        virtual CoroutineTask<void> onInit() override;
 
         virtual void onUninit() override;
 

@@ -2,6 +2,7 @@
 
 #include "Task.h"
 #include "WorkerThread.h"
+#include "CriticalSection.h"
 #include "core/object/SharedPointer.h"
 #include "core/collection/List.h"
 

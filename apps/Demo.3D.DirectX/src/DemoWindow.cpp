@@ -4,9 +4,6 @@
 
 #include "core/Colors.h"
 #include "core/window/DisplayManager.h"
-#include <engine/directx/shader/DxShaderProvider.h>
-#include <engine/graphics/material/MaterialProvider.h>
-#include <engine/directx/texture/DxTextureProvider.h>
 
 namespace Demo {
 	DemoWindow::DemoWindow(
@@ -19,21 +16,13 @@ namespace Demo {
 		Renderer = &renderer;
 		BackgroundColor = &Colors::LIGHT_SKY_BLUE;
 
-		DxGraphicsFeature* graphicsFeature = app.Features.get<DxGraphicsFeature>();
-
-		DxShaderProvider shaderProvider(app.ResourceManager);
-		DxTextureProvider textureProvider(app.ResourceManager);
-		MaterialProvider materialProvider(shaderProvider, textureProvider, graphicsFeature->MemoryManager);
-
 		init();
 	}
 
 	void DemoWindow::init() {
 		DxGraphicsFeature* graphicsFeature = app.Features.get<DxGraphicsFeature>();
 
-		context3d = makeShared<DxGraphics3DContext>(graphicsFeature->MemoryManager, app.ResourceManager);
-
-		world = ghnew World3D(app, context3d.ref());
+		world = ghnew World3D(app);
 		world->init();
 
 		app.CoroutineScheduler.launch(initScene());
@@ -41,6 +30,8 @@ namespace Demo {
 
 	CoroutineTask<void> DemoWindow::initScene() {
 		co_await app.ResourceManager.load<DxMesh>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"models/cube.fbx"));
+
+		app.ResourceManager.printResources();
 	}
 
 	bool DemoWindow::onKeyEvent(const KeyEventArgs& args) {

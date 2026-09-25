@@ -26,6 +26,7 @@ namespace Ghurund::Core {
 }
 
 namespace Ghurund::Engine::_3D {
+    using namespace Ghurund::Core;
     using namespace physx;
 
     class Physics:public Ghurund::Core::Feature {
@@ -50,18 +51,10 @@ namespace Ghurund::Engine::_3D {
         PxPvdTransport* transport = nullptr;
 
     public:
-        virtual void onInit() override;
+        [[nodiscard]]
+        virtual CoroutineTask<void> onInit() override;
 
-        virtual void onUninit() override {
-            if (physics)
-                physics->release();
-            if (transport)
-                transport->release();
-            if (visualDebugger)
-                visualDebugger->release();
-            if (foundation)
-                foundation->release();
-        }
+        virtual void onUninit() override;
 
         PxPhysics& get() {
             return *physics;

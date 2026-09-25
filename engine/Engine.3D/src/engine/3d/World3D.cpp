@@ -13,7 +13,7 @@ namespace Ghurund::Engine::_3D {
 		}
 		physicsSystem.set(ghnew PhysicsSystem3D());
 		systems.add(physicsSystem);
-		scene = makeIntrusive<Scene3D>(context, app.GameObjects);
+		scene = makeIntrusive<Scene3D>(app.GameObjects);
 	}
 
 	void World3D::onUninit() {

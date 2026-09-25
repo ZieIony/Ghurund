@@ -13,17 +13,18 @@ namespace Ghurund::Engine::DirectX {
     }
 
     void DxGraphicsFeature::uninitGraphicsFeature() {
+		delete resourceFactory;
+		resourceFactory = nullptr;
 		resourceManager.Loaders.remove<DxTexture>();
 		resourceManager.Loaders.remove<Material>();
         resourceManager.Loaders.remove<DxShader>();
-		imageLoader.set(nullptr);
         shaderCompiler.set(nullptr);
         delete memoryManager;
         memoryManager = nullptr;
 		graphics.uninit();
 	}
 
-	void DxGraphicsFeature::onInit() {
+	CoroutineTask<void> DxGraphicsFeature::onInit() {
 		graphics.init();
 		commandList = makeIntrusive<CommandList>();
 		commandList->init(graphics, graphics.DirectQueue);
@@ -33,8 +34,7 @@ namespace Ghurund::Engine::DirectX {
 		shaderLoader->includeDirs.add(ResourceManager::ENGINE_LIB_PATH / DirectoryPath(L"/shaders/DirectX/include"));
 		resourceManager.Loaders.set<DxShader>(shaderLoader.ref());
 
-		imageLoader = makeIntrusive<ImageLoader>();
-		auto textureLoader = makeIntrusive<DxTextureLoader>(imageLoader.ref(), graphics, commandList.ref());
+		auto textureLoader = makeIntrusive<DxTextureLoader>(resourceManager, graphics, commandList.ref());
 		resourceManager.Loaders.set<DxTexture>(textureLoader.ref());
 
 		memoryManager = ghnew DxGPUMemoryManager(graphics, commandList.ref());
@@ -43,6 +43,10 @@ namespace Ghurund::Engine::DirectX {
 
 		meshLoader = makeIntrusive<DxMeshLoader>(*memoryManager);
 		resourceManager.Loaders.set<DxMesh>(meshLoader.ref());
+
+		resourceFactory = ghnew DxGraphicsResourceFactory(*memoryManager);
+
+		co_return;
 	}
 
 	void DxGraphicsFeature::onUninit() {

@@ -14,7 +14,7 @@ namespace Ghurund::UI {
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
-            LoadOption options
+            LoadOptions options
         ) override;
     };
 }

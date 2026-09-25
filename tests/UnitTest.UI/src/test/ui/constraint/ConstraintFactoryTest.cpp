@@ -135,10 +135,10 @@ public:
         <Control.Width path="Height" ratio="0.5" offset="-16"/>
     </Control>
 </ControlGroup>)";
-			Buffer buffer(xml.Data, xml.Length);
+			MemoryInputStream stream(xml.Data, xml.Length);
 
 			IntrusivePointer<ControlGroup> controlGroup = runCoroutineBlocking(
-				resourceManager.load<ControlGroup>(buffer, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, LoadOption::DONT_CACHE)
+				resourceManager.load<ControlGroup>(stream, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, nullptr, { .cache = false })
 			);
 			Control* control = controlGroup->find<Control>();
 

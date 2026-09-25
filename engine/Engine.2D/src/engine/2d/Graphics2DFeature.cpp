@@ -9,7 +9,7 @@ namespace Ghurund::Engine::_2D {
         return TYPE;
     }
 
-    void Graphics2DFeature::uninitGraphicsFeature() {
+	void Graphics2DFeature::uninitGraphicsFeature() {
 		resourceManager.Loaders.remove<SpriteAnimationSetLoader>();
 		animationSetLoader.set(nullptr);
 		resourceManager.Loaders.remove<TileSetLoader>();
@@ -18,13 +18,14 @@ namespace Ghurund::Engine::_2D {
 		tileMapLoader.set(nullptr);
 	}
 
-	void Graphics2DFeature::onInit() {
+	CoroutineTask<void> Graphics2DFeature::onInit() {
 		animationSetLoader = makeIntrusive<SpriteAnimationSetLoader>(resourceManager);
 		resourceManager.Loaders.set<SpriteAnimationSet>(animationSetLoader.ref());
 		tileSetLoader = makeIntrusive<TileSetLoader>(resourceManager);
 		resourceManager.Loaders.set<TileSet>(tileSetLoader.ref());
 		tileMapLoader = makeIntrusive<TileMapLoader>(resourceManager);
 		resourceManager.Loaders.set<TileMap>(tileMapLoader.ref());
+		co_return;
 	}
 
 	void Graphics2DFeature::onUninit() {

@@ -24,11 +24,7 @@ namespace Demo {
 		auto fpsSystem = makeIntrusive<FpsSystem>(*this);
 		Systems.add(fpsSystem);
 
-		DxGraphicsFeature* graphicsFeature = Application.Features.get<DxGraphicsFeature>();
-
-		context2d = makeShared<DxGraphics2DContext>(graphicsFeature->MemoryManager, Application.ResourceManager);
-
-		world = ghnew World2D(app, context2d.ref());
+		world = ghnew World2D(app);
 		world->init();
 
 		Application.CoroutineScheduler.launch(initScene());
@@ -40,6 +36,8 @@ namespace Demo {
 		captain = co_await world->spawnEntity<Captain>();
 		captain->Components.get<RigidBodyComponent2D>()->Position = {0, 2};
 		world->Scene.add(captain);
+
+		app.ResourceManager.printResources();
 	}
 
 	bool DemoWindow::onKeyEvent(const KeyEventArgs& args) {

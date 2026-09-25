@@ -3,7 +3,6 @@
 #include "Entity2D.h"
 
 #include "core/resource/Resource.h"
-#include "engine/2d/IGraphics2DContext.h"
 #include "camera/Camera2D.h"
 #include <engine/game/GameObjectDrawCollection.h>
 #include <engine/game/GameObjectUpdateCollection.h>
@@ -23,7 +22,6 @@ namespace Ghurund::Engine::_2D {
 #pragma endregion
 
     private:
-        IGraphics2DContext& context;
         Camera2D* camera = nullptr;
         GameObjectUpdateCollection& gameObjectsUpdate;
         GameObjectDrawCollection gameObjectsDraw;
@@ -31,9 +29,8 @@ namespace Ghurund::Engine::_2D {
 
     public:
         Scene2D(
-            IGraphics2DContext& context,
             GameObjectUpdateCollection& gameObjectsUpdate
-		):context(context), gameObjectsUpdate(gameObjectsUpdate) {
+		):gameObjectsUpdate(gameObjectsUpdate) {
 		}
 
         ~Scene2D() {

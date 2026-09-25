@@ -36,7 +36,8 @@ namespace Ghurund::Engine {
                 uninitAudioFeature();
         }
 
-        virtual void onInit() override;
+        [[nodiscard]]
+        virtual CoroutineTask<void> onInit() override;
 
         virtual void onUninit() override;
 

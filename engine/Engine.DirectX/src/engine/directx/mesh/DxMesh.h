@@ -49,6 +49,9 @@ namespace Ghurund::Engine::DirectX {
         void initIndexBuffer(const Buffer& indices, uint32_t indexCount, DxGPUMemoryManager& memoryManager);
 
     public:
+        // VS complains
+        DxMesh() {}
+
         // TODO: move this to coroutines
         virtual void init(const MeshData& mesh, DxGPUMemoryManager& memoryManager);
 

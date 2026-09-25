@@ -35,6 +35,7 @@ namespace Ghurund::Core {
 			return *this;
 		}
 
+		// TODO: this method name looks like it's costly to call - maybe it should be a getter instead?
 		const WString& toString() const {
 			return path;
 		}
@@ -49,12 +50,20 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = getIsAbsolute)) bool IsAbsolute;
 
+		bool getIsLibrary() const;
+
+		__declspec(property(get = getIsLibrary)) bool IsLibrary;
+
 		bool operator==(const Path& otherPath) const {
 			return path == otherPath.path;
 		}
 
 		bool operator==(const Path& otherPath) {
 			return path == otherPath.path;
+		}
+
+		constexpr std::strong_ordering operator<=>(const Path& other) const noexcept {
+			return path <=> other.path;
 		}
 	};
 }

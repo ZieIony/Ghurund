@@ -18,7 +18,7 @@ namespace Ghurund::Engine {
             const XMLElement& xml,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
-            LoadOption options
+            LoadOptions options
         ) override;
 
     public:

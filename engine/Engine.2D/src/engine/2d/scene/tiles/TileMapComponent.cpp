@@ -2,6 +2,9 @@
 #include "TileMapComponent.h"
 
 #include "core/application/Application.h"
+#include "engine/2d/graphics/mesh/TileMapMeshData.h"
+#include "engine/2d/Graphics2DFeature.h"
+#include "engine/graphics/GraphicsFeature.h"
 
 namespace Ghurund::Engine::_2D {
 	const Ghurund::Core::Type& TileMapComponent::GET_TYPE() {
@@ -25,8 +28,16 @@ namespace Ghurund::Engine::_2D {
 			tileInfo.texCoordBottomRight = { texCoords.z, texCoords.w };
 			tileIndex++;
 		}
-		mesh = Owner.World.context.makeTileMapMesh(tileMap->Size, tiles);
-		Material = (co_await Owner.World.context.makeTileMapMaterial()).get();
+
+		auto tileMapMeshData = makeIntrusive<TileMapMeshData>();
+		tileMapMeshData->init(tileMap->Size, tiles);
+		GraphicsFeature* graphicsFeature = Owner.World.app.Features.get<GraphicsFeature>();
+		mesh = graphicsFeature->ResourceFactory.makeMesh(tileMapMeshData.ref());
+
+		// TODO: clone materials in a more transparent way
+		Material = Owner.World.app.ResourceManager.get<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_SPRITE)->clone();
+
+		co_return;
 	}
 
 	void TileMapComponent::reloadResource() {

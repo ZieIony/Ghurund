@@ -26,7 +26,7 @@ namespace Ghurund::Engine::OpenGL {
             const XMLElement& xml,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
-            LoadOption options
+            LoadOptions options
         ) override;
 
         virtual void saveInternal(
@@ -34,7 +34,7 @@ namespace Ghurund::Engine::OpenGL {
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
-            SaveOption options
+            SaveOptions options
         ) const override;
 	};
 }

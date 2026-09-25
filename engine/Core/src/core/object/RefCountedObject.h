@@ -5,7 +5,8 @@
 #ifdef _DEBUG
 #include "core/StackTrace.h"
 #include "core/collection/List.h"
-#include "core/threading/CriticalSection.h"
+
+#include <mutex>
 #endif
 
 namespace Ghurund::Core {
@@ -28,7 +29,7 @@ namespace Ghurund::Core {
 
 #ifdef _DEBUG
         static List<RefCountedObject*> pointers;
-        static CriticalSection criticalSection;
+        static std::mutex mutex;
         static bool pointersListResizeLocked;
 
         List<StackTraceEntry> stacktrace;
@@ -84,24 +85,24 @@ namespace Ghurund::Core {
 
 #ifdef _DEBUG
         static void setPointersListResizeLocked(bool locked) {
-            SectionLock lock(criticalSection);
+            std::unique_lock lock(mutex);
             pointersListResizeLocked = locked;
         }
 
         static size_t numberOfAllocatedPointers() {
-            SectionLock lock(criticalSection);
+            std::unique_lock lock(mutex);
             return pointers.Size;
         }
 
         static void dumpPointers();
 
         static void reservePointers(size_t size) {
-            SectionLock lock(criticalSection);
+            std::unique_lock lock(mutex);
             pointers.resize(size);
         }
 
         static void clearPointers() {
-            SectionLock lock(criticalSection);
+            std::unique_lock lock(mutex);
             for (RefCountedObject* p : pointers)
                 delete p;
             pointers.clear();

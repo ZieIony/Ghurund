@@ -92,12 +92,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\3d\directx\DxGraphics3DFeature.h" />
+    <ClInclude Include="src\engine\3d\directx\DxGraphics3DFeatureFactory.h" />
     <ClInclude Include="src\Ghurund.Engine.3D.DirectX.h" />
-    <ClInclude Include="src\engine\3d\directx\DxGraphics3DContext.h" />
     <ClInclude Include="src\ghe3ddxpch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\engine\3d\directx\DxGraphics3DContext.cpp" />
+    <ClCompile Include="src\engine\3d\directx\DxGraphics3DFeature.cpp" />
     <ClCompile Include="src\ghe3ddxpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

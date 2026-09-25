@@ -6,7 +6,6 @@
 #include "test/utils/MemoryGuard.h"
 #include "engine/2d/World2D.h"
 
-#include <test/2d/Test2DContext.h>
 #include "ComponentTestUtils.h"
 #include <test/utils/ObjectGuard.h>
 
@@ -22,12 +21,11 @@ namespace UnitTest {
     TEST_CLASS(TransformComponent2DTest) {
 private:
     GameApplication app;
-    Test2DContext context2d;
     SharedPointer<World2D> world;
 
 public:
     TransformComponent2DTest() {
-        world = makeShared<World2D>(app, context2d);
+        world = makeShared<World2D>(app);
     }
 
     TEST_CLASS_INITIALIZE(construct) {

@@ -32,12 +32,10 @@ namespace Ghurund::Engine::_2D {
 
 	public:
 		GameApplication& app;
-		IGraphics2DContext& context;
 		
 		World2D(
-			GameApplication& app,
-			IGraphics2DContext& context
-		):app(app), context(context), systems(app.GameObjects) {
+			GameApplication& app
+		):app(app), systems(app.GameObjects) {
 		}
 
 		~World2D() {

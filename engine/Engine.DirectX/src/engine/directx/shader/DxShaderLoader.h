@@ -23,7 +23,7 @@ namespace Ghurund::Engine::DirectX {
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
-            LoadOption options
+            LoadOptions options
         ) override;
 
         virtual CoroutineTask<void> loadInternal(
@@ -31,7 +31,7 @@ namespace Ghurund::Engine::DirectX {
             const XMLElement& xml,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
-            LoadOption options
+            LoadOptions options
         ) override;
 
         virtual void saveInternal(
@@ -39,7 +39,7 @@ namespace Ghurund::Engine::DirectX {
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
-            SaveOption options
+            SaveOptions options
         ) const override;
 
     public:

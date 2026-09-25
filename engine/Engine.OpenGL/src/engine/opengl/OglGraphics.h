@@ -25,7 +25,8 @@ namespace Ghurund::Engine::OpenGL {
 		void uninitGraphics();
 
 	protected:
-		virtual void onInit() override;
+		[[nodiscard]]
+		virtual CoroutineTask<void> onInit() override;
 
 		virtual void onUninit() override {
 			uninitGraphics();

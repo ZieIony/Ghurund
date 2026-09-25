@@ -23,7 +23,6 @@ namespace Ghurund::Engine::_2D {
 #pragma endregion
 
     private:
-        ResourceManager& resourceManager;
         IntrusivePointer<SpriteAnimationSetLoader> animationSetLoader;
         IntrusivePointer<TileSetLoader> tileSetLoader;
         IntrusivePointer<TileMapLoader> tileMapLoader;
@@ -31,14 +30,24 @@ namespace Ghurund::Engine::_2D {
         void uninitGraphicsFeature();
 
     protected:
-        virtual void onInit() override;
+        ResourceManager& resourceManager;
+
+        [[nodiscard]]
+        virtual CoroutineTask<void> onInit() override;
 
         virtual void onUninit() override;
 
     public:
+        inline static const WString MESH_SPRITE = L"sprite mesh";
+
+        inline static const WString MATERIAL_SPRITE = L"sprite material";
+        inline static const WString MATERIAL_BOX_VISUALIZATION = L"box visualization material";
+        inline static const WString MATERIAL_CAPSULE_VISUALIZATION = L"capsule visualization material";
+        inline static const WString MATERIAL_SEGMENT_VISUALIZATION = L"segment visualization material";
+
         Graphics2DFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 
-        ~Graphics2DFeature() {
+        virtual ~Graphics2DFeature() = 0 {
             if (IsInitialized)
                 uninitGraphicsFeature();
         }

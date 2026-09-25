@@ -12,7 +12,7 @@ namespace Ghurund::Core {
     using namespace std;
 
     HANDLE Logger::process;
-    CriticalSection Logger::criticalSection;
+    std::mutex Logger::mutex;
     LogTypeEnum Logger::filterLevel = LogType::INFO.Value;
     LogOutput* Logger::logOutput = nullptr;
     Set<Logger::LogOnceEntry> Logger::logOnceEntries;
@@ -53,9 +53,8 @@ namespace Ghurund::Core {
 
         std::basic_string<tchar> fileLine = std::format(_T("{0}({1:d}): [{2:#x} {3}(..)]"), entry.fileName, entry.fileLine, entry.address, entry.name);
 
-        criticalSection.enter();
+        std::unique_lock lock(mutex);
         logOutput->log({ type, fileLine.c_str(), text });
-        criticalSection.leave();
     }
 
     void Logger::logOnce(const LogType& type, const tchar* text, uint32_t logId) {
@@ -73,8 +72,7 @@ namespace Ghurund::Core {
 
         logOnceEntries.put(logOnceEntry);
 
-        criticalSection.enter();
+        std::unique_lock lock(mutex);
         logOutput->log({ type, fileLine.c_str(), text });
-        criticalSection.leave();
     }
 }

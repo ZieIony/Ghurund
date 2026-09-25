@@ -264,13 +264,13 @@
     <ClInclude Include="src\core\reflection\TypeModifier.h" />
     <ClInclude Include="src\core\reflection\UniqueProperty.h" />
     <ClInclude Include="src\core\reflection\Visibility.h" />
-    <ClInclude Include="src\core\resource\LoadOption.h" />
+    <ClInclude Include="src\core\resource\LoadOptions.h" />
     <ClInclude Include="src\core\resource\Resource.h" />
     <ClInclude Include="src\core\resource\ResourceAwaiter.h" />
     <ClInclude Include="src\core\resource\ResourceCollection.h" />
     <ClInclude Include="src\core\resource\ResourceFormat.h" />
     <ClInclude Include="src\core\resource\ResourceManager.h" />
-    <ClInclude Include="src\core\resource\SaveOption.h" />
+    <ClInclude Include="src\core\resource\SaveOptions.h" />
     <ClInclude Include="src\core\resource\TextResource.h" />
     <ClInclude Include="src\core\state\MachineState.h" />
     <ClInclude Include="src\core\state\StateMachine.h" />
@@ -284,9 +284,7 @@
     <ClInclude Include="src\core\string\TextUtils.h" />
     <ClInclude Include="src\core\threading\APCThread.h" />
     <ClInclude Include="src\core\threading\ConcurrentTaskQueue.h" />
-    <ClInclude Include="src\core\threading\ConditionVariable.h" />
     <ClInclude Include="src\core\threading\CriticalSection.h" />
-    <ClInclude Include="src\core\threading\FunctionQueue.h" />
     <ClInclude Include="src\core\threading\Task.h" />
     <ClInclude Include="src\core\threading\Thread.h" />
     <ClInclude Include="src\core\threading\ThreadPoolExecutor.h" />
@@ -354,7 +352,6 @@
     <ClCompile Include="src\core\resource\ResourceManager.cpp" />
     <ClCompile Include="src\core\state\StateMachine.cpp" />
     <ClCompile Include="src\core\string\GenericString.cpp" />
-    <ClCompile Include="src\core\threading\FunctionQueue.cpp" />
     <ClCompile Include="src\core\threading\ThreadPoolExecutor.cpp" />
     <ClCompile Include="src\core\threading\WorkerThread.cpp" />
     <ClCompile Include="src\core\window\Cursor.cpp" />

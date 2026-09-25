@@ -9,35 +9,36 @@
 #include "core/logging/Formatter.h"
 
 namespace Ghurund::Core {
-	FilePath ResourceManager::resolvePath(const FilePath& path, const DirectoryPath& workingDir) const {
-		FilePath absolutePath = getAbsolutePath(path, workingDir);
-		WString pathStr = absolutePath.toString();
-		if (pathStr.startsWith(LIB_PROTOCOL)) {
+	FilePath ResourceManager::resolvePath(const FilePath& absoluteOrLibPath) const {
+		if (absoluteOrLibPath.IsLibrary) {
+			WString pathStr = absoluteOrLibPath.toString();
 			size_t afterLibName = pathStr.find(Path::SEPARATOR, LIB_PROTOCOL.Size);
 			const WString libName = pathStr.substring(LIB_PROTOCOL.Length, afterLibName);
 			const WString relativePath = pathStr.substring(afterLibName + 1);
 			const Library* library = libraries.get(libName);
 			if (!library)
 				throw std::invalid_argument(std::format("library \"{}\" doesn't exist", libName));
+			// this throws if library is not a DirectoryLibrary
 			return library->getAbsolutePath(relativePath);
 		} else {
-			return absolutePath;
+			return absoluteOrLibPath;
 		}
 	}
 
-	SharedPointer<Buffer> ResourceManager::resolveResource(const FilePath& path, const DirectoryPath& workingDir) const {
-		FilePath absolutePath = getAbsolutePath(path, workingDir);
-		WString pathStr = absolutePath.toString();
-		if (pathStr.startsWith(LIB_PROTOCOL)) {
+	SharedPointer<Buffer> ResourceManager::resolveResource(const FilePath& absoluteOrLibPath) const {
+		if (absoluteOrLibPath.IsLibrary) {
+			WString pathStr = absoluteOrLibPath.toString();
 			size_t afterLibName = pathStr.find(Path::SEPARATOR, LIB_PROTOCOL.Size);
 			const WString libName = pathStr.substring(LIB_PROTOCOL.Length, afterLibName);
 			const WString relativePath = pathStr.substring(afterLibName + 1);
 			const Library* library = libraries.get(libName);
+			if (!library)
+				throw std::invalid_argument(std::format("library \"{}\" doesn't exist", libName));
 			return library->get(relativePath);
 		} else {
-			File file(absolutePath);
+			File file(absoluteOrLibPath);
 			if (!file.Exists)
-				throw std::invalid_argument(std::format("path \"{}\" doesn't exist", pathStr));
+				throw std::invalid_argument(std::format("path \"{}\" doesn't exist", absoluteOrLibPath));
 			auto buffer = makeShared<Buffer>();
 			file.read(buffer.ref());
 			return buffer;
@@ -62,22 +63,53 @@ namespace Ghurund::Core {
 		const FilePath& path,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
-		LoadOption options
+		const WString* name,
+		LoadOptions options
 	) {
-		SharedPointer<Buffer> buffer = resolveResource(path, workingDir);
-		auto localDir = getLocalDir(path, workingDir);
-		auto resource = co_await loadInternal(loader, buffer.ref(), localDir, format, options);
+		auto absoluteOrLibPath = getAbsoluteOrLibPath(path, workingDir);
+		IntrusivePointer<Resource> resource = IntrusivePointer(resources.get(absoluteOrLibPath));
+		if (resource == nullptr) {
+			SharedPointer<Buffer> buffer = resolveResource(absoluteOrLibPath);
+			MemoryInputStream stream = MemoryInputStream(buffer->Data, buffer->Size);
+			auto localDir = getLocalDir(absoluteOrLibPath, workingDir);
+			resource = co_await loadInternal(loader, stream, localDir, format, options);
+			resource->Path = &absoluteOrLibPath;
+			resource->Name = name ? *name : WString(absoluteOrLibPath.FileName.Data);
+			if (options.cache)
+				resources.put(resource.ref());
+			try {
+				if (options.watch && absoluteOrLibPath.IsAbsolute)
+					watcher.addFile(absoluteOrLibPath);
+			} catch (...) {}
+		} else {
+			resource->addReference();
+		}
 		co_return resource;
 	}
 
 	CoroutineTask<IntrusivePointer<Resource>> ResourceManager::loadInternal(
 		BaseLoader& loader,
-		const Buffer& buffer,
+		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
-		LoadOption options
+		const WString* name,
+		LoadOptions options
 	) {
-		MemoryInputStream stream(buffer.Data, buffer.Size);
+		auto resource = co_await loadInternal(loader, stream, workingDir, format, options);
+		if (name)
+			resource->Name = name;
+		if (options.cache)
+			resources.put(resource.ref());
+		co_return resource;
+	}
+
+	CoroutineTask<IntrusivePointer<Resource>> ResourceManager::loadInternal(
+		BaseLoader& loader,
+		MemoryInputStream& stream,
+		const DirectoryPath& workingDir,
+		const ResourceFormat& format,
+		LoadOptions options
+	) {
 		IntrusivePointer<Resource> resource;
 		try {
 			resource = co_await loader.load(stream, workingDir, format, options);
@@ -87,7 +119,6 @@ namespace Ghurund::Core {
 			throw exception;
 		}
 
-		resource->validate();
 		co_return resource;
 	}
 
@@ -97,7 +128,7 @@ namespace Ghurund::Core {
 		Buffer& buffer,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
-		SaveOption options
+		SaveOptions options
 	) const {
 		MemoryOutputStream stream;
 		try {
@@ -118,31 +149,6 @@ namespace Ghurund::Core {
 		resource.validate();
 	}
 
-	CoroutineTask<IntrusivePointer<Resource>> ResourceManager::load(
-		BaseLoader& loader,
-		const FilePath& path,
-		const DirectoryPath& workingDir,
-		const ResourceFormat& format,
-		LoadOption options
-	) {
-		const WString cacheKey = getCacheKey(path, workingDir);
-		IntrusivePointer<Resource> resource = IntrusivePointer(resources.get(cacheKey));
-		if (resource == nullptr) {
-			resource = co_await loadInternal(loader, path, workingDir, format, options);
-			auto absolutePath = getAbsolutePath(path, workingDir);
-			resource->Path = &absolutePath;
-			if ((options & LoadOption::DONT_CACHE) != LoadOption::DONT_CACHE)
-				resources.add(cacheKey, resource.ref());
-			try {
-				if ((options & LoadOption::DONT_WATCH) != LoadOption::DONT_WATCH)
-					watcher.addFile(resolvePath(path, workingDir));
-			} catch (...) {}
-		} else {
-			resource->addReference();
-		}
-		co_return resource;
-	}
-
 	const Ghurund::Core::Type& ResourceManager::GET_TYPE() {
 		static const Ghurund::Core::Type TYPE = TypeBuilder<ResourceManager>()
 			.withSupertype(__super::GET_TYPE());
@@ -154,11 +160,11 @@ namespace Ghurund::Core {
 
 	CoroutineTask<void> ResourceManager::reload(Resource& resource) {
 		auto path = *resource.Path;
-		auto workingDir = DirectoryPath::getCurrentDirectory();
 		auto loader = getLoader(resource.Type);
-		SharedPointer<Buffer> buffer = resolveResource(path, workingDir);
+		SharedPointer<Buffer> buffer = resolveResource(path);
 		MemoryInputStream stream(buffer->Data, buffer->Size);
 		try {
+			auto workingDir = DirectoryPath::getCurrentDirectory();
 			co_await loader->load(resource, stream, getLocalDir(path, workingDir), ResourceFormat::AUTO);
 		} catch (std::exception& exception) {
 			auto text = std::format(_T("failed to reload resource `{}`\n"), resource.toString());
@@ -167,17 +173,18 @@ namespace Ghurund::Core {
 		}
 	}
 
-	void ResourceManager::setHotReloadEnabled(bool enabled) {
+	void ResourceManager::setIsHotReloadEnabled(bool enabled) {
 		this->hotReloadEnabled = enabled;
 		if (enabled) {
 			watcher.fileChanged += [this](FileWatcher&, const FileChange& change) {
 				if (change.Type != FileChangeType::MODIFIED) {
-					resources.remove(change.Path.toString());
+					// TODO: is this going to work for resources loaded using different working dirs, for example shaders loaded for materials for models?
+					resources.remove(change.Path);
 					watcher.removeFile(change.Path);
+				} else {
+					auto resource = resources.get(change.Path);
+					onResourceChanged(*resource);
 				}
-				auto resource = IntrusivePointer(resources.get(change.Path.toString()));
-				resource->addReference();
-				onResourceChanged(resource.ref());
 				return true;
 			};
 		} else {
@@ -185,7 +192,7 @@ namespace Ghurund::Core {
 		}
 	}
 
-	/*Status ResourceManager::save(MemoryOutputStream& stream, Resource& resource, const DirectoryPath& workingDir,const ResourceFormat* format, SaveOption options) const {
+	/*Status ResourceManager::save(MemoryOutputStream& stream, Resource& resource, const DirectoryPath& workingDir,const ResourceFormat* format, SaveOptions options) const {
 		size_t index = Ghurund::Core::Type::TYPES.find([&](const std::reference_wrapper<const Ghurund::Core::Type> obj) { return obj.get() == resource.getType(); });
 		stream.writeUInt32((uint32_t)index);
 		if (resource.Path == nullptr) {
@@ -197,4 +204,10 @@ namespace Ghurund::Core {
 			return resource.save(*resource.Path, options);
 		}
 	}*/
+
+#ifdef _DEBUG
+	void ResourceManager::printResources() {
+		resources.printResources();
+	}
+#endif
 }

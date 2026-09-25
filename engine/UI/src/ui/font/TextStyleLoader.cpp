@@ -111,7 +111,7 @@ namespace Ghurund::UI {
 	void TextStyleLoader::saveToBin(TextStyle& textStyle, MemoryOutputStream& stream, const DirectoryPath& workingDir) const {
 		DirectoryPath localDir = [&] {
 			if (textStyle.Path) {
-				return ResourceManager::getLocalDir(*textStyle.Path, workingDir);
+				return resourceManager.getLocalDir(*textStyle.Path, workingDir);
 			} else {
 				return workingDir;
 			}
@@ -138,7 +138,7 @@ namespace Ghurund::UI {
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
-		LoadOption options
+		LoadOptions options
 	) {
 		if (format == ResourceFormat::AUTO) {
 			auto position = stream.Position;
@@ -166,7 +166,7 @@ namespace Ghurund::UI {
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
-		SaveOption options
+		SaveOptions options
 	) const {
 		/*TextStyle& textStyle = castResource<TextStyle>(resource);
 		if (format == ResourceFormat::AUTO || format == TextStyle::FORMAT_XML) {

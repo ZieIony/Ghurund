@@ -25,7 +25,9 @@ namespace Ghurund::Core {
 		inline void init(IntrusivePointer<Feature>& feature) {
 			if (!feature->IsInitialized) {
 				try {
-					feature->init();
+					// TODO: make this async
+					auto coroutine = feature->init();
+					coroutine.resume();
 					initialized.add(feature);
 				} catch (std::exception e) {
 					throw e;

@@ -172,7 +172,7 @@ namespace Ghurund::Engine {
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
-        LoadOption options
+        LoadOptions options
     ) {
         loadData(resource, stream);
         co_return;

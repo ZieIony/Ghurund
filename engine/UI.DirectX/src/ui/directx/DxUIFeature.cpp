@@ -22,7 +22,7 @@ namespace Ghurund::UI::DirectX {
         return TYPE;
     }
 
-    void DxUIFeature::onInit() {
+    CoroutineTask<void> DxUIFeature::onInit() {
         commandList = makeIntrusive<CommandList>();
         // TODO: use CopyQueue, but first implement CommandList compatible with copy queue
 		commandList->init(graphics, *graphics.DirectQueue);
@@ -42,6 +42,8 @@ namespace Ghurund::UI::DirectX {
         layoutLoader = makeIntrusive<Ghurund::UI::LayoutLoader>(resourceManager, *constraintFactory);
         layoutLoader->PropertyLoaders.add(std::make_unique<UIMaterialPropertyLoader>(resourceManager, materialLoader.ref()));
         resourceManager.Loaders.set<Control>(layoutLoader.ref());
+
+        co_return;
     }
     
     void DxUIFeature::onUninit() {

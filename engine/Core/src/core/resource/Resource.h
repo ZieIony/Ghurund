@@ -3,6 +3,7 @@
 #include "ResourceFormat.h"
 
 #include "core/io/FilePath.h"
+#include "core/object/NamedObject.h"
 #include "core/object/RefCountedObject.h"
 #include "core/Event.h"
 
@@ -16,7 +17,7 @@ namespace Ghurund::Core {
 	class MemoryOutputStream;
 	class File;
 
-	class Resource: public RefCountedObject {
+	class Resource: public RefCountedObject, public WStringNamedObject {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -67,6 +68,9 @@ namespace Ghurund::Core {
 			return path;
 		}
 
+		/**
+		* Also sets resource name to path/nullptr if name == path.
+		**/
 		void setPath(const FilePath* path);
 
 		__declspec(property(get = getPath, put = setPath)) FilePath* Path;

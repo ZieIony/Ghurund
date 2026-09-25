@@ -31,7 +31,7 @@ public:
 	}
 
 	TEST_METHOD_CLEANUP(ResourceManagerTest_cleanup) {
-		resourceManager.clearCache();
+		resourceManager.Resources.clear();
 		resourceManager.Loaders.clear();
 		resourceManager.Libraries.clear();
 		testLoader.set(nullptr);
@@ -49,7 +49,7 @@ public:
 			auto dir = DirectoryPath::getCurrentDirectory();
 
 			IntrusivePointer<TestResource> resource = runCoroutineBlocking(
-				resourceManager.load<TestResource>(path, dir, ResourceFormat::AUTO, LoadOption::DONT_CACHE)
+				resourceManager.load<TestResource>(path, dir, ResourceFormat::AUTO, nullptr, { .cache = false })
 			);
 
 			Assert::AreEqual(resource->text, AString("test"));
@@ -76,11 +76,11 @@ public:
 			Assert::AreEqual(getCalls + 1, library.getCalls);
 			Assert::AreEqual(loadCalls + 1, testLoader->loadCalls);
 
-			resourceManager.clearCache();
+			resourceManager.Resources.clear();
 		}
 	}
 
-	TEST_METHOD(ResourceManager_loadFromBuffer) {
+	TEST_METHOD(ResourceManager_loadFromMemory) {
 		MemoryGuard mg;
 		ObjectGuard og;
 		{
@@ -88,10 +88,10 @@ public:
 			size_t getCalls = library.getCalls;
 			size_t loadCalls = testLoader->loadCalls;
 
-			Buffer buffer((const void*)"test", 5);
+			MemoryInputStream stream((const void*)"test", 5);
 
 			IntrusivePointer<TestResource> resource = runCoroutineBlocking(
-				resourceManager.load<TestResource>(buffer, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, LoadOption::DONT_CACHE)
+				resourceManager.load<TestResource>(stream, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, nullptr, { .cache = false })
 			);
 
 			Assert::AreEqual(resource->text, AString("test"));

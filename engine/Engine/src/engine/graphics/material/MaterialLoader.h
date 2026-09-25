@@ -16,7 +16,7 @@ namespace Ghurund::Engine {
 			const XMLElement& xml,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
-			LoadOption options
+			LoadOptions options
 		) override;
 
 		virtual CoroutineTask<void> onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value);
@@ -26,7 +26,7 @@ namespace Ghurund::Engine {
 			MemoryOutputStream& stream,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
-			SaveOption options
+			SaveOptions options
 		) const override;
 
 	public:

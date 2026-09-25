@@ -2,19 +2,19 @@
 
 #include "Common.h"
 #include "core/object/Noncopyable.h"
-#include "core/threading/CriticalSection.h"
 #include "Formatter.h"
 #include "LogOutput.h"
 #include "LogType.h"
 #include "core/collection/Set.h"
 
 #include <cstdint>
+#include <mutex>
 
 namespace Ghurund::Core {
     class Logger:public Noncopyable {
     private:
         static HANDLE process;
-        static CriticalSection criticalSection;
+        static std::mutex mutex;
         static LogTypeEnum filterLevel;
 
         static LogOutput* logOutput;
@@ -45,9 +45,8 @@ namespace Ghurund::Core {
             if (((int)type.Value) < (int)filterLevel)
                 return;
 
-            criticalSection.enter();
+            std::unique_lock lock(mutex);
             logOutput->log({ type, _T(""), text });
-            criticalSection.leave();
         }
     };
 }

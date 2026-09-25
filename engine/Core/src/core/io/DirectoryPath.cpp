@@ -81,13 +81,13 @@ namespace Ghurund::Core {
     }
 
     DirectoryPath DirectoryPath::combine(const DirectoryPath& dir) const {
-        if (dir.IsAbsolute)
+        if (dir.IsAbsolute || dir.IsLibrary)
             return dir;
         return DirectoryPath(combineStr(dir.toString()));
     }
 
     FilePath DirectoryPath::combine(const FilePath& file) const {
-        if (file.IsAbsolute)
+        if (file.IsAbsolute || file.IsLibrary)
             return file;
         return FilePath(combineStr(file.toString()));
     }

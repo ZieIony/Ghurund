@@ -18,10 +18,11 @@ namespace Ghurund::Engine {
 		audio.uninit();
 	}
 
-	void AudioFeature::onInit() {
+	CoroutineTask<void> AudioFeature::onInit() {
 		audio.init();
 		soundLoader = makeIntrusive<SoundLoader>(audio);
 		resourceManager.Loaders.set<Sound>(soundLoader.ref());
+		co_return;
 	}
 
 	void AudioFeature::onUninit() {

@@ -3,21 +3,54 @@
 #include "Resource.h"
 #include "core/object/IntrusivePointer.h"
 #include "core/collection/Map.h"
-#include "core/threading/CriticalSection.h"
+
+#include <mutex>
 
 namespace Ghurund::Core {
 	class ResourceCollection {
 	private:
-		Map<WString, IntrusivePointer<Resource>> resources;
-		CriticalSection section;
+		Map<WString, IntrusivePointer<Resource>> resourcesByName;
+		Map<FilePath, IntrusivePointer<Resource>> resourcesByPath;
+		std::mutex mutex;
 
 	public:
-		Resource* get(const WString& path);
+		/**
+		* Thread-safe.
+		**/
+		Resource* get(const WString& name);
 
-		void add(const WString& path, Resource& resource);
+		/**
+		* Thread-safe. ResourceManager uses absolute paths if possible.
+		**/
+		Resource* get(const FilePath& path);
 
-		void remove(const WString& path);
+		/**
+		* Thread-safe.
+		**/
+		void put(NotNull<Resource> resource);
 
+		/**
+		* Thread-safe.
+		**/
+		void remove(NotNull<Resource> resource);
+
+		/**
+		* Thread-safe.
+		**/
+		void remove(const WString& name);
+
+		/**
+		* Thread-safe. ResourceManager uses absolute paths if possible.
+		**/
+		void remove(const FilePath& path);
+
+		/**
+		* Thread-safe.
+		**/
 		void clear();
+
+#ifdef _DEBUG
+		void printResources();
+#endif
 	};
 }

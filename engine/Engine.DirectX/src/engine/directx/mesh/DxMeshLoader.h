@@ -19,7 +19,7 @@ namespace Ghurund::Engine::DirectX {
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
-            LoadOption options
+            LoadOptions options
         ) override;
 
     public:

@@ -7,7 +7,7 @@ namespace Ghurund::Engine {
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
-		LoadOption options
+		LoadOptions options
 	) {
 		checkXmlRoot(xml, L"TextureAtlas");
 	
@@ -15,7 +15,7 @@ namespace Ghurund::Engine {
 		if (!textureAttribute)
 			throw InvalidDataException();
 		auto texturePath = FilePath(*textureAttribute);
-		auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, options);
+		auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, nullptr, options);
 
 		IntSize size = [&] {
 			auto sizeAttribute = xml.findAttribute(L"size");

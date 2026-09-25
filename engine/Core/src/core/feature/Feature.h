@@ -1,12 +1,12 @@
 #pragma once
 
-#include "core/object/Initializable.h"
+#include "core/object/AsyncInitializable.h"
 #include "core/object/RefCountedObject.h"
 
 namespace Ghurund::Core {
 	using namespace Ghurund::Core;
 
-	class Feature:public RefCountedObject, public Initializable {
+	class Feature:public RefCountedObject, public AsyncInitializable {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {

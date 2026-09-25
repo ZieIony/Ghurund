@@ -153,7 +153,7 @@ namespace Ghurund::Core {
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const Ghurund::Core::ResourceFormat& format,
-        Ghurund::Core::LoadOption options
+        Ghurund::Core::LoadOptions options
     ) {
         IWICBitmapDecoder* wicDecoder = nullptr;
         IWICBitmapFrameDecode* wicFrame = nullptr;
@@ -230,7 +230,7 @@ namespace Ghurund::Core {
         MemoryOutputStream& stream,
         const DirectoryPath& workingDir,
         const Ghurund::Core::ResourceFormat& format,
-        Ghurund::Core::SaveOption options
+        Ghurund::Core::SaveOptions options
     ) const {
         GUID guidContainerFormat = (format == ResourceFormat::AUTO || format == Image::FORMAT_PNG) ? GUID_ContainerFormatPng : GUID_ContainerFormatJpeg;
 

@@ -10,7 +10,7 @@ namespace Ghurund::UI {
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
-        LoadOption options
+        LoadOptions options
     ) {
         resource.init(stream.Data, stream.Size);
         co_return;

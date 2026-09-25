@@ -9,7 +9,7 @@ namespace Ghurund::Engine::_2D {
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
-		LoadOption options
+		LoadOptions options
 	) {
 		checkXmlRoot(xml, L"SpriteAnimationSet");
 
@@ -27,7 +27,7 @@ namespace Ghurund::Engine::_2D {
 				if (!durationAttribute)
 					throw InvalidFormatException();
 				auto texturePath = FilePath(*textureAttribute);
-				auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, options);
+				auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, nullptr, options);
 				animation->addFrame(texture.ref(), parse<float>(convertText<wchar_t, char>(*durationAttribute)));
 			}
 			resource.add(animation.get());
@@ -39,7 +39,7 @@ namespace Ghurund::Engine::_2D {
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
-		SaveOption options
+		SaveOptions options
 	) const {
 		/*tinyxml2::XMLDocument document;
 		auto root = document.NewElement("SpriteAnimationSet");

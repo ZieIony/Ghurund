@@ -10,6 +10,7 @@
 #include "core/io/File.h"
 #include "core/io/FilePath.h"
 #include "core/io/LibraryCollection.h"
+#include "core/io/MemoryInputStream.h"
 #include "core/io/watcher/FileWatcher.h"
 #include "core/loading/Loader.h"
 #include "core/loading/LoaderCollection.h"
@@ -41,39 +42,35 @@ namespace Ghurund::Core {
 		FileWatcher watcher;
 		bool hotReloadEnabled = false;
 
-		inline WString getCacheKey(const FilePath& path, const DirectoryPath& workingDir) const {
-			try {
-				return resolvePath(path, workingDir).toString();
-			} catch (...) {
-				return getAbsolutePath(path, workingDir).toString();
-			}
-		}
-
 		BaseLoader* getLoader(const Ghurund::Core::Type& type) const;
 
 		[[nodiscard]]
-		CoroutineTask<IntrusivePointer<Resource>> load(
-			BaseLoader& loader,
-			const FilePath& path,
-			const DirectoryPath& workingDir,
-			const ResourceFormat& format,
-			LoadOption options
-		);
-
 		CoroutineTask<IntrusivePointer<Resource>> loadInternal(
 			BaseLoader& loader,
 			const FilePath& path,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
-			LoadOption options
+			const WString* name,
+			LoadOptions options
 		);
 
+		[[nodiscard]]
 		CoroutineTask<IntrusivePointer<Resource>> loadInternal(
 			BaseLoader& loader,
-			const Buffer& buffer,
+			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
-			LoadOption options
+			const WString* name,
+			LoadOptions options
+		);
+
+		[[nodiscard]]
+		CoroutineTask<IntrusivePointer<Resource>> loadInternal(
+			BaseLoader& loader,
+			MemoryInputStream& stream,
+			const DirectoryPath& workingDir,
+			const ResourceFormat& format,
+			LoadOptions options
 		);
 
 		void saveInternal(
@@ -82,13 +79,14 @@ namespace Ghurund::Core {
 			Buffer& buffer,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
-			SaveOption options
+			SaveOptions options
 		) const;
 
 		void onResourceChanged(Resource& resource) {
 			scheduler.launch(reloadResource(resource));
 		}
 
+		[[nodiscard]]
 		CoroutineTask<void> reloadResource(Resource& resource);
 
 	public:
@@ -97,48 +95,66 @@ namespace Ghurund::Core {
 		inline static const WString LIB_PROTOCOL = L"lib://";
 
 		explicit ResourceManager(CoroutineScheduler& scheduler):scheduler(scheduler) {
-			HotReloadEnabled
+			IsHotReloadEnabled =
 #ifdef _DEBUG
-			= true;
+			true;
 #else
-			= false;
+			false;
 #endif
 		}
 
-		FilePath resolvePath(const FilePath& path, const DirectoryPath& workingDir) const;
+		FilePath resolvePath(const FilePath& absoluteOrLibPath) const;
 
-		SharedPointer<Buffer> resolveResource(const FilePath& path, const DirectoryPath& workingDir) const;
+		SharedPointer<Buffer> resolveResource(const FilePath& absoluteOrLibPath) const;
 
-		static inline FilePath getAbsolutePath(const FilePath& path, const DirectoryPath& workingDir) {
-			if (path.IsAbsolute) {
+		static inline FilePath getAbsoluteOrLibPath(const FilePath& path, const DirectoryPath& workingDir) {
+			if (path.IsAbsolute || path.IsLibrary) {
 				return path;
-			} else if (workingDir.IsAbsolute) {
+			} else if (workingDir.IsAbsolute || workingDir.IsLibrary) {
 				return workingDir / path;
 			} else {
 				return workingDir.AbsolutePath / path;
 			}
 		}
 
-		static inline DirectoryPath getLocalDir(const FilePath& path, const DirectoryPath& workingDir) {
-			return getAbsolutePath(path, workingDir).Directory;
-		}
-
-		inline LoaderCollection& getLoaders() {
-			return loaders;
-		}
-
-		__declspec(property(get = getLoaders)) LoaderCollection& Loaders;
-
-		inline void clearCache() {
-			resources.clear();
-		}
-
-		inline void removeFromCache(Resource* resource, DirectoryPath workingDir) {
-			const FilePath* path = resource->Path;
-			if (path) {
-				const WString cacheKey = getCacheKey(*path, workingDir);
-				resources.remove(cacheKey);
+		inline DirectoryPath getLocalDir(const FilePath& path, const DirectoryPath& workingDir) {
+			if (path.IsAbsolute) {
+				return path.Directory;
+			}else if(path.IsLibrary){
+				return resolvePath(path).Directory;
+			} else {
+				return workingDir;
 			}
+		}
+
+		inline void removeFromCache(
+			const FilePath& path,
+			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory()
+		) {
+			auto absolutePath = getAbsoluteOrLibPath(path, workingDir);
+			resources.remove(absolutePath);
+		}
+
+		template<Derived<Resource> T>
+		[[nodiscard]]
+		IntrusivePointer<T> get(const WString& name) {
+			Resource* resource = resources.get(name);
+			if (resource)
+				resource->addReference();
+			return IntrusivePointer<T>((T*)resource);
+		}
+
+		template<Derived<Resource> T>
+		[[nodiscard]]
+		IntrusivePointer<T> get(
+			const FilePath& path,
+			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory()
+		) {
+			auto cachePath = getAbsoluteOrLibPath(path, workingDir);
+			Resource* resource = resources.get(cachePath);
+			if (resource)
+				resource->addReference();
+			return IntrusivePointer<T>((T*)resource);
 		}
 
 		CoroutineTask<void> reload(Resource& resource);
@@ -149,10 +165,11 @@ namespace Ghurund::Core {
 			const FilePath& path,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			LoadOption options = LoadOption::DEFAULT
+			const WString* name = nullptr,
+			LoadOptions options = {}
 		) {
 			BaseLoader* loader = getLoader(Ghurund::Core::getType<T>());
-			IntrusivePointer<Resource> resource = co_await load(*loader, path, workingDir, format, options);
+			IntrusivePointer<Resource> resource = co_await loadInternal(*loader, path, workingDir, format, name, options);
 			resource->addReference();
 			co_return IntrusivePointer<T>((T*)resource.get());
 		}
@@ -160,13 +177,14 @@ namespace Ghurund::Core {
 		template<Derived<Resource> T>
 		[[nodiscard]]
 		CoroutineTask<IntrusivePointer<T>> load(
-			const Buffer& buffer,
+			MemoryInputStream& stream,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			LoadOption options = LoadOption::DEFAULT
+			const WString* name = nullptr,
+			LoadOptions options = {}
 		) {
 			BaseLoader* loader = getLoader(Ghurund::Core::getType<T>());
-			IntrusivePointer<Resource> resource = co_await loadInternal(*loader, buffer, workingDir, format, options);
+			IntrusivePointer<Resource> resource = co_await loadInternal(*loader, stream, workingDir, format, name, options);
 			resource->addReference();
 			co_return IntrusivePointer<T>((T*)resource.get());
 		}
@@ -174,12 +192,12 @@ namespace Ghurund::Core {
 		template<Derived<Resource> T>
 		void save(
 			T& resource,
+			Buffer& buffer,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			SaveOption options = SaveOption::DEFAULT
+			SaveOptions options = {}
 		) const {
 			const Loader* loader = getLoader(Ghurund::Core::getType<T>());
-			Buffer buffer;
 			saveInternal(resource, *loader, buffer, workingDir, format, options);
 		}
 
@@ -189,9 +207,9 @@ namespace Ghurund::Core {
 			const FilePath& path,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			SaveOption options = SaveOption::DEFAULT
+			SaveOptions options = {}
 		) const {
-			auto absolutePath = getAbsolutePath(path, workingDir);
+			auto absolutePath = getAbsoluteOrLibPath(path, workingDir);
 			resource.Path = &absolutePath;
 			const BaseLoader* loader = getLoader(Ghurund::Core::getType<T>());
 			//Library* library = path.findLibrary(libraries);
@@ -206,18 +224,34 @@ namespace Ghurund::Core {
 			//}
 		}
 
-		void setHotReloadEnabled(bool enabled);
-
-		inline bool isHotReloadEnabled() const {
-			return hotReloadEnabled;
+		inline ResourceCollection& getResources() {
+			return resources;
 		}
 
-		__declspec(property(get = isHotReloadEnabled, put = setHotReloadEnabled)) bool HotReloadEnabled;
+		__declspec(property(get = getResources)) ResourceCollection& Resources;
+
+		inline LoaderCollection& getLoaders() {
+			return loaders;
+		}
+
+		__declspec(property(get = getLoaders)) LoaderCollection& Loaders;
 
 		LibraryCollection& getLibraries() {
 			return libraries;
 		}
 
 		__declspec(property(get = getLibraries)) LibraryCollection& Libraries;
+
+		void setIsHotReloadEnabled(bool enabled);
+
+		inline bool getIsHotReloadEnabled() const {
+			return hotReloadEnabled;
+		}
+
+		__declspec(property(get = getIsHotReloadEnabled, put = setIsHotReloadEnabled)) bool IsHotReloadEnabled;
+
+#ifdef _DEBUG
+		void printResources();
+#endif
 	};
 }

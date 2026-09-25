@@ -7,7 +7,7 @@
 namespace Ghurund::Engine::_3D {
 	using namespace Ghurund::Core;
 
-	/*void Scene::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+	/*void Scene::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOptions options) {
         context.Allocators.set(DrawableComponent::TYPE, DrawingSystem.Allocator);
 		size_t size = stream.readUInt32();
 		for (size_t i = 0; i < size; i++) {
@@ -21,7 +21,7 @@ namespace Ghurund::Engine::_3D {
 		throw NotImplementedException();
 	}*/
 
-	/*void Scene::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+	/*void Scene::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOptions options) const {
 		stream.writeUInt32((uint32_t)entities.Size);
 		for (size_t i = 0; i < entities.Size; i++) {
 			Status result = context.ResourceManager.save(*entities[i], context, workingDir, stream, options);

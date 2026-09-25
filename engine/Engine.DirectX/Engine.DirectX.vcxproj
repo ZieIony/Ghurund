@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\directx\resource\DxGraphicsResourceFactory.h" />
     <ClInclude Include="src\Ghurund.Engine.DirectX.h" />
     <ClInclude Include="src\engine\directx\CommandList.h" />
     <ClInclude Include="src\engine\directx\DirectXTypes.h" />
@@ -120,7 +121,6 @@
     <ClInclude Include="src\engine\directx\shader\DxConstantBuffer.h" />
     <ClInclude Include="src\engine\directx\shader\DxShader.h" />
     <ClInclude Include="src\engine\directx\shader\DxShaderLoader.h" />
-    <ClInclude Include="src\engine\directx\shader\DxShaderProvider.h" />
     <ClInclude Include="src\engine\directx\shader\DxShaderSource.h" />
     <ClInclude Include="src\engine\directx\shader\DxShaderType.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\CompilationTarget.h" />
@@ -139,7 +139,6 @@
     <ClInclude Include="src\engine\directx\texture\DxTexture.h" />
     <ClInclude Include="src\engine\directx\texture\DxTextureFactory.h" />
     <ClInclude Include="src\engine\directx\texture\DxTextureLoader.h" />
-    <ClInclude Include="src\engine\directx\texture\DxTextureProvider.h" />
     <ClInclude Include="src\ghedxpch.h" />
   </ItemGroup>
   <ItemGroup>

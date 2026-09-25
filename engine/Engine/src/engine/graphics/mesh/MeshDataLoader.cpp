@@ -99,7 +99,7 @@ namespace Ghurund::Engine {
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
 		const Ghurund::Core::ResourceFormat& format,
-		Ghurund::Core::LoadOption options
+		Ghurund::Core::LoadOptions options
 	) {
 		loadAssimp(resource, stream);
 		co_return;
@@ -110,7 +110,7 @@ namespace Ghurund::Engine {
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,
 		const Ghurund::Core::ResourceFormat& format,
-		Ghurund::Core::SaveOption options
+		Ghurund::Core::SaveOptions options
 	) const {
 		writeHeader<MeshData>(stream);
 

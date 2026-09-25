@@ -2,6 +2,7 @@
 #include "BaseSpriteComponent.h"
 
 #include "engine/2d/World2D.h"
+#include "engine/2d/Graphics2DFeature.h"
 
 namespace Ghurund::Engine::_2D {
 	const Ghurund::Core::Type& BaseSpriteComponent::GET_TYPE() {
@@ -12,8 +13,9 @@ namespace Ghurund::Engine::_2D {
 	}
 
 	CoroutineTask<void> BaseSpriteComponent::onInit() {
-		Mesh = IntrusivePointer(Owner.World.context.makeSpriteMesh()).get();
-		Material = (co_await Owner.World.context.makeSpriteMaterial()).get();
+		Mesh = Owner.World.app.ResourceManager.get<Ghurund::Engine::Mesh>(Graphics2DFeature::MESH_SPRITE).get();;
+		Material = Owner.World.app.ResourceManager.get<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_SPRITE)->clone();
+		co_return;
 	}
 
 	void BaseSpriteComponent::queueDraw(RenderGroup& group) {

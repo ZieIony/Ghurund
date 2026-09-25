@@ -3,6 +3,7 @@
 #include <Windows.h>
 
 namespace Ghurund::Core {
+    // TODO: replace with std::mutex and std::unique_lock or std::guard_lock
     class CriticalSection {
     private:
         CRITICAL_SECTION section;

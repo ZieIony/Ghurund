@@ -18,7 +18,7 @@ namespace Ghurund::Engine::_3D {
         return TYPE;
     }
 
-    void Physics::onInit() {
+    CoroutineTask<void> Physics::onInit() {
         foundation = PxCreateFoundation(PX_PHYSICS_VERSION, defaultAllocatorCallback, defaultErrorCallback);
         if (!foundation) {
             Logger::log(LogType::ERR0R, _T("PxCreateFoundation failed\n"));
@@ -38,5 +38,18 @@ namespace Ghurund::Engine::_3D {
             Logger::log(LogType::ERR0R, _T("PxCreatePhysics failed\n"));
             throw CallFailedException();
         }
+
+        co_return;
+    }
+    
+    void Physics::onUninit() {
+        if (physics)
+            physics->release();
+        if (transport)
+            transport->release();
+        if (visualDebugger)
+            visualDebugger->release();
+        if (foundation)
+            foundation->release();
     }
 }

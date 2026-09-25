@@ -13,7 +13,7 @@ namespace Ghurund::Core {
 
         resourceManager.Libraries.clear();
         resourceManager.Loaders.clear();
-        resourceManager.clearCache();
+        resourceManager.Resources.clear();
 
         features.uninit();
 

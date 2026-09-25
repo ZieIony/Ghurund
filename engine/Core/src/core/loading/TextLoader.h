@@ -14,7 +14,7 @@ namespace Ghurund::Core {
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
-            LoadOption options
+            LoadOptions options
         ) override {
             resource.Text = stream.readASCII();
         }

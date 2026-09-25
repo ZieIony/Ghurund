@@ -2,10 +2,7 @@
 
 #include "core/application/Application.h"
 #include "engine/audio/AudioFeature.h"
-#include "engine/graphics/GraphicsFeature.h"
-#include "engine/graphics/GraphicsFeatureFactory.h"
 #include "engine/audio/AudioFeatureFactory.h"
-#include "engine/game/system/System.h"
 #include "engine/game/system/SystemCollection.h"
 
 namespace Ghurund::Engine {
@@ -33,7 +30,6 @@ namespace Ghurund::Engine {
 
     public:
         GameApplication() {
-            Features.add<GraphicsFeature, GraphicsFeatureFactory>();
             Features.add<AudioFeature, AudioFeatureFactory>();
         }
 

@@ -54,7 +54,7 @@ public:
             auto dir = DirectoryPath::getCurrentDirectory();
 
             auto thudSound = runCoroutineBlocking(
-                resourceManager.load<Sound>(path, dir, ResourceFormat::AUTO, LoadOption::DONT_WATCH | LoadOption::DONT_CACHE)
+                resourceManager.load<Sound>(path, dir, ResourceFormat::AUTO, nullptr, { .watch = false, .cache = false })
             );
             thudSound->invalidate();
             thudSound->invalidate();

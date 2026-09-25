@@ -73,7 +73,7 @@ namespace Ghurund::UI {
 	void FontAtlasLoader::saveToBin(FontAtlas& atlas, MemoryOutputStream& stream, const DirectoryPath& workingDir) const {
 		DirectoryPath localDir = [&] {
 			if (atlas.Path) {
-				return ResourceManager::getLocalDir(*atlas.Path, workingDir);
+				return resourceManager.getLocalDir(*atlas.Path, workingDir);
 			} else {
 				return workingDir;
 			}
@@ -103,7 +103,7 @@ namespace Ghurund::UI {
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
-		LoadOption options
+		LoadOptions options
 	) {
 		if (format == ResourceFormat::AUTO) {
 			XMLDocument doc;
@@ -128,7 +128,7 @@ namespace Ghurund::UI {
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
-		SaveOption options
+		SaveOptions options
 	) const {
 		if (format == ResourceFormat::AUTO || format == FontAtlas::FORMAT_XML) {
 			//saveToXml(fontAtlas, document, xml, workingDir);

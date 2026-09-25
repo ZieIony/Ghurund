@@ -24,14 +24,22 @@ namespace Ghurund::Core {
         delete this->path;
         if (path) {
             this->path = ghnew FilePath(*path);
+			if (!Name)
+				Name = path->toString();
         } else {
+			if (*Name == this->path->toString())
+				Name = nullptr;
             this->path = nullptr;
         }
 	}
 
 	String Resource::toString() const {
-		if (path) {
-			return String(std::format(_T("{}, path: {}"), __super::toString(), path->toString()).c_str());
+		if (Name) {
+			String nameStr = convertText<wchar_t, tchar>(*Name);
+			return nameStr;
+		} else if (path) {
+			String pathStr = convertText<wchar_t, tchar>(path->toString());
+			return pathStr;
 		} else {
 			return __super::toString();
 		}

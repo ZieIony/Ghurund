@@ -8,10 +8,10 @@
 #include "core/logging/Logger.h"
 #include "core/object/RefCountedObject.h"
 #include "core/reflection/Type.h"
-#include "core/resource/LoadOption.h"
+#include "core/resource/LoadOptions.h"
 #include "core/resource/Resource.h"
 #include "core/resource/ResourceFormat.h"
-#include "core/resource/SaveOption.h"
+#include "core/resource/SaveOptions.h"
 #include "core/xml/XMLElement.h"
 #include "core/coroutine/CoroutineTask.h"
 #include "core/object/IntrusivePointer.h"
@@ -85,17 +85,18 @@ namespace Ghurund::Core {
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			LoadOption options = LoadOption::DEFAULT
+			LoadOptions options = {}
 		) = 0;
 
 		virtual CoroutineTask<IntrusivePointer<Resource>> load(
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			LoadOption options = LoadOption::DEFAULT
+			LoadOptions options = {}
 		) {
 			auto resource = IntrusivePointer(makeResource());
 			co_await load(resource.ref(), stream, workingDir, format, options);
+			resource->validate();
 			co_return resource;
 		}
 
@@ -104,17 +105,18 @@ namespace Ghurund::Core {
 			const XMLElement& xml,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			LoadOption options = LoadOption::DEFAULT
+			LoadOptions options = {}
 		) = 0;
 
 		virtual CoroutineTask<IntrusivePointer<Resource>> load(
 			const XMLElement& xml,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			LoadOption options = LoadOption::DEFAULT
+			LoadOptions options = {}
 		) {
 			auto resource = IntrusivePointer(makeResource());
 			co_await load(resource.ref(), xml, workingDir, format, options);
+			resource->validate();
 			co_return resource;
 		}
 
@@ -123,7 +125,7 @@ namespace Ghurund::Core {
 			MemoryOutputStream& stream,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			SaveOption options = SaveOption::DEFAULT
+			SaveOptions options = {}
 		) const = 0;
 
 		virtual void save(
@@ -131,7 +133,7 @@ namespace Ghurund::Core {
 			const XMLElement& xml,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			SaveOption options = SaveOption::DEFAULT
+			SaveOptions options = {}
 		) const = 0;
 	};
 }

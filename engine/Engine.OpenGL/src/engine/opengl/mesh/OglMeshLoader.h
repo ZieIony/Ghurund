@@ -18,7 +18,7 @@ namespace Ghurund::Engine::OpenGL {
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
-            Ghurund::Core::LoadOption options
+            Ghurund::Core::LoadOptions options
         ) override;
     };
 }
