@@ -35,7 +35,10 @@ namespace Ghurund::Engine::_2D {
 		mesh = graphicsFeature->ResourceFactory.makeMesh(tileMapMeshData.ref());
 
 		// TODO: clone materials in a more transparent way
-		Material = Owner.World.app.ResourceManager.get<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_SPRITE)->clone();
+		auto spriteMaterial = IntrusivePointer<Ghurund::Engine::Material>(
+			Owner.World.app.ResourceManager.get<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_SPRITE)->clone()
+		);
+		Material = spriteMaterial.get();
 
 		co_return;
 	}

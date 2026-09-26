@@ -22,7 +22,7 @@ namespace Ghurund::Engine::_3D {
 		Camera3D* camera;
 
 	public:
-		CameraComponent3D(NotNull<Entity3D> owner, World3D& world):Component3D(owner, world) {
+		CameraComponent3D(NotNull<Entity3D> owner):Component3D(owner) {
 			camera = ghnew Camera3D();
 		}
 

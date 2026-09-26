@@ -46,7 +46,9 @@ namespace Ghurund::Engine::_3D {
 
 	public:
 		Entity3D(World3D& world):world(world) {
-			transformComponent = makeComponent<TransformComponent3D>();
+			auto component = makeComponent<TransformComponent3D>();
+			component->addReference();
+			transformComponent = component.get();
 			components.add(transformComponent);
 			drawGroup = DrawGroup(DrawGroup::DEFAULT_GROUP_ORDER, DrawOrder::BACK_TO_FRONT);
 		}
@@ -77,8 +79,8 @@ namespace Ghurund::Engine::_3D {
 		__declspec(property(get = getComponents)) Component3DCollection& Components;
 
 		template<Derived<Component3D> T>
-		inline T* makeComponent() {
-			return ghnew T(*this, world);
+		inline IntrusivePointer<T> makeComponent() {
+			return makeIntrusive<T>(*this);
 		}
 
 		virtual void fixedUpdate(const Timer& timer) override;

@@ -18,9 +18,9 @@ namespace Ghurund::Engine::_2D::DirectX {
 	void DxGraphics2DFeature::uninitDxGraphicsFeature() {
 		resourceManager.Resources.remove(MESH_SPRITE);
 		resourceManager.Resources.remove(MATERIAL_SPRITE);
-		resourceManager.Resources.remove(MATERIAL_BOX_VISUALIZATION);
-		resourceManager.Resources.remove(MATERIAL_CAPSULE_VISUALIZATION);
-		resourceManager.Resources.remove(MATERIAL_SEGMENT_VISUALIZATION);
+		resourceManager.Resources.remove(MATERIAL_VISUALIZATION_BOX);
+		resourceManager.Resources.remove(MATERIAL_VISUALIZATION_CAPSULE);
+		resourceManager.Resources.remove(MATERIAL_VISUALIZATION_SEGMENT);
 	}
 
 	CoroutineTask<void> DxGraphics2DFeature::onInit() {
@@ -41,15 +41,15 @@ namespace Ghurund::Engine::_2D::DirectX {
 		);
 		co_await resourceManager.load<Material>(
 			ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/2d/box.xml"),
-			workingDir, ResourceFormat::AUTO, &MATERIAL_BOX_VISUALIZATION
+			workingDir, ResourceFormat::AUTO, &MATERIAL_VISUALIZATION_BOX
 		);
 		co_await resourceManager.load<Material>(
 			ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/2d/capsule.xml"),
-			workingDir, ResourceFormat::AUTO, &MATERIAL_CAPSULE_VISUALIZATION
+			workingDir, ResourceFormat::AUTO, &MATERIAL_VISUALIZATION_CAPSULE
 		);
 		co_await resourceManager.load<Material>(
 			ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/2d/segment.xml"),
-			workingDir, ResourceFormat::AUTO, &MATERIAL_SEGMENT_VISUALIZATION
+			workingDir, ResourceFormat::AUTO, &MATERIAL_VISUALIZATION_SEGMENT
 		);
 	}
 

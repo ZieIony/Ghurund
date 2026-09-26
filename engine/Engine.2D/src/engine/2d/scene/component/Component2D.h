@@ -24,7 +24,6 @@ namespace Ghurund::Engine::_2D {
 
 	protected:
 		float drawOrder = 0;
-		Component2D* parent = nullptr;
 		Entity2D& owner;
 
 	public:

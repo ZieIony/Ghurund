@@ -22,9 +22,6 @@ namespace Ghurund::Engine::_3D {
 		right(XMFLOAT3(1, 0, 0)),
 		dist(1.0f) {
 
-		float rotation = 0.0f;
-		//setPositionTargetUp(XMFLOAT3(sin(rotation) * 600, 200, cos(rotation) * 600), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
-
 		parameterDirection = ghnew Float3Parameter(CAMERA_DIRECTION);
 		parameterPosition = ghnew Float3Parameter(CAMERA_POSITION);
 		parameterTarget = ghnew Float3Parameter(CAMERA_TARGET);

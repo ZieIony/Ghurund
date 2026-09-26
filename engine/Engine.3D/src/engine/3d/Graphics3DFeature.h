@@ -24,7 +24,10 @@ namespace Ghurund::Engine::_3D {
         ResourceManager& resourceManager;
 
     public:
-        inline static const WString MESH_QUAD = L"quad mesh";
+        inline static const WString MESH_CUBE = L"gh cube mesh";
+
+        inline static const WString MATERIAL_BASIC = L"gh basic material";
+        inline static const WString MATERIAL_VISUALIZATION_NORMALS = L"gh normals visualization material";
 
         Graphics3DFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 

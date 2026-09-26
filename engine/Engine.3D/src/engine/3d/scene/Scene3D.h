@@ -31,6 +31,7 @@ namespace Ghurund::Engine::_3D {
         Scene3D(
             GameObjectUpdateCollection& gameObjectsUpdate
         ):gameObjectsUpdate(gameObjectsUpdate) {
+            camera = ghnew Camera3D();
         }
 
         ~Scene3D() {

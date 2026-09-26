@@ -22,7 +22,7 @@ namespace Ghurund::Engine::_3D {
 		Light* light;
 
 	public:
-		LightComponent3D(NotNull<Entity3D> owner, World3D& world):Component3D(owner, world) {
+		LightComponent3D(NotNull<Entity3D> owner):Component3D(owner) {
 			light = ghnew Ghurund::Engine::_3D::Light();
 		}
 

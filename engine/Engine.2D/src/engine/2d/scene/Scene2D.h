@@ -31,6 +31,7 @@ namespace Ghurund::Engine::_2D {
         Scene2D(
             GameObjectUpdateCollection& gameObjectsUpdate
 		):gameObjectsUpdate(gameObjectsUpdate) {
+            camera = ghnew Camera2D();
 		}
 
         ~Scene2D() {

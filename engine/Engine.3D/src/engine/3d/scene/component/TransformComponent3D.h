@@ -32,7 +32,7 @@ namespace Ghurund::Engine::_3D {
 		Event<TransformComponent3D, void> rotationChanged = *this;
 		Event<TransformComponent3D, void> scaleChanged = *this;
 
-		TransformComponent3D(NotNull<Entity3D> owner, World3D& world):Component3D(owner, world) {}
+		TransformComponent3D(NotNull<Entity3D> owner):Component3D(owner) {}
 
 		inline const XMFLOAT4X4& getLocalTransformation() const {
 			return localTransformation;

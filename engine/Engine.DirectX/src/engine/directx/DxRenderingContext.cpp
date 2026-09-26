@@ -37,8 +37,10 @@ namespace Ghurund::Engine::DirectX {
 	void DxRenderingContext::draw(Set<RenderGroup>& renderGroups, ParameterManager& parameterManager) {
 		Ghurund::Engine::DirectX::CommandList* commandList = swapChain->CurrentFrame.CommandList;
 		for (auto& group : renderGroups) {
-			if (group.Camera)
+			if (group.Camera) {
+				group.Camera->update();
 				group.Camera->apply(parameterManager);
+			}
 
 			// TODO: sort on insertion
 			group.objects.sort([&](const DrawPacket& first, const DrawPacket& second) -> bool {

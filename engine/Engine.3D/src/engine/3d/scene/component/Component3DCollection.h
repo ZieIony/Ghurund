@@ -14,6 +14,9 @@ namespace Ghurund::Engine::_3D {
 	public:
 		Event<Component3DCollection, void> collectionChanged = *this;
 
+		// VS complains
+		Component3DCollection() {}
+
 		~Component3DCollection() {
 			clear();
 		}

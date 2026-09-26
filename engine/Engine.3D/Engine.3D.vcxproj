@@ -99,12 +99,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\engine\3d\Graphics3DFeature.h" />
+    <ClInclude Include="src\engine\3d\graphics\MeshInputs.h" />
     <ClInclude Include="src\Ghurund.Engine.3D.h" />
     <ClInclude Include="src\engine\3d\World3D.h" />
     <ClInclude Include="src\engine\3d\audio\AudioSystem3D.h" />
     <ClInclude Include="src\engine\3d\audio\component\AudioListenerComponent3D.h" />
     <ClInclude Include="src\engine\3d\audio\component\SoundComponent3D.h" />
-    <ClInclude Include="src\engine\3d\graphics\DrawableComponent3D.h" />
+    <ClInclude Include="src\engine\3d\graphics\MeshComponent.h" />
     <ClInclude Include="src\engine\3d\physics\Physics.h" />
     <ClInclude Include="src\engine\3d\physics\PhysicsSystem3D.h" />
     <ClInclude Include="src\engine\3d\physics\RigidBodyComponent3D.h" />
@@ -122,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\3d\Graphics3DFeature.cpp" />
+    <ClCompile Include="src\engine\3d\graphics\MeshComponent.cpp" />
     <ClCompile Include="src\engine\3d\World3D.cpp" />
     <ClCompile Include="src\engine\3d\audio\AudioSystem3D.cpp" />
     <ClCompile Include="src\engine\3d\audio\component\AudioListenerComponent3D.cpp" />

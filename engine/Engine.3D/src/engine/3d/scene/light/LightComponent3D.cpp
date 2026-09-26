@@ -12,7 +12,7 @@ namespace Ghurund::Engine::_3D {
 	}
 		
 	void LightComponent3D::update(const Timer& timer) {
-		auto w = XMLoadFloat4x4(&Owner->Transform.WorldTransformation);
+		auto w = XMLoadFloat4x4(&Owner.Transform.WorldTransformation);
 		XMFLOAT3 pos;
 		XMStoreFloat3(&pos, XMVector3TransformCoord(XMVectorZero(), w));
 

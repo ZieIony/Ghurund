@@ -32,7 +32,7 @@ namespace Ghurund::Engine::_2D {
 		BoundingOrientedBox transformedBoundingBox;
 		bool culled = false;
 		bool selectable = true, visible = true, cullingEnabled = true;
-		XMFLOAT2 offset;
+		XMFLOAT2 offset = { 0, 0 };
 		FloatSize size = { 1, 1 };
 
 		inline void uninitBaseSpriteComponent() {

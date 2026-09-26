@@ -18,7 +18,5 @@ namespace Ghurund::Engine::_2D {
 
 		camera->setPositionUp({ pos.x, pos.y });
 		//camera->Roll = rotation;
-
-		camera->update();
 	}
 }

@@ -23,7 +23,7 @@ namespace Ghurund::Engine::_3D {
         SoundEmitter emitter = {};
 
 	public:
-        SoundComponent3D(NotNull<Entity3D> owner, World3D& world):Component3D(owner, world) {}
+        SoundComponent3D(NotNull<Entity3D> owner):Component3D(owner) {}
 
         ~SoundComponent3D() {
             if (sound)

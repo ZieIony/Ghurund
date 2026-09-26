@@ -23,20 +23,20 @@ namespace Ghurund::Engine::_3D {
 #pragma endregion
 
 	protected:
-		Component3D* parent = nullptr;
+		float drawOrder = 0;
 		Entity3D& owner;
 
 	public:
-		Component3D(NotNull<Entity3D> owner, World3D& world):owner(owner.ref()) {}
+		Component3D(NotNull<Entity3D> owner):owner(owner.ref()) {}
 
 		virtual ~Component3D() = 0 {
 		}
 
-		inline NotNull<Entity3D> getOwner() const {
+		inline Entity3D& getOwner() const {
 			return owner;
 		}
 
-		__declspec(property(get = getOwner)) NotNull<Entity3D> Owner;
+		__declspec(property(get = getOwner)) Entity3D& Owner;
 
 		virtual void fixedUpdate(const Timer& timer) {}
 

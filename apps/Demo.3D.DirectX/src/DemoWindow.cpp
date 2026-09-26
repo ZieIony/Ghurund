@@ -4,6 +4,7 @@
 
 #include "core/Colors.h"
 #include "core/window/DisplayManager.h"
+#include "engine/3d/graphics/MeshComponent.h"
 
 namespace Demo {
 	DemoWindow::DemoWindow(
@@ -29,7 +30,12 @@ namespace Demo {
 	}
 
 	CoroutineTask<void> DemoWindow::initScene() {
-		co_await app.ResourceManager.load<DxMesh>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"models/cube.fbx"));
+		auto entity = co_await world->spawnEntity<Entity3D>();
+		auto meshComponent = entity->makeComponent<MeshComponent>();
+		co_await meshComponent->init();
+		entity->Components.add(meshComponent.ref());
+		world->Scene.add(entity);
+		world->Scene.Camera->setPositionTargetUp({ -10, 10, -10 }, { 0, 0, 0 });
 
 		app.ResourceManager.printResources();
 	}

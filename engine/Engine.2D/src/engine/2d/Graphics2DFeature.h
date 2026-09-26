@@ -38,12 +38,12 @@ namespace Ghurund::Engine::_2D {
         virtual void onUninit() override;
 
     public:
-        inline static const WString MESH_SPRITE = L"sprite mesh";
+        inline static const WString MESH_SPRITE = L"gh sprite mesh";
 
-        inline static const WString MATERIAL_SPRITE = L"sprite material";
-        inline static const WString MATERIAL_BOX_VISUALIZATION = L"box visualization material";
-        inline static const WString MATERIAL_CAPSULE_VISUALIZATION = L"capsule visualization material";
-        inline static const WString MATERIAL_SEGMENT_VISUALIZATION = L"segment visualization material";
+        inline static const WString MATERIAL_SPRITE = L"gh sprite material";
+        inline static const WString MATERIAL_VISUALIZATION_BOX = L"gh box visualization material";
+        inline static const WString MATERIAL_VISUALIZATION_CAPSULE = L"gh capsule visualization material";
+        inline static const WString MATERIAL_VISUALIZATION_SEGMENT = L"gh segment visualization material";
 
         Graphics2DFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 
