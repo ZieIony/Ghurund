@@ -29,6 +29,8 @@ namespace Ghurund::Engine::_3D {
         inline static const WString MATERIAL_FORWARD_BASIC = L"gh basic forward material";
         inline static const WString MATERIAL_FORWARD_LIT = L"gh lit forward material";
         inline static const WString MATERIAL_FORWARD_NORMALS = L"gh normals forward material";
+        inline static const WString MATERIAL_FORWARD_TANGENTS = L"gh tangents forward material";
+        inline static const WString MATERIAL_FORWARD_TEXCOORDS = L"gh texCoords forward material";
 
         Graphics3DFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 

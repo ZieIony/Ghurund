@@ -2,5 +2,5 @@
 <Material
 	xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd"
 	version="1"
-	shader="lib://Ghurund/shaders/DirectX/3d/forwardNormals.xml"
+	shader="lib://Ghurund/shaders/DirectX/3d/forward/texCoords.xml"
 />

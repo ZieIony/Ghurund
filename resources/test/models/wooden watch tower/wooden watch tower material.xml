@@ -2,7 +2,7 @@
 <Material
 	xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd"
 	version="1"
-	shader="lib://Ghurund/shaders/DirectX/3d/forwardLit.xml"
+	shader="lib://Ghurund/shaders/DirectX/3d/forward/basicLit.xml"
 >
 	<Parameter name="ambientLight" value="#ff1f1f1f"/>
 	<Parameter name="diffuseTexture" value="Wood_Tower_Col.jpg"/>

@@ -5,7 +5,7 @@
 		<Sampler name="linearSampler" filter="linear"/>
 	</Samplers>
 	<Programs>
-		<Program type="vertex" path="forward_vs.hlsl"/>
-		<Program type="pixel" path="forwardLit_ps.hlsl"/>
+		<Program type="vertex" path="default_vs.hlsl"/>
+		<Program type="pixel" path="basicLit_ps.hlsl"/>
 	</Programs>
 </Shader>

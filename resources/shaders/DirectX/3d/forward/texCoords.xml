@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Shader version="1">
+	<Settings isDepthTestEnabled="true" cullMode="back" isTransparencyEnabled="false"/>
+	<Programs>
+		<Program type="vertex" path="default_vs.hlsl"/>
+		<Program type="pixel" path="texCoords_ps.hlsl"/>
+	</Programs>
+</Shader>
