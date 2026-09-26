@@ -32,10 +32,17 @@ namespace Demo {
 	CoroutineTask<void> DemoWindow::initScene() {
 		auto entity = co_await world->spawnEntity<Entity3D>();
 		auto meshComponent = entity->makeComponent<MeshComponent>();
-		co_await meshComponent->init();
+		auto mesh = co_await app.ResourceManager.load<Mesh>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/wooden watch tower/wooden watch tower.fbx"));
+		meshComponent->Mesh = mesh.get();
+		auto material = co_await app.ResourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/wooden watch tower/wooden watch tower material.xml"));
+		meshComponent->Material = material.get();
 		entity->Components.add(meshComponent.ref());
+		entity->Transform.setRotation(0.0f, ::DirectX::XM_PIDIV2, 0.0f);
 		world->Scene.add(entity);
-		world->Scene.Camera->setPositionTargetUp({ -10, 10, -10 }, { 0, 0, 0 });
+		world->Scene.Camera->setPositionTargetUp({ 10, 10, -10 }, { 0, 4, 0 });
+
+		cameraController.Camera = world->Scene.Camera;
+		cameraController.Window = this;
 
 		app.ResourceManager.printResources();
 	}

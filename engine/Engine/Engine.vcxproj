@@ -98,6 +98,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\graphics\model\Model.h" />
     <ClInclude Include="src\engine\resource\IGraphicsResourceFactory.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\animation\Animation.h" />

@@ -21,7 +21,8 @@ namespace Ghurund::Engine {
 			aiProcess_CalcTangentSpace |
 			aiProcess_Triangulate |
 			aiProcess_JoinIdenticalVertices |
-			aiProcess_SortByPType,
+			aiProcess_SortByPType |
+			aiProcess_ConvertToLeftHanded,
 			"fbx");
 
 		if (!scene) {
@@ -32,7 +33,7 @@ namespace Ghurund::Engine {
 		}
 
 		List<XMFLOAT3> positions;
-		List<XMFLOAT3> normals;
+		List<XMFLOAT3> normals, tangents;
 		List<XMFLOAT2> texCoords;
 		List<uint32_t> indices;
 
@@ -43,6 +44,8 @@ namespace Ghurund::Engine {
 				positions.add({ aiVertex.x, aiVertex.y, aiVertex.z });
 				auto& aiNormal = aiMesh->mNormals[j];
 				normals.add({ aiNormal.x, aiNormal.y, aiNormal.z });
+				auto& aiTangent = aiMesh->mTangents[j];
+				tangents.add({ aiTangent.x, aiTangent.y, aiTangent.z });
 				auto& aiTexCoord = aiMesh->mTextureCoords[0][j];
 				texCoords.add({ aiTexCoord.x, aiTexCoord.y });
 			}
@@ -52,8 +55,11 @@ namespace Ghurund::Engine {
 			}
 		}
 
-		if (positions.Empty || normals.Empty || texCoords.Empty) {
-			auto message = std::format(_T("One or more empty streams (positions: {}, normals: {}, texCoords)\n"), positions.Size, normals.Size, texCoords.Size);
+		if (positions.Empty || normals.Empty || tangents.Empty || texCoords.Empty) {
+			auto message = std::format(
+				_T("One or more empty streams (positions: {}, normals: {}, tangents: {}, texCoords)\n"),
+				positions.Size, normals.Size, tangents.Size, texCoords.Size
+			);
 			Logger::log(LogType::ERR0R, message.c_str());
 			AString exMessage = convertText<tchar, char>(String(message.c_str()));
 			throw InvalidDataException(exMessage.Data);
@@ -62,6 +68,7 @@ namespace Ghurund::Engine {
 		Array<VertexStream> vertexStreams = {
 			VertexStream{Buffer(&positions[0], sizeof(XMFLOAT3) * positions.Size), sizeof(XMFLOAT3), VertexRole::POSITION},
 			VertexStream{Buffer(&normals[0], sizeof(XMFLOAT3) * normals.Size), sizeof(XMFLOAT3), VertexRole::NORMAL},
+			VertexStream{Buffer(&tangents[0], sizeof(XMFLOAT3) * tangents.Size), sizeof(XMFLOAT3), VertexRole::TANGENT},
 			VertexStream{Buffer(&texCoords[0], sizeof(XMFLOAT2) * texCoords.Size), sizeof(XMFLOAT2), VertexRole::TEXCOORD},
 		};
 

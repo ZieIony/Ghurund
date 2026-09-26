@@ -11,7 +11,7 @@ namespace Ghurund::Engine::_3D {
 			Mesh = Owner.World.app.ResourceManager.get<Ghurund::Engine::Mesh>(Graphics3DFeature::MESH_CUBE).get();
 		if (!Material) {
 			auto basicMaterial = IntrusivePointer<Ghurund::Engine::Material>(
-				Owner.World.app.ResourceManager.get<Ghurund::Engine::Material>(Graphics3DFeature::MATERIAL_BASIC)->clone()
+				Owner.World.app.ResourceManager.get<Ghurund::Engine::Material>(Graphics3DFeature::MATERIAL_FORWARD_LIT)->clone()
 			);
 			Material = basicMaterial.get();
 		}

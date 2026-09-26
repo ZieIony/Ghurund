@@ -26,8 +26,9 @@ namespace Ghurund::Engine::_3D {
     public:
         inline static const WString MESH_CUBE = L"gh cube mesh";
 
-        inline static const WString MATERIAL_BASIC = L"gh basic material";
-        inline static const WString MATERIAL_VISUALIZATION_NORMALS = L"gh normals visualization material";
+        inline static const WString MATERIAL_FORWARD_BASIC = L"gh basic forward material";
+        inline static const WString MATERIAL_FORWARD_LIT = L"gh lit forward material";
+        inline static const WString MATERIAL_FORWARD_NORMALS = L"gh normals forward material";
 
         Graphics3DFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 
