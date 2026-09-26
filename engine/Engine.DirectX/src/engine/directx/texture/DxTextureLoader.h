@@ -21,7 +21,7 @@ namespace Ghurund::Engine::DirectX {
         ) override {
             // TODO: load image properly, so it can be cached
             auto image = co_await resourceManager.load<Image>(stream, workingDir, format, nullptr, { .cache = false });
-            resource.init(graphics, commandList, image.ref(), TextureType::COLOR);
+            resource.init(graphics, commandList, image.ref());
         }
 
     public:

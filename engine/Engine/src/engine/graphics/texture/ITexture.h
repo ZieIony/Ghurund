@@ -6,10 +6,6 @@
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
 
-	enum class TextureType {
-		COLOR, OTHER
-	};
-
 	class ITexture:public Resource {
 #pragma region reflection
 	protected:

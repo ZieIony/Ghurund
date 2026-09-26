@@ -15,7 +15,7 @@ namespace Demo {
 		Title = _T("Demo 3D DirectX");
 
 		Renderer = &renderer;
-		BackgroundColor = &Colors::LIGHT_SKY_BLUE;
+		BackgroundColor = &Colors::BLACK;
 
 		init();
 	}
@@ -32,14 +32,12 @@ namespace Demo {
 	CoroutineTask<void> DemoWindow::initScene() {
 		auto entity = co_await world->spawnEntity<Entity3D>();
 		auto meshComponent = entity->makeComponent<MeshComponent>();
-		auto mesh = co_await app.ResourceManager.load<Mesh>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/wooden watch tower/wooden watch tower.fbx"));
+		auto mesh = co_await app.ResourceManager.load<Mesh>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/spartan helmet/spartan helmet.fbx"));
 		meshComponent->Mesh = mesh.get();
-		auto material = co_await app.ResourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/wooden watch tower/wooden watch tower material.xml"));
+		auto material = co_await app.ResourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/spartan helmet/spartan helmet material.xml"));
 		meshComponent->Material = material.get();
 		entity->Components.add(meshComponent.ref());
-		entity->Transform.setRotation(0.0f, ::DirectX::XM_PIDIV2, 0.0f);
-		world->Scene.add(entity);
-		world->Scene.Camera->setPositionTargetUp({ 10, 10, -10 }, { 0, 4, 0 });
+		world->Scene.Camera->setPositionTargetUp({ 40, 40, -40 }, { 0, 20, 0 });
 
 		cameraController.Camera = world->Scene.Camera;
 		cameraController.Window = this;

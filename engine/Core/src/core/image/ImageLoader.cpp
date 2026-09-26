@@ -6,9 +6,22 @@
 #include <wrl.h>
 
 namespace Ghurund::Core {
-    DXGI_FORMAT ImageLoader::getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID) {
-        if (wicFormatGUID == GUID_WICPixelFormat128bppRGBAFloat) return DXGI_FORMAT_R32G32B32A32_FLOAT;
-        else if (wicFormatGUID == GUID_WICPixelFormat64bppRGBAHalf) return DXGI_FORMAT_R16G16B16A16_FLOAT;
+	DXGI_FORMAT ImageLoader::makeSRGB(DXGI_FORMAT format) {
+		switch (format) {
+		case DXGI_FORMAT_R8G8B8A8_UNORM: return DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		case DXGI_FORMAT_BC1_UNORM:      return DXGI_FORMAT_BC1_UNORM_SRGB;
+		case DXGI_FORMAT_BC2_UNORM:      return DXGI_FORMAT_BC2_UNORM_SRGB;
+		case DXGI_FORMAT_BC3_UNORM:      return DXGI_FORMAT_BC3_UNORM_SRGB;
+		case DXGI_FORMAT_B8G8R8A8_UNORM: return DXGI_FORMAT_B8G8R8A8_UNORM_SRGB;
+		case DXGI_FORMAT_B8G8R8X8_UNORM: return DXGI_FORMAT_B8G8R8X8_UNORM_SRGB;
+		case DXGI_FORMAT_BC7_UNORM:      return DXGI_FORMAT_BC7_UNORM_SRGB;
+		default:                         return format;
+		}
+	}
+
+	DXGI_FORMAT ImageLoader::getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID) {
+		if (wicFormatGUID == GUID_WICPixelFormat128bppRGBAFloat) return DXGI_FORMAT_R32G32B32A32_FLOAT;
+		else if (wicFormatGUID == GUID_WICPixelFormat64bppRGBAHalf) return DXGI_FORMAT_R16G16B16A16_FLOAT;
         else if (wicFormatGUID == GUID_WICPixelFormat64bppRGBA) return DXGI_FORMAT_R16G16B16A16_UNORM;
         else if (wicFormatGUID == GUID_WICPixelFormat32bppRGBA) return DXGI_FORMAT_R8G8B8A8_UNORM;
         else if (wicFormatGUID == GUID_WICPixelFormat32bppBGRA) return DXGI_FORMAT_B8G8R8A8_UNORM;
@@ -128,12 +141,13 @@ namespace Ghurund::Core {
     }
 
     int ImageLoader::getDXGIFormatBitsPerPixel(DXGI_FORMAT dxgiFormat) {
+        // TODO: support BC1 - BC7 formats
         if (dxgiFormat == DXGI_FORMAT_R32G32B32A32_FLOAT) return 128;
         else if (dxgiFormat == DXGI_FORMAT_R16G16B16A16_FLOAT) return 64;
         else if (dxgiFormat == DXGI_FORMAT_R16G16B16A16_UNORM) return 64;
-        else if (dxgiFormat == DXGI_FORMAT_R8G8B8A8_UNORM) return 32;
-        else if (dxgiFormat == DXGI_FORMAT_B8G8R8A8_UNORM) return 32;
-        else if (dxgiFormat == DXGI_FORMAT_B8G8R8X8_UNORM) return 32;
+        else if (dxgiFormat == DXGI_FORMAT_R8G8B8A8_UNORM || dxgiFormat == DXGI_FORMAT_R8G8B8A8_UNORM_SRGB) return 32;
+        else if (dxgiFormat == DXGI_FORMAT_B8G8R8A8_UNORM || dxgiFormat == DXGI_FORMAT_B8G8R8A8_UNORM_SRGB) return 32;
+        else if (dxgiFormat == DXGI_FORMAT_B8G8R8X8_UNORM || dxgiFormat == DXGI_FORMAT_B8G8R8X8_UNORM_SRGB) return 32;
         else if (dxgiFormat == DXGI_FORMAT_R10G10B10_XR_BIAS_A2_UNORM) return 32;
 
         else if (dxgiFormat == DXGI_FORMAT_R10G10B10A2_UNORM) return 32;
@@ -182,8 +196,6 @@ namespace Ghurund::Core {
         if (FAILED(hr = wicFrame->GetSize(&width, &height)))
             throw std::bad_function_call();
 
-        // TODO: implement sRGB
-
         giFormat = getDXGIFormatFromWICFormat(pixelFormat);
 
         if (giFormat == DXGI_FORMAT_UNKNOWN) {
@@ -205,6 +217,37 @@ namespace Ghurund::Core {
                 throw std::bad_function_call();
 
             imageConverted = true;
+        }
+
+        Microsoft::WRL::ComPtr<IWICMetadataQueryReader> metaReader;
+        if (SUCCEEDED(wicFrame->GetMetadataQueryReader(metaReader.GetAddressOf()))) {
+            GUID containerFormat;
+            if (SUCCEEDED(metaReader->GetContainerFormat(&containerFormat))) {
+                bool sRGB = false;
+
+                PROPVARIANT value;
+                PropVariantInit(&value);
+
+                // Check for colorspace chunks
+                if (memcmp(&containerFormat, &GUID_ContainerFormatPng, sizeof(GUID)) == 0) {
+                    if (SUCCEEDED(metaReader->GetMetadataByName(L"/sRGB/RenderingIntent", &value)) && value.vt == VT_UI1) {
+                        sRGB = true;
+                    } else if (SUCCEEDED(metaReader->GetMetadataByName(L"/gAMA/ImageGamma", &value)) && value.vt == VT_UI4) {
+                        sRGB = (value.uintVal == 45455);
+                    } else {
+                        sRGB = defaultToSRGB;
+                    }
+                } else if (SUCCEEDED(metaReader->GetMetadataByName(L"System.Image.ColorSpace", &value)) && value.vt == VT_UI2) {
+                    sRGB = (value.uiVal == 1);
+                } else {
+                    sRGB = defaultToSRGB;
+                }
+
+                std::ignore = PropVariantClear(&value);
+
+                if (sRGB)
+                    giFormat = makeSRGB(giFormat);
+            }
         }
 
         pixelSize = getDXGIFormatBitsPerPixel(giFormat) / 8;

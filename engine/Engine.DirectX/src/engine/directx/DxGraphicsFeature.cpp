@@ -44,7 +44,7 @@ namespace Ghurund::Engine::DirectX {
 		meshLoader = makeIntrusive<DxMeshLoader>(*memoryManager);
 		resourceManager.Loaders.set<DxMesh>(meshLoader.ref());
 
-		resourceFactory = ghnew DxGraphicsResourceFactory(*memoryManager);
+		resourceFactory = ghnew DxGraphicsResourceFactory(*memoryManager, graphics, commandList.ref());
 
 		co_return;
 	}

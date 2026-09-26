@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Material
+	xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd"
+	version="1"
+	shader="lib://Ghurund/shaders/DirectX/3d/forward/pbr.xml"
+>
+	<Parameter name="albedoTexture" value="Spartan_Base_color.png"/>
+	<Parameter name="metallicTexture" value="Spartan_Metallic.png"/>
+	<Parameter name="roughnessTexture" value="Spartan_Roughness.png"/>
+	<Parameter name="normalTexture" value="Spartan_Normal_OpenGL.png"/>
+	<Parameter name="aoTexture" value="Spartan_Mixed_AO.png"/>
+</Material>

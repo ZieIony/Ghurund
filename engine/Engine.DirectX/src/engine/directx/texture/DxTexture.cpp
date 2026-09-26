@@ -12,32 +12,10 @@ namespace Ghurund::Engine::DirectX {
         return TYPE;
     }
 
-    DXGI_FORMAT DxTexture::adjustFormat(DXGI_FORMAT format, TextureType textureType) {
-        if (textureType == TextureType::OTHER)
-            return format;
-
-        if (format >= DXGI_FORMAT_R8G8B8A8_TYPELESS && format <= DXGI_FORMAT_R8G8B8A8_SINT)
-            return DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-        if (format == DXGI_FORMAT_B8G8R8X8_TYPELESS || format == DXGI_FORMAT_B8G8R8X8_UNORM)
-            return DXGI_FORMAT_B8G8R8X8_UNORM_SRGB;
-        if (format == DXGI_FORMAT_B8G8R8A8_TYPELESS || format == DXGI_FORMAT_B8G8R8A8_UNORM)
-            return DXGI_FORMAT_B8G8R8A8_UNORM_SRGB;
-        if (format == DXGI_FORMAT_BC1_TYPELESS || format == DXGI_FORMAT_BC1_UNORM)
-            return DXGI_FORMAT_BC1_UNORM_SRGB;
-        if (format == DXGI_FORMAT_BC2_TYPELESS || format == DXGI_FORMAT_BC2_UNORM)
-            return DXGI_FORMAT_BC1_UNORM_SRGB;
-        if (format == DXGI_FORMAT_BC3_TYPELESS || format == DXGI_FORMAT_BC3_UNORM)
-            return DXGI_FORMAT_BC1_UNORM_SRGB;
-        if (format == DXGI_FORMAT_BC7_TYPELESS || format == DXGI_FORMAT_BC7_UNORM)
-            return DXGI_FORMAT_BC7_UNORM_SRGB;
-        return format;
-    }
-
     void DxTexture::init(
         DxGraphics& graphics,
         CommandList& commandList,
-        Ghurund::Core::Image& image,
-        TextureType textureType
+        Ghurund::Core::Image& image
     ) {
 		if (commandList.State == CommandListState::FINISHED)
             commandList.reset();
@@ -53,12 +31,13 @@ namespace Ghurund::Engine::DirectX {
             textureDesc.Height = image.Size.Height;
             textureDesc.DepthOrArraySize = 1;
             textureDesc.MipLevels = 1;
-            textureDesc.Format = adjustFormat(image.Format, textureType);
+            textureDesc.Format = image.Format;
             textureDesc.SampleDesc.Count = 1;
             textureDesc.SampleDesc.Quality = 0;
             textureDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;  // let the driver choose
             textureDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 
+            // TODO: use GPUMemoryManager
             auto defaultHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
             if(FAILED(graphics.Device->CreateCommittedResource(
                 &defaultHeapProperties,

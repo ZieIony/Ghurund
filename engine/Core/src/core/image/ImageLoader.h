@@ -30,6 +30,8 @@ namespace Ghurund::Core {
         ) const override;
 
     public:
+        static DXGI_FORMAT makeSRGB(DXGI_FORMAT format);
+            
         static DXGI_FORMAT getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID);
 
         static WICPixelFormatGUID getWICFormatFromDXGIFormat(DXGI_FORMAT format, bool* sRGB);
@@ -37,6 +39,8 @@ namespace Ghurund::Core {
         static WICPixelFormatGUID convertToWICFormat(WICPixelFormatGUID& wicFormatGUID);
 
         static int getDXGIFormatBitsPerPixel(DXGI_FORMAT dxgiFormat);
+
+        bool defaultToSRGB = true;
 
         ImageLoader() {
             HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&imageFactory));

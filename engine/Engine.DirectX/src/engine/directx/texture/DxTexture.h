@@ -29,8 +29,6 @@ namespace Ghurund::Engine::DirectX {
 
         bool uploaded = false;
 
-        DXGI_FORMAT adjustFormat(DXGI_FORMAT format, TextureType textureType);
-
     public:
         DescriptorHandle descHandle;
 
@@ -56,7 +54,7 @@ namespace Ghurund::Engine::DirectX {
 			return __super::getIsValid() && image != nullptr && image->IsValid && uploaded;
         }
 
-        void init(DxGraphics& graphics, CommandList& commandList, Ghurund::Core::Image& image, TextureType textureType);
+        void init(DxGraphics& graphics, CommandList& commandList, Ghurund::Core::Image& image);
 
         inline Ghurund::Core::Image* getImage() {
             return image;

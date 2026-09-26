@@ -16,9 +16,9 @@ namespace Ghurund::Engine::DirectX {
             commandList->addReference();
         }
 
-        virtual ITexture* makeTexture(Image& image, TextureType textureType) override {
+        virtual ITexture* makeTexture(Image& image) override {
             auto texture = ghnew DxTexture();
-            texture->init(graphics, commandList.ref(), image, textureType);
+            texture->init(graphics, commandList.ref(), image);
             return texture;
         }
     };
