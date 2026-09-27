@@ -3,6 +3,8 @@
 
 #include "engine/graphics/rendering/RenderGroup.h"
 #include "engine/graphics/material/TextureInput.h"
+#include "ITextMeshFactory.h"
+#include "engine/resource/IGraphicsResourceFactory.h"
 
 namespace Ghurund::UI {
 	void TextLayout::refresh() {
@@ -78,7 +80,7 @@ namespace Ghurund::UI {
 
 	void TextLayout::initMeshes(
 		ITextMeshFactory& textMeshFactory,
-		ITextureFactory& textureFactory,
+		IGraphicsResourceFactory& resourceFactory,
 		NotNull<Material> material
 	) {
 		textMeshes.clear();
@@ -90,7 +92,7 @@ namespace Ghurund::UI {
 				auto material = IntrusivePointer<Material>(textMaterial->clone());
 				// TODO: support multiple materials
 				TextureInput* colorTextureInput = (TextureInput*)material->Inputs.get("colorTexture");
-				colorTextureInput->Value = IntrusivePointer<ITexture>(textureFactory.makeTexture(*span.textStyle->Atlas->Image)).get();
+				colorTextureInput->Value = IntrusivePointer<ITexture>(resourceFactory.makeTexture(*span.textStyle->Atlas->Image)).get();
 				textMeshes.add({ mesh, material });
 			}
 		}

@@ -18,7 +18,7 @@ namespace Ghurund::UI {
 
 			auto materialProvider = theme->Materials.get(Theme::MATERIAL_TEXT);
 			UIMaterial* material = materialProvider->get();
-			textLayout.initMeshes(context->TextMeshFactory, context->TextureFactory, material);
+			textLayout.initMeshes(context->TextMeshFactory, context->ResourceFactory, material);
 			material->release();
 		}
 	}

@@ -15,8 +15,8 @@ namespace UnitTest {
         TestUIContext(
             Ghurund::Core::Window& window,
             ITextMeshFactory& textMeshFactory,
-            ITextureFactory& textureFactory
-        ):UIContext(window, textMeshFactory, textureFactory) {}
+            IGraphicsResourceFactory& resourceFactory
+        ):UIContext(window, textMeshFactory, resourceFactory) {}
 
         virtual Mesh* makeControlMesh() override;
     };

@@ -8,8 +8,7 @@ namespace Ghurund::Engine::DirectX {
     class DxTextureLoader:public Loader<DxTexture> {
     private:
         ResourceManager& resourceManager;
-        DxGraphics& graphics;
-		CommandList& commandList;
+        DxGPUMemoryManager& memoryManager;
 
     protected:
         virtual CoroutineTask<void> loadInternal(
@@ -21,14 +20,13 @@ namespace Ghurund::Engine::DirectX {
         ) override {
             // TODO: load image properly, so it can be cached
             auto image = co_await resourceManager.load<Image>(stream, workingDir, format, nullptr, { .cache = false });
-            resource.init(graphics, commandList, image.ref());
+            resource.init(image.ref(), memoryManager);
         }
 
     public:
         DxTextureLoader(
             ResourceManager& resourceManager,
-            DxGraphics& graphics,
-            CommandList& commandList
-        ):resourceManager(resourceManager), graphics(graphics), commandList(commandList) {}
+            DxGPUMemoryManager& memoryManager
+        ):resourceManager(resourceManager), memoryManager(memoryManager) {}
     };
 }

@@ -34,17 +34,17 @@ namespace Ghurund::Engine::DirectX {
 		shaderLoader->includeDirs.add(ResourceManager::ENGINE_LIB_PATH / DirectoryPath(L"/shaders/DirectX/include"));
 		resourceManager.Loaders.set<DxShader>(shaderLoader.ref());
 
-		auto textureLoader = makeIntrusive<DxTextureLoader>(resourceManager, graphics, commandList.ref());
-		resourceManager.Loaders.set<DxTexture>(textureLoader.ref());
-
 		memoryManager = ghnew DxGPUMemoryManager(graphics, commandList.ref());
 		auto materialLoader = makeIntrusive<MaterialLoader>(resourceManager, *memoryManager);
 		resourceManager.Loaders.set<Material>(materialLoader.ref());
 
+		auto textureLoader = makeIntrusive<DxTextureLoader>(resourceManager, *memoryManager);
+		resourceManager.Loaders.set<DxTexture>(textureLoader.ref());
+
 		meshLoader = makeIntrusive<DxMeshLoader>(*memoryManager);
 		resourceManager.Loaders.set<DxMesh>(meshLoader.ref());
 
-		resourceFactory = ghnew DxGraphicsResourceFactory(*memoryManager, graphics, commandList.ref());
+		resourceFactory = ghnew DxGraphicsResourceFactory(*memoryManager);
 
 		co_return;
 	}

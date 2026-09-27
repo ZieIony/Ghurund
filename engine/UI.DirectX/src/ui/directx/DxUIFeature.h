@@ -28,7 +28,6 @@ namespace Ghurund::UI::DirectX {
         DxGraphics& graphics;
         DxGPUMemoryManager& memoryManager;
         IntrusivePointer<CommandList> commandList;
-        ITextureFactory* textureFactory = nullptr;
         Ghurund::UI::ConstraintFactory* constraintFactory = nullptr;
         IntrusivePointer<Ghurund::UI::LayoutLoader> layoutLoader;
 
@@ -43,10 +42,6 @@ namespace Ghurund::UI::DirectX {
         virtual CoroutineTask<void> onInit() override;
 
         virtual void onUninit() override;
-
-        virtual ITextureFactory* getTextureFactory() override {
-            return textureFactory;
-        }
 
         virtual Ghurund::UI::ConstraintFactory* getConstraintFactory() override {
             return constraintFactory;

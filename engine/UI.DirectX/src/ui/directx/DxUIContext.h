@@ -1,6 +1,5 @@
 #pragma once
 
-#include "engine/directx/memory/DxGPUMemoryManager.h"
 #include "ui/UIContext.h"
 
 namespace Ghurund::Core {
@@ -11,6 +10,7 @@ namespace Ghurund::Core {
 namespace Ghurund::Engine::DirectX {
     class DxGraphics;
     class CommandList;
+    class DxGPUMemoryManager;
 }
 
 namespace Ghurund::UI::DirectX {
@@ -27,7 +27,7 @@ namespace Ghurund::UI::DirectX {
             ::Ghurund::Core::Window& window,
             DxGPUMemoryManager& memoryManager,
             ITextMeshFactory& textMeshFactory,
-            ITextureFactory& textureFactory
+            IGraphicsResourceFactory& resourceFactory
         );
 
         virtual Mesh* makeControlMesh() override;

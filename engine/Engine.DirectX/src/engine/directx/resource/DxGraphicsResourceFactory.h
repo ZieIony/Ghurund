@@ -6,16 +6,12 @@
 namespace Ghurund::Engine::DirectX {
 	class DxGraphicsResourceFactory:public IGraphicsResourceFactory {
 	private:
-		DxGraphics& graphics;
-		CommandList& commandList;
 		DxGPUMemoryManager& memoryManager;
 
 	public:
 		DxGraphicsResourceFactory(
-			DxGPUMemoryManager& memoryManager,
-			DxGraphics& graphics,
-			CommandList& commandList
-		):memoryManager(memoryManager), graphics(graphics), commandList(commandList) {
+			DxGPUMemoryManager& memoryManager
+		):memoryManager(memoryManager) {
 		}
 
 		[[nodiscard]]
@@ -26,11 +22,10 @@ namespace Ghurund::Engine::DirectX {
 			return mesh.get();
 		}
 
-		// TODO: replace ITextureFactory with this
 		[[nodiscard]]
 		virtual ITexture* makeTexture(Image& image) override {
 			auto texture = ghnew DxTexture();
-			texture->init(graphics, commandList, image);
+			texture->init(image, memoryManager);
 			return texture;
 		}
 	};

@@ -1,8 +1,6 @@
 #include "ghuidxpch.h"
 #include "DxUIContext.h"
 
-#include "engine/directx/CommandList.h"
-#include "engine/directx/DxGraphics.h"
 #include "engine/directx/mesh/DxMesh.h"
 #include "engine/graphics/mesh/QuadMeshData.h"
 
@@ -21,8 +19,8 @@ namespace Ghurund::UI::DirectX {
         ::Ghurund::Core::Window& window,
         DxGPUMemoryManager& memoryManager,
         ITextMeshFactory& textMeshFactory,
-        ITextureFactory& textureFactory
-    ):UIContext(window, textMeshFactory, textureFactory), memoryManager(memoryManager) {
+        class IGraphicsResourceFactory& resourceFactory
+    ):UIContext(window, textMeshFactory, resourceFactory), memoryManager(memoryManager) {
         auto mesh = ghnew DxMesh();
         auto meshData = ghnew QuadMeshData();
         meshData->init();

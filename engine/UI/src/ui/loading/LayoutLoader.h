@@ -4,7 +4,6 @@
 #include "core/loading/Loader.h"
 #include "core/loading/PropertyLoaderCollection.h"
 #include "core/resource/ResourceManager.h"
-#include "engine/graphics/texture/ITextureFactory.h"
 #include "ui/Alignment.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/control/Control.h"

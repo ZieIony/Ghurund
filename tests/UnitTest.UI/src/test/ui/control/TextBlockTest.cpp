@@ -32,12 +32,12 @@ private:
     FontLoader* fontLoader;
     Ghurund::Core::IntrusivePointer<Font> latoMediumFont;
     ITextMeshFactory* textMeshFactory = nullptr;
-    ITextureFactory* textureFactory = nullptr;
+    IGraphicsResourceFactory* resourceFactory = nullptr;
 
 public:
     TextBlockTest() {
         window = ghnew SystemWindow(timer);
-        context = ghnew TestUIContext(*window, *textMeshFactory, *textureFactory);
+        context = ghnew TestUIContext(*window, *textMeshFactory, *resourceFactory);
         fontLoader = ghnew FontLoader();
         resourceManager.Loaders.set<Font>(*fontLoader);
         FilePath path = Ghurund::Core::FilePath(L"../../resources/fonts\\lato_medium.ttf");

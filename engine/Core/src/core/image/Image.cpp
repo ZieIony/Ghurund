@@ -24,7 +24,7 @@ namespace Ghurund::Core {
     const Ghurund::Core::Type& Image::GET_TYPE() {
         using namespace Ghurund::Core;
 
-        static auto PROPERTY_DATA = Property<Image, Buffer&>("Data", &getData);
+        //static auto PROPERTY_DATA = Property<Image, const Buffer&>("Data", ((const Buffer&)) & getData);
         static auto PROPERTY_FORMAT = Property<Image, DXGI_FORMAT>("Format", &getFormat);
         static auto PROPERTY_SIZE = Property<Image, const IntSize&>("Size", &getSize);
         static auto PROPERTY_PIXELSIZE = Property<Image, uint32_t>("PixelSize", &getPixelSize);
@@ -33,7 +33,7 @@ namespace Ghurund::Core {
         static const auto CONSTRUCTOR = Constructor<Image>();
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<Image>()
-            .withProperty(PROPERTY_DATA)
+            //.withProperty(PROPERTY_DATA)
             .withProperty(PROPERTY_FORMAT)
             .withProperty(PROPERTY_SIZE)
             .withProperty(PROPERTY_PIXELSIZE)

@@ -2,7 +2,6 @@
 #include "DxUIFeature.h"
 
 #include "core/reflection/TypeBuilder.h"
-#include "engine/directx/texture/DxTextureFactory.h"
 #include "ui/control/Control.h"
 #include "ui/font/FontAtlasLoader.h"
 #include "ui/font/FontLoader.h"
@@ -26,7 +25,6 @@ namespace Ghurund::UI::DirectX {
         commandList = makeIntrusive<CommandList>();
         // TODO: use CopyQueue, but first implement CommandList compatible with copy queue
 		commandList->init(graphics, *graphics.DirectQueue);
-        textureFactory = ghnew DxTextureFactory(graphics, commandList.ref());
         constraintFactory = ghnew Ghurund::UI::ConstraintFactory();
 
         auto fontLoader = makeIntrusive<FontLoader>();
@@ -50,8 +48,6 @@ namespace Ghurund::UI::DirectX {
         resourceManager.Loaders.remove<Control>();
         resourceManager.Loaders.remove<Ghurund::UI::Font>();
         layoutLoader.set(nullptr);
-        delete textureFactory;
-        textureFactory = nullptr;
         delete constraintFactory;
         constraintFactory = nullptr;
     }

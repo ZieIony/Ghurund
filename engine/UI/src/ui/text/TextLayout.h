@@ -7,8 +7,10 @@
 #include "core/math/Size.h"
 #include "core/string/String.h"
 #include "TextLine.h"
-#include "ITextMeshFactory.h"
-#include "engine/graphics/texture/ITextureFactory.h"
+
+namespace Ghurund::Engine {
+    class IGraphicsResourceFactory;
+}
 
 namespace Ghurund::UI {
     class TextLayout {
@@ -108,8 +110,8 @@ namespace Ghurund::UI {
         void refresh();
 
         void initMeshes(
-            ITextMeshFactory& textMeshFactory,
-            ITextureFactory& textureFactory,
+            class ITextMeshFactory& textMeshFactory,
+            IGraphicsResourceFactory& resourceFactory,
             NotNull<Material> material
         );
 

@@ -53,9 +53,13 @@ namespace Ghurund::Core {
 			return imageData;
 		}
 
+		const Buffer& getData() const {
+			return imageData;
+		}
+
 		__declspec(property(get = getData)) Ghurund::Core::Buffer& Data;
 
-		DXGI_FORMAT getFormat() {
+		DXGI_FORMAT getFormat() const {
 			return format;
 		}
 
@@ -67,13 +71,13 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = getSize)) const IntSize& Size;
 
-		uint32_t getPixelSize() {
+		uint32_t getPixelSize() const {
 			return pixelSize;
 		}
 
 		__declspec(property(get = getPixelSize)) uint32_t PixelSize;
 
-		uint32_t getRowPitch() {
+		uint32_t getRowPitch() const {
 			return rowPitch;
 		}
 

@@ -26,10 +26,6 @@ namespace Ghurund::UI {
 #pragma endregion
 
     public:
-        virtual ITextureFactory* getTextureFactory() = 0;
-
-        __declspec(property(get = getTextureFactory)) ITextureFactory* TextureFactory;
-
         virtual Ghurund::UI::ConstraintFactory* getConstraintFactory() = 0;
 
         __declspec(property(get = getConstraintFactory)) Ghurund::UI::ConstraintFactory* ConstraintFactory;

@@ -190,7 +190,6 @@
     <ClInclude Include="src\engine\graphics\shader\TextureConstant.h" />
     <ClInclude Include="src\engine\graphics\shader\ValueConstant.h" />
     <ClInclude Include="src\engine\graphics\texture\ITexture.h" />
-    <ClInclude Include="src\engine\graphics\texture\ITextureFactory.h" />
     <ClInclude Include="src\engine\graphics\texture\TextureAtlas.h" />
     <ClInclude Include="src\engine\graphics\texture\TextureAtlasLoader.h" />
     <ClInclude Include="src\engine\graphics\texture\TextureFilter.h" />

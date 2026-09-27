@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core/loading/PropertyLoader.h"
-#include "engine/graphics/texture/ITextureFactory.h"
 #include "ui/theme/ThemedValue.h"
 
 namespace Ghurund::UI {

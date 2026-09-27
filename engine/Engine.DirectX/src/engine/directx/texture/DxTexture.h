@@ -1,11 +1,9 @@
 #pragma once
 
 #include "core/image/Image.h"
+#include "engine/directx/buffer/DescriptorHeap.h"
 #include "engine/directx/CommandList.h"
-#include "engine/directx/DxGraphics.h"
 #include "engine/graphics/texture/ITexture.h"
-
-#include <dxgiformat.h>
 
 namespace Ghurund::Engine::DirectX {
     class DxTexture:public ITexture {
@@ -23,15 +21,13 @@ namespace Ghurund::Engine::DirectX {
 
     private:
 		ComPtr<ID3D12Resource> textureResource;
-        ComPtr<ID3D12Resource> textureUploadHeap;
+        DescriptorHandle descHandle;
 
         Ghurund::Core::Image* image = nullptr;
 
         bool uploaded = false;
 
     public:
-        DescriptorHandle descHandle;
-
         ~DxTexture() {
             finalize();
         }
@@ -39,7 +35,6 @@ namespace Ghurund::Engine::DirectX {
         void finalize() {
             uploaded = false;
             textureResource.Reset();
-            textureUploadHeap.Reset();
             if (image != nullptr)
                 image->release();
         }
@@ -54,7 +49,7 @@ namespace Ghurund::Engine::DirectX {
 			return __super::getIsValid() && image != nullptr && image->IsValid && uploaded;
         }
 
-        void init(DxGraphics& graphics, CommandList& commandList, Ghurund::Core::Image& image);
+        void init(Ghurund::Core::Image& image, class DxGPUMemoryManager& memoryManager);
 
         inline Ghurund::Core::Image* getImage() {
             return image;
@@ -68,8 +63,6 @@ namespace Ghurund::Engine::DirectX {
 
         void set(CommandList& commandList, unsigned int index) {
             commandList.addResourceRef(textureResource.Get());
-            commandList.addResourceRef(textureUploadHeap.Get());
-
             commandList.get()->SetGraphicsRootDescriptorTable(index, descHandle.getGpuHandle());
         }
 

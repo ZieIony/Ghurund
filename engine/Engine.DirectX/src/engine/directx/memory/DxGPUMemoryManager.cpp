@@ -69,12 +69,12 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	ComPtr<ID3D12Resource> DxGPUMemoryManager::makeCommitedResource(
-		const Buffer& buffer,
 		CommandList& commandList,
+		CD3DX12_RESOURCE_DESC resourceDesc,
+		D3D12_SUBRESOURCE_DATA subresourceData,
 		D3D12_RESOURCE_STATES resourceType
     ) {
 		ComPtr<ID3D12Resource> resource;
-		auto resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(buffer.Size);
 
 		auto defaultHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 		if (FAILED(graphics.Device->CreateCommittedResource(
@@ -89,11 +89,13 @@ namespace Ghurund::Engine::DirectX {
 		}
 
 		ComPtr<ID3D12Resource> uploadHeap;
+		const UINT64 uploadBufferSize = GetRequiredIntermediateSize(resource.Get(), 0, 1);
+		auto uploadResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize);
 		auto uploadHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 		if (FAILED(graphics.Device->CreateCommittedResource(
 			&uploadHeapProperties,
 			D3D12_HEAP_FLAG_NONE,
-			&resourceDesc,
+			&uploadResourceDesc,
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
 			IID_PPV_ARGS(&uploadHeap)))) {
@@ -101,14 +103,9 @@ namespace Ghurund::Engine::DirectX {
 			throw CallFailedException("device->CreateCommittedResource() failed");
 		}
 
-		D3D12_SUBRESOURCE_DATA vertexData = {};
-		vertexData.pData = buffer.Data;
-		vertexData.RowPitch = buffer.Size;
-		vertexData.SlicePitch = buffer.Size;
-
 		// we are now creating a command with the command list to copy the data from
 		// the upload heap to the default heap
-		UpdateSubresources(commandList.get(), resource.Get(), uploadHeap.Get(), 0, 0, 1, &vertexData);
+		UpdateSubresources(commandList.get(), resource.Get(), uploadHeap.Get(), 0, 0, 1, &subresourceData);
 
 		auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(resource.Get(), D3D12_RESOURCE_STATE_COPY_DEST, resourceType);
 		commandList.get()->ResourceBarrier(1, &barrier);
@@ -127,11 +124,63 @@ namespace Ghurund::Engine::DirectX {
         return cb;
 	}
 
+	ComPtr<ID3D12Resource> DxGPUMemoryManager::makeTexture(const Image& image) {
+		CD3DX12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(
+			image.Format,
+			image.Size.Width,
+			image.Size.Height,
+			1,
+			1
+		);
+		D3D12_SUBRESOURCE_DATA textureData = {};
+		textureData.pData = image.Data.Data;
+		textureData.RowPitch = image.Size.Width * image.PixelSize;
+		textureData.SlicePitch = textureData.RowPitch * image.Size.Height;
+
+		return makeCommitedResource(
+			uploadCommandList,
+			resourceDesc,
+			textureData,
+			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
+		);
+	}
+	
+	DescriptorHandle DxGPUMemoryManager::makeTextureRV(ComPtr<ID3D12Resource> textureResource, DXGI_FORMAT format) {
+		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+		srvDesc.Format = format;
+		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Texture2D.MipLevels = 1;
+		DescriptorHandle descHandle = graphics.DescriptorAllocator.allocate(graphics, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+		graphics.Device->CreateShaderResourceView(textureResource.Get(), &srvDesc, descHandle.CpuHandle);
+		return descHandle;
+	}
+
     ComPtr<ID3D12Resource> DxGPUMemoryManager::makeVertexBuffer(const Buffer& buffer) {
-		return makeCommitedResource(buffer, uploadCommandList, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
+		D3D12_SUBRESOURCE_DATA subresourceData = {};
+		subresourceData.pData = buffer.Data;
+		subresourceData.RowPitch = buffer.Size;
+		subresourceData.SlicePitch = buffer.Size;
+
+		return makeCommitedResource(
+			uploadCommandList,
+			CD3DX12_RESOURCE_DESC::Buffer(buffer.Size),
+			subresourceData,
+			D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER
+		);
 	}
 
 	ComPtr<ID3D12Resource> DxGPUMemoryManager::makeIndexBuffer(const Buffer& buffer) {
-		return makeCommitedResource(buffer, uploadCommandList, D3D12_RESOURCE_STATE_INDEX_BUFFER);
+		D3D12_SUBRESOURCE_DATA subresourceData = {};
+		subresourceData.pData = buffer.Data;
+		subresourceData.RowPitch = buffer.Size;
+		subresourceData.SlicePitch = buffer.Size;
+
+		return makeCommitedResource(
+			uploadCommandList,
+			CD3DX12_RESOURCE_DESC::Buffer(buffer.Size),
+			subresourceData,
+			D3D12_RESOURCE_STATE_INDEX_BUFFER
+		);
 	}
 }

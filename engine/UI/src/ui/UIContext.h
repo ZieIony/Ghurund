@@ -2,7 +2,6 @@
 
 #include "core/reflection/Type.h"
 #include "engine/graphics/mesh/Mesh.h"
-#include "engine/graphics/texture/ITextureFactory.h"
 #include "text/ITextMeshFactory.h"
 
 namespace Ghurund::Core {
@@ -17,14 +16,14 @@ namespace Ghurund::UI {
     private:
         Ghurund::Core::Window& window;
         ITextMeshFactory& textMeshFactory;
-        ITextureFactory& textureFactory;
+        class IGraphicsResourceFactory& resourceFactory;
 
     public:
         UIContext(
             Ghurund::Core::Window& window,
             ITextMeshFactory& textMeshFactory,
-            ITextureFactory& textureFactory
-        ):window(window), textMeshFactory(textMeshFactory), textureFactory(textureFactory) {}
+            IGraphicsResourceFactory& resourceFactory
+        ):window(window), textMeshFactory(textMeshFactory), resourceFactory(resourceFactory) {}
 
         inline Ghurund::Core::Window& getWindow() {
             return window;
@@ -40,11 +39,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTextMeshFactory)) ITextMeshFactory& TextMeshFactory;
 
-        inline ITextureFactory& getTextureFactory() const {
-            return textureFactory;
+        inline IGraphicsResourceFactory& getResourceFactory() const {
+            return resourceFactory;
         }
 
-        __declspec(property(get = getTextureFactory)) ITextureFactory& TextureFactory;
+        __declspec(property(get = getResourceFactory)) IGraphicsResourceFactory& ResourceFactory;
     };
 }
 
