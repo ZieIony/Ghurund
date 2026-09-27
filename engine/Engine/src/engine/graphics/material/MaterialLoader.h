@@ -7,10 +7,11 @@
 namespace Ghurund::Engine {
 
 	class MaterialLoader:public Ghurund::Core::Loader<Material> {
-	protected:
+	private:
 		ResourceManager& resourceManager;
 		IGPUMemoryManager& memoryManager;
 
+	protected:
 		virtual CoroutineTask<void> loadInternal(
 			Material& resource,
 			const XMLElement& xml,

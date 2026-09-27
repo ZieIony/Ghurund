@@ -5,7 +5,7 @@
 	shader="lib://Ghurund/shaders/DirectX/3d/forward/basicLit.xml"
 >
 	<Parameter name="ambientLight" value="#0f0f0fff"/>
-	<Parameter name="diffuseTexture" value="lib://Ghurund/textures/diffuse.png"/>
-	<Parameter name="normalTexture" value="lib://Ghurund/textures/normal.png"/>
-	<Parameter name="specularTexture" value="lib://Ghurund/textures/specular.png"/>
+	<Parameter name="diffuseTexture" value="lib://Ghurund/textures/diffuse.xml"/>
+	<Parameter name="normalTexture" value="lib://Ghurund/textures/normal.xml"/>
+	<Parameter name="specularTexture" value="lib://Ghurund/textures/specular.xml"/>
 </Material>

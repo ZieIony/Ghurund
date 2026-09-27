@@ -37,6 +37,14 @@ namespace Ghurund::Core {
             filterLevel = level.Value;
         }
 
+        template<typename ExceptionType>
+        static void logAndThrow(const tchar* text) {
+            String strText = text;
+            Logger::log(LogType::ERR0R, text);
+            AString astrText = convertText<tchar, char>(strText);
+            throw ExceptionType(astrText.Data);
+        }
+
         static void log(const LogType& type, const tchar* text);
 
         static void logOnce(const LogType& type, const tchar* text, uint32_t logId = 0);

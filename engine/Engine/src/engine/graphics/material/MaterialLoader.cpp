@@ -28,8 +28,11 @@ namespace Ghurund::Engine {
 	) {
 		checkXmlRoot(xml, L"Material");
 	
-		WString* s = xml.findAttribute(L"shader");
-		FilePath path = FilePath(*s);
+		WString* shaderPathAttribute = xml.findAttribute(L"shader");
+		if (!shaderPathAttribute)
+			Logger::logAndThrow<InvalidDataException>(_T("Required 'shader' attribute on 'Material' node is missing.\n"));
+
+		FilePath path = FilePath(*shaderPathAttribute);
 		auto shader = co_await resourceManager.load<Shader>(path, workingDir);
 		resource.init(memoryManager);
 		resource.Shader = shader.get();

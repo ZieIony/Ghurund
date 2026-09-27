@@ -49,7 +49,7 @@ public:
 			auto dir = DirectoryPath::getCurrentDirectory();
 
 			IntrusivePointer<TestResource> resource = runCoroutineBlocking(
-				resourceManager.load<TestResource>(path, dir, ResourceFormat::AUTO, nullptr, { .cache = false })
+				resourceManager.load<TestResource>(path, dir, ResourceFormat::AUTO, ResourceManager::LOAD_GENERATE_NAME, { .cache = false })
 			);
 
 			Assert::AreEqual(resource->text, AString("test"));
@@ -91,7 +91,7 @@ public:
 			MemoryInputStream stream((const void*)"test", 5);
 
 			IntrusivePointer<TestResource> resource = runCoroutineBlocking(
-				resourceManager.load<TestResource>(stream, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, nullptr, { .cache = false })
+				resourceManager.load<TestResource>(stream, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, ResourceManager::LOAD_GENERATE_NAME, { .cache = false })
 			);
 
 			Assert::AreEqual(resource->text, AString("test"));

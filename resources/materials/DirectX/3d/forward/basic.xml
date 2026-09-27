@@ -4,5 +4,5 @@
 	version="1"
 	shader="lib://Ghurund/shaders/DirectX/3d/forward/basic.xml"
 >
-	<Parameter name="diffuseTexture" value="lib://Ghurund/textures/checker.png"/>
+	<Parameter name="diffuseTexture" value="lib://Ghurund/textures/checker.xml"/>
 </Material>

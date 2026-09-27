@@ -143,7 +143,7 @@ namespace Ghurund::UI {
             if (layoutAttr) {
                 WString s = *layoutAttr;
                 try {
-                    auto coroutine = resourceManager.load<Control>(FilePath(s), workingDir, Control::FORMAT_XML, nullptr, { .cache = false });
+                    auto coroutine = resourceManager.load<Control>(FilePath(s), workingDir, Control::FORMAT_XML, ResourceManager::LOAD_GENERATE_NAME, { .cache = false });
                     coroutine.resume();
                     IntrusivePointer<Control> control = coroutine.Result;
                     PartialConstraintSet loadedConstraints;

@@ -89,10 +89,14 @@ namespace Ghurund::Core {
 		[[nodiscard]]
 		CoroutineTask<void> reloadResource(Resource& resource);
 
+		inline static const WString LOAD_GENERATE_NAME_VALUE = L"";
+
 	public:
 		inline static const WString ENGINE_LIB_NAME = L"Ghurund";
 		static const DirectoryPath ENGINE_LIB_PATH;
 		inline static const WString LIB_PROTOCOL = L"lib://";
+
+		static constexpr const WString* LOAD_GENERATE_NAME = &LOAD_GENERATE_NAME_VALUE;
 
 		explicit ResourceManager(CoroutineScheduler& scheduler):scheduler(scheduler) {
 			IsHotReloadEnabled =
@@ -159,13 +163,18 @@ namespace Ghurund::Core {
 
 		CoroutineTask<void> reload(Resource& resource);
 
+		/**
+		* Loads a resource from file path, optionally caches the resource and watches for file changes. May throw if loading the resource fails.
+		* Parameter 'path' can lead to a file, or to a library entry. Parameter 'name' can be nullptr. If parameter 'name' is 'LOAD_GENERATE_NAME', then a name will be generated.
+		* Default parameters are: workingDir = DirectoryPath::getCurrentDirectory(), format = ResourceFormat::AUTO, name = LOAD_GENERATE_NAME, options = {}.
+		**/
 		template<Derived<Resource> T>
 		[[nodiscard]]
 		CoroutineTask<IntrusivePointer<T>> load(
 			const FilePath& path,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			const WString* name = nullptr,
+			const WString* name = LOAD_GENERATE_NAME,
 			LoadOptions options = {}
 		) {
 			BaseLoader* loader = getLoader(Ghurund::Core::getType<T>());
@@ -174,13 +183,18 @@ namespace Ghurund::Core {
 			co_return IntrusivePointer<T>((T*)resource.get());
 		}
 
+		/**
+		* Loads a resource from memory stream, optionally caches the resource. May throw if loading the resource fails.
+		* Parameter 'name' can be nullptr.
+		* Default parameters are: workingDir = DirectoryPath::getCurrentDirectory(), format = ResourceFormat::AUTO, name = LOAD_GENERATE_NAME, options = {}.
+		**/
 		template<Derived<Resource> T>
 		[[nodiscard]]
 		CoroutineTask<IntrusivePointer<T>> load(
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			const WString* name = nullptr,
+			const WString* name = LOAD_GENERATE_NAME,
 			LoadOptions options = {}
 		) {
 			BaseLoader* loader = getLoader(Ghurund::Core::getType<T>());

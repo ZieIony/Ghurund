@@ -18,7 +18,7 @@ namespace Ghurund::UI {
 		): resourceManager(resourceManager), path(path) {}
 
 		virtual IntrusivePointer<Control> get() override {
-			auto coroutine = resourceManager.load<Control>(path, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, nullptr, { .cache = false });
+			auto coroutine = resourceManager.load<Control>(path, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, ResourceManager::LOAD_GENERATE_NAME, { .cache = false });
 			coroutine.resume();
 			return coroutine.Result;
 		}

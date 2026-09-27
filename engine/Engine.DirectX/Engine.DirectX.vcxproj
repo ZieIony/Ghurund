@@ -171,6 +171,7 @@
     <ClCompile Include="src\engine\directx\shader\variables\BufferConstant.cpp" />
     <ClCompile Include="src\engine\directx\shader\variables\Sampler.cpp" />
     <ClCompile Include="src\engine\directx\texture\DxTexture.cpp" />
+    <ClCompile Include="src\engine\directx\texture\DxTextureLoader.cpp" />
     <ClCompile Include="src\ghedxpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

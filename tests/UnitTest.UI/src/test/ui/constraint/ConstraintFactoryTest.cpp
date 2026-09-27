@@ -138,7 +138,7 @@ public:
 			MemoryInputStream stream(xml.Data, xml.Length);
 
 			IntrusivePointer<ControlGroup> controlGroup = runCoroutineBlocking(
-				resourceManager.load<ControlGroup>(stream, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, nullptr, { .cache = false })
+				resourceManager.load<ControlGroup>(stream, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, ResourceManager::LOAD_GENERATE_NAME, { .cache = false })
 			);
 			Control* control = controlGroup->find<Control>();
 

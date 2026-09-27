@@ -4,6 +4,6 @@
 	version="1"
 	shader="lib://Ghurund/shaders/DirectX/3d/forward/pbr.xml"
 >
-	<Parameter name="albedoTexture" value="lib://Ghurund/textures/diffuse.png"/>
-	<Parameter name="normalTexture" value="lib://Ghurund/textures/normal.png"/>
+	<Parameter name="albedoTexture" value="lib://Ghurund/textures/diffuse.xml"/>
+	<Parameter name="normalTexture" value="lib://Ghurund/textures/normal.xml"/>
 </Material>

@@ -69,12 +69,20 @@ namespace Ghurund::Core {
 		auto absoluteOrLibPath = getAbsoluteOrLibPath(path, workingDir);
 		IntrusivePointer<Resource> resource = IntrusivePointer(resources.get(absoluteOrLibPath));
 		if (resource == nullptr) {
+#ifdef _DEBUG
+			auto message = std::format(_T("Loading resource from '{}'\n"), absoluteOrLibPath.toString());
+			Logger::log(LogType::INFO, message.c_str());
+#endif
 			SharedPointer<Buffer> buffer = resolveResource(absoluteOrLibPath);
 			MemoryInputStream stream = MemoryInputStream(buffer->Data, buffer->Size);
 			auto localDir = getLocalDir(absoluteOrLibPath, workingDir);
 			resource = co_await loadInternal(loader, stream, localDir, format, options);
 			resource->Path = &absoluteOrLibPath;
-			resource->Name = name ? *name : WString(absoluteOrLibPath.FileName.Data);
+			if (name == LOAD_GENERATE_NAME) {
+				resource->Name = WString(absoluteOrLibPath.FileName.Data);
+			} else if (name) {
+				resource->Name = *name;
+			}
 			if (options.cache)
 				resources.put(resource.ref());
 			try {
