@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Shader version="1">
+	<Settings isDepthTestEnabled="false" isDepthWriteEnabled="false" cullMode="none" isTransparencyEnabled="false"/>
+	<Programs>
+		<Program type="vertex" path="lib://Ghurund/shaders/DirectX/2d/fullscreenQuad_vs.hlsl"/>
+		<Program type="pixel" path="cubeMap_ps.hlsl"/>
+	</Programs>
+</Shader>

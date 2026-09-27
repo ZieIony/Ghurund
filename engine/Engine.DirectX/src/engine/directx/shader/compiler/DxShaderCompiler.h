@@ -7,11 +7,11 @@
 #include "core/IUnknownImpl.h"
 #include "core/string/String.h"
 #include "engine/directx/shader/DxShader.h"
-#include "engine/directx/shader/DxShaderType.h"
-#include "engine/directx/shader/variables/Sampler.h"
-#include "engine/directx/shader/variables/TextureConstant.h"
-#include "engine/graphics/mesh/VertexStream.h"
 #include "engine/directx/shader/DxShaderSource.h"
+#include "engine/directx/shader/DxShaderType.h"
+#include "engine/directx/shader/variables/DxSamplerInfo.h"
+#include "engine/directx/shader/variables/DxTextureConstantInfo.h"
+#include "engine/graphics/mesh/VertexStream.h"
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
@@ -50,7 +50,7 @@ namespace Ghurund::Engine::DirectX {
 		OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> makeRootSignature(
 			const List<DxBufferConstantInfo*>& constantBuffers,
 			const List<DxTextureConstantInfo*>& textures,
-			const List<Sampler*>& samplers
+			const List<DxSamplerInfo*>& samplers
 		);
 
 		void initConstants(
@@ -58,7 +58,7 @@ namespace Ghurund::Engine::DirectX {
 			const List<SamplerInfo>& samplerInfos,
 			List<DxBufferConstantInfo*>& constantBuffers,
 			List<DxTextureConstantInfo*>& textures,
-			List<Sampler*>& samplers
+			List<DxSamplerInfo*>& samplers
 		);
 
 		DxShaderProgram* compile(const DxShaderProgramSourceCode& shaderSource, CompilerInclude* include = nullptr, bool debug =

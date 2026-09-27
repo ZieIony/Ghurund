@@ -5,11 +5,12 @@
 
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
+#include "engine/directx/cubemap/DxCubeMap.h"
 #include "engine/directx/texture/DxTexture.h"
 #include "engine/parameter/ValueParameter.h"
-#include "variables/BufferConstant.h"
-#include "variables/Sampler.h"
-#include "variables/TextureConstant.h"
+#include "variables/DxBufferConstantInfo.h"
+#include "variables/DxTextureConstantInfo.h"
+#include "variables/DxSamplerInfo.h"
 
 namespace Ghurund::Engine::DirectX {
 	const Ghurund::Core::Type& DxShader::GET_TYPE() {
@@ -24,9 +25,6 @@ namespace Ghurund::Engine::DirectX {
 			rootSignature->Release();
 		if (pipelineState != nullptr)
 			pipelineState->Release();
-
-		bufferConstantInfos.deleteItems();
-		textureConstantInfos.deleteItems();
 	}
 
 	InputType DxShader::makeInputByType(
@@ -77,20 +75,34 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	void DxShader::applyInputs(CommandList& commandList) {
-		size_t vi = 0;
-		for (size_t i = 0; i < bufferConstantInfos.Size; i++) {
-			DxConstantBuffer* buffer = (DxConstantBuffer*)BufferConstants[i].constantBuffer;
-			buffer->set(commandList, bufferConstantInfos[i]->BindSlot);
-		}
-
-		for (size_t i = 0; i < textureConstantInfos.Size; i++) {
-			DxTexture* texture = (DxTexture*)textureConstants[i].Value;
-			if (!texture) {
-				auto text = std::format(_T("No value for constant '{}'.\n"), textureConstantInfos[i]->Name);
+		for (size_t i = 0; i < bufferConstants.Size; i++) {
+			DxConstantBuffer* buffer = (DxConstantBuffer*)bufferConstants[i].constantBuffer;
+			if (!buffer) {
+				auto text = std::format(_T("No value for constant '{}'.\n"), bufferConstants[i].name);
 				Logger::logOnce(LogType::WARNING, text.c_str(), (uint32_t)i);
 				continue;
 			}
-			texture->set(commandList, textureConstantInfos[i]->BindSlot);
+			buffer->set(commandList, bufferConstants[i].bindSlot);
+		}
+
+		for (size_t i = 0; i < textureConstants.Size; i++) {
+			DxTexture* texture = (DxTexture*)textureConstants[i].Value;
+			if (!texture) {
+				auto text = std::format(_T("No value for constant '{}'.\n"), textureConstants[i].name);
+				Logger::logOnce(LogType::WARNING, text.c_str(), (uint32_t)i);
+				continue;
+			}
+			texture->set(commandList, textureConstants[i].bindSlot);
+		}
+
+		for (size_t i = 0; i < cubeMapConstants.Size; i++) {
+			DxCubeMap* cubeMap = (DxCubeMap*)cubeMapConstants[i].Value;
+			if (!cubeMap) {
+				auto text = std::format(_T("No value for constant '{}'.\n"), cubeMapConstants[i].name);
+				Logger::logOnce(LogType::WARNING, text.c_str(), (uint32_t)i);
+				continue;
+			}
+			cubeMap->set(commandList, cubeMapConstants[i].bindSlot);
 		}
 	}
 
@@ -105,7 +117,6 @@ namespace Ghurund::Engine::DirectX {
 		this->layout = layout;
 		this->rootSignature = rootSignature.reset();
 		this->pipelineState = pipelineState.reset();
-		this->bufferConstantInfos = bufferConstantInfos;
 		for (auto& cb : bufferConstantInfos) {
 			List<ValueConstant> cbInputs;
 			for (auto& v : cb->Fields) {
@@ -117,11 +128,15 @@ namespace Ghurund::Engine::DirectX {
 				);
 				cbInputs.add(ValueConstant(v.name, type, v.size, v.offset, v.defaultValue));
 			}
-			bufferConstants.add(BufferConstant(cb->Name, cb->Size, cbInputs));
+			bufferConstants.add(BufferConstant(cb->Name, cb->BindSlot, cb->Size, cbInputs));
 		}
-		this->textureConstantInfos = textureConstantInfos;
-		for (auto& t : textureConstantInfos)
-			textureConstants.add(TextureConstant(t->Name));
+		for (auto& t : textureConstantInfos) {
+			if (t->dimension == D3D_SRV_DIMENSION_TEXTURE2D) {
+				textureConstants.add(TextureConstant(t->Name, t->BindSlot));
+			} else {
+				cubeMapConstants.add(CubeMapConstant(t->Name, t->BindSlot));
+			}
+		}
 		this->isTransparencyEnabled = isTransparencyEnabled;
 	}
 

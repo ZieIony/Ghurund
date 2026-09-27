@@ -2,6 +2,7 @@
 
 #include "engine/directx/mesh/DxMesh.h"
 #include "engine/resource/IGraphicsResourceFactory.h"
+#include "engine/directx/cubemap/DxCubeMap.h"
 
 namespace Ghurund::Engine::DirectX {
 	class DxGraphicsResourceFactory:public IGraphicsResourceFactory {
@@ -27,6 +28,25 @@ namespace Ghurund::Engine::DirectX {
 			auto texture = ghnew DxTexture();
 			texture->init(image, memoryManager);
 			return texture;
+		}
+
+		[[nodiscard]]
+		virtual ICubeMap* makeCubemap(
+			Ghurund::Core::Image& imageTop,
+			Ghurund::Core::Image& imageBottom,
+			Ghurund::Core::Image& imageLeft,
+			Ghurund::Core::Image& imageRight,
+			Ghurund::Core::Image& imageFront,
+			Ghurund::Core::Image& imageBack
+		) override {
+			auto cubeMap = ghnew DxCubeMap();
+			cubeMap->init(
+				imageTop, imageBottom,
+				imageLeft, imageRight,
+				imageFront, imageBack,
+				memoryManager
+			);
+			return cubeMap;
 		}
 	};
 }

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Material version="1" shader="lib://Ghurund/shaders/DirectX/3d/forward/cubeMap.xml">
+	<Parameter name="cubeMap" value="lib://Ghurund/cubemaps/sky.xml"/>
+</Material>

@@ -10,14 +10,14 @@ namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
 	using namespace DirectX;
 
-	class ShaderConstant {
+	class DxShaderConstantInfo {
 	protected:
 		AString name;
 		uint32_t bindPoint, bindSlot = 0;
 		D3D12_SHADER_VISIBILITY visibility;
 
 	public:
-		ShaderConstant(
+		DxShaderConstantInfo(
 			const AString& name,
 			uint32_t bindPoint,
 			D3D12_SHADER_VISIBILITY visibility

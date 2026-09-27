@@ -61,4 +61,3 @@ namespace Ghurund::Engine::DirectX {
 		}
 	}
 }
-

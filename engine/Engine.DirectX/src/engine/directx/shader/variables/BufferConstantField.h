@@ -49,7 +49,7 @@ namespace Ghurund::Engine::DirectX {
 		}()) {
 		}
 
-		BufferConstantField(BufferConstantField&& other):
+		BufferConstantField(BufferConstantField&& other) noexcept:
 			variableClass(other.variableClass),
 			variableType(other.variableType),
 			name(other.name),

@@ -5,6 +5,7 @@
 #include "core/Colors.h"
 #include "core/window/DisplayManager.h"
 #include "engine/3d/graphics/MeshComponent.h"
+#include <engine/3d/graphics/FullscreenQuadComponent.h>
 
 namespace Demo {
 	DemoWindow::DemoWindow(
@@ -30,17 +31,31 @@ namespace Demo {
 	}
 
 	CoroutineTask<void> DemoWindow::initScene() {
-		auto entity = co_await world->spawnEntity<Entity3D>();
-		auto meshComponent = entity->makeComponent<MeshComponent>();
-		auto mesh = co_await app.ResourceManager.load<Mesh>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/spartan helmet/spartan helmet.fbx"));
-		meshComponent->Mesh = mesh.get();
-		auto material = co_await app.ResourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/spartan helmet/spartan helmet material.xml"));
-		meshComponent->Material = material.get();
-		entity->Components.add(meshComponent.ref());
-		world->Scene.Camera->setPositionTargetUp({ 40, 40, -40 }, { 0, 20, 0 });
+		{
+			auto entity = co_await world->spawnEntity<Entity3D>();
+			auto meshComponent = entity->makeComponent<MeshComponent>();
+			auto mesh = co_await app.ResourceManager.load<Mesh>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/spartan helmet/spartan helmet.fbx"));
+			meshComponent->Mesh = mesh.get();
+			auto material = co_await app.ResourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/spartan helmet/spartan helmet material.xml"));
+			meshComponent->Material = material.get();
+			entity->Components.add(meshComponent.ref());
+			world->Scene.Camera->setPositionTargetUp({ 40, 40, -40 }, { 0, 20, 0 });
+		}
 
 		cameraController.Camera = world->Scene.Camera;
 		cameraController.Window = this;
+
+		{
+			auto entity = co_await world->spawnEntity<Entity3D>();
+			entity->Transform.Position = { 0,0,-1000 };
+			auto quadComponent = entity->makeComponent<FullscreenQuadComponent>();
+			co_await quadComponent->init();
+			
+			auto material = co_await app.ResourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/3d/forward/cubeMap.xml"));
+			quadComponent->Material = material.get();
+			quadComponent->drawOrder = -1;
+			entity->Components.add(quadComponent.ref());
+		}
 
 		app.ResourceManager.printResources();
 	}
@@ -81,7 +96,7 @@ namespace Demo {
 	}
 
 	void DemoWindow::onPaint(RenderingContext& renderingContext) {
-		RenderGroup _3dGroup(DrawGroup(0, DrawOrder::FRONT_TO_BACK));
+		RenderGroup _3dGroup(DrawGroup(0, DrawOrder::BACK_TO_FRONT));
 		_3dGroup.Camera = world->Scene.Camera;
 		world->queueDraw(_3dGroup);
 		renderGroups.put(_3dGroup);

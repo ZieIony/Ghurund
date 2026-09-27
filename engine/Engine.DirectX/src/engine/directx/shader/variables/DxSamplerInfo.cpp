@@ -1,8 +1,8 @@
 #include "ghedxpch.h"
-#include "Sampler.h"
+#include "DxSamplerInfo.h"
 
 namespace Ghurund::Engine::DirectX {
-    Sampler::Sampler(const char* name, unsigned int bindPoint, D3D12_SHADER_VISIBILITY visibility):ShaderConstant(name, bindPoint, visibility) {
+    DxSamplerInfo::DxSamplerInfo(const char* name, unsigned int bindPoint, D3D12_SHADER_VISIBILITY visibility):DxShaderConstantInfo(name, bindPoint, visibility) {
         samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
         samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
         samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;

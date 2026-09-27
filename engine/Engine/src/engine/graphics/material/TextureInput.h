@@ -28,7 +28,7 @@ namespace Ghurund::Engine {
 		}
 
 		const AString& getName() const {
-			return shaderConstant.Name;
+			return shaderConstant.name;
 		}
 
 		__declspec(property(get = getName)) const AString& Name;

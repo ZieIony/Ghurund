@@ -5,6 +5,6 @@ namespace Ghurund::Engine {
 		INT, INT2,
 		FLOAT, FLOAT2, FLOAT3, FLOAT4,
 		MATRIX,
-		TEXTURE
+		TEXTURE, CUBEMAP
 	};
 }

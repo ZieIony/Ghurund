@@ -8,9 +8,9 @@
 #include "engine/directx/CommandList.h"
 #include "engine/graphics/mesh/VertexStream.h"
 #include "engine/graphics/shader/Shader.h"
-#include "variables/BufferConstant.h"
-#include "variables/Sampler.h"
-#include "variables/TextureConstant.h"
+#include "variables/DxBufferConstantInfo.h"
+#include "variables/DxSamplerInfo.h"
+#include "variables/DxTextureConstantInfo.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
@@ -37,9 +37,6 @@ namespace Ghurund::Engine::DirectX {
 		ID3D12RootSignature* rootSignature = nullptr;
 		ID3D12PipelineState* pipelineState = nullptr;
 		Array<VertexRole> layout;
-
-		List<DxBufferConstantInfo*> bufferConstantInfos;
-		List<DxTextureConstantInfo*> textureConstantInfos;
 
 		void finalize();
 

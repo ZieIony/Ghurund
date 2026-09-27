@@ -92,7 +92,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\directx\resource\DxGraphicsResourceFactory.h" />
     <ClInclude Include="src\Ghurund.Engine.DirectX.h" />
     <ClInclude Include="src\engine\directx\CommandList.h" />
     <ClInclude Include="src\engine\directx\DirectXTypes.h" />
@@ -113,11 +112,14 @@
     <ClInclude Include="src\engine\directx\buffer\DescriptorHeap.h" />
     <ClInclude Include="src\engine\directx\buffer\DynamicBuffer.h" />
     <ClInclude Include="src\engine\directx\buffer\RenderTarget.h" />
+    <ClInclude Include="src\engine\directx\cubemap\DxCubeMap.h" />
+    <ClInclude Include="src\engine\directx\cubemap\DxCubeMapLoader.h" />
     <ClInclude Include="src\engine\directx\memory\DxGPUMemoryManager.h" />
     <ClInclude Include="src\engine\directx\memory\GPUResourcePointer.h" />
     <ClInclude Include="src\engine\directx\memory\HeapAllocator.h" />
     <ClInclude Include="src\engine\directx\mesh\DxMesh.h" />
     <ClInclude Include="src\engine\directx\mesh\DxMeshLoader.h" />
+    <ClInclude Include="src\engine\directx\resource\DxGraphicsResourceFactory.h" />
     <ClInclude Include="src\engine\directx\shader\DxConstantBuffer.h" />
     <ClInclude Include="src\engine\directx\shader\DxShader.h" />
     <ClInclude Include="src\engine\directx\shader\DxShaderLoader.h" />
@@ -130,12 +132,12 @@
     <ClInclude Include="src\engine\directx\shader\compiler\DxShaderCompiler.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\DxShaderProgram.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\ShaderCompilationResult.h" />
-    <ClInclude Include="src\engine\directx\shader\variables\BufferConstant.h" />
     <ClInclude Include="src\engine\directx\shader\variables\BufferConstantField.h" />
-    <ClInclude Include="src\engine\directx\shader\variables\Sampler.h" />
-    <ClInclude Include="src\engine\directx\shader\variables\ShaderConstant.h" />
-    <ClInclude Include="src\engine\directx\shader\variables\TextureBufferConstant.h" />
-    <ClInclude Include="src\engine\directx\shader\variables\TextureConstant.h" />
+    <ClInclude Include="src\engine\directx\shader\variables\DxBufferConstantInfo.h" />
+    <ClInclude Include="src\engine\directx\shader\variables\DxSamplerInfo.h" />
+    <ClInclude Include="src\engine\directx\shader\variables\DxShaderConstantInfo.h" />
+    <ClInclude Include="src\engine\directx\shader\variables\DxTextureBufferConstantInfo.h" />
+    <ClInclude Include="src\engine\directx\shader\variables\DxTextureConstantInfo.h" />
     <ClInclude Include="src\engine\directx\texture\DxTexture.h" />
     <ClInclude Include="src\engine\directx\texture\DxTextureLoader.h" />
     <ClInclude Include="src\ghedxpch.h" />
@@ -156,6 +158,8 @@
     <ClCompile Include="src\engine\directx\buffer\DepthBuffer.cpp" />
     <ClCompile Include="src\engine\directx\buffer\DescriptorHeap.cpp" />
     <ClCompile Include="src\engine\directx\buffer\RenderTarget.cpp" />
+    <ClCompile Include="src\engine\directx\cubemap\DxCubeMap.cpp" />
+    <ClCompile Include="src\engine\directx\cubemap\DxCubeMapLoader.cpp" />
     <ClCompile Include="src\engine\directx\memory\DxGPUMemoryManager.cpp" />
     <ClCompile Include="src\engine\directx\memory\GPUResourcePointer.cpp" />
     <ClCompile Include="src\engine\directx\memory\HeapAllocator.cpp" />
@@ -168,8 +172,8 @@
     <ClCompile Include="src\engine\directx\shader\compiler\CompilationTarget.cpp" />
     <ClCompile Include="src\engine\directx\shader\compiler\CompilerInclude.cpp" />
     <ClCompile Include="src\engine\directx\shader\compiler\DxShaderCompiler.cpp" />
-    <ClCompile Include="src\engine\directx\shader\variables\BufferConstant.cpp" />
-    <ClCompile Include="src\engine\directx\shader\variables\Sampler.cpp" />
+    <ClCompile Include="src\engine\directx\shader\variables\DxBufferConstantInfo.cpp" />
+    <ClCompile Include="src\engine\directx\shader\variables\DxSamplerInfo.cpp" />
     <ClCompile Include="src\engine\directx\texture\DxTexture.cpp" />
     <ClCompile Include="src\engine\directx\texture\DxTextureLoader.cpp" />
     <ClCompile Include="src\ghedxpch.cpp">

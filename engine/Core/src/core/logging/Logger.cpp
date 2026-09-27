@@ -17,6 +17,12 @@ namespace Ghurund::Core {
     LogOutput* Logger::logOutput = nullptr;
     Set<Logger::LogOnceEntry> Logger::logOnceEntries;
 
+    std::basic_string<tchar> Logger::getStacktraceLine(size_t stacktraceEntryIndex) {
+        StackTrace stacktrace(GetCurrentProcess());
+        StackTraceEntry entry = stacktrace[2 + stacktraceEntryIndex];
+        return std::format(_T("{0}({1:d}): [{2:#x} {3}(..)]"), entry.fileName, entry.fileLine, entry.address, entry.name);
+    }
+
     void Logger::init(std::unique_ptr<LogOutput> output) {
         if (logOutput)
             uninit();
@@ -44,27 +50,21 @@ namespace Ghurund::Core {
         logOutput = nullptr;
     }
     
-    void Logger::log(const LogType& type, const tchar* text) {
+    void Logger::log(const LogType& type, const tchar* text, size_t stacktraceEntryIndex) {
         if (!logOutput || ((int)type.Value) < (int)filterLevel)
             return;
 
-        StackTrace stacktrace(GetCurrentProcess());
-        StackTraceEntry entry = stacktrace[1];
-
-        std::basic_string<tchar> fileLine = std::format(_T("{0}({1:d}): [{2:#x} {3}(..)]"), entry.fileName, entry.fileLine, entry.address, entry.name);
+        std::basic_string<tchar> fileLine = getStacktraceLine(stacktraceEntryIndex);
 
         std::unique_lock lock(mutex);
         logOutput->log({ type, fileLine.c_str(), text });
     }
 
-    void Logger::logOnce(const LogType& type, const tchar* text, uint32_t logId) {
+    void Logger::logOnce(const LogType& type, const tchar* text, uint32_t logId, size_t stacktraceEntryIndex) {
         if (!logOutput || ((int)type.Value) < (int)filterLevel)
             return;
 
-        StackTrace stacktrace(GetCurrentProcess());
-        StackTraceEntry entry = stacktrace[1];
-
-        std::basic_string<tchar> fileLine = std::format(_T("{0}({1:d}): [{2:#x} {3}(..)]"), entry.fileName, entry.fileLine, entry.address, entry.name);
+        std::basic_string<tchar> fileLine = getStacktraceLine(stacktraceEntryIndex);
 
         LogOnceEntry logOnceEntry = { fileLine, logId };
         if (logOnceEntries.contains(logOnceEntry))

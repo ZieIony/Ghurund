@@ -115,7 +115,7 @@ namespace Ghurund::Engine::DirectX {
 	) {
 		List<DxBufferConstantInfo*> constantBuffers;
 		List<DxTextureConstantInfo*> textures;
-		List<Sampler*> samplers;
+		List<DxSamplerInfo*> samplers;
 		for (auto& program : programs)
 			initConstants(program.ref(), samplerInfos, constantBuffers, textures, samplers);
 
@@ -144,6 +144,8 @@ namespace Ghurund::Engine::DirectX {
 			textures,
 			shaderSettings.isTransparencyEnabled
 		);
+		constantBuffers.deleteItems();
+		textures.deleteItems();
 	}
 
 	OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> DxShaderCompiler::makePipelineState(
@@ -153,18 +155,13 @@ namespace Ghurund::Engine::DirectX {
 		ShaderSettings shaderSettings
 	) {
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
+		psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC1(D3D12_DEFAULT);
 		psoDesc.DepthStencilState.DepthEnable = shaderSettings.isDepthTestEnabled;
+		psoDesc.DepthStencilState.DepthWriteMask = shaderSettings.isDepthWriteEnabled ? D3D12_DEPTH_WRITE_MASK_ALL : D3D12_DEPTH_WRITE_MASK_ZERO;
+		psoDesc.DepthStencilState.DepthFunc = shaderSettings.depthFunc;
 		psoDesc.pRootSignature = rootSignature;
 		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-		psoDesc.RasterizerState.CullMode = [&] {
-			if (shaderSettings.cullMode == CullMode::NONE) {
-				return D3D12_CULL_MODE_NONE;
-			} else if (shaderSettings.cullMode == CullMode::FRONT) {
-				return D3D12_CULL_MODE_FRONT;
-			} else {
-				return D3D12_CULL_MODE_BACK;
-			}
-		}();
+		psoDesc.RasterizerState.CullMode = shaderSettings.cullMode;
 
 		for (auto& program : programs) {
 			if (program->Type == DxShaderType::VERTEX) {
@@ -196,7 +193,6 @@ namespace Ghurund::Engine::DirectX {
 		}
 
 		if (shaderSettings.isTransparencyEnabled) {
-			psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 			psoDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
 			psoDesc.BlendState.RenderTarget[0].BlendEnable = true;
 			psoDesc.BlendState.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
@@ -207,7 +203,6 @@ namespace Ghurund::Engine::DirectX {
 			psoDesc.BlendState.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
 			psoDesc.BlendState.RenderTarget[0].RenderTargetWriteMask = 0x0F;
 		} else {
-			psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 			psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
 		}
 		psoDesc.SampleMask = UINT_MAX;
@@ -229,21 +224,21 @@ namespace Ghurund::Engine::DirectX {
 	OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> DxShaderCompiler::makeRootSignature(
 		const List<DxBufferConstantInfo*>& constantBuffers,
 		const List<DxTextureConstantInfo*>& textures,
-		const List<Sampler*>& samplers
+		const List<DxSamplerInfo*>& samplers
 	) {
 		size_t paramCount = constantBuffers.Size + textures.Size;
 		Array<CD3DX12_ROOT_PARAMETER1> rootParameters(paramCount);
 
 		unsigned int r = 0;
 		for (size_t i = 0; i < constantBuffers.Size; i++, r++) {
-			ShaderConstant* constant = constantBuffers.get(i);
+			DxShaderConstantInfo* constant = constantBuffers.get(i);
 			constant->BindSlot = r;
 			rootParameters[r].InitAsConstantBufferView(constant->getBindPoint(), 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, constant->getVisibility());
 		}
 
 		Array<CD3DX12_DESCRIPTOR_RANGE1> ranges(textures.Size);
 		for (size_t i = 0; i < textures.Size; i++, r++) {
-			ShaderConstant* constant = textures.get(i);
+			DxShaderConstantInfo* constant = textures.get(i);
 			constant->BindSlot = r;
 			ranges[i].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, constant->getBindPoint(), 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
 			rootParameters[r].InitAsDescriptorTable(1, &ranges[i], constant->getVisibility());
@@ -284,7 +279,7 @@ namespace Ghurund::Engine::DirectX {
 		const List<SamplerInfo>& samplerInfos,
 		List<DxBufferConstantInfo*>& constantBuffers,
 		List<DxTextureConstantInfo*>& textures,
-		List<Sampler*>& samplers
+		List<DxSamplerInfo*>& samplers
 	) {
 		ID3D12ShaderReflection* reflector = nullptr;
 		D3DReflect(program.ByteCode.Data, program.ByteCode.Size, IID_ID3D12ShaderReflection, (void**)&reflector);
@@ -320,7 +315,7 @@ namespace Ghurund::Engine::DirectX {
 				if (index != textures.Size) {
 					textures[index]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
 				} else {
-					textures.add(ghnew DxTextureConstantInfo(bindDesc.Name, bindDesc.BindPoint, visibility));
+					textures.add(ghnew DxTextureConstantInfo(bindDesc.Name, bindDesc.BindPoint, visibility, bindDesc.Dimension));
 				}
 			}
 			break;
@@ -330,7 +325,7 @@ namespace Ghurund::Engine::DirectX {
 				if (index != samplers.Size) {
 					samplers[index]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
 				} else {
-					auto sampler = ghnew Sampler(bindDesc.Name, bindDesc.BindPoint, visibility);
+					auto sampler = ghnew DxSamplerInfo(bindDesc.Name, bindDesc.BindPoint, visibility);
 					samplers.add(sampler);
 					size_t index = samplerInfos.find([&](auto& info) {return info.name == bindDesc.Name; });
 					if (index != samplerInfos.Size)

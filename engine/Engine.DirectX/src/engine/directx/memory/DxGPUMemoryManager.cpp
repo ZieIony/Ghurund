@@ -71,7 +71,8 @@ namespace Ghurund::Engine::DirectX {
 	ComPtr<ID3D12Resource> DxGPUMemoryManager::makeCommitedResource(
 		CommandList& commandList,
 		CD3DX12_RESOURCE_DESC resourceDesc,
-		D3D12_SUBRESOURCE_DATA subresourceData,
+		D3D12_SUBRESOURCE_DATA* subresourceData,
+		size_t numSubresources,
 		D3D12_RESOURCE_STATES resourceType
     ) {
 		ComPtr<ID3D12Resource> resource;
@@ -89,7 +90,7 @@ namespace Ghurund::Engine::DirectX {
 		}
 
 		ComPtr<ID3D12Resource> uploadHeap;
-		const UINT64 uploadBufferSize = GetRequiredIntermediateSize(resource.Get(), 0, 1);
+		const UINT64 uploadBufferSize = GetRequiredIntermediateSize(resource.Get(), 0, numSubresources);
 		auto uploadResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize);
 		auto uploadHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 		if (FAILED(graphics.Device->CreateCommittedResource(
@@ -105,7 +106,7 @@ namespace Ghurund::Engine::DirectX {
 
 		// we are now creating a command with the command list to copy the data from
 		// the upload heap to the default heap
-		UpdateSubresources(commandList.get(), resource.Get(), uploadHeap.Get(), 0, 0, 1, &subresourceData);
+		UpdateSubresources(commandList.get(), resource.Get(), uploadHeap.Get(), 0, 0, numSubresources, subresourceData);
 
 		auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(resource.Get(), D3D12_RESOURCE_STATE_COPY_DEST, resourceType);
 		commandList.get()->ResourceBarrier(1, &barrier);
@@ -134,13 +135,40 @@ namespace Ghurund::Engine::DirectX {
 		);
 		D3D12_SUBRESOURCE_DATA textureData = {};
 		textureData.pData = image.Data.Data;
-		textureData.RowPitch = image.Size.Width * image.PixelSize;
+		textureData.RowPitch = image.RowPitch;
 		textureData.SlicePitch = textureData.RowPitch * image.Size.Height;
 
 		return makeCommitedResource(
 			uploadCommandList,
 			resourceDesc,
+			&textureData,
+			1,
+			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
+		);
+	}
+
+	ComPtr<ID3D12Resource> DxGPUMemoryManager::makeCubeMap(
+		Array<NotNull<Ghurund::Core::Image>> images
+	) {
+		CD3DX12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(
+			images[0]->Format,
+			images[0]->Size.Width,
+			images[0]->Size.Height,
+			6,
+			1
+		);
+		D3D12_SUBRESOURCE_DATA textureData[6] = {};
+		for (uint32_t face = 0; face < 6; face++) {
+			textureData[face].pData = images[face]->Data.Data;
+			textureData[face].RowPitch = images[face]->RowPitch;
+			textureData[face].SlicePitch = textureData[face].RowPitch * images[face]->Size.Height;
+		}
+
+		return makeCommitedResource(
+			uploadCommandList,
+			resourceDesc,
 			textureData,
+			6,
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
 		);
 	}
@@ -156,6 +184,17 @@ namespace Ghurund::Engine::DirectX {
 		return descHandle;
 	}
 
+	DescriptorHandle DxGPUMemoryManager::makeCubeMapRV(ComPtr<ID3D12Resource> textureResource, DXGI_FORMAT format) {
+		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+		srvDesc.Format = format;
+		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURECUBE;
+		srvDesc.TextureCube.MipLevels = 1;
+		DescriptorHandle descHandle = graphics.DescriptorAllocator.allocate(graphics, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+		graphics.Device->CreateShaderResourceView(textureResource.Get(), &srvDesc, descHandle.CpuHandle);
+		return descHandle;
+	}
+
     ComPtr<ID3D12Resource> DxGPUMemoryManager::makeVertexBuffer(const Buffer& buffer) {
 		D3D12_SUBRESOURCE_DATA subresourceData = {};
 		subresourceData.pData = buffer.Data;
@@ -165,7 +204,8 @@ namespace Ghurund::Engine::DirectX {
 		return makeCommitedResource(
 			uploadCommandList,
 			CD3DX12_RESOURCE_DESC::Buffer(buffer.Size),
-			subresourceData,
+			&subresourceData,
+			1,
 			D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER
 		);
 	}
@@ -179,7 +219,8 @@ namespace Ghurund::Engine::DirectX {
 		return makeCommitedResource(
 			uploadCommandList,
 			CD3DX12_RESOURCE_DESC::Buffer(buffer.Size),
-			subresourceData,
+			&subresourceData,
+			1,
 			D3D12_RESOURCE_STATE_INDEX_BUFFER
 		);
 	}

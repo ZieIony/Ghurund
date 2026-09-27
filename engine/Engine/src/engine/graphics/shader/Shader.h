@@ -1,11 +1,12 @@
 #pragma once
 
+#include "BufferConstant.h"
+#include "CubeMapConstant.h"
+#include "ShaderSource.h"
 #include "TextureConstant.h"
 #include "ValueConstant.h"
-#include "BufferConstant.h"
 
 #include "core/resource/Resource.h"
-#include "ShaderSource.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
@@ -28,6 +29,7 @@ namespace Ghurund::Engine {
         List<ValueConstant> valueConstants;
         List<BufferConstant> bufferConstants;
         List<TextureConstant> textureConstants;
+        List<CubeMapConstant> cubeMapConstants;
         ShaderSource* source = nullptr;
 
     public:
@@ -59,6 +61,12 @@ namespace Ghurund::Engine {
         }
 
         __declspec(property(get = getTextureConstants)) const List<TextureConstant>& TextureConstants;
+
+        inline const List<CubeMapConstant>& getCubeMapConstants() const {
+            return cubeMapConstants;
+        }
+
+        __declspec(property(get = getCubeMapConstants)) const List<CubeMapConstant>& CubeMapConstants;
 
         inline const ShaderSource* getSource() const {
             return source;

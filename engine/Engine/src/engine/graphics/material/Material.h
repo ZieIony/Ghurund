@@ -2,6 +2,7 @@
 
 #include "ValueInput.h"
 #include "TextureInput.h"
+#include "CubeMapInput.h"
 #include "MaterialInputCollection.h"
 
 #include "core/object/NotNull.h"
@@ -32,6 +33,7 @@ namespace Ghurund::Engine {
         List<IntrusivePointer<ConstantBuffer>> constantBuffers;
         List<BaseValueInput*> valueInputs;
         List<TextureInput*> textureInputs;
+        List<CubeMapInput*> cubeMapInputs;
 
         inline void finalize() {
             safeRelease(shader);
@@ -77,6 +79,7 @@ namespace Ghurund::Engine {
             setPointer(this->shader, shader);
             valueInputs.clear();
             textureInputs.clear();
+            cubeMapInputs.clear();
             inputs.clear();
             if (shader)
                 initInputs();

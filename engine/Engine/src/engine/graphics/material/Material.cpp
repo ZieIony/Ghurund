@@ -42,12 +42,12 @@ namespace Ghurund::Engine {
 
     void Material::initInputs() {
         for (auto& bi : shader->BufferConstants) {
-            for (auto& vi : bi.ValueConstants) {
+            for (auto& vi : bi.valueConstants) {
                 auto input = makeInput(vi);
                 valueInputs.add(input);
                 inputs.add(input);
             }
-            constantBuffers.add(IntrusivePointer(memoryManager->makeConstantBuffer(bi.Size)));
+            constantBuffers.add(IntrusivePointer(memoryManager->makeConstantBuffer(bi.size)));
         }
         for (auto& vi : shader->ValueConstants) {
             auto input = makeInput(vi);
@@ -57,6 +57,11 @@ namespace Ghurund::Engine {
         for (auto& ti : shader->TextureConstants) {
             auto input = ghnew TextureInput(ti);
             textureInputs.add(input);
+            inputs.add(input);
+        }
+        for (auto& cmi : shader->CubeMapConstants) {
+            auto input = ghnew CubeMapInput(cmi);
+            cubeMapInputs.add(input);
             inputs.add(input);
         }
     }
@@ -76,7 +81,12 @@ namespace Ghurund::Engine {
 				textureInputs.add(input);
                 inputs.add(input);
 			}
-		}
+            for (size_t i = 0; i < other.cubeMapInputs.Size; i++) {
+                auto input = other.cubeMapInputs[i]->clone();
+                cubeMapInputs.add(input);
+                inputs.add(input);
+            }
+        }
 	}
 
     void Material::applyInputs(ParameterCollection& globals) {
@@ -103,7 +113,7 @@ namespace Ghurund::Engine {
             auto& bi = shader->BufferConstants[b];
             auto& cb = constantBuffers[b];
             bi.constantBuffer = cb.get();
-            for (auto& vi : bi.ValueConstants) {
+            for (auto& vi : bi.valueConstants) {
                 if (!vi.Value) {
                     auto text = std::format(_T("No value for input '{}'.\n"), vi.Name);
                     Logger::logOnce(LogType::WARNING, text.c_str(), i);
@@ -127,5 +137,15 @@ namespace Ghurund::Engine {
                 input->applyValue();
             }
 		}
+        for (auto input : cubeMapInputs) {
+            i++;
+            if (input->IsEmpty) {
+                auto text = std::format(_T("No value for input '{}'.\n"), input->Name);
+                Logger::logOnce(LogType::WARNING, text.c_str(), i);
+                continue;
+            } else {
+                input->applyValue();
+            }
+        }
     }
 }

@@ -1,12 +1,12 @@
 #pragma once
 
 #include "BufferConstantField.h"
-#include "ShaderConstant.h"
+#include "DxShaderConstantInfo.h"
 
 #include <d3dcompiler.h>
 
 namespace Ghurund::Engine::DirectX {
-	class DxBufferConstantInfo:public ShaderConstant {
+	class DxBufferConstantInfo:public DxShaderConstantInfo {
 	private:
 		uint32_t size = 0;
 		List<BufferConstantField> fields;

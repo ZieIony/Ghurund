@@ -7,6 +7,7 @@
 #include "TestShaderSources.h"
 #include "engine/opengl/shader/OglCompilationException.h"
 #include "engine/opengl/OglGraphics.h"
+#include "test/utils/TestUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -26,7 +27,7 @@ public:
         MemoryGuard guard;
         {
             auto graphics = makeIntrusive<OglGraphics>();
-            graphics->init();
+            runCoroutineBlocking(graphics->init());
 
             SharedPointer<OglShaderProgram> shaderProgram(shaderCompiler.compile(TEST_VERTEX_SHADER_SOURCE, OglShaderType::VERTEX));
             Assert::IsNotNull(shaderProgram.get());
@@ -37,7 +38,7 @@ public:
         MemoryGuard guard;
         {
             auto graphics = makeIntrusive<OglGraphics>();
-            graphics->init();
+            runCoroutineBlocking(graphics->init());
 
             // shaders compile without main just fine, so this check needs to be done in another place
             SharedPointer<OglShaderProgram> shaderProgram(shaderCompiler.compile(TEST_VERTEX_SHADER_SOURCE_NO_MAIN, OglShaderType::VERTEX));
@@ -48,7 +49,7 @@ public:
         MemoryGuard guard;
         {
             auto graphics = makeIntrusive<OglGraphics>();
-            graphics->init();
+            runCoroutineBlocking(graphics->init());
 
             SharedPointer<OglShaderProgram> shaderProgram(shaderCompiler.compile(TEST_FRAGMENT_SHADER_SOURCE, OglShaderType::FRAGMENT));
             Assert::IsNotNull(shaderProgram.get());
@@ -59,7 +60,7 @@ public:
         MemoryGuard guard;
         {
             auto graphics = makeIntrusive<OglGraphics>();
-            graphics->init();
+            runCoroutineBlocking(graphics->init());
 
             Assert::ExpectException<OglCompilationException>([&] {
                 SharedPointer<OglShaderProgram> shaderProgram(shaderCompiler.compile(TEST_VERTEX_SHADER_SOURCE, OglShaderType::FRAGMENT));

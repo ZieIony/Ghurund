@@ -22,7 +22,7 @@ namespace Ghurund::Core {
 		unsigned int hash = hashCode(type.Name.Data);
 		uint32_t h = stream.readUInt32();
 		if (h != hash) {
-			auto message = std::format(_T("Invalid resource type code (expected: {}, read: {})\n"), hash, h);
+			auto message = std::format(_T("Invalid resource type code (expected: {}, read: {}, loader: {})\n"), hash, h, Type.Name);
 			Logger::logAndThrow<InvalidDataException>(message.c_str());
 		
 		}
@@ -35,7 +35,7 @@ namespace Ghurund::Core {
 
 	void BaseLoader::checkXmlRoot(const XMLElement& xml, const WString& name) {
 		if (xml.name != name) {
-			auto message = std::format(_T("Invalid resource type name (expected: {}, read: {})\n"), name, xml.name);
+			auto message = std::format(_T("Invalid resource type name (expected: {}, read: {}, loader: {})\n"), name, xml.name, Type.Name);
 			Logger::logAndThrow<InvalidDataException>(message.c_str());
 		}
 

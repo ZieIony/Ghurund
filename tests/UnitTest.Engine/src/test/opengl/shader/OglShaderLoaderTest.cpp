@@ -23,7 +23,7 @@ namespace UnitTest {
 
         TEST_METHOD(OglShaderLoader_loadUnknownFormat) {
             auto graphics = makeIntrusive<OglGraphics>();
-            graphics->init();
+            runCoroutineBlocking(graphics->init());
             
             OglShaderCompiler compiler;
             IntrusivePointer<OglShaderLoader> loader(ghnew OglShaderLoader(compiler));
@@ -38,7 +38,7 @@ namespace UnitTest {
 
         TEST_METHOD(OglShaderLoader_loadShader) {
             auto graphics = makeIntrusive<OglGraphics>();
-            graphics->init();
+            runCoroutineBlocking(graphics->init());
 
             OglShaderCompiler compiler;
             IntrusivePointer<OglShaderLoader> loader(ghnew OglShaderLoader(compiler));

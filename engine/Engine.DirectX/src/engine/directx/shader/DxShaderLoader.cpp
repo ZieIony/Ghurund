@@ -20,35 +20,51 @@ namespace Ghurund::Engine::DirectX {
 		auto settingsElementIndex = xml.children.find([](const SharedPointer<XMLElement>& element) { return element->name == L"Settings"; });
 		if (settingsElementIndex != xml.children.Size) {
 			auto& settingsElement = xml.children[settingsElementIndex];
-			auto cullModeAttributeIterator = settingsElement->attributes.find(L"cullMode");
-			if (cullModeAttributeIterator != settingsElement->attributes.end()) {
-				auto& cullModeValue = cullModeAttributeIterator->value;
+			auto cullModeAttribute= settingsElement->findAttribute(L"cullMode");
+			if (cullModeAttribute) {
+				auto cullModeValue = *cullModeAttribute;
 				if (cullModeValue == L"none") {
-					shaderSource->settings.cullMode = CullMode::NONE;
+					shaderSource->settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_NONE;
 				} else if (cullModeValue == L"front") {
-					shaderSource->settings.cullMode = CullMode::FRONT;
+					shaderSource->settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_FRONT;
 				} else if (cullModeValue == L"back") {
-					shaderSource->settings.cullMode = CullMode::BACK;
+					shaderSource->settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
 				}
 			}
-			auto transparencyAttributeIterator = settingsElement->attributes.find(L"isTransparencyEnabled");
-			if (transparencyAttributeIterator != settingsElement->attributes.end())
-				shaderSource->settings.isTransparencyEnabled = transparencyAttributeIterator->value == L"true";
-			auto depthTestAttributeIterator = settingsElement->attributes.find(L"isDepthTestEnabled");
-			if (depthTestAttributeIterator != settingsElement->attributes.end())
-				shaderSource->settings.isDepthTestEnabled = depthTestAttributeIterator->value == L"true";
+			auto transparencyAttribute = settingsElement->findAttribute(L"isTransparencyEnabled");
+			if (transparencyAttribute)
+				shaderSource->settings.isTransparencyEnabled = *transparencyAttribute == L"true";
+			auto depthTestAttribute = settingsElement->findAttribute(L"isDepthTestEnabled");
+			if (depthTestAttribute)
+				shaderSource->settings.isDepthTestEnabled = *depthTestAttribute == L"true";
+			auto depthWriteAttribute = settingsElement->findAttribute(L"isDepthWriteEnabled");
+			if (depthWriteAttribute)
+				shaderSource->settings.isDepthWriteEnabled = *depthTestAttribute == L"true";
+			auto depthFuncAttribute = settingsElement->findAttribute(L"depthFunc");
+			if (depthFuncAttribute) {
+				auto depthFuncValue = *depthFuncAttribute;
+				if (depthFuncValue == L"never") {
+					shaderSource->settings.depthFunc = D3D12_COMPARISON_FUNC_NEVER;
+				} else if (depthFuncValue == L"always") {
+					shaderSource->settings.depthFunc = D3D12_COMPARISON_FUNC_ALWAYS;
+				} else if (depthFuncValue == L"less") {
+					shaderSource->settings.depthFunc = D3D12_COMPARISON_FUNC_LESS;
+				} else if (depthFuncValue == L"greater") {
+					shaderSource->settings.depthFunc = D3D12_COMPARISON_FUNC_GREATER;
+				}
+			}
 		}
 		auto samplersElementIndex = xml.children.find([](const SharedPointer<XMLElement>& element) { return element->name == L"Samplers"; });
 		if (samplersElementIndex != xml.children.Size) {
 			auto& samplersElement = xml.children[samplersElementIndex];
 			for (auto& samplerElement : samplersElement->children) {
 				SamplerInfo sampler;
-				auto samplerNameAttributeIterator = samplerElement->attributes.find(L"name");
-				if (samplerNameAttributeIterator != samplerElement->attributes.end())
-					sampler.name = convertText<wchar_t, char>(samplerNameAttributeIterator->value);
-				auto samplerFilterAttributeIterator = samplerElement->attributes.find(L"filter");
-				if (samplerFilterAttributeIterator != samplerElement->attributes.end()) {
-					auto& filterValue = samplerFilterAttributeIterator->value;
+				auto samplerNameAttribute = samplerElement->findAttribute(L"name");
+				if (samplerNameAttribute)
+					sampler.name = convertText<wchar_t, char>(*samplerNameAttribute);
+				auto samplerFilterAttribute = samplerElement->findAttribute(L"filter");
+				if (samplerFilterAttribute) {
+					auto filterValue = *samplerFilterAttribute;
 					if (filterValue == L"point") {
 						sampler.filter = TextureFilter::POINT;
 					} else if (filterValue == L"linear") {
@@ -65,9 +81,9 @@ namespace Ghurund::Engine::DirectX {
 			auto& programsElement = xml.children[programsElementIndex];
 			for (auto& programElement : programsElement->children) {
 				DxShaderType type = [&] {
-					auto programTypeAttributeIterator = programElement->attributes.find(L"type");
-					if (programTypeAttributeIterator != programElement->attributes.end()) {
-						auto programType = convertText<wchar_t, char>(programTypeAttributeIterator->value);
+					auto programTypeAttribute = programElement->findAttribute(L"type");
+					if (programTypeAttribute) {
+						auto programType = convertText<wchar_t, char>(*programTypeAttribute);
 						try {
 							return DxShaderType::fromName(programType.toUpperCase());
 						} catch (std::invalid_argument e) {
@@ -79,17 +95,17 @@ namespace Ghurund::Engine::DirectX {
 					}
 				}();
 				AString entryPoint = [&]->AString {
-					auto entryPointAttributeIterator = programElement->attributes.find(L"entryPoint");
-					if (entryPointAttributeIterator != programElement->attributes.end()) {
-						return convertText<wchar_t, char>(entryPointAttributeIterator->value);
+					auto entryPointAttribute = programElement->findAttribute(L"entryPoint");
+					if (entryPointAttribute) {
+						return convertText<wchar_t, char>(*entryPointAttribute);
 					} else {
 						return type.EntryPoint;
 					}
 				}();
 				FilePath path = [&] {
-					auto pathAttributeIterator = programElement->attributes.find(L"path");
-					if (pathAttributeIterator != programElement->attributes.end()) {
-						return FilePath(pathAttributeIterator->value);
+					auto pathAttribute = programElement->findAttribute(L"path");
+					if (pathAttribute) {
+						return FilePath(*pathAttribute);
 					} else {
 						auto message = std::format("Missing program path for program type '{}'.", type.Name);
 						throw InvalidDataException(message.c_str());
@@ -101,9 +117,9 @@ namespace Ghurund::Engine::DirectX {
 					return AString((const char*)buffer->Data, buffer->Size);
 				}();
 				AString sourceName = [&] {
-					auto sourceNameAttributeIterator = programElement->attributes.find(L"sourceName");
-					if (sourceNameAttributeIterator != programElement->attributes.end()) {
-						return convertText<wchar_t, char>(sourceNameAttributeIterator->value);
+					auto sourceNameAttribute = programElement->findAttribute(L"sourceName");
+					if (sourceNameAttribute) {
+						return convertText<wchar_t, char>(*sourceNameAttribute);
 					} else {
 						if (path.IsAbsolute || path.IsLibrary) {
 							return convertText<wchar_t, char>(path.toString());

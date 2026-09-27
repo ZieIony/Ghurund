@@ -45,7 +45,8 @@ namespace Ghurund::Engine::DirectX {
         ComPtr<ID3D12Resource> makeCommitedResource(
             CommandList& commandList,
             CD3DX12_RESOURCE_DESC resourceDesc,
-            D3D12_SUBRESOURCE_DATA subresourceData,
+            D3D12_SUBRESOURCE_DATA* subresourceData,
+            size_t numSubresources,
             D3D12_RESOURCE_STATES resourceType
         );
 
@@ -72,7 +73,11 @@ namespace Ghurund::Engine::DirectX {
 
         ComPtr<ID3D12Resource> makeTexture(const Image& image);
 
+        ComPtr<ID3D12Resource> makeCubeMap(Array<NotNull<Ghurund::Core::Image>> images);
+
         DescriptorHandle makeTextureRV(ComPtr<ID3D12Resource> textureResource, DXGI_FORMAT format);
+
+        DescriptorHandle makeCubeMapRV(ComPtr<ID3D12Resource> textureResource, DXGI_FORMAT format);
 
         ComPtr<ID3D12Resource> makeVertexBuffer(const Buffer& buffer);
 

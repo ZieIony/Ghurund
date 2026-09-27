@@ -92,9 +92,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Ghurund.Engine.2D.DirectX.h" />
     <ClInclude Include="src\engine\2d\directx\DxGraphics2DFeature.h" />
     <ClInclude Include="src\engine\2d\directx\DxGraphics2DFeatureFactory.h" />
-    <ClInclude Include="src\Ghurund.Engine.2D.DirectX.h" />
     <ClInclude Include="src\ghe2ddxpch.h" />
   </ItemGroup>
   <ItemGroup>

@@ -98,7 +98,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\resource\IGraphicsResourceFactory.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\animation\Animation.h" />
     <ClInclude Include="src\engine\animation\AnimationSet.h" />
@@ -157,6 +156,8 @@
     <ClInclude Include="src\engine\graphics\GraphicsFeature.h" />
     <ClInclude Include="src\engine\graphics\ICamera.h" />
     <ClInclude Include="src\engine\graphics\LightSystem.h" />
+    <ClInclude Include="src\engine\graphics\cubemap\ICubeMap.h" />
+    <ClInclude Include="src\engine\graphics\material\CubeMapInput.h" />
     <ClInclude Include="src\engine\graphics\material\Material.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialInput.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialInputCollection.h" />
@@ -182,6 +183,7 @@
     <ClInclude Include="src\engine\graphics\rendering\RenderingStatistics.h" />
     <ClInclude Include="src\engine\graphics\shader\BufferConstant.h" />
     <ClInclude Include="src\engine\graphics\shader\ConstantBuffer.h" />
+    <ClInclude Include="src\engine\graphics\shader\CubeMapConstant.h" />
     <ClInclude Include="src\engine\graphics\shader\IShaderProvider.h" />
     <ClInclude Include="src\engine\graphics\shader\InputType.h" />
     <ClInclude Include="src\engine\graphics\shader\Shader.h" />
@@ -193,7 +195,6 @@
     <ClInclude Include="src\engine\graphics\texture\TextureAtlas.h" />
     <ClInclude Include="src\engine\graphics\texture\TextureAtlasLoader.h" />
     <ClInclude Include="src\engine\graphics\texture\TextureFilter.h" />
-    <ClInclude Include="src\engine\graphics\texture\TextureProvider.h" />
     <ClInclude Include="src\engine\net\Client.h" />
     <ClInclude Include="src\engine\net\ClientMessage.h" />
     <ClInclude Include="src\engine\net\Connection.h" />
@@ -209,6 +210,7 @@
     <ClInclude Include="src\engine\parameter\ParameterManager.h" />
     <ClInclude Include="src\engine\parameter\TextureParameter.h" />
     <ClInclude Include="src\engine\parameter\ValueParameter.h" />
+    <ClInclude Include="src\engine\resource\IGraphicsResourceFactory.h" />
     <ClInclude Include="src\ghepch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -233,6 +235,7 @@
     <ClCompile Include="src\engine\game\system\System.cpp" />
     <ClCompile Include="src\engine\game\tag\TagManager.cpp" />
     <ClCompile Include="src\engine\graphics\GraphicsFeature.cpp" />
+    <ClCompile Include="src\engine\graphics\cubemap\ICubeMap.cpp" />
     <ClCompile Include="src\engine\graphics\material\Material.cpp" />
     <ClCompile Include="src\engine\graphics\material\MaterialLoader.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\ConeMeshData.cpp" />

@@ -1,16 +1,16 @@
 #pragma once
 
-#include "ShaderConstant.h"
+#include "DxShaderConstantInfo.h"
 
 #include "engine/graphics/texture/TextureFilter.h"
 
 namespace Ghurund::Engine::DirectX {
-    class Sampler:public ShaderConstant {
+    class DxSamplerInfo:public DxShaderConstantInfo {
     private:
         D3D12_STATIC_SAMPLER_DESC samplerDesc = {};
 
     public:
-        Sampler(const char* name, unsigned int bindPoint, D3D12_SHADER_VISIBILITY visibility);
+        DxSamplerInfo(const char* name, unsigned int bindPoint, D3D12_SHADER_VISIBILITY visibility);
 
         inline void setFilter(TextureFilter filter) {
             if (filter == TextureFilter::POINT) {

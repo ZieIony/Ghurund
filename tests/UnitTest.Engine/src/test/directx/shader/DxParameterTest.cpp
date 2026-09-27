@@ -84,7 +84,7 @@ public:
             SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(shaderSource));
             List<ConstantBuffer*> constantBuffers;
             List<TextureConstant*> textures;
-            List<Sampler*> samplers;
+            List<DxSamplerInfo*> samplers;
             /*shaderCompiler->initConstants(shaderProgram.ref(), constantBuffers, textures, samplers);
 
             auto alpha = constantBuffers[0]->getParameter("alpha");
@@ -117,7 +117,7 @@ public:
             SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(shaderSource));
             List<ConstantBuffer*> constantBuffers;
             List<TextureConstant*> textures;
-            List<Sampler*> samplers;
+            List<DxSamplerInfo*> samplers;
             //shaderCompiler->initConstants(shaderProgram.ref(), constantBuffers, textures, samplers);
 
             //auto view = constantBuffers[0]->getParameter("view");

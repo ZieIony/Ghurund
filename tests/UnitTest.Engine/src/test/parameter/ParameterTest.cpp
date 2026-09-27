@@ -72,7 +72,7 @@ public:
             SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(shaderSource));
             List<ConstantBuffer*> constantBuffers;
             List<TextureConstant*> textures;
-            List<Sampler*> samplers;
+            List<DxSamplerInfo*> samplers;
             //shaderCompiler->initConstants(shaderProgram.ref(), constantBuffers, textures, samplers);
 
             // not set anywhere
@@ -121,7 +121,7 @@ public:
             SharedPointer<DxShaderProgram> shaderProgram(shaderCompiler->compile(shaderSource));
             List<ConstantBuffer*> constantBuffers;
             List<TextureConstant*> textures;
-            List<Sampler*> samplers;
+            List<DxSamplerInfo*> samplers;
             //shaderCompiler->initConstants(shaderProgram.ref(), constantBuffers, textures, samplers);
 
             /*auto teamColor = (Float4Parameter*)constantBuffers[0]->getParameter(teamColorName);

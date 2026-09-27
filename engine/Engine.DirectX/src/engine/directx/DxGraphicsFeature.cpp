@@ -2,7 +2,8 @@
 #include "DxGraphicsFeature.h"
 
 #include "engine/graphics/material/MaterialLoader.h"
-#include "shader/DxShaderLoader.h"
+#include "engine/directx/shader/DxShaderLoader.h"
+#include "engine/directx/cubemap/DxCubeMapLoader.h"
 
 namespace Ghurund::Engine::DirectX {
     const Ghurund::Core::Type& DxGraphicsFeature::GET_TYPE() {
@@ -40,6 +41,8 @@ namespace Ghurund::Engine::DirectX {
 
 		auto textureLoader = makeIntrusive<DxTextureLoader>(resourceManager, *memoryManager);
 		resourceManager.Loaders.set<DxTexture>(textureLoader.ref());
+		auto cubeMapLoader = makeIntrusive<DxCubeMapLoader>(resourceManager, *memoryManager);
+		resourceManager.Loaders.set<DxCubeMap>(cubeMapLoader.ref());
 
 		meshLoader = makeIntrusive<DxMeshLoader>(*memoryManager);
 		resourceManager.Loaders.set<DxMesh>(meshLoader.ref());

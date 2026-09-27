@@ -4,6 +4,7 @@
 
 namespace Ghurund::Engine {
 	enum class DrawOrder:int8_t {
+		// TODO: since ordering is not done by distance to observer, but by 'float order', maybe this should be DEFAULT and REVERSE?
 		BACK_TO_FRONT = -1, FRONT_TO_BACK = 1
 	};
 

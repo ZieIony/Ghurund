@@ -1,26 +1,24 @@
 #pragma once
 
+#include "InputType.h"
+
 #include "engine/graphics/texture/ITexture.h"
 
 namespace Ghurund::Engine {
 	class TextureConstant {
 	private:
-		const AString name;
 		const ITexture* value = nullptr;
 
 	public:
-		TextureConstant(const AString& name):name(name) {}
+		const AString name;
+		const uint32_t bindSlot;
+
+		TextureConstant(const AString& name, uint32_t bindSlot):name(name), bindSlot(bindSlot) {}
 
 		~TextureConstant() {
 			if (value)
 				value->release();
 		}
-
-		const AString& getName() const {
-			return name;
-		}
-
-		__declspec(property(get = getName)) const AString& Name;
 
 		inline const ITexture* getValue() {
 			return value;

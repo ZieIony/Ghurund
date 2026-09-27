@@ -23,10 +23,11 @@ namespace Ghurund::Engine::_3D {
 #pragma endregion
 
 	protected:
-		float drawOrder = 0;
 		Entity3D& owner;
 
 	public:
+		float drawOrder = 0;
+
 		Component3D(NotNull<Entity3D> owner):owner(owner.ref()) {}
 
 		virtual ~Component3D() = 0 {

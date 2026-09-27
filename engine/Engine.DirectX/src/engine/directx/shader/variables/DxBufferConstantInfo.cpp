@@ -1,12 +1,12 @@
 #include "ghedxpch.h"
-#include "BufferConstant.h"
+#include "DxBufferConstantInfo.h"
 
 namespace Ghurund::Engine::DirectX {
 	DxBufferConstantInfo::DxBufferConstantInfo(
 		const AString& name,
 		uint32_t bindPoint,
 		D3D12_SHADER_VISIBILITY visibility
-	):ShaderConstant(name, bindPoint, visibility) {
+	):DxShaderConstantInfo(name, bindPoint, visibility) {
 	}
 
 	void DxBufferConstantInfo::init(

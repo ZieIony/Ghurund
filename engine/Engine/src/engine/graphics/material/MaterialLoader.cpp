@@ -2,14 +2,21 @@
 #include "MaterialLoader.h"
 
 #include "core/Color.h"
+#include "engine/graphics/cubemap/ICubeMap.h"
+#include "CubeMapInput.h"
 
 namespace Ghurund::Engine {
 	CoroutineTask<void> MaterialLoader::onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value) {
 		if (input.Type == InputType::TEXTURE) {
-			TextureInput& colorTextureInput = (TextureInput&)input;
+			TextureInput& textureInput = (TextureInput&)input;
 			FilePath texturePath = FilePath(convertText<char, wchar_t>(value));
 			auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir);
-			colorTextureInput.Value = texture.get();
+			textureInput.Value = texture.get();
+		} else if (input.Type == InputType::CUBEMAP) {
+			CubeMapInput& cubeMapInput = (CubeMapInput&)input;
+			FilePath cubeMapPath = FilePath(convertText<char, wchar_t>(value));
+			auto cubeMap = co_await resourceManager.load<ICubeMap>(cubeMapPath, workingDir);
+			cubeMapInput.Value = cubeMap.get();
 		} else if (input.Type == InputType::FLOAT4) {
 			Float4Input& float4Input = (Float4Input&)input;
 			// TODO: load theme attributes or do binding
@@ -30,7 +37,7 @@ namespace Ghurund::Engine {
 	
 		WString* shaderPathAttribute = xml.findAttribute(L"shader");
 		if (!shaderPathAttribute)
-			Logger::logAndThrow<InvalidDataException>(_T("Required 'shader' attribute on 'Material' node is missing.\n"));
+			Logger::logAndThrow<InvalidDataException>(_T("Required attribute 'shader' on node 'Material' is missing.\n"));
 
 		FilePath path = FilePath(*shaderPathAttribute);
 		auto shader = co_await resourceManager.load<Shader>(path, workingDir);

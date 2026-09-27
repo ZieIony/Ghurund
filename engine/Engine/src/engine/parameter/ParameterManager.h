@@ -1,11 +1,7 @@
 #pragma once
 
-#include "engine/parameter/Parameter.h"
-#include "core/string/String.h"
 #include "core/object/Object.h"
 #include "ParameterCollection.h"
-#include "engine/graphics/texture/TextureProvider.h"
-#include "TextureParameter.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
@@ -26,20 +22,10 @@ namespace Ghurund::Engine {
 	private:
 		ParameterCollection parameters;
 
-		inline static const AString DIFFUSE_TEXTURE = "diffuseTexture";
-		inline static const AString SPECULAR_TEXTURE = "specularTexture";
-		inline static const AString NORMAL_TEXTURE = "normalTexture";
-
-		IntrusivePointer<TextureParameter> parameterDiffuse = makeIntrusive<TextureParameter>(DIFFUSE_TEXTURE);
-		IntrusivePointer<TextureParameter> parameterSpecular = makeIntrusive<TextureParameter>(SPECULAR_TEXTURE);
-		IntrusivePointer<TextureParameter> parameterNormal = makeIntrusive<TextureParameter>(NORMAL_TEXTURE);
-		
 		ParameterManager& operator=(const ParameterManager& other) = delete;
 
 	public:
 		ParameterManager();
-
-		void initDefaultTextures(TextureProvider& textureProvider);
 
 		ParameterCollection& getParameters() {
 			return parameters;
