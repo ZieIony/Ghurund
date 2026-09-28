@@ -2,11 +2,14 @@
 <Material
 	xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd"
 	version="1"
-	shader="lib://Ghurund/shaders/DirectX/3d/forward/pbr.xml"
+	shader="lib://Ghurund/shaders/DirectX/3d/forward/pbrIbl.xml"
 >
 	<Parameter name="albedoTexture" value="Spartan_albedo.xml"/>
 	<Parameter name="metallicTexture" value="Spartan_metallic.xml"/>
 	<Parameter name="roughnessTexture" value="Spartan_roughness.xml"/>
 	<Parameter name="normalTexture" value="Spartan_normal.xml"/>
 	<Parameter name="aoTexture" value="Spartan_ao.xml"/>
+	<Parameter name="environmentTexture" value="lib://Ghurund/cubemaps/sky.xml"/>
+	<Parameter name="irradianceTexture" value="lib://Ghurund/cubemaps/sky_ir.xml"/>
+	<Parameter name="brdfLUT" value="lib://Ghurund/textures/brdfLUT.xml"/>
 </Material>

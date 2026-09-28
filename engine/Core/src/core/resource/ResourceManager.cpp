@@ -121,10 +121,11 @@ namespace Ghurund::Core {
 		IntrusivePointer<Resource> resource;
 		try {
 			resource = co_await loader.load(stream, workingDir, format, options);
-		} catch (std::exception& exception) {
+		} catch (...) {
 			auto text = std::format(_T("failed to load resource\n"));
 			Logger::log(LogType::ERR0R, text.c_str());
-			throw exception;
+			std::exception_ptr exception = std::current_exception();
+			std::rethrow_exception(exception);
 		}
 
 		co_return resource;
@@ -141,9 +142,10 @@ namespace Ghurund::Core {
 		MemoryOutputStream stream;
 		try {
 			loader.save(resource, stream, workingDir, format, options);
-		} catch (std::exception& exception) {
+		} catch (...) {
 			Logger::log(LogType::ERR0R, std::format(_T("failed to save resource\n")).c_str());
-			throw exception;
+			std::exception_ptr exception = std::current_exception();
+			std::rethrow_exception(exception);
 		}
 		buffer.setData(stream.Data, stream.BytesWritten);
 	}

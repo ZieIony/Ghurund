@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CubeMap version="1">
+	<FaceTop>
+		<Image path="sky_ir_top.png"/>
+	</FaceTop>
+	<FaceBottom>
+		<Image path="sky_ir_bottom.png"/>
+	</FaceBottom>
+	<FaceLeft>
+		<Image path="sky_ir_left.png"/>
+	</FaceLeft>
+	<FaceRight>
+		<Image path="sky_ir_right.png"/>
+	</FaceRight>
+	<FaceFront>
+		<Image path="sky_ir_front.png"/>
+	</FaceFront>
+	<FaceBack>
+		<Image path="sky_ir_back.png"/>
+	</FaceBack>
+</CubeMap>

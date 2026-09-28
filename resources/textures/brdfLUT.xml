@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Texture version="1">
+	<Image path="ibl_brdf_lut.png"/>
+</Texture>
