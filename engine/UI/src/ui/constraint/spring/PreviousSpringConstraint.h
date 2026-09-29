@@ -22,7 +22,7 @@ namespace Ghurund::UI {
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
-			if (!dependencies.Empty) {
+			if (!dependencies.IsEmpty) {
 				value = (*dependencies.begin())->Value;
 			} else {
 				value = 0;
@@ -52,7 +52,7 @@ namespace Ghurund::UI {
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
-			if (!dependencies.Empty) {
+			if (!dependencies.IsEmpty) {
 				value = (*dependencies.begin())->Value;
 			} else {
 				value = 0;
@@ -82,7 +82,7 @@ namespace Ghurund::UI {
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
-			if (!dependencies.Empty) {
+			if (!dependencies.IsEmpty) {
 				value = (*dependencies.begin())->Value;
 			} else {
 				value = 0;
@@ -112,7 +112,7 @@ namespace Ghurund::UI {
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
-			if (!dependencies.Empty) {
+			if (!dependencies.IsEmpty) {
 				value = (*dependencies.begin())->Value;
 			} else {
 				value = 0;

@@ -37,7 +37,7 @@ namespace Ghurund::Engine::DirectX {
                 break;
 
             auto graphicsAdapter = ghnew GraphicsAdapter(adapter);
-            if (graphicsAdapter->Outputs.Empty) {
+            if (graphicsAdapter->Outputs.IsEmpty) {
                 delete graphicsAdapter;
             } else {
                 adapters.add(graphicsAdapter);
@@ -49,13 +49,13 @@ namespace Ghurund::Engine::DirectX {
             Logger::log(LogType::WARNING, _T("factory->EnumWarpAdapter() failed\n"));
 
         auto graphicsAdapter = ghnew GraphicsAdapter(adapter);
-        if (graphicsAdapter->Outputs.Empty) {
+        if (graphicsAdapter->Outputs.IsEmpty) {
             delete graphicsAdapter;
         } else {
             adapters.add(graphicsAdapter);
         }
 
-        if (adapters.Empty)
+        if (adapters.IsEmpty)
             throw DirectX12NotSupportedException();
     }
 

@@ -35,7 +35,7 @@ public:
         graph.sort();
         timer.tick();
         graph.clear();
-        while (!constraints.Empty) {
+        while (!constraints.IsEmpty) {
             Constraint* c = constraints.get(constraints.Size - 1);
             constraints.removeAt(constraints.Size - 1);
             c->release();

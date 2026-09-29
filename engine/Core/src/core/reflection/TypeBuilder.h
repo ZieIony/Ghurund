@@ -31,7 +31,7 @@ namespace Ghurund::Core {
 		//size_t numberOfTemplateParams = 0;
 
 		TypeBuilder(const TypeName& typeName): TypeBuilder(typeName._namespace, typeName.name) {
-			if (!typeName.templateParams.Empty) {
+			if (!typeName.templateParams.IsEmpty) {
 				//numberOfTemplateParams = typeName.templateParams.Size;
 				// this is really cool, but doesn't work because certain types may not be available in the list of types yet
 				/*for (const AString& param : typeName.templateParams) {
@@ -111,7 +111,7 @@ namespace Ghurund::Core {
 		}
 
 		operator Type() const {
-			TypeModifier m = constructors.Empty ? modifiers | TypeModifier::ABSTRACT : modifiers;
+			TypeModifier m = constructors.IsEmpty ? modifiers | TypeModifier::ABSTRACT : modifiers;
 			// this gives problems with more complex template parameters like collection traits and pointer deleters
 			/*if (templateParams.Size != numberOfTemplateParams) {
 				auto message = std::format("this type has {} template params, but {} are defined", numberOfTemplateParams, templateParams.Size);

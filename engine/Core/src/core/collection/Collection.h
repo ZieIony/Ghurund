@@ -29,17 +29,17 @@ namespace Ghurund::Core {
             size = 0;
         }
 
-        inline size_t getSize()const {
+        inline size_t getSize() const {
             return size;
         }
 
         __declspec(property(get = getSize)) size_t Size;
 
-        inline bool isEmpty()const {
+        inline bool getIsEmpty() const {
             return size == 0;
         }
 
-        __declspec(property(get = isEmpty)) bool Empty;
+        __declspec(property(get = getIsEmpty)) bool IsEmpty;
 
         Collection& operator=(const Collection& other) {
             if (this == &other)

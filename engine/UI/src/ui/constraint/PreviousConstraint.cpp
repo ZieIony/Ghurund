@@ -25,7 +25,7 @@ namespace Ghurund::UI {
 	}
 
 	void PreviousLeftConstraint::evaluate() {
-		if (!dependencies.Empty) {
+		if (!dependencies.IsEmpty) {
 			value = (*dependencies.begin())->Value + offset;
 		} else {
 			value = 0;
@@ -53,7 +53,7 @@ namespace Ghurund::UI {
 	}
 
 	void PreviousRightConstraint::evaluate() {
-		if (!dependencies.Empty) {
+		if (!dependencies.IsEmpty) {
 			value = (*dependencies.begin())->Value + offset;
 		} else {
 			value = 0;
@@ -81,7 +81,7 @@ namespace Ghurund::UI {
 	}
 
 	void PreviousTopConstraint::evaluate() {
-		if (!dependencies.Empty) {
+		if (!dependencies.IsEmpty) {
 			value = (*dependencies.begin())->Value + offset;
 		} else {
 			value = 0;
@@ -109,7 +109,7 @@ namespace Ghurund::UI {
 	}
 
 	void PreviousBottomConstraint::evaluate() {
-		if (!dependencies.Empty) {
+		if (!dependencies.IsEmpty) {
 			value = (*dependencies.begin())->Value + offset;
 		} else {
 			value = 0;
@@ -137,7 +137,7 @@ namespace Ghurund::UI {
 	}
 
 	void PreviousWidthConstraint::evaluate() {
-		if (!dependencies.Empty) {
+		if (!dependencies.IsEmpty) {
 			value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
 		} else {
 			value = minMax(min, offset, max);
@@ -165,7 +165,7 @@ namespace Ghurund::UI {
 	}
 	
 	void PreviousHeightConstraint::evaluate() {
-		if (!dependencies.Empty) {
+		if (!dependencies.IsEmpty) {
 			value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
 		} else {
 			value = minMax(min, offset, max);

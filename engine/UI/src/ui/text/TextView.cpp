@@ -205,7 +205,7 @@ namespace Ghurund::UI {
 
             Array<ClusterMetrics> clusterMetrics = textLayout.ClusterMetrics;
 
-            if (clusterMetrics.Empty)
+            if (clusterMetrics.IsEmpty)
                 break;
 
             caretPosition = absolutePosition;

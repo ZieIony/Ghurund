@@ -53,7 +53,7 @@ namespace Ghurund::Net {
 		connection->MessagesReceived.insert(i, ghnew MessageItem(messageData, messageSize));
 		confirmMessage(connection, *message);
 		while (true) {
-			if (!connection->MessagesReceived.Empty && connection->ReliableId == connection->MessagesReceived[0]->Message.id) {
+			if (!connection->MessagesReceived.IsEmpty && connection->ReliableId == connection->MessagesReceived[0]->Message.id) {
 				MessageItem* messageItem = connection->MessagesReceived[0];
 				connection->MessagesReceived.removeAt(0);
 				connection->ReliableId++;
@@ -63,7 +63,7 @@ namespace Ghurund::Net {
 				}
 				delete messageItem;
 			} else {
-				if (!connection->MessagesReceived.Empty) {
+				if (!connection->MessagesReceived.IsEmpty) {
 					auto text = std::format(_T("can't pass received message connection.id:{}, message.id:{}\n"), connection->ReliableId, connection->MessagesReceived[0]->Message.id);
 					Logger::log(LogType::INFO, text.c_str());
 				}
@@ -229,7 +229,7 @@ namespace Ghurund::Net {
 			processMessages(connection, size, time);
 		}
 		for (auto& connection : connections) {
-			if (connection->LastSeen + REFRESH_PERIOD_MS < time && connection->MessagesSent.Empty)
+			if (connection->LastSeen + REFRESH_PERIOD_MS < time && connection->MessagesSent.IsEmpty)
 				send(connection.ref(), ghnew RefreshMessage());
 		}
 	}

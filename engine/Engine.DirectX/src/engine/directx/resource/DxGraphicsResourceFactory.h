@@ -25,9 +25,19 @@ namespace Ghurund::Engine::DirectX {
 		}
 
 		[[nodiscard]]
-		virtual ITexture* makeTexture(Image& image) override {
+		virtual ITexture* makeTexture(Image& image, bool generateMips = false) override {
 			auto texture = ghnew DxTexture();
-			texture->init(image, memoryManager);
+			auto imagePtr = IntrusivePointer<Image>(&image);
+			image.addReference();
+			Array<IntrusivePointer<Image>> images = { imagePtr };
+			texture->init(images, memoryManager);
+			return texture;
+		}
+
+		[[nodiscard]]
+		virtual ITexture* makeTexture(Array<IntrusivePointer<Image>>& images) override {
+			auto texture = ghnew DxTexture();
+			texture->init(images, memoryManager);
 			return texture;
 		}
 

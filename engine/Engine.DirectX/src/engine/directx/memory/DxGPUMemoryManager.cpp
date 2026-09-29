@@ -125,24 +125,27 @@ namespace Ghurund::Engine::DirectX {
         return cb;
 	}
 
-	ComPtr<ID3D12Resource> DxGPUMemoryManager::makeTexture(const Image& image) {
+	ComPtr<ID3D12Resource> DxGPUMemoryManager::makeTexture(const Array<IntrusivePointer<Image>>& images) {
 		CD3DX12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-			image.Format,
-			image.Size.Width,
-			image.Size.Height,
+			images[0]->Format,
+			images[0]->Size.Width,
+			images[0]->Size.Height,
 			1,
-			1
+			images.Size
 		);
-		D3D12_SUBRESOURCE_DATA textureData = {};
-		textureData.pData = image.Data.Data;
-		textureData.RowPitch = image.RowPitch;
-		textureData.SlicePitch = textureData.RowPitch * image.Size.Height;
+
+		Array<D3D12_SUBRESOURCE_DATA> textureData = images.Size;
+		for (size_t i = 0; i < images.Size; i++) {
+			textureData[i].pData = images[i]->Data.Data;
+			textureData[i].RowPitch = images[i]->RowPitch;
+			textureData[i].SlicePitch = textureData[i].RowPitch * images[i]->Size.Height;
+		}
 
 		return makeCommitedResource(
 			uploadCommandList,
 			resourceDesc,
-			&textureData,
-			1,
+			(D3D12_SUBRESOURCE_DATA*)textureData.Data,
+			images.Size,
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
 		);
 	}
@@ -173,12 +176,12 @@ namespace Ghurund::Engine::DirectX {
 		);
 	}
 	
-	DescriptorHandle DxGPUMemoryManager::makeTextureRV(ComPtr<ID3D12Resource> textureResource, DXGI_FORMAT format) {
+	DescriptorHandle DxGPUMemoryManager::makeTextureRV(ComPtr<ID3D12Resource> textureResource, DXGI_FORMAT format, uint32_t mipLevels) {
 		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 		srvDesc.Format = format;
 		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-		srvDesc.Texture2D.MipLevels = 1;
+		srvDesc.Texture2D.MipLevels = mipLevels;
 		DescriptorHandle descHandle = graphics.DescriptorAllocator.allocate(graphics, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 		graphics.Device->CreateShaderResourceView(textureResource.Get(), &srvDesc, descHandle.CpuHandle);
 		return descHandle;

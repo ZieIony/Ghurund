@@ -6,7 +6,7 @@
 
 namespace Ghurund::Core {
 	void Input::dispatchWindowEvents(uint64_t time, EventConsumer& consumer) {
-		while (!events.Empty) {
+		while (!events.IsEmpty) {
 			WindowMessage wm = events[0];
 			if (wm.time > time)
 				break;

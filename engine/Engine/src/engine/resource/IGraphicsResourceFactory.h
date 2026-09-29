@@ -15,7 +15,10 @@ namespace Ghurund::Engine {
 		virtual Mesh* makeMesh(const MeshData& meshData) = 0;
 
 		[[nodiscard]]
-		virtual ITexture* makeTexture(Image& image) = 0;
+		virtual ITexture* makeTexture(Image& image, bool generateMips = false) = 0;
+
+		[[nodiscard]]
+		virtual ITexture* makeTexture(Array<IntrusivePointer<Image>>& image) = 0;
 
 		[[nodiscard]]
 		virtual ICubeMap* makeCubemap(

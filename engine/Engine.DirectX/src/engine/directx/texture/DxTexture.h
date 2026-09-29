@@ -4,6 +4,7 @@
 #include "engine/directx/buffer/DescriptorHeap.h"
 #include "engine/directx/CommandList.h"
 #include "engine/graphics/texture/ITexture.h"
+#include "engine/directx/memory/DxGPUMemoryManager.h"
 
 namespace Ghurund::Engine::DirectX {
     class DxTexture:public ITexture {
@@ -22,14 +23,14 @@ namespace Ghurund::Engine::DirectX {
     private:
 		ComPtr<ID3D12Resource> textureResource;
         DescriptorHandle descHandle;
+        IntSize size;
 
-        Ghurund::Core::Image* image = nullptr;
-
+        Array<IntrusivePointer<Ghurund::Core::Image>> images;
         bool uploaded = false;
 
     protected:
         virtual bool getIsValidInternal() const override {
-			return __super::getIsValidInternal() && image != nullptr && image->IsValid && uploaded;
+			return __super::getIsValidInternal() && uploaded;
         }
 
         ~DxTexture() {
@@ -40,26 +41,24 @@ namespace Ghurund::Engine::DirectX {
         void finalize() {
             uploaded = false;
             textureResource.Reset();
-            if (image != nullptr)
-                image->release();
+            images.clear();
         }
 
         virtual void invalidate() {
             finalize();
-            image = nullptr;
             __super::invalidate();
         }
 
-        void init(Ghurund::Core::Image& image, class DxGPUMemoryManager& memoryManager);
+        void init(Array<IntrusivePointer<Ghurund::Core::Image>>& images, DxGPUMemoryManager& memoryManager);
 
-        inline Ghurund::Core::Image* getImage() {
-            return image;
+        inline const Array<IntrusivePointer<Ghurund::Core::Image>>& getImages() const {
+            return images;
         }
 
-        __declspec(property(get = getImage)) Ghurund::Core::Image* Image;
+        __declspec(property(get = getMipMaps)) const Array<IntrusivePointer<Ghurund::Core::Image>>& Images;
 
         virtual const IntSize& getSize() const override {
-            return image->Size;
+            return size;
         }
 
         void set(CommandList& commandList, unsigned int index) {
@@ -78,7 +77,7 @@ namespace Ghurund::Engine::DirectX {
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_XML };
 
-        static const inline uint32_t VERSION = 0;
+        static const inline uint32_t VERSION = 1;
 #pragma endregion
     };
 }

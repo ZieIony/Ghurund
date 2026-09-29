@@ -39,7 +39,7 @@ namespace Ghurund::Net {
 
 	SharedPointer<Connection> Server::onNewConnection(const String& address, uint16_t port) {
 		uint16_t id = (uint16_t)connections.Size;
-		if (!spareIds.Empty) {
+		if (!spareIds.IsEmpty) {
 			id = spareIds[spareIds.Size - 1];
 			spareIds.removeAt(spareIds.Size - 1);
 		}

@@ -32,7 +32,7 @@ namespace Ghurund::Engine {
         }
 
         inline void clear() {
-            while (!systems.Empty) {
+            while (!systems.IsEmpty) {
                 auto system = systems.get(systems.Size - 1);
                 systems.removeAt(systems.Size - 1);
                 gameObjects.remove(system);

@@ -26,14 +26,14 @@ public:
 			Set<uint32_t> set;
 
 			Assert::AreEqual(set.Size, (size_t)0);
-			Assert::AreEqual(set.Empty, true);
+			Assert::AreEqual(set.IsEmpty, true);
 		}
 
 		{
 			Set<TestClass> set;
 
 			Assert::AreEqual(set.Size, (size_t)0);
-			Assert::AreEqual(set.Empty, true);
+			Assert::AreEqual(set.IsEmpty, true);
 		}
 	}
 
@@ -45,7 +45,7 @@ public:
 				Set<uint32_t> set = Set<uint32_t>(testSet);
 
 				Assert::AreEqual(set.Size, (size_t)3);
-				Assert::AreEqual(set.Empty, false);
+				Assert::AreEqual(set.IsEmpty, false);
 				for (auto val : { 1, 2, 3 })
 					Assert::IsTrue(set.contains(val));
 			}
@@ -59,7 +59,7 @@ public:
 			Set<uint32_t> set = std::move(testSet);
 
 			Assert::AreEqual(set.Size, (size_t)3);
-			Assert::AreEqual(set.Empty, false);
+			Assert::AreEqual(set.IsEmpty, false);
 			for (auto val : { 1, 2, 3 })
 				Assert::IsTrue(set.contains(val));
 		}
@@ -71,7 +71,7 @@ public:
 			Set<uint32_t> set = { 1u, 2u, 3u };
 
 			Assert::AreEqual(set.Size, (size_t)3);
-			Assert::AreEqual(set.Empty, false);
+			Assert::AreEqual(set.IsEmpty, false);
 			for (auto val : { 1, 2, 3 })
 				Assert::IsTrue(set.contains(val));
 		}
@@ -83,7 +83,7 @@ public:
 			Set<uint32_t> set = { 1u, 2u, 3u, 2u, 1u };
 
 			Assert::AreEqual(set.Size, (size_t)3);
-			Assert::AreEqual(set.Empty, false);
+			Assert::AreEqual(set.IsEmpty, false);
 			for (auto val : { 1, 2, 3 })
 				Assert::IsTrue(set.contains(val));
 		}
@@ -96,7 +96,7 @@ public:
 			Set<uint32_t> set = testStack;
 
 			Assert::AreEqual(set.Size, testStack.Size);
-			Assert::AreEqual(set.Empty, false);
+			Assert::AreEqual(set.IsEmpty, false);
 			for (auto val : { 1, 2, 3 })
 				Assert::IsTrue(set.contains(val));
 		}
@@ -110,7 +110,7 @@ public:
 			set = std::move(testSet);
 
 			Assert::AreEqual(set.Size, (size_t)3);
-			Assert::AreEqual(set.Empty, false);
+			Assert::AreEqual(set.IsEmpty, false);
 			for (auto val : { 1, 2, 3 })
 				Assert::IsTrue(set.contains(val));
 		}
@@ -136,7 +136,7 @@ public:
 			Set<uint32_t> set = { 1, 2, 3 };
 
 			Assert::AreEqual(set.Size, (size_t)3);
-			Assert::AreEqual(set.Empty, false);
+			Assert::AreEqual(set.IsEmpty, false);
 			for (auto val : { 1, 2, 3 })
 				Assert::IsTrue(set.contains(val));
 		}
@@ -149,7 +149,7 @@ public:
 			set.put(1);
 
 			Assert::AreEqual(set.Size, (size_t)1);
-			Assert::AreEqual(set.Empty, false);
+			Assert::AreEqual(set.IsEmpty, false);
 			for (auto val : { 1 })
 				Assert::IsTrue(set.contains(val));
 		}
@@ -162,7 +162,7 @@ public:
 			set.putAll({ 1, 2, 3 });
 
 			Assert::AreEqual(set.Size, (size_t)3);
-			Assert::AreEqual(set.Empty, false);
+			Assert::AreEqual(set.IsEmpty, false);
 			for (auto val : { 1, 2, 3 })
 				Assert::IsTrue(set.contains(val));
 		}
@@ -176,12 +176,12 @@ public:
 			set.putAll(testSet);
 
 			Assert::AreEqual(testSet.Size, (size_t)3);
-			Assert::AreEqual(testSet.Empty, false);
+			Assert::AreEqual(testSet.IsEmpty, false);
 			for (auto val : { 1, 2, 3 })
 				Assert::IsTrue(set.contains(val));
 
 			Assert::AreEqual(set.Size, (size_t)3);
-			Assert::AreEqual(set.Empty, false);
+			Assert::AreEqual(set.IsEmpty, false);
 			for (auto val : { 1, 2, 3 })
 				Assert::IsTrue(set.contains(val));
 
@@ -198,12 +198,12 @@ public:
 
 			Assert::AreEqual(testList.Size, (size_t)5);
 			Assert::AreEqual(testList.Capacity >= set.Size, true);
-			Assert::AreEqual(testList.Empty, false);
+			Assert::AreEqual(testList.IsEmpty, false);
 			for (auto val : { 1, 2, 3, 2, 1 })
 				Assert::IsTrue(testList.contains(val));
 
 			Assert::AreEqual(set.Size, (size_t)3);
-			Assert::AreEqual(set.Empty, false);
+			Assert::AreEqual(set.IsEmpty, false);
 			for (auto val : { 1, 2, 3 })
 				Assert::IsTrue(set.contains(val));
 		}
@@ -216,7 +216,7 @@ public:
 			set.remove(2);
 
 			Assert::AreEqual(set.Size, (size_t)2);
-			Assert::AreEqual(set.Empty, false);
+			Assert::AreEqual(set.IsEmpty, false);
 			for (auto val : { 1, 3 })
 				Assert::IsTrue(set.contains(val));
 		}
@@ -230,7 +230,7 @@ public:
 				MemoryGuard guard;
 
 				Assert::AreEqual(set.Size, (size_t)3);
-				Assert::AreEqual(set.Empty, false);
+				Assert::AreEqual(set.IsEmpty, false);
 
 				size_t i = 0;
 				for (auto& item : set)
@@ -247,7 +247,7 @@ public:
 				MemoryGuard guard;
 
 				Assert::AreEqual(set.Size, (size_t)3);
-				Assert::AreEqual(set.Empty, false);
+				Assert::AreEqual(set.IsEmpty, false);
 
 				size_t i = 0;
 				for (auto& item : set)
@@ -262,7 +262,7 @@ public:
 			MemoryGuard guard;
 
 			Assert::AreEqual(set.Size, (size_t)3);
-			Assert::AreEqual(set.Empty, false);
+			Assert::AreEqual(set.IsEmpty, false);
 			Assert::IsTrue(set.contains(1));
 			Assert::IsFalse(set.contains(4));
 		}
@@ -274,7 +274,7 @@ public:
 			MemoryGuard guard;
 
 			Assert::AreEqual(set.Size, (size_t)3);
-			Assert::AreEqual(set.Empty, false);
+			Assert::AreEqual(set.IsEmpty, false);
 			Assert::IsTrue(set.contains(1));
 			Assert::IsFalse(set.contains(4));
 		}
@@ -287,7 +287,7 @@ public:
 			MemoryGuard guard;
 			{
 				Assert::AreEqual(set.Size, (size_t)3);
-				Assert::AreEqual(set.Empty, false);
+				Assert::AreEqual(set.IsEmpty, false);
 				Assert::IsTrue(set == set2);
 			}
 		}

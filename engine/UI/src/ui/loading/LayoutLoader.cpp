@@ -119,7 +119,7 @@ namespace Ghurund::UI {
         } else if (propertyElement) {
             if (!propertyElement->value.IsEmpty) {
                 loader->loadAttr(obj, property, workingDir, convertText<wchar_t, char>(propertyElement->value));
-            } else if (propertyElement->attributes.Empty && !propertyElement->children.Empty) {
+            } else if (propertyElement->attributes.IsEmpty && !propertyElement->children.IsEmpty) {
                 loader->loadChildren(obj, property, workingDir, propertyElement->children[0].ref());
             } else {
                 loader->loadElement(obj, property, workingDir, *propertyElement);

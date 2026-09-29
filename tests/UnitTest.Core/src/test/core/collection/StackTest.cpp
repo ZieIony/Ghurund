@@ -25,7 +25,7 @@ public:
 
             Assert::AreEqual(stack.Size, (size_t)0);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
-            Assert::AreEqual(stack.Empty, true);
+            Assert::AreEqual(stack.IsEmpty, true);
         }
     }
 
@@ -36,7 +36,7 @@ public:
 
             Assert::AreEqual(stack.Size, (size_t)0);
             Assert::AreEqual(stack.Capacity, (size_t)20);
-            Assert::AreEqual(stack.Empty, true);
+            Assert::AreEqual(stack.IsEmpty, true);
         }
     }
 
@@ -48,7 +48,7 @@ public:
 
             Assert::AreEqual(stack.Size, testStack.Size);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
-            Assert::AreEqual(stack.Empty, false);
+            Assert::AreEqual(stack.IsEmpty, false);
             auto i = testStack.begin();
             auto j = stack.begin();
             for (; i != testStack.end(); i++, j++)
@@ -65,7 +65,7 @@ public:
 
             Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
-            Assert::AreEqual(stack.Empty, false);
+            Assert::AreEqual(stack.IsEmpty, false);
             auto i = testList.begin();
             auto j = stack.begin();
             for (; i != testList.end(); i++, j++)
@@ -81,7 +81,7 @@ public:
 
             Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
-            Assert::AreEqual(stack.Empty, false);
+            Assert::AreEqual(stack.IsEmpty, false);
             auto i = testList.begin();
             auto j = stack.begin();
             for (; i != testList.end(); i++, j++)
@@ -98,7 +98,7 @@ public:
 
             Assert::AreEqual(stack.Size, testList.Size);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
-            Assert::AreEqual(stack.Empty, false);
+            Assert::AreEqual(stack.IsEmpty, false);
             auto i = testList.begin();
             auto j = stack.begin();
             for (; i != testList.end(); i++, j++)
@@ -115,7 +115,7 @@ public:
 
             Assert::AreEqual(stack.Size, testStack.Size);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
-            Assert::AreEqual(stack.Empty, false);
+            Assert::AreEqual(stack.IsEmpty, false);
             auto i = testStack.begin();
             auto j = stack.begin();
             for (; i != testStack.end(); i++, j++)
@@ -133,7 +133,7 @@ public:
 
             Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
-            Assert::AreEqual(stack.Empty, false);
+            Assert::AreEqual(stack.IsEmpty, false);
             auto i = testList.begin();
             auto j = stack.begin();
             for (; i != testList.end(); i++, j++)
@@ -150,7 +150,7 @@ public:
 
             Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
-            Assert::AreEqual(stack.Empty, false);
+            Assert::AreEqual(stack.IsEmpty, false);
             auto i = testList.begin();
             auto j = stack.begin();
             for (; i != testList.end(); i++, j++)
@@ -166,7 +166,7 @@ public:
 
             Assert::AreEqual(stack.Size, (size_t)1);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
-            Assert::AreEqual(stack.Empty, false);
+            Assert::AreEqual(stack.IsEmpty, false);
             Assert::AreEqual(stack.top(), 1u);
         }
     }
@@ -180,7 +180,7 @@ public:
 
             Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
-            Assert::AreEqual(stack.Empty, false);
+            Assert::AreEqual(stack.IsEmpty, false);
             auto i = testList.begin();
             auto j = stack.begin();
             for (; i != testList.end(); i++, j++)
@@ -195,12 +195,12 @@ public:
 
         Assert::AreEqual(testStack.Size, (size_t)3);
         Assert::AreEqual(testStack.Capacity >= stack.Size, true);
-        Assert::AreEqual(testStack.Empty, false);
+        Assert::AreEqual(testStack.IsEmpty, false);
         Assert::AreEqual(stack, { 1, 2, 3 });
 
         Assert::AreEqual(stack.Size, (size_t)3);
         Assert::AreEqual(stack.Capacity >= stack.Size, true);
-        Assert::AreEqual(stack.Empty, false);
+        Assert::AreEqual(stack.IsEmpty, false);
         Assert::AreEqual(stack, { 1, 2, 3 });
 
         Assert::AreEqual(stack.Size, testStack.Size);
@@ -213,7 +213,7 @@ public:
 
         Assert::AreEqual(stack.Size, (size_t)2);
         Assert::AreEqual(stack.Capacity >= stack.Size, true);
-        Assert::AreEqual(stack.Empty, false);
+        Assert::AreEqual(stack.IsEmpty, false);
         Assert::AreEqual(stack, { 1, 2 });
         Assert::AreEqual(val, 3u);
         _____________________checkMemory();
@@ -226,7 +226,7 @@ public:
 
             Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
-            Assert::AreEqual(stack.Empty, false);
+            Assert::AreEqual(stack.IsEmpty, false);
 
             size_t i = 0;
             for (auto& item : stack)
@@ -239,7 +239,7 @@ public:
 
             Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
-            Assert::AreEqual(stack.Empty, false);
+            Assert::AreEqual(stack.IsEmpty, false);
 
             size_t i = 0;
             for (auto& item : stack)
@@ -254,7 +254,7 @@ public:
 
             Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
-            Assert::AreEqual(stack.Empty, false);
+            Assert::AreEqual(stack.IsEmpty, false);
             Assert::AreEqual(stack.indexOf(2), (size_t)1);
             Assert::AreEqual(stack.indexOf(4), (size_t)3);
         }
@@ -264,7 +264,7 @@ public:
 
             Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
-            Assert::AreEqual(stack.Empty, false);
+            Assert::AreEqual(stack.IsEmpty, false);
             Assert::AreEqual(stack.indexOf(2), (size_t)1);
             Assert::AreEqual(stack.indexOf(4), (size_t)3);
         }
@@ -277,7 +277,7 @@ public:
 
             Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
-            Assert::AreEqual(stack.Empty, false);
+            Assert::AreEqual(stack.IsEmpty, false);
             Assert::IsTrue(stack.contains(1));
             Assert::IsFalse(stack.contains(4));
         }
@@ -287,7 +287,7 @@ public:
 
             Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
-            Assert::AreEqual(stack.Empty, false);
+            Assert::AreEqual(stack.IsEmpty, false);
             Assert::IsTrue(stack.contains(1));
             Assert::IsFalse(stack.contains(4));
         }
@@ -300,7 +300,7 @@ public:
 
         Assert::AreEqual(stack.Size, (size_t)3);
         Assert::AreEqual(stack.Capacity >= stack.Size, true);
-        Assert::AreEqual(stack.Empty, false);
+        Assert::AreEqual(stack.IsEmpty, false);
         Assert::IsTrue(stack == stack2);
         _____________________checkMemory();
     }*/

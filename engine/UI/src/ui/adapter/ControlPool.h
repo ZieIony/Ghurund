@@ -17,7 +17,7 @@ namespace Ghurund::UI {
         }
 
         inline bool isEmpty(size_t type) const {
-			return !pool.contains(type) || pool[type].Empty;
+			return !pool.contains(type) || pool[type].IsEmpty;
         }
 
         Control* getControl(size_t type) {

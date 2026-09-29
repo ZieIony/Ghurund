@@ -74,7 +74,7 @@ namespace Ghurund::UI {
 		}
 
 		inline void clear() {
-			while(!controls.Empty){
+			while(!controls.IsEmpty){
 				IntrusivePointer<Control> control = controls[0].control;
 				controls.removeAt(0);
 				control->clearFocus();

@@ -197,7 +197,7 @@ namespace Ghurund::Core {
         __declspec(property(get = getTemplateParams)) const Array<std::reference_wrapper<const Type>>& TemplateParams;
 
         inline bool isTemplate() const {
-            return !templateParams.Empty;
+            return !templateParams.IsEmpty;
         }
 
         __declspec(property(get = isTemplate)) bool IsTemplate;

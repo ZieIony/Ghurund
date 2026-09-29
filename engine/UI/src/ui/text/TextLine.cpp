@@ -4,7 +4,7 @@
 namespace Ghurund::UI {
 	void TextLine::add(const CharacterInfo& info, const TextStyle* textStyle, const Color& color) {
 		characters.add(info);
-		if (metrics.Empty) {
+		if (metrics.IsEmpty) {
 			metrics.add({ textStyle->FontMetrics.ascent, textStyle->FontMetrics.descent });
 			WString text;
 			text.add(info.c);

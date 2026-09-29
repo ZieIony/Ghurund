@@ -55,7 +55,7 @@ namespace Ghurund::Engine {
 			}
 		}
 
-		if (positions.Empty || normals.Empty || tangents.Empty || texCoords.Empty) {
+		if (positions.IsEmpty || normals.IsEmpty || tangents.IsEmpty || texCoords.IsEmpty) {
 			auto message = std::format(
 				_T("One or more empty streams (positions: {}, normals: {}, tangents: {}, texCoords)\n"),
 				positions.Size, normals.Size, tangents.Size, texCoords.Size

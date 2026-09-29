@@ -22,7 +22,7 @@ namespace Ghurund::UI {
 
 	public:
 		inline uint32_t getWidth() const {
-			if (characters.Empty)
+			if (characters.IsEmpty)
 				return 0;
 			auto& c = characters[characters.Size - 1];
 			return uint32_t(c.pos.x + c.glyph.shapeSize.Width);
@@ -31,31 +31,31 @@ namespace Ghurund::UI {
 		__declspec(property(get = getWidth)) uint32_t Width;
 
 		inline uint16_t getAscent() const {
-			return metrics.Empty ? 0 : metrics[metrics.Size - 1].ascent;
+			return metrics.IsEmpty ? 0 : metrics[metrics.Size - 1].ascent;
 		}
 
 		__declspec(property(get = getAscent)) uint16_t Ascent;
 
 		inline uint16_t getDescent() const {
-			return metrics.Empty ? 0 : metrics[metrics.Size - 1].descent;
+			return metrics.IsEmpty ? 0 : metrics[metrics.Size - 1].descent;
 		}
 
 		__declspec(property(get = getDescent)) uint16_t Descent;
 
 		inline uint16_t getHeight() const {
-			return metrics.Empty ? 0 : (metrics[metrics.Size - 1].ascent + metrics[metrics.Size - 1].descent);
+			return metrics.IsEmpty ? 0 : (metrics[metrics.Size - 1].ascent + metrics[metrics.Size - 1].descent);
 		}
 
 		__declspec(property(get = getHeight)) uint16_t Height;
 
 		inline uint16_t getBaseline() const {
-			return metrics.Empty ? 0 : metrics[metrics.Size - 1].ascent;
+			return metrics.IsEmpty ? 0 : metrics[metrics.Size - 1].ascent;
 		}
 
 		__declspec(property(get = getBaseline)) uint16_t Baseline;
 
 		inline bool getIsEmpty() const {
-			return characters.Empty;
+			return characters.IsEmpty;
 		}
 
 		__declspec(property(get = getIsEmpty)) bool IsEmpty;

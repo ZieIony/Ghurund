@@ -26,7 +26,7 @@ public:
 
             Assert::AreEqual(bag.Size, (size_t)0);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, true);
+            Assert::AreEqual(bag.IsEmpty, true);
         }
 
         {
@@ -34,7 +34,7 @@ public:
 
             Assert::AreEqual(bag.Size, (size_t)0);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, true);
+            Assert::AreEqual(bag.IsEmpty, true);
         }
     }
 
@@ -45,7 +45,7 @@ public:
 
             Assert::AreEqual(bag.Size, (size_t)0);
             Assert::AreEqual(bag.Capacity, (size_t)20);
-            Assert::AreEqual(bag.Empty, true);
+            Assert::AreEqual(bag.IsEmpty, true);
         }
 
         {
@@ -53,7 +53,7 @@ public:
 
             Assert::AreEqual(bag.Size, (size_t)0);
             Assert::AreEqual(bag.Capacity, (size_t)20);
-            Assert::AreEqual(bag.Empty, true);
+            Assert::AreEqual(bag.IsEmpty, true);
         }
     }
 
@@ -65,7 +65,7 @@ public:
 
             Assert::AreEqual(bag.Size, (size_t)3);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, false);
+            Assert::AreEqual(bag.IsEmpty, false);
             Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
         }
     }
@@ -78,7 +78,7 @@ public:
 
             Assert::AreEqual(bag.Size, (size_t)3);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, false);
+            Assert::AreEqual(bag.IsEmpty, false);
             Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
         }
     }
@@ -90,7 +90,7 @@ public:
 
             Assert::AreEqual(bag.Size, (size_t)3);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, false);
+            Assert::AreEqual(bag.IsEmpty, false);
             Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
         }
     }
@@ -102,7 +102,7 @@ public:
 
             Assert::AreEqual(bag.Size, (size_t)5);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, false);
+            Assert::AreEqual(bag.IsEmpty, false);
             Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
         }
     }
@@ -116,7 +116,7 @@ public:
 
             Assert::AreEqual(bag.Size, testStack.Size);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, false);
+            Assert::AreEqual(bag.IsEmpty, false);
             Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
         }
     }
@@ -130,7 +130,7 @@ public:
 
             Assert::AreEqual(bag.Size, testBag.Size);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, false);
+            Assert::AreEqual(bag.IsEmpty, false);
             Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
         }
     }
@@ -144,7 +144,7 @@ public:
 
             Assert::AreEqual(bag.Size, (size_t)3);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, false);
+            Assert::AreEqual(bag.IsEmpty, false);
             Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
         }
     }
@@ -157,7 +157,7 @@ public:
 
             Assert::AreEqual(bag.Size, (size_t)3);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, false);
+            Assert::AreEqual(bag.IsEmpty, false);
             Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
         }
     }
@@ -170,7 +170,7 @@ public:
 
             Assert::AreEqual(bag.Size, (size_t)1);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, false);
+            Assert::AreEqual(bag.IsEmpty, false);
             Assert::IsTrue(collectionContains(bag, { 1 }));
         }
     }
@@ -183,7 +183,7 @@ public:
 
             Assert::AreEqual(bag.Size, (size_t)3);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, false);
+            Assert::AreEqual(bag.IsEmpty, false);
             Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
         }
     }
@@ -197,12 +197,12 @@ public:
 
             Assert::AreEqual(testBag.Size, (size_t)3);
             Assert::AreEqual(testBag.Capacity >= bag.Size, true);
-            Assert::AreEqual(testBag.Empty, false);
+            Assert::AreEqual(testBag.IsEmpty, false);
             Assert::IsTrue(collectionContains(testBag, { 1, 2, 3 }));
 
             Assert::AreEqual(bag.Size, (size_t)3);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, false);
+            Assert::AreEqual(bag.IsEmpty, false);
             Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
 
             Assert::AreEqual(bag.Size, testBag.Size);
@@ -218,12 +218,12 @@ public:
 
             Assert::AreEqual(testList.Size, (size_t)5);
             Assert::AreEqual(testList.Capacity >= bag.Size, true);
-            Assert::AreEqual(testList.Empty, false);
+            Assert::AreEqual(testList.IsEmpty, false);
             Assert::IsTrue(collectionContains(testList, { 1, 2, 3 }));
 
             Assert::AreEqual(bag.Size, (size_t)5);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, false);
+            Assert::AreEqual(bag.IsEmpty, false);
             Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
         }
     }
@@ -236,7 +236,7 @@ public:
 
             Assert::AreEqual(bag.Size, (size_t)2);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, false);
+            Assert::AreEqual(bag.IsEmpty, false);
             Assert::IsTrue(collectionContains(bag, { 1, 3 }));
         }
     }
@@ -249,7 +249,7 @@ public:
 
             Assert::AreEqual(bag.Size, (size_t)3);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, false);
+            Assert::AreEqual(bag.IsEmpty, false);
             Assert::IsTrue(collectionContains(bag, testVector));
         }
 
@@ -259,7 +259,7 @@ public:
 
             Assert::AreEqual(bag.Size, (size_t)3);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
-            Assert::AreEqual(bag.Empty, false);
+            Assert::AreEqual(bag.IsEmpty, false);
             Assert::IsTrue(collectionContains(bag, testVector));
         }
     }

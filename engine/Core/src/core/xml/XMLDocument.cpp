@@ -28,11 +28,11 @@ namespace Ghurund::Core {
 						element->attributes.put(readName(), readValue());
 				}
 
-				if (!elementStack.Empty)
+				if (!elementStack.IsEmpty)
 					elementStack[elementStack.Size - 1]->children.add(element);
 				if (!empty) {
 					elementStack.add(element);
-				} else if (elementStack.Empty) {
+				} else if (elementStack.IsEmpty) {
 					root = element;
 				}
 			}

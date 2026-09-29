@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Texture version="0" image ="normal.png"/>
-
+<Texture version="1">
+	<Image path="normal.png"/>
+</Texture>

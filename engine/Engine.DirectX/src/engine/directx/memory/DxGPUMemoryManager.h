@@ -6,9 +6,10 @@
 #include "core/Buffer.h"
 #include "core/collection/Map.h"
 #include "core/image/Image.h"
+#include "engine/directx/buffer/DescriptorHeap.h"
 #include "engine/directx/CommandList.h"
 #include "engine/graphics/memory/IGPUMemoryManager.h"
-#include "engine/directx/buffer/DescriptorHeap.h"
+#include "core/object/IntrusivePointer.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
@@ -71,11 +72,11 @@ namespace Ghurund::Engine::DirectX {
         [[nodiscard]]
         virtual ConstantBuffer* makeConstantBuffer(size_t size) override;
 
-        ComPtr<ID3D12Resource> makeTexture(const Image& image);
+        ComPtr<ID3D12Resource> makeTexture(const Array<IntrusivePointer<Image>>& images);
 
         ComPtr<ID3D12Resource> makeCubeMap(Array<NotNull<Ghurund::Core::Image>> images);
 
-        DescriptorHandle makeTextureRV(ComPtr<ID3D12Resource> textureResource, DXGI_FORMAT format);
+        DescriptorHandle makeTextureRV(ComPtr<ID3D12Resource> textureResource, DXGI_FORMAT format, uint32_t mipLevels);
 
         DescriptorHandle makeCubeMapRV(ComPtr<ID3D12Resource> textureResource, DXGI_FORMAT format);
 

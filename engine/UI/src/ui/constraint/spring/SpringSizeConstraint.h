@@ -65,7 +65,7 @@ namespace Ghurund::UI {
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
-			if (!dependencies.Empty) {
+			if (!dependencies.IsEmpty) {
 				value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
 			} else {
 				value = minMax(min, offset, max);

@@ -20,7 +20,7 @@ namespace Ghurund::UI {
 	}
 
 	void ContentWidthConstraint::evaluate() {
-		if (!dependencies.Empty) {
+		if (!dependencies.IsEmpty) {
 			value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
 		} else {
 			value = minMax(min, offset, max);
@@ -43,7 +43,7 @@ namespace Ghurund::UI {
 	}
 	
 	void ContentHeightConstraint::evaluate() {
-		if (!dependencies.Empty) {
+		if (!dependencies.IsEmpty) {
 			value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
 		} else {
 			value = minMax(min, offset, max);

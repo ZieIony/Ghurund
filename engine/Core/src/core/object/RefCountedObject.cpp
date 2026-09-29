@@ -86,7 +86,7 @@ namespace Ghurund::Core {
 #ifdef _DEBUG
     void RefCountedObject::dumpPointers() {
         std::unique_lock lock(mutex);
-        if (pointers.Empty) {
+        if (pointers.IsEmpty) {
             Logger::log(LogType::INFO, _T("no allocated pointers\n"));
         } else {
             Logger::log(LogType::INFO, std::format(_T("allocated pointers ({}):\n"), pointers.Size).c_str());

@@ -29,7 +29,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)0);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, true);
+			Assert::AreEqual(list.IsEmpty, true);
 			Assert::AreEqual(a.Allocations, 1);
 		}
 
@@ -38,7 +38,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)0);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, true);
+			Assert::AreEqual(list.IsEmpty, true);
 		}
 	}
 
@@ -49,7 +49,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)0);
 			Assert::AreEqual(list.Capacity, (size_t)20);
-			Assert::AreEqual(list.Empty, true);
+			Assert::AreEqual(list.IsEmpty, true);
 		}
 
 		{
@@ -57,7 +57,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)0);
 			Assert::AreEqual(list.Capacity, (size_t)20);
-			Assert::AreEqual(list.Empty, true);
+			Assert::AreEqual(list.IsEmpty, true);
 		}
 	}
 
@@ -69,7 +69,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)3ull);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 1u);
 			Assert::AreEqual(list[1], 2u);
 			Assert::AreEqual(list[2], 3u);
@@ -84,7 +84,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)3);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 1u);
 			Assert::AreEqual(list[1], 2u);
 			Assert::AreEqual(list[2], 3u);
@@ -98,7 +98,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)3);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 1u);
 			Assert::AreEqual(list[1], 2u);
 			Assert::AreEqual(list[2], 3u);
@@ -114,7 +114,7 @@ public:
 
 			Assert::AreEqual(list.Size, testList.Size);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 1u);
 			Assert::AreEqual(list[1], 2u);
 			Assert::AreEqual(list[2], 3u);
@@ -130,7 +130,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)3);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 1u);
 			Assert::AreEqual(list[1], 2u);
 			Assert::AreEqual(list[2], 3u);
@@ -145,7 +145,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)3);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 1u);
 			Assert::AreEqual(list[1], 2u);
 			Assert::AreEqual(list[2], 3u);
@@ -160,7 +160,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)1);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 1u);
 		}
 	}
@@ -171,7 +171,7 @@ public:
 			List<ObjectTestClass*> list;
 			for (size_t i = 0; i < 30; i++)
 				list.add(ghnew ObjectTestClass());
-			while (!list.Empty) {
+			while (!list.IsEmpty) {
 				ObjectTestClass* obj = *list.rbegin();
 				list.removeAt(list.Size - 1);
 				delete obj;
@@ -187,7 +187,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)3);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 1u);
 			Assert::AreEqual(list[1], 2u);
 			Assert::AreEqual(list[2], 3u);
@@ -203,14 +203,14 @@ public:
 
 			Assert::AreEqual(testList.Size, (size_t)3);
 			Assert::AreEqual(testList.Capacity >= list.Size, true);
-			Assert::AreEqual(testList.Empty, false);
+			Assert::AreEqual(testList.IsEmpty, false);
 			Assert::AreEqual(testList[0], 1u);
 			Assert::AreEqual(testList[1], 2u);
 			Assert::AreEqual(testList[2], 3u);
 
 			Assert::AreEqual(list.Size, (size_t)3);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 1u);
 			Assert::AreEqual(list[1], 2u);
 			Assert::AreEqual(list[2], 3u);
@@ -227,7 +227,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)4);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 1u);
 			Assert::AreEqual(list[1], 4u);
 			Assert::AreEqual(list[2], 2u);
@@ -243,7 +243,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)3);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 1u);
 			Assert::AreEqual(list[1], 4u);
 			Assert::AreEqual(list[2], 3u);
@@ -258,7 +258,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)3);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 1u);
 			Assert::AreEqual(list[1], 2u);
 			Assert::AreEqual(list[2], 3u);
@@ -279,7 +279,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)3);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 1u);
 			Assert::AreEqual(list[1], 2u);
 			Assert::AreEqual(list[2], 3u);
@@ -299,7 +299,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)2);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 1u);
 			Assert::AreEqual(list[1], 3u);
 		}
@@ -313,7 +313,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)2);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 1u);
 			Assert::AreEqual(list[1], 2u);
 		}
@@ -327,7 +327,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)3);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(1u, list[0]);
 			Assert::AreEqual(2u, list[1]);
 			Assert::AreEqual(6u, list[2]);
@@ -342,7 +342,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)4);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 3u);
 			Assert::AreEqual(list[1], 4u);
 			Assert::AreEqual(list[2], 5u);
@@ -358,7 +358,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)4);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list[0], 1u);
 			Assert::AreEqual(list[1], 2u);
 			Assert::AreEqual(list[2], 3u);
@@ -374,7 +374,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)0);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, true);
+			Assert::AreEqual(list.IsEmpty, true);
 		}
 	}
 
@@ -386,7 +386,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)5);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 
 			List<uint32_t> testList = { 3,5,6,7,8 };
 			size_t i = 0;
@@ -403,11 +403,11 @@ public:
 
 			Assert::AreEqual((size_t)6, list.Size);
 			Assert::AreEqual(true, list.Capacity >= list.Size);
-			Assert::AreEqual(false, list.Empty);
+			Assert::AreEqual(false, list.IsEmpty);
 
 			Assert::AreEqual((size_t)3, list2.Size);
 			Assert::AreEqual(true, list2.Capacity >= list2.Size);
-			Assert::AreEqual(false, list2.Empty);
+			Assert::AreEqual(false, list2.IsEmpty);
 
 			List<uint32_t> testList = { 1, 2, 3, 4, 5, 6 };
 			size_t i = 0;
@@ -429,11 +429,11 @@ public:
 
 			Assert::AreEqual((size_t)6, list.Size);
 			Assert::AreEqual(true, list.Capacity >= list.Size);
-			Assert::AreEqual(false, list.Empty);
+			Assert::AreEqual(false, list.IsEmpty);
 
 			Assert::AreEqual((size_t)2, list2.Size);
 			Assert::AreEqual(true, list2.Capacity >= list2.Size);
-			Assert::AreEqual(false, list2.Empty);
+			Assert::AreEqual(false, list2.IsEmpty);
 
 			List<uint32_t> testList = { 1, 2, 3, 4, 5, 6 };
 			size_t i = 0;
@@ -455,7 +455,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)3);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 
 			size_t i = 0;
 			for (auto& item : list)
@@ -468,7 +468,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)3);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 
 			size_t i = 0;
 			for (auto& item : list)
@@ -483,7 +483,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)3);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list.indexOf(2), (size_t)1);
 			Assert::AreEqual(list.indexOf(4), (size_t)3);
 		}
@@ -493,7 +493,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)3);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::AreEqual(list.indexOf(2), (size_t)1);
 			Assert::AreEqual(list.indexOf(4), (size_t)3);
 		}
@@ -506,7 +506,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)3);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::IsTrue(list.contains(1));
 			Assert::IsFalse(list.contains(4));
 		}
@@ -516,7 +516,7 @@ public:
 
 			Assert::AreEqual(list.Size, (size_t)3);
 			Assert::AreEqual(list.Capacity >= list.Size, true);
-			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list.IsEmpty, false);
 			Assert::IsTrue(list.contains(1));
 			Assert::IsFalse(list.contains(4));
 		}

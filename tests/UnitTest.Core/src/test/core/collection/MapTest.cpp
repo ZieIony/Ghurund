@@ -63,14 +63,14 @@ namespace UnitTest {
 				Map<uint32_t, AString> map;
 
 				Assert::AreEqual(map.Size, (size_t)0);
-				Assert::AreEqual(map.Empty, true);
+				Assert::AreEqual(map.IsEmpty, true);
 			}
 
 			{
 				Map<uint32_t, TestClass> map;
 
 				Assert::AreEqual(map.Size, (size_t)0);
-				Assert::AreEqual(map.Empty, true);
+				Assert::AreEqual(map.IsEmpty, true);
 			}
 		}
 
@@ -81,7 +81,7 @@ namespace UnitTest {
 				Map<uint32_t, AString> map = Map<uint32_t, AString>(testMap);
 
 				Assert::AreEqual(map.Size, (size_t)3);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
@@ -98,7 +98,7 @@ namespace UnitTest {
 				Map<uint32_t, AString> map = std::move(testMap);
 
 				Assert::AreEqual(map.Size, (size_t)3);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
@@ -114,7 +114,7 @@ namespace UnitTest {
 				Map<uint32_t, AString> map = { {1, "a"}, {2, "b"}, {3, "c"} };
 
 				Assert::AreEqual(map.Size, (size_t)3);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
@@ -132,7 +132,7 @@ namespace UnitTest {
 				map = testMap;
 
 				Assert::AreEqual(map.Size, testMap.Size);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
@@ -150,7 +150,7 @@ namespace UnitTest {
 				map = testMap;
 
 				Assert::AreEqual(map.Size, testMap.Size);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
@@ -168,7 +168,7 @@ namespace UnitTest {
 				map = std::move(testMap);
 
 				Assert::AreEqual(map.Size, (size_t)3);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
@@ -186,7 +186,7 @@ namespace UnitTest {
 				map = std::move(testMap);
 
 				Assert::AreEqual(map.Size, (size_t)3);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
@@ -203,7 +203,7 @@ namespace UnitTest {
 				map = { {1, "a"}, {2, "b"}, {3, "c"} };
 
 				Assert::AreEqual(map.Size, (size_t)3);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
@@ -232,7 +232,7 @@ namespace UnitTest {
 				map.put(1, "a");
 
 				Assert::AreEqual(map.Size, (size_t)1);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(containsValue<uint32_t, AString>(map, "a"));
 			}
@@ -245,7 +245,7 @@ namespace UnitTest {
 				map[1] = "test";
 
 				Assert::AreEqual(map.Size, (size_t)1);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1u));
 				Assert::AreEqual(map.get(1u), AString("test"));
 #ifdef _DEBUG
@@ -263,7 +263,7 @@ namespace UnitTest {
 				map.put(1, "c");
 
 				Assert::AreEqual(map.Size, (size_t)1);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1u));
 				Assert::AreEqual(map.get(1), AString("c"));
 #ifdef _DEBUG
@@ -281,13 +281,13 @@ namespace UnitTest {
 				map.putAll(testList);
 
 				Assert::AreEqual(testList.Size, (size_t)3);
-				Assert::AreEqual(testList.Empty, false);
+				Assert::AreEqual(testList.IsEmpty, false);
 				Assert::IsTrue(testList.contains(a));
 				Assert::IsTrue(testList.contains(b));
 				Assert::IsTrue(testList.contains(c));
 
 				Assert::AreEqual(map.Size, (size_t)3);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
@@ -305,7 +305,7 @@ namespace UnitTest {
 				map.putAll(testList);
 
 				Assert::AreEqual(map.Size, (size_t)3);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
@@ -323,7 +323,7 @@ namespace UnitTest {
 				map.putAll(testList);
 
 				Assert::AreEqual(map.Size, (size_t)3);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
@@ -349,7 +349,7 @@ namespace UnitTest {
 				map.remove(4);
 
 				Assert::AreEqual(map.Size, (size_t)0);
-				Assert::AreEqual(map.Empty, true);
+				Assert::AreEqual(map.IsEmpty, true);
 				Assert::IsFalse(map.contains(1u));
 				Assert::IsFalse(map.contains(2u));
 				Assert::IsFalse(map.contains(3u));
@@ -359,7 +359,7 @@ namespace UnitTest {
 				map.remove(2);
 
 				Assert::AreEqual(map.Size, (size_t)1);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsFalse(map.contains(2u));
 			}
@@ -368,7 +368,7 @@ namespace UnitTest {
 				map.remove(1);
 
 				Assert::AreEqual(map.Size, (size_t)0);
-				Assert::AreEqual(map.Empty, true);
+				Assert::AreEqual(map.IsEmpty, true);
 				Assert::IsFalse(map.contains(1u));
 			}
 		}
@@ -380,7 +380,7 @@ namespace UnitTest {
 				map.remove(4);
 
 				Assert::AreEqual(map.Size, (size_t)3);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
@@ -394,7 +394,7 @@ namespace UnitTest {
 				Map<uint32_t, AString> map = { {1, "a"}, {2, "b"}, {3, "c"} };
 
 				Assert::AreEqual(map.Size, (size_t)3);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 
 				size_t i = 0;
 				for (auto& item : map)
@@ -406,7 +406,7 @@ namespace UnitTest {
 				const Map<uint32_t, AString> map = { {1, "a"}, {2, "b"}, {3, "c"} };
 
 				Assert::AreEqual(map.Size, (size_t)3);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 
 				size_t i = 0;
 				for (auto& item : map)
@@ -421,7 +421,7 @@ namespace UnitTest {
 				Map<uint32_t, AString> map = { {1, "a"}, {2, "b"}, {3, "c"} };
 
 				Assert::AreEqual(map.Size, (size_t)3);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1));
 				Assert::IsTrue(containsValue<uint32_t, AString>(map, "a"));
 				Assert::IsFalse(map.contains(4));
@@ -432,7 +432,7 @@ namespace UnitTest {
 				const Map<uint32_t, AString> map = { {1, "a"}, {2, "b"}, {3, "c"} };
 
 				Assert::AreEqual(map.Size, (size_t)3);
-				Assert::AreEqual(map.Empty, false);
+				Assert::AreEqual(map.IsEmpty, false);
 				Assert::IsTrue(map.contains(1));
 				Assert::IsTrue(containsValue<uint32_t, AString>(map, "a"));
 				Assert::IsFalse(map.contains(4));
@@ -445,7 +445,7 @@ namespace UnitTest {
 			Map<uint32_t, AString> map2 = { {1, "a"}, {2, "b"}, {3, "c"} };
 
 			Assert::AreEqual(map.Size, (size_t)3);
-			Assert::AreEqual(map.Empty, false);
+			Assert::AreEqual(map.IsEmpty, false);
 			Assert::IsTrue(map == map2);
 		}
 
@@ -456,7 +456,7 @@ namespace UnitTest {
 			map[2] = CustomTraitsTestClass(4);
 
 			Assert::AreEqual(map.Size, (size_t)2);
-			Assert::AreEqual(map.Empty, false);
+			Assert::AreEqual(map.IsEmpty, false);
 			Assert::AreEqual(5, map.get(1).a);
 			Assert::AreEqual(4, map.get(2).a);
 		}

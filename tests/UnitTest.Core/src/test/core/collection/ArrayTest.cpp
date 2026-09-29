@@ -23,7 +23,7 @@ public:
 			Array<TestClass> array;
 
 			Assert::AreEqual((size_t)0, array.Size);
-			Assert::AreEqual(true, array.Empty);
+			Assert::AreEqual(true, array.IsEmpty);
 		}
 	}
 
@@ -33,14 +33,14 @@ public:
 			Array<uint32_t> array(20);
 
 			Assert::AreEqual((size_t)20, array.Size);
-			Assert::AreEqual(false, array.Empty);
+			Assert::AreEqual(false, array.IsEmpty);
 		}
 
 		{
 			Array<TestClass> array(20);
 
 			Assert::AreEqual((size_t)20, array.Size);
-			Assert::AreEqual(false, array.Empty);
+			Assert::AreEqual(false, array.IsEmpty);
 		}
 	}
 
@@ -51,7 +51,7 @@ public:
 			Array<uint32_t> array = Array<uint32_t>(testArray);
 
 			Assert::AreEqual((size_t)3ull, array.Size);
-			Assert::AreEqual(false, array.Empty);
+			Assert::AreEqual(false, array.IsEmpty);
 			Assert::AreEqual(1u, array[0]);
 			Assert::AreEqual(2u, array[1]);
 			Assert::AreEqual(3u, array[2]);
@@ -65,7 +65,7 @@ public:
 			Array<uint32_t> array = std::move(testArray);
 
 			Assert::AreEqual(array.Size, (size_t)3);
-			Assert::AreEqual(array.Empty, false);
+			Assert::AreEqual(array.IsEmpty, false);
 			Assert::AreEqual(array[0], 1u);
 			Assert::AreEqual(array[1], 2u);
 			Assert::AreEqual(array[2], 3u);
@@ -78,7 +78,7 @@ public:
 			Array<uint32_t> array = { 1, 2, 3 };
 
 			Assert::AreEqual(array.Size, (size_t)3);
-			Assert::AreEqual(array.Empty, false);
+			Assert::AreEqual(array.IsEmpty, false);
 			Assert::AreEqual(array[0], 1u);
 			Assert::AreEqual(array[1], 2u);
 			Assert::AreEqual(array[2], 3u);
@@ -93,7 +93,7 @@ public:
 			Array<uint32_t> a = array = testArray;
 
 			Assert::AreEqual(array.Size, testArray.Size);
-			Assert::AreEqual(array.Empty, false);
+			Assert::AreEqual(array.IsEmpty, false);
 			Assert::AreEqual(array[0], 1u);
 			Assert::AreEqual(array[1], 2u);
 			Assert::AreEqual(array[2], 3u);
@@ -108,7 +108,7 @@ public:
 			array = std::move(testArray);
 
 			Assert::AreEqual(array.Size, (size_t)3);
-			Assert::AreEqual(array.Empty, false);
+			Assert::AreEqual(array.IsEmpty, false);
 			Assert::AreEqual(array[0], 1u);
 			Assert::AreEqual(array[1], 2u);
 			Assert::AreEqual(array[2], 3u);
@@ -122,7 +122,7 @@ public:
 			array = { 1, 2, 3 };
 
 			Assert::AreEqual(array.Size, (size_t)3);
-			Assert::AreEqual(array.Empty, false);
+			Assert::AreEqual(array.IsEmpty, false);
 			Assert::AreEqual(array[0], 1u);
 			Assert::AreEqual(array[1], 2u);
 			Assert::AreEqual(array[2], 3u);
@@ -136,7 +136,7 @@ public:
 			array.set(1, 4);
 
 			Assert::AreEqual(array.Size, (size_t)3);
-			Assert::AreEqual(array.Empty, false);
+			Assert::AreEqual(array.IsEmpty, false);
 			Assert::AreEqual(array[0], 1u);
 			Assert::AreEqual(array[1], 4u);
 			Assert::AreEqual(array[2], 3u);
@@ -150,7 +150,7 @@ public:
 			auto val = array.get(1);
 
 			Assert::AreEqual(array.Size, (size_t)3);
-			Assert::AreEqual(array.Empty, false);
+			Assert::AreEqual(array.IsEmpty, false);
 			Assert::AreEqual(array[0], 1u);
 			Assert::AreEqual(array[1], 2u);
 			Assert::AreEqual(array[2], 3u);
@@ -170,7 +170,7 @@ public:
 			uint32_t& val = array[1];
 
 			Assert::AreEqual(array.Size, (size_t)3);
-			Assert::AreEqual(array.Empty, false);
+			Assert::AreEqual(array.IsEmpty, false);
 			Assert::AreEqual(array[0], 1u);
 			Assert::AreEqual(array[1], 2u);
 			Assert::AreEqual(array[2], 3u);
@@ -189,10 +189,10 @@ public:
 			Array<uint32_t> array2 = array.subarray(2, 5);
 
 			Assert::AreEqual((size_t)6, array.Size);
-			Assert::AreEqual(false, array.Empty);
+			Assert::AreEqual(false, array.IsEmpty);
 
 			Assert::AreEqual((size_t)3, array2.Size);
-			Assert::AreEqual(false, array2.Empty);
+			Assert::AreEqual(false, array2.IsEmpty);
 
 			Array<uint32_t> testArray = { 1, 2, 3, 4, 5, 6 };
 			size_t i = 0;
@@ -213,10 +213,10 @@ public:
 			Array<uint32_t> array2 = array.subarray(4, 6);
 
 			Assert::AreEqual((size_t)6, array.Size);
-			Assert::AreEqual(false, array.Empty);
+			Assert::AreEqual(false, array.IsEmpty);
 
 			Assert::AreEqual((size_t)2, array2.Size);
-			Assert::AreEqual(false, array2.Empty);
+			Assert::AreEqual(false, array2.IsEmpty);
 
 			Array<uint32_t> testArray = { 1, 2, 3, 4, 5, 6 };
 			size_t i = 0;
@@ -237,7 +237,7 @@ public:
 			Array<uint32_t> array = { 1, 2, 3 };
 
 			Assert::AreEqual(array.Size, (size_t)3);
-			Assert::AreEqual(array.Empty, false);
+			Assert::AreEqual(array.IsEmpty, false);
 
 			size_t i = 0;
 			for (auto& item : array)
@@ -249,7 +249,7 @@ public:
 			const Array<uint32_t> array = { 1, 2, 3 };
 
 			Assert::AreEqual(array.Size, (size_t)3);
-			Assert::AreEqual(array.Empty, false);
+			Assert::AreEqual(array.IsEmpty, false);
 
 			size_t i = 0;
 			for (auto& item : array)
@@ -263,7 +263,7 @@ public:
 			Array<uint32_t> array = { 1, 2, 3 };
 
 			Assert::AreEqual(array.Size, (size_t)3);
-			Assert::AreEqual(array.Empty, false);
+			Assert::AreEqual(array.IsEmpty, false);
 			Assert::AreEqual(array.indexOf(2), (size_t)1);
 			Assert::AreEqual(array.indexOf(4), (size_t)3);
 		}
@@ -272,7 +272,7 @@ public:
 			const Array<uint32_t> array = { 1, 2, 3 };
 
 			Assert::AreEqual(array.Size, (size_t)3);
-			Assert::AreEqual(array.Empty, false);
+			Assert::AreEqual(array.IsEmpty, false);
 			Assert::AreEqual(array.indexOf(2), (size_t)1);
 			Assert::AreEqual(array.indexOf(4), (size_t)3);
 		}
@@ -284,7 +284,7 @@ public:
 			Array<uint32_t> array = { 1, 2, 3 };
 
 			Assert::AreEqual(array.Size, (size_t)3);
-			Assert::AreEqual(array.Empty, false);
+			Assert::AreEqual(array.IsEmpty, false);
 			Assert::IsTrue(array.contains(1));
 			Assert::IsFalse(array.contains(4));
 		}
@@ -293,7 +293,7 @@ public:
 			const Array<uint32_t> array = { 1, 2, 3 };
 
 			Assert::AreEqual(array.Size, (size_t)3);
-			Assert::AreEqual(array.Empty, false);
+			Assert::AreEqual(array.IsEmpty, false);
 			Assert::IsTrue(array.contains(1));
 			Assert::IsFalse(array.contains(4));
 		}

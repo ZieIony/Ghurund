@@ -35,7 +35,7 @@ namespace UnitTest {
 				Tree<MapTraits<uint32_t, TreeTestValue>> tree;
 
 				Assert::AreEqual(tree.Size, (size_t)0);
-				Assert::AreEqual(tree.Empty, true);
+				Assert::AreEqual(tree.IsEmpty, true);
 #ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
 #endif
@@ -49,7 +49,7 @@ namespace UnitTest {
 				Tree<MapTraits<uint32_t, TreeTestValue>> tree = Tree<MapTraits<uint32_t, TreeTestValue>>(testTree);
 
 				Assert::AreEqual(tree.Size, (size_t)3);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1u));
 				Assert::IsTrue(tree.contains(2u));
 				Assert::IsTrue(tree.contains(3u));
@@ -63,7 +63,7 @@ namespace UnitTest {
 				Tree<MapTraits<uint32_t, TreeTestValue>> tree = std::move(testTree);
 
 				Assert::AreEqual(tree.Size, (size_t)3);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1u));
 				Assert::IsTrue(tree.contains(2u));
 				Assert::IsTrue(tree.contains(3u));
@@ -76,7 +76,7 @@ namespace UnitTest {
 				Tree<MapTraits<uint32_t, TreeTestValue>> tree = { {1, {}}, {2, {}}, {3, {}} };
 
 				Assert::AreEqual(tree.Size, (size_t)3);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1u));
 				Assert::IsTrue(tree.contains(2u));
 				Assert::IsTrue(tree.contains(3u));
@@ -91,7 +91,7 @@ namespace UnitTest {
 				tree = testTree;
 
 				Assert::AreEqual(tree.Size, testTree.Size);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1u));
 				Assert::IsTrue(tree.contains(2u));
 				Assert::IsTrue(tree.contains(3u));
@@ -106,7 +106,7 @@ namespace UnitTest {
 				tree = std::move(testTree);
 
 				Assert::AreEqual(tree.Size, (size_t)3);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1u));
 				Assert::IsTrue(tree.contains(2u));
 				Assert::IsTrue(tree.contains(3u));
@@ -120,7 +120,7 @@ namespace UnitTest {
 				tree = { {1, {}}, {2, {}}, {3, {}} };
 
 				Assert::AreEqual(tree.Size, (size_t)3);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1u));
 				Assert::IsTrue(tree.contains(2u));
 				Assert::IsTrue(tree.contains(3u));
@@ -134,7 +134,7 @@ namespace UnitTest {
 				tree.put(1);
 
 				Assert::AreEqual(tree.Size, (size_t)1);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1u));
 #ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
@@ -149,7 +149,7 @@ namespace UnitTest {
 				tree[1] = { 'a' };
 
 				Assert::AreEqual(tree.Size, (size_t)1);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1u));
 				Assert::AreEqual(tree.get(1u).c, 'a');
 #ifdef _DEBUG
@@ -167,7 +167,7 @@ namespace UnitTest {
 				tree.put(1);
 
 				Assert::AreEqual(tree.Size, (size_t)1);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1u));
 #ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
@@ -183,13 +183,13 @@ namespace UnitTest {
 				tree.putAll(testList);
 
 				Assert::AreEqual(testList.Size, (size_t)3);
-				Assert::AreEqual(testList.Empty, false);
+				Assert::AreEqual(testList.IsEmpty, false);
 				Assert::IsTrue(testList.contains(1u));
 				Assert::IsTrue(testList.contains(2u));
 				Assert::IsTrue(testList.contains(3u));
 
 				Assert::AreEqual(tree.Size, (size_t)3);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1u));
 				Assert::IsTrue(tree.contains(2u));
 				Assert::IsTrue(tree.contains(3u));
@@ -207,7 +207,7 @@ namespace UnitTest {
 				tree.putAll(testList);
 
 				Assert::AreEqual(tree.Size, (size_t)3);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1u));
 				Assert::IsTrue(tree.contains(2u));
 				Assert::IsTrue(tree.contains(3u));
@@ -225,7 +225,7 @@ namespace UnitTest {
 				tree.putAll(testList);
 
 				Assert::AreEqual(tree.Size, (size_t)3);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1u));
 				Assert::IsTrue(tree.contains(2u));
 				Assert::IsTrue(tree.contains(3u));
@@ -278,7 +278,7 @@ namespace UnitTest {
 				tree.remove(4);
 
 				Assert::AreEqual(tree.Size, (size_t)0);
-				Assert::AreEqual(tree.Empty, true);
+				Assert::AreEqual(tree.IsEmpty, true);
 				Assert::IsFalse(tree.contains(1u));
 				Assert::IsFalse(tree.contains(2u));
 				Assert::IsFalse(tree.contains(3u));
@@ -327,7 +327,7 @@ namespace UnitTest {
 				tree.remove(4);
 
 				Assert::AreEqual(tree.Size, (size_t)8);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(12u));
 				Assert::IsTrue(tree.contains(76u));
 				Assert::IsTrue(tree.contains(9u));
@@ -340,7 +340,7 @@ namespace UnitTest {
 				tree.remove(2);
 
 				Assert::AreEqual(tree.Size, (size_t)1);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1u));
 				Assert::IsFalse(tree.contains(2u));
 #ifdef _DEBUG
@@ -352,7 +352,7 @@ namespace UnitTest {
 				tree.remove(1);
 
 				Assert::AreEqual(tree.Size, (size_t)0);
-				Assert::AreEqual(tree.Empty, true);
+				Assert::AreEqual(tree.IsEmpty, true);
 				Assert::IsFalse(tree.contains(1u));
 #ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
@@ -370,7 +370,7 @@ namespace UnitTest {
 #endif
 
 				Assert::AreEqual(tree.Size, (size_t)5);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1u));
 				Assert::IsFalse(tree.contains(2u));
 				Assert::IsTrue(tree.contains(3u));
@@ -384,7 +384,7 @@ namespace UnitTest {
 #endif
 
 				Assert::AreEqual(tree.Size, (size_t)5);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1u));
 				Assert::IsFalse(tree.contains(2u));
 				Assert::IsTrue(tree.contains(3u));
@@ -398,7 +398,7 @@ namespace UnitTest {
 				tree.remove(4);
 
 				Assert::AreEqual(tree.Size, (size_t)3);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1u));
 				Assert::IsTrue(tree.contains(2u));
 				Assert::IsTrue(tree.contains(3u));
@@ -416,7 +416,7 @@ namespace UnitTest {
 				Tree<SetTraits<uint32_t>> tree = { 1, 2, 3 };
 
 				Assert::AreEqual(tree.Size, (size_t)3);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 
 				size_t i = 0;
 				for (auto& item : tree)
@@ -428,7 +428,7 @@ namespace UnitTest {
 				const Tree<SetTraits<uint32_t>> tree = { 1, 2, 3 };
 
 				Assert::AreEqual(tree.Size, (size_t)3);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 
 				size_t i = 0;
 				for (auto& item : tree)
@@ -442,7 +442,7 @@ namespace UnitTest {
 				Tree<MapTraits<uint32_t, TreeTestValue>> tree = { {1, {}}, {2, {}}, {3, {}} };
 
 				Assert::AreEqual(tree.Size, (size_t)3);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1));
 				Assert::IsFalse(tree.contains(4));
 			}
@@ -451,7 +451,7 @@ namespace UnitTest {
 				const Tree<MapTraits<uint32_t, TreeTestValue>> tree = { {1, {}}, {2, {}}, {3, {}} };
 
 				Assert::AreEqual(tree.Size, (size_t)3);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree.contains(1));
 				Assert::IsFalse(tree.contains(4));
 			}
@@ -467,7 +467,7 @@ namespace UnitTest {
 				Tree<MapTraits<uint32_t, TreeTestValue>> tree5 = { {1, {'d'}}, {4, {'b'}}, {3, {'c'}} };
 
 				Assert::AreEqual(tree.Size, (size_t)3);
-				Assert::AreEqual(tree.Empty, false);
+				Assert::AreEqual(tree.IsEmpty, false);
 				Assert::IsTrue(tree == tree2);
 				Assert::IsFalse(tree != tree2);
 				Assert::IsFalse(tree == tree3);

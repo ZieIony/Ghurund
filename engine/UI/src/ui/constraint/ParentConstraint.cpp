@@ -27,7 +27,7 @@ namespace Ghurund::UI {
 	}
 
 	void ParentRightConstraint::evaluate() {
-		if (!dependencies.Empty) {
+		if (!dependencies.IsEmpty) {
 			value = (*dependencies.begin())->Value + offset;
 		} else {
 			value = offset;
@@ -58,7 +58,7 @@ namespace Ghurund::UI {
 	}
 
 	void ParentBottomConstraint::evaluate() {
-		if (!dependencies.Empty) {
+		if (!dependencies.IsEmpty) {
 			value = (*dependencies.begin())->Value + offset;
 		} else {
 			value = offset;
@@ -89,7 +89,7 @@ namespace Ghurund::UI {
 	}
 
 	void ParentWidthConstraint::evaluate() {
-		if (!dependencies.Empty) {
+		if (!dependencies.IsEmpty) {
 			float width = parentWidth->Evaluated ? parentWidth->Value : contentWidth->Value;
 			value = minMax(min, width * ratio + offset, max);
 		} else {
@@ -121,7 +121,7 @@ namespace Ghurund::UI {
 	}
 	
 	void ParentHeightConstraint::evaluate() {
-		if (!dependencies.Empty) {
+		if (!dependencies.IsEmpty) {
 			float height = parentHeight->Evaluated ? parentHeight->Value : contentHeight->Value;
 			value = minMax(min, height * ratio + offset, max);
 		} else {

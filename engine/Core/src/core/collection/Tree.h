@@ -413,11 +413,11 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = getSize)) size_t Size;
 
-		inline bool isEmpty()const {
+		inline bool getIsEmpty()const {
 			return size == 0;
 		}
 
-		__declspec(property(get = isEmpty)) bool Empty;
+		__declspec(property(get = getIsEmpty)) bool IsEmpty;
 
 		inline value_t& get(const key_t& key) {
 			Node* node = findNode(key);
