@@ -5,7 +5,7 @@
 #include "core/object/IntrusivePointer.h"
 #include "core/reflection/StandardTypes.h"
 #include "engine/directx/DxGraphics.h"
-#include "engine/directx/shader/DxShaderLoader.h"
+#include "engine/directx/rendering/DxGraphicsShaderLoader.h"
 #include "engine/parameter/ValueParameter.h"
 #include "test/utils/MemoryGuard.h"
 

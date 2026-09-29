@@ -178,6 +178,7 @@ namespace Ghurund::Engine {
 	typedef ValueParameter<::DirectX::XMFLOAT3> Float3Parameter;
 	typedef ValueParameter<::DirectX::XMFLOAT4> Float4Parameter;
 	typedef ValueParameter<int32_t> IntParameter;
+	typedef ValueParameter<uint32_t> UIntParameter;
 	typedef ValueParameter<::DirectX::XMINT2> Int2Parameter;
 	typedef ValueParameter<::DirectX::XMFLOAT4X4> MatrixParameter;
 }

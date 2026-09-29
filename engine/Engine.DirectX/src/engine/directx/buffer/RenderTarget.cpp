@@ -7,6 +7,7 @@
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 #include "engine/directx/DxGraphics.h"
+#include "engine/directx/rendering/DxGraphicsCommandList.h"
 
 namespace Ghurund::Engine::DirectX {
     void RenderTarget::init(DxGraphics& graphics, ID3D12Resource* texture) {
@@ -105,7 +106,7 @@ namespace Ghurund::Engine::DirectX {
             throw NotSupportedException();
         }
 
-        CommandList* commandList = ghnew CommandList();
+        DxGraphicsCommandList* commandList = ghnew DxGraphicsCommandList();
         commandList->init(graphics, commandQueue);
         commandList->reset();
 

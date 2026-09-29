@@ -1,6 +1,5 @@
 #pragma once
 
-#include "engine/directx/CommandList.h"
 #include "engine/directx/DxGraphics.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/loading/LayoutLoader.h"
@@ -27,7 +26,6 @@ namespace Ghurund::UI::DirectX {
         ResourceManager& resourceManager;
         DxGraphics& graphics;
         DxGPUMemoryManager& memoryManager;
-        IntrusivePointer<CommandList> commandList;
         Ghurund::UI::ConstraintFactory* constraintFactory = nullptr;
         IntrusivePointer<Ghurund::UI::LayoutLoader> layoutLoader;
 

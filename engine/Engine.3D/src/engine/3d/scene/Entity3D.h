@@ -29,7 +29,6 @@ namespace Ghurund::Engine::_3D {
 
 	protected:
 		virtual CoroutineTask<void> onInit() override {
-			co_await transformComponent->init();
 			for (auto& component : components)
 				co_await component->init();
 		};
@@ -37,7 +36,6 @@ namespace Ghurund::Engine::_3D {
 		inline void uninitEntity3D() {
 			for (auto& component : components)
 				component->uninit();
-			transformComponent->uninit();
 		};
 
 		virtual void onUninit() {

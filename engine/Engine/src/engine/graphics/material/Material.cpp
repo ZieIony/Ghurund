@@ -26,6 +26,10 @@ namespace Ghurund::Engine {
             return ghnew ValueInput<IntParameter>(valueInput);
         case InputType::INT2:
             return ghnew ValueInput<Int2Parameter>(valueInput);
+        case InputType::UINT:
+            return ghnew ValueInput<UIntParameter>(valueInput);
+        case InputType::BOOL:
+            return ghnew ValueInput<BoolParameter>(valueInput);
         case InputType::FLOAT:
             return ghnew ValueInput<FloatParameter>(valueInput);
         case InputType::FLOAT2:
@@ -41,7 +45,7 @@ namespace Ghurund::Engine {
     }
 
     void Material::initInputs() {
-        for (auto& bi : shader->BufferConstants) {
+        for (auto& bi : shader->Constants.BufferConstants) {
             for (auto& vi : bi.valueConstants) {
                 auto input = makeInput(vi);
                 valueInputs.add(input);
@@ -49,17 +53,17 @@ namespace Ghurund::Engine {
             }
             constantBuffers.add(IntrusivePointer(memoryManager->makeConstantBuffer(bi.size)));
         }
-        for (auto& vi : shader->ValueConstants) {
+        for (auto& vi : shader->Constants.ValueConstants) {
             auto input = makeInput(vi);
             valueInputs.add(input);
             inputs.add(input);
         }
-        for (auto& ti : shader->TextureConstants) {
+        for (auto& ti : shader->Constants.TextureConstants) {
             auto input = ghnew TextureInput(ti);
             textureInputs.add(input);
             inputs.add(input);
         }
-        for (auto& cmi : shader->CubeMapConstants) {
+        for (auto& cmi : shader->Constants.CubeMapConstants) {
             auto input = ghnew CubeMapInput(cmi);
             cubeMapInputs.add(input);
             inputs.add(input);
@@ -74,7 +78,7 @@ namespace Ghurund::Engine {
 				valueInputs.add(input);
                 inputs.add(input);
 			}
-			for (size_t i = 0; i < shader->BufferConstants.Size; i++)
+			for (size_t i = 0; i < shader->Constants.BufferConstants.Size; i++)
 				constantBuffers.add(IntrusivePointer(memoryManager->makeConstantBuffer(other.constantBuffers[i]->Size)));
 			for (size_t i = 0; i < other.textureInputs.Size; i++) {
 				auto input = other.textureInputs[i]->clone();
@@ -90,9 +94,9 @@ namespace Ghurund::Engine {
 	}
 
     void Material::applyInputs(ParameterCollection& globals) {
-		size_t i = 0;
+		uint32_t logId = 0;
 		for (auto input : valueInputs) {
-			i++;
+            logId++;
 			if (input->IsEmpty) {
 				auto global = (BaseValueParameter*)globals.get(input->Name);
 				if (global && !global->IsEmpty) {
@@ -101,7 +105,7 @@ namespace Ghurund::Engine {
 					input->applyValue(input->DefaultValue);
 				} else {
 					auto text = std::format(_T("No value for input '{}'.\n"), input->Name);
-					Logger::logOnce(LogType::WARNING, text.c_str(), i);
+					Logger::logOnce(LogType::WARNING, text.c_str(), logId);
                     continue;
                 }
             } else {
@@ -109,28 +113,28 @@ namespace Ghurund::Engine {
                 input->applyValue();
             }
 		}
-		for (size_t b = 0; b < shader->BufferConstants.Size; b++) {
-            auto& bi = shader->BufferConstants[b];
+		for (size_t b = 0; b < shader->Constants.BufferConstants.Size; b++) {
+            auto& bi = shader->Constants.BufferConstants[b];
             auto& cb = constantBuffers[b];
             bi.constantBuffer = cb.get();
             for (auto& vi : bi.valueConstants) {
                 if (!vi.Value) {
                     auto text = std::format(_T("No value for input '{}'.\n"), vi.Name);
-                    Logger::logOnce(LogType::WARNING, text.c_str(), i);
+                    Logger::logOnce(LogType::WARNING, text.c_str(), logId);
                     continue;
                 }
                 cb->setValue(vi.Value, vi.Size, vi.Offset);
 			}
 		}
 		for (auto input : textureInputs) {
-			i++;
+            logId++;
 			if (input->IsEmpty) {
 				auto global = (TextureParameter*)globals.get(input->Name);
 				if (global && !global->IsEmpty) {
                     input->applyValue(global->Value);
 				} else {
 					auto text = std::format(_T("No value for input '{}'.\n"), input->Name);
-					Logger::logOnce(LogType::WARNING, text.c_str(), i);
+					Logger::logOnce(LogType::WARNING, text.c_str(), logId);
                     continue;
 				}
             } else {
@@ -138,10 +142,10 @@ namespace Ghurund::Engine {
             }
 		}
         for (auto input : cubeMapInputs) {
-            i++;
+            logId++;
             if (input->IsEmpty) {
                 auto text = std::format(_T("No value for input '{}'.\n"), input->Name);
-                Logger::logOnce(LogType::WARNING, text.c_str(), i);
+                Logger::logOnce(LogType::WARNING, text.c_str(), logId);
                 continue;
             } else {
                 input->applyValue();

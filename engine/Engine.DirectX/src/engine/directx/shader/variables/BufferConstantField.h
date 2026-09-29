@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/string/String.h"
+#include "engine/graphics/shader/InputType.h"
 
 #include <d3dcommon.h>
 
@@ -62,5 +63,7 @@ namespace Ghurund::Engine::DirectX {
 		~BufferConstantField() {
 			delete defaultValue;
 		}
+
+		InputType makeInputType() const;
 	};
 }

@@ -5,6 +5,7 @@
 #include "engine/directx/mesh/DxMesh.h"
 #include "engine/graphics/mesh/MeshData.h"
 #include "test/utils/MemoryGuard.h"
+#include "engine/directx/rendering/DxGraphicsCommandList.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -37,7 +38,7 @@ public:
             mesh->init({ posStream }, (uint32_t)vertices.Size, indices);
             auto dxMesh = makeIntrusive<DxMesh>();
             graphics.init();
-            auto commandList = makeIntrusive<CommandList>();
+            auto commandList = makeIntrusive<DxGraphicsCommandList>();
             commandList->init(graphics, graphics.CopyQueue);
             DxGPUMemoryManager memoryManager(graphics, commandList.ref());
             dxMesh->init(mesh.ref(), memoryManager);

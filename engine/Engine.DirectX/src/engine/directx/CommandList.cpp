@@ -14,10 +14,8 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	CommandList::~CommandList() {
-		if (state == CommandListState::RECORDING) {
-			commandList->OMSetRenderTargets(0, 0, true, 0);
+		if (state == CommandListState::RECORDING)
 			finish();
-		}
 		if (state == CommandListState::CLOSED)
 			wait();
 
@@ -130,19 +128,4 @@ namespace Ghurund::Engine::DirectX {
 		}
 		return false;
 	}
-
-	bool CommandList::setGraphicsRootSignature(ID3D12RootSignature* rootSignature) {
-#ifdef _DEBUG
-		if (rootSignature == nullptr)
-			Logger::log(LogType::WARNING, _T("rootSignature cannot be null\n"));
-#endif
-		if (this->rootSignature != rootSignature) {
-			addResourceRef(rootSignature);
-			commandList.Get()->SetGraphicsRootSignature(rootSignature);
-			this->rootSignature = rootSignature;
-			return true;
-		}
-		return false;
-	}
-
 }

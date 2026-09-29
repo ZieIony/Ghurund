@@ -6,8 +6,10 @@
 
 namespace Ghurund::Engine::DirectX {
     const Ghurund::Core::Type& DxTexture::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<DxTexture>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<DxTexture>()
-            .withSupertype(__super::GET_TYPE());
+            .withSupertype(__super::GET_TYPE())
+            .withConstructor(CONSTRUCTOR);
 
         return TYPE;
     }

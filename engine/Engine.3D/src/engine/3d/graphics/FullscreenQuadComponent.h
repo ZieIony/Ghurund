@@ -11,7 +11,11 @@ namespace Ghurund::Engine::_3D {
 		BoundingOrientedBox transformedBoundingBox;
 		bool culled = false;
 
-		void finalize() {
+		inline void setMesh(Mesh* mesh) {
+			setPointer(this->mesh, mesh);
+		}
+
+		inline void uninitFullscreenQuadComponent() {
 			safeRelease(mesh);
 			safeRelease(material);
 		}
@@ -23,34 +27,31 @@ namespace Ghurund::Engine::_3D {
 		[[nodiscard]]
 		virtual CoroutineTask<void> onInit() override;
 
+		virtual void onUninit() override {
+			uninitFullscreenQuadComponent();
+		}
+
 	public:
 		bool selectable = true, visible = true, cullingEnabled = true;
 
 		FullscreenQuadComponent(NotNull<Entity3D> owner):Component3D(owner) {}
 
 		virtual ~FullscreenQuadComponent() {
-			finalize();
+			if (IsInitialized)
+				uninitFullscreenQuadComponent();
 		}
 
-		virtual void invalidate() {
-			finalize();
-		}
-
-		Mesh* getMesh() const {
+		inline Mesh* getMesh() const {
 			return mesh;
-		}
-
-		void setMesh(Mesh* mesh) {
-			setPointer(this->mesh, mesh);
 		}
 
 		__declspec(property(get = getMesh, put = setMesh)) Mesh* Mesh;
 
-		Material* getMaterial() {
+		inline Material* getMaterial() {
 			return material;
 		}
 
-		void setMaterial(Material* material) {
+		inline void setMaterial(Material* material) {
 			setPointer(this->material, material);
 		}
 

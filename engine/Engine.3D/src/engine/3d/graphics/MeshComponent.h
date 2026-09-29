@@ -12,7 +12,7 @@ namespace Ghurund::Engine::_3D {
 		BoundingOrientedBox transformedBoundingBox;
 		bool culled = false;
 
-		void finalize() {
+		void uninitMeshComponent() {
 			safeRelease(mesh);
 			safeRelease(material);
 		}
@@ -25,17 +25,18 @@ namespace Ghurund::Engine::_3D {
 		[[nodiscard]]
 		virtual CoroutineTask<void> onInit() override;
 
+		virtual void onUninit() override {
+			uninitMeshComponent();
+		}
+
 	public:
 		bool selectable = true, visible = true, cullingEnabled = true;
 
 		MeshComponent(NotNull<Entity3D> owner):Component3D(owner) {}
 
 		virtual ~MeshComponent() {
-			finalize();
-		}
-
-		virtual void invalidate() {
-			finalize();
+			if (IsInitialized)
+				uninitMeshComponent();
 		}
 
 		Mesh* getMesh() const {

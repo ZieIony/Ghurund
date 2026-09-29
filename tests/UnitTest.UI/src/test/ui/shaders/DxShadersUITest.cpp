@@ -3,7 +3,7 @@
 
 #include "core/object/IntrusivePointer.h"
 #include "engine/directx/DxGraphics.h"
-#include "engine/directx/shader/DxShaderLoader.h"
+#include "engine/directx/rendering/DxGraphicsShaderLoader.h"
 
 #include "test/utils/TestLogOutput.h"
 #include "test/utils/TestUtils.h"
@@ -24,11 +24,11 @@ private:
     CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
     ResourceManager resourceManager = ResourceManager(coroutineScheduler);
 
-    bool tryLoadShader(DxShaderLoader& shaderLoader, const File& file) {
+    bool tryLoadShader(DxGraphicsShaderLoader& shaderLoader, const File& file) {
         Buffer buffer;
         file.read(buffer);
         MemoryInputStream stream(buffer.Data, buffer.Size);
-        auto shader = makeIntrusive<DxShader>();
+        auto shader = makeIntrusive<DxGraphicsShader>();
         shader->setPath(&file.Path);
         try {
             DirectoryPath workingDir = file.Path.Directory;
@@ -49,7 +49,7 @@ public:
         graphics.init();
 
         DxShaderCompiler compiler(graphics);
-        auto loader = makeIntrusive<DxShaderLoader>(resourceManager, compiler);
+        auto loader = makeIntrusive<DxGraphicsShaderLoader>(resourceManager, compiler);
         loader->includeDirs.add(DirectoryPath(L"../../resources/shaders/DirectX/include").AbsolutePath);
         DirectoryPath shaderDirectory = DirectoryPath(L"../../resources/shaders/DirectX/ui").AbsolutePath;
         auto files = shaderDirectory.Files;

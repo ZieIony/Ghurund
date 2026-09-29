@@ -1,10 +1,7 @@
 #pragma once
 
-#include "BufferConstant.h"
-#include "CubeMapConstant.h"
 #include "ShaderSource.h"
-#include "TextureConstant.h"
-#include "ValueConstant.h"
+#include "ConstantsCollection.h"
 
 #include "core/resource/Resource.h"
 
@@ -25,53 +22,43 @@ namespace Ghurund::Engine {
 #pragma endregion
 
     protected:
-        bool isTransparencyEnabled = false;
-        List<ValueConstant> valueConstants;
-        List<BufferConstant> bufferConstants;
-        List<TextureConstant> textureConstants;
-        List<CubeMapConstant> cubeMapConstants;
         ShaderSource* source = nullptr;
+        ConstantsCollection* constants = nullptr;
 
-    public:
-        ~Shader() {
+        inline void finalize() {
             if (source)
                 source->release();
+            if (constants)
+                delete constants;
         }
 
-        bool getIsTransparencyEnabled() {
-            return isTransparencyEnabled;
+        virtual bool getIsValidInternal() const override {
+            return __super::getIsValidInternal() && constants != nullptr;
         }
 
-        __declspec(property(get = getIsTransparencyEnabled)) bool IsTransparencyEnabled;
-
-        inline const List<ValueConstant>& getValueConstants() const {
-            return valueConstants;
+        ~Shader() {
+            finalize();
         }
 
-        __declspec(property(get = getValueConstants)) const List<ValueConstant>& ValueConstants;
-
-        inline const List<BufferConstant>& getBufferInputs() const {
-            return bufferConstants;
-        }
-
-        __declspec(property(get = getBufferInputs)) const List<BufferConstant>& BufferConstants;
-
-        inline const List<TextureConstant>& getTextureConstants() const {
-            return textureConstants;
-        }
-
-        __declspec(property(get = getTextureConstants)) const List<TextureConstant>& TextureConstants;
-
-        inline const List<CubeMapConstant>& getCubeMapConstants() const {
-            return cubeMapConstants;
-        }
-
-        __declspec(property(get = getCubeMapConstants)) const List<CubeMapConstant>& CubeMapConstants;
-
+    public:
         inline const ShaderSource* getSource() const {
             return source;
         }
 
         __declspec(property(get = getSource)) const ShaderSource* Source;
+
+        inline ConstantsCollection& getConstants() {
+            return *constants;
+        }
+
+        __declspec(property(get = getConstants)) ConstantsCollection& Constants;
+
+        virtual void invalidate() override {
+            finalize();
+            source = nullptr;
+            constants = nullptr;
+            
+            __super::invalidate();
+        }
     };
 }

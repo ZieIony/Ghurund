@@ -28,7 +28,7 @@ namespace Ghurund::Engine::DirectX {
         inline static const Ghurund::Core::Type& TYPE = CommandList::GET_TYPE();
 #pragma endregion
 
-    private:
+    protected:
         Fence fence;
         ComPtr<ID3D12CommandAllocator> commandAllocator;
         ComPtr<ID3D12GraphicsCommandList> commandList;
@@ -43,7 +43,9 @@ namespace Ghurund::Engine::DirectX {
         WString name;
 
     public:
-        ~CommandList();
+        CommandList() {}
+
+        virtual ~CommandList() = 0;
 
         void init(DxGraphics& graphics, NotNull<ID3D12CommandQueue> queue);
 
@@ -76,8 +78,6 @@ namespace Ghurund::Engine::DirectX {
 
         bool setPipelineState(ID3D12PipelineState* pipelineState);
 
-        bool setGraphicsRootSignature(ID3D12RootSignature* rootSignature);
-
         inline void barrier(const D3D12_RESOURCE_BARRIER& barrier) {
             commandList->ResourceBarrier(1, &barrier);
         }
@@ -91,9 +91,5 @@ namespace Ghurund::Engine::DirectX {
             resource->addReference();
             pointerRefs.add(resource);
         }
-
-        /*virtual String toString() const override {
-            return String(std::format(_T("{}: {\n}\n"), __super::toString()).c_str());
-        }*/
     };
 }

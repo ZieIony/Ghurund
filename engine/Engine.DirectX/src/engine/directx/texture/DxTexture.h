@@ -27,11 +27,16 @@ namespace Ghurund::Engine::DirectX {
 
         bool uploaded = false;
 
-    public:
+    protected:
+        virtual bool getIsValidInternal() const override {
+			return __super::getIsValidInternal() && image != nullptr && image->IsValid && uploaded;
+        }
+
         ~DxTexture() {
             finalize();
         }
 
+    public:
         void finalize() {
             uploaded = false;
             textureResource.Reset();
@@ -43,10 +48,6 @@ namespace Ghurund::Engine::DirectX {
             finalize();
             image = nullptr;
             __super::invalidate();
-        }
-
-        virtual bool getIsValid() const override {
-			return __super::getIsValid() && image != nullptr && image->IsValid && uploaded;
         }
 
         void init(Ghurund::Core::Image& image, class DxGPUMemoryManager& memoryManager);

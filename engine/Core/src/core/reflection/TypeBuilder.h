@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Type.h"
+
 #include "core/exception/Exceptions.h"
 #include "core/EnumOperators.h"
 
@@ -43,12 +44,6 @@ namespace Ghurund::Core {
 			if (std::is_abstract<T>::value) {
 				modifiers |= TypeModifier::ABSTRACT;
 			}
-		}
-
-		TypeBuilder(const AString& _namespace, const AString& name) requires std::is_default_constructible<T>::value && !std::is_abstract<T>::value
-			: _namespace(_namespace), name(name), size(sizeof(T)) {
-			static const auto CONSTRUCTOR = Constructor<T>();
-			constructors.add(CONSTRUCTOR);
 		}
 
 		TypeBuilder(const AString& _namespace, const AString& name): _namespace(_namespace), name(name), size(sizeof(T)) {}

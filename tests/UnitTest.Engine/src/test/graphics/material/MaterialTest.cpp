@@ -5,7 +5,7 @@
 #include "core/object/IntrusivePointer.h"
 #include "core/reflection/StandardTypes.h"
 #include "engine/directx/DxGraphics.h"
-#include "engine/directx/shader/DxShaderLoader.h"
+#include "engine/directx/rendering/DxGraphicsShaderLoader.h"
 #include "engine/parameter/ValueParameter.h"
 #include "engine/graphics/material/Material.h"
 
@@ -33,7 +33,7 @@ private:
     IntrusivePointer<CommandList> commandList;
     SharedPointer<DxGPUMemoryManager> memoryManager;
     SharedPointer<DxShaderCompiler> shaderCompiler;
-    IntrusivePointer<DxShaderLoader> shaderLoader;
+    IntrusivePointer<DxGraphicsShaderLoader> shaderLoader;
 
     AString loadShaderSource(const WString& path) {
         File file = FilePath(resDir + path);
@@ -45,11 +45,11 @@ private:
 public:
     MaterialTest() {
         graphics.init();
-        commandList = makeIntrusive<CommandList>();
+        commandList = makeIntrusive<DxGraphicsCommandList>();
         commandList->init(graphics, graphics.CopyQueue);
         memoryManager = makeShared<DxGPUMemoryManager>(graphics, commandList.ref());
         shaderCompiler = makeShared<DxShaderCompiler>(graphics);
-        shaderLoader = makeIntrusive<DxShaderLoader>(resourceManager, shaderCompiler.ref());
+        shaderLoader = makeIntrusive<DxGraphicsShaderLoader>(resourceManager, shaderCompiler.ref());
     }
 
     TEST_METHOD(Material_constructor) {
@@ -57,7 +57,7 @@ public:
         {
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/ui.hlsl");
             MemoryInputStream stream(testShaderSource.Data, testShaderSource.Size);
-            auto shader = makeIntrusive<DxShader>();
+            auto shader = makeIntrusive<DxGraphicsShader>();
             runCoroutineBlocking(shaderLoader->load(shader.ref(), stream));
             auto material = makeIntrusive<Material>();
             material->init(memoryManager.ref());
@@ -70,7 +70,7 @@ public:
         {
             AString testShaderSource = loadShaderSource(L"/shaders/DirectX/ui.hlsl");
             MemoryInputStream stream(testShaderSource.Data, testShaderSource.Size);
-            auto shader = makeIntrusive<DxShader>();
+            auto shader = makeIntrusive<DxGraphicsShader>();
             runCoroutineBlocking(shaderLoader->load(shader.ref(), stream));
             auto material = makeIntrusive<Material>();
             material->init(memoryManager.ref());

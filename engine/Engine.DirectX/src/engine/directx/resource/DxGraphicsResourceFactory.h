@@ -1,8 +1,9 @@
 #pragma once
 
-#include "engine/directx/mesh/DxMesh.h"
-#include "engine/resource/IGraphicsResourceFactory.h"
 #include "engine/directx/cubemap/DxCubeMap.h"
+#include "engine/directx/mesh/DxMesh.h"
+#include "engine/directx/texture/DxTexture.h"
+#include "engine/resource/IGraphicsResourceFactory.h"
 
 namespace Ghurund::Engine::DirectX {
 	class DxGraphicsResourceFactory:public IGraphicsResourceFactory {

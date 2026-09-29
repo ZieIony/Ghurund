@@ -1,7 +1,5 @@
 #pragma once
 
-#include "InputType.h"
-
 #include "engine/graphics/texture/ITexture.h"
 
 namespace Ghurund::Engine {

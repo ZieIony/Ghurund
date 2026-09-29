@@ -36,12 +36,14 @@ namespace Demo {
 			auto meshComponent = entity->makeComponent<MeshComponent>();
 			auto mesh = co_await app.ResourceManager.load<Mesh>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/spartan helmet/spartan helmet.fbx"));
 			meshComponent->Mesh = mesh.get();
+
 			auto material = co_await app.ResourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/spartan helmet/spartan helmet material.xml"));
 			meshComponent->Material = material.get();
 			entity->Components.add(meshComponent.ref());
-			world->Scene.Camera->setPositionTargetUp({ 40, 40, -40 }, { 0, 20, 0 });
+			co_await entity->init();
 		}
 
+		world->Scene.Camera->setPositionTargetUp({ 40, 40, -40 }, { 0, 20, 0 });
 		cameraController.Camera = world->Scene.Camera;
 		cameraController.Window = this;
 
@@ -49,13 +51,15 @@ namespace Demo {
 			auto entity = co_await world->spawnEntity<Entity3D>();
 			entity->Transform.Position = { 0,0,-1000 };
 			auto quadComponent = entity->makeComponent<FullscreenQuadComponent>();
-			co_await quadComponent->init();
 			
 			auto material = co_await app.ResourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/3d/forward/cubeMap.xml"));
 			quadComponent->Material = material.get();
 			quadComponent->drawOrder = -1;
 			entity->Components.add(quadComponent.ref());
+			co_await entity->init();
 		}
+
+		auto computeShader = co_await app.ResourceManager.load<ComputeShader>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"shaders/DirectX/compute/generateMipMaps.xml"));
 
 		app.ResourceManager.printResources();
 	}

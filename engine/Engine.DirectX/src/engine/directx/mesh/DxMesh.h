@@ -48,6 +48,10 @@ namespace Ghurund::Engine::DirectX {
 
         void initIndexBuffer(const Buffer& indices, uint32_t indexCount, DxGPUMemoryManager& memoryManager);
 
+        virtual bool getIsValidInternal() const override {
+			return __super::getIsValidInternal() && vertexBuffers[0].Get() && indexBuffer.Get();
+        }
+
     public:
         // VS complains
         DxMesh() {}
@@ -63,10 +67,6 @@ namespace Ghurund::Engine::DirectX {
             indexBuffer.Reset();
 
             __super::invalidate();
-        }
-
-        virtual bool getIsValid() const override {
-			return __super::getIsValid() && vertexBuffers[0].Get() && indexBuffer.Get();
         }
 
         void draw(CommandList& commandList, const Array<VertexRole>& layout);

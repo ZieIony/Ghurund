@@ -3,7 +3,7 @@
 
 #include "core/object/IntrusivePointer.h"
 #include "engine/directx/DxGraphics.h"
-#include "engine/directx/shader/DxShaderLoader.h"
+#include "engine/directx/rendering/DxGraphicsShaderLoader.h"
 
 #include "test/utils/TestUtils.h"
 #include "engine/directx/shader/compiler/DxEntrypointNotFoundException.h"
@@ -74,20 +74,14 @@ float4 pixelMain(DefaultPixel input): SV_Target{
             graphics.init();
 
             DxShaderCompiler compiler(graphics);
-            auto loader = makeIntrusive<DxShaderLoader>(resourceManager, compiler);
+            auto loader = makeIntrusive<DxGraphicsShaderLoader>(resourceManager, compiler);
             Buffer data("test", 5);
             MemoryInputStream stream(data.Data, data.Size);
 
-            try {
-              //  Assert::ExpectException<std::exception>([&] {
-                    auto shader = makeIntrusive<DxShader>();
-                    runCoroutineBlocking(loader->load(shader.ref(), stream));
-         //       });
-            } catch (...) {
-                auto exception = std::current_exception();
-                return;
-            }
-            Assert::Fail();
+            Assert::ExpectException<std::exception>([&] {
+                auto shader = makeIntrusive<DxGraphicsShader>();
+                runCoroutineBlocking(loader->load(shader.ref(), stream));
+            });
         }
 
         TEST_METHOD(DxShaderLoader_loadHlsl) {
@@ -95,9 +89,9 @@ float4 pixelMain(DefaultPixel input): SV_Target{
             graphics.init();
 
             DxShaderCompiler compiler(graphics);
-            auto loader = makeIntrusive<DxShaderLoader>(resourceManager, compiler);
+            auto loader = makeIntrusive<DxGraphicsShaderLoader>(resourceManager, compiler);
             MemoryInputStream stream(testShaderSource.Data, testShaderSource.Size);
-            auto shader = makeIntrusive<DxShader>();
+            auto shader = makeIntrusive<DxGraphicsShader>();
             runCoroutineBlocking(loader->load(shader.ref(), stream));
   
             Assert::IsNotNull(shader.get());

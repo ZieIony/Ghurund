@@ -34,6 +34,11 @@ namespace Ghurund::Core {
 		uint32_t pixelSize = 0, rowPitch = 0;
 		Buffer imageData;
 
+	protected:
+		virtual bool getIsValidInternal() const override {
+			return __super::getIsValidInternal() && imageData.Size != 0;
+		}
+
 	public:
 		void init(const Buffer& data, const IntSize& size, DXGI_FORMAT format);
 
@@ -43,10 +48,6 @@ namespace Ghurund::Core {
 			size = {};
 			pixelSize = 0, rowPitch = 0;
 			imageData.resize(0);
-		}
-
-		virtual bool getIsValid() const override {
-			return __super::getIsValid() && imageData.Size != 0;
 		}
 
 		Buffer& getData() {

@@ -1,20 +1,17 @@
 #include "ghedxpch.h"
-#include "DxShaderLoader.h"
+#include "DxGraphicsShaderLoader.h"
 
-#include "core/xml/XMLDocument.h"
-#include "compiler/CompilerInclude.h"
-#include "compiler/DxShaderProgram.h"
-#include "compiler/DxEntrypointNotFoundException.h"
+#include "engine/directx/shader/compiler/DxEntrypointNotFoundException.h"
 
 namespace Ghurund::Engine::DirectX {
-	CoroutineTask<void> DxShaderLoader::loadInternal(
-		DxShader& resource,
+	CoroutineTask<void> DxGraphicsShaderLoader::loadInternal(
+		DxGraphicsShader& resource,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
 		LoadOptions options
 	) {
-		checkXmlRoot(xml, L"Shader");
+		checkXmlRoot(xml, L"GraphicsShader");
 	
 		auto shaderSource = makeIntrusive<ShaderSource>();
 		auto settingsElementIndex = xml.children.find([](const SharedPointer<XMLElement>& element) { return element->name == L"Settings"; });
@@ -144,7 +141,7 @@ namespace Ghurund::Engine::DirectX {
 		co_return;
 	}
 
-	void DxShaderLoader::loadFromSource(NotNull<ShaderSource> shaderSource, const DirectoryPath& workingDir, DxShader& shader) {
+	void DxGraphicsShaderLoader::loadFromSource(NotNull<ShaderSource> shaderSource, const DirectoryPath& workingDir, DxGraphicsShader& shader) {
 		if (!shaderSource->programs.any([](auto& program) { return ((DxShaderProgramSourceCode*)program)->shaderType == DxShaderType::VERTEX; })) {
 			Logger::log(LogType::ERR0R, _T("Vertex shader program is required.\n"));
 			throw DxEntrypointNotFoundException(DxShaderType::VERTEX);
@@ -165,22 +162,23 @@ namespace Ghurund::Engine::DirectX {
 		shader.validate();
 	}
 
-	void DxShaderLoader::loadFromHlsl(const AString& sourceCode, const DirectoryPath& workingDir, DxShader& shader) {
+	void DxGraphicsShaderLoader::loadFromHlsl(const AString& sourceCode, const DirectoryPath& workingDir, DxGraphicsShader& shader) {
 		auto shaderSource = makeIntrusive<ShaderSource>();
 
 		for (const DxShaderType& shaderType : DxShaderType::VALUES) {
 			AString entryPoint = shaderType.getEntryPoint();
 			if (sourceCode.contains(entryPoint)) {
+				// TODO: fix shader.Path name
 				AString sourceName = shader.Path ? convertText<wchar_t, char>(shader.Path->toString()) : AString("[unnamed shader]");
 				shaderSource->programs.add(ghnew DxShaderProgramSourceCode(shaderType, sourceCode, sourceName));
 			}
 		}
 
-		loadFromSource(shaderSource.ref() , workingDir, shader);
+		loadFromSource(shaderSource.ref(), workingDir, shader);
 	}
 
-	CoroutineTask<void> DxShaderLoader::loadInternal(
-		DxShader& resource,
+	CoroutineTask<void> DxGraphicsShaderLoader::loadInternal(
+		DxGraphicsShader& resource,
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
@@ -196,14 +194,14 @@ namespace Ghurund::Engine::DirectX {
 		}
 	}
 
-	void DxShaderLoader::saveInternal(
-		DxShader& resource,
+	void DxGraphicsShaderLoader::saveInternal(
+		DxGraphicsShader& resource,
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
 		SaveOptions options
 	) const {
-		writeHeader<DxShader>(stream);
+		writeHeader<DxGraphicsShader>(stream);
 
 		//stream.writeASCII(shader.sourceCode);
 	}

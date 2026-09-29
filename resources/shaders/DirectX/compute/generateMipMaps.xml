@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ComputeShader version="1">
+	<Samplers>
+		<Sampler name="linearSampler" filter="linear"/>
+	</Samplers>
+	<Program path="generateMipMaps_cs.hlsl"/>
+</ComputeShader>

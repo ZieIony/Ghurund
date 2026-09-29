@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Shader version="1">
+<GraphicsShader version="1">
 	<Settings isDepthTestEnabled="true" cullMode="back" isTransparencyEnabled="false"/>
 	<Samplers>
 		<Sampler name="linearSampler" filter="linear"/>
@@ -8,4 +8,4 @@
 		<Program type="vertex" path="default_vs.hlsl"/>
 		<Program type="pixel" path="basicLit_ps.hlsl"/>
 	</Programs>
-</Shader>
+</GraphicsShader>

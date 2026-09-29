@@ -5,7 +5,7 @@
 #include "engine/application/GameApplication.h"
 #include "engine/directx/DxGraphicsFeature.h"
 #include "engine/directx/DxGraphicsFeatureFactory.h"
-#include "engine/directx/DxRenderer.h"
+#include "engine/directx/rendering/DxRenderer.h"
 #include "ui/directx/DxUIFeature.h"
 #include "ui/directx/DxUIFeatureFactory.h"
 

@@ -31,6 +31,11 @@ namespace Ghurund::Engine {
         XAUDIO2_BUFFER audioBuffer = {};
         bool loop = false;
 
+    protected:
+        virtual bool getIsValidInternal() const override {
+			return __super::getIsValidInternal() && sourceVoice;
+		}
+
     public:
         Sound() {}
 
@@ -42,10 +47,6 @@ namespace Ghurund::Engine {
 		}
 
 		virtual void invalidate() override;
-
-        virtual bool getIsValid() const override {
-			return __super::getIsValid() && sourceVoice;
-		}
 
         void init(
             NotNull<IXAudio2MasteringVoice> masteringVoice,

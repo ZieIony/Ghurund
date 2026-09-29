@@ -1,16 +1,15 @@
 #pragma once
 
+#include "DxGraphicsCommandList.h"
+
 #include "core/collection/Array.h"
 #include "core/collection/List.h"
 #include "core/IUnknownImpl.h"
 #include "core/object/OwnedNotNull.h"
-#include "core/resource/ResourceManager.h"
-#include "engine/directx/CommandList.h"
 #include "engine/graphics/mesh/VertexStream.h"
-#include "engine/graphics/shader/Shader.h"
-#include "variables/DxBufferConstantInfo.h"
-#include "variables/DxSamplerInfo.h"
-#include "variables/DxTextureConstantInfo.h"
+#include "engine/graphics/rendering/GraphicsShader.h"
+#include "engine/directx/shader/variables/DxBufferConstantInfo.h"
+#include "engine/directx/shader/variables/DxTextureConstantInfo.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
@@ -20,7 +19,7 @@ namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
 	using namespace Microsoft::WRL;
 
-	class DxShader:public Shader {
+	class DxGraphicsShader:public GraphicsShader {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -30,55 +29,50 @@ namespace Ghurund::Engine::DirectX {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = DxShader::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = DxGraphicsShader::GET_TYPE();
 #pragma endregion
 
 	private:
+		Array<VertexRole> layout;
 		ID3D12RootSignature* rootSignature = nullptr;
 		ID3D12PipelineState* pipelineState = nullptr;
-		Array<VertexRole> layout;
 
 		void finalize();
 
-		InputType makeInputByType(
-			D3D_SHADER_VARIABLE_CLASS _class,
-			D3D_SHADER_VARIABLE_TYPE type,
-			const AString& name,
-			size_t size
-		);
-
-		void applyInputs(CommandList& commandList);
-
-	public:
-		~DxShader();
-
-		virtual void invalidate() override;
-
-		virtual bool getIsValid() const override {
-			return __super::getIsValid() && pipelineState != nullptr && rootSignature != nullptr;
+	protected:
+		virtual bool getIsValidInternal() const override {
+			return __super::getIsValidInternal() && pipelineState != nullptr && rootSignature != nullptr;
 		}
 
-		void init(
-			const Array<VertexRole>& layout,
-			OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> rootSignature,
-			OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,
-			const List<DxBufferConstantInfo*>& bufferConstantInfos,
-			const List<DxTextureConstantInfo*>& textureConstantInfos,
-			bool isTransparencyEnabled
-		);
+		~DxGraphicsShader();
 
-		bool apply(CommandList& commandList);
+	public:
+		DxGraphicsShader() {}
 
 		inline const Array<VertexRole>& getLayout() const {
 			return layout;
 		}
 
 		__declspec(property(get = getLayout)) const Array<VertexRole>& Layout;
+		
+		void init(
+			const Array<VertexRole>& layout,
+			OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> rootSignature,
+			OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,
+			const List<DxBufferConstantInfo*>& bufferConstantInfos,
+			const List<DxTextureConstantInfo*>& textureConstantInfos,
+			const List<DxTextureConstantInfo*>& uavConstantInfos,
+			bool isTransparencyEnabled
+		);
+
+		bool apply(DxGraphicsCommandList& commandList);
+
+		virtual void invalidate() override;
 
 #pragma region formats
 	protected:
 		virtual const Array<ResourceFormat>& getFormatsImpl() const override {
-			return DxShader::FORMATS;
+			return DxGraphicsShader::FORMATS;
 		}
 
 	public:

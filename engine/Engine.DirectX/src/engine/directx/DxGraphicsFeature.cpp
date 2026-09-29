@@ -2,8 +2,10 @@
 #include "DxGraphicsFeature.h"
 
 #include "engine/graphics/material/MaterialLoader.h"
-#include "engine/directx/shader/DxShaderLoader.h"
+#include "engine/directx/rendering/DxGraphicsShaderLoader.h"
 #include "engine/directx/cubemap/DxCubeMapLoader.h"
+#include "texture/DxTextureLoader.h"
+#include "compute/DxComputeShaderLoader.h"
 
 namespace Ghurund::Engine::DirectX {
     const Ghurund::Core::Type& DxGraphicsFeature::GET_TYPE() {
@@ -18,7 +20,7 @@ namespace Ghurund::Engine::DirectX {
 		resourceFactory = nullptr;
 		resourceManager.Loaders.remove<DxTexture>();
 		resourceManager.Loaders.remove<Material>();
-        resourceManager.Loaders.remove<DxShader>();
+        resourceManager.Loaders.remove<DxGraphicsShader>();
         shaderCompiler.set(nullptr);
         delete memoryManager;
         memoryManager = nullptr;
@@ -27,13 +29,16 @@ namespace Ghurund::Engine::DirectX {
 
 	CoroutineTask<void> DxGraphicsFeature::onInit() {
 		graphics.init();
-		commandList = makeIntrusive<CommandList>();
+		commandList = makeIntrusive<DxGraphicsCommandList>();
 		commandList->init(graphics, graphics.DirectQueue);
 
 		shaderCompiler = makeShared<DxShaderCompiler>(graphics);
-		auto shaderLoader = makeIntrusive<DxShaderLoader>(resourceManager, shaderCompiler.ref());
-		shaderLoader->includeDirs.add(ResourceManager::ENGINE_LIB_PATH / DirectoryPath(L"/shaders/DirectX/include"));
-		resourceManager.Loaders.set<DxShader>(shaderLoader.ref());
+		auto graphicsShaderLoader = makeIntrusive<DxGraphicsShaderLoader>(resourceManager, shaderCompiler.ref());
+		graphicsShaderLoader->includeDirs.add(ResourceManager::ENGINE_LIB_PATH / DirectoryPath(L"/shaders/DirectX/include"));
+		resourceManager.Loaders.set<DxGraphicsShader>(graphicsShaderLoader.ref());
+		auto computeShaderLoader = makeIntrusive<DxComputeShaderLoader>(resourceManager, shaderCompiler.ref());
+		computeShaderLoader->includeDirs.add(ResourceManager::ENGINE_LIB_PATH / DirectoryPath(L"/shaders/DirectX/include"));
+		resourceManager.Loaders.set<DxComputeShader>(computeShaderLoader.ref());
 
 		memoryManager = ghnew DxGPUMemoryManager(graphics, commandList.ref());
 		auto materialLoader = makeIntrusive<MaterialLoader>(resourceManager, *memoryManager);

@@ -22,9 +22,6 @@ namespace Ghurund::UI::DirectX {
     }
 
     CoroutineTask<void> DxUIFeature::onInit() {
-        commandList = makeIntrusive<CommandList>();
-        // TODO: use CopyQueue, but first implement CommandList compatible with copy queue
-		commandList->init(graphics, *graphics.DirectQueue);
         constraintFactory = ghnew Ghurund::UI::ConstraintFactory();
 
         auto fontLoader = makeIntrusive<FontLoader>();

@@ -2,13 +2,13 @@
 
 #include "DxGraphics.h"
 
-#include "core/reflection/Type.h"
 #include "core/feature/Feature.h"
-#include "shader/compiler/DxShaderCompiler.h"
-#include "texture/DxTextureLoader.h"
-#include "mesh/DxMeshLoader.h"
+#include "core/reflection/Type.h"
 #include "engine/graphics/GraphicsFeature.h"
+#include "mesh/DxMeshLoader.h"
+#include "rendering/DxGraphicsCommandList.h"
 #include "resource/DxGraphicsResourceFactory.h"
+#include "shader/compiler/DxShaderCompiler.h"
 
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
@@ -28,7 +28,7 @@ namespace Ghurund::Engine::DirectX {
 
     private:
         DxGraphics graphics;
-        IntrusivePointer<CommandList> commandList;
+        IntrusivePointer<DxGraphicsCommandList> commandList;
         DxGPUMemoryManager* memoryManager = nullptr;
         SharedPointer<DxShaderCompiler> shaderCompiler;
         IntrusivePointer<DxMeshLoader> meshLoader;

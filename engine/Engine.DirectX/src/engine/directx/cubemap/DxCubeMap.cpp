@@ -6,8 +6,10 @@
 
 namespace Ghurund::Engine::DirectX {
     const Ghurund::Core::Type& DxCubeMap::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<DxCubeMap>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<DxCubeMap>()
-            .withSupertype(__super::GET_TYPE());
+            .withSupertype(__super::GET_TYPE())
+            .withConstructor(CONSTRUCTOR);
 
         return TYPE;
     }
@@ -21,14 +23,7 @@ namespace Ghurund::Engine::DirectX {
         }
     }
 
-    void DxCubeMap::invalidate() {
-        finalize();
-		for (size_t i = 0; i < images.Size; i++)
-			images[i] = nullptr;
-        __super::invalidate();
-    }
-
-    bool DxCubeMap::getIsValid() const {
+    bool DxCubeMap::getIsValidInternal() const {
         bool imagesValid = [&] {
             for (Image* image : images) {
                 if (!image || !image->IsValid)
@@ -36,7 +31,14 @@ namespace Ghurund::Engine::DirectX {
             }
             return true;
         }();
-		return __super::getIsValid() && imagesValid && uploaded;
+		return __super::getIsValidInternal() && imagesValid && uploaded;
+    }
+
+    void DxCubeMap::invalidate() {
+        finalize();
+		for (size_t i = 0; i < images.Size; i++)
+			images[i] = nullptr;
+        __super::invalidate();
     }
 
     void DxCubeMap::init(

@@ -7,6 +7,8 @@
 #include "core/collection/iterator/ReverseTreeNodeIterator.h"
 #include "core/concepts/Iterable.h"
 
+#include <xutility>
+
 namespace Ghurund::Core {
 	template<typename TraitsType, typename AllocatorType = SimpleAllocator>
 	class Tree {

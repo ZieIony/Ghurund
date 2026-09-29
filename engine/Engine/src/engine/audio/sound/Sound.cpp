@@ -12,8 +12,10 @@ namespace Ghurund::Engine {
     using Microsoft::WRL::ComPtr;
 
     const Ghurund::Core::Type& Sound::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<Sound>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<Sound>()
-            .withSupertype(__super::GET_TYPE());
+            .withSupertype(__super::GET_TYPE())
+            .withConstructor(CONSTRUCTOR);
 
         return TYPE;
     }

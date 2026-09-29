@@ -1,25 +1,22 @@
 #pragma once
 
-#include "DxShader.h"
-
 #include "core/loading/Loader.h"
-#include "core/xml/XMLDocument.h"
-#include "compiler/DxShaderCompiler.h"
+#include "engine/directx/shader/compiler/DxShaderCompiler.h"
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
 
-	class DxShaderLoader:public Loader<DxShader> {
+	class DxGraphicsShaderLoader:public Loader<DxGraphicsShader> {
 	private:
         ResourceManager& resourceManager;
         DxShaderCompiler& compiler;
 
-        void loadFromSource(NotNull<ShaderSource> sourceCode, const DirectoryPath& workingDir, DxShader& shader);
-        void loadFromHlsl(const AString& sourceCode, const DirectoryPath& workingDir, DxShader& shader);
+        void loadFromSource(NotNull<ShaderSource> sourceCode, const DirectoryPath& workingDir, DxGraphicsShader& shader);
+        void loadFromHlsl(const AString& sourceCode, const DirectoryPath& workingDir, DxGraphicsShader& shader);
 
     protected:
         virtual CoroutineTask<void> loadInternal(
-            DxShader& resource,
+            DxGraphicsShader& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
@@ -27,7 +24,7 @@ namespace Ghurund::Engine::DirectX {
         ) override;
 
         virtual CoroutineTask<void> loadInternal(
-            DxShader& resource,
+            DxGraphicsShader& resource,
             const XMLElement& xml,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
@@ -35,7 +32,7 @@ namespace Ghurund::Engine::DirectX {
         ) override;
 
         virtual void saveInternal(
-            DxShader& resource,
+            DxGraphicsShader& resource,
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
@@ -45,6 +42,6 @@ namespace Ghurund::Engine::DirectX {
     public:
         List<DirectoryPath> includeDirs;
 
-        DxShaderLoader(ResourceManager& resourceManager, DxShaderCompiler& compiler):resourceManager(resourceManager), compiler(compiler) {}
+        DxGraphicsShaderLoader(ResourceManager& resourceManager, DxShaderCompiler& compiler):resourceManager(resourceManager), compiler(compiler) {}
 	};
 }

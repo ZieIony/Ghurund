@@ -1,10 +1,8 @@
 #pragma once
 
-#include "DxGraphics.h"
 #include "DxRenderingContext.h"
-#include "Postprocess.h"
 
-#include "core/Color.h"
+#include "engine/directx/DxGraphics.h"
 #include "engine/graphics/rendering/Renderer.h"
 
 namespace Ghurund::Engine::DirectX {
@@ -25,11 +23,6 @@ namespace Ghurund::Engine::DirectX {
 #pragma endregion
 
     private:
-		//Model* fullScreenQuad = nullptr;
-        Material* lightPassMaterial = nullptr;
-        Postprocess* postprocess = nullptr;
-        //RenderTarget* postprocessRenderTarget[FRAME_COUNT] = {};
-
         DxGraphics& graphics;
 
     protected:

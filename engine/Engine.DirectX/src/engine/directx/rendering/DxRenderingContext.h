@@ -1,10 +1,8 @@
 #pragma once
 
-#include "buffer/RenderTarget.h"
+#include "engine/directx/buffer/RenderTarget.h"
 #include "engine/directx/SwapChain.h"
 #include "engine/graphics/rendering/RenderingContext.h"
-#include "mesh/DxMesh.h"
-#include "shader/DxShader.h"
 
 namespace Ghurund::Engine::DirectX {
 	class DxRenderingContext: public RenderingContext {

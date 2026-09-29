@@ -27,16 +27,17 @@ namespace Ghurund::Engine::DirectX {
 
         bool uploaded = false;
 
-    public:
+        void finalize();
+
+    protected:
+        virtual bool getIsValidInternal() const override;
+
         ~DxCubeMap() {
             finalize();
         }
 
-        void finalize();
-
+    public:
         virtual void invalidate();
-
-        virtual bool getIsValid() const override;
 
         void init(
             Ghurund::Core::Image& imageTop,

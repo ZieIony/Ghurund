@@ -8,13 +8,11 @@
 
 namespace Ghurund::Engine::_3D {
 	CoroutineTask<void> FullscreenQuadComponent::onInit() {
-		if (!Mesh) {
-			auto graphicsFeature = Owner.World.app.Features.get<GraphicsFeature>();
-			auto quadMeshData = makeIntrusive<QuadMeshData>();
-			quadMeshData->init();
-			auto quadMesh = IntrusivePointer<Ghurund::Engine::Mesh>(graphicsFeature->ResourceFactory.makeMesh(quadMeshData.ref()));
-			Mesh = quadMesh.get();
-		}
+		auto graphicsFeature = Owner.World.app.Features.get<GraphicsFeature>();
+		auto quadMeshData = makeIntrusive<QuadMeshData>();
+		quadMeshData->init();
+		auto quadMesh = IntrusivePointer<Ghurund::Engine::Mesh>(graphicsFeature->ResourceFactory.makeMesh(quadMeshData.ref()));
+		Mesh = quadMesh.get();
 		co_return;
 	}
 

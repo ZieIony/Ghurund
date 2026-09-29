@@ -108,16 +108,17 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	void DxShaderCompiler::build(
-		DxShader& shader,
+		DxGraphicsShader& shader,
 		const Array<SharedPointer<DxShaderProgram>>& programs,
 		const List<SamplerInfo>& samplerInfos,
 		ShaderSettings shaderSettings
 	) {
 		List<DxBufferConstantInfo*> constantBuffers;
 		List<DxTextureConstantInfo*> textures;
+		List<DxTextureConstantInfo*> uavs;
 		List<DxSamplerInfo*> samplers;
 		for (auto& program : programs)
-			initConstants(program.ref(), samplerInfos, constantBuffers, textures, samplers);
+			initConstants(program.ref(), samplerInfos, constantBuffers, textures, uavs, samplers);
 
 		D3D12_INPUT_LAYOUT_DESC inputLayout;
 		for (auto& program : programs) {
@@ -131,24 +132,54 @@ namespace Ghurund::Engine::DirectX {
 			for (size_t i = 0; i < inputLayout.NumElements; i++)
 				delete[] inputLayout.pInputElementDescs[i].SemanticName;
 			delete[] inputLayout.pInputElementDescs;
+			constantBuffers.deleteItems();
+			textures.deleteItems();
 			samplers.deleteItems();
 		};
 
-		auto rootSignature = makeRootSignature(constantBuffers, textures, samplers);
-		auto pipelineState = makePipelineState(programs, inputLayout, &rootSignature, shaderSettings);
+		auto rootSignature = makeRootSignature(constantBuffers, textures, uavs, samplers);
+		auto pipelineState = makeGraphicsPipelineState(programs, inputLayout, &rootSignature, shaderSettings);
 		shader.init(
 			layout,
 			std::move(rootSignature),
 			std::move(pipelineState),
 			constantBuffers,
 			textures,
+			uavs,
 			shaderSettings.isTransparencyEnabled
 		);
-		constantBuffers.deleteItems();
-		textures.deleteItems();
 	}
 
-	OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> DxShaderCompiler::makePipelineState(
+	void DxShaderCompiler::build(
+		DxComputeShader& shader,
+		const DxShaderProgram& computeProgram,
+		const List<SamplerInfo>& samplerInfos
+	) {
+		List<DxBufferConstantInfo*> constantBuffers;
+		List<DxTextureConstantInfo*> textures;
+		List<DxTextureConstantInfo*> uavs;
+		List<DxSamplerInfo*> samplers;
+		initConstants(computeProgram, samplerInfos, constantBuffers, textures, uavs, samplers);
+
+		Finally f = [&] {
+			constantBuffers.deleteItems();
+			textures.deleteItems();
+			uavs.deleteItems();
+			samplers.deleteItems();
+		};
+
+		auto rootSignature = makeRootSignature(constantBuffers, textures, uavs, samplers);
+		auto pipelineState = makeComputePipelineState(computeProgram, &rootSignature);
+		shader.init(
+			std::move(rootSignature),
+			std::move(pipelineState),
+			constantBuffers,
+			textures,
+			uavs
+		);
+	}
+
+	OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> DxShaderCompiler::makeGraphicsPipelineState(
 		const Array<SharedPointer<DxShaderProgram>>& programs,
 		D3D12_INPUT_LAYOUT_DESC inputLayout,
 		ID3D12RootSignature* rootSignature,
@@ -221,12 +252,32 @@ namespace Ghurund::Engine::DirectX {
 		return OwnedNotNull<ID3D12PipelineState, IUnknownDeleter>(pipelineState);
 	}
 
+	OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> DxShaderCompiler::makeComputePipelineState(
+		const DxShaderProgram& computeProgram,
+		ID3D12RootSignature* rootSignature
+	) {
+		D3D12_COMPUTE_PIPELINE_STATE_DESC psoDesc = {};
+		psoDesc.pRootSignature = rootSignature;
+
+		psoDesc.CS.pShaderBytecode = computeProgram.ByteCode.Data;
+		psoDesc.CS.BytecodeLength = computeProgram.ByteCode.Size;
+
+		ID3D12PipelineState* pipelineState = nullptr;
+		if (FAILED(graphics.Device->CreateComputePipelineState(&psoDesc, IID_PPV_ARGS(&pipelineState)))) {
+			Logger::log(LogType::ERR0R, _T("device->CreateComputePipelineState() failed\n"));
+			throw CallFailedException();
+		}
+
+		return OwnedNotNull<ID3D12PipelineState, IUnknownDeleter>(pipelineState);
+	}
+
 	OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> DxShaderCompiler::makeRootSignature(
 		const List<DxBufferConstantInfo*>& constantBuffers,
 		const List<DxTextureConstantInfo*>& textures,
+		const List<DxTextureConstantInfo*>& uavs,
 		const List<DxSamplerInfo*>& samplers
 	) {
-		size_t paramCount = constantBuffers.Size + textures.Size;
+		size_t paramCount = constantBuffers.Size + textures.Size + uavs.Size;
 		Array<CD3DX12_ROOT_PARAMETER1> rootParameters(paramCount);
 
 		unsigned int r = 0;
@@ -236,12 +287,20 @@ namespace Ghurund::Engine::DirectX {
 			rootParameters[r].InitAsConstantBufferView(constant->getBindPoint(), 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, constant->getVisibility());
 		}
 
-		Array<CD3DX12_DESCRIPTOR_RANGE1> ranges(textures.Size);
+		Array<CD3DX12_DESCRIPTOR_RANGE1> textureRanges(textures.Size);
 		for (size_t i = 0; i < textures.Size; i++, r++) {
 			DxShaderConstantInfo* constant = textures.get(i);
 			constant->BindSlot = r;
-			ranges[i].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, constant->getBindPoint(), 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
-			rootParameters[r].InitAsDescriptorTable(1, &ranges[i], constant->getVisibility());
+			textureRanges[i].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, constant->getBindPoint(), 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
+			rootParameters[r].InitAsDescriptorTable(1, &textureRanges[i], constant->getVisibility());
+		}
+
+		Array<CD3DX12_DESCRIPTOR_RANGE1> uavRanges(uavs.Size);
+		for (size_t i = 0; i < uavs.Size; i++, r++) {
+			DxShaderConstantInfo* constant = uavs.get(i);
+			constant->BindSlot = r;
+			uavRanges[i].Init(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, constant->getBindPoint(), 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
+			rootParameters[r].InitAsDescriptorTable(1, &uavRanges[i], constant->getVisibility());
 		}
 
 		Array<D3D12_STATIC_SAMPLER_DESC> samplerDescs(samplers.Size);
@@ -279,6 +338,7 @@ namespace Ghurund::Engine::DirectX {
 		const List<SamplerInfo>& samplerInfos,
 		List<DxBufferConstantInfo*>& constantBuffers,
 		List<DxTextureConstantInfo*>& textures,
+		List<DxTextureConstantInfo*>& uavs,
 		List<DxSamplerInfo*>& samplers
 	) {
 		ID3D12ShaderReflection* reflector = nullptr;
@@ -330,6 +390,16 @@ namespace Ghurund::Engine::DirectX {
 					size_t index = samplerInfos.find([&](auto& info) {return info.name == bindDesc.Name; });
 					if (index != samplerInfos.Size)
 						sampler->Filter = samplerInfos[index].filter;
+				}
+			}
+			break;
+			case D3D_SIT_UAV_RWTYPED:
+			{
+				size_t index = uavs.find([&](auto& item) {return strcmp(bindDesc.Name, item->Name.Data) == 0; });
+				if (index != uavs.Size) {
+					uavs[index]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
+				} else {
+					uavs.add(ghnew DxTextureConstantInfo(bindDesc.Name, bindDesc.BindPoint, visibility, bindDesc.Dimension));
 				}
 			}
 			break;

@@ -3,6 +3,7 @@
 #include "core/concepts/Callable.h"
 
 #include <functional>
+#include <type_traits>
 
 namespace Ghurund::Core {
     template <class SenderType, typename ReturnType, typename...> class EventHandler;
@@ -16,8 +17,6 @@ namespace Ghurund::Core {
         std::function<ReturnType(SenderType& sender)> function;
 
     public:
-        EventHandler() {}
-
         template<Callable<ReturnType, SenderType&> Type>
         EventHandler(Type function, uint32_t id = ID++) {
             this->function = std::forward<Type>(function);

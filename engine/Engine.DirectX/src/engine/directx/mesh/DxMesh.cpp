@@ -6,8 +6,10 @@
 
 namespace Ghurund::Engine::DirectX {
 	const Ghurund::Core::Type& DxMesh::GET_TYPE() {
+		static const auto CONSTRUCTOR = Constructor<DxMesh>();
 		static const Ghurund::Core::Type TYPE = TypeBuilder<DxMesh>()
-			.withSupertype(__super::GET_TYPE());
+			.withSupertype(__super::GET_TYPE())
+			.withConstructor(CONSTRUCTOR);
 
 		return TYPE;
 	}

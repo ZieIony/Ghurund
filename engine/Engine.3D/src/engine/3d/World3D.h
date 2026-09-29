@@ -64,7 +64,6 @@ namespace Ghurund::Engine::_3D {
 		template<Derived<Entity3D> T>
 		inline CoroutineTask<IntrusivePointer<T>> spawnEntity() {
 			auto entity = makeIntrusive<T>(*this);
-			co_await entity->init();
 			scene->add(entity);
 			co_return entity;
 		}

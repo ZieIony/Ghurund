@@ -40,7 +40,7 @@ namespace Ghurund::Engine {
 			Logger::logAndThrow<InvalidDataException>(_T("Required attribute 'shader' on node 'Material' is missing.\n"));
 
 		FilePath path = FilePath(*shaderPathAttribute);
-		auto shader = co_await resourceManager.load<Shader>(path, workingDir);
+		auto shader = co_await resourceManager.load<GraphicsShader>(path, workingDir);
 		resource.init(memoryManager);
 		resource.Shader = shader.get();
 		for(const auto& child:xml.children){

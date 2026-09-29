@@ -8,7 +8,7 @@
 #include "core/object/NotNull.h"
 #include "core/resource/Resource.h"
 #include "engine/graphics/memory/IGPUMemoryManager.h"
-#include "engine/graphics/shader/Shader.h"
+#include "engine/graphics/rendering/GraphicsShader.h"
 #include "engine/parameter/ParameterCollection.h"
 
 namespace Ghurund::Engine {
@@ -29,7 +29,7 @@ namespace Ghurund::Engine {
     private:
         MaterialInputCollection inputs;
         IGPUMemoryManager* memoryManager = nullptr;
-        Shader* shader = nullptr;
+        GraphicsShader* shader = nullptr;
         List<IntrusivePointer<ConstantBuffer>> constantBuffers;
         List<BaseValueInput*> valueInputs;
         List<TextureInput*> textureInputs;
@@ -49,6 +49,10 @@ namespace Ghurund::Engine {
 
         virtual void initInputs();
 
+        virtual bool getIsValidInternal() const override {
+            return __super::getIsValidInternal() && shader != nullptr && shader->IsValid;
+        }
+
     public:
         Material() {}
 
@@ -61,21 +65,17 @@ namespace Ghurund::Engine {
             __super::invalidate();
         }
 
-        virtual bool getIsValid() const override {
-            return __super::getIsValid() && shader != nullptr && shader->IsValid;
-        }
-
         inline MaterialInputCollection& getInputs() {
             return inputs;
         }
 
         __declspec(property(get = getInputs)) MaterialInputCollection& Inputs;
         
-        inline Shader* getShader() const {
+        inline GraphicsShader* getShader() const {
             return shader;
         }
 
-        inline void setShader(Shader* shader) {
+        inline void setShader(GraphicsShader* shader) {
             setPointer(this->shader, shader);
             valueInputs.clear();
             textureInputs.clear();
@@ -85,7 +85,7 @@ namespace Ghurund::Engine {
                 initInputs();
         }
 
-        __declspec(property(get = getShader, put = setShader)) Shader* Shader;
+        __declspec(property(get = getShader, put = setShader)) GraphicsShader* Shader;
 
         inline bool getIsTransparencyEnabled() const {
             return shader->IsTransparencyEnabled;

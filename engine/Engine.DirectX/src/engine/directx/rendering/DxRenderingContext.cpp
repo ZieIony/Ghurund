@@ -1,6 +1,9 @@
 #include "ghedxpch.h"
 #include "DxRenderingContext.h"
 
+#include "engine/directx/mesh/DxMesh.h"
+#include "DxGraphicsShader.h"
+
 namespace Ghurund::Engine::DirectX {
 	void DxRenderingContext::onInit() {
 		swapChain = ghnew Ghurund::Engine::DirectX::SwapChain();
@@ -35,7 +38,7 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	void DxRenderingContext::draw(Set<RenderGroup>& renderGroups, ParameterManager& parameterManager) {
-		Ghurund::Engine::DirectX::CommandList* commandList = swapChain->CurrentFrame.CommandList;
+		auto commandList = swapChain->CurrentFrame.CommandList;
 		for (auto& group : renderGroups) {
 			if (group.Camera) {
 				group.Camera->update();
@@ -50,7 +53,7 @@ namespace Ghurund::Engine::DirectX {
 				auto mesh = (DxMesh*)packet.Mesh;
 				auto material = packet.Material;
 				material->applyInputs(parameterManager.Parameters);
-				auto shader = (DxShader*)material->Shader;
+				auto shader = (DxGraphicsShader*)material->Shader;
 				bool shaderChanged = shader->apply(*commandList);
 				mesh->draw(*commandList, shader->Layout);
 

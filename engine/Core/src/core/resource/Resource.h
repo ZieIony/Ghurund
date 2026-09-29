@@ -45,6 +45,10 @@ namespace Ghurund::Core {
 
 		~Resource();
 
+		virtual bool getIsValidInternal() const {
+			return valid;
+		}
+
 	public:
 		Event<Resource, void> validChanged = *this;
 
@@ -58,8 +62,8 @@ namespace Ghurund::Core {
 			validChanged();
 		}
 
-		virtual bool getIsValid() const {
-			return valid;
+		inline bool getIsValid() const {
+			return getIsValidInternal();
 		}
 
 		__declspec(property(get = getIsValid)) bool IsValid;
