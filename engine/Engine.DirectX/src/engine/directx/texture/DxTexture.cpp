@@ -15,11 +15,12 @@ namespace Ghurund::Engine::DirectX {
     }
 
     void DxTexture::init(
-        Array<IntrusivePointer<Ghurund::Core::Image>>& images,
+        List<IntrusivePointer<Ghurund::Core::Image>>& images,
         DxGPUMemoryManager& memoryManager
     ) {
         this->images = images;
         size = images[0]->Size;
+        format = images[0]->Format;
 
         memoryManager.resetUpload();
 

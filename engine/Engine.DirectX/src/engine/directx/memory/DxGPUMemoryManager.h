@@ -74,11 +74,11 @@ namespace Ghurund::Engine::DirectX {
 
         ComPtr<ID3D12Resource> makeTexture(const Array<IntrusivePointer<Image>>& images);
 
-        ComPtr<ID3D12Resource> makeCubeMap(Array<NotNull<Ghurund::Core::Image>> images);
+        ComPtr<ID3D12Resource> makeCubeMap(Array<List<IntrusivePointer<Ghurund::Core::Image>>>& images);
 
         DescriptorHandle makeTextureRV(ComPtr<ID3D12Resource> textureResource, DXGI_FORMAT format, uint32_t mipLevels);
 
-        DescriptorHandle makeCubeMapRV(ComPtr<ID3D12Resource> textureResource, DXGI_FORMAT format);
+        DescriptorHandle makeCubeMapRV(ComPtr<ID3D12Resource> textureResource, DXGI_FORMAT format, uint32_t mipLevels);
 
         ComPtr<ID3D12Resource> makeVertexBuffer(const Buffer& buffer);
 

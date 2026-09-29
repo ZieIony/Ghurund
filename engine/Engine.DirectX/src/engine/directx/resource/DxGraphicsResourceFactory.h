@@ -29,35 +29,16 @@ namespace Ghurund::Engine::DirectX {
 			auto texture = ghnew DxTexture();
 			auto imagePtr = IntrusivePointer<Image>(&image);
 			image.addReference();
-			Array<IntrusivePointer<Image>> images = { imagePtr };
+			List<IntrusivePointer<Image>> images = { imagePtr };
 			texture->init(images, memoryManager);
 			return texture;
 		}
 
 		[[nodiscard]]
-		virtual ITexture* makeTexture(Array<IntrusivePointer<Image>>& images) override {
+		virtual ITexture* makeTexture(List<IntrusivePointer<Image>>& images) override {
 			auto texture = ghnew DxTexture();
 			texture->init(images, memoryManager);
 			return texture;
-		}
-
-		[[nodiscard]]
-		virtual ICubeMap* makeCubemap(
-			Ghurund::Core::Image& imageTop,
-			Ghurund::Core::Image& imageBottom,
-			Ghurund::Core::Image& imageLeft,
-			Ghurund::Core::Image& imageRight,
-			Ghurund::Core::Image& imageFront,
-			Ghurund::Core::Image& imageBack
-		) override {
-			auto cubeMap = ghnew DxCubeMap();
-			cubeMap->init(
-				imageTop, imageBottom,
-				imageLeft, imageRight,
-				imageFront, imageBack,
-				memoryManager
-			);
-			return cubeMap;
 		}
 	};
 }

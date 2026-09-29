@@ -18,16 +18,6 @@ namespace Ghurund::Engine {
 		virtual ITexture* makeTexture(Image& image, bool generateMips = false) = 0;
 
 		[[nodiscard]]
-		virtual ITexture* makeTexture(Array<IntrusivePointer<Image>>& image) = 0;
-
-		[[nodiscard]]
-		virtual ICubeMap* makeCubemap(
-			Ghurund::Core::Image& imageTop,
-			Ghurund::Core::Image& imageBottom,
-			Ghurund::Core::Image& imageLeft,
-			Ghurund::Core::Image& imageRight,
-			Ghurund::Core::Image& imageFront,
-			Ghurund::Core::Image& imageBack
-		) = 0;
+		virtual ITexture* makeTexture(List<IntrusivePointer<Image>>& image) = 0;
 	};
 }

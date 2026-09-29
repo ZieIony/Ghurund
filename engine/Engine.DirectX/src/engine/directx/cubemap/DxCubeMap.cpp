@@ -17,16 +17,38 @@ namespace Ghurund::Engine::DirectX {
     void DxCubeMap::finalize() {
         uploaded = false;
         textureResource.Reset();
-        for (Image* image : images) {
-            if (image)
-                image->release();
-        }
+        imagesTop.clear();
+        imagesBottom.clear();
+        imagesLeft.clear();
+        imagesRight.clear();
+        imagesFront.clear();
+        imagesBack.clear();
     }
 
     bool DxCubeMap::getIsValidInternal() const {
         bool imagesValid = [&] {
-            for (Image* image : images) {
-                if (!image || !image->IsValid)
+            for (auto& image : imagesTop) {
+                if (image == nullptr || !image->IsValid)
+                    return false;
+            }
+            for (auto& image : imagesBottom) {
+                if (image == nullptr || !image->IsValid)
+                    return false;
+            }
+            for (auto& image : imagesLeft) {
+                if (image == nullptr || !image->IsValid)
+                    return false;
+            }
+            for (auto& image : imagesRight) {
+                if (image == nullptr || !image->IsValid)
+                    return false;
+            }
+            for (auto& image : imagesFront) {
+                if (image == nullptr || !image->IsValid)
+                    return false;
+            }
+            for (auto& image : imagesBack) {
+                if (image == nullptr || !image->IsValid)
                     return false;
             }
             return true;
@@ -36,32 +58,36 @@ namespace Ghurund::Engine::DirectX {
 
     void DxCubeMap::invalidate() {
         finalize();
-		for (size_t i = 0; i < images.Size; i++)
-			images[i] = nullptr;
         __super::invalidate();
     }
 
     void DxCubeMap::init(
-        Ghurund::Core::Image& imageTop,
-        Ghurund::Core::Image& imageBottom,
-        Ghurund::Core::Image& imageLeft,
-        Ghurund::Core::Image& imageRight,
-        Ghurund::Core::Image& imageFront,
-        Ghurund::Core::Image& imageBack,
+        List<IntrusivePointer<Ghurund::Core::Image>>& imagesTop,
+        List<IntrusivePointer<Ghurund::Core::Image>>& imagesBottom,
+        List<IntrusivePointer<Ghurund::Core::Image>>& imagesLeft,
+        List<IntrusivePointer<Ghurund::Core::Image>>& imagesRight,
+        List<IntrusivePointer<Ghurund::Core::Image>>& imagesFront,
+        List<IntrusivePointer<Ghurund::Core::Image>>& imagesBack,
         DxGPUMemoryManager& memoryManager
     ) {
-        setPointer(images[0], &imageRight);
-        setPointer(images[1], &imageLeft);
-        setPointer(images[2], &imageTop);
-        setPointer(images[3], &imageBottom);
-        setPointer(images[4], &imageFront);
-        setPointer(images[5], &imageBack);
+        size = imagesTop[0]->Size;
+        format = imagesTop[0]->Format;
 
+        this->imagesTop = imagesTop;
+        this->imagesBottom = imagesBottom;
+        this->imagesLeft = imagesLeft;
+        this->imagesRight = imagesRight;
+        this->imagesFront = imagesFront;
+        this->imagesBack = imagesBack;
         memoryManager.resetUpload();
 
-        Array<NotNull<Image>> imagesNotNull = { images[0], images[1], images[2], images[3], images[4], images[5] };
-        textureResource = memoryManager.makeCubeMap(imagesNotNull);
-        descHandle = memoryManager.makeCubeMapRV(textureResource, images[0]->Format);
+        Array<List<IntrusivePointer<Ghurund::Core::Image>>> images = {
+            imagesRight, imagesLeft,
+            imagesTop, imagesBottom,
+            imagesFront, imagesBack
+        };
+        textureResource = memoryManager.makeCubeMap(images);
+        descHandle = memoryManager.makeCubeMapRV(textureResource, images[0][0]->Format, imagesTop.Size);
 
         memoryManager.executeUploads();
 

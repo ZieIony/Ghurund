@@ -19,8 +19,13 @@ namespace Ghurund::Engine {
 		inline static const Ghurund::Core::Type& TYPE = ITexture::GET_TYPE();
 #pragma endregion
 
+	protected:
+		IntSize size;
+
 	public:
-		virtual const IntSize& getSize() const = 0;
+		inline const IntSize& getSize() const {
+			return size;
+		}
 
 		__declspec(property(get = getSize)) const IntSize& Size;
 	};

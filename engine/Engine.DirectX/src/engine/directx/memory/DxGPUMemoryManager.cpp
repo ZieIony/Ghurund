@@ -151,27 +151,30 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	ComPtr<ID3D12Resource> DxGPUMemoryManager::makeCubeMap(
-		Array<NotNull<Ghurund::Core::Image>> images
+		Array<List<IntrusivePointer<Ghurund::Core::Image>>>& images
 	) {
 		CD3DX12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-			images[0]->Format,
-			images[0]->Size.Width,
-			images[0]->Size.Height,
+			images[0][0]->Format,
+			images[0][0]->Size.Width,
+			images[0][0]->Size.Height,
 			6,
-			1
+			images[0].Size
 		);
-		D3D12_SUBRESOURCE_DATA textureData[6] = {};
-		for (uint32_t face = 0; face < 6; face++) {
-			textureData[face].pData = images[face]->Data.Data;
-			textureData[face].RowPitch = images[face]->RowPitch;
-			textureData[face].SlicePitch = textureData[face].RowPitch * images[face]->Size.Height;
+		D3D12_SUBRESOURCE_DATA* textureData = ghnew D3D12_SUBRESOURCE_DATA[images.Size * images[0].Size];
+		for (size_t face = 0; face < images.Size; face++) {
+			for (size_t mipLevel = 0; mipLevel < images[0].Size; mipLevel++) {
+				size_t subresourceIndex = face * images[0].Size + mipLevel;
+				textureData[subresourceIndex].pData = images[face][mipLevel]->Data.Data;
+				textureData[subresourceIndex].RowPitch = images[face][mipLevel]->RowPitch;
+				textureData[subresourceIndex].SlicePitch = textureData[subresourceIndex].RowPitch * images[face][mipLevel]->Size.Height;
+			}
 		}
 
 		return makeCommitedResource(
 			uploadCommandList,
 			resourceDesc,
 			textureData,
-			6,
+			images.Size * images[0].Size,
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE
 		);
 	}
@@ -187,12 +190,12 @@ namespace Ghurund::Engine::DirectX {
 		return descHandle;
 	}
 
-	DescriptorHandle DxGPUMemoryManager::makeCubeMapRV(ComPtr<ID3D12Resource> textureResource, DXGI_FORMAT format) {
+	DescriptorHandle DxGPUMemoryManager::makeCubeMapRV(ComPtr<ID3D12Resource> textureResource, DXGI_FORMAT format, uint32_t mipLevels) {
 		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 		srvDesc.Format = format;
 		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURECUBE;
-		srvDesc.TextureCube.MipLevels = 1;
+		srvDesc.TextureCube.MipLevels = mipLevels;
 		DescriptorHandle descHandle = graphics.DescriptorAllocator.allocate(graphics, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 		graphics.Device->CreateShaderResourceView(textureResource.Get(), &srvDesc, descHandle.CpuHandle);
 		return descHandle;

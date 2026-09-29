@@ -10,7 +10,17 @@ namespace Ghurund::Engine::DirectX {
 		LoadOptions options
 	) {
 		checkXmlRoot(xml, L"Texture");
-	
+		auto images = co_await loadMipImages(resourceManager, xml, workingDir, format, options);
+		resource.init(images, memoryManager);
+	}
+
+	CoroutineTask<List<IntrusivePointer<Image>>> DxTextureLoader::loadMipImages(
+		ResourceManager& resourceManager,
+		const XMLElement & xml,
+		const DirectoryPath & workingDir,
+		const ResourceFormat & format,
+		LoadOptions options
+	) {
 		struct ImageInfo {
 			uint32_t level;
 			FilePath path;
@@ -30,13 +40,16 @@ namespace Ghurund::Engine::DirectX {
 
 		if (imageInfos.Size > 1 && generateMipMaps)
 			Logger::logAndThrow<InvalidDataException>(_T("Combination of 'generateMipMaps' attribute == true and more than one 'Image' node is invalid.\n"));
-		Array<IntrusivePointer<Image>> images(imageInfos.Size);
+
+		List<IntrusivePointer<Image>> images;
 		DXGI_FORMAT imageFormat = DXGI_FORMAT_UNKNOWN;
-		for (auto& imageInfo : imageInfos) {
-			if (images[imageInfo.level] != nullptr) {
-				auto message = std::format(_T("Image mipLevel {} is declared more than once.\n"), imageInfo.level);
+		for (size_t i = 0; i < imageInfos.Size;i++) {
+			auto index = imageInfos.find([&](const ImageInfo& info) {return info.level == i; });
+			if (index == imageInfos.Size) {
+				auto message = std::format(_T("Image for mipLevel {} is missing.\n"), i);
 				Logger::logAndThrow<InvalidDataException>(message.c_str());
 			}
+			auto imageInfo = imageInfos[i];
 			auto image = co_await resourceManager.load<Image>(imageInfo.path, workingDir);
 			if (imageFormat != DXGI_FORMAT_UNKNOWN && imageFormat != image->Format) {
 				auto message = std::format(
@@ -46,12 +59,12 @@ namespace Ghurund::Engine::DirectX {
 				Logger::logAndThrow<InvalidDataException>(message.c_str());
 			}
 			imageFormat = image->Format;
-			images.set(imageInfo.level, image);
+			images.add(image);
 		}
 		if (imageInfos.IsEmpty && generateMipMaps) {
-			// TODO: generate mip maps
+			throw NotImplementedException();
 		}
 
-		resource.init(images, memoryManager);
+		co_return images;
 	}
 }

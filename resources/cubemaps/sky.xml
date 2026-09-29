@@ -1,3 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CubeMap version="0" top="sky_top.png" bottom="sky_bottom.png" left="sky_left.png" right="sky_right.png" front="sky_front.png" back="sky_back.png"/>
-
+<CubeMap version="1">
+	<FaceTop>
+		<Image path="sky_top.png"/>
+	</FaceTop>
+	<FaceBottom>
+		<Image path="sky_bottom.png"/>
+	</FaceBottom>
+	<FaceLeft>
+		<Image path="sky_left.png"/>
+	</FaceLeft>
+	<FaceRight>
+		<Image path="sky_right.png"/>
+	</FaceRight>
+	<FaceFront>
+		<Image path="sky_front.png"/>
+	</FaceFront>
+	<FaceBack>
+		<Image path="sky_back.png"/>
+	</FaceBack>
+</CubeMap>

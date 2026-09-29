@@ -22,8 +22,14 @@ namespace Ghurund::Engine::DirectX {
     private:
 		ComPtr<ID3D12Resource> textureResource;
         DescriptorHandle descHandle;
+        DXGI_FORMAT format;
 
-        Array<Ghurund::Core::Image*> images = 6;
+        List<IntrusivePointer<Ghurund::Core::Image>> imagesTop;
+        List<IntrusivePointer<Ghurund::Core::Image>> imagesBottom;
+        List<IntrusivePointer<Ghurund::Core::Image>> imagesLeft;
+        List<IntrusivePointer<Ghurund::Core::Image>> imagesRight;
+        List<IntrusivePointer<Ghurund::Core::Image>> imagesFront;
+        List<IntrusivePointer<Ghurund::Core::Image>> imagesBack;
 
         bool uploaded = false;
 
@@ -40,24 +46,26 @@ namespace Ghurund::Engine::DirectX {
         virtual void invalidate();
 
         void init(
-            Ghurund::Core::Image& imageTop,
-            Ghurund::Core::Image& imageBottom,
-            Ghurund::Core::Image& imageLeft,
-            Ghurund::Core::Image& imageRight,
-            Ghurund::Core::Image& imageFront,
-            Ghurund::Core::Image& imageBack,
+            List<IntrusivePointer<Ghurund::Core::Image>>& imagesTop,
+            List<IntrusivePointer<Ghurund::Core::Image>>& imagesBottom,
+            List<IntrusivePointer<Ghurund::Core::Image>>& imagesLeft,
+            List<IntrusivePointer<Ghurund::Core::Image>>& imagesRight,
+            List<IntrusivePointer<Ghurund::Core::Image>>& imagesFront,
+            List<IntrusivePointer<Ghurund::Core::Image>>& imagesBack,
             class DxGPUMemoryManager& memoryManager
         );
+
+        inline DXGI_FORMAT getFormat() const {
+            return format;
+        }
+
+        __declspec(property(get = getFormat)) DXGI_FORMAT Format;
 
         /*inline Ghurund::Core::Image* getImage() {
             return image;
         }
 
         __declspec(property(get = getImage)) Ghurund::Core::Image* Image;*/
-
-        virtual const IntSize& getSize() const override {
-            return images[0]->Size;
-        }
 
         void set(CommandList& commandList, unsigned int index) {
             commandList.addResourceRef(textureResource.Get());
@@ -75,7 +83,7 @@ namespace Ghurund::Engine::DirectX {
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_XML };
 
-        static const inline uint32_t VERSION = 0;
+        static const inline uint32_t VERSION = 1;
 #pragma endregion
     };
 }

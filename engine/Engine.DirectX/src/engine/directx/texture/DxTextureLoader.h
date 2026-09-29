@@ -24,5 +24,13 @@ namespace Ghurund::Engine::DirectX {
             ResourceManager& resourceManager,
             DxGPUMemoryManager& memoryManager
         ):resourceManager(resourceManager), memoryManager(memoryManager) {}
+
+        static CoroutineTask<List<IntrusivePointer<Image>>> loadMipImages(
+            ResourceManager& resourceManager,
+            const XMLElement& xml,
+            const DirectoryPath& workingDir,
+            const ResourceFormat& format,
+            LoadOptions options
+        );
     };
 }

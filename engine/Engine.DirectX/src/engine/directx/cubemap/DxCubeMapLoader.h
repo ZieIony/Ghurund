@@ -11,7 +11,14 @@ namespace Ghurund::Engine::DirectX {
         DxGPUMemoryManager& memoryManager;
 
         [[nodiscard]]
-        CoroutineTask<IntrusivePointer<Image>> loadSide(const XMLElement& xml, const DirectoryPath& workingDir, WString side, uint32_t width, uint32_t height);
+        CoroutineTask<List<IntrusivePointer<Image>>> loadFace(
+            const XMLElement& xml,
+            const DirectoryPath& workingDir,
+            WString side,
+            IntSize size,
+            const ResourceFormat& format,
+            LoadOptions options
+        );
 
     protected:
         [[nodiscard]]

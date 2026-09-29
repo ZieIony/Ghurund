@@ -23,10 +23,17 @@ namespace Ghurund::Engine::DirectX {
     private:
 		ComPtr<ID3D12Resource> textureResource;
         DescriptorHandle descHandle;
-        IntSize size;
+        DXGI_FORMAT format;
 
-        Array<IntrusivePointer<Ghurund::Core::Image>> images;
+        List<IntrusivePointer<Ghurund::Core::Image>> images;
+
         bool uploaded = false;
+
+        void finalize() {
+            uploaded = false;
+            textureResource.Reset();
+            images.clear();
+        }
 
     protected:
         virtual bool getIsValidInternal() const override {
@@ -38,28 +45,26 @@ namespace Ghurund::Engine::DirectX {
         }
 
     public:
-        void finalize() {
-            uploaded = false;
-            textureResource.Reset();
-            images.clear();
-        }
+        DxTexture() {}
 
         virtual void invalidate() {
             finalize();
             __super::invalidate();
         }
 
-        void init(Array<IntrusivePointer<Ghurund::Core::Image>>& images, DxGPUMemoryManager& memoryManager);
+        void init(List<IntrusivePointer<Ghurund::Core::Image>>& images, DxGPUMemoryManager& memoryManager);
 
-        inline const Array<IntrusivePointer<Ghurund::Core::Image>>& getImages() const {
+        inline DXGI_FORMAT getFormat() const {
+            return format;
+        }
+
+        __declspec(property(get = getFormat)) DXGI_FORMAT Format;
+
+        inline const List<IntrusivePointer<Ghurund::Core::Image>>& getImages() const {
             return images;
         }
 
-        __declspec(property(get = getMipMaps)) const Array<IntrusivePointer<Ghurund::Core::Image>>& Images;
-
-        virtual const IntSize& getSize() const override {
-            return size;
-        }
+        __declspec(property(get = getImages)) const List<IntrusivePointer<Ghurund::Core::Image>>& Images;
 
         void set(CommandList& commandList, unsigned int index) {
             commandList.addResourceRef(textureResource.Get());
