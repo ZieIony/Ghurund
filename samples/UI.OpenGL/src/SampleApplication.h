@@ -6,11 +6,11 @@
 #include "SampleWindow.h"
 #include "engine/opengl/OglGraphics.h"
 
-namespace Samples {
+namespace Sample {
     using namespace Ghurund::Engine;
     using namespace Ghurund::Engine::OpenGL;
 
-    class SampleApplication:public Ghurund::Core::Application {
+    class SampleApplication:public Ghurund::Engine::GameApplication {
     private:
         ParameterManager parameterManager;
         OglRenderer* renderer = nullptr;

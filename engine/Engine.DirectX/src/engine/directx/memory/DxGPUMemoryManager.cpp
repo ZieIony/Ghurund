@@ -1,9 +1,10 @@
 #include "ghedxpch.h"
 #include "DxGPUMemoryManager.h"
 
+#include "core/Finally.h"
+#include "core/logging/Logger.h"
 #include "core/math/MathUtils.h"
 #include "engine/directx/DxGraphics.h"
-#include "core/logging/Logger.h"
 #include "engine/directx/shader/DxConstantBuffer.h"
 
 namespace Ghurund::Engine::DirectX {
@@ -169,6 +170,9 @@ namespace Ghurund::Engine::DirectX {
 				textureData[subresourceIndex].SlicePitch = textureData[subresourceIndex].RowPitch * images[face][mipLevel]->Size.Height;
 			}
 		}
+		Finally f = [&] {
+			delete[] textureData;
+		};
 
 		return makeCommitedResource(
 			uploadCommandList,

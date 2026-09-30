@@ -98,9 +98,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\graphics\compute\ComputeShader.h" />
-    <ClInclude Include="src\engine\graphics\rendering\GraphicsShader.h" />
-    <ClInclude Include="src\engine\graphics\shader\ConstantsCollection.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\animation\Animation.h" />
     <ClInclude Include="src\engine\animation\AnimationSet.h" />
@@ -159,6 +156,7 @@
     <ClInclude Include="src\engine\graphics\GraphicsFeature.h" />
     <ClInclude Include="src\engine\graphics\ICamera.h" />
     <ClInclude Include="src\engine\graphics\LightSystem.h" />
+    <ClInclude Include="src\engine\graphics\compute\ComputeShader.h" />
     <ClInclude Include="src\engine\graphics\cubemap\ICubeMap.h" />
     <ClInclude Include="src\engine\graphics\material\CubeMapInput.h" />
     <ClInclude Include="src\engine\graphics\material\Material.h" />
@@ -180,12 +178,14 @@
     <ClInclude Include="src\engine\graphics\mesh\SpriteMeshData.h" />
     <ClInclude Include="src\engine\graphics\mesh\VertexStream.h" />
     <ClInclude Include="src\engine\graphics\rendering\DrawPacket.h" />
+    <ClInclude Include="src\engine\graphics\rendering\GraphicsShader.h" />
     <ClInclude Include="src\engine\graphics\rendering\RenderGroup.h" />
     <ClInclude Include="src\engine\graphics\rendering\Renderer.h" />
     <ClInclude Include="src\engine\graphics\rendering\RenderingContext.h" />
     <ClInclude Include="src\engine\graphics\rendering\RenderingStatistics.h" />
     <ClInclude Include="src\engine\graphics\shader\BufferConstant.h" />
     <ClInclude Include="src\engine\graphics\shader\ConstantBuffer.h" />
+    <ClInclude Include="src\engine\graphics\shader\ConstantsCollection.h" />
     <ClInclude Include="src\engine\graphics\shader\CubeMapConstant.h" />
     <ClInclude Include="src\engine\graphics\shader\IShaderProvider.h" />
     <ClInclude Include="src\engine\graphics\shader\InputType.h" />
@@ -237,8 +237,8 @@
     <ClCompile Include="src\engine\game\behavior\SequenceNode.cpp" />
     <ClCompile Include="src\engine\game\system\System.cpp" />
     <ClCompile Include="src\engine\game\tag\TagManager.cpp" />
-    <ClCompile Include="src\engine\graphics\compute\ComputeShader.cpp" />
     <ClCompile Include="src\engine\graphics\GraphicsFeature.cpp" />
+    <ClCompile Include="src\engine\graphics\compute\ComputeShader.cpp" />
     <ClCompile Include="src\engine\graphics\cubemap\ICubeMap.cpp" />
     <ClCompile Include="src\engine\graphics\material\Material.cpp" />
     <ClCompile Include="src\engine\graphics\material\MaterialLoader.cpp" />
@@ -247,9 +247,9 @@
     <ClCompile Include="src\engine\graphics\mesh\MeshData.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\MeshDataLoader.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\SphereMeshData.cpp" />
+    <ClCompile Include="src\engine\graphics\rendering\GraphicsShader.cpp" />
     <ClCompile Include="src\engine\graphics\rendering\Renderer.cpp" />
     <ClCompile Include="src\engine\graphics\rendering\RenderingStatistics.cpp" />
-    <ClCompile Include="src\engine\graphics\rendering\GraphicsShader.cpp" />
     <ClCompile Include="src\engine\graphics\shader\Shader.cpp" />
     <ClCompile Include="src\engine\graphics\shader\ShaderSource.cpp" />
     <ClCompile Include="src\engine\graphics\texture\ITexture.cpp" />

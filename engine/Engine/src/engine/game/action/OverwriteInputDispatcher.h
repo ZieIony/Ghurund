@@ -10,10 +10,10 @@ namespace Ghurund::Engine {
 
 	public:
 		OverwriteInputDispatcher(
-			GameAction<To>* action,
+			NotNull<GameAction<To>> action,
 			const To& value,
 			uint8_t priority
-		):BaseInputDispatcher<From>(IntrusivePointer<BaseGameAction>((BaseGameAction*)action), priority), value(value) {
+		):BaseInputDispatcher<From>(IntrusivePointer<BaseGameAction>(action.get()), priority), value(value) {
 			action->addReference();
 		}
 

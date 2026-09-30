@@ -2,7 +2,7 @@
 
 #include <core/io/DirectoryLibrary.h>
 
-namespace Samples {
+namespace Sample {
     void SampleApplication::uninitSampleApplication() {
         delete window;
         window = nullptr;

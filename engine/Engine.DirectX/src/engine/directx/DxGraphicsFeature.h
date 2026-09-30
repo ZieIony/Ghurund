@@ -5,10 +5,7 @@
 #include "core/feature/Feature.h"
 #include "core/reflection/Type.h"
 #include "engine/graphics/GraphicsFeature.h"
-#include "mesh/DxMeshLoader.h"
-#include "rendering/DxGraphicsCommandList.h"
 #include "resource/DxGraphicsResourceFactory.h"
-#include "shader/compiler/DxShaderCompiler.h"
 
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
@@ -27,12 +24,12 @@ namespace Ghurund::Engine::DirectX {
 #pragma endregion
 
     private:
-        DxGraphics graphics;
-        IntrusivePointer<DxGraphicsCommandList> commandList;
-        DxGPUMemoryManager* memoryManager = nullptr;
-        SharedPointer<DxShaderCompiler> shaderCompiler;
-        IntrusivePointer<DxMeshLoader> meshLoader;
-        DxGraphicsResourceFactory* resourceFactory = nullptr;
+        class DxGraphics* graphics = nullptr;
+        class DxGraphicsCommandList* commandList = nullptr;
+        class DxGPUMemoryManager* memoryManager = nullptr;
+        class DxShaderCompiler* shaderCompiler = nullptr;
+        class DxGraphicsResourceFactory* resourceFactory = nullptr;
+        class DxRenderer* renderer = nullptr;
 
         void uninitGraphicsFeature();
 
@@ -55,10 +52,16 @@ namespace Ghurund::Engine::DirectX {
         virtual void onUninit() override;
 
         inline DxGraphics& getGraphics() {
-            return graphics;
+            return *graphics;
         }
 
         __declspec(property(get = getGraphics)) DxGraphics& Graphics;
+
+        inline DxRenderer& getRenderer() {
+            return *renderer;
+        }
+
+        __declspec(property(get = getRenderer)) DxRenderer& Renderer;
 
         inline DxGPUMemoryManager& getMemoryManager() {
             return *memoryManager;

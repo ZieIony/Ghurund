@@ -6,6 +6,10 @@
 #include "engine/directx/cubemap/DxCubeMapLoader.h"
 #include "texture/DxTextureLoader.h"
 #include "compute/DxComputeShaderLoader.h"
+#include "mesh/DxMeshLoader.h"
+#include "rendering/DxGraphicsCommandList.h"
+#include "shader/compiler/DxShaderCompiler.h"
+#include "engine/directx/rendering/DxRenderer.h"
 
 namespace Ghurund::Engine::DirectX {
     const Ghurund::Core::Type& DxGraphicsFeature::GET_TYPE() {
@@ -18,29 +22,46 @@ namespace Ghurund::Engine::DirectX {
     void DxGraphicsFeature::uninitGraphicsFeature() {
 		delete resourceFactory;
 		resourceFactory = nullptr;
+
 		resourceManager.Loaders.remove<DxTexture>();
 		resourceManager.Loaders.remove<Material>();
         resourceManager.Loaders.remove<DxGraphicsShader>();
-        shaderCompiler.set(nullptr);
+
+		delete shaderCompiler;
+        shaderCompiler = nullptr;
+
         delete memoryManager;
-        memoryManager = nullptr;
-		graphics.uninit();
+		memoryManager = nullptr;
+
+		delete renderer;
+		renderer = nullptr;
+
+		commandList->release();
+		commandList = nullptr;
+
+		delete graphics;
+		graphics = nullptr;
 	}
 
 	CoroutineTask<void> DxGraphicsFeature::onInit() {
-		graphics.init();
-		commandList = makeIntrusive<DxGraphicsCommandList>();
-		commandList->init(graphics, graphics.DirectQueue);
+		graphics = ghnew DxGraphics();
+		graphics->init();
 
-		shaderCompiler = makeShared<DxShaderCompiler>(graphics);
-		auto graphicsShaderLoader = makeIntrusive<DxGraphicsShaderLoader>(resourceManager, shaderCompiler.ref());
+		commandList = ghnew DxGraphicsCommandList();
+		commandList->init(*graphics, graphics->DirectQueue);
+
+		renderer = ghnew DxRenderer(*graphics);
+		renderer->init();
+
+		shaderCompiler = ghnew DxShaderCompiler(*graphics);
+		auto graphicsShaderLoader = makeIntrusive<DxGraphicsShaderLoader>(resourceManager, *shaderCompiler);
 		graphicsShaderLoader->includeDirs.add(ResourceManager::ENGINE_LIB_PATH / DirectoryPath(L"/shaders/DirectX/include"));
 		resourceManager.Loaders.set<DxGraphicsShader>(graphicsShaderLoader.ref());
-		auto computeShaderLoader = makeIntrusive<DxComputeShaderLoader>(resourceManager, shaderCompiler.ref());
+		auto computeShaderLoader = makeIntrusive<DxComputeShaderLoader>(resourceManager, *shaderCompiler);
 		computeShaderLoader->includeDirs.add(ResourceManager::ENGINE_LIB_PATH / DirectoryPath(L"/shaders/DirectX/include"));
 		resourceManager.Loaders.set<DxComputeShader>(computeShaderLoader.ref());
 
-		memoryManager = ghnew DxGPUMemoryManager(graphics, commandList.ref());
+		memoryManager = ghnew DxGPUMemoryManager(*graphics, *commandList);
 		auto materialLoader = makeIntrusive<MaterialLoader>(resourceManager, *memoryManager);
 		resourceManager.Loaders.set<Material>(materialLoader.ref());
 
@@ -49,7 +70,7 @@ namespace Ghurund::Engine::DirectX {
 		auto cubeMapLoader = makeIntrusive<DxCubeMapLoader>(resourceManager, *memoryManager);
 		resourceManager.Loaders.set<DxCubeMap>(cubeMapLoader.ref());
 
-		meshLoader = makeIntrusive<DxMeshLoader>(*memoryManager);
+		auto meshLoader = makeIntrusive<DxMeshLoader>(*memoryManager);
 		resourceManager.Loaders.set<DxMesh>(meshLoader.ref());
 
 		resourceFactory = ghnew DxGraphicsResourceFactory(*memoryManager);

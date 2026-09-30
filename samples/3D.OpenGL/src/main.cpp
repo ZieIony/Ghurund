@@ -1,3 +1,5 @@
+#include "Ghurund.Core.h"
+#include "Ghurund.Engine.h"
 #include "Ghurund.Engine.OpenGL.h"
 
 #include "SampleApplication.h"
