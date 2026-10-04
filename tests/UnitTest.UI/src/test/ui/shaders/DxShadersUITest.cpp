@@ -17,7 +17,7 @@ namespace UnitTest {
     using namespace UnitTest::Utils;
     using namespace std;
 
-    TEST_CLASS(DxShaders2DTest) {
+    TEST_CLASS(DxShadersUITest) {
 private:
     Timer timer;
     CoroutineThreadPool threadPool = CoroutineThreadPool(4);
@@ -44,7 +44,7 @@ public:
         Ghurund::Core::Logger::init(make_unique<UnitTest::Utils::TestLogOutput>());
     }
 
-    TEST_METHOD(DxShaders2D_loadAll) {
+    TEST_METHOD(DxShadersUI_loadAll) {
         DxGraphics graphics;
         graphics.init();
 

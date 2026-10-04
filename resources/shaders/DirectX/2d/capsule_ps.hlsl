@@ -7,7 +7,7 @@ cbuffer pixelConstants: register(b1) {
     float2 extents;
 }
 
-float4 pixelMain(Pixel2D input): SV_Target {
+float4 pixelMain(DefaultPixel2D input): SV_Target {
     float dist = sdfCapsule(input.texCoord * extents * 2, extents, extents.x);
     return float4(color.rgb, (step(-2, dist) * 0.75 + 0.25) * step(dist, 0));
 }

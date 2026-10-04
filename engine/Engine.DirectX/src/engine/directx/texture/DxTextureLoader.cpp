@@ -9,7 +9,7 @@ namespace Ghurund::Engine::DirectX {
 		const ResourceFormat& format,
 		LoadOptions options
 	) {
-		checkXmlRoot(xml, L"Texture");
+		checkXmlRoot(xml, L"Texture", DxTexture::FORMAT_XML);
 		auto images = co_await loadMipImages(resourceManager, xml, workingDir, format, options);
 		resource.init(images, memoryManager);
 	}

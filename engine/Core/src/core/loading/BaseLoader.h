@@ -41,8 +41,6 @@ namespace Ghurund::Core {
 	protected:
 		virtual const Ghurund::Core::Type& getResourceType() const = 0;
 
-		virtual uint32_t getResourceVersion() const = 0;
-
 		inline Resource* makeResource() {
 			auto& constructor = getResourceType().Constructors.get(0).get();
 			if (allocator)
@@ -60,20 +58,20 @@ namespace Ghurund::Core {
 		}
 
 		template<Derived<Resource> T>
-		void writeHeader(MemoryOutputStream& stream) const {
-			unsigned int hash = hashCode(T::TYPE.Name.Data);
+		inline void writeHeader(MemoryOutputStream& stream, const ResourceFormat& format) const {
+			unsigned int hash = hashCode(T::TYPE.Name.Data, T::TYPE.Name.Length);
 			stream.writeUInt32(hash);
-			stream.writeUInt32(T::VERSION);
+			stream.writeUInt32(format.Version);
 		}
 
 		template<Derived<Resource> T>
-		void readHeader(MemoryInputStream& stream) {
-			readHeader(stream, T::TYPE, T::VERSION);
+		inline void readHeader(MemoryInputStream& stream, const ResourceFormat& format) {
+			readHeader(stream, T::TYPE, format.Version);
 		}
 
 		void readHeader(MemoryInputStream& stream, const Ghurund::Core::Type& type, uint32_t version);
 
-		void checkXmlRoot(const XMLElement& xml, const WString& name);
+		void checkXmlRoot(const XMLElement& xml, const WString& name, const ResourceFormat& format);
 
 	public:
 		BaseLoader(Allocator* allocator = nullptr):allocator(allocator) {}

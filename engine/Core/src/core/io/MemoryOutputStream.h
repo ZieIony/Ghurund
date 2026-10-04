@@ -7,12 +7,13 @@ namespace Ghurund::Core {
 	class MemoryOutputStream {
 	private:
 		size_t pointer = 0;
-		uint8_t* data;
+		uint8_t* data;	// uint8_t instead of void to easily manipulate pointer position
 		size_t capacity, initial;
+		float increase;
 
-		inline void resize(size_t size) {
+		inline void ensureRemainingCapacity(size_t size) {
 			if (capacity < pointer + size) {
-				capacity += std::max(initial, size);
+				capacity = std::max((size_t)(capacity * increase), capacity + size);
 				uint8_t* data2 = new uint8_t[capacity];
 				memcpy(data2, data, pointer);
 				delete[] data;
@@ -20,12 +21,23 @@ namespace Ghurund::Core {
 			}
 		}
 
+		template<typename T>
+		inline void writePrimitive(const T& value) {
+			size_t size = sizeof(T);
+			ensureRemainingCapacity(size);
+			*(T*)(data + pointer) = value;
+			pointer += size;
+		}
+
 		MemoryOutputStream& operator=(const MemoryOutputStream& other) = delete;
 
 	public:
-		MemoryOutputStream() {
-			capacity = initial = 100;
-			this->data = new uint8_t[initial];
+		MemoryOutputStream(
+			size_t initialSizeBytes = 100,
+			float sizeIncrease = 1.4f
+		):
+			capacity(initialSizeBytes), initial(initialSizeBytes),
+			increase(sizeIncrease), data(new uint8_t[initialSizeBytes]) {
 		}
 
 		~MemoryOutputStream() {
@@ -44,89 +56,80 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = getBytesWritten)) size_t BytesWritten;
 
-		inline void writeInt32(int32_t i) {
-			resize(sizeof(int32_t));
-			*(int32_t*)(data + pointer) = i;
-			pointer += sizeof(int32_t);
+		inline void writeUInt8(uint8_t value) {
+			writePrimitive(value);
 		}
 
-		inline void writeUInt32(uint32_t i) {
-			resize(sizeof(uint32_t));
-			*(uint32_t*)(data + pointer) = i;
-			pointer += sizeof(uint32_t);
+		inline void writeInt32(int32_t value) {
+			writePrimitive(value);
 		}
 
-		inline void writeInt64(int64_t i) {
-			resize(sizeof(int64_t));
-			*(int64_t*)(data + pointer) = i;
-			pointer += sizeof(int64_t);
+		inline void writeUInt32(uint32_t value) {
+			writePrimitive(value);
 		}
 
-		inline void writeUInt64(uint64_t i) {
-			resize(sizeof(uint64_t));
-			*(uint64_t*)(data + pointer) = i;
-			pointer += sizeof(uint64_t);
+		inline void writeInt64(int64_t value) {
+			writePrimitive(value);
 		}
 
-		inline void writeFloat(float i) {
-			resize(sizeof(float));
-			*(float*)(data + pointer) = i;
-			pointer += sizeof(float);
+		inline void writeUInt64(uint64_t value) {
+			writePrimitive(value);
 		}
 
-		inline void writeDouble(double i) {
-			resize(sizeof(double));
-			*(double*)(data + pointer) = i;
-			pointer += sizeof(double);
+		inline void writeFloat(float value) {
+			writePrimitive(value);
 		}
 
-		inline void writeBoolean(bool i) {
-			resize(sizeof(bool));
-			*(bool*)(data + pointer) = i;
-			pointer += sizeof(bool);
+		inline void writeDouble(double value) {
+			writePrimitive(value);
 		}
 
-		inline void writeASCII(const char* str) {
+		inline void writeBoolean(bool value) {
+			writePrimitive(value);
+		}
+
+		inline void writeChars(const char* str) {
 			size_t length = (strlen(str) + 1) * sizeof(char);
 			writeBytes(str, length);
 		}
 
-		inline void writeASCII(const AString& str) {
+		inline void writeAString(const AString& str) {
 			writeBytes(str.Data, str.Size);
 		}
 
-		inline void writeASCII(const AStringView& str) {
+		inline void writeAStringView(const AStringView& str) {
 			writeBytes(str.Data, str.Length);
 			char nullTerminator = 0;
 			writeBytes(&nullTerminator, sizeof(char));
 		}
 
-		inline void writeUnicode(const wchar_t* str) {
+		inline void writeWChars(const wchar_t* str) {
 			size_t length = (wcslen(str) + 1) * sizeof(wchar_t);
 			writeBytes(str, length);
 		}
 
-		inline void writeUnicode(const WString& str) {
-			writeBytes(str.Data, str.Size*sizeof(wchar_t));
+		inline void writeWString(const WString& str) {
+			writeBytes(str.Data, str.Size * sizeof(wchar_t));
 		}
 
-		inline void writeUnicode(const WStringView& str) {
+		inline void writeWStringView(const WStringView& str) {
 			writeBytes(str.Data, str.Length * sizeof(wchar_t));
 			wchar_t nullTerminator = 0;
 			writeBytes(&nullTerminator, sizeof(wchar_t));
 		}
 
-		inline void writeBytes(const void* bytes, size_t length) {
-			resize(length);
-			memcpy((uint8_t*)data + pointer, bytes, length);
-			pointer += length;
+		inline void writeBytes(const void* data, size_t size) {
+			ensureRemainingCapacity(size);
+			memcpy(this->data + pointer, data, size);
+			pointer += size;
 		}
+
 		template<typename T>
 		void write(const T& value) {
-			size_t length = sizeof(T);
-			resize(length);
-			memcpy((uint8_t*)data + pointer, &value, length);
-			pointer += length;
+			size_t size = sizeof(T);
+			ensureRemainingCapacity(size);
+			memcpy(data + pointer, &value, size);
+			pointer += size;
 		}
 	};
 }

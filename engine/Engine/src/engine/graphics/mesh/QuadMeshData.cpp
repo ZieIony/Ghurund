@@ -10,14 +10,14 @@ namespace Ghurund::Engine {
 			{ -1.0f, 1.0f },
 			{ 1.0f, -1.0f },
 			{ 1.0f, 1.0f },
-			}), VertexRole::POSITION);
+		}), VertexRole::POSITION);
 
 		VertexStream texCoordStream = VertexStream(List<XMFLOAT2>({
 			{ 0,0 },
 			{ 0,1 },
 			{ 1,0 },
 			{ 1,1 },
-			}), VertexRole::TEXCOORD);
+		}), VertexRole::TEXCOORD);
 
 		List<uint16_t> indices = {
 			0, 1, 2, // first triangle

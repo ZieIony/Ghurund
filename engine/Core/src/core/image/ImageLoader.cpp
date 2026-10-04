@@ -252,15 +252,15 @@ namespace Ghurund::Core {
 
         pixelSize = getDXGIFormatBitsPerPixel(giFormat) / 8;
         rowPitch = width * pixelSize;
-        int imageSize = rowPitch * height;
+        uint32_t imageSize = rowPitch * height;
 
         imageData.resize(imageSize);
 
         if (imageConverted) {
-            if (FAILED(hr = wicConverter->CopyPixels(0, rowPitch, imageSize, imageData.Data)))
+            if (FAILED(hr = wicConverter->CopyPixels(0, rowPitch, imageSize, (BYTE*)imageData.Data)))
                 throw std::bad_function_call();
         } else {
-            if (FAILED(hr = wicFrame->CopyPixels(0, rowPitch, imageSize, imageData.Data)))
+            if (FAILED(hr = wicFrame->CopyPixels(0, rowPitch, imageSize, (BYTE*)imageData.Data)))
                 throw std::bad_function_call();
         }
 
@@ -353,7 +353,7 @@ namespace Ghurund::Core {
             Microsoft::WRL::ComPtr<IWICBitmap> source;
             hr = imageFactory->CreateBitmapFromMemory(resource.Size.Width, resource.Size.Height, pfGuid,
                 static_cast<UINT>(dstRowPitch), (UINT)resource.Data.Size,
-                resource.Data.Data, source.GetAddressOf());
+                (BYTE*)resource.Data.Data, source.GetAddressOf());
             if (FAILED(hr))
                 throw std::bad_function_call();
 
@@ -377,7 +377,7 @@ namespace Ghurund::Core {
             if (FAILED(hr))
                 throw std::bad_function_call();
         } else {
-            hr = frame->WritePixels(resource.Size.Height, static_cast<UINT>(dstRowPitch), (UINT)resource.Data.Size, resource.Data.Data);
+            hr = frame->WritePixels(resource.Size.Height, static_cast<UINT>(dstRowPitch), (UINT)resource.Data.Size, (BYTE*)resource.Data.Data);
             if (FAILED(hr))
                 throw std::bad_function_call();
         }

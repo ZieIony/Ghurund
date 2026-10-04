@@ -8,7 +8,7 @@ namespace Ghurund::Core {
     void DirectoryWatch::onFileChanged(Buffer& buffer) {
         int offset = 0;
         while (true) {
-            FILE_NOTIFY_INFORMATION& fni = *(FILE_NOTIFY_INFORMATION*)(buffer.Data + offset);
+            FILE_NOTIFY_INFORMATION& fni = *(FILE_NOTIFY_INFORMATION*)((uint8_t*)buffer.Data + offset);
             WString fileName(fni.FileName, fni.FileNameLength / sizeof(wchar_t));
 
             if (files.contains(fileName)) {

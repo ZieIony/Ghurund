@@ -13,6 +13,11 @@ namespace Ghurund::Engine {
         void saveMesh(MeshData& resource, MemoryOutputStream& stream) const;
 
     protected:
+        virtual const ResourceFormat& getPreferredSaveFormat() const override {
+            return MeshData::FORMAT_MESH;
+        }
+
+    protected:
         [[nodiscard]]
         virtual CoroutineTask<void> loadInternal(
             MeshData& resource,

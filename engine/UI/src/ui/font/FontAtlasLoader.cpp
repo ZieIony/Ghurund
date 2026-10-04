@@ -7,7 +7,7 @@
 
 namespace Ghurund::UI {
 	CoroutineTask<void> FontAtlasLoader::loadFromBin(MemoryInputStream& stream, const DirectoryPath& workingDir, FontAtlas& fontAtlas) {
-		FilePath path = FilePath(stream.readUnicode());
+		FilePath path = FilePath(stream.readWString());
 		auto image = co_await resourceManager.load<Image>(path, workingDir, ResourceFormat::AUTO);
 
 		size_t glyphCount = stream.readUInt64();
@@ -22,32 +22,29 @@ namespace Ghurund::UI {
 	}
 
 	CoroutineTask<void> FontAtlasLoader::loadFromXml(const XMLElement& xml, const DirectoryPath& workingDir, FontAtlas& fontAtlas) {
-		FilePath path = FilePath(*xml.findAttribute(L"image"));
+		auto imagePathAttribute = xml.requireAttribute(L"image");
+		FilePath path = FilePath(imagePathAttribute);
 		auto image = co_await resourceManager.load<Image>(path, workingDir, ResourceFormat::AUTO);
 
 		Map<wchar_t, GlyphMetrics> glyphs;
 		for(const auto& child: xml.children) {
 			if (child->name == L"Glyph") {
-				auto cAttribute = child->findAttribute(L"c");
-				auto shapeSizeAttribute = child->findAttribute(L"shapeSize");
-				auto bitmapSizeAttribute = child->findAttribute(L"bitmapSize");
-				auto shapeOriginAttribute = child->findAttribute(L"shapeOrigin");
-				auto bitmapPosAttribute = child->findAttribute(L"bitmapPos");
-				auto scaleAttribute = child->findAttribute(L"scale");
-				auto incrementAttribute = child->findAttribute(L"increment");
-				if (cAttribute && shapeSizeAttribute &&
-					bitmapSizeAttribute && shapeOriginAttribute &&
-					bitmapPosAttribute && scaleAttribute &&
-					incrementAttribute) {
-					wchar_t c = parse<uint32_t>(convertText<wchar_t, char>(*cAttribute));
-					auto shapeSize = parse<IntSize>(convertText<wchar_t, char>(*shapeSizeAttribute));
-					auto bitmapSize = parse<IntSize>(convertText<wchar_t, char>(*bitmapSizeAttribute));
-					auto shapeOrigin = parse<XMINT2>(convertText<wchar_t, char>(*shapeOriginAttribute));
-					auto bitmapPos = parse<XMINT2>(convertText<wchar_t, char>(*bitmapPosAttribute));
-					auto scale = parse<float>(convertText<wchar_t, char>(*scaleAttribute));
-					auto increment = parse<uint16_t>(convertText<wchar_t, char>(*incrementAttribute));
-					glyphs.put(c, { shapeSize, bitmapSize, shapeOrigin, bitmapPos, scale, increment });
-				}
+				auto characterAttribute = child->requireAttribute(L"character");
+				auto shapeSizeAttribute = child->requireAttribute(L"shapeSize");
+				auto bitmapSizeAttribute = child->requireAttribute(L"bitmapSize");
+				auto shapeOriginAttribute = child->requireAttribute(L"shapeOrigin");
+				auto bitmapPosAttribute = child->requireAttribute(L"bitmapPos");
+				auto scaleAttribute = child->requireAttribute(L"scale");
+				auto incrementAttribute = child->requireAttribute(L"increment");
+
+				wchar_t c = characterAttribute[0];
+				auto shapeSize = parse<IntSize>(convertText<wchar_t, char>(shapeSizeAttribute));
+				auto bitmapSize = parse<IntSize>(convertText<wchar_t, char>(bitmapSizeAttribute));
+				auto shapeOrigin = parse<XMINT2>(convertText<wchar_t, char>(shapeOriginAttribute));
+				auto bitmapPos = parse<XMINT2>(convertText<wchar_t, char>(bitmapPosAttribute));
+				auto scale = parse<float>(convertText<wchar_t, char>(scaleAttribute));
+				auto increment = parse<uint16_t>(convertText<wchar_t, char>(incrementAttribute));
+				glyphs.put(c, { shapeSize, bitmapSize, shapeOrigin, bitmapPos, scale, increment });
 			}
 		}
 
@@ -89,7 +86,7 @@ namespace Ghurund::UI {
 				throw InvalidDataException();
 			}
 		}();
-		stream.writeUnicode(path.toString());
+		stream.writeWString(path.toString());
 		resourceManager.save(*atlas.Image, path, localDir);
 		stream.writeUInt64(atlas.Glyphs.Size);
 		for (auto& glyph : atlas.Glyphs) {

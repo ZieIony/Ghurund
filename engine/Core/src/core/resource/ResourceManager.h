@@ -42,6 +42,17 @@ namespace Ghurund::Core {
 		FileWatcher watcher;
 		bool hotReloadEnabled = false;
 
+		template<typename T>
+		inline const ResourceFormat& guessResourceFormat(const FilePath& path, const ResourceFormat& format) {
+			if (format != ResourceFormat::AUTO)
+				return format;
+			for (auto& resourceFormat : T::FORMATS) {
+				if (path.Extension == resourceFormat.FileExtension)
+					return resourceFormat;
+			}
+			return ResourceFormat::AUTO;
+		}
+
 		BaseLoader* getLoader(const Ghurund::Core::Type& type) const;
 
 		[[nodiscard]]
@@ -135,8 +146,8 @@ namespace Ghurund::Core {
 			const FilePath& path,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory()
 		) {
-			auto absolutePath = getAbsoluteOrLibPath(path, workingDir);
-			resources.remove(absolutePath);
+			auto absoluteOrLibPath = resolvePath(getAbsoluteOrLibPath(path, workingDir));
+			resources.remove(absoluteOrLibPath);
 		}
 
 		template<Derived<Resource> T>
@@ -154,8 +165,8 @@ namespace Ghurund::Core {
 			const FilePath& path,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory()
 		) {
-			auto cachePath = getAbsoluteOrLibPath(path, workingDir);
-			Resource* resource = resources.get(cachePath);
+			auto absoluteOrLibPath = resolvePath(getAbsoluteOrLibPath(path, workingDir));
+			Resource* resource = resources.get(absoluteOrLibPath);
 			if (resource)
 				resource->addReference();
 			return IntrusivePointer<T>((T*)resource);
@@ -178,7 +189,8 @@ namespace Ghurund::Core {
 			LoadOptions options = {}
 		) {
 			BaseLoader* loader = getLoader(Ghurund::Core::getType<T>());
-			IntrusivePointer<Resource> resource = co_await loadInternal(*loader, path, workingDir, format, name, options);
+			auto& loadFormat = guessResourceFormat<T>(path, format);
+			IntrusivePointer<Resource> resource = co_await loadInternal(*loader, path, workingDir, loadFormat, name, options);
 			resource->addReference();
 			co_return IntrusivePointer<T>((T*)resource.get());
 		}
@@ -223,8 +235,10 @@ namespace Ghurund::Core {
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			SaveOptions options = {}
 		) const {
-			auto absolutePath = getAbsoluteOrLibPath(path, workingDir);
-			resource.Path = &absolutePath;
+			auto absoluteOrLibPath = resolvePath(getAbsoluteOrLibPath(path, workingDir));
+			if (absoluteOrLibPath.IsLibrary)
+				throw NotSupportedException("Saving to file libraries is not supported.");
+			resource.Path = &absoluteOrLibPath;
 			const BaseLoader* loader = getLoader(Ghurund::Core::getType<T>());
 			//Library* library = path.findLibrary(libraries);
 			//if (library) {

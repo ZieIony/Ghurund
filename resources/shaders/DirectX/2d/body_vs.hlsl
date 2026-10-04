@@ -6,8 +6,8 @@ cbuffer vertexConstants: register(b0) {
     matrix gh_viewProjection;
 }
 
-Pixel2D vertexMain(Vertex2D input) {
-    Pixel2D output;
+DefaultPixel2D vertexMain(DefaultVertex2D input) {
+    DefaultPixel2D output;
 
     float4 inputPos = float4(input.position, 0, 1);
     output.position = mul(mul(inputPos, gh_world), gh_viewProjection);

@@ -42,7 +42,7 @@ namespace Ghurund::Engine::DirectX {
 
         ComPtr<ID3D12Resource> indexBuffer;
         D3D12_INDEX_BUFFER_VIEW indexBufferView;
-        uint32_t indexCount;
+        uint32_t indexCount = 0;
 
         void initVertexBuffers(const Array<VertexStream>& vertexStreams, uint32_t vertexCount, DxGPUMemoryManager& memoryManager);
 
@@ -74,16 +74,8 @@ namespace Ghurund::Engine::DirectX {
 #pragma region formats
     protected:
         virtual const Array<ResourceFormat>& getFormatsImpl() const override {
-            return DxMesh::FORMATS;
+            return MeshData::FORMATS;
         }
-
-    public:
-        static const inline ResourceFormat FORMAT_MESH = ResourceFormat(L"mesh", ResourceFormatOptions::CAN_LOAD);
-        static const inline ResourceFormat FORMAT_OBJ = ResourceFormat(L"obj", ResourceFormatOptions::CAN_LOAD);
-
-        inline static const Array<ResourceFormat>& FORMATS = { FORMAT_MESH, FORMAT_OBJ };
-
-        static const inline uint32_t VERSION = 1;
 #pragma endregion
     };
 }

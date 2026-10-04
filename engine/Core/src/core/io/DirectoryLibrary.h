@@ -14,7 +14,7 @@ namespace Ghurund::Core {
         DirectoryPath path;
 
     public:
-        DirectoryLibrary(const WString& name, const DirectoryPath& path):Library(name), path(path) {}
+        DirectoryLibrary(const WString& name, const DirectoryPath& path):Library(name), path(path.AbsolutePath) {}
 
         const DirectoryPath& getPath() const {
             return path;

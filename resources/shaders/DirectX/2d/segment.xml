@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Shader version="1">
+<GraphicsShader version="1">
 	<Settings isDepthTestEnabled="false" cullMode="none" isTransparencyEnabled="true"/>
 	<Programs>
 		<Program type="vertex" path="body_vs.hlsl"/>
 		<Program type="pixel" path="segment_ps.hlsl"/>
 	</Programs>
-</Shader>
+</GraphicsShader>

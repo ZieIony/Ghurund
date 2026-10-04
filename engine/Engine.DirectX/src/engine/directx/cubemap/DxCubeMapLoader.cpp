@@ -12,13 +12,8 @@ namespace Ghurund::Engine::DirectX {
 		const ResourceFormat& format,
 		LoadOptions options
 	) {
-		auto imageElement = xml.findElement(side.Data);
-		if (!imageElement) {
-			auto message = std::format(_T("Required node '{}' on node 'CubeMap' is missing.\n"), side.Data);
-			Logger::logAndThrow<InvalidDataException>(message.c_str());
-		}
-
-		auto images = co_await DxTextureLoader::loadMipImages(resourceManager, *imageElement, workingDir, format, options);
+		auto imageElement = xml.requireElement(side.Data);
+		auto images = co_await DxTextureLoader::loadMipImages(resourceManager, imageElement, workingDir, format, options);
 		co_return images;
 	}
 
@@ -29,7 +24,7 @@ namespace Ghurund::Engine::DirectX {
 		const ResourceFormat& format,
 		LoadOptions options
 	) {
-		checkXmlRoot(xml, L"CubeMap");
+		checkXmlRoot(xml, L"CubeMap", DxCubeMap::FORMAT_XML);
 
 		auto imagesTop = co_await loadFace(xml, workingDir, L"FaceTop", { 0, 0 }, format, options);
 		auto size = imagesTop[0]->Size;

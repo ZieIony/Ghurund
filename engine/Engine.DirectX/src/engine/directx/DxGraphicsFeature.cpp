@@ -44,6 +44,8 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	CoroutineTask<void> DxGraphicsFeature::onInit() {
+		co_await __super::onInit();
+
 		graphics = ghnew DxGraphics();
 		graphics->init();
 
@@ -80,5 +82,6 @@ namespace Ghurund::Engine::DirectX {
 
 	void DxGraphicsFeature::onUninit() {
 		uninitGraphicsFeature();
+		__super::onUninit();
 	}
 }

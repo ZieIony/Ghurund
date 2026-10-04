@@ -11,24 +11,18 @@ namespace Ghurund::Engine::_2D {
 		const ResourceFormat& format,
 		LoadOptions options
 	) {
-		checkXmlRoot(xml, L"SpriteAnimationSet");
+		checkXmlRoot(xml, L"SpriteAnimationSet", format);
 
 		for (const auto& animationElement : xml.children) {
-			auto nameAttribute = animationElement->findAttribute(L"name");
-			if (!nameAttribute)
-				throw InvalidFormatException();
+			auto nameAttribute = animationElement->requireAttribute(L"name");
 			auto animation = makeIntrusive<SpriteAnimation>();
-			animation->Name = *nameAttribute;
+			animation->Name = nameAttribute;
 			for (const auto& frameElement : animationElement->children) {
-				auto textureAttribute = frameElement->findAttribute(L"texture");
-				if (!textureAttribute)
-					throw InvalidFormatException();
-				auto durationAttribute = frameElement->findAttribute(L"duration");
-				if (!durationAttribute)
-					throw InvalidFormatException();
-				auto texturePath = FilePath(*textureAttribute);
+				auto textureAttribute = frameElement->requireAttribute(L"texture");
+				auto durationAttribute = frameElement->requireAttribute(L"duration");
+				auto texturePath = FilePath(textureAttribute);
 				auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, nullptr, options);
-				animation->addFrame(texture.ref(), parse<float>(convertText<wchar_t, char>(*durationAttribute)));
+				animation->addFrame(texture.ref(), parse<float>(convertText<wchar_t, char>(durationAttribute)));
 			}
 			resource.add(animation.get());
 		}

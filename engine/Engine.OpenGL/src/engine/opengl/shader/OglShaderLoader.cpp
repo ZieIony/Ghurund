@@ -33,7 +33,7 @@ namespace Ghurund::Engine::OpenGL {
 		const ResourceFormat& format,
 		LoadOptions options
 	) {
-		checkXmlRoot(xml, L"Shader");
+		checkXmlRoot(xml, L"Shader", format);
 
 		auto vertexProgram = loadShaderProgramFromXml(xml, workingDir, OglShaderType::VERTEX);
 		auto fragmentProgram = loadShaderProgramFromXml(xml, workingDir, OglShaderType::FRAGMENT);
@@ -49,7 +49,7 @@ namespace Ghurund::Engine::OpenGL {
 		const ResourceFormat& format,
 		SaveOptions options
 	) const {
-		writeHeader<OglShader>(stream);
+		writeHeader<OglShader>(stream, format);
 
 		//stream.writeASCII(shader.sourceCode);
 	}

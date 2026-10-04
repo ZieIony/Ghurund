@@ -125,14 +125,14 @@ public:
             const char* str3 = "view";
             AStringView sv = str3;
             MemoryOutputStream os;
-            os.writeASCII(str);
-            os.writeASCII(str2);
-            os.writeASCII(sv);
+            os.writeChars(str);
+            os.writeAString(str2);
+            os.writeAStringView(sv);
             MemoryInputStream is(os.Data, os.BytesWritten);
             Assert::AreEqual(os.BytesWritten, is.Available);
-            Assert::AreEqual(AString(str), is.readASCII());
-            Assert::AreEqual(str2, is.readASCII());
-            Assert::AreEqual(AString(str3), is.readASCII());
+            Assert::AreEqual(AString(str), is.readAString());
+            Assert::AreEqual(str2, is.readAString());
+            Assert::AreEqual(AString(str3), is.readAString());
             Assert::AreEqual(0ull, is.Available);
         }
     }
@@ -145,14 +145,14 @@ public:
             const wchar_t* str3 = L"view";
             WStringView sv = str3;
             MemoryOutputStream os;
-            os.writeUnicode(str);
-            os.writeUnicode(str2);
-            os.writeUnicode(sv);
+            os.writeWChars(str);
+            os.writeWString(str2);
+            os.writeWStringView(sv);
             MemoryInputStream is(os.Data, os.BytesWritten);
             Assert::AreEqual(os.BytesWritten, is.Available);
-            Assert::AreEqual(WString(str), is.readUnicode());
-            Assert::AreEqual(str2, is.readUnicode());
-            Assert::AreEqual(WString(str3), is.readUnicode());
+            Assert::AreEqual(WString(str), is.readWString());
+            Assert::AreEqual(str2, is.readWString());
+            Assert::AreEqual(WString(str3), is.readWString());
             Assert::AreEqual(0ull, is.Available);
         }
     }

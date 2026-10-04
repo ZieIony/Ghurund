@@ -4,15 +4,34 @@
 #include "engine/directx/shader/compiler/DxEntrypointNotFoundException.h"
 
 namespace Ghurund::Engine::DirectX {
-	CoroutineTask<void> DxComputeShaderLoader::loadInternal(
-		DxComputeShader& resource,
-		const XMLElement& xml,
-		const DirectoryPath& workingDir,
-		const ResourceFormat& format,
-		LoadOptions options
-	) {
-		checkXmlRoot(xml, L"ComputeShader");
-	
+	void DxComputeShaderLoader::loadFromSource(NotNull<ShaderSource> shaderSource, const DirectoryPath& workingDir, DxComputeShader& shader) {
+		DxShaderProgramSourceCode* computeShaderSource = (DxShaderProgramSourceCode*)shaderSource->programs[0];
+		if(computeShaderSource->shaderType != DxShaderType::COMPUTE) {
+			Logger::log(LogType::ERR0R, _T("Compute shader program is required.\n"));
+			throw DxEntrypointNotFoundException(DxShaderType::COMPUTE);
+		}
+		CompilerInclude include(resourceManager, workingDir, includeDirs);
+		auto computeProgram = SharedPointer<DxShaderProgram>(compiler.compile(*computeShaderSource, &include));
+		compiler.build(shader, computeProgram.ref(), shaderSource->samplers);
+		shader.validate();
+	}
+
+	void DxComputeShaderLoader::loadHlslFormat(const AString& sourceCode, const DirectoryPath& workingDir, DxComputeShader& shader) {
+		auto shaderSource = makeIntrusive<ShaderSource>();
+
+		AString entryPoint = DxShaderType::COMPUTE.EntryPoint;
+		if (sourceCode.contains(entryPoint)) {
+			// TODO: fix shader.Path name
+			AString sourceName = shader.Path ? convertText<wchar_t, char>(shader.Path->toString()) : AString("[unnamed shader]");
+			shaderSource->programs.add(ghnew DxShaderProgramSourceCode(DxShaderType::COMPUTE, sourceCode, sourceName));
+		}
+
+		loadFromSource(shaderSource.ref(), workingDir, shader);
+	}
+
+	void DxComputeShaderLoader::loadXmlFormat(DxComputeShader& resource, const XMLElement& xml, const DirectoryPath& workingDir) {
+		checkXmlRoot(xml, L"ComputeShader", DxComputeShader::FORMAT_XML);
+
 		auto shaderSource = makeIntrusive<ShaderSource>();
 		//auto settingsElement = xml.findElement(L"Settings");
 		auto samplersElement = xml.findElement(L"Samplers");
@@ -36,34 +55,24 @@ namespace Ghurund::Engine::DirectX {
 				shaderSource->samplers.add(sampler);
 			}
 		}
-		auto programElement = xml.findElement(L"Program");
-		if (!programElement) {
-			Logger::logAndThrow<InvalidDataException>(_T("Missing required 'Program' node.\n"));
-		}
+		auto programElement = xml.requireElement(L"Program");
 
 		AString entryPoint = [&]->AString {
-			auto entryPointAttribute = programElement->findAttribute(L"entryPoint");
+			auto entryPointAttribute = programElement.findAttribute(L"entryPoint");
 			if (entryPointAttribute) {
 				return convertText<wchar_t, char>(*entryPointAttribute);
 			} else {
 				return DxShaderType::COMPUTE.EntryPoint;
 			}
 		}();
-		FilePath path = [&] {
-			auto pathAttribute = programElement->findAttribute(L"path");
-			if (pathAttribute) {
-				return FilePath(*pathAttribute);
-			} else {
-				Logger::logAndThrow<InvalidDataException>(_T("Missing program path for compute program.\n"));
-			}
-		}();
+		FilePath path = FilePath(programElement.requireAttribute(L"path"));
 		AString sourceCode = [&] {
 			auto absolutePath = resourceManager.getAbsoluteOrLibPath(path, workingDir);
 			auto buffer = resourceManager.resolveResource(absolutePath);
 			return AString((const char*)buffer->Data, buffer->Size);
 		}();
 		AString sourceName = [&] {
-			auto sourceNameAttribute = programElement->findAttribute(L"sourceName");
+			auto sourceNameAttribute = programElement.findAttribute(L"sourceName");
 			if (sourceNameAttribute) {
 				return convertText<wchar_t, char>(*sourceNameAttribute);
 			} else {
@@ -71,12 +80,12 @@ namespace Ghurund::Engine::DirectX {
 					return convertText<wchar_t, char>(path.toString());
 				} else if (resource.Path != nullptr) {
 					if (resource.Path->IsAbsolute || resource.Path->IsLibrary) {
-						auto absolutePath = resourceManager.getAbsoluteOrLibPath(path, resource.Path->Directory);
-						return convertText<wchar_t, char>(absolutePath.toString());
+						auto absoluteOrLibPath = resourceManager.resolvePath(resourceManager.getAbsoluteOrLibPath(path, resource.Path->Directory));
+						return convertText<wchar_t, char>(absoluteOrLibPath.toString());
 					} else {
-						auto absoluteResourcePath = resourceManager.getAbsoluteOrLibPath(*resource.Path, workingDir);
-						auto absolutePath = resourceManager.getAbsoluteOrLibPath(path, absoluteResourcePath.Directory);
-						return convertText<wchar_t, char>(absolutePath.toString());
+						auto absoluteOrLibResourcePath = resourceManager.getAbsoluteOrLibPath(*resource.Path, workingDir);
+						auto absoluteOrLibPath = resourceManager.resolvePath(resourceManager.getAbsoluteOrLibPath(path, absoluteOrLibResourcePath.Directory));
+						return convertText<wchar_t, char>(absoluteOrLibPath.toString());
 					}
 				} else {
 					return AString("[unnamed shader]");
@@ -85,32 +94,6 @@ namespace Ghurund::Engine::DirectX {
 		}();
 		shaderSource->programs.add(ghnew DxShaderProgramSourceCode(DxShaderType::COMPUTE, sourceCode, sourceName));
 		loadFromSource(shaderSource.ref(), workingDir, resource);
-		co_return;
-	}
-
-	void DxComputeShaderLoader::loadFromSource(NotNull<ShaderSource> shaderSource, const DirectoryPath& workingDir, DxComputeShader& shader) {
-		DxShaderProgramSourceCode* computeShaderSource = (DxShaderProgramSourceCode*)shaderSource->programs[0];
-		if(computeShaderSource->shaderType != DxShaderType::COMPUTE) {
-			Logger::log(LogType::ERR0R, _T("Compute shader program is required.\n"));
-			throw DxEntrypointNotFoundException(DxShaderType::COMPUTE);
-		}
-		CompilerInclude include(resourceManager, workingDir, includeDirs);
-		auto computeProgram = SharedPointer<DxShaderProgram>(compiler.compile(*computeShaderSource, &include));
-		compiler.build(shader, computeProgram.ref(), shaderSource->samplers);
-		shader.validate();
-	}
-
-	void DxComputeShaderLoader::loadFromHlsl(const AString& sourceCode, const DirectoryPath& workingDir, DxComputeShader& shader) {
-		auto shaderSource = makeIntrusive<ShaderSource>();
-
-		AString entryPoint = DxShaderType::COMPUTE.EntryPoint;
-		if (sourceCode.contains(entryPoint)) {
-			// TODO: fix shader.Path name
-			AString sourceName = shader.Path ? convertText<wchar_t, char>(shader.Path->toString()) : AString("[unnamed shader]");
-			shaderSource->programs.add(ghnew DxShaderProgramSourceCode(DxShaderType::COMPUTE, sourceCode, sourceName));
-		}
-
-		loadFromSource(shaderSource.ref(), workingDir, shader);
 	}
 
 	CoroutineTask<void> DxComputeShaderLoader::loadInternal(
@@ -121,13 +104,30 @@ namespace Ghurund::Engine::DirectX {
 		LoadOptions options
 	) {
 		auto position = stream.Position;
-		try {
+		if (format == DxComputeShader::FORMAT_XML) {
 			co_await loadFromXml(resource, stream, workingDir, format, options);
-		} catch(...) {
-			stream.Position = position;
-			AString streamContents = stream.readASCII();
-			loadFromHlsl(streamContents, workingDir, resource);
+		} else if (format == DxComputeShader::FORMAT_HLSL) {
+			AString streamContents = stream.readAString();
+			loadHlslFormat(streamContents, workingDir, resource);
+		} else if (format == ResourceFormat::AUTO) {
+			try {
+				co_await loadFromXml(resource, stream, workingDir, DxComputeShader::FORMAT_XML, options);
+			} catch (...) {
+				stream.Position = position;
+				AString streamContents = stream.readAString();
+				loadHlslFormat(streamContents, workingDir, resource);
+			}
 		}
+	}
+
+	CoroutineTask<void> DxComputeShaderLoader::loadInternal(
+		DxComputeShader& resource,
+		const XMLElement& xml,
+		const DirectoryPath& workingDir,
+		const ResourceFormat& format,
+		LoadOptions options) {
+		loadXmlFormat(resource, xml, workingDir);
+		co_return;
 	}
 
 	void DxComputeShaderLoader::saveInternal(
@@ -137,7 +137,8 @@ namespace Ghurund::Engine::DirectX {
 		const ResourceFormat& format,
 		SaveOptions options
 	) const {
-		writeHeader<DxComputeShader>(stream);
+		throw NotImplementedException();
+		//writeHeader<DxComputeShader>(stream, format);
 
 		//stream.writeASCII(shader.sourceCode);
 	}

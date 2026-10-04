@@ -4,20 +4,18 @@
 #include "engine/directx/shader/compiler/DxEntrypointNotFoundException.h"
 
 namespace Ghurund::Engine::DirectX {
-	CoroutineTask<void> DxGraphicsShaderLoader::loadInternal(
+	void DxGraphicsShaderLoader::loadXmlFormat(
 		DxGraphicsShader& resource,
 		const XMLElement& xml,
-		const DirectoryPath& workingDir,
-		const ResourceFormat& format,
-		LoadOptions options
+		const DirectoryPath& workingDir
 	) {
-		checkXmlRoot(xml, L"GraphicsShader");
-	
+		checkXmlRoot(xml, L"GraphicsShader", DxGraphicsShader::FORMAT_XML);
+
 		auto shaderSource = makeIntrusive<ShaderSource>();
 		auto settingsElementIndex = xml.children.find([](const SharedPointer<XMLElement>& element) { return element->name == L"Settings"; });
 		if (settingsElementIndex != xml.children.Size) {
 			auto& settingsElement = xml.children[settingsElementIndex];
-			auto cullModeAttribute= settingsElement->findAttribute(L"cullMode");
+			auto cullModeAttribute = settingsElement->findAttribute(L"cullMode");
 			if (cullModeAttribute) {
 				auto cullModeValue = *cullModeAttribute;
 				if (cullModeValue == L"none") {
@@ -99,15 +97,7 @@ namespace Ghurund::Engine::DirectX {
 						return type.EntryPoint;
 					}
 				}();
-				FilePath path = [&] {
-					auto pathAttribute = programElement->findAttribute(L"path");
-					if (pathAttribute) {
-						return FilePath(*pathAttribute);
-					} else {
-						auto message = std::format("Missing program path for program type '{}'.", type.Name);
-						throw InvalidDataException(message.c_str());
-					}
-				}();
+				FilePath path = FilePath(programElement->requireAttribute(L"path"));
 				AString sourceCode = [&] {
 					auto absolutePath = resourceManager.getAbsoluteOrLibPath(path, workingDir);
 					auto buffer = resourceManager.resolveResource(absolutePath);
@@ -122,12 +112,12 @@ namespace Ghurund::Engine::DirectX {
 							return convertText<wchar_t, char>(path.toString());
 						} else if (resource.Path != nullptr) {
 							if (resource.Path->IsAbsolute || resource.Path->IsLibrary) {
-								auto absolutePath = resourceManager.getAbsoluteOrLibPath(path, resource.Path->Directory);
-								return convertText<wchar_t, char>(absolutePath.toString());
+								auto absoluteOrLibPath = resourceManager.resolvePath(resourceManager.getAbsoluteOrLibPath(path, resource.Path->Directory));
+								return convertText<wchar_t, char>(absoluteOrLibPath.toString());
 							} else {
-								auto absoluteResourcePath = resourceManager.getAbsoluteOrLibPath(*resource.Path, workingDir);
-								auto absolutePath = resourceManager.getAbsoluteOrLibPath(path, absoluteResourcePath.Directory);
-								return convertText<wchar_t, char>(absolutePath.toString());
+								auto absoluteOrLibResourcePath = resourceManager.getAbsoluteOrLibPath(*resource.Path, workingDir);
+								auto absoluteOrLibPath = resourceManager.resolvePath(resourceManager.getAbsoluteOrLibPath(path, absoluteOrLibResourcePath.Directory));
+								return convertText<wchar_t, char>(absoluteOrLibPath.toString());
 							}
 						} else {
 							return AString("[unnamed shader]");
@@ -138,6 +128,16 @@ namespace Ghurund::Engine::DirectX {
 			}
 		}
 		loadFromSource(shaderSource.ref(), workingDir, resource);
+	}
+
+	CoroutineTask<void> DxGraphicsShaderLoader::loadInternal(
+		DxGraphicsShader& resource,
+		const XMLElement& xml,
+		const DirectoryPath& workingDir,
+		const ResourceFormat& format,
+		LoadOptions options
+	) {
+		loadXmlFormat(resource, xml, workingDir);
 		co_return;
 	}
 
@@ -162,7 +162,7 @@ namespace Ghurund::Engine::DirectX {
 		shader.validate();
 	}
 
-	void DxGraphicsShaderLoader::loadFromHlsl(const AString& sourceCode, const DirectoryPath& workingDir, DxGraphicsShader& shader) {
+	void DxGraphicsShaderLoader::loadHlslFormat(const AString& sourceCode, const DirectoryPath& workingDir, DxGraphicsShader& shader) {
 		auto shaderSource = makeIntrusive<ShaderSource>();
 
 		for (const DxShaderType& shaderType : DxShaderType::VALUES) {
@@ -185,12 +185,19 @@ namespace Ghurund::Engine::DirectX {
 		LoadOptions options
 	) {
 		auto position = stream.Position;
-		try {
+		if (format == DxGraphicsShader::FORMAT_XML) {
 			co_await loadFromXml(resource, stream, workingDir, format, options);
-		} catch(...) {
-			stream.Position = position;
-			AString streamContents = stream.readASCII();
-			loadFromHlsl(streamContents, workingDir, resource);
+		} else if (format == DxGraphicsShader::FORMAT_HLSL) {
+			AString streamContents = stream.readAString();
+			loadHlslFormat(streamContents, workingDir, resource);
+		} else if (format == ResourceFormat::AUTO) {
+			try {
+				co_await loadFromXml(resource, stream, workingDir, DxGraphicsShader::FORMAT_XML, options);
+			} catch (...) {
+				stream.Position = position;
+				AString streamContents = stream.readAString();
+				loadHlslFormat(streamContents, workingDir, resource);
+			}
 		}
 	}
 
@@ -201,7 +208,8 @@ namespace Ghurund::Engine::DirectX {
 		const ResourceFormat& format,
 		SaveOptions options
 	) const {
-		writeHeader<DxGraphicsShader>(stream);
+		throw NotImplementedException();
+		//writeHeader<DxGraphicsShader>(stream, format);
 
 		//stream.writeASCII(shader.sourceCode);
 	}

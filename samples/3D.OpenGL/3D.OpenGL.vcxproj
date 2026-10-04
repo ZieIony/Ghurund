@@ -95,9 +95,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\CloseWindowAction.h" />
+    <ClInclude Include="src\MoveWindowAction.h" />
     <ClInclude Include="src\SampleApplication.h" />
     <ClInclude Include="src\SampleWindow.h" />
-    <ClInclude Include="src\MoveWindowAction.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SampleApplication.cpp" />

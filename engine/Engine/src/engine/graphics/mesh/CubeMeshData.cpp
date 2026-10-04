@@ -60,7 +60,7 @@ namespace Ghurund::Engine {
 
 			// bottom face
 			{0,-1,0},{0,-1,0},{0,-1,0},{0,-1,0}
-			}), VertexRole::NORMAL);
+		}), VertexRole::NORMAL);
 
 		VertexStream texCoordStream = VertexStream(Array<XMFLOAT2>({
 			{0,0},
@@ -127,11 +127,11 @@ namespace Ghurund::Engine {
 
 		auto boundingBox = MeshProcessor::computeBoundingBox(positionStream);
 
-		MeshData::init(
+        MeshData::init(
 			{ positionStream, normalStream, texCoordStream },
 			(uint32_t)positions.Size,
 			indices,
 			boundingBox
 		);
-	}
+    }
 }

@@ -2,6 +2,7 @@
 #include "GraphicsFeature.h"
 
 #include "core/reflection/Type.h"
+#include "mesh/MeshDataLoader.h"
 
 namespace Ghurund::Engine {
     const Ghurund::Core::Type& GraphicsFeature::GET_TYPE() {
@@ -12,12 +13,14 @@ namespace Ghurund::Engine {
     }
 
     void GraphicsFeature::uninitGraphicsFeature() {
-		resourceManager.Loaders.remove<TextureAtlasLoader>();
-		textureAtlasLoader.set(nullptr);
+		resourceManager.Loaders.remove<TextureAtlas>();
+		resourceManager.Loaders.remove<MeshData>();
 	}
 
 	CoroutineTask<void> GraphicsFeature::onInit() {
-		textureAtlasLoader = makeIntrusive<TextureAtlasLoader>(resourceManager);
+		auto meshDataLoader = makeIntrusive<MeshDataLoader>();
+		resourceManager.Loaders.set<MeshData>(meshDataLoader.ref());
+		auto textureAtlasLoader = makeIntrusive<TextureAtlasLoader>(resourceManager);
 		resourceManager.Loaders.set<TextureAtlas>(textureAtlasLoader.ref());
 		co_return;
 	}

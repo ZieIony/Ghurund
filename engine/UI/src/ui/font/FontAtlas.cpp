@@ -229,7 +229,7 @@ namespace Ghurund::UI {
 				throw std::invalid_argument("invalid hdc - no glyph outline");
 
 			XMFLOAT2 topLeft;
-			msdfgen::Shape shape = shapeFromPolygonData(glyphOutlineData.Data, (DWORD)glyphOutlineData.Size, topLeft);
+			msdfgen::Shape shape = shapeFromPolygonData((uint8_t*)glyphOutlineData.Data, (DWORD)glyphOutlineData.Size, topLeft);
 
 			// whitespace characters don't have any shape data
 			if (shape.contours.size() > 0) {
@@ -252,10 +252,10 @@ namespace Ghurund::UI {
 						uint8_t b = pixelFloatToByte(pixel[2]);
 						uint8_t a = pixelFloatToByte(pixel[3]);
 						uint32_t pixelPos = (y + glyph.bitmapPos.y) * rowPitch + (x + glyph.bitmapPos.x) * pixelSize;
-						atlasData.Data[pixelPos] = r;
-						atlasData.Data[pixelPos + 1] = g;
-						atlasData.Data[pixelPos + 2] = b;
-						atlasData.Data[pixelPos + 3] = a;
+						((uint8_t*)atlasData.Data)[pixelPos] = r;
+						((uint8_t*)atlasData.Data)[pixelPos + 1] = g;
+						((uint8_t*)atlasData.Data)[pixelPos + 2] = b;
+						((uint8_t*)atlasData.Data)[pixelPos + 3] = a;
 					}
 				}
 			}

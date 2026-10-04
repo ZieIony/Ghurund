@@ -71,11 +71,11 @@ namespace Ghurund::UI {
 			} else if (child->name == L"FontMetrics") {
 				if (fontMetrics.height != 0)
 					throw InvalidFormatException("FontMetrics can appear only once in TextStyle");
-				fontMetrics.ascent = parse<uint32_t>(convertText<wchar_t, char>(*child->findAttribute(L"ascent")));
-				fontMetrics.descent = parse<uint32_t>(convertText<wchar_t, char>(*child->findAttribute(L"descent")));
-				fontMetrics.height = parse<uint32_t>(convertText<wchar_t, char>(*child->findAttribute(L"height")));
-				fontMetrics.weight = parse<uint32_t>(convertText<wchar_t, char>(*child->findAttribute(L"weight")));
-				fontMetrics.italic = *child->findAttribute(L"italic") == L"true";
+				fontMetrics.ascent = parse<uint32_t>(convertText<wchar_t, char>(child->requireAttribute(L"ascent")));
+				fontMetrics.descent = parse<uint32_t>(convertText<wchar_t, char>(child->requireAttribute(L"descent")));
+				fontMetrics.height = parse<uint32_t>(convertText<wchar_t, char>(child->requireAttribute(L"height")));
+				fontMetrics.weight = parse<uint32_t>(convertText<wchar_t, char>(child->requireAttribute(L"weight")));
+				fontMetrics.italic = child->requireAttribute(L"italic") == L"true";
 			}
 		}
 		textStyle.init(fontMetrics, atlas.ref(), kerning);
@@ -83,7 +83,7 @@ namespace Ghurund::UI {
 	}
 
 	CoroutineTask<void> TextStyleLoader::loadFromBin(TextStyle& textStyle, MemoryInputStream& stream, const DirectoryPath& workingDir) const {
-		FilePath path = FilePath(stream.readUnicode());
+		FilePath path = FilePath(stream.readWString());
 		IntrusivePointer<FontAtlas> atlas = co_await resourceManager.load<FontAtlas>(path, workingDir);
 		auto kerning = loadKerning(stream);
 		FontMetrics fontMetrics = *(FontMetrics*)stream.readBytes(sizeof(FontMetrics));
@@ -127,7 +127,7 @@ namespace Ghurund::UI {
 				throw InvalidDataException();
 			}
 		}();
-		stream.writeUnicode(path.toString());
+		stream.writeWString(path.toString());
 		resourceManager.save(*textStyle.Atlas, path, localDir, FontAtlas::FORMAT_BIN);
 		saveKerning(textStyle.Kerning, stream);
 		stream.writeBytes(&textStyle.FontMetrics, sizeof(FontMetrics));

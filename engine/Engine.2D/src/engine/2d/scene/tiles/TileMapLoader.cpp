@@ -9,12 +9,10 @@ namespace Ghurund::Engine::_2D {
 		const ResourceFormat& format,
 		LoadOptions options
 	) {
-		checkXmlRoot(xml, L"TileMap");
+		checkXmlRoot(xml, L"TileMap", format);
 	
-		auto tileSetAttribute = xml.findAttribute(L"tileSet");
-		if (!tileSetAttribute)
-			throw InvalidDataException();
-		auto tileSetPath = FilePath(*tileSetAttribute);
+		auto tileSetAttribute = xml.requireAttribute(L"tileSet");
+		auto tileSetPath = FilePath(tileSetAttribute);
 		auto tileSet = co_await resourceManager.load<TileSet>(tileSetPath, workingDir, ResourceFormat::AUTO, nullptr, options);
 
 		IntSize size = [&] {
@@ -43,6 +41,5 @@ namespace Ghurund::Engine::_2D {
 				resource.set({ (uint32_t)x, (uint32_t)y }, parse<uint32_t>(tile));
 			}
 		}
-		co_return;
 	}
 }

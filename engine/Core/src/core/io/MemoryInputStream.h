@@ -18,6 +18,15 @@ namespace Ghurund::Core {
 #endif
 		}
 
+		template<typename T>
+		inline T readPrimitive() {
+			size_t size = sizeof(T);
+			assertAvailable<T>();
+			T value = *(T*)(data + pointer);
+			pointer += size;
+			return value;
+		}
+
 		MemoryInputStream& operator=(const MemoryInputStream& other) = delete;
 
 	public:
@@ -48,49 +57,39 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = getAvailable)) size_t Available;
 
+		inline uint8_t readUInt8() {
+			return readPrimitive<uint8_t>();
+		}
+
 		inline int32_t readInt32() {
-			assertAvailable<int32_t>();
-			int32_t i = *(int32_t*)(data + pointer);
-			pointer += sizeof(int32_t);
-			return i;
+			return readPrimitive<int32_t>();
 		}
+
 		inline uint32_t readUInt32() {
-			assertAvailable<uint32_t>();
-			uint32_t i = *(uint32_t*)(data + pointer);
-			pointer += sizeof(uint32_t);
-			return i;
+			return readPrimitive<uint32_t>();
 		}
+
 		inline int64_t readInt64() {
-			assertAvailable<int64_t>();
-			int64_t i = *(int64_t*)(data + pointer);
-			pointer += sizeof(int64_t);
-			return i;
+			return readPrimitive<int64_t>();
 		}
+
 		inline uint64_t readUInt64() {
-			assertAvailable<uint64_t>();
-			uint64_t i = *(uint64_t*)(data + pointer);
-			pointer += sizeof(uint64_t);
-			return i;
+			return readPrimitive<uint64_t>();
 		}
+
 		inline float readFloat() {
-			assertAvailable<float>();
-			float i = *(float*)(data + pointer);
-			pointer += sizeof(float);
-			return i;
+			return readPrimitive<float>();
 		}
+
 		inline double readDouble() {
-			assertAvailable<double>();
-			double i = *(double*)(data + pointer);
-			pointer += sizeof(double);
-			return i;
+			return readPrimitive<double>();
 		}
+
 		inline bool readBoolean() {
-			assertAvailable<bool>();
-			bool i = *(bool*)(data + pointer);
-			pointer += sizeof(bool);
-			return i;
+			return readPrimitive<bool>();
 		}
-		inline AString readASCII() {
+
+		inline AString readAString() {
 			char* i = (char*)(data + pointer);
 			size_t slen = strlen(i);
 			size_t available = Available;
@@ -102,7 +101,8 @@ namespace Ghurund::Core {
 				return AString(i, slen);
 			}
 		}
-		inline WString readUnicode() {
+
+		inline WString readWString() {
 			wchar_t* i = (wchar_t*)(data + pointer);
 			size_t slen = wcslen(i);
 			size_t available = Available;
@@ -115,10 +115,10 @@ namespace Ghurund::Core {
 			}
 		}
 
-		inline const void* readBytes(uint32_t length) {
-			assertAvailable<int32_t>();
+		inline const void* readBytes(size_t size) {
+			assertAvailable<uint8_t>(size);
 			void* dataToReturn = (void*)(data + pointer);
-			pointer += length;
+			pointer += size;
 			return dataToReturn;
 		}
 
@@ -131,7 +131,7 @@ namespace Ghurund::Core {
 		}
 
 		inline const void* getData() const {
-			return (uint8_t*)data;
+			return data;
 		}
 
 		_declspec(property(get = getData)) const void* Data;

@@ -90,11 +90,11 @@ namespace Ghurund::Core {
         }
 
         bool operator==(const GenericString<T>& string) const {
-            return size == string.Size && size != 0 && (v == string.begin() || memcmp(v, string.begin(), Length * sizeof(T)) == 0);
+            return size == string.Size && size != 0 && (v == &string[0] || memcmp(v, &string.Data[0], Length * sizeof(T)) == 0);
         }
 
         bool operator==(const GenericString<T>& string) {
-            return size == string.Size && size != 0 && (v == string.begin() || memcmp(v, string.begin(), Length * sizeof(T)) == 0);
+            return size == string.Size && size != 0 && (v == &string[0] || memcmp(v, &string.Data[0], Length * sizeof(T)) == 0);
         }
 
         bool operator==(const T* str) const {

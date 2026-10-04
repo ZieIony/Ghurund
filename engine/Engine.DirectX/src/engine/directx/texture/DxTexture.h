@@ -78,11 +78,9 @@ namespace Ghurund::Engine::DirectX {
         }
 
     public:
-        static const inline ResourceFormat FORMAT_XML = ResourceFormat(L"xml", ResourceFormatOptions::CAN_LOAD);
+        static const inline ResourceFormat FORMAT_XML = ResourceFormat(L"xml", ResourceFormatOptions::CAN_LOAD, 1);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_XML };
-
-        static const inline uint32_t VERSION = 1;
 #pragma endregion
     };
 }

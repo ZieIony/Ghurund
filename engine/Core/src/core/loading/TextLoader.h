@@ -16,7 +16,7 @@ namespace Ghurund::Core {
             const ResourceFormat& format,
             LoadOptions options
         ) override {
-            resource.Text = stream.readASCII();
+            resource.Text = stream.readAString();
         }
     };
 }

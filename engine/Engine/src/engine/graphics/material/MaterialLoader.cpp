@@ -26,24 +26,19 @@ namespace Ghurund::Engine {
 		co_return;
 	}
 
-	CoroutineTask<void> MaterialLoader::loadInternal(
+	CoroutineTask<void> MaterialLoader::loadXmlFormat(
 		Material& resource,
 		const XMLElement& xml,
-		const DirectoryPath& workingDir,
-		const ResourceFormat& format,
-		LoadOptions options
+		const DirectoryPath& workingDir
 	) {
-		checkXmlRoot(xml, L"Material");
-	
-		WString* shaderPathAttribute = xml.findAttribute(L"shader");
-		if (!shaderPathAttribute)
-			Logger::logAndThrow<InvalidDataException>(_T("Required attribute 'shader' on node 'Material' is missing.\n"));
+		checkXmlRoot(xml, L"Material", Material::FORMAT_XML);
 
-		FilePath path = FilePath(*shaderPathAttribute);
+		WString shaderPathAttribute = xml.requireAttribute(L"shader");
+		FilePath path = FilePath(shaderPathAttribute);
 		auto shader = co_await resourceManager.load<GraphicsShader>(path, workingDir);
 		resource.init(memoryManager);
 		resource.Shader = shader.get();
-		for(const auto& child:xml.children){
+		for (const auto& child : xml.children) {
 			if (child->name == L"Parameter") {
 				auto nameAttribute = child->findAttribute(L"name");
 				auto valueAttribute = child->findAttribute(L"value");
@@ -59,6 +54,20 @@ namespace Ghurund::Engine {
 					}
 				}
 			}
+		}
+	}
+
+	CoroutineTask<void> MaterialLoader::loadInternal(
+		Material& resource,
+		const XMLElement& xml,
+		const DirectoryPath& workingDir,
+		const ResourceFormat& format,
+		LoadOptions options
+	) {
+		if (format == Material::FORMAT_XML) {
+			co_await loadXmlFormat(resource, xml, workingDir);
+		} else if (format == ResourceFormat::AUTO) {
+			co_await loadXmlFormat(resource, xml, workingDir);
 		}
 	}
 

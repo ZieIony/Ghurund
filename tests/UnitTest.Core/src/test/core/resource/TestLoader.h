@@ -19,7 +19,7 @@ namespace UnitTest {
             LoadOptions options
         ) override {
             loadCalls++;
-            resource.text = stream.readASCII();
+            resource.text = stream.readAString();
             co_return;
         }
     };

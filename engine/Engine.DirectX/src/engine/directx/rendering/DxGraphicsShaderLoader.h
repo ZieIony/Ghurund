@@ -12,7 +12,8 @@ namespace Ghurund::Engine::DirectX {
         DxShaderCompiler& compiler;
 
         void loadFromSource(NotNull<ShaderSource> sourceCode, const DirectoryPath& workingDir, DxGraphicsShader& shader);
-        void loadFromHlsl(const AString& sourceCode, const DirectoryPath& workingDir, DxGraphicsShader& shader);
+        void loadHlslFormat(const AString& sourceCode, const DirectoryPath& workingDir, DxGraphicsShader& shader);
+        void loadXmlFormat(DxGraphicsShader& resource, const XMLElement& xml, const DirectoryPath& workingDir);
 
     protected:
         virtual CoroutineTask<void> loadInternal(

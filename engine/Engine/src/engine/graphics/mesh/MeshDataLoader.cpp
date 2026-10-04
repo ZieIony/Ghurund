@@ -95,7 +95,7 @@ namespace Ghurund::Engine {
 	}
 
 	void MeshDataLoader::loadMesh(MeshData& mesh, MemoryInputStream& stream) {
-		readHeader<MeshData>(stream);
+		readHeader<MeshData>(stream, MeshData::FORMAT_MESH);
 
 		uint32_t vertexCount = stream.readUInt32();
 		uint32_t streamCount = stream.readUInt32();
@@ -142,7 +142,7 @@ namespace Ghurund::Engine {
 		MeshData& resource,
 		MemoryOutputStream& stream
 	) const {
-		writeHeader<MeshData>(stream);
+		writeHeader<MeshData>(stream, MeshData::FORMAT_MESH);
 
 		stream.writeUInt32(resource.VertexCount);
 		stream.writeUInt32((uint32_t)resource.VertexStreams.Size);

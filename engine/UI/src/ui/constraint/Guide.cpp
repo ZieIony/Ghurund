@@ -79,14 +79,10 @@ namespace Ghurund::UI {
     }
 
     Guide Guide::load(const XMLElement& xml) {
-        auto nameAttr = xml.findAttribute(L"name");
-        if (!nameAttr)
-            throw InvalidDataException("Attribute 'name' is required for a Guide.");
-        AString name = convertText<wchar_t, char>(*nameAttr);
-        auto constraintAttr = xml.findAttribute(L"constraint");
-        if (!constraintAttr)
-            throw InvalidDataException("Attribute 'constraint' is required for a Guide.");
-        ControlPath constraint = parse<ControlPath>(convertText<wchar_t, char>(*constraintAttr));
+        auto nameAttr = xml.requireAttribute(L"name");
+        AString name = convertText<wchar_t, char>(nameAttr);
+        auto constraintAttr = xml.requireAttribute(L"constraint");
+        ControlPath constraint = parse<ControlPath>(convertText<wchar_t, char>(constraintAttr));
         auto valueAttr = xml.findAttribute(L"value");
         float value = 0.0f;
         Type type = Type::PIXELS;
@@ -102,5 +98,4 @@ namespace Ghurund::UI {
 
         return { name, constraint, value, type };
     }
-
 }

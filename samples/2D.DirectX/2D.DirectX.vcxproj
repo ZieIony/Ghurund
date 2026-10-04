@@ -96,16 +96,16 @@
   <ItemGroup>
     <ClInclude Include="src\Captain.h" />
     <ClInclude Include="src\CaptainStates.h" />
-    <ClInclude Include="src\SampleApplication.h" />
-    <ClInclude Include="src\SampleWindow.h" />
     <ClInclude Include="src\FpsSystem.h" />
     <ClInclude Include="src\Ground.h" />
+    <ClInclude Include="src\SampleApplication.h" />
+    <ClInclude Include="src\SampleWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Captain.cpp" />
+    <ClCompile Include="src\Ground.cpp" />
     <ClCompile Include="src\SampleApplication.cpp" />
     <ClCompile Include="src\SampleWindow.cpp" />
-    <ClCompile Include="src\Ground.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>

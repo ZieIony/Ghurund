@@ -38,6 +38,11 @@ namespace Ghurund::Engine::DirectX {
             return *resourceFactory;
         }
 
+        [[nodiscard]]
+        virtual CoroutineTask<void> onInit() override;
+
+        virtual void onUninit() override;
+
     public:
         DxGraphicsFeature(ResourceManager& resourceManager):GraphicsFeature(resourceManager) {}
 
@@ -45,11 +50,6 @@ namespace Ghurund::Engine::DirectX {
             if (IsInitialized)
                 uninitGraphicsFeature();
         }
-
-        [[nodiscard]]
-        virtual CoroutineTask<void> onInit() override;
-
-        virtual void onUninit() override;
 
         inline DxGraphics& getGraphics() {
             return *graphics;

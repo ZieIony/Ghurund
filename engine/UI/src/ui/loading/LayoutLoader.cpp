@@ -139,25 +139,20 @@ namespace Ghurund::UI {
     ControlWithConstraints LayoutLoader::loadControl(ControlParent& parent, const DirectoryPath& workingDir, const XMLElement& xml) {
         const WString& name = xml.name;
         if (name == L"include") {
-            auto layoutAttr = xml.findAttribute(L"layout");
-            if (layoutAttr) {
-                WString s = *layoutAttr;
-                try {
-                    auto coroutine = resourceManager.load<Control>(FilePath(s), workingDir, Control::FORMAT_XML, ResourceManager::LOAD_GENERATE_NAME, { .cache = false });
-                    coroutine.resume();
-                    IntrusivePointer<Control> control = coroutine.Result;
-                    PartialConstraintSet loadedConstraints;
-                    loadedConstraints.load(control->Type, *this, xml);
-                    PartialConstraintSet constraints = parent.makeDefaultConstraints();
-                    constraints.merge(loadedConstraints);
-                    return ControlWithConstraints(control, constraints);
-                } catch (...) {
-                    auto text = std::format(_T("Could not load layout '{}'.\n"), s);
-					Logger::log(LogType::ERR0R, text.c_str());
-				}
+            auto layoutAttr = xml.requireAttribute(L"layout");
+            try {
+                auto coroutine = resourceManager.load<Control>(FilePath(layoutAttr), workingDir, Control::FORMAT_XML, ResourceManager::LOAD_GENERATE_NAME, { .cache = false });
+                coroutine.resume();
+                IntrusivePointer<Control> control = coroutine.Result;
+                PartialConstraintSet loadedConstraints;
+                loadedConstraints.load(control->Type, *this, xml);
+                PartialConstraintSet constraints = parent.makeDefaultConstraints();
+                constraints.merge(loadedConstraints);
+                return ControlWithConstraints(control, constraints);
+            } catch (...) {
+                auto text = std::format(_T("Could not load layout '{}'.\n"), layoutAttr);
+				Logger::log(LogType::ERR0R, text.c_str());
 			}
-			Logger::log(LogType::ERR0R, _T("Missing 'layout' attribute.\n"));
-			throw InvalidDataException("Missing 'layout' attribute.\n");
 		} else {
 			AString namespaceName = DEFAULT_CONTROL_NAMESPACE;
 			auto namespaceAttr = xml.findAttribute(L"namespace");

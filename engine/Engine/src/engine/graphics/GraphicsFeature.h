@@ -22,8 +22,6 @@ namespace Ghurund::Engine {
 #pragma endregion
 
     private:
-        IntrusivePointer<TextureAtlasLoader> textureAtlasLoader;
-
         void uninitGraphicsFeature();
 
     protected:

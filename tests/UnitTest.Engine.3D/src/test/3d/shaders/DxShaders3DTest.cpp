@@ -7,6 +7,7 @@
 
 #include "test/utils/TestLogOutput.h"
 #include "test/utils/TestUtils.h"
+#include <core/io/DirectoryLibrary.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -47,11 +48,12 @@ public:
     TEST_METHOD(DxShaders3D_loadAll) {
         DxGraphics graphics;
 		graphics.init();
+        resourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"../../resources").AbsolutePath));
 
 		DxShaderCompiler compiler(graphics);
 		auto loader = makeIntrusive<DxGraphicsShaderLoader>(resourceManager, compiler);
         loader->includeDirs.add(DirectoryPath(L"../../resources/shaders/DirectX/include").AbsolutePath);
-        DirectoryPath shaderDirectory = DirectoryPath(L"../../resources/shaders/DirectX/3d").AbsolutePath;
+        DirectoryPath shaderDirectory = DirectoryPath(L"../../resources/shaders/DirectX/3d/forward").AbsolutePath;
 		auto files = shaderDirectory.Files;
         if (files.Size == 0) {
             auto message = std::format(L"No files found in {}", shaderDirectory.toString().Data);

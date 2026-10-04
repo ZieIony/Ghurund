@@ -76,12 +76,10 @@ namespace Ghurund::Engine::DirectX {
 		}
 
 	public:
-		static const inline ResourceFormat FORMAT_SHADER = ResourceFormat(L"shader", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
+		static const inline ResourceFormat FORMAT_XML = ResourceFormat(L"xml", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD, 1);
 		static const inline ResourceFormat FORMAT_HLSL = ResourceFormat(L"hlsl", ResourceFormatOptions::CAN_LOAD);
 
-		inline static const Array<ResourceFormat>& FORMATS = { FORMAT_SHADER, FORMAT_HLSL };
-
-		static const inline uint32_t VERSION = 1;
+		inline static const Array<ResourceFormat>& FORMATS = { FORMAT_XML, FORMAT_HLSL };
 #pragma endregion
 	};
 }

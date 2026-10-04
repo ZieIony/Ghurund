@@ -9,14 +9,14 @@ void Ghurund::Engine::SpriteMeshData::init() {
 		{ 0.5f, 0.5f, 0.0f },
 		{ -0.5f, -0.5f, 0.0f },
 		{ -0.5f, 0.5f, 0.0f },
-		}), VertexRole::POSITION);
+	}), VertexRole::POSITION);
 
 	VertexStream tcStream = VertexStream(List<XMFLOAT2>({
 		{ 1.0f, 1.0f },
 		{ 1.0f, 0.0f },
 		{ 0.0f, 1.0f },
 		{ 0.0f, 0.0f },
-		}), VertexRole::TEXCOORD);
+	}), VertexRole::TEXCOORD);
 
 	List<uint16_t> indices = {
 		0, 1, 2, // first triangle

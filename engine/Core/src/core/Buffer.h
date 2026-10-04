@@ -9,7 +9,7 @@
 namespace Ghurund::Core {
     class Buffer {
     private:
-        uint8_t* data;
+        void* data;
         size_t size;
 
     public:
@@ -46,15 +46,15 @@ namespace Ghurund::Core {
             delete[] data;
         }
 
-        inline uint8_t* getData() {
+        inline void* getData() {
             return data;
         }
 
-        inline const uint8_t* getData() const {
+        inline const void* getData() const {
             return data;
         }
 
-        __declspec(property(get = getData)) uint8_t* Data;
+        __declspec(property(get = getData)) void* Data;
 
         inline size_t getSize() const {
             return size;
@@ -100,7 +100,7 @@ namespace Ghurund::Core {
 
         inline void resize(size_t size) {
             if (size) {
-                uint8_t* prev = data;
+                void* prev = data;
                 data = ghnew uint8_t[size];
                 if (prev) {
                     memcpy(data, prev, std::min(this->size, size));

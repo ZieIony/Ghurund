@@ -46,8 +46,8 @@ namespace Ghurund::Core {
 			return T::TYPE;
 		}
 
-		virtual uint32_t getResourceVersion() const override {
-			return T::VERSION;
+		virtual const ResourceFormat& getPreferredSaveFormat() const {
+			return ResourceFormat::AUTO;
 		}
 
 		[[nodiscard]]
@@ -60,7 +60,7 @@ namespace Ghurund::Core {
 		) {
 			auto streamPosition = stream.Position;
 			try {
-				AString streamContents = stream.readASCII();
+				AString streamContents = stream.readAString();
 				XMLDocument document;
 				document.parse(streamContents.Data, (uint32_t)streamContents.Size);
 				const XMLElement& root = document.Root;
@@ -127,7 +127,7 @@ namespace Ghurund::Core {
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOptions options = {}
 		) override {
-			if (!format.canLoad)
+			if (!format.CanLoad)
 				throw FormatNotSupportedException(format);
 			if (resource.IsValid)
 				resource.invalidate();
@@ -143,7 +143,7 @@ namespace Ghurund::Core {
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOptions options = {}
 		) override {
-			if (!format.canLoad)
+			if (!format.CanLoad)
 				throw FormatNotSupportedException(format);
 			if (resource.IsValid)
 				resource.invalidate();
@@ -158,10 +158,13 @@ namespace Ghurund::Core {
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			SaveOptions options = {}
 		) const override {
-			if (!format.canSave)
-				throw FormatNotSupportedException(format);
+			auto resolvedFormat = format;
+			if (format == ResourceFormat::AUTO)
+				resolvedFormat = getPreferredSaveFormat();
+			if (!resolvedFormat.CanSave)
+				throw FormatNotSupportedException(resolvedFormat);
 			T& typedResource = castResource<T>(resource);
-			saveInternal(typedResource, stream, workingDir, format, options);
+			saveInternal(typedResource, stream, workingDir, resolvedFormat, options);
 		}
 
 		virtual void save(
@@ -171,10 +174,13 @@ namespace Ghurund::Core {
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			SaveOptions options = {}
 		) const override {
-			if (!format.canSave)
-				throw FormatNotSupportedException(format);
+			auto resolvedFormat = format;
+			if (format == ResourceFormat::AUTO)
+				resolvedFormat = getPreferredSaveFormat();
+			if (!resolvedFormat.CanSave)
+				throw FormatNotSupportedException(resolvedFormat);
 			T& typedResource = castResource<T>(resource);
-			saveInternal(typedResource, root, workingDir, format, options);
+			saveInternal(typedResource, root, workingDir, resolvedFormat, options);
 		}
 	};
 }

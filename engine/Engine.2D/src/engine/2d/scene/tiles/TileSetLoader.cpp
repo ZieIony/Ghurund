@@ -9,18 +9,14 @@ namespace Ghurund::Engine::_2D {
 		const ResourceFormat& format,
 		LoadOptions options
 	) {
-		checkXmlRoot(xml, L"TileSet");
+		checkXmlRoot(xml, L"TileSet", format);
 	
-		auto textureAttribute = xml.findAttribute(L"texture");
-		if (!textureAttribute)
-			throw InvalidDataException();
-		auto texturePath = FilePath(*textureAttribute);
+		auto textureAttribute = xml.requireAttribute(L"texture");
+		auto texturePath = FilePath(textureAttribute);
 		auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, nullptr, options);
 
-		auto tileSizeAttribute = xml.findAttribute(L"tileSize");
-		if (!tileSizeAttribute)
-			throw InvalidDataException();
-		auto tileSize = IntSize::parse(convertText<wchar_t, char>(*tileSizeAttribute));
+		auto tileSizeAttribute = xml.requireAttribute(L"tileSize");
+		auto tileSize = IntSize::parse(convertText<wchar_t, char>(tileSizeAttribute));
 
 		resource.init(texture.ref(), tileSize);
 	}

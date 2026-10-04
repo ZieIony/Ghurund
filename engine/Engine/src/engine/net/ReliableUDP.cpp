@@ -117,7 +117,7 @@ namespace Ghurund::Net {
 	void ReliableUDP::processMessages(SharedPointer<Connection>& connection, size_t size, uint64_t time) {
 		size_t consumed = 0, messageSize = 0;
 		while (consumed < size) {
-			uint8_t* messageData = buffer.Data + consumed;
+			uint8_t* messageData = (uint8_t*)buffer.Data + consumed;
 			Message* message = (Message*)messageData;
 			if (message->type == MessageType::CONFIRM.Value) {
 				messageSize = sizeof(ConfirmationMessage);

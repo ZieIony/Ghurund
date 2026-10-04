@@ -9,7 +9,7 @@ cbuffer pixelConstants: register(b1) {
 SamplerState pointSampler: register(s0);
 Texture2D colorTexture: register(t0);
 
-float4 pixelMain(Pixel2D input): SV_Target {
+float4 pixelMain(DefaultPixel2D input): SV_Target {
     float4 color = colorTexture.Sample(pointSampler, input.texCoord);
     return float4(color.rgb * tint, color.a * alpha);
 }

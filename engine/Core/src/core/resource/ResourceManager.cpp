@@ -18,8 +18,11 @@ namespace Ghurund::Core {
 			const Library* library = libraries.get(libName);
 			if (!library)
 				throw std::invalid_argument(std::format("library \"{}\" doesn't exist", libName));
-			// this throws if library is not a DirectoryLibrary
-			return library->getAbsolutePath(relativePath);
+			try {
+				return library->getAbsolutePath(relativePath);
+			} catch (...) {
+				return absoluteOrLibPath;	// file library
+			}
 		} else {
 			return absoluteOrLibPath;
 		}
@@ -66,7 +69,7 @@ namespace Ghurund::Core {
 		const WString* name,
 		LoadOptions options
 	) {
-		auto absoluteOrLibPath = getAbsoluteOrLibPath(path, workingDir);
+		auto absoluteOrLibPath = resolvePath(getAbsoluteOrLibPath(path, workingDir));
 		IntrusivePointer<Resource> resource = IntrusivePointer(resources.get(absoluteOrLibPath));
 		if (resource == nullptr) {
 #ifdef _DEBUG
