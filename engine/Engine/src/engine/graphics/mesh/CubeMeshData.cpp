@@ -1,9 +1,10 @@
 #include "ghepch.h"
 #include "CubeMeshData.h"
 #include "core/collection/Array.h"
+#include "MeshProcessor.h"
 
 namespace Ghurund::Engine {
-    void CubeMeshData::init(unsigned int detail) {
+	void CubeMeshData::init(unsigned int detail) {
 		auto positions = Array<XMFLOAT3>({
 			{-1.0f,  1.0f, -1.0f},
 			{1.0f, -1.0f, -1.0f},
@@ -39,8 +40,9 @@ namespace Ghurund::Engine {
 			{-1.0f, -1.0f, -1.0f},
 			{1.0f,  -1.0f, -1.0f},
 			{-1.0f, -1.0f,  1.0f}
-		});
+			});
 		VertexStream positionStream = VertexStream(positions, VertexRole::POSITION);
+
 		VertexStream normalStream = VertexStream(Array<XMFLOAT3>({
 			{0,0,-1},{0,0,-1},{0,0,-1},{0,0,-1},
 
@@ -58,7 +60,8 @@ namespace Ghurund::Engine {
 
 			// bottom face
 			{0,-1,0},{0,-1,0},{0,-1,0},{0,-1,0}
-		}), VertexRole::NORMAL);
+			}), VertexRole::NORMAL);
+
 		VertexStream texCoordStream = VertexStream(Array<XMFLOAT2>({
 			{0,0},
 			{1,1},
@@ -94,7 +97,7 @@ namespace Ghurund::Engine {
 			{1,1},
 			{0,1},
 			{1,0},
-		}), VertexRole::TEXCOORD);
+			}), VertexRole::TEXCOORD);
 
 		Ghurund::Core::Array<uint16_t> indices = {
 			// front face
@@ -122,6 +125,13 @@ namespace Ghurund::Engine {
 			20, 23, 21, // second triangle
 		};
 
-        MeshData::init({positionStream, normalStream, texCoordStream}, (uint32_t)positions.Size, indices);
-    }
+		auto boundingBox = MeshProcessor::computeBoundingBox(positionStream);
+
+		MeshData::init(
+			{ positionStream, normalStream, texCoordStream },
+			(uint32_t)positions.Size,
+			indices,
+			boundingBox
+		);
+	}
 }

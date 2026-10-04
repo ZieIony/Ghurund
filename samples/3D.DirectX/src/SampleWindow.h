@@ -36,6 +36,8 @@ namespace Sample {
 
 		virtual bool onKeyEvent(const KeyEventArgs& args) override;
 
+		virtual bool onSizeChanged() override;
+
 	public:
 		SampleWindow(SampleApplication& app);
 

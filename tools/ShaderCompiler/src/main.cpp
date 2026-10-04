@@ -6,7 +6,7 @@
 #include "engine/directx/DxGraphics.h"
 #include "engine/directx/shader/compiler/DxCompilationException.h"
 #include "engine/directx/shader/compiler/DxShaderCompiler.h"
-#include "engine/directx/shader/DxShaderLoader.h"
+#include "engine/directx/rendering/DxGraphicsShaderLoader.h"
 
 using namespace Ghurund::Core;
 using namespace Ghurund::Engine::DirectX;
@@ -74,10 +74,10 @@ int main() {
 		}
 	} else {
 		try {
-			auto loader = makeIntrusive<DxShaderLoader>(resourceManager, compiler);
+			auto loader = makeIntrusive<DxGraphicsShaderLoader>(resourceManager, compiler);
 			loader->includeDirs.add(DirectoryPath(L"./shaders/DirectX/include").AbsolutePath);
 			MemoryInputStream stream(buffer.Data, buffer.Size);
-			auto shader = makeIntrusive<DxShader>();
+			auto shader = makeIntrusive<DxGraphicsShader>();
 			auto coroutine = loader->load(shader.ref(), stream);
 			coroutine.resume();
 		} catch (const DxCompilationException& exception) {

@@ -246,7 +246,10 @@
     <ClCompile Include="src\engine\graphics\mesh\CubeMeshData.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\MeshData.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\MeshDataLoader.cpp" />
+    <ClCompile Include="src\engine\graphics\mesh\MeshProcessor.cpp" />
+    <ClCompile Include="src\engine\graphics\mesh\QuadMeshData.cpp" />
     <ClCompile Include="src\engine\graphics\mesh\SphereMeshData.cpp" />
+    <ClCompile Include="src\engine\graphics\mesh\SpriteMeshData.cpp" />
     <ClCompile Include="src\engine\graphics\rendering\GraphicsShader.cpp" />
     <ClCompile Include="src\engine\graphics\rendering\Renderer.cpp" />
     <ClCompile Include="src\engine\graphics\rendering\RenderingStatistics.cpp" />

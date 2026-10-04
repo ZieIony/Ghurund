@@ -3,8 +3,11 @@
 #include "core/reflection/TypeBuilder.h"
 #include "core/resource/Resource.h"
 
+#include <DirectXCollision.h>
+
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
+    using namespace ::DirectX;
 
     // this is just a common type for meshes used by RenderingContext
     class Mesh:public Resource {
@@ -24,5 +27,15 @@ namespace Ghurund::Engine {
 
         inline static const Ghurund::Core::Type& TYPE = Mesh::GET_TYPE();
 #pragma endregion
+
+    protected:
+        BoundingBox boundingBox;
+
+    public:
+        inline const BoundingBox& getBoundingBox() const {
+            return boundingBox;
+        }
+
+        __declspec(property(get = getBoundingBox)) const BoundingBox& BoundingBox;
     };
 }

@@ -24,8 +24,8 @@ namespace Ghurund::Core {
 		if (h != hash) {
 			auto message = std::format(_T("Invalid resource type code (expected: {}, read: {}, loader: {})\n"), hash, h, Type.Name);
 			Logger::logAndThrow<InvalidDataException>(message.c_str());
-		
 		}
+
 		uint32_t v = stream.readUInt32();
 		if (v != version) {
 			auto message = std::format(_T("Invalid version number (expected: {}, read: {})\n"), version, v);

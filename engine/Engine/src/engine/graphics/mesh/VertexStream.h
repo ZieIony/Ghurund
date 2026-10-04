@@ -9,7 +9,7 @@
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
 
-	enum class VertexRole {
+	enum class VertexRole:uint8_t {
 		POSITION, NORMAL, TEXCOORD, TANGENT, COLOR, MIXED
 	};
 

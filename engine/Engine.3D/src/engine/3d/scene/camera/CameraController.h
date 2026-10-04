@@ -17,15 +17,12 @@ namespace Ghurund::Engine::_3D {
 		};
 
 	private:
-		static constexpr float DIST_EPSILON = 0.01f;
-
 		Camera3D* camera = nullptr;
 		SystemWindow* window = nullptr;
 
 		Map<MouseButton, Mode> modeMap;
 		bool pressed = false;
 		MouseButton pressedButton = MouseButton::LEFT;
-		float rotateSensivity = 1.0f / 5 * ::DirectX::XM_PI / 180;
 
 	protected:
 		virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
@@ -35,6 +32,10 @@ namespace Ghurund::Engine::_3D {
 		virtual bool onMouseWheelEvent(const MouseWheelEventArgs& event) override;
 
 	public:
+		float rotateSensivity = 1.0f / 5 * ::DirectX::XM_PI / 180;
+		float zoomSensitivity = 0.01f;
+		float zoomStep = 1.0f;
+
 		CameraController();
 
 		inline void setCamera(Camera3D* camera) {

@@ -9,8 +9,6 @@
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
 
-#include <cstdlib>
-
 namespace Ghurund::Engine {
 
 	void MeshDataLoader::loadAssimp(MeshData& mesh, MemoryInputStream& stream) {
@@ -22,7 +20,8 @@ namespace Ghurund::Engine {
 			aiProcess_Triangulate |
 			aiProcess_JoinIdenticalVertices |
 			aiProcess_SortByPType |
-			aiProcess_ConvertToLeftHanded,
+			aiProcess_ConvertToLeftHanded |
+			aiProcess_GenBoundingBoxes,
 			"fbx");
 
 		if (!scene) {
@@ -36,6 +35,8 @@ namespace Ghurund::Engine {
 		List<XMFLOAT3> normals, tangents;
 		List<XMFLOAT2> texCoords;
 		List<uint32_t> indices;
+
+		BoundingBox boundingBox;
 
 		for (size_t i = 0; i < scene->mNumMeshes; i++) {
 			auto aiMesh = scene->mMeshes[i];
@@ -53,6 +54,18 @@ namespace Ghurund::Engine {
 				auto& aiFace = aiMesh->mFaces[k];
 				indices.addAll({ aiFace.mIndices[0], aiFace.mIndices[1], aiFace.mIndices[2] });
 			}
+
+			XMFLOAT3 pMin = { aiMesh->mAABB.mMin.x, aiMesh->mAABB.mMin.y, aiMesh->mAABB.mMin.z };
+			XMFLOAT3 pMax = { aiMesh->mAABB.mMax.x, aiMesh->mAABB.mMax.y, aiMesh->mAABB.mMax.z };
+			auto vMin = XMLoadFloat3(&pMin);
+			auto vMax = XMLoadFloat3(&pMax);
+			BoundingBox currentBoundingBox;
+			BoundingBox::CreateFromPoints(currentBoundingBox, vMin, vMax);
+			if (i == 0) {
+				boundingBox = currentBoundingBox;
+			} else {
+				BoundingBox::CreateMerged(boundingBox, boundingBox, currentBoundingBox);
+			}
 		}
 
 		if (positions.IsEmpty || normals.IsEmpty || tangents.IsEmpty || texCoords.IsEmpty) {
@@ -66,17 +79,18 @@ namespace Ghurund::Engine {
 		}
 
 		Array<VertexStream> vertexStreams = {
-			VertexStream{Buffer(&positions[0], sizeof(XMFLOAT3) * positions.Size), sizeof(XMFLOAT3), VertexRole::POSITION},
-			VertexStream{Buffer(&normals[0], sizeof(XMFLOAT3) * normals.Size), sizeof(XMFLOAT3), VertexRole::NORMAL},
-			VertexStream{Buffer(&tangents[0], sizeof(XMFLOAT3) * tangents.Size), sizeof(XMFLOAT3), VertexRole::TANGENT},
-			VertexStream{Buffer(&texCoords[0], sizeof(XMFLOAT2) * texCoords.Size), sizeof(XMFLOAT2), VertexRole::TEXCOORD},
+			VertexStream{Buffer(positions.Data, sizeof(XMFLOAT3) * positions.Size), sizeof(XMFLOAT3), VertexRole::POSITION},
+			VertexStream{Buffer(normals.Data, sizeof(XMFLOAT3) * normals.Size), sizeof(XMFLOAT3), VertexRole::NORMAL},
+			VertexStream{Buffer(tangents.Data, sizeof(XMFLOAT3) * tangents.Size), sizeof(XMFLOAT3), VertexRole::TANGENT},
+			VertexStream{Buffer(texCoords.Data, sizeof(XMFLOAT2) * texCoords.Size), sizeof(XMFLOAT2), VertexRole::TEXCOORD},
 		};
 
 		mesh.init(
 			vertexStreams,
 			(uint32_t)positions.Size,
 			Buffer(&indices[0], sizeof(uint32_t) * indices.Size),
-			(uint32_t)indices.Size
+			(uint32_t)indices.Size,
+			boundingBox
 		);
 	}
 
@@ -98,7 +112,9 @@ namespace Ghurund::Engine {
 		uint32_t indexSize = stream.readUInt32();
 		const void* data = stream.readBytes(indexCount * indexSize);
 
-		mesh.init(vertexStreams, vertexCount, Buffer(data, indexCount * indexSize), indexCount);
+		BoundingBox boundingBox = stream.read<BoundingBox>();
+
+		mesh.init(vertexStreams, vertexCount, Buffer(data, indexCount * indexSize), indexCount, boundingBox);
 	}
 
 	CoroutineTask<void> MeshDataLoader::loadInternal(
@@ -108,16 +124,23 @@ namespace Ghurund::Engine {
 		const Ghurund::Core::ResourceFormat& format,
 		Ghurund::Core::LoadOptions options
 	) {
-		loadAssimp(resource, stream);
+		if (format == MeshData::FORMAT_MESH) {
+			loadMesh(resource, stream);
+		} else if (format == ResourceFormat::AUTO) {
+			try {
+				loadMesh(resource, stream);
+			} catch (...) {
+				loadAssimp(resource, stream);
+			}
+		} else {
+			loadAssimp(resource, stream);
+		}
 		co_return;
 	}
 
-	void MeshDataLoader::saveInternal(
+	void MeshDataLoader::saveMesh(
 		MeshData& resource,
-		MemoryOutputStream& stream,
-		const DirectoryPath& workingDir,
-		const Ghurund::Core::ResourceFormat& format,
-		Ghurund::Core::SaveOptions options
+		MemoryOutputStream& stream
 	) const {
 		writeHeader<MeshData>(stream);
 
@@ -130,11 +153,21 @@ namespace Ghurund::Engine {
 			stream.write<uint16_t>((uint16_t)(vertexStream.role));
 		}
 
-		stream.write(resource.IndexCount);
-		stream.write(resource.IndexSize);
+		stream.writeUInt32(resource.IndexCount);
+		stream.writeUInt32(resource.IndexSize);
 		stream.writeBytes(resource.Indices.Data, resource.Indices.Size);
 
-		//stream.write<XMFLOAT3>(boundingBox.Center);
-		//stream.write<XMFLOAT3>(boundingBox.Extents);
+		stream.write<BoundingBox>(resource.BoundingBox);
+	}
+
+	void MeshDataLoader::saveInternal(
+		MeshData& resource,
+		MemoryOutputStream& stream,
+		const DirectoryPath& workingDir,
+		const Ghurund::Core::ResourceFormat& format,
+		Ghurund::Core::SaveOptions options
+	) const {
+		if (format == MeshData::FORMAT_MESH)
+			saveMesh(resource, stream);
 	}
 }

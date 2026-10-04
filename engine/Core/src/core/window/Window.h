@@ -48,6 +48,7 @@ namespace Ghurund::Core {
         Window& operator=(const Window& other) = delete;
 
     protected:
+        // TODO: make these event handlers return void
         virtual bool onPositionChanged() {
             return false;
         }

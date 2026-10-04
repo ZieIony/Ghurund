@@ -1,12 +1,13 @@
 #include "ghepch.h"
 #include "MeshData.h"
 
-#include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Engine {
     const Ghurund::Core::Type& MeshData::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<MeshData>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<MeshData>()
+            .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

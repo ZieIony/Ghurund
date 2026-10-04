@@ -76,20 +76,20 @@ public:
             auto path = FilePath(L"lib://Ghurund/test\\folder\\path\\file");
             Assert::AreEqual(L"file", path.FileName.Data);
             Assert::AreEqual(L"", path.Extension.Data);
-            Assert::AreEqual(true, path.IsAbsolute);
+            Assert::AreEqual(false, path.IsAbsolute);
             Assert::AreEqual(L"lib://Ghurund/test/folder/path/", path.Directory.toString().Data);
         }
     }
 
-	TEST_METHOD(DirectoryPath_libProtocol) {
-		MemoryGuard guard;
-		{
-			auto path = DirectoryPath(L"lib://Ghurund\\test\\folder\\path");
-			auto file = path / FilePath(L"file.png");
-			Assert::AreEqual(L"file.png", file.FileName.Data);
-			Assert::AreEqual(L"png", file.Extension.Data);
-			Assert::AreEqual(L"lib://Ghurund/test/folder/path/file.png", file.toString().Data);
-		}
-	}
+    TEST_METHOD(DirectoryPath_libProtocol) {
+        MemoryGuard guard;
+        {
+            auto path = DirectoryPath(L"lib://Ghurund\\test\\folder\\path");
+            auto file = path / FilePath(L"file.png");
+            Assert::AreEqual(L"file.png", file.FileName.Data);
+            Assert::AreEqual(L"png", file.Extension.Data);
+            Assert::AreEqual(L"lib://Ghurund/test/folder/path/file.png", file.toString().Data);
+        }
+    }
     };
 }

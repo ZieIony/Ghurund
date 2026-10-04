@@ -1,6 +1,8 @@
 #include "ghuipch.h"
 #include "TextMesh.h"
 
+#include "engine/graphics/mesh/MeshProcessor.h"
+
 namespace Ghurund::UI {
 	using namespace Ghurund::Engine;
 
@@ -54,9 +56,11 @@ namespace Ghurund::UI {
 				});
 			prevC = info.c;
 		}
-		VertexStream posStream = VertexStream(positions, VertexRole::POSITION);
+		VertexStream positionStream = VertexStream(positions, VertexRole::POSITION);
 		VertexStream texCoordStream = VertexStream(texCoords, VertexRole::TEXCOORD);
 
-		MeshData::init({ posStream, texCoordStream }, positions.Size, indices);
+		auto boundingBox = MeshProcessor::computeBoundingBox(positionStream);
+
+		MeshData::init({ positionStream, texCoordStream }, positions.Size, indices, boundingBox);
 	}
 }

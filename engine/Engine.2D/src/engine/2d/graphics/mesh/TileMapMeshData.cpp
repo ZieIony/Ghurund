@@ -1,6 +1,8 @@
 #include "ghe2dpch.h"
 #include "TileMapMeshData.h"
 
+#include "engine/graphics/mesh/MeshProcessor.h"
+
 namespace Ghurund::Engine::_2D {
 	void TileMapMeshData::init(IntSize tileMapSize, Array<TileInfo>& tiles) {
 		List<XMFLOAT2> vertices;
@@ -30,9 +32,11 @@ namespace Ghurund::Engine::_2D {
 			tileIndex++;
 			i += 4;
 		}
-		VertexStream posStream = VertexStream(vertices, VertexRole::POSITION);
+		VertexStream positionStream = VertexStream(vertices, VertexRole::POSITION);
 		VertexStream texCoordStream = VertexStream(texCoords, VertexRole::TEXCOORD);
 
-		MeshData::init({ posStream, texCoordStream }, (uint32_t)vertices.Size, indices);
+		auto boundingBox = MeshProcessor::computeBoundingBox(positionStream);
+
+		MeshData::init({ positionStream, texCoordStream }, (uint32_t)vertices.Size, indices, boundingBox);
 	}
 }

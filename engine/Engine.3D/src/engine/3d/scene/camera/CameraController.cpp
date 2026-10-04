@@ -54,8 +54,9 @@ namespace Ghurund::Engine::_3D {
 			} else if (mode == CameraController::Mode::PAN) {
 				camera->pan((float)event.Delta.x, (float)event.Delta.y);
 			} else if (mode == CameraController::Mode::ZOOM) {
-				if (camera->getDistance() > event.Delta.y)
-					camera->zoom((float)-event.Delta.y);
+				float zoomDist = zoomStep * -event.Delta.y * zoomSensitivity;
+				if (camera->Distance > zoomDist)
+					camera->zoom(zoomDist);
 			} else {
 				XMFLOAT3 rotation = camera->getRotation();
 				camera->setRotation(rotation.x + event.Delta.x * rotateSensivity, max(-89.0f / 180.0f * XM_PI, min(rotation.y - event.Delta.y * rotateSensivity, 89.0f / 180.0f * XM_PI)));
@@ -69,11 +70,9 @@ namespace Ghurund::Engine::_3D {
 		if (!camera)
 			return false;
 
-		if (camera->getDistance() > event.Delta) {
-			camera->zoom((float)event.Delta);
-		} else {
-			camera->zoom(camera->getDistance() - DIST_EPSILON);
-		}
+		float zoomDist = zoomStep * event.Delta;
+		if (camera->Distance > zoomDist)
+			camera->zoom(zoomDist);
 
 		return true;
 	}

@@ -5,6 +5,7 @@
 #include "engine/parameter/ValueParameter.h"
 
 #include <DirectXMath.h>
+#include <DirectXCollision.h>
 
 namespace Ghurund::Engine::_3D {
 	using namespace ::DirectX;
@@ -26,30 +27,33 @@ namespace Ghurund::Engine::_3D {
 		XMFLOAT3 pos, target, dir, right, up;
 		//XMFLOAT4X4 facing;
 		IntSize viewSize;
-		float fov, zNear, zFar, dist;
+		XMFLOAT2 fov;
+		float aspectRatio, zNear, zFar, dist;
 		bool pers;
 
-		inline static const AString CAMERA_DIRECTION = "gh_cameraDirection";
-		inline static const AString CAMERA_POSITION = "gh_cameraPosition";
-		inline static const AString CAMERA_TARGET = "gh_cameraTarget";
-		inline static const AString CAMERA_UP = "gh_cameraUp";
-		inline static const AString CAMERA_RIGHT = "gh_cameraRight";
-		inline static const AString FOV = "gh_fov";
-		inline static const AString ZNEAR = "gh_zNear";
-		inline static const AString ZFAR = "gh_zFar";
-		inline static const AString VIEW = "gh_view";
-		inline static const AString PROJECTION = "gh_projection";
-		inline static const AString VIEW_PROJECTION = "gh_viewProjection";
-		inline static const AString VIEW_PROJECTION_INV = "gh_viewProjectionInv";
+		inline static const AString PARAMETER_NAME_DIRECTION = "gh_cameraDirection";
+		inline static const AString PARAMETER_NAME_POSITION = "gh_cameraPosition";
+		inline static const AString PARAMETER_NAME_TARGET = "gh_cameraTarget";
+		inline static const AString PARAMETER_NAME_UP = "gh_cameraUp";
+		inline static const AString PARAMETER_NAME_RIGHT = "gh_cameraRight";
+		inline static const AString PARAMETER_NAME_FOV = "gh_fov";
+		inline static const AString PARAMETER_NAME_ZNEAR = "gh_zNear";
+		inline static const AString PARAMETER_NAME_ZFAR = "gh_zFar";
+		inline static const AString PARAMETER_NAME_VIEW = "gh_view";
+		inline static const AString PARAMETER_NAME_PROJECTION = "gh_projection";
+		inline static const AString PARAMETER_NAME_VIEW_PROJECTION = "gh_viewProjection";
+		inline static const AString PARAMETER_NAME_VIEW_PROJECTION_INV = "gh_viewProjectionInv";
 
 		Float3Parameter* parameterDirection = nullptr, * parameterPosition = nullptr, * parameterTarget = nullptr;
 		Float3Parameter* parameterUp = nullptr, * parameterRight = nullptr;
-		FloatParameter* parameterFov = nullptr;
+		Float2Parameter* parameterFov = nullptr;
 		FloatParameter* parameterZNear = nullptr, * parameterZFar = nullptr;
 		MatrixParameter* parameterView = nullptr, * parameterProjection = nullptr;
 		MatrixParameter* parameterViewProjection = nullptr, * parameterViewProjectionInv = nullptr;
 
 	public:
+		inline static const XMFLOAT3 DEFAULT_UP = { 0, 1, 0 };
+
 		Camera3D();
 
 		~Camera3D();
@@ -96,20 +100,50 @@ namespace Ghurund::Engine::_3D {
 		}
 
 		inline void setViewSize(const IntSize& viewSize) {
+#ifdef _DEBUG
+			_ASSERT(viewSize.Width > 0 && viewSize.Height > 0);
+#endif
 			this->viewSize = viewSize;
+			aspectRatio = (float)viewSize.Width / (float)viewSize.Height;
 		}
 
 		inline void setViewSize(uint32_t w, uint32_t h) {
-			viewSize = IntSize(w, h);
+#ifdef _DEBUG
+			_ASSERT(w > 0 && h > 0);
+#endif
+			viewSize.Width = w;
+			viewSize.Height = h;
+			aspectRatio = (float)viewSize.Width / (float)viewSize.Height;
 		}
 
 		__declspec(property(get = getViewSize, put = setViewSize)) IntSize& ViewSize;
 
-		inline float getAspect() const {
-			return (float)viewSize.Width / (float)viewSize.Height;
+		inline void setFOV(float verticalFOVRad) {
+#ifdef _DEBUG
+			_ASSERT(verticalFOVRad > 0 && verticalFOVRad < XM_PI / 2.0f);
+#endif
+			fov.x = 2.0f * atan(tan(verticalFOVRad * 0.5f) / aspectRatio);
+			fov.y = verticalFOVRad;
 		}
 
-		__declspec(property(get = getAspect)) float Aspect;
+		inline void setFOV(const XMFLOAT2& fov) {
+#ifdef _DEBUG
+			_ASSERT(fov.x > 0 && fov.x < XM_PI / 2.0f && fov.y > 0 && fov.y < XM_PI / 2.0f);
+#endif
+			this->fov = fov;
+		}
+
+		inline const XMFLOAT2& getFOV() const {
+			return fov;
+		}
+
+		__declspec(property(get = getFOV, put = setFOV)) const XMFLOAT2& FOV;
+
+		inline float getAspectRatio() const {
+			return aspectRatio;
+		}
+
+		__declspec(property(get = getAspectRatio)) float AspectRatio;
 
 		inline float getDistance() const {
 			return dist;
@@ -133,8 +167,26 @@ namespace Ghurund::Engine::_3D {
 
 		__declspec(property(get = getPerspective, put = setPerspective)) bool Perspective;
 
-		void setPositionTargetUp(const XMFLOAT3& pos, const XMFLOAT3& target, const XMFLOAT3& up = XMFLOAT3(0, 1, 0));
-		void setPositionDirectionDistanceUp(const XMFLOAT3& pos, const XMFLOAT3& dir, float dist = 1.0f, const XMFLOAT3& up = XMFLOAT3(0, 1, 0));
+		/**
+		* Sets camera position, direction, target, right and up vectors so that it looks at
+		* the bounding sphere. The sphere should be transformed to world coordinates.
+		**/
+		void setDirectionSphereUp(const XMFLOAT3& dir, const BoundingSphere& boundingSphere, const XMFLOAT3& up);
+
+		/**
+		* Sets camera position, direction, target, right and up vectors so that it looks at
+		* the bounding box. The box should be transformed to world coordinates.
+		**/
+		void setDirectionBoxUp(const XMFLOAT3& dir, const BoundingBox& boundingBox, const XMFLOAT3& up = DEFAULT_UP);
+
+		/**
+		* Sets camera position, direction, target, right and up vectors so that it looks at
+		* the bounding box. The box should be transformed to world coordinates.
+		**/
+		void setDirectionBoxUp(const XMFLOAT3& dir, const BoundingOrientedBox& boundingBox, const XMFLOAT3& up = DEFAULT_UP);
+
+		void setPositionTargetUp(const XMFLOAT3& pos, const XMFLOAT3& target, const XMFLOAT3& up = DEFAULT_UP);
+		void setPositionDirectionDistanceUp(const XMFLOAT3& pos, const XMFLOAT3& dir, float dist, const XMFLOAT3& up = DEFAULT_UP);
 
 		inline XMFLOAT3 getRotation() const {
 			float currentYaw = (float)(atan2(dir.x, dir.z) + XM_PI);

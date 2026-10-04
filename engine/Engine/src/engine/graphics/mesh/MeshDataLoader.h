@@ -7,12 +7,10 @@
 namespace Ghurund::Engine {
     class MeshDataLoader:public Loader<MeshData> {
     private:
-        struct ObjVert {
-            uint32_t posIndex, texCoordIndex, normalIndex, vertexIndex;
-        };
-
         void loadAssimp(MeshData& mesh, MemoryInputStream& stream);
         void loadMesh(MeshData& mesh, MemoryInputStream& stream);
+
+        void saveMesh(MeshData& resource, MemoryOutputStream& stream) const;
 
     protected:
         [[nodiscard]]

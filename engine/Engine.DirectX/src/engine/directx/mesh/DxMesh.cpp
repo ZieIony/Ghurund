@@ -19,6 +19,7 @@ namespace Ghurund::Engine::DirectX {
 
 		initVertexBuffers(mesh.VertexStreams, mesh.VertexCount, memoryManager);
 		initIndexBuffer(mesh.Indices, mesh.IndexCount, memoryManager);
+		boundingBox = mesh.BoundingBox;
 
 		memoryManager.executeUploads();
 	}

@@ -36,13 +36,20 @@ namespace Sample {
 			auto mesh = co_await app.ResourceManager.load<Mesh>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/spartan helmet/spartan helmet.fbx"));
 			meshComponent->Mesh = mesh.get();
 
+			entity->Transform.Position = { 10,0,0 };
+			BoundingOrientedBox bob, transformedBob;
+			BoundingOrientedBox::CreateFromBoundingBox(bob, mesh->BoundingBox);
+			entity->Transform.update(app.Timer);
+			auto transform = XMLoadFloat4x4(&entity->Transform.WorldTransformation);
+			bob.Transform(transformedBob, transform);
+			world->Scene.Camera->setDirectionBoxUp({ -1, -0.2f, 1 }, transformedBob);
+
 			auto material = co_await app.ResourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/spartan helmet/spartan helmet material.xml"));
 			meshComponent->Material = material.get();
 			entity->Components.add(meshComponent.ref());
 			co_await entity->init();
 		}
 
-		world->Scene.Camera->setPositionTargetUp({ 40, 40, -40 }, { 0, 20, 0 });
 		cameraController.Camera = world->Scene.Camera;
 		cameraController.Window = this;
 
@@ -88,6 +95,15 @@ namespace Sample {
 			Style = DEFAULT_WINDOW_STYLE;
 			ClientSize = { 800, 600 };
 		}
+		return true;
+	}
+
+	bool SampleWindow::onSizeChanged() {
+		__super::onSizeChanged();
+		world->Scene.Camera->ViewSize = ClientSize;
+
+		// recalculate horizontal fov based on current vertical fov and new aspect ratio
+		world->Scene.Camera->FOV = world->Scene.Camera->FOV.y;
 		return true;
 	}
 

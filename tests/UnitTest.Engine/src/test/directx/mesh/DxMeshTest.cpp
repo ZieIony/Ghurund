@@ -19,11 +19,11 @@ namespace UnitTest {
 
     TEST_CLASS(DxMeshTest) {
 private:
-            Timer timer;
-            CoroutineThreadPool threadPool = CoroutineThreadPool(4);
-            CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
-            ResourceManager resourceManager = ResourceManager(coroutineScheduler);
-            DxGraphics graphics;
+    Timer timer;
+    CoroutineThreadPool threadPool = CoroutineThreadPool(4);
+    CoroutineScheduler coroutineScheduler = Ghurund::Core::CoroutineScheduler(threadPool, timer);
+    ResourceManager resourceManager = ResourceManager(coroutineScheduler);
+    DxGraphics graphics;
 
 public:
 
@@ -33,9 +33,10 @@ public:
             Array<XMFLOAT3> vertices = { {1,0,0}, {1,1,0}, {0,1,0} };
             Array<uint32_t> indices = { 0,1,2 };
             VertexStream posStream = VertexStream(vertices, VertexRole::POSITION);
+            BoundingBox boundingBox;
 
             auto mesh = makeIntrusive<MeshData>();
-            mesh->init({ posStream }, (uint32_t)vertices.Size, indices);
+            mesh->init({ posStream }, (uint32_t)vertices.Size, indices, boundingBox);
             auto dxMesh = makeIntrusive<DxMesh>();
             graphics.init();
             auto commandList = makeIntrusive<DxGraphicsCommandList>();

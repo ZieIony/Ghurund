@@ -10,8 +10,6 @@ namespace Ghurund::Engine::_3D {
 	using namespace ::DirectX;
 
 	Camera3D::Camera3D():
-		viewSize({ 640, 480 }),
-		fov(XM_PI / 4),
 		zNear(0.1f),
 		zFar(10000.0f),
 		pers(true),
@@ -22,20 +20,23 @@ namespace Ghurund::Engine::_3D {
 		right(XMFLOAT3(1, 0, 0)),
 		dist(1.0f) {
 
-		parameterDirection = ghnew Float3Parameter(CAMERA_DIRECTION);
-		parameterPosition = ghnew Float3Parameter(CAMERA_POSITION);
-		parameterTarget = ghnew Float3Parameter(CAMERA_TARGET);
-		parameterUp = ghnew Float3Parameter(CAMERA_UP);
-		parameterRight = ghnew Float3Parameter(CAMERA_RIGHT);
+		ViewSize = { 640, 480 };
+		FOV = XM_PI / 4;
 
-		parameterFov = ghnew FloatParameter(FOV);
-		parameterZNear = ghnew FloatParameter(ZNEAR);
-		parameterZFar = ghnew FloatParameter(ZFAR);
+		parameterDirection = ghnew Float3Parameter(PARAMETER_NAME_DIRECTION);
+		parameterPosition = ghnew Float3Parameter(PARAMETER_NAME_POSITION);
+		parameterTarget = ghnew Float3Parameter(PARAMETER_NAME_TARGET);
+		parameterUp = ghnew Float3Parameter(PARAMETER_NAME_UP);
+		parameterRight = ghnew Float3Parameter(PARAMETER_NAME_RIGHT);
 
-		parameterView = ghnew MatrixParameter(VIEW);
-		parameterProjection = ghnew MatrixParameter(PROJECTION);
-		parameterViewProjection = ghnew MatrixParameter(VIEW_PROJECTION);
-		parameterViewProjectionInv = ghnew MatrixParameter(VIEW_PROJECTION_INV);
+		parameterFov = ghnew Float2Parameter(PARAMETER_NAME_FOV);
+		parameterZNear = ghnew FloatParameter(PARAMETER_NAME_ZNEAR);
+		parameterZFar = ghnew FloatParameter(PARAMETER_NAME_ZFAR);
+
+		parameterView = ghnew MatrixParameter(PARAMETER_NAME_VIEW);
+		parameterProjection = ghnew MatrixParameter(PARAMETER_NAME_PROJECTION);
+		parameterViewProjection = ghnew MatrixParameter(PARAMETER_NAME_VIEW_PROJECTION);
+		parameterViewProjectionInv = ghnew MatrixParameter(PARAMETER_NAME_VIEW_PROJECTION_INV);
 	}
 
 	Camera3D::~Camera3D() {
@@ -62,7 +63,7 @@ namespace Ghurund::Engine::_3D {
 		viewTemp = XMMatrixLookAtLH(XMLoadFloat3(&pos), XMLoadFloat3(&target), XMLoadFloat3(&up));
 		XMStoreFloat4x4(&view, XMMatrixTranspose(viewTemp));
 		if (pers) {
-			projTemp = XMMatrixPerspectiveFovLH(fov, getAspect(), zNear, zFar);
+			projTemp = XMMatrixPerspectiveFovLH(fov.y, aspectRatio, zNear, zFar);
 		} else {
 			projTemp = XMMatrixOrthographicLH((float)viewSize.Width, (float)viewSize.Height, zNear, zFar);
 		}
@@ -125,6 +126,36 @@ namespace Ghurund::Engine::_3D {
 		XMStoreFloat3(&rayDir, XMVector3Normalize(rayTarget2 - rayPos2));
 	}
 
+	void Camera3D::setDirectionSphereUp(const XMFLOAT3& dir, const BoundingSphere& boundingSphere, const XMFLOAT3& up) {
+		XMVECTOR tv = XMLoadFloat3(&boundingSphere.Center);
+		XMStoreFloat3(&this->target, tv);
+		float tanFov = std::max(tan(fov.x / 2), tan(fov.y / 2));
+		dist = boundingSphere.Radius / tanFov + boundingSphere.Radius;
+
+		XMVECTOR dv = XMVector3Normalize(XMLoadFloat3(&dir));
+		XMStoreFloat3(&this->dir, dv);
+		XMStoreFloat3(&pos, tv - dv * dist);
+
+		XMVECTOR uv = XMVector3Normalize(XMLoadFloat3(&up));
+		XMVECTOR rv = XMVector3Cross(uv, dv);
+		XMStoreFloat3(&right, rv);
+		XMStoreFloat3(&this->up, uv);
+	}
+
+	void Camera3D::setDirectionBoxUp(const XMFLOAT3& dir, const BoundingBox& boundingBox, const XMFLOAT3& up) {
+		BoundingSphere boundingSphere;
+		BoundingSphere::CreateFromBoundingBox(boundingSphere, boundingBox);
+
+		setDirectionSphereUp(dir, boundingSphere, up);
+	}
+
+	void Camera3D::setDirectionBoxUp(const XMFLOAT3& dir, const BoundingOrientedBox& boundingBox, const XMFLOAT3& up) {
+		BoundingSphere boundingSphere;
+		BoundingSphere::CreateFromBoundingBox(boundingSphere, boundingBox);
+
+		setDirectionSphereUp(dir, boundingSphere, up);
+	}
+
 	void Camera3D::setPositionTargetUp(const XMFLOAT3& pos, const XMFLOAT3& target, const XMFLOAT3& up) {
 		this->pos = pos;
 		this->target = target;
@@ -132,11 +163,11 @@ namespace Ghurund::Engine::_3D {
 		XMVECTOR dv = XMLoadFloat3(&target) - XMLoadFloat3(&pos);
 
 		XMStoreFloat(&dist, XMVector3Length(dv));
-		XMVECTOR uv = XMLoadFloat3(&up);
+		XMVECTOR uv = XMVector3Normalize(XMLoadFloat3(&up));
 		XMStoreFloat3(&dir, XMVector3Normalize(dv));
-		XMVECTOR rv = XMVector3Normalize(XMVector3Cross(uv, dv));
+		XMVECTOR rv = XMVector3Cross(uv, dv);
 		XMStoreFloat3(&right, rv);
-		XMStoreFloat3(&this->up, XMVector3Normalize(uv));
+		XMStoreFloat3(&this->up, uv);
 	}
 
 	void Camera3D::setPositionDirectionDistanceUp(const XMFLOAT3& pos, const XMFLOAT3& dir, float dist, const XMFLOAT3& up) {
@@ -145,11 +176,11 @@ namespace Ghurund::Engine::_3D {
 		XMStoreFloat3(&target, XMLoadFloat3(&pos) + dv * dist);
 
 		this->dist = dist;
-		XMVECTOR uv = XMLoadFloat3(&up);
+		XMVECTOR uv = XMVector3Normalize(XMLoadFloat3(&up));
 		XMStoreFloat3(&this->dir, dv);
-		XMVECTOR rv = XMVector3Normalize(XMVector3Cross(uv, dv));
+		XMVECTOR rv = XMVector3Cross(uv, dv);
 		XMStoreFloat3(&right, rv);
-		XMStoreFloat3(&this->up, XMVector3Normalize(uv));
+		XMStoreFloat3(&this->up, uv);
 	}
 
 	void Camera3D::setRotation(float yaw, float pitch, float roll) {

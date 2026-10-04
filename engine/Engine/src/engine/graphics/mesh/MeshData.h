@@ -28,36 +28,52 @@ namespace Ghurund::Engine {
 		uint32_t vertexCount = 0;
 		Buffer indices;
 		uint32_t indexCount = 0;
-
 		BoundingBox boundingBox;
 
 	public:
 		MeshData() {}
 
-		void init(Array<VertexStream> vertexStreams, uint32_t vertexCount, Buffer indices, uint32_t indexCount) {
+		void init(
+			Array<VertexStream> vertexStreams,
+			uint32_t vertexCount,
+			Buffer indices,
+			uint32_t indexCount,
+			const BoundingBox& boundingBox
+		) {
 			this->vertexStreams = vertexStreams;
 			this->vertexCount = vertexCount;
 			this->indices = indices;
 			this->indexCount = indexCount;
+			this->boundingBox = boundingBox;
 		}
 
 		template<typename T>
-		void init(Array<VertexStream> vertexStreams, uint32_t vertexCount, const ArrayCollection<T>& indices) {
+		void init(
+			Array<VertexStream> vertexStreams,
+			uint32_t vertexCount,
+			const ArrayCollection<T>& indices,
+			const BoundingBox& boundingBox
+		) {
 			this->vertexStreams = vertexStreams;
 			this->vertexCount = vertexCount;
 			this->indices = Buffer(indices.Data, sizeof(T) * indices.Size);
 			this->indexCount = (uint32_t)(indices.Size);
+			this->boundingBox = boundingBox;
 		}
 
 		template<typename T>
-		void init(Array<VertexStream> vertexStreams, uint32_t vertexCount, const Array<T>& indices) {
+		void init(
+			Array<VertexStream> vertexStreams,
+			uint32_t vertexCount,
+			const Array<T>& indices,
+			const BoundingBox& boundingBox
+		) {
 			this->vertexStreams = vertexStreams;
 			this->vertexCount = vertexCount;
 			this->indices = Buffer(indices.Data, sizeof(T) * indices.Size);
 			this->indexCount = (uint32_t)(indices.Size);
+			this->boundingBox = boundingBox;
 		}
-
-		//virtual bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist);
 
 		const Array<VertexStream>& getVertexStreams() const {
 			return vertexStreams;
@@ -89,12 +105,11 @@ namespace Ghurund::Engine {
 
 		__declspec(property(get = getIndexSize)) uint32_t IndexSize;
 
-		BoundingBox& getBoundingBox() {
+		const BoundingBox& getBoundingBox() const {
 			return boundingBox;
 		}
 
-		__declspec(property(get = getBoundingBox)) BoundingBox& BoundingBox;
-
+		__declspec(property(get = getBoundingBox)) const BoundingBox& BoundingBox;
 
 #pragma region formats
 	protected:
@@ -103,6 +118,7 @@ namespace Ghurund::Engine {
 		}
 
 	public:
+		// TODO: maybe move formats to loaders?
 		static const inline ResourceFormat FORMAT_MESH = ResourceFormat(L"mesh", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
 		static const inline ResourceFormat FORMAT_3DMF = ResourceFormat(L"3mf", ResourceFormatOptions::CAN_LOAD);
 		static const inline ResourceFormat FORMAT_COLLADA_DAE = ResourceFormat(L"dae", ResourceFormatOptions::CAN_LOAD);
