@@ -43,7 +43,7 @@ namespace Ghurund::Core {
 		bool hotReloadEnabled = false;
 
 		template<typename T>
-		inline const ResourceFormat& guessResourceFormat(const FilePath& path, const ResourceFormat& format) {
+		inline const ResourceFormat& guessResourceFormat(const FilePath& path, const ResourceFormat& format) const {
 			if (format != ResourceFormat::AUTO)
 				return format;
 			for (auto& resourceFormat : T::FORMATS) {
@@ -223,8 +223,11 @@ namespace Ghurund::Core {
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			SaveOptions options = {}
 		) const {
-			const Loader* loader = getLoader(Ghurund::Core::getType<T>());
-			saveInternal(resource, *loader, buffer, workingDir, format, options);
+			const Loader* loader = getLoader(T::TYPE);
+			auto& saveFormat = format;
+			if(resource.Path)
+				saveFormat = guessResourceFormat<T>(*resource.Path, format);
+			saveInternal(resource, *loader, buffer, workingDir, saveFormat, options);
 		}
 
 		template<Derived<Resource> T>
@@ -239,14 +242,15 @@ namespace Ghurund::Core {
 			if (absoluteOrLibPath.IsLibrary)
 				throw NotSupportedException("Saving to file libraries is not supported.");
 			resource.Path = &absoluteOrLibPath;
-			const BaseLoader* loader = getLoader(Ghurund::Core::getType<T>());
+			const BaseLoader* loader = getLoader(T::TYPE);
+			auto& saveFormat = guessResourceFormat<T>(path, format);
 			//Library* library = path.findLibrary(libraries);
 			//if (library) {
 				//auto buffer = path.resolveResource(workingDir, libraries);
 				//saveInternal(resource, *loader, workingDir, buffer, format, options);
 			//} else {
 				Buffer buffer;
-				saveInternal(resource, *loader, buffer, workingDir, format, options);
+				saveInternal(resource, *loader, buffer, workingDir, saveFormat, options);
 				File file(*resource.Path);
 				file.write(buffer);
 			//}
