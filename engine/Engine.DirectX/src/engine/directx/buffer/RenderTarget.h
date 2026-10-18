@@ -22,14 +22,14 @@ namespace Ghurund::Engine::DirectX {
 
     public:
         ~RenderTarget() {
-            uninit();
+            deinit();
         }
 
         void init(DxGraphics& graphics, ID3D12Resource* texture);
 
         void init(DxGraphics& graphics, IntSize size, DXGI_FORMAT format);
 
-        void uninit();
+        void deinit();
 
         inline void clear(CommandList& commandList, ::DirectX::XMFLOAT4 color) {
             const float clearColor[] = { color.x, color.y, color.z, color.w };

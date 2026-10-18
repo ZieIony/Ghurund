@@ -40,11 +40,11 @@ namespace Ghurund::Engine::_2D {
 		inline void uninitEntity2D() {
 			invalidate();
 			for (auto& component : components)
-				component->uninit();
-			transformComponent->uninit();
+				component->deinit();
+			transformComponent->deinit();
 		};
 
-		virtual void onUninit() {
+		virtual void onDeinit() {
 			uninitEntity2D();
 		};
 

@@ -3,7 +3,7 @@
 #include "OglMesh.h"
 
 namespace Ghurund::Engine::OpenGL {
-    CoroutineTask<void> OglMeshLoader::loadInternal(
+    CoroutineTask<void> OglMeshLoader::load_internal(
         OglMesh& resource,
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,

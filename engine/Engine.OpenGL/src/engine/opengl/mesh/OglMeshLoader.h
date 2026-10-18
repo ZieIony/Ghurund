@@ -13,7 +13,7 @@ namespace Ghurund::Engine::OpenGL {
         MeshDataLoader meshDataLoader;
 
     protected:
-        virtual CoroutineTask<void> loadInternal(
+        virtual CoroutineTask<void> load_internal(
             OglMesh& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,

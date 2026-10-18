@@ -36,8 +36,8 @@ namespace Ghurund::Engine {
 		WString shaderPathAttribute = xml.requireAttribute(L"shader");
 		FilePath path = FilePath(shaderPathAttribute);
 		auto shader = co_await resourceManager.load<GraphicsShader>(path, workingDir);
-		resource.init(memoryManager);
 		resource.Shader = shader.get();
+		resource.init(memoryManager);
 		for (const auto& child : xml.children) {
 			if (child->name == L"Parameter") {
 				auto nameAttribute = child->findAttribute(L"name");
@@ -57,7 +57,7 @@ namespace Ghurund::Engine {
 		}
 	}
 
-	CoroutineTask<void> MaterialLoader::loadInternal(
+	CoroutineTask<void> MaterialLoader::load_internal(
 		Material& resource,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
@@ -71,7 +71,7 @@ namespace Ghurund::Engine {
 		}
 	}
 
-	void MaterialLoader::saveInternal(
+	void MaterialLoader::save_internal(
 		Material& resource,
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,

@@ -22,7 +22,7 @@ namespace Ghurund::Engine::_2D {
 			b2DestroyWorld(id);
 		};
 
-		virtual void onUninit() {
+		virtual void onDeinit() {
 			uninitPhysicsSystem2D();
 		};
 

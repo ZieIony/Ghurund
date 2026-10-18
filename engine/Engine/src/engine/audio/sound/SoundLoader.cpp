@@ -167,7 +167,7 @@ namespace Ghurund::Engine {
         sound.init(*audio.MasteringVoice, sourceVoice, waveFormat, audioBuffer);
     }
 
-    CoroutineTask<void> SoundLoader::loadInternal(
+    CoroutineTask<void> SoundLoader::load_internal(
         Sound& resource,
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,

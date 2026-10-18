@@ -39,25 +39,23 @@ public:
         resourceManager.Loaders.set<Sound>(soundLoader.ref());
     }
 
-    TEST_METHOD(Sound_emptyInvalidate) {
+    TEST_METHOD(Sound_emptyDeinit) {
         MemoryGuard guard;
         {
             auto sound = makeIntrusive<Sound>();
-            sound->invalidate();
+            sound->deinit();
         }
     }
 
-    TEST_METHOD(Sound_doubleInvalidate) {
+    TEST_METHOD(Sound_doubleDeinit) {
         MemoryGuard guard;
         {
             auto path = FilePath(L"../../resources/test/sounds/thud.wav");
             auto dir = DirectoryPath::getCurrentDirectory();
 
-            auto thudSound = runCoroutineBlocking(
-                resourceManager.load<Sound>(path, dir, ResourceFormat::AUTO, ResourceManager::LOAD_GENERATE_NAME, { .watch = false, .cache = false })
-            );
-            thudSound->invalidate();
-            thudSound->invalidate();
+            auto thudSound = runCoroutineBlocking(resourceManager.load<Sound>(path, dir));
+            thudSound->deinit();
+            thudSound->deinit();
         }
     }
     };

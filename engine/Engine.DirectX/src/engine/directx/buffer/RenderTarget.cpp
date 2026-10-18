@@ -73,7 +73,7 @@ namespace Ghurund::Engine::DirectX {
         init(graphics, texture);
     }
 
-    void RenderTarget::uninit() {
+    void RenderTarget::deinit() {
         size = {};
         format = DXGI_FORMAT_UNKNOWN;
 

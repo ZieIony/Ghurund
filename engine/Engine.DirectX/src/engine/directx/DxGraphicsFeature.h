@@ -41,7 +41,7 @@ namespace Ghurund::Engine::DirectX {
         [[nodiscard]]
         virtual CoroutineTask<void> onInit() override;
 
-        virtual void onUninit() override;
+        virtual void onDeinit() override;
 
     public:
         DxGraphicsFeature(ResourceManager& resourceManager):GraphicsFeature(resourceManager) {}

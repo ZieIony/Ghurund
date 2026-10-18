@@ -15,8 +15,8 @@ namespace Ghurund::UI {
 		return TYPE;
 	}
 
-	void ControlGroup::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) {
-		__super::loadInternal(loader, workingDir, xml);
+	void ControlGroup::load_internal(LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) {
+		__super::load_internal(loader, workingDir, xml);
 		Children.clear();
 		for(const auto& childElement : xml.children){
 			if (!childElement->name.contains(L".")) {

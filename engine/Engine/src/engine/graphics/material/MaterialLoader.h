@@ -14,7 +14,7 @@ namespace Ghurund::Engine {
 		CoroutineTask<void> loadXmlFormat(Material& resource, const XMLElement& xml, const DirectoryPath& workingDir);
 
 	protected:
-		virtual CoroutineTask<void> loadInternal(
+		virtual CoroutineTask<void> load_internal(
 			Material& resource,
 			const XMLElement& xml,
 			const DirectoryPath& workingDir,
@@ -24,7 +24,25 @@ namespace Ghurund::Engine {
 
 		virtual CoroutineTask<void> onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value);
 
-		virtual void saveInternal(
+		[[nodiscard]]
+		virtual CoroutineTask<void> init_internal(Material& resource) {
+			resource.init(memoryManager);
+			co_return;
+		}
+
+		[[nodiscard]]
+		virtual CoroutineTask<void> deinit_internal(Material& resource) {
+			resource.deinit();
+			co_return;
+		}
+
+		[[nodiscard]]
+		virtual CoroutineTask<void> unload_internal(Material& resource) {
+			resource.unload();
+			co_return;
+		}
+
+		virtual void save_internal(
 			Material& resource,
 			MemoryOutputStream& stream,
 			const DirectoryPath& workingDir,

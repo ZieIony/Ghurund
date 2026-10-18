@@ -28,7 +28,7 @@ namespace Ghurund::Engine {
         inline void remove(IntrusivePointer<System> system) {
             gameObjects.remove(system);
             systems.remove(system);
-            system->uninit();
+            system->deinit();
         }
 
         inline void clear() {
@@ -36,7 +36,7 @@ namespace Ghurund::Engine {
                 auto system = systems.get(systems.Size - 1);
                 systems.removeAt(systems.Size - 1);
                 gameObjects.remove(system);
-                system->uninit();
+                system->deinit();
             }
         }
     };

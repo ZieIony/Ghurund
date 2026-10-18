@@ -11,12 +11,12 @@ namespace Ghurund::Engine::DirectX {
         ResourceManager& resourceManager;
         DxShaderCompiler& compiler;
 
-        void loadFromSource(NotNull<ShaderSource> sourceCode, const DirectoryPath& workingDir, DxGraphicsShader& shader);
-        void loadHlslFormat(const AString& sourceCode, const DirectoryPath& workingDir, DxGraphicsShader& shader);
-        void loadXmlFormat(DxGraphicsShader& resource, const XMLElement& xml, const DirectoryPath& workingDir);
+        void initialize(DxGraphicsShader& shader, const DirectoryPath& workingDir);
+        void loadHlslFormat(DxGraphicsShader& shader, const AString& sourceCode, const DirectoryPath& workingDir);
+        void loadXmlFormat(DxGraphicsShader& shader, const XMLElement& xml, const DirectoryPath& workingDir);
 
     protected:
-        virtual CoroutineTask<void> loadInternal(
+        virtual CoroutineTask<void> load_internal(
             DxGraphicsShader& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
@@ -24,7 +24,7 @@ namespace Ghurund::Engine::DirectX {
             LoadOptions options
         ) override;
 
-        virtual CoroutineTask<void> loadInternal(
+        virtual CoroutineTask<void> load_internal(
             DxGraphicsShader& resource,
             const XMLElement& xml,
             const DirectoryPath& workingDir,
@@ -32,7 +32,7 @@ namespace Ghurund::Engine::DirectX {
             LoadOptions options
         ) override;
 
-        virtual void saveInternal(
+        virtual void save_internal(
             DxGraphicsShader& resource,
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,

@@ -28,7 +28,7 @@ namespace Ghurund::Engine {
         [[nodiscard]]
         virtual CoroutineTask<void> onInit() override;
 
-        virtual void onUninit() override;
+        virtual void onDeinit() override;
 
         virtual IGraphicsResourceFactory& getResourceFactoryInternal() = 0;
 

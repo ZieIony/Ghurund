@@ -1,6 +1,5 @@
 #pragma once
 
-#include "core/allocation/Allocator.h"
 #include "core/concepts/Derived.h"
 #include "core/exception/FormatNotSupportedException.h"
 #include "core/io/MemoryInputStream.h"
@@ -35,18 +34,8 @@ namespace Ghurund::Core {
 		inline static const Ghurund::Core::Type& TYPE = BaseLoader::GET_TYPE();
 #pragma endregion
 
-	private:
-		Allocator* allocator;
-
 	protected:
 		virtual const Ghurund::Core::Type& getResourceType() const = 0;
-
-		inline Resource* makeResource() {
-			auto& constructor = getResourceType().Constructors.get(0).get();
-			if (allocator)
-				return (Resource*)constructor.invokeRawWithAllocator(*allocator);
-			return (Resource*)constructor.invokeRaw();
-		}
 
 		template<Derived<Resource> T>
 		T& castResource(Resource& resource) const {
@@ -74,10 +63,12 @@ namespace Ghurund::Core {
 		void checkXmlRoot(const XMLElement& xml, const WString& name, const ResourceFormat& format);
 
 	public:
-		BaseLoader(Allocator* allocator = nullptr):allocator(allocator) {}
-
 		virtual ~BaseLoader() = 0 {}
 
+		[[nodiscard]]
+		virtual IntrusivePointer<Resource> makeResource() const = 0;
+
+		[[nodiscard]]
 		virtual CoroutineTask<void> load(
 			Resource& resource,
 			MemoryInputStream& stream,
@@ -86,18 +77,7 @@ namespace Ghurund::Core {
 			LoadOptions options = {}
 		) = 0;
 
-		virtual CoroutineTask<IntrusivePointer<Resource>> load(
-			MemoryInputStream& stream,
-			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
-			const ResourceFormat& format = ResourceFormat::AUTO,
-			LoadOptions options = {}
-		) {
-			auto resource = IntrusivePointer(makeResource());
-			co_await load(resource.ref(), stream, workingDir, format, options);
-			resource->validate();
-			co_return resource;
-		}
-
+		[[nodiscard]]
 		virtual CoroutineTask<void> load(
 			Resource& resource,
 			const XMLElement& xml,
@@ -106,17 +86,14 @@ namespace Ghurund::Core {
 			LoadOptions options = {}
 		) = 0;
 
-		virtual CoroutineTask<IntrusivePointer<Resource>> load(
-			const XMLElement& xml,
-			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
-			const ResourceFormat& format = ResourceFormat::AUTO,
-			LoadOptions options = {}
-		) {
-			auto resource = IntrusivePointer(makeResource());
-			co_await load(resource.ref(), xml, workingDir, format, options);
-			resource->validate();
-			co_return resource;
-		}
+		[[nodiscard]]
+		virtual CoroutineTask<void> init(Resource& resource) = 0;
+
+		[[nodiscard]]
+		virtual CoroutineTask<void> deinit(Resource& resource) = 0;
+
+		[[nodiscard]]
+		virtual CoroutineTask<void> unload(Resource& resource) = 0;
 
 		virtual void save(
 			Resource& resource,

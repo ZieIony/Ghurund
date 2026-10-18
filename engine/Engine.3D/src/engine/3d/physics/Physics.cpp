@@ -42,7 +42,7 @@ namespace Ghurund::Engine::_3D {
         co_return;
     }
     
-    void Physics::onUninit() {
+    void Physics::onDeinit() {
         if (physics)
             physics->release();
         if (transport)

@@ -5,7 +5,7 @@
 
 namespace Ghurund::UI {
 
-    CoroutineTask<void> FontLoader::loadInternal(
+    CoroutineTask<void> FontLoader::load_internal(
         Font& resource,
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,

@@ -14,13 +14,17 @@ namespace Ghurund::Engine::DirectX {
         IntrusivePointer<MeshDataLoader> meshDataLoader;
 
     protected:
-        virtual CoroutineTask<void> loadInternal(
+        [[nodiscard]]
+        virtual CoroutineTask<void> load_internal(
             DxMesh& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
             LoadOptions options
         ) override;
+
+        [[nodiscard]]
+        virtual CoroutineTask<void> init_internal(DxMesh& resource) override;
 
     public:
         DxMeshLoader(

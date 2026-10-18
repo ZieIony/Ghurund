@@ -9,6 +9,7 @@
 
 namespace Ghurund::Core {
 	struct DataSize {
+		// TODO: consider 32b sizes
 		uint64_t graphical, system;
 	};
 
@@ -16,6 +17,15 @@ namespace Ghurund::Core {
 	class MemoryInputStream;
 	class MemoryOutputStream;
 	class File;
+
+	enum class ResourceState {
+		// a path may be set, but the rest is missing
+		EMPTY,
+		// the resource was loaded, but can't be used yet, for example because it still needs to be uploaded to VRAM
+		LOADED,
+		// the resource is ready to use
+		INITIALIZED
+	};
 
 	class Resource: public RefCountedObject, public WStringNamedObject {
 #pragma region reflection
@@ -31,7 +41,7 @@ namespace Ghurund::Core {
 #pragma endregion
 
 	private:
-		bool valid = false;
+		ResourceState state = ResourceState::EMPTY;
 		FilePath* path = nullptr;
 
 	protected:
@@ -40,33 +50,27 @@ namespace Ghurund::Core {
 		Resource() {}
 
 		Resource(const Resource& other):
+			state(other.state),
 			path(other.path ? ghnew FilePath(*other.path) : nullptr),
 			dataSize(other.dataSize) {}
 
 		~Resource();
 
-		virtual bool getIsValidInternal() const {
-			return valid;
+		inline void setState(ResourceState newState) {
+			auto prevState = state;
+			state = newState;
+			stateChanged(prevState);
 		}
 
 	public:
-		Event<Resource, void> validChanged = *this;
+		// needed for TileMapComponent, but maybe it could be done in a different way?
+		Event<Resource, void, ResourceState> stateChanged = *this;
 
-		virtual void invalidate() {
-			valid = false;
-			validChanged();
+		inline ResourceState getState() const {
+			return state;
 		}
 
-		inline void validate() {
-			valid = true;
-			validChanged();
-		}
-
-		inline bool getIsValid() const {
-			return getIsValidInternal();
-		}
-
-		__declspec(property(get = getIsValid)) bool IsValid;
+		__declspec(property(get = getState, put = setState)) ResourceState State;
 
 		const FilePath* getPath() const {
 			return path;
@@ -78,12 +82,12 @@ namespace Ghurund::Core {
 		void setPath(const FilePath* path);
 
 		__declspec(property(get = getPath, put = setPath)) FilePath* Path;
-		/*
-		const DataSize& getSize() const {
+		
+		const DataSize& getDataSize() const {
 			return dataSize;
 		}
 
-		__declspec(property(get = getSize)) const DataSize& Size;*/
+		__declspec(property(get = getDataSize)) const DataSize& DataSize;
 
 		virtual String toString() const override;
 

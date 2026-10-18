@@ -35,10 +35,10 @@ namespace Ghurund::Engine::_3D {
 
 		inline void uninitEntity3D() {
 			for (auto& component : components)
-				component->uninit();
+				component->deinit();
 		};
 
-		virtual void onUninit() {
+		virtual void onDeinit() {
 			uninitEntity3D();
 		};
 

@@ -35,7 +35,7 @@ namespace Ghurund::Engine::OpenGL {
             throw CallFailedException();
     }
     
-    void OglRenderingContext::onUninit() {
+    void OglRenderingContext::onDeinit() {
         uninitRenderingContext();
     }
 

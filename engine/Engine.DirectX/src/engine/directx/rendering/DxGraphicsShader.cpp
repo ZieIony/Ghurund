@@ -24,6 +24,8 @@ namespace Ghurund::Engine::DirectX {
 		const List<DxTextureConstantInfo*>& uavConstantInfos,
 		bool isTransparencyEnabled
 	) {
+		deinit();
+
 		this->layout = layout;
 		this->rootSignature = rootSignature.reset();
 		this->pipelineState = pipelineState.reset();
@@ -33,6 +35,10 @@ namespace Ghurund::Engine::DirectX {
 			return c;
 		}();
 		this->isTransparencyEnabled = isTransparencyEnabled;
+
+		dataSize.system = sizeof(*this) + source->getDataSize();
+
+		State = ResourceState::INITIALIZED;
 	}
 
 	bool DxGraphicsShader::apply(DxGraphicsCommandList& commandList) {
@@ -44,24 +50,7 @@ namespace Ghurund::Engine::DirectX {
 		return rsChanged || psChanged;
 	}
 
-
-	void DxGraphicsShader::finalize() {
-		if (rootSignature != nullptr)
-			rootSignature->Release();
-		if (pipelineState != nullptr)
-			pipelineState->Release();
-	}
-
 	DxGraphicsShader::~DxGraphicsShader() {
-		finalize();
-	}
-
-	void DxGraphicsShader::invalidate() {
-		__super::invalidate();
-
-		finalize();
-
-		rootSignature = nullptr;
-		pipelineState = nullptr;
+		deinit_internal();
 	}
 }

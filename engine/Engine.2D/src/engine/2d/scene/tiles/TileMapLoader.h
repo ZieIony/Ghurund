@@ -13,7 +13,7 @@ namespace Ghurund::Engine::_2D {
         ResourceManager& resourceManager;
 
     protected:
-        virtual CoroutineTask<void> loadInternal(
+        virtual CoroutineTask<void> load_internal(
             TileMap& resource,
             const XMLElement& xml,
             const DirectoryPath& workingDir,

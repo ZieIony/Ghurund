@@ -2,7 +2,7 @@
 #include "TileSetLoader.h"
 
 namespace Ghurund::Engine::_2D {
-	CoroutineTask<void> TileSetLoader::loadInternal(
+	CoroutineTask<void> TileSetLoader::load_internal(
 		TileSet& resource,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,

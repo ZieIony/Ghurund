@@ -30,7 +30,7 @@ public:
     }
 
     TEST_METHOD_CLEANUP(uninit) {
-        world->uninit();
+        world->deinit();
     }
 
     TEST_METHOD(World2D_spawnDestroyEntity) {

@@ -12,7 +12,7 @@ namespace Ghurund::UI {
 		ResourceManager& resourceManager;
 
 	protected:
-		virtual CoroutineTask<void> loadInternal(
+		virtual CoroutineTask<void> load_internal(
 			FontAtlas& resource,
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
@@ -20,7 +20,7 @@ namespace Ghurund::UI {
 			LoadOptions options
 		) override;
 
-		virtual void saveInternal(
+		virtual void save_internal(
 			FontAtlas& resource,
 			MemoryOutputStream& stream,
 			const DirectoryPath& workingDir,

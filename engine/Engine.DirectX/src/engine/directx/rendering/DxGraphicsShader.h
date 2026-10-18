@@ -37,14 +37,29 @@ namespace Ghurund::Engine::DirectX {
 		ID3D12RootSignature* rootSignature = nullptr;
 		ID3D12PipelineState* pipelineState = nullptr;
 
-		void finalize();
-
-	protected:
-		virtual bool getIsValidInternal() const override {
-			return __super::getIsValidInternal() && pipelineState != nullptr && rootSignature != nullptr;
+		inline void deinit_internal() {
+			if (rootSignature != nullptr)
+				rootSignature->Release();
+			if (pipelineState != nullptr)
+				pipelineState->Release();
+			rootSignature = nullptr;
+			pipelineState = nullptr;
 		}
 
+	protected:
 		~DxGraphicsShader();
+
+		virtual void onDeinit() {
+			__super::onDeinit();
+			deinit_internal();
+		}
+
+		virtual void updateDataSize() override {
+			__super::updateDataSize();
+			dataSize.system += sizeof(*this) - sizeof(Shader);
+			// TODO: calculate graphical data size
+			//dataSize.graphical = 
+		}
 
 	public:
 		DxGraphicsShader() {}
@@ -66,8 +81,6 @@ namespace Ghurund::Engine::DirectX {
 		);
 
 		bool apply(DxGraphicsCommandList& commandList);
-
-		virtual void invalidate() override;
 
 #pragma region formats
 	protected:

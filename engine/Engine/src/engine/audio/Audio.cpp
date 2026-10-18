@@ -79,7 +79,7 @@ namespace Ghurund::Engine {
         X3DAudioInitialize(dwChannelMask, X3DAUDIO_SPEED_OF_SOUND, x3DInstance);
     }
 
-    void Audio::onUninit() {
+    void Audio::onDeinit() {
         MFShutdown();
 
         delete[] matrixCoefficients;

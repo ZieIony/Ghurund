@@ -18,7 +18,7 @@ namespace Ghurund::Engine::DirectX {
 
     protected:
         ~DxConstantBuffer() {
-            uninit();
+            deinit();
         }
 
     public:
@@ -26,7 +26,7 @@ namespace Ghurund::Engine::DirectX {
 
         void init(ComPtr<ID3D12Resource> uploadHeap);
 
-		void uninit();
+		void deinit();
 
         virtual size_t getSize() const override {
             return buffer->Size;

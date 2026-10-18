@@ -6,59 +6,89 @@
 #include "core/resource/Resource.h"
 
 namespace Ghurund::Engine {
-    using namespace Ghurund::Core;
+	using namespace Ghurund::Core;
 
-    class Shader:public Resource {
+	class Shader:public Resource {
 #pragma region reflection
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-    public:
-        static const Ghurund::Core::Type& GET_TYPE();
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = Shader::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = Shader::GET_TYPE();
 #pragma endregion
 
-    protected:
-        ShaderSource* source = nullptr;
-        ConstantsCollection* constants = nullptr;
+	private:
+		inline void deinit_internal() {
+			if (constants)
+				delete constants;
+			constants = nullptr;
+		}
 
-        inline void finalize() {
-            if (source)
-                source->release();
-            if (constants)
-                delete constants;
-        }
+		inline void unload_internal() {
+			if (source)
+				source->release();
+			source = nullptr;
+		}
 
-        virtual bool getIsValidInternal() const override {
-            return __super::getIsValidInternal() && constants != nullptr;
-        }
+	protected:
+		ShaderSource* source = nullptr;
+		ConstantsCollection* constants = nullptr;
 
-        ~Shader() {
-            finalize();
-        }
+		~Shader() {
+			deinit();
+			unload();
+		}
 
-    public:
-        inline const ShaderSource* getSource() const {
-            return source;
-        }
+		virtual void onDeinit() {
+			deinit_internal();
+		}
 
-        __declspec(property(get = getSource)) const ShaderSource* Source;
+		virtual void onUnload() {
+			unload_internal();
+		}
 
-        inline ConstantsCollection& getConstants() {
-            return *constants;
-        }
+		virtual void updateDataSize() {
+			dataSize.system = sizeof(*this) + source->getDataSize();
+		}
 
-        __declspec(property(get = getConstants)) ConstantsCollection& Constants;
+	public:
+		inline void setSource(ShaderSource* source) {
+			deinit();
+			setPointer(this->source, source);
+			if (source) {
+				updateDataSize();
+				State = ResourceState::LOADED;
+			}
+		}
 
-        virtual void invalidate() override {
-            finalize();
-            source = nullptr;
-            constants = nullptr;
-            
-            __super::invalidate();
-        }
-    };
+		inline const ShaderSource* getSource() const {
+			return source;
+		}
+
+		__declspec(property(get = getSource, put = setSource)) const ShaderSource* Source;
+
+		inline ConstantsCollection& getConstants() {
+			return *constants;
+		}
+
+		__declspec(property(get = getConstants)) ConstantsCollection& Constants;
+
+		inline void deinit() {
+			if (State != ResourceState::INITIALIZED)
+				return;
+			onDeinit();
+			State = ResourceState::LOADED;
+		}
+
+		inline void unload() {
+			if (State != ResourceState::LOADED)
+				return;
+			onUnload();
+			State = ResourceState::EMPTY;
+		}
+	};
 }

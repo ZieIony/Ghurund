@@ -28,7 +28,7 @@ namespace Ghurund::Engine::_2D {
 			audioSystem.set(nullptr);
 		}
 
-		virtual void onUninit() override;
+		virtual void onDeinit() override;
 
 	public:
 		GameApplication& app;
@@ -72,7 +72,7 @@ namespace Ghurund::Engine::_2D {
 		inline CoroutineTask<void> destroyEntity(IntrusivePointer<T> entity) {
 			entity->invalidate();
 			co_await app.CoroutineScheduler.nextUpdate();
-			entity->uninit();
+			entity->deinit();
 		}
 
 		inline void queueDraw(RenderGroup& group) {

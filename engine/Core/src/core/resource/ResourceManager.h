@@ -56,27 +56,8 @@ namespace Ghurund::Core {
 		BaseLoader* getLoader(const Ghurund::Core::Type& type) const;
 
 		[[nodiscard]]
-		CoroutineTask<IntrusivePointer<Resource>> loadInternal(
-			BaseLoader& loader,
-			const FilePath& path,
-			const DirectoryPath& workingDir,
-			const ResourceFormat& format,
-			const WString* name,
-			LoadOptions options
-		);
-
-		[[nodiscard]]
-		CoroutineTask<IntrusivePointer<Resource>> loadInternal(
-			BaseLoader& loader,
-			MemoryInputStream& stream,
-			const DirectoryPath& workingDir,
-			const ResourceFormat& format,
-			const WString* name,
-			LoadOptions options
-		);
-
-		[[nodiscard]]
-		CoroutineTask<IntrusivePointer<Resource>> loadInternal(
+		CoroutineTask<void> load_internal(
+			Resource& resource,
 			BaseLoader& loader,
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
@@ -84,7 +65,10 @@ namespace Ghurund::Core {
 			LoadOptions options
 		);
 
-		void saveInternal(
+		[[nodiscard]]
+		CoroutineTask<void> init_internal(Resource& resource, BaseLoader& loader);
+
+		void save_internal(
 			Resource& resource,
 			const BaseLoader& loader,
 			Buffer& buffer,
@@ -94,11 +78,8 @@ namespace Ghurund::Core {
 		) const;
 
 		void onResourceChanged(Resource& resource) {
-			scheduler.launch(reloadResource(resource));
+			scheduler.launch(reload(resource));
 		}
-
-		[[nodiscard]]
-		CoroutineTask<void> reloadResource(Resource& resource);
 
 		inline static const WString LOAD_GENERATE_NAME_VALUE = L"";
 
@@ -110,12 +91,7 @@ namespace Ghurund::Core {
 		static constexpr const WString* LOAD_GENERATE_NAME = &LOAD_GENERATE_NAME_VALUE;
 
 		explicit ResourceManager(CoroutineScheduler& scheduler):scheduler(scheduler) {
-			IsHotReloadEnabled =
-#ifdef _DEBUG
-			true;
-#else
-			false;
-#endif
+			IsHotReloadEnabled = IS_DEBUG_BUILD && !IS_UNIT_TEST;
 		}
 
 		FilePath resolvePath(const FilePath& absoluteOrLibPath) const;
@@ -135,7 +111,7 @@ namespace Ghurund::Core {
 		inline DirectoryPath getLocalDir(const FilePath& path, const DirectoryPath& workingDir) {
 			if (path.IsAbsolute) {
 				return path.Directory;
-			}else if(path.IsLibrary){
+			} else if (path.IsLibrary) {
 				return resolvePath(path).Directory;
 			} else {
 				return workingDir;
@@ -150,29 +126,60 @@ namespace Ghurund::Core {
 			resources.remove(absoluteOrLibPath);
 		}
 
-		template<Derived<Resource> T>
-		[[nodiscard]]
-		IntrusivePointer<T> get(const WString& name) {
-			Resource* resource = resources.get(name);
-			if (resource)
-				resource->addReference();
-			return IntrusivePointer<T>((T*)resource);
-		}
-
-		template<Derived<Resource> T>
-		[[nodiscard]]
-		IntrusivePointer<T> get(
-			const FilePath& path,
-			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory()
-		) {
-			auto absoluteOrLibPath = resolvePath(getAbsoluteOrLibPath(path, workingDir));
-			Resource* resource = resources.get(absoluteOrLibPath);
-			if (resource)
-				resource->addReference();
-			return IntrusivePointer<T>((T*)resource);
-		}
-
 		CoroutineTask<void> reload(Resource& resource);
+
+		/**
+		* Loads a resource by name. May throw if loading the resource fails.
+		* Parameter 'path' can lead to a file, or to a library entry. Parameter 'name' can be nullptr. If parameter 'name' is 'LOAD_GENERATE_NAME', then a name will be generated.
+		* Default parameters are: workingDir = DirectoryPath::getCurrentDirectory(), format = ResourceFormat::AUTO, name = LOAD_GENERATE_NAME, options = {}.
+		**/
+		template<Derived<Resource> T>
+		[[nodiscard]]
+		CoroutineTask<IntrusivePointer<T>> load(
+			const WString& name,
+			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
+			const ResourceFormat& format = ResourceFormat::AUTO,
+			LoadOptions options = {}
+		) {
+			IntrusivePointer<T> resource = IntrusivePointer<T>((T*)resources.get(name));
+			if (resource == nullptr) {
+				throw std::invalid_argument("resource is not present in cache");
+			} else {
+				resource->addReference();
+			}
+
+			BaseLoader& loader = *getLoader(Ghurund::Core::getType<T>());
+
+			if (resource->State == ResourceState::EMPTY && options.targetState != ResourceState::EMPTY) {
+				auto absoluteOrLibPath = resource->Path;
+				if (!absoluteOrLibPath)
+					throw InvalidStateException("resource needs a valid path to be loaded by name");
+
+				auto& loadFormat = guessResourceFormat<T>(*absoluteOrLibPath, format);
+
+#ifdef _DEBUG
+				auto message = std::format(_T("Loading resource by name '{}'.\n"), name);
+				Logger::log(LogType::INFO, message.c_str());
+#endif
+				SharedPointer<Buffer> buffer = resolveResource(*absoluteOrLibPath);
+				MemoryInputStream stream = MemoryInputStream(buffer->Data, buffer->Size);
+				auto localDir = getLocalDir(*absoluteOrLibPath, workingDir);
+				co_await load_internal(resource.ref(), loader, stream, localDir, format, options);
+			}
+
+			if (options.clone)
+				resource = IntrusivePointer<T>((T*)resource->clone());
+
+			if (resource->State == ResourceState::LOADED && options.targetState != ResourceState::LOADED) {
+#ifdef _DEBUG
+				auto message = std::format(_T("Initializing resource by name '{}'.\n"), name);
+				Logger::log(LogType::INFO, message.c_str());
+#endif
+				co_await init_internal(resource.ref(), loader);
+			}
+
+			co_return resource;
+		}
 
 		/**
 		* Loads a resource from file path, optionally caches the resource and watches for file changes. May throw if loading the resource fails.
@@ -188,11 +195,51 @@ namespace Ghurund::Core {
 			const WString* name = LOAD_GENERATE_NAME,
 			LoadOptions options = {}
 		) {
-			BaseLoader* loader = getLoader(Ghurund::Core::getType<T>());
-			auto& loadFormat = guessResourceFormat<T>(path, format);
-			IntrusivePointer<Resource> resource = co_await loadInternal(*loader, path, workingDir, loadFormat, name, options);
-			resource->addReference();
-			co_return IntrusivePointer<T>((T*)resource.get());
+			BaseLoader& loader = *getLoader(Ghurund::Core::getType<T>());
+
+			auto absoluteOrLibPath = resolvePath(getAbsoluteOrLibPath(path, workingDir));
+			IntrusivePointer<T> resource = IntrusivePointer<T>((T*)resources.get(absoluteOrLibPath));
+			if (resource == nullptr){
+				auto typelessResource = loader.makeResource();
+				resource = IntrusivePointer<T>((T*)typelessResource.get());
+				resource->Path = &absoluteOrLibPath;
+				if (name == LOAD_GENERATE_NAME) {
+					resource->Name = WString(absoluteOrLibPath.FileName.Data);
+				} else if (name) {
+					resource->Name = name;
+				}
+				resources.put(resource.ref());
+				if (options.watch && absoluteOrLibPath.IsAbsolute)
+					watcher.addFile(absoluteOrLibPath);
+			} else {
+				resource->addReference();
+			}
+
+			if (resource->State == ResourceState::EMPTY && options.targetState != ResourceState::EMPTY) {
+				auto& loadFormat = guessResourceFormat<T>(path, format);
+
+#ifdef _DEBUG
+				auto message = std::format(_T("Loading resource from '{}'.\n"), absoluteOrLibPath.toString());
+				Logger::log(LogType::INFO, message.c_str());
+#endif
+				SharedPointer<Buffer> buffer = resolveResource(absoluteOrLibPath);
+				MemoryInputStream stream = MemoryInputStream(buffer->Data, buffer->Size);
+				auto localDir = getLocalDir(absoluteOrLibPath, workingDir);
+				co_await load_internal(resource.ref(), loader, stream, localDir, format, options);
+			}
+
+			if (options.clone)
+				resource = IntrusivePointer<T>((T*)resource->clone());
+
+			if (resource->State == ResourceState::LOADED && options.targetState != ResourceState::LOADED) {
+#ifdef _DEBUG
+				auto message = std::format(_T("Initializing resource from '{}'.\n"), absoluteOrLibPath.toString());
+				Logger::log(LogType::INFO, message.c_str());
+#endif
+				co_await init_internal(resource.ref(), loader);
+			}
+
+			co_return resource;
 		}
 
 		/**
@@ -209,10 +256,47 @@ namespace Ghurund::Core {
 			const WString* name = LOAD_GENERATE_NAME,
 			LoadOptions options = {}
 		) {
-			BaseLoader* loader = getLoader(Ghurund::Core::getType<T>());
-			IntrusivePointer<Resource> resource = co_await loadInternal(*loader, stream, workingDir, format, name, options);
-			resource->addReference();
-			co_return IntrusivePointer<T>((T*)resource.get());
+			BaseLoader& loader = *getLoader(Ghurund::Core::getType<T>());
+
+			IntrusivePointer<T> resource;
+			if (name && name != LOAD_GENERATE_NAME)
+				resource = IntrusivePointer<T>((T*)resources.get(*name));
+			if (resource == nullptr) {
+				auto typelessResource = loader.makeResource();
+				resource = IntrusivePointer<T>((T*)typelessResource.get());
+				if (name)
+					resource->Name = *name;
+				resources.put(resource.ref());
+			} else {
+				resource->addReference();
+			}
+
+			if (resource->State == ResourceState::EMPTY && options.targetState != ResourceState::EMPTY) {
+#ifdef _DEBUG
+				Logger::log(LogType::INFO, _T("Loading resource from stream.\n"));
+#endif
+				co_await load_internal(resource.ref(), loader, stream, workingDir, format, options);
+			}
+
+			if (options.clone)
+				resource = IntrusivePointer<T>((T*)resource->clone());
+
+			if (resource->State == ResourceState::LOADED && options.targetState != ResourceState::LOADED) {
+#ifdef _DEBUG
+				auto message = std::format(_T("Initializing from stream.\n"));
+				Logger::log(LogType::INFO, message.c_str());
+#endif
+				co_await init_internal(resource.ref(), loader);
+			}
+
+			co_return resource;
+		}
+
+		template<Derived<Resource> T>
+		[[nodiscard]]
+		CoroutineTask<void> init(T& resource) {
+			BaseLoader& loader = getLoader(Ghurund::Core::getType<T>());
+			co_await init_internal(resource, loader);
 		}
 
 		template<Derived<Resource> T>
@@ -225,9 +309,9 @@ namespace Ghurund::Core {
 		) const {
 			const Loader* loader = getLoader(T::TYPE);
 			auto& saveFormat = format;
-			if(resource.Path)
+			if (resource.Path)
 				saveFormat = guessResourceFormat<T>(*resource.Path, format);
-			saveInternal(resource, *loader, buffer, workingDir, saveFormat, options);
+			save_internal(resource, *loader, buffer, workingDir, saveFormat, options);
 		}
 
 		template<Derived<Resource> T>
@@ -247,12 +331,12 @@ namespace Ghurund::Core {
 			//Library* library = path.findLibrary(libraries);
 			//if (library) {
 				//auto buffer = path.resolveResource(workingDir, libraries);
-				//saveInternal(resource, *loader, workingDir, buffer, format, options);
+				//save_internal(resource, *loader, workingDir, buffer, format, options);
 			//} else {
-				Buffer buffer;
-				saveInternal(resource, *loader, buffer, workingDir, saveFormat, options);
-				File file(*resource.Path);
-				file.write(buffer);
+			Buffer buffer;
+			save_internal(resource, *loader, buffer, workingDir, saveFormat, options);
+			File file(*resource.Path);
+			file.write(buffer);
 			//}
 		}
 
@@ -281,9 +365,5 @@ namespace Ghurund::Core {
 		}
 
 		__declspec(property(get = getIsHotReloadEnabled, put = setIsHotReloadEnabled)) bool IsHotReloadEnabled;
-
-#ifdef _DEBUG
-		void printResources();
-#endif
 	};
 }

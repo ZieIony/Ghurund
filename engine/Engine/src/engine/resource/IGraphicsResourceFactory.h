@@ -12,7 +12,7 @@ namespace Ghurund::Engine {
 	class IGraphicsResourceFactory:public Noncopyable {
 	public:
 		[[nodiscard]]
-		virtual Mesh* makeMesh(const MeshData& meshData) = 0;
+		virtual Mesh* makeMesh(NotNull<MeshData> meshData) = 0;
 
 		[[nodiscard]]
 		virtual ITexture* makeTexture(Image& image, bool generateMips = false) = 0;

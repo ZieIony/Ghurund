@@ -15,9 +15,9 @@ namespace Ghurund::Core {
 				this->path.add(L'/');
 		}
 
-		DirectoryPath(const DirectoryPath& path):DirectoryPath(path.path) {}
+		DirectoryPath(const DirectoryPath& other):Path(other) {}
 
-		DirectoryPath(DirectoryPath&& path) noexcept:Path(std::move(path)) {}
+		DirectoryPath(DirectoryPath&& other) noexcept:Path(std::move(other)) {}
 
 		inline DirectoryPath& operator=(const DirectoryPath& other) {
 			if (this == &other)

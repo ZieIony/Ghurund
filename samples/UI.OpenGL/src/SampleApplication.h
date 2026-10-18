@@ -21,7 +21,7 @@ namespace Sample {
     protected:
         virtual void onInit() override;
 
-        virtual void onUninit() override;
+        virtual void onDeinit() override;
 
     public:
         SampleApplication() {

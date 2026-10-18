@@ -54,7 +54,7 @@ namespace Ghurund::Engine::_3D {
         [[nodiscard]]
         virtual CoroutineTask<void> onInit() override;
 
-        virtual void onUninit() override;
+        virtual void onDeinit() override;
 
         PxPhysics& get() {
             return *physics;

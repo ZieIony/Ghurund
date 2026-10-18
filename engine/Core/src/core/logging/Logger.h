@@ -33,7 +33,7 @@ namespace Ghurund::Core {
     public:
         static void init(std::unique_ptr<LogOutput> output = nullptr);
 
-        static void uninit();
+        static void deinit();
 
         static inline void setFilter(const LogType& level) {
             filterLevel = level.Value;

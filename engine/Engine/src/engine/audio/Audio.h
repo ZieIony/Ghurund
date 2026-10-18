@@ -51,7 +51,7 @@ namespace Ghurund::Engine {
     public:
         virtual void onInit() override;
 
-        virtual void onUninit() override;
+        virtual void onDeinit() override;
 
         inline ComPtr<IXAudio2> getDevice() {
             return device;

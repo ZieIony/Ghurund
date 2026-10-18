@@ -11,7 +11,7 @@ namespace UnitTest {
     public:
         size_t loadCalls = 0;
 
-        virtual CoroutineTask<void> loadInternal(
+        virtual CoroutineTask<void> load_internal(
             TestResource& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,

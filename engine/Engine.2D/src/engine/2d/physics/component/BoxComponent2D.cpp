@@ -29,8 +29,11 @@ namespace Ghurund::Engine::_2D {
 				visualizationComponent->release();
 			}
 			visualizationComponent = Owner.makeComponent<VisualizationComponent2D>();
-			visualizationComponent->Mesh = Owner.World.app.ResourceManager.get<Ghurund::Engine::Mesh>(Graphics2DFeature::MESH_SPRITE).get();;
-			visualizationComponent->Material = Owner.World.app.ResourceManager.get<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_VISUALIZATION_BOX).get();
+			auto& resourceManager = Owner.World.app.ResourceManager;
+			auto visMesh = co_await resourceManager.load<Ghurund::Engine::Mesh>(Graphics2DFeature::MESH_SPRITE);
+			visualizationComponent->Mesh = visMesh.get();
+			auto visMaterial = co_await resourceManager.load<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_VISUALIZATION_BOX);
+			visualizationComponent->Material = visMaterial.get();
 			Owner.Components.add(visualizationComponent);
 		}
 		co_await __super::onInit();

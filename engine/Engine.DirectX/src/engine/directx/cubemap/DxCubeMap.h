@@ -31,35 +31,54 @@ namespace Ghurund::Engine::DirectX {
         List<IntrusivePointer<Ghurund::Core::Image>> imagesFront;
         List<IntrusivePointer<Ghurund::Core::Image>> imagesBack;
 
-        bool uploaded = false;
-
-        void finalize();
-
-    protected:
-        virtual bool getIsValidInternal() const override;
-
-        ~DxCubeMap() {
-            finalize();
+        inline void unload_internal() {
+            imagesTop.clear();
+            imagesBottom.clear();
+            imagesLeft.clear();
+            imagesRight.clear();
+            imagesFront.clear();
+            imagesBack.clear();
+            dataSize.system = sizeof(*this);
         }
 
-    public:
-        virtual void invalidate();
+        inline void deinit_internal() {
+            textureResource.Reset();
+        }
 
-        void init(
-            List<IntrusivePointer<Ghurund::Core::Image>>& imagesTop,
-            List<IntrusivePointer<Ghurund::Core::Image>>& imagesBottom,
-            List<IntrusivePointer<Ghurund::Core::Image>>& imagesLeft,
-            List<IntrusivePointer<Ghurund::Core::Image>>& imagesRight,
-            List<IntrusivePointer<Ghurund::Core::Image>>& imagesFront,
-            List<IntrusivePointer<Ghurund::Core::Image>>& imagesBack,
-            class DxGPUMemoryManager& memoryManager
-        );
+    protected:
+        ~DxCubeMap() {}
+
+    public:
+        void init(class DxGPUMemoryManager& memoryManager);
+
+        inline void deinit() {
+            if (State != ResourceState::INITIALIZED)
+                return;
+            deinit_internal();
+            State = ResourceState::LOADED;
+        }
+
+        inline void unload() {
+            if (State != ResourceState::LOADED)
+                return;
+            unload_internal();
+            State = ResourceState::EMPTY;
+        }
 
         inline DXGI_FORMAT getFormat() const {
             return format;
         }
 
         __declspec(property(get = getFormat)) DXGI_FORMAT Format;
+
+        void setImages(
+            List<IntrusivePointer<Ghurund::Core::Image>>& imagesTop,
+            List<IntrusivePointer<Ghurund::Core::Image>>& imagesBottom,
+            List<IntrusivePointer<Ghurund::Core::Image>>& imagesLeft,
+            List<IntrusivePointer<Ghurund::Core::Image>>& imagesRight,
+            List<IntrusivePointer<Ghurund::Core::Image>>& imagesFront,
+            List<IntrusivePointer<Ghurund::Core::Image>>& imagesBack
+        );
 
         /*inline Ghurund::Core::Image* getImage() {
             return image;

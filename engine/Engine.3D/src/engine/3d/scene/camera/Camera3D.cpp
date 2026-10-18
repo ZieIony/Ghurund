@@ -236,8 +236,8 @@ namespace Ghurund::Engine::_3D {
 		XMStoreFloat(&dist, XMVector3Length(XMLoadFloat3(&target) - pv2));
 	}
 
-	/*void Camera::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOptions options) {
-		//__super::loadInternal(context, workingDir, stream, options);
+	/*void Camera::load_internal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOptions options) {
+		//__super::load_internal(context, workingDir, stream, options);
 
 		memcpy(&pos, stream.readBytes(sizeof(pos)), sizeof(pos));
 		memcpy(&target, stream.readBytes(sizeof(target)), sizeof(target));
@@ -255,8 +255,8 @@ namespace Ghurund::Engine::_3D {
 		pers = stream.readBoolean();
 	}
 
-	void Camera::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOptions options) const {
-		//__super::saveInternal(context, workingDir, stream, options);
+	void Camera::save_internal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOptions options) const {
+		//__super::save_internal(context, workingDir, stream, options);
 
 		stream.writeBytes(&pos, sizeof(pos));
 		stream.writeBytes(&target, sizeof(target));

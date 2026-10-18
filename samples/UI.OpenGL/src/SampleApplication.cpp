@@ -12,9 +12,9 @@ namespace Sample {
         ResourceManager.Libraries.clear();
     }
 
-    void SampleApplication::onUninit() {
+    void SampleApplication::onDeinit() {
         uninitSampleApplication();
-        __super::onUninit();
+        __super::onDeinit();
     }
     
     void SampleApplication::onInit() {

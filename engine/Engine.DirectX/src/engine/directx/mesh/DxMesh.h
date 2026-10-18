@@ -36,6 +36,8 @@ namespace Ghurund::Engine::DirectX {
 #pragma endregion
 
     protected:
+        IntrusivePointer<MeshData> meshData;
+
         List<VertexRole> roles;
         List<ComPtr<ID3D12Resource>> vertexBuffers;
         List<D3D12_VERTEX_BUFFER_VIEW> vertexBuffersView;
@@ -48,25 +50,44 @@ namespace Ghurund::Engine::DirectX {
 
         void initIndexBuffer(const Buffer& indices, uint32_t indexCount, DxGPUMemoryManager& memoryManager);
 
-        virtual bool getIsValidInternal() const override {
-			return __super::getIsValidInternal() && vertexBuffers[0].Get() && indexBuffer.Get();
-        }
-
     public:
         // VS complains
         DxMesh() {}
 
-        // TODO: move this to coroutines
-        virtual void init(const MeshData& mesh, DxGPUMemoryManager& memoryManager);
+		void setMeshData(MeshData* meshData) {
+			deinit();
+			unload();
+			this->meshData.set(meshData);
+            meshData->addReference();
+            if (meshData) {
+                dataSize.system = sizeof(this) + meshData->DataSize.system;
+                State = ResourceState::LOADED;
+            }
+		}
 
-        virtual void invalidate() override {
+        // TODO: move this to coroutines
+        void init(DxGPUMemoryManager& memoryManager);
+
+        void deinit() {
+            if (State != ResourceState::INITIALIZED)
+                return;
+
+            roles.clear();
             vertexBuffers.clear();
             vertexBuffersView.clear();
-            /*for(auto& buffer:vertexBuffers)
-                buffer.Reset();*/
             indexBuffer.Reset();
+            dataSize.system = sizeof(this) + meshData->DataSize.system;
+            dataSize.graphical = 0;
+            State = ResourceState::LOADED;
+        }
 
-            __super::invalidate();
+        void unload() {
+            if (State != ResourceState::LOADED)
+                return;
+
+            meshData.set(nullptr);
+            dataSize.system = sizeof(this);
+            State = ResourceState::EMPTY;
         }
 
         void draw(CommandList& commandList, const Array<VertexRole>& layout);

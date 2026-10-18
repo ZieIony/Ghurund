@@ -80,14 +80,12 @@ namespace Ghurund::Engine::DirectX {
 		void build(
 			DxGraphicsShader& shader,
 			const Array<SharedPointer<DxShaderProgram>>& programs,
-			const List<SamplerInfo>& samplerInfos,
 			ShaderSettings shaderSettings
 		);
 
 		void build(
 			DxComputeShader& shader,
-			const DxShaderProgram& computeProgram,
-			const List<SamplerInfo>& samplerInfos
+			const DxShaderProgram& computeProgram
 		);
 	};
 }

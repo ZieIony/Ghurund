@@ -28,7 +28,7 @@ namespace Ghurund::Engine::_3D {
 			audioSystem.set(nullptr);
 		}
 
-		virtual void onUninit() override;
+		virtual void onDeinit() override;
 
 	public:
 		GameApplication& app;

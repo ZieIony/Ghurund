@@ -20,9 +20,7 @@ namespace Ghurund::Engine {
         return TYPE;
     }
 
-    void Sound::invalidate() {
-        __super::invalidate();
-
+    void Sound::deinit() {
         if (sourceVoice) {
             sourceVoice->DestroyVoice();
             sourceVoice = nullptr;
@@ -33,6 +31,8 @@ namespace Ghurund::Engine {
         }
         delete audioBuffer.pAudioData;
         memset(&audioBuffer, 0, sizeof(XAUDIO2_BUFFER));
+
+        State = ResourceState::EMPTY;
     }
 
     void Sound::play() {

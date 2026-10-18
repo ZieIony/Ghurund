@@ -5,8 +5,8 @@
 #include "ui/control/InvalidControl.h"
 
 namespace Ghurund::UI {
-	void ContentWidget::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) {
-		__super::loadInternal(loader, workingDir, xml);
+	void ContentWidget::load_internal(LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) {
+		__super::load_internal(loader, workingDir, xml);
 		for (const auto& childElement : xml.children) {
 			if (!childElement->name.contains(L".")) {
 				try {

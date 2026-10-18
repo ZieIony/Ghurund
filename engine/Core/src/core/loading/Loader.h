@@ -38,9 +38,6 @@ namespace Ghurund::Core {
 		inline static const Ghurund::Core::Type& TYPE = Loader::GET_TYPE();
 #pragma endregion
 
-	private:
-		Allocator* allocator;
-
 	protected:
 		virtual const Ghurund::Core::Type& getResourceType() const override {
 			return T::TYPE;
@@ -64,7 +61,7 @@ namespace Ghurund::Core {
 				XMLDocument document;
 				document.parse(streamContents.Data, (uint32_t)streamContents.Size);
 				const XMLElement& root = document.Root;
-				co_await loadInternal(resource, root, workingDir, format, options);
+				co_await load_internal(resource, root, workingDir, format, options);
 			} catch (...) {
 				stream.Position = streamPosition;
 				std::exception_ptr exception = std::current_exception();
@@ -73,7 +70,7 @@ namespace Ghurund::Core {
 		}
 
 		[[nodiscard]]
-		virtual CoroutineTask<void> loadInternal(
+		virtual CoroutineTask<void> load_internal(
 			T& resource,
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
@@ -84,7 +81,7 @@ namespace Ghurund::Core {
 		}
 
 		[[nodiscard]]
-		virtual CoroutineTask<void> loadInternal(
+		virtual CoroutineTask<void> load_internal(
 			T& resource,
 			const XMLElement& xml,
 			const DirectoryPath& workingDir,
@@ -94,7 +91,22 @@ namespace Ghurund::Core {
 			throw NotSupportedException();
 		}
 
-		virtual void saveInternal(
+		[[nodiscard]]
+		virtual CoroutineTask<void> init_internal(T& resource) {
+			co_return;
+		}
+
+		[[nodiscard]]
+		virtual CoroutineTask<void> deinit_internal(T& resource) {
+			co_return;
+		}
+
+		[[nodiscard]]
+		virtual CoroutineTask<void> unload_internal(T& resource) {
+			co_return;
+		}
+
+		virtual void save_internal(
 			T& resource,
 			MemoryOutputStream& stream,
 			const DirectoryPath& workingDir,
@@ -104,7 +116,7 @@ namespace Ghurund::Core {
 			throw NotSupportedException();
 		}
 
-		virtual void saveInternal(
+		virtual void save_internal(
 			T& resource,
 			const XMLElement& xml,
 			const DirectoryPath& workingDir,
@@ -115,9 +127,12 @@ namespace Ghurund::Core {
 		}
 
 	public:
-		Loader(Allocator* allocator = nullptr):allocator(allocator) {}
-
 		virtual ~Loader() = 0 {}
+
+		[[nodiscard]]
+		virtual IntrusivePointer<Resource> makeResource() const override {
+			return makeIntrusive<T>();
+		}
 
 		[[nodiscard]]
 		virtual CoroutineTask<void> load(
@@ -129,10 +144,11 @@ namespace Ghurund::Core {
 		) override {
 			if (!format.CanLoad)
 				throw FormatNotSupportedException(format);
-			if (resource.IsValid)
-				resource.invalidate();
+#ifdef _DEBUG
+			_ASSERTE(resource.State == ResourceState::EMPTY);
+#endif
 			T& typedResource = castResource<T>(resource);
-			co_await loadInternal(typedResource, stream, workingDir, format, options);
+			co_await load_internal(typedResource, stream, workingDir, format, options);
 		}
 
 		[[nodiscard]]
@@ -145,10 +161,29 @@ namespace Ghurund::Core {
 		) override {
 			if (!format.CanLoad)
 				throw FormatNotSupportedException(format);
-			if (resource.IsValid)
-				resource.invalidate();
+#ifdef _DEBUG
+			_ASSERTE(resource.State == ResourceState::EMPTY);
+#endif
 			T& typedResource = castResource<T>(resource);
-			co_await loadInternal(typedResource, root, workingDir, format, options);
+			co_await load_internal(typedResource, root, workingDir, format, options);
+		}
+
+		[[nodiscard]]
+		virtual CoroutineTask<void> init(Resource& resource) override {
+			T& typedResource = castResource<T>(resource);
+			co_await init_internal(typedResource);
+		}
+
+		[[nodiscard]]
+		virtual CoroutineTask<void> deinit(Resource& resource) override {
+			T& typedResource = castResource<T>(resource);
+			co_await deinit_internal(typedResource);
+		}
+
+		[[nodiscard]]
+		virtual CoroutineTask<void> unload(Resource& resource) override {
+			T& typedResource = castResource<T>(resource);
+			co_await unload_internal(typedResource);
 		}
 
 		virtual void save(
@@ -163,8 +198,11 @@ namespace Ghurund::Core {
 				resolvedFormat = getPreferredSaveFormat();
 			if (!resolvedFormat.CanSave)
 				throw FormatNotSupportedException(resolvedFormat);
+#ifdef _DEBUG
+			_ASSERTE(resource.State != ResourceState::EMPTY);
+#endif
 			T& typedResource = castResource<T>(resource);
-			saveInternal(typedResource, stream, workingDir, resolvedFormat, options);
+			save_internal(typedResource, stream, workingDir, resolvedFormat, options);
 		}
 
 		virtual void save(
@@ -179,8 +217,11 @@ namespace Ghurund::Core {
 				resolvedFormat = getPreferredSaveFormat();
 			if (!resolvedFormat.CanSave)
 				throw FormatNotSupportedException(resolvedFormat);
+#ifdef _DEBUG
+			_ASSERTE(resource.State != ResourceState::EMPTY);
+#endif
 			T& typedResource = castResource<T>(resource);
-			saveInternal(typedResource, root, workingDir, resolvedFormat, options);
+			save_internal(typedResource, root, workingDir, resolvedFormat, options);
 		}
 	};
 }

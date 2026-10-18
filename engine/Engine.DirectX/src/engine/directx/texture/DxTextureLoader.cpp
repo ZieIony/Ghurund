@@ -2,7 +2,7 @@
 #include "DxTextureLoader.h"
 
 namespace Ghurund::Engine::DirectX {
-	CoroutineTask<void> DxTextureLoader::loadInternal(
+	CoroutineTask<void> DxTextureLoader::load_internal(
 		DxTexture& resource,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
@@ -11,7 +11,7 @@ namespace Ghurund::Engine::DirectX {
 	) {
 		checkXmlRoot(xml, L"Texture", DxTexture::FORMAT_XML);
 		auto images = co_await loadMipImages(resourceManager, xml, workingDir, format, options);
-		resource.init(images, memoryManager);
+		resource.Images = images;
 	}
 
 	CoroutineTask<List<IntrusivePointer<Image>>> DxTextureLoader::loadMipImages(

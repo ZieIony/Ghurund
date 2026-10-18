@@ -31,6 +31,20 @@ typedef unsigned long address_t;
 #pragma comment(lib, "Dbghelp.lib")
 
 namespace Ghurund::Core {
+    const bool IS_DEBUG_BUILD =
+#ifdef _DEBUG
+    true;
+#else
+    false;
+#endif
+
+    const bool IS_UNIT_TEST =
+#ifdef _UNIT_TESTS
+        true;
+#else
+        false;
+#endif
+
     /**
      * @brief Modifies a value to be in range (alignment*N) <= value < (alignment*(N+1)).
      * @tparam Type type of value, alignment and aligned value.

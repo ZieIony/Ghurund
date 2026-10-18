@@ -39,7 +39,7 @@ namespace Ghurund::UI::DirectX {
         [[nodiscard]]
         virtual CoroutineTask<void> onInit() override;
 
-        virtual void onUninit() override;
+        virtual void onDeinit() override;
 
         virtual Ghurund::UI::ConstraintFactory* getConstraintFactory() override {
             return constraintFactory;

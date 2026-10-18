@@ -39,7 +39,7 @@ namespace Ghurund::Core {
         RefCountedObject::dumpPointers();
 #endif
 
-        Logger::uninit();
+        Logger::deinit();
 
 #ifdef _DEBUG
         _____________________checkMemory();

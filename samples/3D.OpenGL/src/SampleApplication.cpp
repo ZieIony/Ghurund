@@ -23,8 +23,8 @@ namespace Sample {
         window->bringToFront();
     }
     
-    void SampleApplication::onUninit() {
+    void SampleApplication::onDeinit() {
         uninitDemoApplication();
-        __super::onUninit();
+        __super::onDeinit();
     }
 }

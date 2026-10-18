@@ -17,9 +17,10 @@ namespace Ghurund::Engine::DirectX {
 		}
 
 		[[nodiscard]]
-		virtual Mesh* makeMesh(const MeshData& meshData) override {
+		virtual Mesh* makeMesh(NotNull<MeshData> meshData) override {
 			auto mesh = makeIntrusive<DxMesh>();
-			mesh->init(meshData, memoryManager);
+			mesh->setMeshData(meshData.get());
+			mesh->init(memoryManager);
 			mesh->addReference();
 			return mesh.get();
 		}
@@ -30,14 +31,16 @@ namespace Ghurund::Engine::DirectX {
 			auto imagePtr = IntrusivePointer<Image>(&image);
 			image.addReference();
 			List<IntrusivePointer<Image>> images = { imagePtr };
-			texture->init(images, memoryManager);
+			texture->Images = images;
+			texture->init(memoryManager);
 			return texture;
 		}
 
 		[[nodiscard]]
 		virtual ITexture* makeTexture(List<IntrusivePointer<Image>>& images) override {
 			auto texture = ghnew DxTexture();
-			texture->init(images, memoryManager);
+			texture->Images = images;
+			texture->init(memoryManager);
 			return texture;
 		}
 	};

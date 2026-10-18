@@ -22,7 +22,7 @@ namespace Ghurund::Engine {
         void loadData(Sound& sound, MemoryInputStream& stream);
 
     protected:
-        virtual CoroutineTask<void> loadInternal(
+        virtual CoroutineTask<void> load_internal(
             Sound& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,

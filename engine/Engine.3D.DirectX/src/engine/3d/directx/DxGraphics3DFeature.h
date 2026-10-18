@@ -28,7 +28,7 @@ namespace Ghurund::Engine::_3D::DirectX {
         [[nodiscard]]
         virtual CoroutineTask<void> onInit() override;
 
-        virtual void onUninit() override;
+        virtual void onDeinit() override;
 
     public:
         DxGraphics3DFeature(

@@ -22,7 +22,7 @@ namespace Ghurund::Engine::DirectX {
 
     protected:
         [[nodiscard]]
-        virtual CoroutineTask<void> loadInternal(
+        virtual CoroutineTask<void> load_internal(
             DxCubeMap& resource,
             const XMLElement& xml,
             const DirectoryPath& workingDir,

@@ -7,11 +7,17 @@
 
 namespace Ghurund::Engine::_3D {
 	CoroutineTask<void> MeshComponent::onInit() {
-		if (!Mesh)
-			Mesh = Owner.World.app.ResourceManager.get<Ghurund::Engine::Mesh>(Graphics3DFeature::MESH_CUBE).get();
+		auto& resourceManager = Owner.World.app.ResourceManager;
+		if (!Mesh) {
+			auto cubeMesh = co_await resourceManager.load<Ghurund::Engine::Mesh>(Graphics3DFeature::MESH_CUBE);
+			Mesh = cubeMesh.get();
+		}
 		if (!Material) {
-			auto basicMaterial = IntrusivePointer<Ghurund::Engine::Material>(
-				Owner.World.app.ResourceManager.get<Ghurund::Engine::Material>(Graphics3DFeature::MATERIAL_FORWARD_LIT)->clone()
+			auto basicMaterial = co_await resourceManager.load<Ghurund::Engine::Material>(
+				Graphics3DFeature::MATERIAL_FORWARD_LIT,
+				DirectoryPath::getCurrentDirectory(),
+				ResourceFormat::AUTO,
+				{ .clone = true }
 			);
 			Material = basicMaterial.get();
 		}

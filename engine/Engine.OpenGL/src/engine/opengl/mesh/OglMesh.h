@@ -13,12 +13,12 @@ namespace Ghurund::Engine::OpenGL {
 
     public:
         ~OglMesh() {
-            uninit();
+            deinit();
         }
 
         void init(const MeshData& mesh);
 
-        void uninit();
+        void deinit();
 
         void draw();
 

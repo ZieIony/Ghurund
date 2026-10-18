@@ -34,7 +34,7 @@ namespace Ghurund::UI {
 		}
 
 	protected:
-		virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) override;
+		virtual void load_internal(LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) override;
 
 		virtual void onLayoutChanged() override {
 			if (container) {

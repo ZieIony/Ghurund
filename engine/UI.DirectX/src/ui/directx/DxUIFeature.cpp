@@ -41,7 +41,7 @@ namespace Ghurund::UI::DirectX {
         co_return;
     }
     
-    void DxUIFeature::onUninit() {
+    void DxUIFeature::onDeinit() {
         resourceManager.Loaders.remove<Control>();
         resourceManager.Loaders.remove<Ghurund::UI::Font>();
         layoutLoader.set(nullptr);

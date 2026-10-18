@@ -37,7 +37,7 @@ private:
         } catch (std::exception e) {
             return false;
         }
-        return shader->IsValid;
+		return shader->State == ResourceState::INITIALIZED;
     }
 
 public:

@@ -4,6 +4,7 @@
 
 #include "core/resource/ResourceManager.h"
 #include "ui/control/Control.h"
+#include <ui/loading/ControlLayout.h>
 
 namespace Ghurund::UI {
 	class FileLayoutProvider:public LayoutProvider {
@@ -18,9 +19,15 @@ namespace Ghurund::UI {
 		): resourceManager(resourceManager), path(path) {}
 
 		virtual IntrusivePointer<Control> get() override {
-			auto coroutine = resourceManager.load<Control>(path, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, ResourceManager::LOAD_GENERATE_NAME, { .cache = false });
+			auto coroutine = resourceManager.load<ControlLayout>(
+				path,
+				DirectoryPath::getCurrentDirectory(),
+				ResourceFormat::AUTO,
+				ResourceManager::LOAD_GENERATE_NAME,
+				{ .clone = false }
+			);
 			coroutine.resume();
-			return coroutine.Result;
+			return coroutine.Result->control;
 		}
 	};
 }

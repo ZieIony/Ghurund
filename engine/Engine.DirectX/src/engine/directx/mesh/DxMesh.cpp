@@ -14,24 +14,37 @@ namespace Ghurund::Engine::DirectX {
 		return TYPE;
 	}
 
-	void DxMesh::init(const MeshData& mesh, DxGPUMemoryManager& memoryManager) {
-		memoryManager.resetUpload();
+	void DxMesh::init(DxGPUMemoryManager& memoryManager) {
+		if (State != ResourceState::LOADED)
+			return;
 
-		initVertexBuffers(mesh.VertexStreams, mesh.VertexCount, memoryManager);
-		initIndexBuffer(mesh.Indices, mesh.IndexCount, memoryManager);
-		boundingBox = mesh.BoundingBox;
+		memoryManager.resetUpload();
+		dataSize.graphical = 0;
+
+		initVertexBuffers(meshData->VertexStreams, meshData->VertexCount, memoryManager);
+		initIndexBuffer(meshData->Indices, meshData->IndexCount, memoryManager);
+		boundingBox = meshData->BoundingBox;
 
 		memoryManager.executeUploads();
+
+		// sizeof(this) contains indexBuffer and indexBufferView
+		dataSize.system = sizeof(this) + meshData->DataSize.system;
+		dataSize.system += roles.Size * sizeof(VertexRole);
+		dataSize.system += vertexBuffers.Size * sizeof(ComPtr<ID3D12Resource>);
+		dataSize.system += vertexBuffersView.Size * sizeof(D3D12_VERTEX_BUFFER_VIEW);
+		State = ResourceState::INITIALIZED;
 	}
 
 	void DxMesh::initVertexBuffers(const Array<VertexStream>& vertexStreams, uint32_t vertexCount, DxGPUMemoryManager& memoryManager) {
-		roles.clear();
-		vertexBuffers.clear();
-		vertexBuffersView.clear();
+		roles.resize(vertexStreams.Size);
+		vertexBuffers.resize(vertexStreams.Size);
+		vertexBuffersView.resize(vertexStreams.Size);
 		for (size_t i = 0; i < vertexStreams.Size; i++) {
 			const VertexStream& stream = vertexStreams[i];
 
 			unsigned int vertexBufferSize = stream.vertexSize * vertexCount;
+			// TODO: get the right size from vertexBuffer (alignment and stuff)
+			dataSize.graphical += vertexBufferSize;
 
 			ComPtr<ID3D12Resource> vertexBuffer = memoryManager.makeVertexBuffer(stream.data);
 
@@ -48,6 +61,8 @@ namespace Ghurund::Engine::DirectX {
 
 	void DxMesh::initIndexBuffer(const Buffer& buffer, uint32_t indexCount, DxGPUMemoryManager& memoryManager) {
 		size_t indexBufferSize = buffer.Size;
+		// TODO: get the right size from indexBuffer (alignment and stuff)
+		dataSize.graphical += indexBufferSize;
 		this->indexCount = indexCount;
 		
 		indexBuffer = memoryManager.makeIndexBuffer(buffer);

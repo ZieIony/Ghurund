@@ -22,7 +22,7 @@ namespace Ghurund::UI {
 		void saveToBin(TextStyle& textStyle, MemoryOutputStream& stream, const DirectoryPath& workingDir) const;
 
 	protected:
-		virtual CoroutineTask<void> loadInternal(
+		virtual CoroutineTask<void> load_internal(
 			TextStyle& resource,
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
@@ -30,7 +30,7 @@ namespace Ghurund::UI {
 			LoadOptions options
 		) override;
 
-		virtual void saveInternal(
+		virtual void save_internal(
 			TextStyle& resource,
 			MemoryOutputStream& stream,
 			const DirectoryPath& workingDir,

@@ -122,8 +122,8 @@ namespace Ghurund::Engine::_2D {
 		this->pos = pos;
 	}
 
-	/*void Camera2D::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOptions options) {
-		//__super::loadInternal(context, workingDir, stream, options);
+	/*void Camera2D::load_internal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOptions options) {
+		//__super::load_internal(context, workingDir, stream, options);
 
 		memcpy(&pos, stream.readBytes(sizeof(pos)), sizeof(pos));
 		memcpy(&right, stream.readBytes(sizeof(right)), sizeof(right));
@@ -136,8 +136,8 @@ namespace Ghurund::Engine::_2D {
 		memcpy(&up, stream.readBytes(sizeof(up)), sizeof(up));
 	}
 
-	void Camera2D::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOptions options) const {
-		//__super::saveInternal(context, workingDir, stream, options);
+	void Camera2D::save_internal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOptions options) const {
+		//__super::save_internal(context, workingDir, stream, options);
 
 		stream.writeBytes(&pos, sizeof(pos));
 		stream.writeBytes(&right, sizeof(right));

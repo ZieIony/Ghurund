@@ -31,22 +31,13 @@ namespace Ghurund::Engine {
         XAUDIO2_BUFFER audioBuffer = {};
         bool loop = false;
 
-    protected:
-        virtual bool getIsValidInternal() const override {
-			return __super::getIsValidInternal() && sourceVoice;
-		}
-
     public:
         Sound() {}
 
 		~Sound() {
-			if (sourceVoice)
-				sourceVoice->DestroyVoice();
-            CoTaskMemFree(waveFormat);
-			delete audioBuffer.pAudioData;
+            if (State != ResourceState::EMPTY)
+                deinit();
 		}
-
-		virtual void invalidate() override;
 
         void init(
             NotNull<IXAudio2MasteringVoice> masteringVoice,
@@ -60,7 +51,11 @@ namespace Ghurund::Engine {
             this->sourceVoice->GetVoiceDetails(&inputDetails);
             this->waveFormat = waveFormat.get();
             this->audioBuffer = audioBuffer;
+
+            State = ResourceState::INITIALIZED;
 		}
+
+        void deinit();
 
         void play();
 

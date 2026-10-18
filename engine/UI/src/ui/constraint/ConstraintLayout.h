@@ -27,7 +27,7 @@ namespace Ghurund::UI {
 		//List<Guide> guides;
 
 	protected:
-		virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) override;
+		virtual void load_internal(LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) override;
 
 		virtual void onDraw(RenderGroup& group, const XMFLOAT2& parentPosition) override;
 

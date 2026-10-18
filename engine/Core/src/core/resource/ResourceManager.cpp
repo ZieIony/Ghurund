@@ -61,80 +61,39 @@ namespace Ghurund::Core {
 		return loader;
 	}
 
-	CoroutineTask<IntrusivePointer<Resource>> ResourceManager::loadInternal(
-		BaseLoader& loader,
-		const FilePath& path,
-		const DirectoryPath& workingDir,
-		const ResourceFormat& format,
-		const WString* name,
-		LoadOptions options
-	) {
-		auto absoluteOrLibPath = resolvePath(getAbsoluteOrLibPath(path, workingDir));
-		IntrusivePointer<Resource> resource = IntrusivePointer(resources.get(absoluteOrLibPath));
-		if (resource == nullptr) {
-#ifdef _DEBUG
-			auto message = std::format(_T("Loading resource from '{}'\n"), absoluteOrLibPath.toString());
-			Logger::log(LogType::INFO, message.c_str());
-#endif
-			SharedPointer<Buffer> buffer = resolveResource(absoluteOrLibPath);
-			MemoryInputStream stream = MemoryInputStream(buffer->Data, buffer->Size);
-			auto localDir = getLocalDir(absoluteOrLibPath, workingDir);
-			resource = co_await loadInternal(loader, stream, localDir, format, options);
-			resource->Path = &absoluteOrLibPath;
-			if (name == LOAD_GENERATE_NAME) {
-				resource->Name = WString(absoluteOrLibPath.FileName.Data);
-			} else if (name) {
-				resource->Name = *name;
-			}
-			if (options.cache)
-				resources.put(resource.ref());
-			try {
-				if (options.watch && absoluteOrLibPath.IsAbsolute)
-					watcher.addFile(absoluteOrLibPath);
-			} catch (...) {}
-		} else {
-			resource->addReference();
-		}
-		co_return resource;
-	}
-
-	CoroutineTask<IntrusivePointer<Resource>> ResourceManager::loadInternal(
-		BaseLoader& loader,
-		MemoryInputStream& stream,
-		const DirectoryPath& workingDir,
-		const ResourceFormat& format,
-		const WString* name,
-		LoadOptions options
-	) {
-		auto resource = co_await loadInternal(loader, stream, workingDir, format, options);
-		if (name)
-			resource->Name = name;
-		if (options.cache)
-			resources.put(resource.ref());
-		co_return resource;
-	}
-
-	CoroutineTask<IntrusivePointer<Resource>> ResourceManager::loadInternal(
+	CoroutineTask<void> ResourceManager::load_internal(
+		Resource& resource,
 		BaseLoader& loader,
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
 		LoadOptions options
 	) {
-		IntrusivePointer<Resource> resource;
 		try {
-			resource = co_await loader.load(stream, workingDir, format, options);
+			co_await loader.load(resource, stream, workingDir, format, options);
+			_ASSERTE(resource.State != ResourceState::EMPTY);
+			_ASSERTE(resource.DataSize.system > 0);
 		} catch (...) {
 			auto text = std::format(_T("failed to load resource\n"));
 			Logger::log(LogType::ERR0R, text.c_str());
 			std::exception_ptr exception = std::current_exception();
 			std::rethrow_exception(exception);
 		}
-
-		co_return resource;
 	}
 
-	void ResourceManager::saveInternal(
+	CoroutineTask<void> ResourceManager::init_internal(Resource& resource, BaseLoader& loader) {
+		try {
+			co_await loader.init(resource);
+			_ASSERTE(resource.State == ResourceState::INITIALIZED);
+		} catch (...) {
+			auto text = std::format(_T("failed to init resource\n"));
+			Logger::log(LogType::ERR0R, text.c_str());
+			std::exception_ptr exception = std::current_exception();
+			std::rethrow_exception(exception);
+		}
+	}
+
+	void ResourceManager::save_internal(
 		Resource& resource,
 		const BaseLoader& loader,
 		Buffer& buffer,
@@ -153,15 +112,6 @@ namespace Ghurund::Core {
 		buffer.setData(stream.Data, stream.BytesWritten);
 	}
 
-	CoroutineTask<void> ResourceManager::reloadResource(Resource& resource) {
-		co_await scheduler.nextUpdate();
-		resource.invalidate();
-		co_await scheduler.backgroundThread();
-		co_await reload(resource);
-		co_await scheduler.nextUpdate();
-		resource.validate();
-	}
-
 	const Ghurund::Core::Type& ResourceManager::GET_TYPE() {
 		static const Ghurund::Core::Type TYPE = TypeBuilder<ResourceManager>()
 			.withSupertype(__super::GET_TYPE());
@@ -172,18 +122,11 @@ namespace Ghurund::Core {
 	const DirectoryPath ResourceManager::ENGINE_LIB_PATH = DirectoryPath(std::format(L"{}{}", LIB_PROTOCOL, ENGINE_LIB_NAME).c_str());
 
 	CoroutineTask<void> ResourceManager::reload(Resource& resource) {
-		auto path = *resource.Path;
-		auto loader = getLoader(resource.Type);
-		SharedPointer<Buffer> buffer = resolveResource(path);
-		MemoryInputStream stream(buffer->Data, buffer->Size);
-		try {
-			auto workingDir = DirectoryPath::getCurrentDirectory();
-			co_await loader->load(resource, stream, getLocalDir(path, workingDir), ResourceFormat::AUTO);
-		} catch (std::exception& exception) {
-			auto text = std::format(_T("failed to reload resource `{}`\n"), resource.toString());
-			Logger::log(LogType::ERR0R, text.c_str());
-			throw exception;
-		}
+		co_await scheduler.nextUpdate();
+		co_await scheduler.backgroundThread();
+		//co_await reload(resource);
+		co_await scheduler.nextUpdate();
+		// TODO: implement this
 	}
 
 	void ResourceManager::setIsHotReloadEnabled(bool enabled) {
@@ -217,10 +160,4 @@ namespace Ghurund::Core {
 			return resource.save(*resource.Path, options);
 		}
 	}*/
-
-#ifdef _DEBUG
-	void ResourceManager::printResources() {
-		resources.printResources();
-	}
-#endif
 }

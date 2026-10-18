@@ -5,30 +5,37 @@
 #include "engine/directx/memory/DxGPUMemoryManager.h"
 
 namespace Ghurund::Engine::DirectX {
-    const Ghurund::Core::Type& DxTexture::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<DxTexture>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<DxTexture>()
-            .withSupertype(__super::GET_TYPE())
-            .withConstructor(CONSTRUCTOR);
+	const Ghurund::Core::Type& DxTexture::GET_TYPE() {
+		static const auto CONSTRUCTOR = Constructor<DxTexture>();
+		static const Ghurund::Core::Type TYPE = TypeBuilder<DxTexture>()
+			.withSupertype(__super::GET_TYPE())
+			.withConstructor(CONSTRUCTOR);
 
-        return TYPE;
-    }
+		return TYPE;
+	}
 
-    void DxTexture::init(
-        List<IntrusivePointer<Ghurund::Core::Image>>& images,
-        DxGPUMemoryManager& memoryManager
-    ) {
-        this->images = images;
-        size = images[0]->Size;
-        format = images[0]->Format;
+	void DxTexture::init(DxGPUMemoryManager& memoryManager) {
+		memoryManager.resetUpload();
 
-        memoryManager.resetUpload();
+		textureResource = memoryManager.makeTexture(images);
+		descHandle = memoryManager.makeTextureRV(textureResource, images[0]->Format, images.Size);
 
-        textureResource = memoryManager.makeTexture(images);
-        descHandle = memoryManager.makeTextureRV(textureResource, images[0]->Format, images.Size);
+		memoryManager.executeUploads();
+		State = ResourceState::INITIALIZED;
+	}
+	
+	void DxTexture::setImages(List<IntrusivePointer<Ghurund::Core::Image>>& images) {
+		if (State != ResourceState::EMPTY) {
+			deinit_internal();
+			unload_internal();
+		}
 
-        memoryManager.executeUploads();
+		this->images = images;
+		size = images[0]->Size;
+		format = images[0]->Format;
 
-        uploaded = true;
-    }
+		dataSize.system = sizeof(*this);
+
+		State = ResourceState::LOADED;
+	}
 }

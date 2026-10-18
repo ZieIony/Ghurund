@@ -58,8 +58,8 @@ namespace Ghurund::UI {
 		}
 	}
 
-    CoroutineTask<void> LayoutLoader::loadInternal(
-        Control& resource,
+    CoroutineTask<void> LayoutLoader::load_internal(
+        ControlLayout& resource,
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
@@ -76,7 +76,7 @@ namespace Ghurund::UI {
             namespaceName = convertText<wchar_t, char>(*namespaceAttr);
 		AString type = namespaceName + "::" + convertText<wchar_t, char>(child.name);
 
-        resource.load(*this, workingDir, child);
+        //resource.load(*this, workingDir, child);
         co_return;
     }
 
@@ -141,14 +141,14 @@ namespace Ghurund::UI {
         if (name == L"include") {
             auto layoutAttr = xml.requireAttribute(L"layout");
             try {
-                auto coroutine = resourceManager.load<Control>(FilePath(layoutAttr), workingDir, Control::FORMAT_XML, ResourceManager::LOAD_GENERATE_NAME, { .cache = false });
+                auto coroutine = resourceManager.load<ControlLayout>(FilePath(layoutAttr), workingDir, ControlLayout::FORMAT_XML, ResourceManager::LOAD_GENERATE_NAME, { .clone = true });
                 coroutine.resume();
-                IntrusivePointer<Control> control = coroutine.Result;
+                IntrusivePointer<ControlLayout> control = coroutine.Result;
                 PartialConstraintSet loadedConstraints;
                 loadedConstraints.load(control->Type, *this, xml);
                 PartialConstraintSet constraints = parent.makeDefaultConstraints();
                 constraints.merge(loadedConstraints);
-                return ControlWithConstraints(control, constraints);
+                //return ControlWithConstraints(control, constraints);
             } catch (...) {
                 auto text = std::format(_T("Could not load layout '{}'.\n"), layoutAttr);
 				Logger::log(LogType::ERR0R, text.c_str());

@@ -49,7 +49,7 @@ namespace Ghurund::Engine::_2D {
 
 		virtual CoroutineTask<void> onInit() override;
 
-		virtual void onUninit() {
+		virtual void onDeinit() {
 			uninitBaseSpriteComponent();
 		};
 

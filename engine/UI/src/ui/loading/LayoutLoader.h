@@ -10,6 +10,7 @@
 #include "ui/layout/ControlWithConstraints.h"
 #include "ui/text/DocumentElement.h"
 #include "ui/theme/ThemedValue.h"
+#include "ControlLayout.h"
 
 namespace Ghurund::UI {
 	using namespace Ghurund::Core;
@@ -17,7 +18,7 @@ namespace Ghurund::UI {
 	class TextFormat;
 	class Theme;
 
-	class LayoutLoader:public Loader<Control> {
+	class LayoutLoader:public Loader<ControlLayout> {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -39,8 +40,8 @@ namespace Ghurund::UI {
 		static inline const AString DEFAULT_CONTROL_NAMESPACE = LayoutLoader::TYPE.Namespace;
 
 	protected:
-		virtual CoroutineTask<void> loadInternal(
-			Control& resource,
+		virtual CoroutineTask<void> load_internal(
+			ControlLayout& resource,
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,

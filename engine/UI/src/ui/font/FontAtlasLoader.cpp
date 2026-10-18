@@ -95,7 +95,7 @@ namespace Ghurund::UI {
 		}
 	}
 
-	CoroutineTask<void> FontAtlasLoader::loadInternal(
+	CoroutineTask<void> FontAtlasLoader::load_internal(
 		FontAtlas& resource,
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
@@ -120,7 +120,7 @@ namespace Ghurund::UI {
 		}
 	}
 
-	void FontAtlasLoader::saveInternal(
+	void FontAtlasLoader::save_internal(
 		FontAtlas& resource,
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,

@@ -44,7 +44,7 @@ public:
             DxGPUMemoryManager memoryManager(graphics, commandList.ref());
             dxMesh->init(mesh.ref(), memoryManager);
 
-            Assert::IsTrue(mesh->IsValid);
+            Assert::IsTrue(mesh->State == ResourceState::INITIALIZED);
         }
     }
     };

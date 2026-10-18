@@ -30,8 +30,8 @@ namespace Ghurund::Engine::_2D::DirectX {
 		auto mesh = makeIntrusive<DxMesh>();
 		auto spriteMeshData = makeIntrusive<SpriteMeshData>();
 		spriteMeshData->init();
-		mesh->init(spriteMeshData.ref(), memoryManager);
-		mesh->validate();
+		mesh->setMeshData(spriteMeshData.get());
+		mesh->init(memoryManager);
 		mesh->Name = &MESH_SPRITE;
 		resourceManager.Resources.put(mesh.get());
 		
@@ -53,8 +53,8 @@ namespace Ghurund::Engine::_2D::DirectX {
 		);
 	}
 
-	void DxGraphics2DFeature::onUninit() {
+	void DxGraphics2DFeature::onDeinit() {
 		uninitDxGraphicsFeature();
-		__super::onUninit();
+		__super::onDeinit();
 	}
 }

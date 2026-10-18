@@ -2,7 +2,7 @@
 #include "TextureAtlasLoader.h"
 
 namespace Ghurund::Engine {
-	CoroutineTask<void> TextureAtlasLoader::loadInternal(
+	CoroutineTask<void> TextureAtlasLoader::load_internal(
 		TextureAtlas& resource,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,

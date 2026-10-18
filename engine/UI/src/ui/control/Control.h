@@ -5,7 +5,6 @@
 #include "core/math/Size.h"
 #include "core/reflection/Property.h"
 #include "core/reflection/StandardTypes.h"
-#include "core/resource/Resource.h"
 #include "engine/graphics/mesh/Mesh.h"
 #include "ui/constraint/Constraint.h"
 #include "ui/constraint/ContentSize.h"
@@ -34,7 +33,7 @@ namespace Ghurund::UI {
 	using namespace Ghurund::Core;
 	using namespace Ghurund::Engine;
 
-	class Control:public Resource, public EventConsumer {
+	class Control:public RefCountedObject, public EventConsumer {
 #pragma region reflection
 	private:
 		static Ghurund::Core::Property<Control, bool> PROPERTY_IS_ENABLED;
@@ -90,7 +89,7 @@ namespace Ghurund::UI {
 
 		Theme* localTheme = nullptr;
 
-		Control(const Control& other):Resource(other),
+		Control(const Control& other):
 			cursor(other.cursor),
 			size(other.size),
 			visible(other.visible), enabled(other.enabled), focusable(other.focusable),
@@ -101,7 +100,7 @@ namespace Ghurund::UI {
 
 		virtual ~Control();
 
-		virtual void loadInternal(Ghurund::UI::LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml);
+		virtual void load_internal(Ghurund::UI::LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml);
 
 		virtual void onLoaded();
 
@@ -392,7 +391,7 @@ namespace Ghurund::UI {
 
 		inline void load(Ghurund::UI::LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) {
 			try {
-				loadInternal(loader, workingDir, xml);
+				load_internal(loader, workingDir, xml);
 				onLoaded();
 			} catch (std::exception e) {
 				throw e;
@@ -402,20 +401,6 @@ namespace Ghurund::UI {
 		virtual Control* clone() const override {
 			return ghnew Control(*this);
 		}
-
-#pragma region formats
-	protected:
-		virtual const Array<ResourceFormat>& getFormatsImpl() const override {
-			return Control::FORMATS;
-		}
-
-	public:
-		static const inline ResourceFormat FORMAT_XML = ResourceFormat(L"xml", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
-
-		inline static const Array<ResourceFormat>& FORMATS = { FORMAT_XML };
-
-		static const inline uint32_t VERSION = 0;
-#pragma endregion
 
 #ifdef _DEBUG
 		virtual void validate() const;

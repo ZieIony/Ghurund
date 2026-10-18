@@ -30,17 +30,15 @@ namespace Ghurund::UI {
 		UIInputs uiInputs = {};
 
 	protected:
-		virtual void initInputs() override {
-			__super::initInputs();
-
-			uiInputs.init(Inputs);
-		}
-
-	protected:
-		UIMaterial(const UIMaterial& other):Material(other), uiInputs(other.uiInputs) {}
+		UIMaterial(const UIMaterial& other):Material(other) {}
 
 	public:
 		UIMaterial() {}
+
+		void init(NotNull<IGPUMemoryManager> memoryManager) {
+			uiInputs.init(Inputs);
+			__super::init(memoryManager);
+		}
 
 		inline UIInputs& getUIInputs() {
 			return uiInputs;

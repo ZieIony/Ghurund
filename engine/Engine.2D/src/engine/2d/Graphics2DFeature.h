@@ -35,7 +35,7 @@ namespace Ghurund::Engine::_2D {
         [[nodiscard]]
         virtual CoroutineTask<void> onInit() override;
 
-        virtual void onUninit() override;
+        virtual void onDeinit() override;
 
     public:
         inline static const WString MESH_SPRITE = L"gh sprite mesh";

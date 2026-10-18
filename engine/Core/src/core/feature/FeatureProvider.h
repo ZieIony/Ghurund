@@ -104,9 +104,9 @@ namespace Ghurund::Core {
 				init(f.value);
 		}
 
-		void uninit() {
+		void deinit() {
 			for (auto rit = initialized.rbegin(); rit != initialized.rend(); rit++)
-				(*rit)->uninit();
+				(*rit)->deinit();
 			initialized.clear();
 		}
 	};

@@ -25,7 +25,7 @@ namespace Ghurund::Engine::_2D {
 
 	private:
 		TileMap* tileMap = nullptr;
-		EventHandler<Resource, void> tileMapChanged = [this](Resource& resource)->bool {
+		EventHandler<Resource, void, ResourceState> tileMapChanged = [this](Resource& resource, const ResourceState& prevState)->bool {
 			reloadResource();
 			return true;
 		};
@@ -41,7 +41,7 @@ namespace Ghurund::Engine::_2D {
 
 		virtual CoroutineTask<void> onInit();
 
-		virtual void onUninit() {
+		virtual void onDeinit() {
 			uninitTileMapComponent();
 		};
 
@@ -63,10 +63,10 @@ namespace Ghurund::Engine::_2D {
 
 		inline void setTileMap(TileMap* tileMap) {
 			if (this->tileMap)
-				this->tileMap->validChanged -= tileMapChanged;
+				this->tileMap->stateChanged -= tileMapChanged;
 			setPointer(this->tileMap, tileMap);
 			if (tileMap)
-				tileMap->validChanged += tileMapChanged;
+				tileMap->stateChanged += tileMapChanged;
 			if (material && tileMap)
 				inputs.ColorTexture = tileMap->TileSet->TextureAtlas->get();
 		}

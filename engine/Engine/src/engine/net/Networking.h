@@ -23,7 +23,7 @@ namespace Ghurund::Net {
     public:
         void init();
 
-        void uninit() {
+        void deinit() {
             WSACleanup();
         };
 

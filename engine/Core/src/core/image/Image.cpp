@@ -7,12 +7,16 @@
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core {
-    void Image::init(const Buffer& data, const IntSize& size, DXGI_FORMAT format) {
+    void Image::load(const Buffer& data, const IntSize& size, DXGI_FORMAT format) {
         imageData = data;
         this->size = size;
         this->format = format;
         this->pixelSize = ImageLoader::getDXGIFormatBitsPerPixel(format) / 8;
         rowPitch = ((uint32_t)(data.Size / size.Height));
+
+        dataSize.system = sizeof(*this) + imageData.Size;
+
+        State = ResourceState::INITIALIZED;
     }
 
     template<>

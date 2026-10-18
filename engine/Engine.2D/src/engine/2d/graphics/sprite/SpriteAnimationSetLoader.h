@@ -11,7 +11,7 @@ namespace Ghurund::Engine::_2D {
 	private:
         ResourceManager& resourceManager;
 
-        virtual CoroutineTask<void> loadInternal(
+        virtual CoroutineTask<void> load_internal(
             SpriteAnimationSet& resource,
             const XMLElement& xml,
             const DirectoryPath& workingDir,
@@ -19,7 +19,7 @@ namespace Ghurund::Engine::_2D {
             LoadOptions options
         ) override;
 
-        virtual void saveInternal(
+        virtual void save_internal(
             SpriteAnimationSet& resource,
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,

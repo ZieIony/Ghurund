@@ -25,5 +25,9 @@ namespace Ghurund::Engine::DirectX {
 			_ASSERTE(entryPoint.Length < sourceCode.Length);
 #endif
 		}
+
+		virtual uint64_t getDataSize() {
+			return __super::getDataSize() + sizeof(*this) - sizeof(ShaderProgramSourceCode);
+		}
 	};
 }

@@ -8,7 +8,7 @@ namespace Ghurund::Core {
     protected:
         virtual void onInit() {};
 
-        virtual void onUninit() {};
+        virtual void onDeinit() {};
 
     public:
         virtual ~Initializable() = 0 {};
@@ -26,10 +26,10 @@ namespace Ghurund::Core {
             isInitialized = true;
         }
 
-        inline void uninit() {
+        inline void deinit() {
             if (!isInitialized)
                 return;
-            onUninit();
+            onDeinit();
             isInitialized = false;
         }
     };

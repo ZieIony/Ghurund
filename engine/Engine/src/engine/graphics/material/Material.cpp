@@ -44,7 +44,7 @@ namespace Ghurund::Engine {
         throw std::invalid_argument("invalid valueInput type");
     }
 
-    void Material::initInputs() {
+    void Material::init(NotNull<IGPUMemoryManager> memoryManager) {
         for (auto& bi : shader->Constants.BufferConstants) {
             for (auto& vi : bi.valueConstants) {
                 auto input = makeInput(vi);
@@ -68,29 +68,13 @@ namespace Ghurund::Engine {
             cubeMapInputs.add(input);
             inputs.add(input);
         }
+
+        State = ResourceState::INITIALIZED;
     }
 
-	Material::Material(const Material& other):Resource(other), memoryManager(other.memoryManager), shader(other.shader) {
-		if (shader) {
-			shader->addReference();
-			for (size_t i = 0; i < other.valueInputs.Size; i++) {
-				auto input = (BaseValueInput*)other.valueInputs[i]->clone();
-				valueInputs.add(input);
-                inputs.add(input);
-			}
-			for (size_t i = 0; i < shader->Constants.BufferConstants.Size; i++)
-				constantBuffers.add(IntrusivePointer(memoryManager->makeConstantBuffer(other.constantBuffers[i]->Size)));
-			for (size_t i = 0; i < other.textureInputs.Size; i++) {
-				auto input = other.textureInputs[i]->clone();
-				textureInputs.add(input);
-                inputs.add(input);
-			}
-            for (size_t i = 0; i < other.cubeMapInputs.Size; i++) {
-                auto input = other.cubeMapInputs[i]->clone();
-                cubeMapInputs.add(input);
-                inputs.add(input);
-            }
-        }
+	Material::Material(const Material& other):Resource(other) {
+        Shader = other.shader;
+        State = shader ? ResourceState::LOADED : ResourceState::EMPTY;
 	}
 
     void Material::applyInputs(ParameterCollection& globals) {

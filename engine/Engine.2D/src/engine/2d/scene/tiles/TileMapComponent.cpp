@@ -34,9 +34,11 @@ namespace Ghurund::Engine::_2D {
 		GraphicsFeature* graphicsFeature = Owner.World.app.Features.get<GraphicsFeature>();
 		mesh = graphicsFeature->ResourceFactory.makeMesh(tileMapMeshData.ref());
 
-		// TODO: clone materials in a more transparent way
-		auto spriteMaterial = IntrusivePointer<Ghurund::Engine::Material>(
-			Owner.World.app.ResourceManager.get<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_SPRITE)->clone()
+		auto spriteMaterial = co_await Owner.World.app.ResourceManager.load<Ghurund::Engine::Material>(
+			Graphics2DFeature::MATERIAL_SPRITE,
+			DirectoryPath::getCurrentDirectory(),
+			ResourceFormat::AUTO,
+			{ .clone = true }
 		);
 		Material = spriteMaterial.get();
 
@@ -44,11 +46,7 @@ namespace Ghurund::Engine::_2D {
 	}
 
 	void TileMapComponent::reloadResource() {
-		if (tileMap && !tileMap->IsValid) {
-			uninit();
-		} else {
-			Owner.World.app.CoroutineScheduler.launch(init());
-		}
+		Owner.World.app.ResourceManager.reload(*tileMap);
 	}
 	
 	void TileMapComponent::queueDraw(RenderGroup& group) {

@@ -67,7 +67,7 @@ namespace Sample {
 
 		auto computeShader = co_await app.ResourceManager.load<ComputeShader>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"shaders/DirectX/compute/generateMipMaps.xml"));
 
-		app.ResourceManager.printResources();
+		app.ResourceManager.Resources.printResources();
 	}
 
 	bool SampleWindow::onKeyEvent(const KeyEventArgs& args) {

@@ -13,9 +13,13 @@ namespace Ghurund::Engine {
         ShaderProgramSourceCode(const AString& sourceCode):sourceCode(sourceCode) {}
 
         virtual ~ShaderProgramSourceCode() {}
+
+        virtual uint64_t getDataSize() {
+            return sizeof(this) + sourceCode.Length;
+        }
     };
 
-    class ShaderSource:public Resource {
+    class ShaderSource:public RefCountedObject {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -35,6 +39,14 @@ namespace Ghurund::Engine {
 
         ~ShaderSource() {
             programs.deleteItems();
+        }
+
+        inline uint64_t getDataSize() {
+            uint64_t size = sizeof(this);
+            size += samplers.Capacity * sizeof(SamplerInfo);
+            for (auto program : programs)
+                size += program->getDataSize();
+            return size;
         }
     };
 }

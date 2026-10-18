@@ -162,7 +162,7 @@ namespace Ghurund::Core {
         return -1;
     }
 
-    CoroutineTask<void> ImageLoader::loadInternal(
+    CoroutineTask<void> ImageLoader::load_internal(
         Image& resource,
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
@@ -264,11 +264,11 @@ namespace Ghurund::Core {
                 throw std::bad_function_call();
         }
 
-        resource.init(imageData, {width, height}, giFormat);
+        resource.load(imageData, {width, height}, giFormat);
         co_return;
     }
 
-    void ImageLoader::saveInternal(
+    void ImageLoader::save_internal(
         Image& resource,
         MemoryOutputStream& stream,
         const DirectoryPath& workingDir,

@@ -4,16 +4,15 @@
 #include "engine/directx/shader/compiler/DxEntrypointNotFoundException.h"
 
 namespace Ghurund::Engine::DirectX {
-	void DxComputeShaderLoader::loadFromSource(NotNull<ShaderSource> shaderSource, const DirectoryPath& workingDir, DxComputeShader& shader) {
-		DxShaderProgramSourceCode* computeShaderSource = (DxShaderProgramSourceCode*)shaderSource->programs[0];
+	void DxComputeShaderLoader::initialize(const DirectoryPath& workingDir, DxComputeShader& shader) {
+		DxShaderProgramSourceCode* computeShaderSource = (DxShaderProgramSourceCode*)shader.Source->programs[0];
 		if(computeShaderSource->shaderType != DxShaderType::COMPUTE) {
 			Logger::log(LogType::ERR0R, _T("Compute shader program is required.\n"));
 			throw DxEntrypointNotFoundException(DxShaderType::COMPUTE);
 		}
 		CompilerInclude include(resourceManager, workingDir, includeDirs);
 		auto computeProgram = SharedPointer<DxShaderProgram>(compiler.compile(*computeShaderSource, &include));
-		compiler.build(shader, computeProgram.ref(), shaderSource->samplers);
-		shader.validate();
+		compiler.build(shader, computeProgram.ref());
 	}
 
 	void DxComputeShaderLoader::loadHlslFormat(const AString& sourceCode, const DirectoryPath& workingDir, DxComputeShader& shader) {
@@ -26,7 +25,8 @@ namespace Ghurund::Engine::DirectX {
 			shaderSource->programs.add(ghnew DxShaderProgramSourceCode(DxShaderType::COMPUTE, sourceCode, sourceName));
 		}
 
-		loadFromSource(shaderSource.ref(), workingDir, shader);
+		shader.Source = shaderSource.get();
+		initialize(workingDir, shader);
 	}
 
 	void DxComputeShaderLoader::loadXmlFormat(DxComputeShader& resource, const XMLElement& xml, const DirectoryPath& workingDir) {
@@ -93,10 +93,11 @@ namespace Ghurund::Engine::DirectX {
 			}
 		}();
 		shaderSource->programs.add(ghnew DxShaderProgramSourceCode(DxShaderType::COMPUTE, sourceCode, sourceName));
-		loadFromSource(shaderSource.ref(), workingDir, resource);
+		resource.Source = shaderSource.get();
+		initialize(workingDir, resource);
 	}
 
-	CoroutineTask<void> DxComputeShaderLoader::loadInternal(
+	CoroutineTask<void> DxComputeShaderLoader::load_internal(
 		DxComputeShader& resource,
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
@@ -120,7 +121,7 @@ namespace Ghurund::Engine::DirectX {
 		}
 	}
 
-	CoroutineTask<void> DxComputeShaderLoader::loadInternal(
+	CoroutineTask<void> DxComputeShaderLoader::load_internal(
 		DxComputeShader& resource,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
@@ -130,7 +131,7 @@ namespace Ghurund::Engine::DirectX {
 		co_return;
 	}
 
-	void DxComputeShaderLoader::saveInternal(
+	void DxComputeShaderLoader::save_internal(
 		DxComputeShader& resource,
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,

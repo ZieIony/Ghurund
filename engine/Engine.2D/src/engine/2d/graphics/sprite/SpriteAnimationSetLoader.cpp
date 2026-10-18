@@ -4,7 +4,7 @@
 #include "core/math/Float.h"
 
 namespace Ghurund::Engine::_2D {
-	CoroutineTask<void> SpriteAnimationSetLoader::loadInternal(
+	CoroutineTask<void> SpriteAnimationSetLoader::load_internal(
 		SpriteAnimationSet& resource,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
@@ -28,7 +28,7 @@ namespace Ghurund::Engine::_2D {
 		}
 	}
 
-	void SpriteAnimationSetLoader::saveInternal(
+	void SpriteAnimationSetLoader::save_internal(
 		SpriteAnimationSet& resource,
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,

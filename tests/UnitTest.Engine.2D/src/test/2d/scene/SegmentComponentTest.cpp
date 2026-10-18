@@ -45,7 +45,7 @@ namespace UnitTest {
         }
 
         TEST_METHOD_CLEANUP(uninit) {
-            world->uninit();
+            world->deinit();
         }
 
         TEST_METHOD(SegmentComponent_doubleInit) {

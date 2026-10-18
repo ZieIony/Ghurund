@@ -110,7 +110,6 @@ namespace Ghurund::Engine::DirectX {
 	void DxShaderCompiler::build(
 		DxGraphicsShader& shader,
 		const Array<SharedPointer<DxShaderProgram>>& programs,
-		const List<SamplerInfo>& samplerInfos,
 		ShaderSettings shaderSettings
 	) {
 		List<DxBufferConstantInfo*> constantBuffers;
@@ -118,7 +117,7 @@ namespace Ghurund::Engine::DirectX {
 		List<DxTextureConstantInfo*> uavs;
 		List<DxSamplerInfo*> samplers;
 		for (auto& program : programs)
-			initConstants(program.ref(), samplerInfos, constantBuffers, textures, uavs, samplers);
+			initConstants(program.ref(), shader.Source->samplers, constantBuffers, textures, uavs, samplers);
 
 		D3D12_INPUT_LAYOUT_DESC inputLayout;
 		for (auto& program : programs) {
@@ -150,16 +149,12 @@ namespace Ghurund::Engine::DirectX {
 		);
 	}
 
-	void DxShaderCompiler::build(
-		DxComputeShader& shader,
-		const DxShaderProgram& computeProgram,
-		const List<SamplerInfo>& samplerInfos
-	) {
+	void DxShaderCompiler::build(DxComputeShader& shader, const DxShaderProgram& computeProgram) {
 		List<DxBufferConstantInfo*> constantBuffers;
 		List<DxTextureConstantInfo*> textures;
 		List<DxTextureConstantInfo*> uavs;
 		List<DxSamplerInfo*> samplers;
-		initConstants(computeProgram, samplerInfos, constantBuffers, textures, uavs, samplers);
+		initConstants(computeProgram, shader.Source->samplers, constantBuffers, textures, uavs, samplers);
 
 		Finally f = [&] {
 			constantBuffers.deleteItems();

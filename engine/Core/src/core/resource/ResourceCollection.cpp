@@ -21,8 +21,8 @@ namespace Ghurund::Core {
 	void ResourceCollection::put(NotNull<Resource> resource) {
 		std::unique_lock lock(mutex);
 #ifdef _DEBUG
-		// don't accept resources without a usable id, or invalid
-		_ASSERTE((resource->Name != nullptr || resource->Path != nullptr) && resource->IsValid);
+		// don't accept resources without a usable id
+		_ASSERTE(resource->Name != nullptr || resource->Path != nullptr);
 #endif
 		if (resource->Name) {
 			resource->addReference();
@@ -37,8 +37,8 @@ namespace Ghurund::Core {
 	void ResourceCollection::remove(NotNull<Resource> resource) {
 		std::unique_lock lock(mutex);
 #ifdef _DEBUG
-		// don't accept resources without a usable id, or invalid
-		_ASSERTE((resource->Name || resource->Path) && resource->IsValid);
+		// don't accept resources without a usable id
+		_ASSERTE(resource->Name || resource->Path);
 #endif
 		if (resource->Name)
 			resourcesByName.remove(*resource->Name);
@@ -83,7 +83,34 @@ namespace Ghurund::Core {
 			auto resource = entry.value.get();
 			auto name = resource->Name ? *resource->Name : L"[null]";
 			auto path = resource->Path ? resource->Path->toString() : L"[null]";
-			auto message = std::format(_T("type: {}, refs: {}, name: \"{}\", path: \"{}\"\n"), resource->Type.Name, resource->ReferenceCount, name, path);
+			auto state = [&] {
+				if (resource->State == ResourceState::EMPTY) {
+					return AString("e");
+				}else if(resource->State == ResourceState::LOADED) {
+					return AString("l");
+				} else {
+					return AString("i");
+				}
+			}();
+			auto formatMem = [&](int s) {
+				if (s < 1024) {
+					return std::format(_T("{}B"), s);
+				} else if (s < 1024 * 1024) {
+					return std::format(_T("{}KB"), s / 1024);
+				} else {
+					return std::format(_T("{}MB"), s / 1024 / 1024);
+				}
+			};
+			auto message = std::format(
+				_T("type: {}, state: {}, size: s: {}, g: {}, refs: {}, name: \"{}\", path: \"{}\"\n"),
+				resource->Type.Name,
+				state,
+				formatMem(resource->DataSize.system),
+				formatMem(resource->DataSize.graphical),
+				resource->ReferenceCount,
+				name,
+				path
+			);
 			Logger::print(LogType::INFO, message.c_str());
 		}
 	}

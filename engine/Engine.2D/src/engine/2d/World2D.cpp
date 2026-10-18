@@ -16,7 +16,7 @@ namespace Ghurund::Engine::_2D {
 		scene = makeIntrusive<Scene2D>(app.GameObjects);
 	}
 
-	void World2D::onUninit() {
+	void World2D::onDeinit() {
 		uninitWorld2D();
 	}
 }

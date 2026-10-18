@@ -13,7 +13,7 @@ namespace Ghurund::Core {
         IWICImagingFactory* imageFactory = nullptr;
 
     protected:
-        virtual CoroutineTask<void> loadInternal(
+        virtual CoroutineTask<void> load_internal(
             Image& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
@@ -21,7 +21,13 @@ namespace Ghurund::Core {
             LoadOptions options
         ) override;
 
-        virtual void saveInternal(
+        [[nodiscard]]
+        virtual CoroutineTask<void> unload_internal(Image& resource) override {
+            resource.unload();
+            co_return;
+        }
+
+        virtual void save_internal(
             Image& resource,
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,

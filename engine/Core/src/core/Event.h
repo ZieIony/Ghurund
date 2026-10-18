@@ -4,12 +4,13 @@
 #include "core/collection/List.h"
 
 namespace Ghurund::Core {
-    template <class SenderType, typename ReturnType, typename...> class Event;
+    template <class SenderType, typename ReturnType, typename...>
+    class Event;
 
     template<class SenderType>
     class Event<SenderType, bool> {
     public:
-        typedef EventHandler<SenderType, bool> handler_t;
+        using handler_t = EventHandler<SenderType, bool>;
     
     private:
         List<handler_t> listeners;
@@ -22,7 +23,7 @@ namespace Ghurund::Core {
             listeners.add(listener);
         }
 
-        inline Event<SenderType, bool>& operator+=(const handler_t& listener) {
+        inline Event& operator+=(const handler_t& listener) {
             listeners.add(listener);
             return *this;
         }
@@ -31,7 +32,7 @@ namespace Ghurund::Core {
             listeners.remove(listener);
         }
 
-        inline Event<SenderType, bool>& operator-=(const handler_t& listener) {
+        inline Event& operator-=(const handler_t& listener) {
             listeners.remove(listener);
             return *this;
         }
@@ -55,7 +56,7 @@ namespace Ghurund::Core {
     template<class SenderType>
     class Event<SenderType, void> {
     public:
-        typedef EventHandler<SenderType, void> handler_t;
+        using handler_t = EventHandler<SenderType, void>;
 
     private:
         List<handler_t> listeners;
@@ -68,7 +69,7 @@ namespace Ghurund::Core {
             listeners.add(listener);
         }
 
-        inline Event<SenderType, void>& operator+=(const handler_t& listener) {
+        inline Event& operator+=(const handler_t& listener) {
             listeners.add(listener);
             return *this;
         }
@@ -77,7 +78,7 @@ namespace Ghurund::Core {
             listeners.remove(listener);
         }
 
-        inline Event<SenderType, void>& operator-=(const handler_t& listener) {
+        inline Event& operator-=(const handler_t& listener) {
             listeners.remove(listener);
             return *this;
         }
@@ -98,29 +99,30 @@ namespace Ghurund::Core {
 
     template<class SenderType, typename ArgsType>
     class Event<SenderType, bool, ArgsType> {
+    public:
+        using handler_t = EventHandler<SenderType, bool, ArgsType>;
+
     private:
-        List<EventHandler<SenderType, bool, ArgsType>> listeners;
+        List<handler_t> listeners;
         SenderType& owner;
 
     public:
-        using args_t = ArgsType;
-
         Event(SenderType& owner):owner(owner) {}
 
-        inline void add(const EventHandler<SenderType, bool, ArgsType>& listener) {
+        inline void add(const handler_t& listener) {
             listeners.add(listener);
         }
 
-        inline Event<SenderType, bool, ArgsType>& operator+=(const EventHandler<SenderType, bool, ArgsType>& listener) {
+        inline Event& operator+=(const handler_t& listener) {
             listeners.add(listener);
             return *this;
         }
 
-        inline void remove(const EventHandler<SenderType, bool, ArgsType>& listener) {
+        inline void remove(const handler_t& listener) {
             listeners.remove(listener);
         }
 
-        inline Event<SenderType, bool, ArgsType> operator-=(const EventHandler<SenderType, bool, ArgsType>& listener) {
+        inline Event& operator-=(const handler_t& listener) {
             listeners.remove(listener);
             return *this;
         }
@@ -143,29 +145,30 @@ namespace Ghurund::Core {
 
     template<class SenderType, typename ArgsType>
     class Event<SenderType, void, ArgsType> {
+    public:
+        using handler_t = EventHandler<SenderType, void, ArgsType>;
+
     private:
-        List<EventHandler<SenderType, void, ArgsType>> listeners;
+        List<handler_t> listeners;
         SenderType& owner;
 
     public:
-        using args_t = ArgsType;
-
         Event(SenderType& owner):owner(owner) {}
 
-        inline void addListener(const EventHandler<SenderType, void, ArgsType>& listener) {
+        inline void addListener(const handler_t& listener) {
             listeners.add(listener);
         }
 
-        inline Event<SenderType, void, ArgsType>& operator+=(const EventHandler<SenderType, void, ArgsType>& listener) {
+        inline Event& operator+=(const handler_t& listener) {
             listeners.add(listener);
             return *this;
         }
 
-        inline void removeListener(const EventHandler<SenderType, void, ArgsType>& listener) {
+        inline void removeListener(const handler_t& listener) {
             listeners.remove(listener);
         }
 
-        inline Event<SenderType, void, ArgsType> operator-=(const EventHandler<SenderType, void, ArgsType>& listener) {
+        inline Event& operator-=(const handler_t& listener) {
             listeners.remove(listener);
             return *this;
         }

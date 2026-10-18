@@ -10,7 +10,7 @@ namespace Ghurund::Engine::DirectX {
 		swapChain->init(graphics, window.Handle, window.Size);
 	}
 
-	void DxRenderingContext::onUninit() {
+	void DxRenderingContext::onDeinit() {
 		uninitDxRenderingContext();
 	}
 

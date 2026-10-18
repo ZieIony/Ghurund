@@ -261,6 +261,6 @@ namespace Ghurund::UI {
 			}
 		}
 
-		atlas->init(atlasData, atlasSize, DXGI_FORMAT_R8G8B8A8_UNORM);
+		atlas->load(atlasData, atlasSize, DXGI_FORMAT_R8G8B8A8_UNORM);
 	}
 }

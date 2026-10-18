@@ -25,7 +25,7 @@ namespace Ghurund::Core {
 
     void Logger::init(std::unique_ptr<LogOutput> output) {
         if (logOutput)
-            uninit();
+            deinit();
 
 #ifdef _DEBUG
         filterLevel = LogType::INFO.Value;
@@ -43,7 +43,7 @@ namespace Ghurund::Core {
         }
     }
 
-    void Logger::uninit() {
+    void Logger::deinit() {
         SymCleanup(process);
 
         delete logOutput;

@@ -46,7 +46,7 @@ namespace Ghurund::Engine::_2D {
 			b2DestroyBody(id);
 		};
 
-		virtual void onUninit() {
+		virtual void onDeinit() {
 			uninitBodyComponent2D();
 		};
 

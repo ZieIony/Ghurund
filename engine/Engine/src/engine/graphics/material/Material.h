@@ -28,67 +28,66 @@ namespace Ghurund::Engine {
 
     private:
         MaterialInputCollection inputs;
-        IGPUMemoryManager* memoryManager = nullptr;
         GraphicsShader* shader = nullptr;
         List<IntrusivePointer<ConstantBuffer>> constantBuffers;
         List<BaseValueInput*> valueInputs;
         List<TextureInput*> textureInputs;
         List<CubeMapInput*> cubeMapInputs;
 
-        inline void finalize() {
-            safeRelease(shader);
-            inputs.clear();
-        }
-
     protected:
         Material(const Material& other);
 
         ~Material() {
-            finalize();
+            unload();
         }
 
-        virtual void initInputs();
+	public:
+		Material() {}
 
-        virtual bool getIsValidInternal() const override {
-            return __super::getIsValidInternal() && shader != nullptr && shader->IsValid;
-        }
+		void init(NotNull<IGPUMemoryManager> memoryManager);
 
-    public:
-        Material() {}
+		inline void deinit() {
+			if (State != ResourceState::INITIALIZED)
+				return;
+			valueInputs.clear();
+			textureInputs.clear();
+			cubeMapInputs.clear();
+			inputs.clear();
+			State = ResourceState::LOADED;
+		}
 
-        void init(NotNull<IGPUMemoryManager> memoryManager) {
-            this->memoryManager = memoryManager.get();
-        }
+		inline void unload() {
+			safeRelease(shader);
+			inputs.clear();
+			State = ResourceState::EMPTY;
+		}
 
-        virtual void invalidate() {
-            finalize();
-            __super::invalidate();
-        }
+		inline MaterialInputCollection& getInputs() {
+			return inputs;
+		}
 
-        inline MaterialInputCollection& getInputs() {
-            return inputs;
-        }
+		__declspec(property(get = getInputs)) MaterialInputCollection& Inputs;
 
-        __declspec(property(get = getInputs)) MaterialInputCollection& Inputs;
-        
-        inline GraphicsShader* getShader() const {
-            return shader;
-        }
+		inline GraphicsShader* getShader() const {
+			return shader;
+		}
 
-        inline void setShader(GraphicsShader* shader) {
-            setPointer(this->shader, shader);
-            valueInputs.clear();
-            textureInputs.clear();
-            cubeMapInputs.clear();
-            inputs.clear();
-            if (shader)
-                initInputs();
-        }
+		inline void setShader(GraphicsShader* shader) {
+			deinit();
+			setPointer(this->shader, shader);
+			if (shader) {
+				dataSize.system = sizeof(*this);
+				State = ResourceState::LOADED;
+			} else {
+				dataSize.system = sizeof(*this);
+				State = ResourceState::EMPTY;
+			}
+		}
 
-        __declspec(property(get = getShader, put = setShader)) GraphicsShader* Shader;
+		__declspec(property(get = getShader, put = setShader)) GraphicsShader* Shader;
 
-        inline bool getIsTransparencyEnabled() const {
-            return shader->IsTransparencyEnabled;
+		inline bool getIsTransparencyEnabled() const {
+			return shader->IsTransparencyEnabled;
         }
 
         __declspec(property(get = getIsTransparencyEnabled)) bool IsTransparencyEnabled;

@@ -15,9 +15,9 @@ namespace Ghurund::Core {
 			this->path.replaceAll(L'\\', L'/');
 		}
 
-		Path(Path&& path) noexcept {
-			this->path = std::move(path.path);
-		}
+		Path(const Path& other):path(other.path) {}
+
+		Path(Path&& other) noexcept:path(std::move(other.path)) {}
 
 		virtual ~Path() = 0 {}
 

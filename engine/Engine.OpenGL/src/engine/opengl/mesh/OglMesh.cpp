@@ -20,7 +20,7 @@ namespace Ghurund::Engine::OpenGL {
         );
     }
     
-    void OglMesh::uninit() {
+    void OglMesh::deinit() {
         glDeleteBuffers(1, &vertexbuffer);
         glDeleteVertexArrays(1, &VertexArrayID);
     }

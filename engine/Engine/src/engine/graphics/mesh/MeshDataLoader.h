@@ -19,7 +19,7 @@ namespace Ghurund::Engine {
 
     protected:
         [[nodiscard]]
-        virtual CoroutineTask<void> loadInternal(
+        virtual CoroutineTask<void> load_internal(
             MeshData& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
@@ -27,7 +27,7 @@ namespace Ghurund::Engine {
             LoadOptions options
         ) override;
 
-        virtual void saveInternal(
+        virtual void save_internal(
             MeshData& resource,
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,

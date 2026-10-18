@@ -47,7 +47,7 @@ namespace Ghurund::Engine::DirectX {
     protected:
         virtual void onInit() override;
 
-        virtual void onUninit() override;
+        virtual void onDeinit() override;
 
     public:
         // for some reason, when this constructor is not defined here, VS complains about it being deleted

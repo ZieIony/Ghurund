@@ -28,7 +28,7 @@ namespace Ghurund::Engine::DirectX {
     protected:
         virtual void onInit() override;
 
-        virtual void onUninit() override;
+        virtual void onDeinit() override;
         void uninitDxRenderer();
 
     public:

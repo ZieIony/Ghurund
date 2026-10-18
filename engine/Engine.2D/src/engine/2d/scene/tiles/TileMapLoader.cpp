@@ -2,7 +2,7 @@
 #include "TileMapLoader.h"
 
 namespace Ghurund::Engine::_2D {
-	CoroutineTask<void> TileMapLoader::loadInternal(
+	CoroutineTask<void> TileMapLoader::load_internal(
 		TileMap& resource,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,

@@ -14,71 +14,9 @@ namespace Ghurund::Engine::DirectX {
         return TYPE;
     }
 
-    void DxCubeMap::finalize() {
-        uploaded = false;
-        textureResource.Reset();
-        imagesTop.clear();
-        imagesBottom.clear();
-        imagesLeft.clear();
-        imagesRight.clear();
-        imagesFront.clear();
-        imagesBack.clear();
-    }
-
-    bool DxCubeMap::getIsValidInternal() const {
-        bool imagesValid = [&] {
-            for (auto& image : imagesTop) {
-                if (image == nullptr || !image->IsValid)
-                    return false;
-            }
-            for (auto& image : imagesBottom) {
-                if (image == nullptr || !image->IsValid)
-                    return false;
-            }
-            for (auto& image : imagesLeft) {
-                if (image == nullptr || !image->IsValid)
-                    return false;
-            }
-            for (auto& image : imagesRight) {
-                if (image == nullptr || !image->IsValid)
-                    return false;
-            }
-            for (auto& image : imagesFront) {
-                if (image == nullptr || !image->IsValid)
-                    return false;
-            }
-            for (auto& image : imagesBack) {
-                if (image == nullptr || !image->IsValid)
-                    return false;
-            }
-            return true;
-        }();
-		return __super::getIsValidInternal() && imagesValid && uploaded;
-    }
-
-    void DxCubeMap::invalidate() {
-        finalize();
-        __super::invalidate();
-    }
-
     void DxCubeMap::init(
-        List<IntrusivePointer<Ghurund::Core::Image>>& imagesTop,
-        List<IntrusivePointer<Ghurund::Core::Image>>& imagesBottom,
-        List<IntrusivePointer<Ghurund::Core::Image>>& imagesLeft,
-        List<IntrusivePointer<Ghurund::Core::Image>>& imagesRight,
-        List<IntrusivePointer<Ghurund::Core::Image>>& imagesFront,
-        List<IntrusivePointer<Ghurund::Core::Image>>& imagesBack,
         DxGPUMemoryManager& memoryManager
     ) {
-        size = imagesTop[0]->Size;
-        format = imagesTop[0]->Format;
-
-        this->imagesTop = imagesTop;
-        this->imagesBottom = imagesBottom;
-        this->imagesLeft = imagesLeft;
-        this->imagesRight = imagesRight;
-        this->imagesFront = imagesFront;
-        this->imagesBack = imagesBack;
         memoryManager.resetUpload();
 
         Array<List<IntrusivePointer<Ghurund::Core::Image>>> images = {
@@ -90,7 +28,34 @@ namespace Ghurund::Engine::DirectX {
         descHandle = memoryManager.makeCubeMapRV(textureResource, images[0][0]->Format, imagesTop.Size);
 
         memoryManager.executeUploads();
+        State = ResourceState::INITIALIZED;
+    }
 
-        uploaded = true;
+    void DxCubeMap::setImages(
+        List<IntrusivePointer<Ghurund::Core::Image>>& imagesTop,
+        List<IntrusivePointer<Ghurund::Core::Image>>& imagesBottom,
+        List<IntrusivePointer<Ghurund::Core::Image>>& imagesLeft,
+        List<IntrusivePointer<Ghurund::Core::Image>>& imagesRight,
+        List<IntrusivePointer<Ghurund::Core::Image>>& imagesFront,
+        List<IntrusivePointer<Ghurund::Core::Image>>& imagesBack
+    ) {
+        if (State != ResourceState::EMPTY) {
+            deinit_internal();
+            unload_internal();
+        }
+
+        size = imagesTop[0]->Size;
+        format = imagesTop[0]->Format;
+
+        this->imagesTop = imagesTop;
+        this->imagesBottom = imagesBottom;
+        this->imagesLeft = imagesLeft;
+        this->imagesRight = imagesRight;
+        this->imagesFront = imagesFront;
+        this->imagesBack = imagesBack;
+
+        dataSize.system = sizeof(*this);
+
+        State = ResourceState::LOADED;
     }
 }

@@ -117,7 +117,7 @@ namespace Ghurund::Engine {
 		mesh.init(vertexStreams, vertexCount, Buffer(data, indexCount * indexSize), indexCount, boundingBox);
 	}
 
-	CoroutineTask<void> MeshDataLoader::loadInternal(
+	CoroutineTask<void> MeshDataLoader::load_internal(
 		MeshData& resource,
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
@@ -160,7 +160,7 @@ namespace Ghurund::Engine {
 		stream.write<BoundingBox>(resource.BoundingBox);
 	}
 
-	void MeshDataLoader::saveInternal(
+	void MeshDataLoader::save_internal(
 		MeshData& resource,
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,

@@ -13,9 +13,14 @@ namespace Ghurund::Engine::_2D {
 	}
 
 	CoroutineTask<void> BaseSpriteComponent::onInit() {
-		Mesh = Owner.World.app.ResourceManager.get<Ghurund::Engine::Mesh>(Graphics2DFeature::MESH_SPRITE).get();;
-		auto spriteMaterial = IntrusivePointer<Ghurund::Engine::Material>(
-			Owner.World.app.ResourceManager.get<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_SPRITE)->clone()
+		auto& resourceManager = Owner.World.app.ResourceManager;
+		auto spriteMesh = co_await resourceManager.load<Ghurund::Engine::Mesh>(Graphics2DFeature::MESH_SPRITE);
+		Mesh = spriteMesh.get();
+		auto spriteMaterial = co_await resourceManager.load<Ghurund::Engine::Material>(
+			Graphics2DFeature::MATERIAL_SPRITE,
+			DirectoryPath::getCurrentDirectory(),
+			ResourceFormat::AUTO,
+			{ .clone = true }
 		);
 		Material = spriteMaterial.get();
 		co_return;

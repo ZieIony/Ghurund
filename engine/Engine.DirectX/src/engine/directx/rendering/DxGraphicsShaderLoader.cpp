@@ -5,13 +5,13 @@
 
 namespace Ghurund::Engine::DirectX {
 	void DxGraphicsShaderLoader::loadXmlFormat(
-		DxGraphicsShader& resource,
+		DxGraphicsShader& shader,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir
 	) {
 		checkXmlRoot(xml, L"GraphicsShader", DxGraphicsShader::FORMAT_XML);
 
-		auto shaderSource = makeIntrusive<ShaderSource>();
+		ShaderSource shaderSource;
 		auto settingsElementIndex = xml.children.find([](const SharedPointer<XMLElement>& element) { return element->name == L"Settings"; });
 		if (settingsElementIndex != xml.children.Size) {
 			auto& settingsElement = xml.children[settingsElementIndex];
@@ -19,33 +19,33 @@ namespace Ghurund::Engine::DirectX {
 			if (cullModeAttribute) {
 				auto cullModeValue = *cullModeAttribute;
 				if (cullModeValue == L"none") {
-					shaderSource->settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_NONE;
+					shaderSource.settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_NONE;
 				} else if (cullModeValue == L"front") {
-					shaderSource->settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_FRONT;
+					shaderSource.settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_FRONT;
 				} else if (cullModeValue == L"back") {
-					shaderSource->settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
+					shaderSource.settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
 				}
 			}
 			auto transparencyAttribute = settingsElement->findAttribute(L"isTransparencyEnabled");
 			if (transparencyAttribute)
-				shaderSource->settings.isTransparencyEnabled = *transparencyAttribute == L"true";
+				shaderSource.settings.isTransparencyEnabled = *transparencyAttribute == L"true";
 			auto depthTestAttribute = settingsElement->findAttribute(L"isDepthTestEnabled");
 			if (depthTestAttribute)
-				shaderSource->settings.isDepthTestEnabled = *depthTestAttribute == L"true";
+				shaderSource.settings.isDepthTestEnabled = *depthTestAttribute == L"true";
 			auto depthWriteAttribute = settingsElement->findAttribute(L"isDepthWriteEnabled");
 			if (depthWriteAttribute)
-				shaderSource->settings.isDepthWriteEnabled = *depthTestAttribute == L"true";
+				shaderSource.settings.isDepthWriteEnabled = *depthTestAttribute == L"true";
 			auto depthFuncAttribute = settingsElement->findAttribute(L"depthFunc");
 			if (depthFuncAttribute) {
 				auto depthFuncValue = *depthFuncAttribute;
 				if (depthFuncValue == L"never") {
-					shaderSource->settings.depthFunc = D3D12_COMPARISON_FUNC_NEVER;
+					shaderSource.settings.depthFunc = D3D12_COMPARISON_FUNC_NEVER;
 				} else if (depthFuncValue == L"always") {
-					shaderSource->settings.depthFunc = D3D12_COMPARISON_FUNC_ALWAYS;
+					shaderSource.settings.depthFunc = D3D12_COMPARISON_FUNC_ALWAYS;
 				} else if (depthFuncValue == L"less") {
-					shaderSource->settings.depthFunc = D3D12_COMPARISON_FUNC_LESS;
+					shaderSource.settings.depthFunc = D3D12_COMPARISON_FUNC_LESS;
 				} else if (depthFuncValue == L"greater") {
-					shaderSource->settings.depthFunc = D3D12_COMPARISON_FUNC_GREATER;
+					shaderSource.settings.depthFunc = D3D12_COMPARISON_FUNC_GREATER;
 				}
 			}
 		}
@@ -68,7 +68,7 @@ namespace Ghurund::Engine::DirectX {
 						sampler.filter = TextureFilter::ANISOTROPIC;
 					}
 				}
-				shaderSource->samplers.add(sampler);
+				shaderSource.samplers.add(sampler);
 			}
 		}
 		auto programsElementIndex = xml.children.find([](const SharedPointer<XMLElement>& element) { return element->name == L"Programs"; });
@@ -110,12 +110,12 @@ namespace Ghurund::Engine::DirectX {
 					} else {
 						if (path.IsAbsolute || path.IsLibrary) {
 							return convertText<wchar_t, char>(path.toString());
-						} else if (resource.Path != nullptr) {
-							if (resource.Path->IsAbsolute || resource.Path->IsLibrary) {
-								auto absoluteOrLibPath = resourceManager.resolvePath(resourceManager.getAbsoluteOrLibPath(path, resource.Path->Directory));
+						} else if (shader.Path != nullptr) {
+							if (shader.Path->IsAbsolute || shader.Path->IsLibrary) {
+								auto absoluteOrLibPath = resourceManager.resolvePath(resourceManager.getAbsoluteOrLibPath(path, shader.Path->Directory));
 								return convertText<wchar_t, char>(absoluteOrLibPath.toString());
 							} else {
-								auto absoluteOrLibResourcePath = resourceManager.getAbsoluteOrLibPath(*resource.Path, workingDir);
+								auto absoluteOrLibResourcePath = resourceManager.getAbsoluteOrLibPath(*shader.Path, workingDir);
 								auto absoluteOrLibPath = resourceManager.resolvePath(resourceManager.getAbsoluteOrLibPath(path, absoluteOrLibResourcePath.Directory));
 								return convertText<wchar_t, char>(absoluteOrLibPath.toString());
 							}
@@ -124,13 +124,15 @@ namespace Ghurund::Engine::DirectX {
 						}
 					}
 				}();
-				shaderSource->programs.add(ghnew DxShaderProgramSourceCode(type, sourceCode, sourceName));
+				shaderSource.programs.add(ghnew DxShaderProgramSourceCode(type, sourceCode, sourceName));
 			}
 		}
-		loadFromSource(shaderSource.ref(), workingDir, resource);
+
+		shader.Source = &shaderSource;
+		initialize(shader, workingDir);
 	}
 
-	CoroutineTask<void> DxGraphicsShaderLoader::loadInternal(
+	CoroutineTask<void> DxGraphicsShaderLoader::load_internal(
 		DxGraphicsShader& resource,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
@@ -141,28 +143,27 @@ namespace Ghurund::Engine::DirectX {
 		co_return;
 	}
 
-	void DxGraphicsShaderLoader::loadFromSource(NotNull<ShaderSource> shaderSource, const DirectoryPath& workingDir, DxGraphicsShader& shader) {
-		if (!shaderSource->programs.any([](auto& program) { return ((DxShaderProgramSourceCode*)program)->shaderType == DxShaderType::VERTEX; })) {
+	void DxGraphicsShaderLoader::initialize(DxGraphicsShader& shader, const DirectoryPath& workingDir) {
+		if (!shader.Source->programs.any([](auto& program) { return ((DxShaderProgramSourceCode*)program)->shaderType == DxShaderType::VERTEX; })) {
 			Logger::log(LogType::ERR0R, _T("Vertex shader program is required.\n"));
 			throw DxEntrypointNotFoundException(DxShaderType::VERTEX);
 		}
-		if (!shaderSource->programs.any([](auto& program) { return ((DxShaderProgramSourceCode*)program)->shaderType == DxShaderType::PIXEL; })) {
+		if (!shader.Source->programs.any([](auto& program) { return ((DxShaderProgramSourceCode*)program)->shaderType == DxShaderType::PIXEL; })) {
 			Logger::log(LogType::ERR0R, _T("Pixel shader program is required.\n"));
 			throw DxEntrypointNotFoundException(DxShaderType::PIXEL);
 		}
 		CompilerInclude include(resourceManager, workingDir, includeDirs);
 		List<SharedPointer<DxShaderProgram>> programs;
-		for (auto sourceCode : shaderSource->programs) {
+		for (auto sourceCode : shader.Source->programs) {
 			auto dxSourceCode = (DxShaderProgramSourceCode*)sourceCode;
 			auto program = SharedPointer<DxShaderProgram>(compiler.compile(*dxSourceCode, &include));
 			programs.add(program);
 		}
 		auto array = Array<SharedPointer<DxShaderProgram>>(programs);
-		compiler.build(shader, programs, shaderSource->samplers, shaderSource->settings);
-		shader.validate();
+		compiler.build(shader, programs, shader.Source->settings);
 	}
 
-	void DxGraphicsShaderLoader::loadHlslFormat(const AString& sourceCode, const DirectoryPath& workingDir, DxGraphicsShader& shader) {
+	void DxGraphicsShaderLoader::loadHlslFormat(DxGraphicsShader& shader, const AString& sourceCode, const DirectoryPath& workingDir) {
 		auto shaderSource = makeIntrusive<ShaderSource>();
 
 		for (const DxShaderType& shaderType : DxShaderType::VALUES) {
@@ -174,10 +175,11 @@ namespace Ghurund::Engine::DirectX {
 			}
 		}
 
-		loadFromSource(shaderSource.ref(), workingDir, shader);
+		shader.Source = shaderSource.get();
+		initialize(shader, workingDir);
 	}
 
-	CoroutineTask<void> DxGraphicsShaderLoader::loadInternal(
+	CoroutineTask<void> DxGraphicsShaderLoader::load_internal(
 		DxGraphicsShader& resource,
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
@@ -189,19 +191,19 @@ namespace Ghurund::Engine::DirectX {
 			co_await loadFromXml(resource, stream, workingDir, format, options);
 		} else if (format == DxGraphicsShader::FORMAT_HLSL) {
 			AString streamContents = stream.readAString();
-			loadHlslFormat(streamContents, workingDir, resource);
+			loadHlslFormat(resource, streamContents, workingDir);
 		} else if (format == ResourceFormat::AUTO) {
 			try {
 				co_await loadFromXml(resource, stream, workingDir, DxGraphicsShader::FORMAT_XML, options);
 			} catch (...) {
 				stream.Position = position;
 				AString streamContents = stream.readAString();
-				loadHlslFormat(streamContents, workingDir, resource);
+				loadHlslFormat(resource, streamContents, workingDir);
 			}
 		}
 	}
 
-	void DxGraphicsShaderLoader::saveInternal(
+	void DxGraphicsShaderLoader::save_internal(
 		DxGraphicsShader& resource,
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,

@@ -71,7 +71,7 @@ namespace Ghurund::UI {
 		this->name = ghnew AString(name);
 	}
 
-	void Control::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) {
+	void Control::load_internal(LayoutLoader& loader, const DirectoryPath& workingDir, const XMLElement& xml) {
 		loader.loadProperties(*this, workingDir, xml);
 		//loader.loadBindings()
 	}

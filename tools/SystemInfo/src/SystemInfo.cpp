@@ -14,10 +14,15 @@ int main() {
 	Logger::init(std::unique_ptr<LogOutput>(ghnew StandardConsoleLogOutput()));
 	auto processor = SystemInfo::getProcessorInfo();
 	auto textCpu = std::format(
-		_T("processor\narchitecture: {}, cores: {}, logical: {}\n\n"),
+		_T("processor\narchitecture: {}, cores: {}, logical: {}\n"),
 		processor.architecture, processor.cores, processor.logicalProcessors
 	);
 	Logger::print(LogType::INFO, textCpu.c_str());
+
+	uint32_t maxHardwareThreads = std::thread::hardware_concurrency();
+	auto textThreads = std::format(_T("max supported hardware threads: {}\n\n"), maxHardwareThreads);
+	Logger::print(LogType::INFO, textThreads.c_str());
+
 	auto memory = SystemInfo::getMemoryInfo();
 	auto textMem = std::format(
 		_T("memory\ntotal: {}MB ({}B), working set: {}MB ({}B)\n\n"),

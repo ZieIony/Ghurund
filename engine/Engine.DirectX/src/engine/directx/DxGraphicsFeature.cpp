@@ -80,8 +80,8 @@ namespace Ghurund::Engine::DirectX {
 		co_return;
 	}
 
-	void DxGraphicsFeature::onUninit() {
+	void DxGraphicsFeature::onDeinit() {
 		uninitGraphicsFeature();
-		__super::onUninit();
+		__super::onDeinit();
 	}
 }

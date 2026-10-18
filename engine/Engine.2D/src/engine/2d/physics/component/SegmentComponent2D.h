@@ -35,9 +35,9 @@ namespace Ghurund::Engine::_2D {
 	protected:
 		virtual CoroutineTask<void> onInit() override;
 
-		virtual void onUninit() {
+		virtual void onDeinit() {
 			uninitSegmentComponent2D();
-			__super::onUninit();
+			__super::onDeinit();
 		};
 
 	public:

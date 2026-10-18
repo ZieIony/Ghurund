@@ -16,10 +16,10 @@ namespace Ghurund::UI {
 			layout.reset(ghnew ThemedLayout(layoutKey));
 		} else {
 			FilePath path = FilePath(convertText<char, wchar_t>(s));
-			auto coroutine = resourceManager.load<Control>(path, workingDir, ResourceFormat::AUTO, ResourceManager::LOAD_GENERATE_NAME, { .cache = false });
+			auto coroutine = resourceManager.load<ControlLayout>(path, workingDir, ResourceFormat::AUTO, ResourceManager::LOAD_GENERATE_NAME, { .clone = true });
 			coroutine.resume();
-			auto control = coroutine.Result;
-			layout.reset(ghnew ThemedLayout(control));
+			auto controlLayout = coroutine.Result;
+			layout.reset(ghnew ThemedLayout(controlLayout->control));
 		}
 		if (!layout)
 			layout.reset(ghnew ThemedLayout(IntrusivePointer<Control>(ghnew InvalidControl())));

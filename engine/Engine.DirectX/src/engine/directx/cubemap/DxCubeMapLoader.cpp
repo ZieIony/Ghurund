@@ -17,7 +17,7 @@ namespace Ghurund::Engine::DirectX {
 		co_return images;
 	}
 
-	CoroutineTask<void> DxCubeMapLoader::loadInternal(
+	CoroutineTask<void> DxCubeMapLoader::load_internal(
 		DxCubeMap& resource,
 		const XMLElement& xml,
 		const DirectoryPath& workingDir,
@@ -79,6 +79,7 @@ namespace Ghurund::Engine::DirectX {
 			Logger::logAndThrow<InvalidDataException>(message.c_str());
 		}
 
-		resource.init(imagesTop, imagesBottom, imagesLeft, imagesRight, imagesFront, imagesBack, memoryManager);
+		resource.setImages(imagesTop, imagesBottom, imagesLeft, imagesRight, imagesFront, imagesBack);
+		resource.init(memoryManager);
 	}
 }

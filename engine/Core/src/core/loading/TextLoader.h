@@ -9,7 +9,7 @@
 namespace Ghurund::Core {
     class TextLoader:public Loader<TextResource> {
     protected:
-        virtual void loadInternal(
+        virtual void load_internal(
             TextResource& resource,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,

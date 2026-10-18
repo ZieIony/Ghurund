@@ -17,7 +17,7 @@ namespace Ghurund::Engine::DirectX {
         buffer = ghnew Buffer(uploadHeap->GetDesc().Width);
     }
 
-    void DxConstantBuffer::uninit() {
+    void DxConstantBuffer::deinit() {
         // constantBufferUploadHeap and resourcePointer are basically the same resource in the same memory block
         if (constantBufferUploadHeap) {
             constantBufferUploadHeap->Release();

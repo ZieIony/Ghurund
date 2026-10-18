@@ -14,13 +14,6 @@ namespace Ghurund::Engine::DirectX {
 		return TYPE;
 	}
 
-	void DxComputeShader::finalize() {
-		if (rootSignature != nullptr)
-			rootSignature->Release();
-		if (pipelineState != nullptr)
-			pipelineState->Release();
-	}
-
 	void DxComputeShader::init(
 		OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> rootSignature,
 		OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,
@@ -28,6 +21,8 @@ namespace Ghurund::Engine::DirectX {
 		const List<DxTextureConstantInfo*>& textureConstantInfos,
 		const List<DxTextureConstantInfo*>& uavConstantInfos
 	) {
+		deinit();
+
 		this->rootSignature = rootSignature.reset();
 		this->pipelineState = pipelineState.reset();
 		constants = [&] {
@@ -35,19 +30,12 @@ namespace Ghurund::Engine::DirectX {
 			c->init(bufferConstantInfos, textureConstantInfos, uavConstantInfos);
 			return c;
 		}();
+
+		State = ResourceState::INITIALIZED;
 	}
 
 	DxComputeShader::~DxComputeShader() {
-		finalize();
-	}
-
-	void DxComputeShader::invalidate() {
-		__super::invalidate();
-
-		finalize();
-
-		rootSignature = nullptr;
-		pipelineState = nullptr;
+		deinit_internal();
 	}
 
 	bool DxComputeShader::apply(DxComputeCommandList& commandList) {

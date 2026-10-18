@@ -133,7 +133,7 @@ namespace Ghurund::UI {
 		stream.writeBytes(&textStyle.FontMetrics, sizeof(FontMetrics));
 	}
 
-	CoroutineTask<void> TextStyleLoader::loadInternal(
+	CoroutineTask<void> TextStyleLoader::load_internal(
 		TextStyle& resource,
 		MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
@@ -161,7 +161,7 @@ namespace Ghurund::UI {
 		co_return;
 	}
 
-	void TextStyleLoader::saveInternal(
+	void TextStyleLoader::save_internal(
 		TextStyle& resource,
 		MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,

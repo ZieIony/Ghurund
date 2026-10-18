@@ -16,7 +16,7 @@ namespace Ghurund::Engine::_3D {
 		scene = makeIntrusive<Scene3D>(app.GameObjects);
 	}
 
-	void World3D::onUninit() {
+	void World3D::onDeinit() {
 		uninitWorld3D();
 	}
 }

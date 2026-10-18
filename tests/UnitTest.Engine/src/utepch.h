@@ -9,4 +9,6 @@
 
 // add headers that you want to pre-compile here
 
+#define _UNIT_TESTS
+
 #endif //PCH_H

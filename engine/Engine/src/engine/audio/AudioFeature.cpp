@@ -15,7 +15,7 @@ namespace Ghurund::Engine {
     void AudioFeature::uninitAudioFeature() {
 		resourceManager.Loaders.remove<Sound>();
 		soundLoader.set(nullptr);
-		audio.uninit();
+		audio.deinit();
 	}
 
 	CoroutineTask<void> AudioFeature::onInit() {
@@ -25,7 +25,7 @@ namespace Ghurund::Engine {
 		co_return;
 	}
 
-	void AudioFeature::onUninit() {
+	void AudioFeature::onDeinit() {
 		uninitAudioFeature();
 	}
 }

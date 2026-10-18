@@ -15,7 +15,7 @@ namespace Ghurund::Core {
         resourceManager.Loaders.clear();
         resourceManager.Resources.clear();
 
-        features.uninit();
+        features.deinit();
 
         // TODO: cancel and destroy coroutines
         OleUninitialize();
@@ -35,7 +35,7 @@ namespace Ghurund::Core {
         features.init();
     }
 
-    void Application::onUninit() {
+    void Application::onDeinit() {
         uninitApplication();
     }
 
@@ -63,7 +63,7 @@ namespace Ghurund::Core {
         }
 
         isRunning = false;
-        uninit();
+        deinit();
     }
 
     bool Application::handleMessages() {

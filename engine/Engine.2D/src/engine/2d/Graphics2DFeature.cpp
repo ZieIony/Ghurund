@@ -28,7 +28,7 @@ namespace Ghurund::Engine::_2D {
 		co_return;
 	}
 
-	void Graphics2DFeature::onUninit() {
+	void Graphics2DFeature::onDeinit() {
 		uninitGraphicsFeature();
 	}
 }

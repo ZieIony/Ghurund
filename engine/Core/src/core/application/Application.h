@@ -43,7 +43,7 @@ namespace Ghurund::Core {
 	protected:
 		virtual void onInit();
 
-		virtual void onUninit();
+		virtual void onDeinit();
 
 		virtual void onFixedUpdate();
 

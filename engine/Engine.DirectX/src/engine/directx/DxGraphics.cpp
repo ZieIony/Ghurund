@@ -147,7 +147,7 @@ namespace Ghurund::Engine::DirectX {
         }
     }
 
-    void DxGraphics::onUninit() {
+    void DxGraphics::onDeinit() {
         uninitGraphics();
     }
 }

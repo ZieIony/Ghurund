@@ -14,7 +14,7 @@ namespace Ghurund::Engine::DirectX {
     void DxRenderer::onInit() {
     }
 
-    void DxRenderer::onUninit() {
+    void DxRenderer::onDeinit() {
         uninitDxRenderer();
     }
 

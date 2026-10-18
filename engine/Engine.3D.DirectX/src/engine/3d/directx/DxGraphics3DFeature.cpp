@@ -29,31 +29,31 @@ namespace Ghurund::Engine::_3D::DirectX {
 
 		co_await resourceManager.load<DxMesh>(
 			ResourceManager::ENGINE_LIB_PATH / FilePath(L"models/cube.fbx"),
-			workingDir, ResourceFormat::AUTO, &MESH_CUBE
+			workingDir, ResourceFormat::AUTO, &MESH_CUBE, { .targetState = ResourceState::EMPTY }
 		);
 		co_await resourceManager.load<Material>(
 			ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/3d/forward/basic.xml"),
-			workingDir, ResourceFormat::AUTO, &MATERIAL_FORWARD_BASIC
+			workingDir, ResourceFormat::AUTO, &MATERIAL_FORWARD_BASIC, { .targetState = ResourceState::EMPTY }
 		);
 		co_await resourceManager.load<Material>(
 			ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/3d/forward/basicLit.xml"),
-			workingDir, ResourceFormat::AUTO, &MATERIAL_FORWARD_LIT
+			workingDir, ResourceFormat::AUTO, &MATERIAL_FORWARD_LIT, { .targetState = ResourceState::EMPTY }
 		);
 		co_await resourceManager.load<Material>(
 			ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/3d/forward/normals.xml"),
-			workingDir, ResourceFormat::AUTO, &MATERIAL_FORWARD_NORMALS
+			workingDir, ResourceFormat::AUTO, &MATERIAL_FORWARD_NORMALS, { .targetState = ResourceState::EMPTY }
 		);
 		co_await resourceManager.load<Material>(
 			ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/3d/forward/tangents.xml"),
-			workingDir, ResourceFormat::AUTO, &MATERIAL_FORWARD_TANGENTS
+			workingDir, ResourceFormat::AUTO, &MATERIAL_FORWARD_TANGENTS, { .targetState = ResourceState::EMPTY }
 		);
 		co_await resourceManager.load<Material>(
 			ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/3d/forward/texCoords.xml"),
-			workingDir, ResourceFormat::AUTO, &MATERIAL_FORWARD_TEXCOORDS
+			workingDir, ResourceFormat::AUTO, &MATERIAL_FORWARD_TEXCOORDS, { .targetState = ResourceState::EMPTY }
 		);
 	}
 
-	void DxGraphics3DFeature::onUninit() {
+	void DxGraphics3DFeature::onDeinit() {
 		uninitDxGraphics3DFeature();
 	}
 }

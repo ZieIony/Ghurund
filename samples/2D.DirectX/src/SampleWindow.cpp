@@ -34,7 +34,7 @@ namespace Sample {
 		captain->Components.get<RigidBodyComponent2D>()->Position = {0, 2};
 		world->Scene.add(captain);
 
-		app.ResourceManager.printResources();
+		app.ResourceManager.Resources.printResources();
 	}
 
 	bool SampleWindow::onKeyEvent(const KeyEventArgs& args) {

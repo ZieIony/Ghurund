@@ -45,6 +45,10 @@ namespace Ghurund::Engine {
 			this->indices = indices;
 			this->indexCount = indexCount;
 			this->boundingBox = boundingBox;
+
+			dataSize.system = sizeof(this) + indices.Size;
+			for (auto& stream : vertexStreams)
+				dataSize.system += stream.getDataSize();
 		}
 
 		template<typename T>
@@ -59,6 +63,10 @@ namespace Ghurund::Engine {
 			this->indices = Buffer(indices.Data, sizeof(T) * indices.Size);
 			this->indexCount = (uint32_t)(indices.Size);
 			this->boundingBox = boundingBox;
+
+			dataSize.system = sizeof(this) + indices.Size;
+			for (auto& stream : vertexStreams)
+				dataSize.system += stream.getDataSize();
 		}
 
 		template<typename T>
@@ -73,6 +81,10 @@ namespace Ghurund::Engine {
 			this->indices = Buffer(indices.Data, sizeof(T) * indices.Size);
 			this->indexCount = (uint32_t)(indices.Size);
 			this->boundingBox = boundingBox;
+
+			dataSize.system = sizeof(this) + indices.Size;
+			for (auto& stream : vertexStreams)
+				dataSize.system += stream.getDataSize();
 		}
 
 		const Array<VertexStream>& getVertexStreams() const {

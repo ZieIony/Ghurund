@@ -12,7 +12,7 @@ namespace Ghurund::Core {
             co_return;
         };
 
-        virtual void onUninit() {};
+        virtual void onDeinit() {};
 
     public:
         virtual ~AsyncInitializable() = 0 {};
@@ -31,10 +31,10 @@ namespace Ghurund::Core {
             isInitialized = true;
         }
 
-        inline void uninit() {
+        inline void deinit() {
             if (!isInitialized)
                 return;
-            onUninit();
+            onDeinit();
             isInitialized = false;
         }
     };
