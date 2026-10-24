@@ -2,7 +2,7 @@
 
 #include "ShaderSettings.h"
 
-#include "core/resource/Resource.h"
+#include "core/object/RefCountedObject.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
@@ -15,7 +15,7 @@ namespace Ghurund::Engine {
         virtual ~ShaderProgramSourceCode() {}
 
         virtual uint64_t getDataSize() {
-            return sizeof(this) + sourceCode.Length;
+            return sizeof(*this) + sourceCode.Length;
         }
     };
 
@@ -42,7 +42,7 @@ namespace Ghurund::Engine {
         }
 
         inline uint64_t getDataSize() {
-            uint64_t size = sizeof(this);
+            uint64_t size = sizeof(*this);
             size += samplers.Capacity * sizeof(SamplerInfo);
             for (auto program : programs)
                 size += program->getDataSize();

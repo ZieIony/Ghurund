@@ -23,12 +23,11 @@ namespace Ghurund::Engine::DirectX {
 
 		initVertexBuffers(meshData->VertexStreams, meshData->VertexCount, memoryManager);
 		initIndexBuffer(meshData->Indices, meshData->IndexCount, memoryManager);
-		boundingBox = meshData->BoundingBox;
 
 		memoryManager.executeUploads();
 
-		// sizeof(this) contains indexBuffer and indexBufferView
-		dataSize.system = sizeof(this) + meshData->DataSize.system;
+		// sizeof(*this) contains indexBuffer and indexBufferView
+		dataSize.system = sizeof(*this) + meshData->getDataSize();
 		dataSize.system += roles.Size * sizeof(VertexRole);
 		dataSize.system += vertexBuffers.Size * sizeof(ComPtr<ID3D12Resource>);
 		dataSize.system += vertexBuffersView.Size * sizeof(D3D12_VERTEX_BUFFER_VIEW);

@@ -35,9 +35,22 @@ namespace Ghurund::Engine::DirectX {
         inline static const Ghurund::Core::Type& TYPE = DxMesh::GET_TYPE();
 #pragma endregion
 
-    protected:
-        IntrusivePointer<MeshData> meshData;
+    private:
+        virtual void onDeinit() override {
+            roles.clear();
+            vertexBuffers.clear();
+            vertexBuffersView.clear();
+            indexBuffer.Reset();
+        }
 
+        virtual void updateDataSize() {
+            dataSize.system = sizeof(*this);
+            if (meshData != nullptr)
+                meshData->getDataSize();
+            dataSize.graphical = 0;
+        }
+
+    protected:
         List<VertexRole> roles;
         List<ComPtr<ID3D12Resource>> vertexBuffers;
         List<D3D12_VERTEX_BUFFER_VIEW> vertexBuffersView;
@@ -54,49 +67,9 @@ namespace Ghurund::Engine::DirectX {
         // VS complains
         DxMesh() {}
 
-		void setMeshData(MeshData* meshData) {
-			deinit();
-			unload();
-			this->meshData.set(meshData);
-            meshData->addReference();
-            if (meshData) {
-                dataSize.system = sizeof(this) + meshData->DataSize.system;
-                State = ResourceState::LOADED;
-            }
-		}
-
         // TODO: move this to coroutines
         void init(DxGPUMemoryManager& memoryManager);
 
-        void deinit() {
-            if (State != ResourceState::INITIALIZED)
-                return;
-
-            roles.clear();
-            vertexBuffers.clear();
-            vertexBuffersView.clear();
-            indexBuffer.Reset();
-            dataSize.system = sizeof(this) + meshData->DataSize.system;
-            dataSize.graphical = 0;
-            State = ResourceState::LOADED;
-        }
-
-        void unload() {
-            if (State != ResourceState::LOADED)
-                return;
-
-            meshData.set(nullptr);
-            dataSize.system = sizeof(this);
-            State = ResourceState::EMPTY;
-        }
-
         void draw(CommandList& commandList, const Array<VertexRole>& layout);
-
-#pragma region formats
-    protected:
-        virtual const Array<ResourceFormat>& getFormatsImpl() const override {
-            return MeshData::FORMATS;
-        }
-#pragma endregion
     };
 }

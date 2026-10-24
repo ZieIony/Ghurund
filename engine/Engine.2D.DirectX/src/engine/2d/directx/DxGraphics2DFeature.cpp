@@ -30,7 +30,7 @@ namespace Ghurund::Engine::_2D::DirectX {
 		auto mesh = makeIntrusive<DxMesh>();
 		auto spriteMeshData = makeIntrusive<SpriteMeshData>();
 		spriteMeshData->init();
-		mesh->setMeshData(spriteMeshData.get());
+		mesh->Data = spriteMeshData.get();
 		mesh->init(memoryManager);
 		mesh->Name = &MESH_SPRITE;
 		resourceManager.Resources.put(mesh.get());

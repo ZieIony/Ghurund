@@ -37,7 +37,7 @@ namespace Ghurund::Engine {
 		VertexStream(const ArrayCollection<T>& data, VertexRole role) : data(Buffer(data.Data, sizeof(T)* data.Size)), vertexSize(sizeof(T)), role(role) {}
 
 		inline uint64_t getDataSize() const {
-			return sizeof(this) + data.Size;
+			return sizeof(*this) + data.Size;
 		}
 	};
 }

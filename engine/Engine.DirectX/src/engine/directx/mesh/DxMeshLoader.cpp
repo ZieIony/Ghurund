@@ -2,16 +2,22 @@
 #include "DxMeshLoader.h"
 
 namespace Ghurund::Engine::DirectX {
-    CoroutineTask<void> DxMeshLoader::load_internal(
-        DxMesh& resource,
-        MemoryInputStream& stream,
-        const DirectoryPath& workingDir,
-        const ResourceFormat& format,
-        Ghurund::Core::LoadOptions options
-    ) {
+    void DxMeshLoader::loadAssimp(DxMesh& mesh, MemoryInputStream& stream) {
         auto meshData = makeIntrusive<MeshData>();
-        co_await meshDataLoader->load(meshData.ref(), stream, workingDir, format, options);
-        resource.setMeshData(meshData.get());
+        meshDataLoader->loadAssimp(meshData.ref(), stream);
+        mesh.Data = meshData.get();
+    }
+
+    void DxMeshLoader::loadMesh(DxMesh& mesh, MemoryInputStream& stream) {
+        readHeader<Mesh>(stream, Mesh::FORMAT_MESH);
+        auto meshData = makeIntrusive<MeshData>();
+        meshDataLoader->loadMesh(meshData.ref(), stream);
+        mesh.Data = meshData.get();
+    }
+
+    void DxMeshLoader::saveMesh(DxMesh& resource, MemoryOutputStream& stream) const {
+        writeHeader<Mesh>(stream, Mesh::FORMAT_MESH);
+        meshDataLoader->saveMesh(*resource.Data, stream);
     }
 
     CoroutineTask<void> DxMeshLoader::init_internal(DxMesh& resource) {

@@ -28,7 +28,7 @@ public:
         auto layout = makeIntrusive<ConstraintLayout>();
         auto content = makeIntrusive<Control>();
         layout->Children.add(content.get());
-        ControlPath path = ControlPath::parse(L"Parent");
+        ControlPath path = ControlPath::parse("Parent");
         Control* result = path.resolve(content.ref());
         Assert::IsNotNull(result);
         Assert::AreSame<Control>(layout.ref(), *result);
@@ -38,7 +38,7 @@ public:
         auto layout = makeIntrusive<ControlContainer>();
         auto content = makeIntrusive<Control>();
         layout->Child = content.get();
-        ControlPath path = ControlPath::parse(L"Parent");
+        ControlPath path = ControlPath::parse("Parent");
         Control* result = path.resolve(content.ref());
         Assert::IsNotNull(result);
         Assert::AreSame<Control>(layout.ref(), *result);
@@ -46,7 +46,7 @@ public:
 
     TEST_METHOD(resolveEmptyParent) {
         auto content = makeIntrusive<Control>();
-        ControlPath path = ControlPath::parse(L"Parent");
+        ControlPath path = ControlPath::parse("Parent");
         Control* result = path.resolve(content.ref());
         Assert::IsNull(result);
     }
@@ -54,9 +54,9 @@ public:
     TEST_METHOD(resolveNameGroup) {
         auto layout = makeIntrusive<ConstraintLayout>();
         auto content = makeIntrusive<Control>();
-        content->Name = L"color";
+        content->Name = "color";
         layout->Children.add(content.get());
-        ControlPath path = ControlPath::parse(L"'color'");
+        ControlPath path = ControlPath::parse("'color'");
         Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
         Assert::AreSame<Control>(content.ref(), *result);
@@ -65,9 +65,9 @@ public:
     TEST_METHOD(resolveNameContainer) {
         auto layout = makeIntrusive<ControlContainer>();
         auto content = makeIntrusive<Control>();
-        content->Name = L"color";
+        content->Name = "color";
         layout->Child = content.get();
-        ControlPath path = ControlPath::parse(L"'color'");
+        ControlPath path = ControlPath::parse("'color'");
         Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
         Assert::AreSame<Control>(content.ref(), *result);
@@ -75,14 +75,14 @@ public:
 
     TEST_METHOD(resolveMissingNameGroup) {
         auto layout = makeIntrusive<ConstraintLayout>();
-        ControlPath path = ControlPath::parse(L"'color'");
+        ControlPath path = ControlPath::parse("'color'");
         Control* result = path.resolve(layout.ref());
         Assert::IsNull(result);
     }
 
     TEST_METHOD(resolveMissingNameContainer) {
         auto layout = makeIntrusive<ConstraintLayout>();
-        ControlPath path = ControlPath::parse(L"'color'");
+        ControlPath path = ControlPath::parse("'color'");
         Control* result = path.resolve(layout.ref());
         Assert::IsNull(result);
     }
@@ -92,7 +92,7 @@ public:
         auto content = makeIntrusive<Control>();
         auto content2 = makeIntrusive<Control>();
         layout->Children = { content.get(), content2.get() };
-        ControlPath path = ControlPath::parse(L"[1]");
+        ControlPath path = ControlPath::parse("[1]");
         Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
         Assert::AreSame<Control>(content2.ref(), *result);
@@ -103,7 +103,7 @@ public:
         auto content = makeIntrusive<Control>();
         auto content2 = makeIntrusive<Control>();
         layout->Children = { content.get(), content2.get() };
-        ControlPath path = ControlPath::parse(L"[-1]");
+        ControlPath path = ControlPath::parse("[-1]");
         Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
         Assert::AreSame<Control>(content2.ref(), *result);
@@ -114,7 +114,7 @@ public:
         auto content = makeIntrusive<Control>();
         auto content2 = makeIntrusive<Control>();
         layout->Children = { content.get(), content2.get() };
-        ControlPath path = ControlPath::parse(L"[2]");
+        ControlPath path = ControlPath::parse("[2]");
         Control* result = path.resolve(layout.ref());
         Assert::IsNull(result);
     }
@@ -124,7 +124,7 @@ public:
         auto content = makeIntrusive<Control>();
         auto content2 = makeIntrusive<Control>();
         layout->Children = { content.get(), content2.get() };
-        ControlPath path = ControlPath::parse(L"[-3]");
+        ControlPath path = ControlPath::parse("[-3]");
         Control* result = path.resolve(layout.ref());
         Assert::IsNull(result);
     }
@@ -132,9 +132,9 @@ public:
     TEST_METHOD(resolveIndexContainer) {
         auto layout = makeIntrusive<ControlContainer>();
         auto content = makeIntrusive<Control>();
-        content->Name = L"color";
+        content->Name = "color";
         layout->Child = content.get();
-        ControlPath path = ControlPath::parse(L"[0]");
+        ControlPath path = ControlPath::parse("[0]");
         Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
         Assert::AreSame<Control>(content.ref(), *result);
@@ -144,9 +144,9 @@ public:
     TEST_METHOD(resolveNegativeIndexContainer) {
         auto layout = makeIntrusive<ControlContainer>();
         auto content = makeIntrusive<Control>();
-        content->Name = L"color";
+        content->Name = "color";
         layout->Child = content.get();
-        ControlPath path = ControlPath::parse(L"[-1]");
+        ControlPath path = ControlPath::parse("[-1]");
         Control* result = path.resolve(layout.ref());
         Assert::IsNull(result);
     }
@@ -154,9 +154,9 @@ public:
     TEST_METHOD(resolveIndexMissingContainer) {
         auto layout = makeIntrusive<ControlContainer>();
         auto content = makeIntrusive<Control>();
-        content->Name = L"color";
+        content->Name = "color";
         layout->Child = content.get();
-        ControlPath path = ControlPath::parse(L"[1]");
+        ControlPath path = ControlPath::parse("[1]");
         Control* result = path.resolve(layout.ref());
         Assert::IsNull(result);
     }
@@ -164,9 +164,9 @@ public:
     TEST_METHOD(resolveNegativeIndexMissingContainer) {
         auto layout = makeIntrusive<ControlContainer>();
         auto content = makeIntrusive<Control>();
-        content->Name = L"color";
+        content->Name = "color";
         layout->Child = content.get();
-        ControlPath path = ControlPath::parse(L"[-2]");
+        ControlPath path = ControlPath::parse("[-2]");
         Control* result = path.resolve(layout.ref());
         Assert::IsNull(result);
     }
@@ -174,9 +174,9 @@ public:
     TEST_METHOD(resolveParentNameGroup) {
         auto layout = makeIntrusive<ConstraintLayout>();
         auto content = makeIntrusive<Control>();
-        content->Name = L"color";
+        content->Name = "color";
         layout->Children.add(content.get());
-        ControlPath path = ControlPath::parse(L"Parent.'color'");
+        ControlPath path = ControlPath::parse("Parent.'color'");
         Control* result = path.resolve(content.ref());
         Assert::IsNotNull(result);
         Assert::AreSame<Control>(content.ref(), *result);
@@ -185,9 +185,9 @@ public:
     TEST_METHOD(resolveParentNameContainer) {
         auto layout = makeIntrusive<ControlContainer>();
         auto content = makeIntrusive<Control>();
-        content->Name = L"color";
+        content->Name = "color";
         layout->Child = content.get();
-        ControlPath path = ControlPath::parse(L"Parent.'color'");
+        ControlPath path = ControlPath::parse("Parent.'color'");
         Control* result = path.resolve(content.ref());
         Assert::IsNotNull(result);
         Assert::AreSame<Control>(content.ref(), *result);
@@ -197,7 +197,7 @@ public:
         auto layout = makeIntrusive<ConstraintLayout>();
         auto content = makeIntrusive<Control>();
         layout->Children.add(content.get());
-        ControlPath path = ControlPath::parse(L"Parent[0]");
+        ControlPath path = ControlPath::parse("Parent[0]");
         Control* result = path.resolve(content.ref());
         Assert::IsNotNull(result);
         Assert::AreSame<Control>(content.ref(), *result);
@@ -207,7 +207,7 @@ public:
         auto layout = makeIntrusive<ControlContainer>();
         auto content = makeIntrusive<Control>();
         layout->Child = content.get();
-        ControlPath path = ControlPath::parse(L"Parent[0]");
+        ControlPath path = ControlPath::parse("Parent[0]");
         Control* result = path.resolve(content.ref());
         Assert::IsNotNull(result);
         Assert::AreSame<Control>(content.ref(), *result);
@@ -216,11 +216,11 @@ public:
     TEST_METHOD(resolveNameIndexGroup) {
         auto layout = makeIntrusive<ConstraintLayout>();
         auto mid = makeIntrusive<ConstraintLayout>();
-        mid->Name = L"container";
+        mid->Name = "container";
         layout->Children = { mid.get() };
         auto content = makeIntrusive<Control>();
         mid->Children = { content.get() };
-        ControlPath path = ControlPath::parse(L"'container'[0]");
+        ControlPath path = ControlPath::parse("'container'[0]");
         Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
         Assert::AreSame<Control>(content.ref(), *result);
@@ -229,11 +229,11 @@ public:
     TEST_METHOD(resolveNameIndexContainer) {
         auto layout = makeIntrusive<ControlContainer>();
         auto mid = makeIntrusive<ControlContainer>();
-        mid->Name = L"container";
+        mid->Name = "container";
         layout->Child = mid.get();
         auto content = makeIntrusive<Control>();
         mid->Child = content.get();
-        ControlPath path = ControlPath::parse(L"'container'[0]");
+        ControlPath path = ControlPath::parse("'container'[0]");
         Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
         Assert::AreSame<Control>(content.ref(), *result);
@@ -242,9 +242,9 @@ public:
     TEST_METHOD(resolveComplex1) {
         auto layout = makeIntrusive<ControlContainer>();
         auto container = makeIntrusive<ControlContainer>();
-        container->Name = L"container";
+        container->Name = "container";
         layout->Child = container.get();
-        ControlPath path = ControlPath::parse(L"'container'.Parent[0]");
+        ControlPath path = ControlPath::parse("'container'.Parent[0]");
         Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
         Assert::AreSame<Control>(container.ref(), *result);
@@ -253,12 +253,12 @@ public:
     TEST_METHOD(resolveComplex2) {
         auto layout = makeIntrusive<ControlContainer>();
         auto mid = makeIntrusive<ControlContainer>();
-        mid->Name = L"container";
+        mid->Name = "container";
         layout->Child = mid.get();
         auto content = makeIntrusive<Control>();
-        content->Name = L"color";
+        content->Name = "color";
         mid->Child = content.get();
-        ControlPath path = ControlPath::parse(L"'container'.'color'");
+        ControlPath path = ControlPath::parse("'container'.'color'");
         Control* result = path.resolve(layout.ref());
         Assert::IsNotNull(result);
         Assert::AreSame<Control>(content.ref(), *result);
@@ -270,7 +270,7 @@ public:
         layout->Child = mid.get();
         auto content = makeIntrusive<Control>();
         mid->Child = content.get();
-        ControlPath path = ControlPath::parse(L"Parent.Parent");
+        ControlPath path = ControlPath::parse("Parent.Parent");
         Control* result = path.resolve(content.ref());
         Assert::IsNotNull(result);
         Assert::AreSame<Control>(layout.ref(), *result);
@@ -278,31 +278,31 @@ public:
 
     TEST_METHOD(resolveInvalidPathNoQuotationMarks) {
         Assert::ExpectException<InvalidDataException>([] {
-            ControlPath::parse(L"Parent.color");
+            ControlPath::parse("Parent.color");
         });
     }
 
     TEST_METHOD(resolveInvalidPathIndexAfterDot) {
         Assert::ExpectException<InvalidDataException>([] {
-            ControlPath::parse(L"Parent.[5]");
+            ControlPath::parse("Parent.[5]");
         });
     }
 
     TEST_METHOD(resolveInvalidPathFloatIndex) {
         Assert::ExpectException<InvalidDataException>([] {
-            ControlPath::parse(L"Parent[3.4]");
+            ControlPath::parse("Parent[3.4]");
         });
     }
 
     TEST_METHOD(resolveInvalidPathTextIndex) {
         Assert::ExpectException<InvalidDataException>([] {
-            ControlPath::parse(L"Parent[five]");
+            ControlPath::parse("Parent[five]");
         });
     }
 
     TEST_METHOD(resolveInvalidPathParentLowerCase) {
         Assert::ExpectException<InvalidDataException>([] {
-            ControlPath::parse(L"parent");
+            ControlPath::parse("parent");
         });
     }
 

@@ -137,9 +137,10 @@ public:
 </ControlGroup>)";
 			MemoryInputStream stream(xml.Data, xml.Length);
 
-			IntrusivePointer<ControlGroup> controlGroup = runCoroutineBlocking(
-				resourceManager.load<ControlGroup>(stream, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, ResourceManager::LOAD_GENERATE_NAME, { .cache = false })
+			IntrusivePointer<ControlLayout> controlLayout = runCoroutineBlocking(
+				resourceManager.load<ControlLayout>(stream, DirectoryPath::getCurrentDirectory(), ResourceFormat::AUTO, ResourceManager::LOAD_GENERATE_NAME)
 			);
+			ControlGroup* controlGroup = (ControlGroup*)controlLayout->control.get();
 			Control* control = controlGroup->find<Control>();
 
 			ConstraintSet& constraints = controlGroup->getConstraints(*control);

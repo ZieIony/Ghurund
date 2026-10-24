@@ -95,8 +95,6 @@ namespace Ghurund::Engine {
 	}
 
 	void MeshDataLoader::loadMesh(MeshData& mesh, MemoryInputStream& stream) {
-		readHeader<MeshData>(stream, MeshData::FORMAT_MESH);
-
 		uint32_t vertexCount = stream.readUInt32();
 		uint32_t streamCount = stream.readUInt32();
 		Array<VertexStream> vertexStreams(streamCount);
@@ -117,33 +115,10 @@ namespace Ghurund::Engine {
 		mesh.init(vertexStreams, vertexCount, Buffer(data, indexCount * indexSize), indexCount, boundingBox);
 	}
 
-	CoroutineTask<void> MeshDataLoader::load_internal(
-		MeshData& resource,
-		MemoryInputStream& stream,
-		const DirectoryPath& workingDir,
-		const Ghurund::Core::ResourceFormat& format,
-		Ghurund::Core::LoadOptions options
-	) {
-		if (format == MeshData::FORMAT_MESH) {
-			loadMesh(resource, stream);
-		} else if (format == ResourceFormat::AUTO) {
-			try {
-				loadMesh(resource, stream);
-			} catch (...) {
-				loadAssimp(resource, stream);
-			}
-		} else {
-			loadAssimp(resource, stream);
-		}
-		co_return;
-	}
-
 	void MeshDataLoader::saveMesh(
 		MeshData& resource,
 		MemoryOutputStream& stream
 	) const {
-		writeHeader<MeshData>(stream, MeshData::FORMAT_MESH);
-
 		stream.writeUInt32(resource.VertexCount);
 		stream.writeUInt32((uint32_t)resource.VertexStreams.Size);
 		for (auto& vertexStream : resource.VertexStreams) {
@@ -158,16 +133,5 @@ namespace Ghurund::Engine {
 		stream.writeBytes(resource.Indices.Data, resource.Indices.Size);
 
 		stream.write<BoundingBox>(resource.BoundingBox);
-	}
-
-	void MeshDataLoader::save_internal(
-		MeshData& resource,
-		MemoryOutputStream& stream,
-		const DirectoryPath& workingDir,
-		const Ghurund::Core::ResourceFormat& format,
-		Ghurund::Core::SaveOptions options
-	) const {
-		if (format == MeshData::FORMAT_MESH)
-			saveMesh(resource, stream);
 	}
 }

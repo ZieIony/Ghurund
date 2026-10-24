@@ -11,7 +11,8 @@ namespace Ghurund::Engine::OpenGL {
         Ghurund::Core::LoadOptions options
     ) {
         auto meshData = makeIntrusive<MeshData>();
-        co_await meshDataLoader.load(meshData.ref(), stream, workingDir, format, options);
+        //co_await meshDataLoader.load(meshData.ref(), stream, workingDir, format, options);
         resource.init(meshData.ref());
+        co_return;
     }
 }

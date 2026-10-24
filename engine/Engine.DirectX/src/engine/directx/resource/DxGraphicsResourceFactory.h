@@ -19,7 +19,7 @@ namespace Ghurund::Engine::DirectX {
 		[[nodiscard]]
 		virtual Mesh* makeMesh(NotNull<MeshData> meshData) override {
 			auto mesh = makeIntrusive<DxMesh>();
-			mesh->setMeshData(meshData.get());
+			mesh->Data = meshData.get();
 			mesh->init(memoryManager);
 			mesh->addReference();
 			return mesh.get();

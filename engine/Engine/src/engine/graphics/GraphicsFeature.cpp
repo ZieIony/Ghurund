@@ -18,8 +18,6 @@ namespace Ghurund::Engine {
 	}
 
 	CoroutineTask<void> GraphicsFeature::onInit() {
-		auto meshDataLoader = makeIntrusive<MeshDataLoader>();
-		resourceManager.Loaders.set<MeshData>(meshDataLoader.ref());
 		auto textureAtlasLoader = makeIntrusive<TextureAtlasLoader>(resourceManager);
 		resourceManager.Loaders.set<TextureAtlas>(textureAtlasLoader.ref());
 		co_return;
