@@ -1,33 +1,32 @@
 #include "Ground.h"
 
-#include "core/application/Application.h"
-#include "engine/2d/World2D.h"
+#include <engine/2d/scene/tiles/TileMap.h>
+#include <engine/2d/scene/tiles/TileMapComponent.h>
+#include <engine/2d/scene/transform/TransformComponent2D.h>
+#include <engine/2d/physics/RigidBodyComponent2D.h>
+#include <engine/2d/physics/visualization/VisualizationComponent2D.h>
 
 namespace Sample {
-	CoroutineTask<void> Ground::onInit() {
+	using namespace Ghurund::Engine::_2D;
+
+	CoroutineTask<void> Ground::init(PhysicsSystem2D& physicsSystem, IGraphicsResourceFactory& resourceFactory, ResourceManager& resourceManager) {
+		addComponent<TransformComponent2D>();
+		addComponent<SpriteComponent>();
+
 		{
-			groundBox = IntrusivePointer(makeComponent<BoxComponent2D>());
-			co_await groundBox->init();
-			groundBox->BodyType = BodyType::STATIC;
-			groundBox->Size = { 5, 3 };
-			Components.add(groundBox.get());
+			auto& groundBox = addComponent<RigidBodyComponent2D>();
+			groundBox.init(physicsSystem, ShapeType::BOX);
+			groundBox.BodyType = BodyType::STATIC;
+			groundBox.Size = { 5, 3 };
+			auto& visComponent = addComponent<VisualizationComponent2D>();
+			co_await visComponent.init(resourceManager, groundBox);
 		}
 
 		{
-			segmentBox = IntrusivePointer(makeComponent<SegmentComponent2D>());
-			co_await segmentBox->init();
-			segmentBox->BodyType = BodyType::STATIC;
-			segmentBox->Position = { 0, -0.1f };
-			segmentBox->Width = 12;
-			Components.add(segmentBox.get());
-		}
-
-		{
-			tileMapComponent = IntrusivePointer(makeComponent<TileMapComponent>());
-			tileMap = co_await World.app.ResourceManager.load<TileMap>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/images/terrainTileMap.xml"));
-			tileMapComponent->TileMap = tileMap.get();
-			co_await tileMapComponent->init();
-			Components.add(tileMapComponent.get());
+			auto& tileMapComponent = addComponent<TileMapComponent>();
+			auto tileMap = co_await resourceManager.load<TileMap>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/images/terrainTileMap.xml"));
+			tileMapComponent.TileMap = tileMap.get();
+			co_await tileMapComponent.init(resourceFactory, resourceManager);
 		}
 	}
 }

@@ -57,7 +57,7 @@
       <PrecompiledHeaderFile>ghe2dpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\..\libs\box2d-3.1.1\include\box2d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\..\libs\entt\single_include\entt;..\..\libs\box2d-3.1.1\include\box2d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -78,7 +78,7 @@
       <PrecompiledHeaderFile>ghe2dpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\..\libs\box2d-3.1.1\include\box2d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\..\libs\entt\single_include\entt;..\..\libs\box2d-3.1.1\include\box2d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -98,6 +98,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\2d\graphics\sprite\animation\SpriteAnimationSystem.h" />
+    <ClInclude Include="src\engine\2d\scene\camera\CameraSystem2D.h" />
+    <ClInclude Include="src\engine\2d\physics\visualization\VisualizatonRenderingSystem.h" />
+    <ClInclude Include="src\engine\2d\scene\tiles\TileMapSystem.h" />
     <ClInclude Include="src\Ghurund.Engine.2D.h" />
     <ClInclude Include="src\engine\2d\Graphics2DFeature.h" />
     <ClInclude Include="src\engine\2d\World2D.h" />
@@ -105,28 +109,23 @@
     <ClInclude Include="src\engine\2d\audio\component\AudioListenerComponent2D.h" />
     <ClInclude Include="src\engine\2d\audio\component\SoundComponent2D.h" />
     <ClInclude Include="src\engine\2d\graphics\mesh\TileMapMeshData.h" />
-    <ClInclude Include="src\engine\2d\graphics\sprite\AnimatedSpriteComponent.h" />
-    <ClInclude Include="src\engine\2d\graphics\sprite\BaseSpriteComponent.h" />
-    <ClInclude Include="src\engine\2d\graphics\sprite\SpriteAnimation.h" />
-    <ClInclude Include="src\engine\2d\graphics\sprite\SpriteAnimationSet.h" />
-    <ClInclude Include="src\engine\2d\graphics\sprite\SpriteAnimationSetLoader.h" />
-    <ClInclude Include="src\engine\2d\graphics\sprite\SpriteAnimator.h" />
+    <ClInclude Include="src\engine\2d\graphics\sprite\SpriteRenderingSystem.h" />
+    <ClInclude Include="src\engine\2d\graphics\sprite\animation\AnimatedSpriteComponent.h" />
+    <ClInclude Include="src\engine\2d\graphics\sprite\animation\SpriteAnimation.h" />
+    <ClInclude Include="src\engine\2d\graphics\sprite\animation\SpriteAnimationSet.h" />
+    <ClInclude Include="src\engine\2d\graphics\sprite\animation\SpriteAnimationSetLoader.h" />
+    <ClInclude Include="src\engine\2d\graphics\sprite\animation\SpriteAnimator.h" />
     <ClInclude Include="src\engine\2d\graphics\sprite\SpriteComponent.h" />
     <ClInclude Include="src\engine\2d\graphics\sprite\SpriteInputs.h" />
     <ClInclude Include="src\engine\2d\physics\PhysicsSystem2D.h" />
-    <ClInclude Include="src\engine\2d\physics\component\BoxComponent2D.h" />
-    <ClInclude Include="src\engine\2d\physics\component\CapsuleComponent2D.h" />
-    <ClInclude Include="src\engine\2d\physics\component\RigidBodyComponent2D.h" />
-    <ClInclude Include="src\engine\2d\physics\component\SegmentComponent2D.h" />
-    <ClInclude Include="src\engine\2d\scene\Entity2D.h" />
+    <ClInclude Include="src\engine\2d\physics\RigidBodyComponent2D.h" />
     <ClInclude Include="src\engine\2d\scene\Scene2D.h" />
+    <ClInclude Include="src\engine\2d\scene\transform\TransformSystem.h" />
     <ClInclude Include="src\engine\2d\scene\camera\Camera2D.h" />
     <ClInclude Include="src\engine\2d\scene\camera\CameraComponent2D.h" />
-    <ClInclude Include="src\engine\2d\scene\component\Component2D.h" />
-    <ClInclude Include="src\engine\2d\scene\component\Component2DCollection.h" />
-    <ClInclude Include="src\engine\2d\scene\component\TransformComponent2D.h" />
-    <ClInclude Include="src\engine\2d\scene\component\VisualizationComponent2D.h" />
-    <ClInclude Include="src\engine\2d\scene\component\VisualizationInputs.h" />
+    <ClInclude Include="src\engine\2d\scene\transform\TransformComponent2D.h" />
+    <ClInclude Include="src\engine\2d\physics\visualization\VisualizationComponent2D.h" />
+    <ClInclude Include="src\engine\2d\physics\visualization\VisualizationInputs.h" />
     <ClInclude Include="src\engine\2d\scene\tiles\TileMap.h" />
     <ClInclude Include="src\engine\2d\scene\tiles\TileMapComponent.h" />
     <ClInclude Include="src\engine\2d\scene\tiles\TileMapLoader.h" />
@@ -136,29 +135,25 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\2d\Graphics2DFeature.cpp" />
+    <ClCompile Include="src\engine\2d\graphics\sprite\animation\SpriteAnimationSystem.cpp" />
+    <ClCompile Include="src\engine\2d\graphics\sprite\SpriteRenderingSystem.cpp" />
+    <ClCompile Include="src\engine\2d\physics\PhysicsSystem2D.cpp" />
+    <ClCompile Include="src\engine\2d\physics\visualization\VisualizatonRenderingSystem.cpp" />
+    <ClCompile Include="src\engine\2d\scene\tiles\TileMapSystem.cpp" />
+    <ClCompile Include="src\engine\2d\scene\transform\TransformSystem.cpp" />
     <ClCompile Include="src\engine\2d\World2D.cpp" />
     <ClCompile Include="src\engine\2d\audio\AudioSystem2D.cpp" />
-    <ClCompile Include="src\engine\2d\audio\component\AudioListenerComponent2D.cpp" />
-    <ClCompile Include="src\engine\2d\audio\component\SoundComponent2D.cpp" />
     <ClCompile Include="src\engine\2d\graphics\mesh\TileMapMeshData.cpp" />
-    <ClCompile Include="src\engine\2d\graphics\sprite\AnimatedSpriteComponent.cpp" />
-    <ClCompile Include="src\engine\2d\graphics\sprite\BaseSpriteComponent.cpp" />
-    <ClCompile Include="src\engine\2d\graphics\sprite\SpriteAnimation.cpp" />
-    <ClCompile Include="src\engine\2d\graphics\sprite\SpriteAnimationSet.cpp" />
-    <ClCompile Include="src\engine\2d\graphics\sprite\SpriteAnimationSetLoader.cpp" />
-    <ClCompile Include="src\engine\2d\graphics\sprite\SpriteAnimator.cpp" />
+    <ClCompile Include="src\engine\2d\graphics\sprite\animation\AnimatedSpriteComponent.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\SpriteComponent.cpp" />
-    <ClCompile Include="src\engine\2d\physics\component\BoxComponent2D.cpp" />
-    <ClCompile Include="src\engine\2d\physics\component\CapsuleComponent2D.cpp" />
-    <ClCompile Include="src\engine\2d\physics\component\RigidBodyComponent2D.cpp" />
-    <ClCompile Include="src\engine\2d\physics\component\SegmentComponent2D.cpp" />
-    <ClCompile Include="src\engine\2d\scene\Entity2D.cpp" />
+    <ClCompile Include="src\engine\2d\graphics\sprite\animation\SpriteAnimation.cpp" />
+    <ClCompile Include="src\engine\2d\graphics\sprite\animation\SpriteAnimationSet.cpp" />
+    <ClCompile Include="src\engine\2d\graphics\sprite\animation\SpriteAnimationSetLoader.cpp" />
+    <ClCompile Include="src\engine\2d\graphics\sprite\animation\SpriteAnimator.cpp" />
+    <ClCompile Include="src\engine\2d\physics\RigidBodyComponent2D.cpp" />
     <ClCompile Include="src\engine\2d\scene\Scene2D.cpp" />
     <ClCompile Include="src\engine\2d\scene\camera\Camera2D.cpp" />
-    <ClCompile Include="src\engine\2d\scene\camera\CameraComponent2D.cpp" />
-    <ClCompile Include="src\engine\2d\scene\component\Component2D.cpp" />
-    <ClCompile Include="src\engine\2d\scene\component\TransformComponent2D.cpp" />
-    <ClCompile Include="src\engine\2d\scene\component\VisualizationComponent2D.cpp" />
+    <ClCompile Include="src\engine\2d\physics\visualization\VisualizationComponent2D.cpp" />
     <ClCompile Include="src\engine\2d\scene\tiles\TileMapComponent.cpp" />
     <ClCompile Include="src\engine\2d\scene\tiles\TileMapLoader.cpp" />
     <ClCompile Include="src\engine\2d\scene\tiles\TileSet.cpp" />

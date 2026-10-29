@@ -7,6 +7,8 @@
 #include "engine/application/GameWindow.h"
 #include "core/coroutine/CoroutineTask.h"
 #include "engine/2d/World2D.h"
+#include <engine/2d/graphics/sprite/SpriteRenderingSystem.h>
+#include <engine/2d/physics/visualization/VisualizatonRenderingSystem.h>
 
 namespace Sample {
 	using namespace Ghurund;
@@ -21,16 +23,17 @@ namespace Sample {
 
 		Set<RenderGroup> renderGroups;
 		World2D* world = nullptr;
-		IntrusivePointer<Captain> captain;
-		IntrusivePointer<Ground> ground;
+		IntrusivePointer<SpriteRenderingSystem> spriteRenderingSystem;
+		IntrusivePointer<VisualizationRenderingSystem> visualizationRenderingSystem;
+
+		Captain captain;
+		Ground ground;
 		float direction = 1;
 
 	public:
 		SampleWindow(SampleApplication& app);
 
 		~SampleWindow() {
-			captain.set(nullptr);
-			ground.set(nullptr);
 			delete world;
 		}
 
@@ -39,7 +42,5 @@ namespace Sample {
 		CoroutineTask<void> initScene();
 
 		virtual bool onKeyEvent(const KeyEventArgs& args) override;
-
-		virtual void onPaint(RenderingContext& renderingContext) override;
 	};
 }

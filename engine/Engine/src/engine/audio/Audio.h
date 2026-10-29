@@ -2,6 +2,7 @@
 
 #include "core/feature/Feature.h"
 #include "core/object/Initializable.h"
+#include <core/object/Noncopyable.h>
 
 #include <wrl\client.h>
 

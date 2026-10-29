@@ -15,6 +15,7 @@ namespace Sample {
 		window->ClientSize = { 800, 600 };
         window->Position = { 0, 0 };
         window->Visible = true;
+        window->init();
         window->bringToFront();
     }
     

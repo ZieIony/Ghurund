@@ -33,6 +33,7 @@ namespace Ghurund::Engine::DirectX {
 		}
 
 		inline void deinit_internal() {
+			dataSize.graphical = 0;
 			textureResource.Reset();
 		}
 
@@ -42,7 +43,7 @@ namespace Ghurund::Engine::DirectX {
 	public:
 		DxTexture() {}
 
-		void init(DxGPUMemoryManager& memoryManager);
+		void init(DxGPUMemoryManager& memoryManager, DxGraphics& graphics);
 
 		inline void deinit() {
 			if (State != ResourceState::INITIALIZED)

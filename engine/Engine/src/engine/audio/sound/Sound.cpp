@@ -30,8 +30,8 @@ namespace Ghurund::Engine {
             waveFormat = nullptr;
         }
         delete audioBuffer.pAudioData;
-        memset(&audioBuffer, 0, sizeof(XAUDIO2_BUFFER));
 
+        dataSize.system = sizeof(*this);
         State = ResourceState::EMPTY;
     }
 

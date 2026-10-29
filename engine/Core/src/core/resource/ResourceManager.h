@@ -164,7 +164,7 @@ namespace Ghurund::Core {
 				SharedPointer<Buffer> buffer = resolveResource(*absoluteOrLibPath);
 				MemoryInputStream stream = MemoryInputStream(buffer->Data, buffer->Size);
 				auto localDir = getLocalDir(*absoluteOrLibPath, workingDir);
-				co_await load_internal(resource.ref(), loader, stream, localDir, format, options);
+				co_await load_internal(resource.ref(), loader, stream, localDir, loadFormat, options);
 			}
 
 			if (options.clone)
@@ -225,7 +225,7 @@ namespace Ghurund::Core {
 				SharedPointer<Buffer> buffer = resolveResource(absoluteOrLibPath);
 				MemoryInputStream stream = MemoryInputStream(buffer->Data, buffer->Size);
 				auto localDir = getLocalDir(absoluteOrLibPath, workingDir);
-				co_await load_internal(resource.ref(), loader, stream, localDir, format, options);
+				co_await load_internal(resource.ref(), loader, stream, localDir, loadFormat, options);
 			}
 
 			if (options.clone)

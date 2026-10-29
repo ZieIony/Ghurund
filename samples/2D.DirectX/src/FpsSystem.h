@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine/application/GameWindow.h"
-#include "engine/game/system/System.h"
+#include "engine/ecs/System.h"
 
 namespace Sample {
 	using namespace Ghurund::Engine;

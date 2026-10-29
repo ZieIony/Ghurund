@@ -37,30 +37,26 @@ namespace Ghurund::Engine::DirectX {
 		}
 	}
 
-	void DxRenderingContext::draw(Set<RenderGroup>& renderGroups, ParameterManager& parameterManager) {
+	void DxRenderingContext::draw(RenderGroup& renderGroup, ParameterManager& parameterManager) {
 		auto commandList = swapChain->CurrentFrame.CommandList;
-		for (auto& group : renderGroups) {
-			if (group.Camera) {
-				group.Camera->update();
-				group.Camera->apply(parameterManager);
-			}
+		if (renderGroup.Camera)
+			renderGroup.Camera->apply(parameterManager);
 
-			// TODO: sort on insertion
-			group.objects.sort([&](const DrawPacket& first, const DrawPacket& second) -> bool {
-				return (first.Order - second.Order) * (int8_t)group.DrawGroup.DrawOrder > 0;
-			});
-			for (auto& packet : group.objects) {
-				auto mesh = (DxMesh*)packet.Mesh;
-				auto material = packet.Material;
-				material->applyInputs(parameterManager.Parameters);
-				auto shader = (DxGraphicsShader*)material->Shader;
-				bool shaderChanged = shader->apply(*commandList);
-				mesh->draw(*commandList, shader->Layout);
+		// TODO: sort on insertion
+		renderGroup.objects.sort([&](const DrawPacket& first, const DrawPacket& second) -> bool {
+			return (first.Order - second.Order) * (int8_t)renderGroup.DrawGroup.DrawOrder > 0;
+		});
+		for (auto& packet : renderGroup.objects) {
+			auto mesh = (DxMesh*)packet.Mesh;
+			auto material = packet.Material;
+			material->applyInputs(parameterManager.Parameters);
+			auto shader = (DxGraphicsShader*)material->Shader;
+			bool shaderChanged = shader->apply(*commandList);
+			mesh->draw(*commandList, shader->Layout);
 
-				stats.modelsRendered++;
-				if (shaderChanged)
-					stats.materialChanges++;
-			}
+			stats.modelsRendered++;
+			if (shaderChanged)
+				stats.materialChanges++;
 		}
 	}
 }

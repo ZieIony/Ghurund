@@ -11,6 +11,9 @@ namespace Ghurund::Engine::_2D {
 		tiles = Array<Tile>(tileCount);
 		for (size_t i = 0; i < tileCount; i++)
 			tiles[i].index = i;
+
+		dataSize.system = sizeof(*this) + sizeof(Tile) * tiles.Size;
+		State = ResourceState::INITIALIZED;
 	}
 
 	void TileSet::init(NotNull<ITexture> texture, XMUINT2 gridSize) {
@@ -21,5 +24,8 @@ namespace Ghurund::Engine::_2D {
 		tiles = Array<Tile>(tileCount);
 		for (size_t i = 0; i < tileCount; i++)
 			tiles[i].index = i;
+
+		dataSize.system = sizeof(*this) + sizeof(Tile) * tiles.Size;
+		State = ResourceState::INITIALIZED;
 	}
 }

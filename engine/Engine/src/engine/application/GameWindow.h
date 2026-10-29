@@ -73,8 +73,6 @@ namespace Ghurund::Engine {
 
         virtual bool onFocusedChanged() override;
 
-        virtual void onPaint(RenderingContext& renderingContext) {}
-
     public:
 		GameWindow(GameApplication& app, WindowStyle style = SystemWindow::DEFAULT_WINDOW_STYLE);
 
@@ -121,7 +119,7 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getParameterManager)) ParameterManager& ParameterManager;
 
-        virtual void fixedUpdate() override {}
+        virtual void fixedUpdate() override;
 
         virtual void update() override;
 

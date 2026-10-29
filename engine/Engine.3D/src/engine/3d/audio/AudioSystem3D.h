@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine/audio/Audio.h"
-#include "engine/game/system/System.h"
+#include "engine/ecs/System.h"
 #include "component/SoundComponent3D.h"
 #include "component/AudioListenerComponent3D.h"
 

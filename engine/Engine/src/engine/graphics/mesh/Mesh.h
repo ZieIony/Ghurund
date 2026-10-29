@@ -43,7 +43,7 @@ namespace Ghurund::Engine {
 		virtual void updateDataSize() {
 			dataSize.system = sizeof(*this);
 			if (meshData != nullptr)
-				meshData->getDataSize();
+				dataSize.system += meshData->getDataSize();
 			dataSize.graphical = 0;
 		}
 
@@ -54,7 +54,7 @@ namespace Ghurund::Engine {
 			this->meshData.set(meshData);
 			meshData->addReference();
 			if (meshData) {
-				dataSize.system = sizeof(*this) + meshData->getDataSize();
+				updateDataSize();
 				State = ResourceState::LOADED;
 			}
 		}
@@ -95,7 +95,7 @@ namespace Ghurund::Engine {
 
 	public:
 		// TODO: maybe move formats to loaders?
-		static const inline ResourceFormat FORMAT_MESH = ResourceFormat(L"mesh", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
+		static const inline ResourceFormat FORMAT_MESH = ResourceFormat(L"mesh", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD, 1);
 		static const inline ResourceFormat FORMAT_3DMF = ResourceFormat(L"3mf", ResourceFormatOptions::CAN_LOAD);
 		static const inline ResourceFormat FORMAT_COLLADA_DAE = ResourceFormat(L"dae", ResourceFormatOptions::CAN_LOAD);
 		static const inline ResourceFormat FORMAT_COLLADA_XML = ResourceFormat(L"xml", ResourceFormatOptions::CAN_LOAD);
@@ -188,8 +188,6 @@ namespace Ghurund::Engine {
 			FORMAT_TRUESPACE_COB, FORMAT_TRUESPACE_SCN,
 			FORMAT_XGL
 		};
-
-		static const inline uint32_t VERSION = 1;
 #pragma endregion
 	};
 }

@@ -21,7 +21,5 @@ namespace Ghurund::Engine::OpenGL {
         void deinit();
 
         void draw();
-
-        static const inline uint32_t VERSION = 0;
     };
 }

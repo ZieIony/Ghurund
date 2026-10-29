@@ -3,7 +3,7 @@
 #include "scene/Scene3D.h"
 #include "audio/AudioSystem3D.h"
 #include "physics/PhysicsSystem3D.h"
-#include "engine/game/system/SystemCollection.h"
+#include "engine/ecs/SystemCollection.h"
 #include "engine/application/GameApplication.h"
 
 namespace Ghurund::Core {
@@ -35,7 +35,7 @@ namespace Ghurund::Engine::_3D {
 		
 		World3D(
 			GameApplication& app
-		):app(app), systems(app.GameObjects) {
+		):app(app) {
 		}
 
 		~World3D() {
@@ -66,10 +66,6 @@ namespace Ghurund::Engine::_3D {
 			auto entity = makeIntrusive<T>(*this);
 			scene->add(entity);
 			co_return entity;
-		}
-
-		inline void queueDraw(RenderGroup& group) {
-			scene->queueDraw(group);
 		}
 	};
 }

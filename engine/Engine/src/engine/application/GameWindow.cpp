@@ -52,7 +52,7 @@ namespace Ghurund::Engine {
         return __super::onFocusedChanged();
     }
 
-    GameWindow::GameWindow(GameApplication& app, WindowStyle style):ApplicationWindow(app, style), systems(app.GameObjects) {
+    GameWindow::GameWindow(GameApplication& app, WindowStyle style):ApplicationWindow(app, style) {
         viewportSizeParameter = makeIntrusive<Int2Parameter>(VIEWPORT_SIZE);
         parameterManager.Parameters.put(viewportSizeParameter.get());
         timeParameter = makeIntrusive<FloatParameter>(TIME);
@@ -62,9 +62,14 @@ namespace Ghurund::Engine {
         ParameterManager.Parameters.put(mousePosParameter.get());
     }
 
+    inline void GameWindow::fixedUpdate() {
+        systems.fixedUpdate(Timer);
+    }
+
     void GameWindow::update() {
         timeParameter->Value = (float)Timer.ScaledTime;
         layers.update(Timer.TimeMs);
+        systems.update(Timer);
         Input->dispatchGamepadEvents(Timer.TimeMs, *this);
         actionMapping.executeDispatches();
     }
@@ -74,8 +79,8 @@ namespace Ghurund::Engine {
             return;
 
         renderingContext->startFrame();
-        __super::paint();
-        onPaint(*renderingContext);
+        renderingContext->clear(BackgroundColor);
+        systems.queueDraw(*renderingContext);
         layers.draw(*renderingContext, parameterManager);
         renderingContext->finishFrame();
     }

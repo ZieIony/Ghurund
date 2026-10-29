@@ -2,6 +2,7 @@
 
 #include "core/string/String.h"
 #include "engine/graphics/shader/InputType.h"
+#include <core/object/Object.h>
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;

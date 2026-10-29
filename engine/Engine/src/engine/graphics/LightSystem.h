@@ -1,7 +1,9 @@
 #pragma once
 
-namespace Ghurund {
-	class LightSystem {
+#include "engine/ecs/System.h"
+
+namespace Ghurund::Engine {
+	class LightSystem:public System {
 
 	};
 }

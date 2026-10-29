@@ -1,11 +1,7 @@
 #pragma once
 
-#include "Entity2D.h"
-
 #include "core/resource/Resource.h"
 #include "camera/Camera2D.h"
-#include <engine/game/GameObjectDrawCollection.h>
-#include <engine/game/GameObjectUpdateCollection.h>
 
 namespace Ghurund::Engine::_2D {
     class Scene2D:public Resource {
@@ -23,24 +19,15 @@ namespace Ghurund::Engine::_2D {
 
     private:
         Camera2D* camera = nullptr;
-        GameObjectUpdateCollection& gameObjectsUpdate;
-        GameObjectDrawCollection gameObjectsDraw;
-        List<IntrusivePointer<Entity2D>> entities;
 
     public:
-        Scene2D(
-            GameObjectUpdateCollection& gameObjectsUpdate
-		):gameObjectsUpdate(gameObjectsUpdate) {
+        Scene2D() {
             camera = ghnew Camera2D();
 		}
 
         ~Scene2D() {
             if (camera)
                 camera->release();
-            for (auto& entity : entities) {
-                gameObjectsUpdate.remove(entity);
-                gameObjectsDraw.remove(entity);
-            }
         }
 
         inline Camera2D* getCamera() const {
@@ -52,22 +39,6 @@ namespace Ghurund::Engine::_2D {
         }
 
         __declspec(property(get = getCamera, put = setCamera)) Camera2D* Camera;
-
-        inline void add(IntrusivePointer<Entity2D> entity) {
-            entities.add(entity);
-            gameObjectsDraw.add(entity);
-            gameObjectsUpdate.add(entity);
-        }
-
-        inline void remove(IntrusivePointer<Entity2D> entity) {
-            entities.remove(entity);
-            gameObjectsDraw.remove(entity);
-            gameObjectsUpdate.remove(entity);
-        }
-
-        inline void queueDraw(RenderGroup& rg) {
-            gameObjectsDraw.queueDraw(rg);
-        }
 
 #pragma region formats
     protected:

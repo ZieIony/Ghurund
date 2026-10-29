@@ -2,29 +2,14 @@
 
 #include "engine/audio/sound/Sound.h"
 #include "engine/audio/sound/SoundEmitter.h"
-#include "engine/2d/scene/component/Component2D.h"
 
 namespace Ghurund::Engine::_2D {
-	class SoundComponent2D:public Component2D {
-#pragma region reflection
-	protected:
-		virtual const Ghurund::Core::Type& getTypeImpl() const override {
-			return GET_TYPE();
-		}
-
-	public:
-		static const Ghurund::Core::Type& GET_TYPE();
-
-		inline static const Ghurund::Core::Type& TYPE = SoundComponent2D::GET_TYPE();
-#pragma endregion
-
+	class SoundComponent2D {
 	private:
         Sound* sound = nullptr;
         SoundEmitter emitter = {};
 
 	public:
-        SoundComponent2D(NotNull<Entity2D> owner):Component2D(owner) {}
-
         ~SoundComponent2D() {
             if (sound)
                 sound->release();
@@ -87,5 +72,9 @@ namespace Ghurund::Engine::_2D {
         }
 
         __declspec(property(get = getEmitter)) const SoundEmitter& Emitter;
+
+        inline void play() {
+            sound->play();
+        }
 	};
 }

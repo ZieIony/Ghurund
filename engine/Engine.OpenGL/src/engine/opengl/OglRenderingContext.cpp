@@ -61,26 +61,24 @@ namespace Ghurund::Engine::OpenGL {
         glClear(GL_DEPTH_BUFFER_BIT);
     }
 
-    void OglRenderingContext::draw(Set<RenderGroup>& renderGroups, ParameterManager& parameterManager) {
-        for (auto& group : renderGroups) {
-            group.objects.sort([&](const DrawPacket& first, const DrawPacket& second) -> bool {
-                return (first.Order - second.Order) * (int8_t)group.DrawGroup.DrawOrder > 0;
-            });
-            for (auto& packet : group.objects) {
-                /*renderingContext.startFrame();
-                Color clearColor = { 0xff1f1f1f };
-                renderer->clear(&clearColor);
-                OpenGLDrawingContext context;
-                Layers.draw(context);
+    void OglRenderingContext::draw(RenderGroup& renderGroup, ParameterManager& parameterManager) {
+        renderGroup.objects.sort([&](const DrawPacket& first, const DrawPacket& second) -> bool {
+            return (first.Order - second.Order) * (int8_t)renderGroup.DrawGroup.DrawOrder > 0;
+        });
+        for (auto& packet : renderGroup.objects) {
+            /*renderingContext.startFrame();
+            Color clearColor = { 0xff1f1f1f };
+            renderer->clear(&clearColor);
+            OpenGLDrawingContext context;
+            Layers.draw(context);
 
-                glDrawArrays(GL_TRIANGLES, 0, 3);
-                //glFlush();
-                renderingContext.finishFrame();
+            glDrawArrays(GL_TRIANGLES, 0, 3);
+            //glFlush();
+            renderingContext.finishFrame();
 
-                PAINTSTRUCT ps;
-                BeginPaint(Handle, &ps);
-                EndPaint(Handle, &ps);*/
-            }
+            PAINTSTRUCT ps;
+            BeginPaint(Handle, &ps);
+            EndPaint(Handle, &ps);*/
         }
     }
 

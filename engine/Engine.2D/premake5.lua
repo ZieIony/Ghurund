@@ -19,6 +19,7 @@ project "Engine.2D"
 		"src",
 		includeDir["Core"],
 		includeDir["Engine"],
+		includeDir["entt"],
 		includeDir["Box2D"]
 	}
 

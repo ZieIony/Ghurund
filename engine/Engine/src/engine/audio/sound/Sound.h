@@ -23,10 +23,11 @@ namespace Ghurund::Engine {
 #pragma endregion
 
     private:
+        // mastering voice shouldn't be a part of Sound
         IXAudio2MasteringVoice* masteringVoice = nullptr;
-        XAUDIO2_VOICE_DETAILS outputDetails;
+        XAUDIO2_VOICE_DETAILS outputDetails = {};
         IXAudio2SourceVoice* sourceVoice = nullptr;
-        XAUDIO2_VOICE_DETAILS inputDetails;
+        XAUDIO2_VOICE_DETAILS inputDetails = {};
         WAVEFORMATEX* waveFormat = nullptr;
         XAUDIO2_BUFFER audioBuffer = {};
         bool loop = false;
@@ -52,6 +53,8 @@ namespace Ghurund::Engine {
             this->waveFormat = waveFormat.get();
             this->audioBuffer = audioBuffer;
 
+            // TODO: include IXAutio2 objects sizes
+            dataSize.system = sizeof(*this) + audioBuffer.AudioBytes + sizeof(*waveFormat);
             State = ResourceState::INITIALIZED;
 		}
 
@@ -143,8 +146,6 @@ namespace Ghurund::Engine {
         static const inline ResourceFormat FORMAT_WAV = ResourceFormat(L"wav", ResourceFormatOptions::CAN_LOAD);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_WAV };
-
-        static const inline uint32_t VERSION = 0;
 #pragma endregion
     };
 }

@@ -2,27 +2,15 @@
 
 #include "Camera2D.h"
 
-#include "engine/2d/scene/component/Component2D.h"
+#include <engine/2d/scene/transform/TransformComponent2D.h>
 
 namespace Ghurund::Engine::_2D {
-	class CameraComponent2D:public Component2D {
-#pragma region reflection
-	protected:
-		virtual const Ghurund::Core::Type& getTypeImpl() const override {
-			return GET_TYPE();
-		}
-
-	public:
-		static const Ghurund::Core::Type& GET_TYPE();
-
-		inline static const Ghurund::Core::Type& TYPE = CameraComponent2D::GET_TYPE();
-#pragma endregion
-
+	class CameraComponent2D {
 	private:
 		Camera2D* camera;
 
 	public:
-		CameraComponent2D(NotNull<Entity2D> owner):Component2D(owner) {
+		CameraComponent2D() {
 			camera = ghnew Camera2D();
 		}
 
@@ -41,6 +29,13 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getCamera, put = setCamera)) Camera2D* Camera;
 
-		virtual void update(const Timer& timer) override;
+		inline void update(const TransformComponent2D& transform) {
+			auto w = XMLoadFloat4x4(&transform.WorldTransformation);
+			XMFLOAT3 pos;
+			XMStoreFloat3(&pos, XMVector3TransformCoord(XMVectorZero(), w));
+
+			camera->setPositionUp({ pos.x, pos.y });
+			camera->update();
+		}
 	};
 }

@@ -3,7 +3,8 @@
 #include "scene/Scene2D.h"
 #include "audio/AudioSystem2D.h"
 #include "physics/PhysicsSystem2D.h"
-#include "engine/game/system/SystemCollection.h"
+#include "engine/ecs/SystemCollection.h"
+#include "engine/ecs/World.h"
 #include "engine/application/GameApplication.h"
 
 namespace Ghurund::Core {
@@ -11,7 +12,7 @@ namespace Ghurund::Core {
 }
 
 namespace Ghurund::Engine::_2D {
-	class World2D:public Initializable, public Noncopyable {
+	class World2D:public World {
 	private:
 		IntrusivePointer<AudioSystem2D> audioSystem;
 		IntrusivePointer<PhysicsSystem2D> physicsSystem;
@@ -31,11 +32,9 @@ namespace Ghurund::Engine::_2D {
 		virtual void onDeinit() override;
 
 	public:
-		GameApplication& app;
-		
 		World2D(
 			GameApplication& app
-		):app(app), systems(app.GameObjects) {
+		):World(app) {
 		}
 
 		~World2D() {
@@ -60,23 +59,5 @@ namespace Ghurund::Engine::_2D {
 		}
 
 		__declspec(property(get = getScene)) Scene2D& Scene;
-
-		template<Derived<Entity2D> T>
-		inline CoroutineTask<IntrusivePointer<T>> spawnEntity() {
-			auto entity = makeIntrusive<T>(*this);
-			co_await entity->init();
-			co_return entity;
-		}
-
-		template<Derived<Entity2D> T>
-		inline CoroutineTask<void> destroyEntity(IntrusivePointer<T> entity) {
-			entity->invalidate();
-			co_await app.CoroutineScheduler.nextUpdate();
-			entity->deinit();
-		}
-
-		inline void queueDraw(RenderGroup& group) {
-			scene->queueDraw(group);
-		}
 	};
 }

@@ -26,6 +26,7 @@ project "2D.DirectX"
 		includeDir["Engine.2D.DirectX"],
 		includeDir["UI"],
 		includeDir["UI.DirectX"],
+		includeDir["entt"],
 		includeDir["Box2D"],
 		includeDir["DirectX"]
 	}

@@ -2,27 +2,14 @@
 
 #include "TileMap.h"
 
-#include "engine/2d/scene/component/Component2D.h"
 #include "engine/2d/graphics/sprite/SpriteComponent.h"
-#include "engine/2d/World2D.h"
+#include "engine/resource/IGraphicsResourceFactory.h"
 
 namespace Ghurund::Engine::_2D {
 	using namespace Ghurund::Core;
 	using namespace ::DirectX;
 
-	class TileMapComponent:public Component2D {
-#pragma region reflection
-	protected:
-		virtual const Ghurund::Core::Type& getTypeImpl() const override {
-			return GET_TYPE();
-		}
-
-	public:
-		static const Ghurund::Core::Type& GET_TYPE();
-
-		inline static const Ghurund::Core::Type& TYPE = TileMapComponent::GET_TYPE();
-#pragma endregion
-
+	class TileMapComponent {
 	private:
 		TileMap* tileMap = nullptr;
 		EventHandler<Resource, void, ResourceState> tileMapChanged = [this](Resource& resource, const ResourceState& prevState)->bool {
@@ -32,30 +19,21 @@ namespace Ghurund::Engine::_2D {
 
 		Mesh* mesh = nullptr;
 		Material* material = nullptr;
-		SpriteInputs inputs;
-
-		inline void uninitTileMapComponent() {
-			safeRelease(mesh);
-			safeRelease(material);
-		};
-
-		virtual CoroutineTask<void> onInit();
-
-		virtual void onDeinit() {
-			uninitTileMapComponent();
-		};
 
 		void reloadResource();
 
 	public:
-		TileMapComponent(NotNull<Entity2D> owner):Component2D(owner) {}
-
 		~TileMapComponent() {
-			if (IsInitialized)
-				uninitTileMapComponent();
-			if (tileMap)
-				tileMap->release();
+			deinit();
 		}
+
+		CoroutineTask<void> init(IGraphicsResourceFactory& resourceFactory, ResourceManager& resourceManager);
+
+		void deinit() {
+			safeRelease(mesh);
+			safeRelease(material);
+			safeRelease(tileMap);
+		};
 
 		inline TileMap* getTileMap() {
 			return tileMap;
@@ -67,23 +45,24 @@ namespace Ghurund::Engine::_2D {
 			setPointer(this->tileMap, tileMap);
 			if (tileMap)
 				tileMap->stateChanged += tileMapChanged;
-			if (material && tileMap)
-				inputs.ColorTexture = tileMap->TileSet->TextureAtlas->get();
 		}
 
 		__declspec(property(get = getTileMap, put = setTileMap)) TileMap* TileMap;
 
-		inline void setMaterial(Material* material) {
-			setPointer(this->material, material);
-			if (material) {
-				inputs.init(material->Inputs);
-				if (tileMap)
-					inputs.ColorTexture = tileMap->TileSet->TextureAtlas->get();
-			}
+		inline Material* getMaterial() const {
+			return material;
 		}
 
-		__declspec(property(put = setMaterial)) Material* Material;
+		inline void setMaterial(Material* material) {
+			setPointer(this->material, material);
+		}
 
-		virtual void queueDraw(RenderGroup& group) override;
+		__declspec(property(get = getMaterial, put = setMaterial)) Material* Material;
+
+		inline Mesh* getMesh() const {
+			return mesh;
+		}
+
+		__declspec(property(get = getMesh)) Mesh* Mesh;
 	};
 }

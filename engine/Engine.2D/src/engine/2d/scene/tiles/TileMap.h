@@ -30,7 +30,7 @@ namespace Ghurund::Engine::_2D {
 	private:
 		TileSet* tileSet = nullptr;
 		IntSize size;
-		Array<size_t> tiles;
+		Array<uint16_t> tiles;
 
 	public:
 		~TileMap() {
@@ -41,14 +41,25 @@ namespace Ghurund::Engine::_2D {
 		void init(NotNull<TileSet> tileSet, IntSize size) {
 			setPointer(this->tileSet, tileSet.get());
 			this->size = size;
-			tiles = Array<size_t>(size.Width * size.Height);
+			tiles = Array<uint16_t>(size.Width * size.Height);
+			dataSize.system = sizeof(*this) + sizeof(uint16_t) * tiles.Size;
+			State = ResourceState::INITIALIZED;
 		}
 
-		inline size_t get(XMUINT2 pos) const {
+		void init(NotNull<TileSet> tileSet, IntSize size, const Array<uint16_t>& tiles) {
+			setPointer(this->tileSet, tileSet.get());
+			this->size = size;
+			this->tiles = tiles;
+			dataSize.system = sizeof(*this) + sizeof(uint16_t) * tiles.Size;
+			State = ResourceState::INITIALIZED;
+		}
+
+		inline uint16_t get(XMUINT2 pos) const {
+			_ASSERTE(pos.x < size.Width && pos.y < size.Height);
 			return tiles.get(pos.y * size.Width + pos.x);
 		}
 
-		inline void set(XMUINT2 pos, size_t index) {
+		inline void set(XMUINT2 pos, uint16_t index) {
 			tiles.get(pos.y * size.Width + pos.x) = index;
 		}
 
@@ -75,11 +86,9 @@ namespace Ghurund::Engine::_2D {
 		}
 
 	public:
-		static const inline ResourceFormat FORMAT_XML = ResourceFormat(L"xml", ResourceFormatOptions::CAN_LOAD | ResourceFormatOptions::CAN_SAVE);
+		static const inline ResourceFormat FORMAT_XML = ResourceFormat(L"xml", ResourceFormatOptions::CAN_LOAD | ResourceFormatOptions::CAN_SAVE, 1);
 
 		inline static const Array<ResourceFormat>& FORMATS = { FORMAT_XML };
-
-		static const inline uint32_t VERSION = 1;
 #pragma endregion
 	};
 }

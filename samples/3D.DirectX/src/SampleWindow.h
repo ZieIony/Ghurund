@@ -50,7 +50,5 @@ namespace Sample {
 		CoroutineTask<void> initScene();
 
 		virtual void update() override;
-
-		virtual void onPaint(RenderingContext& renderingContext) override;
 	};
 }

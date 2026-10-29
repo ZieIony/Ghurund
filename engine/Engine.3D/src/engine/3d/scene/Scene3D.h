@@ -4,8 +4,6 @@
 
 #include "core/resource/Resource.h"
 #include "camera/Camera3D.h"
-#include <engine/game/GameObjectDrawCollection.h>
-#include <engine/game/GameObjectUpdateCollection.h>
 
 namespace Ghurund::Engine::_3D {
     class Scene3D:public Resource {
@@ -23,24 +21,16 @@ namespace Ghurund::Engine::_3D {
 
     private:
         Camera3D* camera = nullptr;
-        GameObjectUpdateCollection& gameObjectsUpdate;
-        GameObjectDrawCollection gameObjectsDraw;
         List<IntrusivePointer<Entity3D>> entities;
 
     public:
-        Scene3D(
-            GameObjectUpdateCollection& gameObjectsUpdate
-        ):gameObjectsUpdate(gameObjectsUpdate) {
+        Scene3D() {
             camera = ghnew Camera3D();
         }
 
         ~Scene3D() {
             if (camera)
                 camera->release();
-            for (auto& entity : entities) {
-                gameObjectsUpdate.remove(entity);
-                gameObjectsDraw.remove(entity);
-            }
         }
 
         inline Camera3D* getCamera() const {
@@ -55,12 +45,6 @@ namespace Ghurund::Engine::_3D {
 
         inline void add(IntrusivePointer<Entity3D> entity) {
             entities.add(entity);
-            gameObjectsDraw.add(entity);
-            gameObjectsUpdate.add(entity);
-        }
-
-        inline void queueDraw(RenderGroup& rg) {
-            gameObjectsDraw.queueDraw(rg);
         }
 
 #pragma region formats

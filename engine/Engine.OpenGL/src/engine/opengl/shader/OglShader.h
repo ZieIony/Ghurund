@@ -54,8 +54,6 @@ namespace Ghurund::Engine::OpenGL {
 		static const inline ResourceFormat FORMAT_GLSL = ResourceFormat(L"glsl", ResourceFormatOptions::CAN_LOAD);
 
 		inline static const Array<ResourceFormat>& FORMATS = { FORMAT_SHADER, FORMAT_GLSL };
-
-		static const inline uint32_t VERSION = 0;
 #pragma endregion
 	};
 }

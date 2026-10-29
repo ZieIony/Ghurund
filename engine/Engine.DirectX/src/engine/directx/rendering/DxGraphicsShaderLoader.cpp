@@ -11,7 +11,7 @@ namespace Ghurund::Engine::DirectX {
 	) {
 		checkXmlRoot(xml, L"GraphicsShader", DxGraphicsShader::FORMAT_XML);
 
-		ShaderSource shaderSource;
+		auto shaderSource = makeIntrusive<ShaderSource>();
 		auto settingsElementIndex = xml.children.find([](const SharedPointer<XMLElement>& element) { return element->name == L"Settings"; });
 		if (settingsElementIndex != xml.children.Size) {
 			auto& settingsElement = xml.children[settingsElementIndex];
@@ -19,33 +19,33 @@ namespace Ghurund::Engine::DirectX {
 			if (cullModeAttribute) {
 				auto cullModeValue = *cullModeAttribute;
 				if (cullModeValue == L"none") {
-					shaderSource.settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_NONE;
+					shaderSource->settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_NONE;
 				} else if (cullModeValue == L"front") {
-					shaderSource.settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_FRONT;
+					shaderSource->settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_FRONT;
 				} else if (cullModeValue == L"back") {
-					shaderSource.settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
+					shaderSource->settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
 				}
 			}
 			auto transparencyAttribute = settingsElement->findAttribute(L"isTransparencyEnabled");
 			if (transparencyAttribute)
-				shaderSource.settings.isTransparencyEnabled = *transparencyAttribute == L"true";
+				shaderSource->settings.isTransparencyEnabled = *transparencyAttribute == L"true";
 			auto depthTestAttribute = settingsElement->findAttribute(L"isDepthTestEnabled");
 			if (depthTestAttribute)
-				shaderSource.settings.isDepthTestEnabled = *depthTestAttribute == L"true";
+				shaderSource->settings.isDepthTestEnabled = *depthTestAttribute == L"true";
 			auto depthWriteAttribute = settingsElement->findAttribute(L"isDepthWriteEnabled");
 			if (depthWriteAttribute)
-				shaderSource.settings.isDepthWriteEnabled = *depthTestAttribute == L"true";
+				shaderSource->settings.isDepthWriteEnabled = *depthTestAttribute == L"true";
 			auto depthFuncAttribute = settingsElement->findAttribute(L"depthFunc");
 			if (depthFuncAttribute) {
 				auto depthFuncValue = *depthFuncAttribute;
 				if (depthFuncValue == L"never") {
-					shaderSource.settings.depthFunc = D3D12_COMPARISON_FUNC_NEVER;
+					shaderSource->settings.depthFunc = D3D12_COMPARISON_FUNC_NEVER;
 				} else if (depthFuncValue == L"always") {
-					shaderSource.settings.depthFunc = D3D12_COMPARISON_FUNC_ALWAYS;
+					shaderSource->settings.depthFunc = D3D12_COMPARISON_FUNC_ALWAYS;
 				} else if (depthFuncValue == L"less") {
-					shaderSource.settings.depthFunc = D3D12_COMPARISON_FUNC_LESS;
+					shaderSource->settings.depthFunc = D3D12_COMPARISON_FUNC_LESS;
 				} else if (depthFuncValue == L"greater") {
-					shaderSource.settings.depthFunc = D3D12_COMPARISON_FUNC_GREATER;
+					shaderSource->settings.depthFunc = D3D12_COMPARISON_FUNC_GREATER;
 				}
 			}
 		}
@@ -68,7 +68,7 @@ namespace Ghurund::Engine::DirectX {
 						sampler.filter = TextureFilter::ANISOTROPIC;
 					}
 				}
-				shaderSource.samplers.add(sampler);
+				shaderSource->samplers.add(sampler);
 			}
 		}
 		auto programsElementIndex = xml.children.find([](const SharedPointer<XMLElement>& element) { return element->name == L"Programs"; });
@@ -124,11 +124,11 @@ namespace Ghurund::Engine::DirectX {
 						}
 					}
 				}();
-				shaderSource.programs.add(ghnew DxShaderProgramSourceCode(type, sourceCode, sourceName));
+				shaderSource->programs.add(ghnew DxShaderProgramSourceCode(type, sourceCode, sourceName));
 			}
 		}
 
-		shader.Source = &shaderSource;
+		shader.Source = shaderSource.get();
 		initialize(shader, workingDir);
 	}
 

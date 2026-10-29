@@ -9,6 +9,7 @@ namespace Ghurund::Engine::DirectX {
     private:
         ResourceManager& resourceManager;
         DxGPUMemoryManager& memoryManager;
+        DxGraphics& graphics;
 
     protected:
         virtual CoroutineTask<void> load_internal(
@@ -21,7 +22,7 @@ namespace Ghurund::Engine::DirectX {
 
         [[nodiscard]]
         virtual CoroutineTask<void> init_internal(DxTexture& resource) {
-            resource.init(memoryManager);
+            resource.init(memoryManager, graphics);
             co_return;
         }
 
@@ -40,8 +41,9 @@ namespace Ghurund::Engine::DirectX {
     public:
         DxTextureLoader(
             ResourceManager& resourceManager,
-            DxGPUMemoryManager& memoryManager
-        ):resourceManager(resourceManager), memoryManager(memoryManager) {}
+            DxGPUMemoryManager& memoryManager,
+            DxGraphics& graphics
+        ):resourceManager(resourceManager), memoryManager(memoryManager), graphics(graphics) {}
 
         static CoroutineTask<List<IntrusivePointer<Image>>> loadMipImages(
             ResourceManager& resourceManager,

@@ -67,7 +67,7 @@ namespace Ghurund::Engine::DirectX {
 		auto materialLoader = makeIntrusive<MaterialLoader>(resourceManager, *memoryManager);
 		resourceManager.Loaders.set<Material>(materialLoader.ref());
 
-		auto textureLoader = makeIntrusive<DxTextureLoader>(resourceManager, *memoryManager);
+		auto textureLoader = makeIntrusive<DxTextureLoader>(resourceManager, *memoryManager, *graphics);
 		resourceManager.Loaders.set<DxTexture>(textureLoader.ref());
 		auto cubeMapLoader = makeIntrusive<DxCubeMapLoader>(resourceManager, *memoryManager);
 		resourceManager.Loaders.set<DxCubeMap>(cubeMapLoader.ref());
@@ -75,7 +75,7 @@ namespace Ghurund::Engine::DirectX {
 		auto meshLoader = makeIntrusive<DxMeshLoader>(*memoryManager);
 		resourceManager.Loaders.set<DxMesh>(meshLoader.ref());
 
-		resourceFactory = ghnew DxGraphicsResourceFactory(*memoryManager);
+		resourceFactory = ghnew DxGraphicsResourceFactory(*memoryManager, *graphics);
 
 		co_return;
 	}

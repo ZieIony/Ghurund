@@ -53,9 +53,7 @@ namespace Ghurund::Core {
 
 		if (!loader) {
 			auto message = std::format(_T("loader for type {} is missing\n"), type.Name);
-			Logger::log(LogType::ERR0R, message.c_str());
-			auto exMessage = convertText<tchar, char>(String(message.c_str()));
-			throw InvalidStateException(exMessage.Data);
+			Logger::logAndThrow<InvalidStateException>(message.c_str());
 		}
 
 		return loader;
@@ -74,8 +72,8 @@ namespace Ghurund::Core {
 			_ASSERTE(resource.State != ResourceState::EMPTY);
 			_ASSERTE(resource.DataSize.system > 0);
 		} catch (...) {
-			auto text = std::format(_T("failed to load resource\n"));
-			Logger::log(LogType::ERR0R, text.c_str());
+			auto message = std::format(_T("failed to load resource {}\n"), resource.Type.Name);
+			Logger::log(LogType::ERR0R, message.c_str());
 			std::exception_ptr exception = std::current_exception();
 			std::rethrow_exception(exception);
 		}

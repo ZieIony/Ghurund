@@ -8,21 +8,4 @@ namespace Ghurund::Engine::_3D {
 
 		return TYPE;
 	}
-	
-	void Entity3D::fixedUpdate(const Timer& timer) {
-		transformComponent->fixedUpdate(timer);
-		for (auto& component : components)
-			component->fixedUpdate(timer);
-	}
-	
-	void Entity3D::update(const Timer& timer) {
-		transformComponent->update(timer);
-		for (auto& component : components)
-			component->update(timer);
-	}
-	
-	void Entity3D::queueDraw(RenderGroup& group) {
-		for (auto& component : components)
-			component->queueDraw(group);
-	}
 }

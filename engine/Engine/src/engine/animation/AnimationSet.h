@@ -29,6 +29,10 @@ namespace Ghurund::Engine {
 	private:
 		List<T*> animations;
 
+		inline void updateDataSize() {
+			dataSize.system = sizeof(*this) + sizeof(T*) * animations.Capacity;
+		}
+
 	public:
 		~AnimationSet() {
 			clear();
@@ -37,6 +41,8 @@ namespace Ghurund::Engine {
 		inline void add(T* animation) {
 			animations.add(animation);
 			animation->addReference();
+			updateDataSize();
+			State = ResourceState::INITIALIZED;
 		}
 
 		inline void addAll(const List<T*>& animations) {
@@ -44,6 +50,8 @@ namespace Ghurund::Engine {
 				this->animations.add(animation);
 				animation->addReference();
 			}
+			updateDataSize();
+			State = ResourceState::INITIALIZED;
 		}
 
 		inline void addAll(const std::initializer_list<T*>& animations) {
@@ -51,28 +59,40 @@ namespace Ghurund::Engine {
 				this->animations.add(animation);
 				animation->addReference();
 			}
+			updateDataSize();
+			State = ResourceState::INITIALIZED;
 		}
 
 		inline void insert(size_t i, T* animation) {
 			animations.insert(i, animation);
 			animation->addReference();
+			updateDataSize();
+			State = ResourceState::INITIALIZED;
 		}
 
 		inline void remove(T* animation) {
 			animations.remove(animation);
 			animation->release();
+			updateDataSize();
+			if (animations.IsEmpty)
+				State = ResourceState::EMPTY;
 		}
 
 		inline void removeAt(size_t index) {
 			auto& animation = animations.get(index);
 			animations.removeAt(index);
 			animation->release();
+			updateDataSize();
+			if (animations.IsEmpty)
+				State = ResourceState::EMPTY;
 		}
 
 		inline void clear() {
 			for (auto animation : animations)
 				animation->release();
 			animations.clear();
+			updateDataSize();
+			State = ResourceState::EMPTY;
 		}
 
 		inline ArrayIterator<T*> begin() {
@@ -138,15 +158,6 @@ namespace Ghurund::Engine {
 
 		inline size_t find(const Ghurund::Core::WString& name) {
 			return animations.find([&](T* c) { return c->Name&& c->Name->operator==(name); });
-		}
-
-		template<class T>
-		inline T* find() const {
-			return (T*)find(T::GET_TYPE());
-		}
-
-		inline size_t find(const Ghurund::Core::Type& type) const {
-			return animations.find([&](T* c) { return c->Type == type; });
 		}
 	};
 }

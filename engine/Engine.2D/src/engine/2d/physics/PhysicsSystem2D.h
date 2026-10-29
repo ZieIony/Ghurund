@@ -1,14 +1,35 @@
 #pragma once
 
-#include "component/RigidBodyComponent2D.h"
-#include "engine/game/system/System.h"
+#include "engine/ecs/System.h"
 
 #include <box2d.h>
 
+namespace Ghurund::Engine {
+	class World;
+}
+
 namespace Ghurund::Engine::_2D {
 	class PhysicsSystem2D:public System {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE() {
+			static const Ghurund::Core::Type TYPE = TypeBuilder<PhysicsSystem2D>()
+				.withSupertype(__super::GET_TYPE());
+
+			return TYPE;
+		}
+
+		inline static const Ghurund::Core::Type& TYPE = PhysicsSystem2D::GET_TYPE();
+#pragma endregion
+
 	private:
-		b2WorldId id;
+		World& world;
+		b2WorldId id = {};
 		static const uint16_t subStepCount = 4;
 
 	protected:
@@ -26,11 +47,9 @@ namespace Ghurund::Engine::_2D {
 			uninitPhysicsSystem2D();
 		};
 
-		virtual bool getUsesUpdateInternal() const override {
-			return false;
-		}
-
 	public:
+		PhysicsSystem2D(World& world):world(world) {}
+		
 		~PhysicsSystem2D() {
 			if (IsInitialized)
 				uninitPhysicsSystem2D();
@@ -52,8 +71,8 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getGravity, put = setGravity)) float Gravity;
 
-		virtual void fixedUpdate(const Timer& timer) {
-			b2World_Step(id, timer.FixedFrameTime, subStepCount);
-		}
+		virtual void fixedUpdate(const Timer& timer);
+
+		virtual void update(const Timer& timer);
 	};
 }

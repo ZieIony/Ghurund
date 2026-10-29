@@ -37,7 +37,7 @@ namespace Ghurund::Engine {
 
         virtual void clear(const Color* clearColor) = 0;
 
-        virtual void draw(Set<RenderGroup>& renderGroups, ParameterManager& parameterManager) = 0;
+        virtual void draw(RenderGroup& renderGroup, ParameterManager& parameterManager) = 0;
 
         virtual void setSize(IntSize size) = 0;
 

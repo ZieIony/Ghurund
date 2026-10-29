@@ -113,14 +113,4 @@ namespace Sample {
 		auto text = std::format(_T("fps: {:.2f}"), Timer.FramesPerSecond);
 		Title = String(text.c_str());
 	}
-
-	void SampleWindow::onPaint(RenderingContext& renderingContext) {
-		RenderGroup _3dGroup(DrawGroup(0, DrawOrder::BACK_TO_FRONT));
-		_3dGroup.Camera = world->Scene.Camera;
-		world->queueDraw(_3dGroup);
-		renderGroups.put(_3dGroup);
-
-		renderingContext.clear(BackgroundColor);
-		renderingContext.draw(renderGroups, ParameterManager);
-	}
 }

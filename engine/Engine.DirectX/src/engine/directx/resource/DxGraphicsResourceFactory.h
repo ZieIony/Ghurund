@@ -9,11 +9,12 @@ namespace Ghurund::Engine::DirectX {
 	class DxGraphicsResourceFactory:public IGraphicsResourceFactory {
 	private:
 		DxGPUMemoryManager& memoryManager;
+		DxGraphics& graphics;
 
 	public:
 		DxGraphicsResourceFactory(
-			DxGPUMemoryManager& memoryManager
-		):memoryManager(memoryManager) {
+			DxGPUMemoryManager& memoryManager, DxGraphics& graphics
+		):memoryManager(memoryManager), graphics(graphics) {
 		}
 
 		[[nodiscard]]
@@ -32,7 +33,7 @@ namespace Ghurund::Engine::DirectX {
 			image.addReference();
 			List<IntrusivePointer<Image>> images = { imagePtr };
 			texture->Images = images;
-			texture->init(memoryManager);
+			texture->init(memoryManager, graphics);
 			return texture;
 		}
 
@@ -40,7 +41,7 @@ namespace Ghurund::Engine::DirectX {
 		virtual ITexture* makeTexture(List<IntrusivePointer<Image>>& images) override {
 			auto texture = ghnew DxTexture();
 			texture->Images = images;
-			texture->init(memoryManager);
+			texture->init(memoryManager, graphics);
 			return texture;
 		}
 	};

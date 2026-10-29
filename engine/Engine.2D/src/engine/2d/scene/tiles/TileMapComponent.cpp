@@ -4,17 +4,9 @@
 #include "core/application/Application.h"
 #include "engine/2d/graphics/mesh/TileMapMeshData.h"
 #include "engine/2d/Graphics2DFeature.h"
-#include "engine/graphics/GraphicsFeature.h"
 
 namespace Ghurund::Engine::_2D {
-	const Ghurund::Core::Type& TileMapComponent::GET_TYPE() {
-		static const Ghurund::Core::Type TYPE = TypeBuilder<TileMapComponent>()
-			.withSupertype(__super::GET_TYPE());
-
-		return TYPE;
-	}
-
-	CoroutineTask<void> TileMapComponent::onInit() {
+	CoroutineTask<void> TileMapComponent::init(IGraphicsResourceFactory& resourceFactory, ResourceManager& resourceManager) {
 		Array<TileInfo> tiles = tileMap->Size.Width * tileMap->Size.Height;
 		uint32_t tileIndex = 0;
 		for (TileInfo& tileInfo : tiles) {
@@ -31,32 +23,18 @@ namespace Ghurund::Engine::_2D {
 
 		auto tileMapMeshData = makeIntrusive<TileMapMeshData>();
 		tileMapMeshData->init(tileMap->Size, tiles);
-		GraphicsFeature* graphicsFeature = Owner.World.app.Features.get<GraphicsFeature>();
-		mesh = graphicsFeature->ResourceFactory.makeMesh(tileMapMeshData.ref());
+		mesh = resourceFactory.makeMesh(tileMapMeshData.ref());
 
-		auto spriteMaterial = co_await Owner.World.app.ResourceManager.load<Ghurund::Engine::Material>(
+		auto spriteMaterial = co_await resourceManager.load<Ghurund::Engine::Material>(
 			Graphics2DFeature::MATERIAL_SPRITE,
 			DirectoryPath::getCurrentDirectory(),
 			ResourceFormat::AUTO,
 			{ .clone = true }
 		);
 		Material = spriteMaterial.get();
-
-		co_return;
 	}
 
 	void TileMapComponent::reloadResource() {
-		Owner.World.app.ResourceManager.reload(*tileMap);
-	}
-	
-	void TileMapComponent::queueDraw(RenderGroup& group) {
-		if (mesh && material) {
-			auto w = XMLoadFloat4x4(&Owner.Transform.WorldTransformation);
-			XMFLOAT4X4 world;
-			XMStoreFloat4x4(&world, XMMatrixTranspose(w));
-
-			inputs.Transformation = world;
-			group.objects.add(DrawPacket(mesh, material, drawOrder));
-		}
+		//Owner.World.app.ResourceManager.reload(*tileMap);
 	}
 }

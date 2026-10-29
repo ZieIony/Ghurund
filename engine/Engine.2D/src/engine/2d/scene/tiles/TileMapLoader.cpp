@@ -38,7 +38,7 @@ namespace Ghurund::Engine::_2D {
 				throw InvalidDataException();
 			for (size_t x = 0; x < tiles.Size; x++) {
 				auto& tile = tiles[x];
-				resource.set({ (uint32_t)x, (uint32_t)y }, parse<uint32_t>(tile));
+				resource.set({ (uint32_t)x, (uint32_t)y }, parse<uint16_t>(tile));
 			}
 		}
 	}

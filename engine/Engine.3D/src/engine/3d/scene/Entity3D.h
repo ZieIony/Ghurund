@@ -2,14 +2,13 @@
 
 #include "core/object/AsyncInitializable.h"
 #include "engine/3d/scene/component/TransformComponent3D.h"
-#include "engine/game/GameObject.h"
 #include "engine/graphics/rendering/RenderGroup.h"
 #include "component/Component3DCollection.h"
 
 namespace Ghurund::Engine::_3D {
     using namespace Ghurund::Core;
 
-    class Entity3D:public GameObject, public AsyncInitializable {
+    class Entity3D:public RefCountedObject, public WStringNamedObject, public AsyncInitializable {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -48,7 +47,6 @@ namespace Ghurund::Engine::_3D {
 			component->addReference();
 			transformComponent = component.get();
 			components.add(transformComponent);
-			drawGroup = DrawGroup(DrawGroup::DEFAULT_GROUP_ORDER, DrawOrder::BACK_TO_FRONT);
 		}
 
 		~Entity3D() {
@@ -80,11 +78,5 @@ namespace Ghurund::Engine::_3D {
 		inline IntrusivePointer<T> makeComponent() {
 			return makeIntrusive<T>(*this);
 		}
-
-		virtual void fixedUpdate(const Timer& timer) override;
-
-		virtual void update(const Timer& timer) override;
-
-		virtual void queueDraw(RenderGroup& group) override;
     };
 }

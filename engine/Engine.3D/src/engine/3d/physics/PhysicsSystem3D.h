@@ -2,7 +2,7 @@
 
 #include "Physics.h"
 
-#include "engine/game/system/System.h"
+#include "engine/ecs/System.h"
 
 #pragma warning(push, 0)
 #include <extensions/PxDefaultCpuDispatcher.h>

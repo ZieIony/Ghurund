@@ -3,41 +3,30 @@
 #include "core/application/Application.h"
 #include "engine/audio/AudioFeature.h"
 #include "engine/audio/AudioFeatureFactory.h"
-#include "engine/game/system/SystemCollection.h"
+#include "engine/ecs/SystemCollection.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
 
     class GameApplication:public Application {
     private:
-        GameObjectUpdateCollection gameObjects;
-        SystemCollection systems = gameObjects;
-        List<GameObject> preFixedUpdateQueue, postFixedUpdateQueue;
-        List<GameObject> preUpdateQueue, postUpdateQueue;
+        SystemCollection systems;
 
     protected:
         virtual void onFixedUpdate() override {
-            gameObjects.preFixedUpdate(Timer);
             __super::onFixedUpdate();
-            gameObjects.postFixedUpdate(Timer);
+            systems.fixedUpdate(Timer);
         }
 
         virtual void onUpdate() override {
-            gameObjects.preUpdate(Timer);
             __super::onUpdate();
-            gameObjects.postUpdate(Timer);
+            systems.update(Timer);
         }
 
     public:
         GameApplication() {
             Features.add<AudioFeature, AudioFeatureFactory>();
         }
-
-        inline GameObjectUpdateCollection& getGameObjects() {
-            return gameObjects;
-        }
-
-        __declspec(property(get = getGameObjects)) GameObjectUpdateCollection& GameObjects;
 
         inline SystemCollection& getSystems() {
             return systems;

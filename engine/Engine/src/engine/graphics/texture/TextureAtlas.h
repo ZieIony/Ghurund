@@ -67,11 +67,9 @@ namespace Ghurund::Engine {
 		}
 
 	public:
-		static const inline ResourceFormat FORMAT_XML = ResourceFormat(L"xml", ResourceFormatOptions::CAN_LOAD | ResourceFormatOptions::CAN_SAVE);
+		static const inline ResourceFormat FORMAT_XML = ResourceFormat(L"xml", ResourceFormatOptions::CAN_LOAD | ResourceFormatOptions::CAN_SAVE, 1);
 
 		inline static const Array<ResourceFormat>& FORMATS = { FORMAT_XML };
-
-		static const inline uint32_t VERSION = 1;
 #pragma endregion
 	};
 }
