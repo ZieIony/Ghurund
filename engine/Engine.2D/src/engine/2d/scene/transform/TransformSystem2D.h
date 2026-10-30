@@ -15,12 +15,7 @@ namespace Ghurund::Engine::_2D {
         }
 
     public:
-        static const Ghurund::Core::Type& GET_TYPE() {
-            static const Ghurund::Core::Type TYPE = TypeBuilder<TransformSystem2D>()
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Core::Type& GET_TYPE();
 
         inline static const Ghurund::Core::Type& TYPE = TransformSystem2D::GET_TYPE();
 #pragma endregion

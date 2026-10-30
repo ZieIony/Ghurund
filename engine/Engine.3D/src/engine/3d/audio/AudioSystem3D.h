@@ -12,7 +12,7 @@ namespace Ghurund::Engine::_3D {
 		AudioListenerComponent3D* audioListenerComponent = nullptr;
 
 	protected:
-		virtual bool getUsesFixedUpdateInternal() const override {
+		virtual bool getUsesFixedUpdate_internal() const override {
 			return false;
 		}
 

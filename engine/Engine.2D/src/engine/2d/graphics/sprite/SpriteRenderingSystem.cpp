@@ -1,11 +1,26 @@
 #include "ghe2dpch.h"
 #include "SpriteRenderingSystem.h"
+#include "SpriteInputs.h"
 
 #include "engine/ecs/World.h"
 #include "engine/2d/scene/transform/TransformComponent2D.h"
 #include "engine/2d/graphics/sprite/SpriteComponent.h"
+#include "engine/2d/scene/transform/TransformSystem2D.h"
+#include "engine/2d/scene/camera/CameraSystem2D.h"
 
 namespace Ghurund::Engine::_2D {
+    const Ghurund::Core::Type& SpriteRenderingSystem::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<SpriteRenderingSystem>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
+    const Array<std::reference_wrapper<const Ghurund::Core::Type>>& SpriteRenderingSystem::getDependencies_internal() const {
+        static Array<std::reference_wrapper<const Ghurund::Core::Type>> dependencies = { TransformSystem2D::TYPE, CameraSystem2D::TYPE };
+        return dependencies;
+    }
+
     void SpriteRenderingSystem::queueDraw(RenderingContext& renderingContext) {
         RenderGroup group = DrawGroup();
         group.Camera = camera;

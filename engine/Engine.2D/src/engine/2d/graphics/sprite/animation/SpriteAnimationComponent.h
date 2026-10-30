@@ -2,16 +2,23 @@
 
 #include "SpriteAnimation.h"
 #include "SpriteAnimator.h"
-#include <core/Timer.h>
+
+#include "core/Timer.h"
+#include "engine/2d/graphics/sprite/SpriteRenderingSystem.h"
 
 namespace Ghurund::Engine::_2D {
-	class AnimatedSpriteComponent {
+	class SpriteAnimationComponent {
 	protected:
 		SpriteAnimation* animation = nullptr;
 		SpriteAnimator* animator = nullptr;
 
+		virtual const Array<std::reference_wrapper<const Ghurund::Core::Type>>& getDependents_internal() const {
+			static Array<std::reference_wrapper<const Ghurund::Core::Type>> dependents = { SpriteRenderingSystem::TYPE };
+			return dependents;
+		}
+
 	public:
-		~AnimatedSpriteComponent() {
+		~SpriteAnimationComponent() {
 			if (animation)
 				animation->release();
 			if (animator)

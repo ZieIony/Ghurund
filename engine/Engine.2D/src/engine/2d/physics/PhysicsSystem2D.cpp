@@ -9,6 +9,13 @@
 #include <entt.hpp>
 
 namespace Ghurund::Engine::_2D {
+	const Ghurund::Core::Type& PhysicsSystem2D::GET_TYPE() {
+		static const Ghurund::Core::Type TYPE = TypeBuilder<PhysicsSystem2D>()
+			.withSupertype(__super::GET_TYPE());
+
+		return TYPE;
+	}
+
 	void PhysicsSystem2D::fixedUpdate(const Timer& timer) {
 		b2World_Step(id, timer.FixedFrameTime, subStepCount);
 	}

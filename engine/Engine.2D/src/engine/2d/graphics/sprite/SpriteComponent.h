@@ -1,7 +1,5 @@
 #pragma once
 
-#include "SpriteInputs.h"
-
 #include "core/Colors.h"
 #include "core/math/Size.h"
 #include "engine/graphics/material/Material.h"

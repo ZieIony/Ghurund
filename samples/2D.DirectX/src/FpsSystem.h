@@ -7,11 +7,28 @@ namespace Sample {
 	using namespace Ghurund::Engine;
 
 	class FpsSystem:public System {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE() {
+			static const Ghurund::Core::Type TYPE = TypeBuilder<FpsSystem>()
+				.withSupertype(__super::GET_TYPE());
+
+			return TYPE;
+		}
+
+		inline static const Ghurund::Core::Type& TYPE = FpsSystem::GET_TYPE();
+#pragma endregion
+
 	private:
 		GameWindow& window;
 
 	protected:
-		virtual bool getUsesFixedUpdateInternal() const override {
+		virtual bool getUsesFixedUpdate_internal() const override {
 			return false;
 		}
 

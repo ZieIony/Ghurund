@@ -34,7 +34,7 @@ namespace Ghurund::Engine::DirectX {
         void uninitGraphicsFeature();
 
     protected:
-        virtual IGraphicsResourceFactory& getResourceFactoryInternal() override {
+        virtual IGraphicsResourceFactory& getResourceFactory_internal() override {
             return *resourceFactory;
         }
 

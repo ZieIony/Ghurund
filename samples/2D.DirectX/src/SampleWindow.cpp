@@ -5,7 +5,7 @@
 #include "core/Colors.h"
 #include "core/window/DisplayManager.h"
 #include <FpsSystem.h>
-#include <engine/2d/scene/transform/TransformSystem.h>
+#include <engine/2d/scene/transform/TransformSystem2D.h>
 #include <engine/2d/scene/tiles/TileMapSystem.h>
 #include <engine/2d/graphics/sprite/animation/SpriteAnimationSystem.h>
 #include <engine/2d/scene/camera/CameraSystem2D.h>
@@ -35,6 +35,8 @@ namespace Sample {
 		Systems.add(makeIntrusive<TileMapSystem>(*world));
 		Systems.add(makeIntrusive<SpriteAnimationSystem>(*world));
 		Systems.add(makeIntrusive<CameraSystem2D>(*world));
+
+		Systems.printGraph();
 
 		Application.CoroutineScheduler.launch(initScene());
 	}

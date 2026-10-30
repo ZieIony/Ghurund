@@ -30,7 +30,7 @@ namespace Ghurund::Engine {
 
         virtual void onDeinit() override;
 
-        virtual IGraphicsResourceFactory& getResourceFactoryInternal() = 0;
+        virtual IGraphicsResourceFactory& getResourceFactory_internal() = 0;
 
     public:
         ResourceManager& resourceManager;
@@ -43,7 +43,7 @@ namespace Ghurund::Engine {
         }
 
         inline IGraphicsResourceFactory& getResourceFactory() {
-            return getResourceFactoryInternal();
+            return getResourceFactory_internal();
         }
 
         __declspec(property(get = getResourceFactory)) IGraphicsResourceFactory& ResourceFactory;

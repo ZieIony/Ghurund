@@ -2,7 +2,6 @@
 
 #include "engine/2d/scene/camera/Camera2D.h"
 #include "engine/ecs/System.h"
-#include "engine/parameter/ValueParameter.h"
 
 namespace Ghurund::Engine {
     class World;
@@ -17,12 +16,7 @@ namespace Ghurund::Engine::_2D {
         }
 
     public:
-        static const Ghurund::Core::Type& GET_TYPE() {
-            static const Ghurund::Core::Type TYPE = TypeBuilder<SpriteRenderingSystem>()
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Core::Type& GET_TYPE();
 
         inline static const Ghurund::Core::Type& TYPE = SpriteRenderingSystem::GET_TYPE();
 #pragma endregion
@@ -31,6 +25,9 @@ namespace Ghurund::Engine::_2D {
         World& world;
         Camera2D* camera = nullptr;
         ParameterManager& parameterManager;
+
+    protected:
+        virtual const Array<std::reference_wrapper<const Ghurund::Core::Type>>& getDependencies_internal() const override;
 
     public:
         SpriteRenderingSystem(

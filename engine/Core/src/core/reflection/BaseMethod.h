@@ -16,7 +16,7 @@ namespace Ghurund::Core {
     protected:
         const Array<std::reference_wrapper<const Type>> parameters;
 
-        virtual void invokeRawInternal(void* obj, void* args, std::function<void(void*)> callback) const = 0;
+        virtual void invokeRaw_internal(void* obj, void* args, std::function<void(void*)> callback) const = 0;
 
     public:
         BaseMethod(const AString& name, const Type& returnType, const Array<std::reference_wrapper<const Type>> parameters)
@@ -25,7 +25,7 @@ namespace Ghurund::Core {
         template<typename... ArgsT>
         void invokeRaw(void* obj, ArgsT&... args, std::function<void(void*)> callback = nullptr) const {
             auto tuple = Tuple(args...);
-            invokeRawInternal(obj, (void*)&tuple, callback);
+            invokeRaw_internal(obj, (void*)&tuple, callback);
         }
 
         inline AString getName() const {

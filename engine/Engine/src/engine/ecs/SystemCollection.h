@@ -7,6 +7,10 @@ namespace Ghurund::Engine {
 
 	class SystemCollection {
 	private:
+		struct SystemGroup {
+			List<IntrusivePointer<System>> systems;
+		};
+
 		List<IntrusivePointer<System>> systems;
 
 	public:
@@ -16,10 +20,7 @@ namespace Ghurund::Engine {
 			clear();
 		}
 
-		inline void add(IntrusivePointer<System> system) {
-			system->init();
-			systems.add(system);
-		}
+		void add(IntrusivePointer<System> system);
 
 		template<Derived<System> T>
 		inline T* get() {
@@ -63,5 +64,9 @@ namespace Ghurund::Engine {
 					system->queueDraw(renderingContext);
 			}
 		}
+
+#ifdef _DEBUG
+		void printGraph() const;
+#endif
 	};
 }

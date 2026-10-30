@@ -18,7 +18,7 @@ namespace Ghurund::Core {
             return func(obj, get<I>(std::forward<Tuple<ArgsT...>>(t))...);
         }
 
-        virtual void invokeRawInternal(void* obj, void* args, std::function<void(void*)> callback) const override {
+        virtual void invokeRaw_internal(void* obj, void* args, std::function<void(void*)> callback) const override {
             Tuple<ArgsT...>& t = *(Tuple<ArgsT...>*)args;
             auto indexSeq = std::make_index_sequence<std::tuple_size_v<std::tuple<ArgsT...>>>{};
             ReturnT result = callWithTuple(*(T*)obj, std::forward<Tuple<ArgsT...>>(t), indexSeq);
@@ -47,7 +47,7 @@ namespace Ghurund::Core {
             func(obj, get<I>(std::forward<Tuple<ArgsT...>>(t))...);
         }
 
-        virtual void invokeRawInternal(void* obj, void* args, std::function<void(void*)> callback) const override {
+        virtual void invokeRaw_internal(void* obj, void* args, std::function<void(void*)> callback) const override {
             Tuple<ArgsT...>& t = *(Tuple<ArgsT...>*)args;
             auto indexSeq = std::make_index_sequence<std::tuple_size_v<std::tuple<ArgsT...>>>{};
             callWithTuple(*(T*)obj, std::forward<Tuple<ArgsT...>>(t), indexSeq);

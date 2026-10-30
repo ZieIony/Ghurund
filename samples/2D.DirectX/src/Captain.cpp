@@ -35,7 +35,7 @@ namespace Sample {
 		}
 
 		{
-			auto& captainAnimation = addComponent<AnimatedSpriteComponent>();
+			auto& captainAnimation = addComponent<SpriteAnimationComponent>();
 
 			auto animationSet = co_await resourceManager.load<SpriteAnimationSet>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/images/captain.xml"));
 			captainAnimation.Animation = animationSet->get(animationSet->find(L"idle"));

@@ -22,16 +22,26 @@ namespace Ghurund::Engine {
 #pragma endregion
 
     protected:
-        virtual bool getUsesFixedUpdateInternal() const {
+        virtual bool getUsesFixedUpdate_internal() const {
             return true;
         }
 
-        virtual bool getUsesUpdateInternal() const {
+        virtual bool getUsesUpdate_internal() const {
             return true;
         }
 
-        virtual bool getUsesDrawInternal() const {
+        virtual bool getUsesDraw_internal() const {
             return true;
+        }
+
+        virtual const Array<std::reference_wrapper<const Ghurund::Core::Type>>& getDependencies_internal() const {
+            static Array<std::reference_wrapper<const Ghurund::Core::Type>> dependencies;
+            return dependencies;
+        }
+
+        virtual const Array<std::reference_wrapper<const Ghurund::Core::Type>>& getDependents_internal() const {
+            static Array<std::reference_wrapper<const Ghurund::Core::Type>> dependents;
+            return dependents;
         }
 
     public:
@@ -41,7 +51,7 @@ namespace Ghurund::Engine {
         DrawGroup drawGroup;
 
         inline bool getUsesFixedUpdate() const {
-            return getUsesFixedUpdateInternal();
+            return getUsesFixedUpdate_internal();
         }
 
         __declspec(property(get = getUsesFixedUpdate)) bool UsesFixedUpdate;
@@ -49,7 +59,7 @@ namespace Ghurund::Engine {
         virtual void fixedUpdate(const Timer& timer) {}
 
         inline bool getUsesUpdate() const {
-            return getUsesUpdateInternal();
+            return getUsesUpdate_internal();
         }
 
         __declspec(property(get = getUsesUpdate)) bool UsesUpdate;
@@ -57,11 +67,29 @@ namespace Ghurund::Engine {
         virtual void update(const Timer& timer) {}
 
         inline bool getUsesDraw() const {
-            return getUsesDrawInternal();
+            return getUsesDraw_internal();
         }
 
         __declspec(property(get = getUsesDraw)) bool UsesDraw;
 
         virtual void queueDraw(RenderingContext& renderingContext) {}
-	};
+
+		/**
+		* System types that need to execute before this system.
+		**/
+        inline const Array<std::reference_wrapper<const Ghurund::Core::Type>>& getDependencies() const {
+            return getDependencies_internal();
+        }
+
+        __declspec(property(get = getDependencies)) const Array<std::reference_wrapper<const Ghurund::Core::Type>>& Dependencies;
+
+		/**
+		* System types that need to execute after this system.
+		**/
+        inline const Array<std::reference_wrapper<const Ghurund::Core::Type>>& getDependents() const {
+            return getDependents_internal();
+        }
+
+        __declspec(property(get = getDependents)) const Array<std::reference_wrapper<const Ghurund::Core::Type>>& Dependents;
+    };
 }

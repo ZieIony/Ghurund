@@ -17,7 +17,7 @@ namespace Ghurund::Core {
         BaseConstructor(BaseConstructor&& other) = delete;
 
     protected:
-        virtual void* invokeRawInternal(void* args) const = 0;
+        virtual void* invokeRaw_internal(void* args) const = 0;
         virtual void* invokeRawInternalWithAllocator(Allocator& allocator, void* args) const = 0;
 
     public:
@@ -27,7 +27,7 @@ namespace Ghurund::Core {
         void* invokeRaw(ArgsT&&... args) const {
             auto tuple = Tuple(args...);
             checkParameters<ArgsT...>(parameters);
-            return invokeRawInternal((void*)&tuple);
+            return invokeRaw_internal((void*)&tuple);
         }
 
         template<>
@@ -35,14 +35,14 @@ namespace Ghurund::Core {
             Array<std::reference_wrapper<const Type>> currentParameters;
             if (currentParameters.Size != Parameters.Size)
                 throw std::invalid_argument(std::format("{} parameters expected, {} provided.\n", Parameters.Size, currentParameters.Size).c_str());
-            return invokeRawInternal(nullptr);
+            return invokeRaw_internal(nullptr);
         }
 
         template<typename... ArgsT>
         void* invokeRawWithAllocator(Allocator& allocator, ArgsT&&... args) const {
             auto tuple = std::make_tuple(args...);
             checkParameters<ArgsT...>(parameters);
-            return invokeRawInternal(allocator, (void*)&tuple);
+            return invokeRaw_internal(allocator, (void*)&tuple);
         }
 
         template<>
@@ -68,7 +68,7 @@ namespace Ghurund::Core {
             return ghnew T(get<I>(std::forward<TupleT>(t))...);
         }
 
-        virtual void* invokeRawInternal(void* args) const override {
+        virtual void* invokeRaw_internal(void* args) const override {
             Tuple<ArgsT...>& t = *(Tuple<ArgsT...>*)args;
             auto indexSeq = std::make_index_sequence<std::tuple_size_v<std::tuple<ArgsT...>>>{};
             return makeFromTuple(std::forward<Tuple<ArgsT...>>(t), indexSeq);
@@ -101,7 +101,7 @@ namespace Ghurund::Core {
     template <class T>
     class Constructor<T>:public BaseConstructor {
     protected:
-        virtual void* invokeRawInternal(void* args) const override {
+        virtual void* invokeRaw_internal(void* args) const override {
             return ghnew T();
         }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "engine/ecs/System.h"
+#include "engine/2d/graphics/sprite/SpriteRenderingSystem.h"
 
 namespace Ghurund::Engine {
     class World;
@@ -27,6 +28,12 @@ namespace Ghurund::Engine::_2D {
 
     private:
         World& world;
+
+    protected:
+        virtual const Array<std::reference_wrapper<const Ghurund::Core::Type>>& getDependents_internal() const override {
+            static Array<std::reference_wrapper<const Ghurund::Core::Type>> dependents = { SpriteRenderingSystem::TYPE };
+            return dependents;
+        }
 
     public:
         TileMapSystem(World& world):world(world) {

@@ -225,6 +225,7 @@
     <ClCompile Include="src\engine\audio\sound\Sound.cpp" />
     <ClCompile Include="src\engine\audio\sound\SoundLoader.cpp" />
     <ClCompile Include="src\engine\ecs\System.cpp" />
+    <ClCompile Include="src\engine\ecs\SystemCollection.cpp" />
     <ClCompile Include="src\engine\editor\ThumbnailRenderer.cpp" />
     <ClCompile Include="src\engine\game\Component.cpp" />
     <ClCompile Include="src\engine\game\StaticDrawable.cpp" />

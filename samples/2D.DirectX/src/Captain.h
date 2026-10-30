@@ -6,7 +6,7 @@
 #include <engine/2d/audio/component/SoundComponent2D.h>
 #include <engine/2d/scene/transform/TransformComponent2D.h>
 #include <engine/2d/World2D.h>
-#include <engine/2d/graphics/sprite/animation/AnimatedSpriteComponent.h>
+#include <engine/2d/graphics/sprite/animation/SpriteAnimationComponent.h>
 #include <engine/2d/physics/RigidBodyComponent2D.h>
 
 namespace Sample {
@@ -28,11 +28,11 @@ namespace Sample {
 
 		__declspec(property(get = getTransform)) TransformComponent2D& Transform;
 
-		inline AnimatedSpriteComponent& getAnimatedSprite() {
-			return getComponent<AnimatedSpriteComponent>();
+		inline SpriteAnimationComponent& getAnimatedSprite() {
+			return getComponent<SpriteAnimationComponent>();
 		}
 
-		__declspec(property(get = getAnimatedSprite)) AnimatedSpriteComponent& AnimatedSprite;
+		__declspec(property(get = getAnimatedSprite)) SpriteAnimationComponent& AnimatedSprite;
 
 		inline RigidBodyComponent2D& getCapsuleComponent() {
 			return getComponent<RigidBodyComponent2D>();

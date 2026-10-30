@@ -7,9 +7,23 @@
 #include "engine/ecs/World.h"
 #include "engine/2d/scene/transform/TransformComponent2D.h"
 #include <engine/2d/physics/RigidBodyComponent2D.h>
+#include "engine/2d/scene/transform/TransformSystem2D.h"
+#include "engine/2d/scene/camera/CameraSystem2D.h"
 
 namespace Ghurund::Engine::_2D {
-	void VisualizationRenderingSystem::update(const Timer& timer) {
+    const Ghurund::Core::Type& VisualizationRenderingSystem::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<VisualizationRenderingSystem>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
+    const Array<std::reference_wrapper<const Ghurund::Core::Type>>& VisualizationRenderingSystem::getDependencies_internal() const {
+        static Array<std::reference_wrapper<const Ghurund::Core::Type>> dependencies = { TransformSystem2D::TYPE, CameraSystem2D::TYPE, PhysicsSystem2D::TYPE };
+        return dependencies;
+    }
+
+    void VisualizationRenderingSystem::update(const Timer& timer) {
 		auto view = world.entityRegistry.view<VisualizationComponent2D, const RigidBodyComponent2D>();
 		for (auto [id, visualization, rigidBody] : view.each()) {
 			visualization.update(rigidBody);
