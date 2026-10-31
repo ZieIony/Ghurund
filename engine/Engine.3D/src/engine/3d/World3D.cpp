@@ -8,7 +8,7 @@ namespace Ghurund::Engine::_3D {
 	void World3D::onInit() {
 		auto audioFeature = app.Features.get<AudioFeature>();
 		if (audioFeature) {
-			audioSystem.set(ghnew AudioSystem3D(audioFeature->Audio));
+			audioSystem.set(ghnew AudioSystem3D(audioFeature->Audio, *this));
 			systems.add(audioSystem);
 		}
 		physicsSystem.set(ghnew PhysicsSystem3D());
@@ -17,6 +17,6 @@ namespace Ghurund::Engine::_3D {
 	}
 
 	void World3D::onDeinit() {
-		uninitWorld3D();
+		deinitWorld3D();
 	}
 }

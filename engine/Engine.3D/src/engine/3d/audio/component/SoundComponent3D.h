@@ -2,29 +2,14 @@
 
 #include "engine/audio/sound/Sound.h"
 #include "engine/audio/sound/SoundEmitter.h"
-#include "engine/3d/scene/component/Component3D.h"
 
 namespace Ghurund::Engine::_3D {
-	class SoundComponent3D:public Component3D {
-#pragma region reflection
-	protected:
-		virtual const Ghurund::Core::Type& getTypeImpl() const override {
-			return GET_TYPE();
-		}
-
-	public:
-		static const Ghurund::Core::Type& GET_TYPE();
-
-		inline static const Ghurund::Core::Type& TYPE = SoundComponent3D::GET_TYPE();
-#pragma endregion
-
+	class SoundComponent3D {
 	private:
         Sound* sound = nullptr;
         SoundEmitter emitter = {};
 
 	public:
-        SoundComponent3D(NotNull<Entity3D> owner):Component3D(owner) {}
-
         ~SoundComponent3D() {
             if (sound)
                 sound->release();

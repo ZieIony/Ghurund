@@ -178,6 +178,9 @@ namespace Ghurund::Core {
 				co_await init_internal(resource.ref(), loader);
 			}
 
+#ifdef _DEBUG
+			resources.validateResources();
+#endif
 			co_return resource;
 		}
 
@@ -201,6 +204,7 @@ namespace Ghurund::Core {
 			IntrusivePointer<T> resource = IntrusivePointer<T>((T*)resources.get(absoluteOrLibPath));
 			if (resource == nullptr){
 				auto typelessResource = loader.makeResource();
+				typelessResource->addReference();
 				resource = IntrusivePointer<T>((T*)typelessResource.get());
 				resource->Path = &absoluteOrLibPath;
 				if (name == LOAD_GENERATE_NAME) {
@@ -239,6 +243,9 @@ namespace Ghurund::Core {
 				co_await init_internal(resource.ref(), loader);
 			}
 
+#ifdef _DEBUG
+			resources.validateResources();
+#endif
 			co_return resource;
 		}
 
@@ -263,6 +270,7 @@ namespace Ghurund::Core {
 				resource = IntrusivePointer<T>((T*)resources.get(*name));
 			if (resource == nullptr) {
 				auto typelessResource = loader.makeResource();
+				typelessResource->addReference();
 				resource = IntrusivePointer<T>((T*)typelessResource.get());
 				if (name)
 					resource->Name = *name;
@@ -289,6 +297,9 @@ namespace Ghurund::Core {
 				co_await init_internal(resource.ref(), loader);
 			}
 
+#ifdef _DEBUG
+			resources.validateResources();
+#endif
 			co_return resource;
 		}
 

@@ -1,28 +1,13 @@
 #pragma once
 
 #include "engine/audio/AudioListener.h"
-#include "engine/3d/scene/component/Component3D.h"
 
 namespace Ghurund::Engine::_3D {
-	class AudioListenerComponent3D:public Component3D {
-#pragma region reflection
-	protected:
-		virtual const Ghurund::Core::Type& getTypeImpl() const override {
-			return GET_TYPE();
-		}
-
-	public:
-		static const Ghurund::Core::Type& GET_TYPE();
-
-		inline static const Ghurund::Core::Type& TYPE = AudioListenerComponent3D::GET_TYPE();
-#pragma endregion
-
+	class AudioListenerComponent3D {
 	private:
 		AudioListener listener;
 
 	public:
-        AudioListenerComponent3D(NotNull<Entity3D> owner, World3D& world);
-  
         inline void setPosition(const XMFLOAT3& pos) {
             listener.Position = pos;
         }

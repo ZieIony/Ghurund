@@ -19,6 +19,7 @@ project "Engine.3D"
 		"src",
 		includeDir["Core"],
 		includeDir["Engine"],
+		includeDir["entt"],
 		includeDir["PhysX"],
 		includeDir["PhysX.Shared"],
 	}

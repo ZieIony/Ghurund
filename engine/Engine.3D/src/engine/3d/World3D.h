@@ -5,13 +5,14 @@
 #include "physics/PhysicsSystem3D.h"
 #include "engine/ecs/SystemCollection.h"
 #include "engine/application/GameApplication.h"
+#include "engine/ecs/World.h"
 
 namespace Ghurund::Core {
 	class Application;
 }
 
 namespace Ghurund::Engine::_3D {
-	class World3D:public Initializable, public Noncopyable {
+	class World3D:public World {
 	private:
 		IntrusivePointer<AudioSystem3D> audioSystem;
 		IntrusivePointer<PhysicsSystem3D> physicsSystem;
@@ -21,7 +22,7 @@ namespace Ghurund::Engine::_3D {
 	protected:
 		virtual void onInit() override;
 
-		inline void uninitWorld3D() {
+		inline void deinitWorld3D() {
 			scene.set(nullptr);
 			systems.clear();
 			physicsSystem.set(nullptr);
@@ -31,16 +32,14 @@ namespace Ghurund::Engine::_3D {
 		virtual void onDeinit() override;
 
 	public:
-		GameApplication& app;
-		
 		World3D(
 			GameApplication& app
-		):app(app) {
+		):World(app) {
 		}
 
 		~World3D() {
 			if (IsInitialized)
-				uninitWorld3D();
+				deinitWorld3D();
 		}
 
 		inline AudioSystem3D* getAudioSystem() {
@@ -60,12 +59,5 @@ namespace Ghurund::Engine::_3D {
 		}
 
 		__declspec(property(get = getScene)) Scene3D& Scene;
-
-		template<Derived<Entity3D> T>
-		inline CoroutineTask<IntrusivePointer<T>> spawnEntity() {
-			auto entity = makeIntrusive<T>(*this);
-			scene->add(entity);
-			co_return entity;
-		}
 	};
 }

@@ -20,17 +20,16 @@ namespace Ghurund::Core {
 
 	void ResourceCollection::put(NotNull<Resource> resource) {
 		std::unique_lock lock(mutex);
-#ifdef _DEBUG
 		// don't accept resources without a usable id
 		_ASSERTE(resource->Name != nullptr || resource->Path != nullptr);
-#endif
-		if (resource->Name) {
-			resource->addReference();
-			resourcesByName.put(*resource->Name, IntrusivePointer(resource.get()));
-		}
 		if (resource->Path) {
+			_ASSERTE(!resourcesByPath.contains(*resource->Path));
 			resource->addReference();
 			resourcesByPath.put(*resource->Path, IntrusivePointer(resource.get()));
+		} else if (resource->Name) {
+			_ASSERTE(!resourcesByName.contains(*resource->Name));
+			resource->addReference();
+			resourcesByName.put(*resource->Name, IntrusivePointer(resource.get()));
 		}
 	}
 
@@ -40,10 +39,10 @@ namespace Ghurund::Core {
 		// don't accept resources without a usable id
 		_ASSERTE(resource->Name || resource->Path);
 #endif
-		if (resource->Name)
-			resourcesByName.remove(*resource->Name);
 		if (resource->Path)
 			resourcesByPath.remove(*resource->Path);
+		if (resource->Name)
+			resourcesByName.remove(*resource->Name);
 	}
 
 	void ResourceCollection::remove(const WString& name) {
@@ -77,6 +76,15 @@ namespace Ghurund::Core {
 	}
 
 #ifdef _DEBUG
+	void ResourceCollection::validateResources() {
+		std::unique_lock lock(mutex);
+		for (auto& entry : resourcesByPath) {
+			_ASSERTE(entry.value != nullptr);
+			_ASSERTE(entry.value->Path != nullptr);
+			_ASSERTE(entry.value->Type.isOrExtends(Resource::TYPE));
+		}
+	}
+
 	void ResourceCollection::printResources() {
 		std::unique_lock lock(mutex);
 		for (auto& entry : resourcesByPath) {

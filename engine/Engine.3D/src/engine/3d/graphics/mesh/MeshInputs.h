@@ -24,7 +24,8 @@ namespace Ghurund::Engine::_3D {
 		}
 
 		inline void setTransformation(const XMFLOAT4X4& world) {
-			worldInput->Value = world;
+			if (worldInput)
+				worldInput->Value = world;
 		}
 
 		__declspec(property(put = setTransformation)) const XMFLOAT4X4& Transformation;

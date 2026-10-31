@@ -21,7 +21,6 @@ namespace Sample {
 	private:
 		SampleApplication& app;
 
-		Set<RenderGroup> renderGroups;
 		World2D* world = nullptr;
 		IntrusivePointer<SpriteRenderingSystem> spriteRenderingSystem;
 		IntrusivePointer<VisualizationRenderingSystem> visualizationRenderingSystem;

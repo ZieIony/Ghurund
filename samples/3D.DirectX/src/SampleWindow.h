@@ -5,7 +5,8 @@
 #include "engine/application/GameWindow.h"
 #include "core/coroutine/CoroutineTask.h"
 #include "engine/3d/World3D.h"
-#include "engine/3d/scene/camera/CameraController.h"
+#include "engine/3d/graphics/camera/CameraController.h"
+#include <engine/3d/graphics/mesh/MeshRenderingSystem.h>
 
 namespace Sample {
 	using namespace Ghurund;
@@ -17,9 +18,9 @@ namespace Sample {
 	private:
 		SampleApplication& app;
 
-		Set<RenderGroup> renderGroups;
 		World3D* world = nullptr;
 		CameraController cameraController;
+		IntrusivePointer<MeshRenderingSystem> meshRenderingSystem;
 
 	protected:
 		virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override {

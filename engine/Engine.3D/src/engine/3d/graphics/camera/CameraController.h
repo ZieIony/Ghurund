@@ -38,6 +38,11 @@ namespace Ghurund::Engine::_3D {
 
 		CameraController();
 
+		~CameraController() {
+			if (camera)
+				camera->release();
+		}
+
 		inline void setCamera(Camera3D* camera) {
 			setPointer(this->camera, camera);
 		}

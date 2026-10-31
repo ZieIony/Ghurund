@@ -1,9 +1,7 @@
 #pragma once
 
-#include "Entity3D.h"
-
 #include "core/resource/Resource.h"
-#include "camera/Camera3D.h"
+#include <engine/3d/graphics/camera/Camera3D.h>
 
 namespace Ghurund::Engine::_3D {
     class Scene3D:public Resource {
@@ -21,7 +19,6 @@ namespace Ghurund::Engine::_3D {
 
     private:
         Camera3D* camera = nullptr;
-        List<IntrusivePointer<Entity3D>> entities;
 
     public:
         Scene3D() {
@@ -42,10 +39,6 @@ namespace Ghurund::Engine::_3D {
         }
 
         __declspec(property(get = getCamera, put = setCamera)) Camera3D* Camera;
-
-        inline void add(IntrusivePointer<Entity3D> entity) {
-            entities.add(entity);
-        }
 
 #pragma region formats
     protected:

@@ -2,7 +2,6 @@
 
 #include "engine/audio/Audio.h"
 #include "engine/ecs/System.h"
-#include "component/SoundComponent2D.h"
 #include "component/AudioListenerComponent2D.h"
 #include <engine/ecs/World.h>
 
@@ -19,9 +18,6 @@ namespace Ghurund::Engine::_2D {
 		}
 
 	public:
-		// TODO: make a proper collection
-		List<SharedPointer<SoundComponent2D>> soundComponents;
-
 		AudioSystem2D(Audio& audio, World& world):audio(audio), world(world) {}
 
 		~AudioSystem2D();

@@ -57,7 +57,7 @@
       <PrecompiledHeaderFile>ghe3dpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\..\libs\entt\single_include\entt;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -78,7 +78,7 @@
       <PrecompiledHeaderFile>ghe3dpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\Engine\src;..\..\libs\entt\single_include\entt;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -104,42 +104,38 @@
     <ClInclude Include="src\engine\3d\audio\AudioSystem3D.h" />
     <ClInclude Include="src\engine\3d\audio\component\AudioListenerComponent3D.h" />
     <ClInclude Include="src\engine\3d\audio\component\SoundComponent3D.h" />
-    <ClInclude Include="src\engine\3d\graphics\FullscreenQuadComponent.h" />
-    <ClInclude Include="src\engine\3d\graphics\MeshComponent.h" />
-    <ClInclude Include="src\engine\3d\graphics\MeshInputs.h" />
+    <ClInclude Include="src\engine\3d\graphics\camera\Camera3D.h" />
+    <ClInclude Include="src\engine\3d\graphics\camera\CameraComponent3D.h" />
+    <ClInclude Include="src\engine\3d\graphics\camera\CameraController.h" />
+    <ClInclude Include="src\engine\3d\graphics\camera\CameraSystem3D.h" />
+    <ClInclude Include="src\engine\3d\graphics\light\Light.h" />
+    <ClInclude Include="src\engine\3d\graphics\light\LightComponent3D.h" />
+    <ClInclude Include="src\engine\3d\graphics\light\LightSystem3D.h" />
+    <ClInclude Include="src\engine\3d\graphics\mesh\MeshComponent.h" />
+    <ClInclude Include="src\engine\3d\graphics\mesh\MeshInputs.h" />
+    <ClInclude Include="src\engine\3d\graphics\mesh\MeshRenderingSystem.h" />
     <ClInclude Include="src\engine\3d\physics\Physics.h" />
     <ClInclude Include="src\engine\3d\physics\PhysicsSystem3D.h" />
     <ClInclude Include="src\engine\3d\physics\RigidBodyComponent3D.h" />
-    <ClInclude Include="src\engine\3d\scene\Entity3D.h" />
     <ClInclude Include="src\engine\3d\scene\Scene3D.h" />
-    <ClInclude Include="src\engine\3d\scene\camera\Camera3D.h" />
-    <ClInclude Include="src\engine\3d\scene\camera\CameraComponent3D.h" />
-    <ClInclude Include="src\engine\3d\scene\camera\CameraController.h" />
-    <ClInclude Include="src\engine\3d\scene\component\Component3D.h" />
-    <ClInclude Include="src\engine\3d\scene\component\Component3DCollection.h" />
-    <ClInclude Include="src\engine\3d\scene\component\TransformComponent3D.h" />
-    <ClInclude Include="src\engine\3d\scene\light\Light.h" />
-    <ClInclude Include="src\engine\3d\scene\light\LightComponent3D.h" />
+    <ClInclude Include="src\engine\3d\scene\transform\TransformComponent3D.h" />
+    <ClInclude Include="src\engine\3d\scene\transform\TransformSystem3D.h" />
     <ClInclude Include="src\ghe3dpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\3d\Graphics3DFeature.cpp" />
     <ClCompile Include="src\engine\3d\World3D.cpp" />
     <ClCompile Include="src\engine\3d\audio\AudioSystem3D.cpp" />
-    <ClCompile Include="src\engine\3d\audio\component\AudioListenerComponent3D.cpp" />
-    <ClCompile Include="src\engine\3d\audio\component\SoundComponent3D.cpp" />
-    <ClCompile Include="src\engine\3d\graphics\FullscreenQuadComponent.cpp" />
-    <ClCompile Include="src\engine\3d\graphics\MeshComponent.cpp" />
+    <ClCompile Include="src\engine\3d\graphics\camera\Camera3D.cpp" />
+    <ClCompile Include="src\engine\3d\graphics\camera\CameraController.cpp" />
+    <ClCompile Include="src\engine\3d\graphics\camera\CameraSystem3D.cpp" />
+    <ClCompile Include="src\engine\3d\graphics\light\Light.cpp" />
+    <ClCompile Include="src\engine\3d\graphics\light\LightSystem3D.cpp" />
+    <ClCompile Include="src\engine\3d\graphics\mesh\MeshComponent.cpp" />
+    <ClCompile Include="src\engine\3d\graphics\mesh\MeshRenderingSystem.cpp" />
     <ClCompile Include="src\engine\3d\physics\Physics.cpp" />
-    <ClCompile Include="src\engine\3d\scene\Entity3D.cpp" />
     <ClCompile Include="src\engine\3d\scene\Scene3D.cpp" />
-    <ClCompile Include="src\engine\3d\scene\camera\Camera3D.cpp" />
-    <ClCompile Include="src\engine\3d\scene\camera\CameraComponent3D.cpp" />
-    <ClCompile Include="src\engine\3d\scene\camera\CameraController.cpp" />
-    <ClCompile Include="src\engine\3d\scene\component\Component3D.cpp" />
-    <ClCompile Include="src\engine\3d\scene\component\TransformComponent3D.cpp" />
-    <ClCompile Include="src\engine\3d\scene\light\Light.cpp" />
-    <ClCompile Include="src\engine\3d\scene\light\LightComponent3D.cpp" />
+    <ClCompile Include="src\engine\3d\scene\transform\TransformSystem3D.cpp" />
     <ClCompile Include="src\ghe3dpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

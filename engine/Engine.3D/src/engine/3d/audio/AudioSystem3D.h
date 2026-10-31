@@ -2,12 +2,13 @@
 
 #include "engine/audio/Audio.h"
 #include "engine/ecs/System.h"
-#include "component/SoundComponent3D.h"
 #include "component/AudioListenerComponent3D.h"
+#include <engine/ecs/World.h>
 
 namespace Ghurund::Engine::_3D {
 	class AudioSystem3D:public System {
 	private:
+		World& world;
 		Audio& audio;
 		AudioListenerComponent3D* audioListenerComponent = nullptr;
 
@@ -17,15 +18,12 @@ namespace Ghurund::Engine::_3D {
 		}
 
 	public:
-		// TODO: make a proper collection
-		List<IntrusivePointer<SoundComponent3D>> soundComponents;
-
-		AudioSystem3D(Audio& audio):audio(audio) {}
+		AudioSystem3D(Audio& audio, World& world):audio(audio), world(world) {}
 
 		~AudioSystem3D();
 
 		inline void setAudioListener(AudioListenerComponent3D* component) {
-			setPointer(audioListenerComponent, component);
+			audioListenerComponent = component;
 		}
 
 		__declspec(property(put = setAudioListener)) AudioListenerComponent3D* AudioListener;

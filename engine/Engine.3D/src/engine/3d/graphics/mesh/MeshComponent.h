@@ -1,42 +1,35 @@
 #pragma once
 
 #include "MeshInputs.h"
-#include "engine/3d/scene/component/Component3D.h"
+#include "engine/graphics/material/Material.h"
+#include "engine/graphics/mesh/Mesh.h"
 
 #include <DirectXCollision.h>
 
 namespace Ghurund::Engine::_3D {
-	class MeshComponent:public Component3D {
+	class MeshComponent {
 	private:
 		BoundingBox boundingBox;
 		BoundingOrientedBox transformedBoundingBox;
 		bool culled = false;
 
-		void uninitMeshComponent() {
-			safeRelease(mesh);
-			safeRelease(material);
-		}
-
 	protected:
 		Mesh* mesh = nullptr;
 		Material* material = nullptr;
-		MeshInputs inputs;
-
-		[[nodiscard]]
-		virtual CoroutineTask<void> onInit() override;
-
-		virtual void onDeinit() override {
-			uninitMeshComponent();
-		}
 
 	public:
 		bool selectable = true, visible = true, cullingEnabled = true;
 
-		MeshComponent(NotNull<Entity3D> owner):Component3D(owner) {}
-
 		virtual ~MeshComponent() {
-			if (IsInitialized)
-				uninitMeshComponent();
+			deinit();
+		}
+
+		[[nodiscard]]
+		CoroutineTask<void> init(ResourceManager& resourceManager);
+
+		inline void deinit() {
+			safeRelease(mesh);
+			safeRelease(material);
 		}
 
 		Mesh* getMesh() const {
@@ -55,12 +48,8 @@ namespace Ghurund::Engine::_3D {
 
 		void setMaterial(Material* material) {
 			setPointer(this->material, material);
-			if (material)
-				inputs.init(material->Inputs);
 		}
 
 		__declspec(property(get = getMaterial, put = setMaterial)) Material* Material;
-
-		virtual void queueDraw(RenderGroup& group) override;
 	};
 }

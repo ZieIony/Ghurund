@@ -36,7 +36,7 @@ namespace Ghurund::Engine::_2D {
 
 		CoroutineTask<void> init(ResourceManager& resourceManager);
 
-		void deinit() {
+		inline void deinit() {
 			safeRelease(colorTexture);
 			safeRelease(mesh);
 			safeRelease(material);

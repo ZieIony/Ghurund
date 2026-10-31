@@ -50,6 +50,8 @@ namespace Ghurund::Core {
 		void clear();
 
 #ifdef _DEBUG
+		void validateResources();
+
 		void printResources();
 #endif
 	};

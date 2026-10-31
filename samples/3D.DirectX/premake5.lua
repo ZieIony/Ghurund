@@ -26,6 +26,7 @@ project "3D.DirectX"
 		includeDir["Engine.3D.DirectX"],
 		includeDir["UI"],
 		includeDir["UI.DirectX"],
+		includeDir["entt"],
 		includeDir["PhysX"],
 		includeDir["PhysX.Shared"],
 		includeDir["DirectX"]

@@ -4,10 +4,14 @@
 
 #include "core/Colors.h"
 #include "core/window/DisplayManager.h"
-#include "engine/3d/graphics/MeshComponent.h"
-#include "engine/3d/graphics/FullscreenQuadComponent.h"
+#include "engine/3d/graphics/mesh/MeshComponent.h"
 #include "engine/graphics/compute/ComputeShader.h"
+#include <engine/3d/scene/transform/TransformComponent3D.h>
+#include <engine/graphics/mesh/QuadMeshData.h>
+#include <engine/3d/scene/transform/TransformSystem3D.h>
+#include <engine/3d/graphics/camera/CameraSystem3D.h>
 #include "engine/directx/rendering/DxRenderer.h"
+#include <engine/3d/graphics/camera/CameraComponent3D.h>
 
 namespace Sample {
 	SampleWindow::SampleWindow(SampleApplication& app):GameWindow(app), app(app) {
@@ -21,48 +25,63 @@ namespace Sample {
 	}
 
 	void SampleWindow::init() {
-		DxGraphicsFeature* graphicsFeature = app.Features.get<DxGraphicsFeature>();
-
 		world = ghnew World3D(app);
 		world->init();
+
+		meshRenderingSystem = makeIntrusive<MeshRenderingSystem>(*world, ParameterManager);
+		Systems.add(makeIntrusive<TransformSystem3D>(*world));
+		Systems.add(meshRenderingSystem);
+		Systems.add(makeIntrusive<CameraSystem3D>(*world));
+
+		Systems.printGraph();
 
 		app.CoroutineScheduler.launch(initScene());
 	}
 
 	CoroutineTask<void> SampleWindow::initScene() {
+		BoundingOrientedBox bob, transformedBob;
 		{
-			auto entity = co_await world->spawnEntity<Entity3D>();
-			auto meshComponent = entity->makeComponent<MeshComponent>();
+			auto entity = world->spawnEntity<Entity>();
+			auto& meshComponent = entity.addComponent<MeshComponent>();
 			auto mesh = co_await app.ResourceManager.load<Mesh>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/spartan helmet/spartan helmet.fbx"));
-			meshComponent->Mesh = mesh.get();
+			meshComponent.Mesh = mesh.get();
 
-			entity->Transform.Position = { 10,0,0 };
-			BoundingOrientedBox bob, transformedBob;
+			auto& transformComponent = entity.addComponent<TransformComponent3D>();
+			transformComponent.Position = { 10,0,0 };
 			BoundingOrientedBox::CreateFromBoundingBox(bob, mesh->BoundingBox);
-			entity->Transform.update(app.Timer);
-			auto transform = XMLoadFloat4x4(&entity->Transform.WorldTransformation);
+			transformComponent.update();
+			auto transform = XMLoadFloat4x4(&transformComponent.WorldTransformation);
 			bob.Transform(transformedBob, transform);
-			world->Scene.Camera->setDirectionBoxUp({ -1, -0.2f, 1 }, transformedBob);
 
 			auto material = co_await app.ResourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/spartan helmet/spartan helmet material.xml"));
-			meshComponent->Material = material.get();
-			entity->Components.add(meshComponent.ref());
-			co_await entity->init();
+			meshComponent.Material = material.get();
+		}
+
+		{
+			auto entity = world->spawnEntity<Entity>();
+			auto& transformComponent = entity.addComponent<TransformComponent3D>();
+			auto& cameraComponent = entity.addComponent<CameraComponent3D>();
+			world->Scene.Camera = cameraComponent.Camera;
+			cameraComponent.Camera->setDirectionBoxUp({ -1, -0.2f, 1 }, transformedBob);
 		}
 
 		cameraController.Camera = world->Scene.Camera;
 		cameraController.Window = this;
+		meshRenderingSystem->Camera = world->Scene.Camera;
 
 		{
-			auto entity = co_await world->spawnEntity<Entity3D>();
-			entity->Transform.Position = { 0,0,-1000 };
-			auto quadComponent = entity->makeComponent<FullscreenQuadComponent>();
+			auto entity = world->spawnEntity<Entity>();
+			auto& transformComponent = entity.addComponent<TransformComponent3D>();
+			transformComponent.Position = { 0,0,-1000 };
+			auto& quadComponent = entity.addComponent<MeshComponent>();
 			
+			DxGraphicsFeature* graphicsFeature = app.Features.get<DxGraphicsFeature>();
+			auto quadMeshData = makeIntrusive<QuadMeshData>();
+			quadMeshData->init();
+			auto quadMesh = IntrusivePointer<Ghurund::Engine::Mesh>(graphicsFeature->ResourceFactory.makeMesh(quadMeshData.ref()));
+			quadComponent.Mesh = quadMesh.get();
 			auto material = co_await app.ResourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/3d/forward/cubeMap.xml"));
-			quadComponent->Material = material.get();
-			quadComponent->drawOrder = -1;
-			entity->Components.add(quadComponent.ref());
-			co_await entity->init();
+			quadComponent.Material = material.get();
 		}
 
 		auto computeShader = co_await app.ResourceManager.load<ComputeShader>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"shaders/DirectX/compute/generateMipMaps.xml"));
