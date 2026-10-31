@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Event.h"
+#include "core/event/Event.h"
 #include "core/object/SharedPointer.h"
 #include "core/string/String.h"
 

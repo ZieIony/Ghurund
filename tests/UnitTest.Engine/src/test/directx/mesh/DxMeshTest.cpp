@@ -27,6 +27,14 @@ private:
 
 public:
 
+    TEST_METHOD_INITIALIZE(init) {
+        graphics.init();
+    }
+
+    TEST_METHOD_CLEANUP(uninit) {
+        graphics.deinit();
+    }
+
     TEST_METHOD(DxMesh_init) {
         MemoryGuard guard;
         {
@@ -38,13 +46,13 @@ public:
             auto mesh = makeIntrusive<MeshData>();
             mesh->init({ posStream }, (uint32_t)vertices.Size, indices, boundingBox);
             auto dxMesh = makeIntrusive<DxMesh>();
-            graphics.init();
+            dxMesh->setData(mesh.get());
             auto commandList = makeIntrusive<DxGraphicsCommandList>();
             commandList->init(graphics, graphics.CopyQueue);
             DxGPUMemoryManager memoryManager(graphics, commandList.ref());
-            dxMesh->init(mesh.ref(), memoryManager);
+            dxMesh->init(memoryManager);
 
-            Assert::IsTrue(mesh->State == ResourceState::INITIALIZED);
+            Assert::IsTrue(dxMesh->State == ResourceState::INITIALIZED);
         }
     }
     };

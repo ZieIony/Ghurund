@@ -28,8 +28,11 @@ namespace Ghurund::Engine {
         if (waveFormat) {
             CoTaskMemFree(waveFormat);
             waveFormat = nullptr;
-        }
-        delete audioBuffer.pAudioData;
+		}
+		if (audioBuffer.pAudioData) {
+			delete audioBuffer.pAudioData;
+			audioBuffer.pAudioData = nullptr;
+		}
 
         dataSize.system = sizeof(*this);
         State = ResourceState::EMPTY;

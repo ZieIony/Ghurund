@@ -5,7 +5,7 @@
 #include "ServerMessage.h"
 #include "ReliableUDP.h"
 #include "core/Buffer.h"
-#include "core/Event.h"
+#include "core/event/Event.h"
 #include "core/collection/List.h"
 #include "core/exception/Exceptions.h"
 

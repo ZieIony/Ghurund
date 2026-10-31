@@ -5,7 +5,7 @@
 
 #include "core/collection/List.h"
 #include "core/collection/Stack.h"
-#include "core/Timer.h"
+#include "core/time/Timer.h"
 
 #include <iostream>
 #include <vector>
@@ -553,13 +553,13 @@ public:
 		for (uint32_t i = 0; i < 100000; i++)
 			list.add(i);
 		timer.tick();
-		auto timeList = timer.FrameTimeMs;
+		auto timeList = timer.FrameTime.valueMs;
 		timer.tick();
 		std::vector<uint32_t> vector;
 		for (uint32_t i = 0; i < 100000; i++)
 			vector.push_back(i);
 		timer.tick();
-		auto timeVector = timer.FrameTimeMs;
+		auto timeVector = timer.FrameTime.valueMs;
 		Assert::IsTrue(timeList < timeVector);
 	}
 	};

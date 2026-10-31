@@ -45,6 +45,9 @@ namespace Ghurund::Engine {
     }
 
     void Material::init(NotNull<IGPUMemoryManager> memoryManager) {
+        if (!shader)
+            throw InvalidStateException("shader is null");
+
         for (auto& bi : shader->Constants.BufferConstants) {
             for (auto& vi : bi.valueConstants) {
                 auto input = makeInput(vi);

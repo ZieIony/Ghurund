@@ -1,7 +1,7 @@
 #include "ghcpch.h"
 #include "ResourceManager.h"
 
-#include "core/EnumOperators.h"
+#include "core/enum/EnumOperators.h"
 #include "core/io/File.h"
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"

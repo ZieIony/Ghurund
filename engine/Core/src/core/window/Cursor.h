@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Common.h"
-#include "core/Enum.h"
+#include "core/enum/Enum.h"
 #include "core/reflection/Type.h"
 
 #include <Windows.h>

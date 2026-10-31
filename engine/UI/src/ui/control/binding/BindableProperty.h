@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Event.h"
+#include "core/event/Event.h"
 
 namespace Ghurund::UI {
 	using namespace Ghurund::Core;

@@ -2,7 +2,7 @@
 
 #include "core/object/IntrusivePointer.h"
 #include "core/collection/Set.h"
-#include "core/EnumOperators.h"
+#include "core/enum/EnumOperators.h"
 
 namespace Ghurund::UI {
 	class Control;

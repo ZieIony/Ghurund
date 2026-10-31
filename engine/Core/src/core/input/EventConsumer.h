@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Event.h"
+#include "core/event/Event.h"
 #include "gamepad/GamepadButtonEventArgs.h"
 #include "gamepad/GamepadStickEventArgs.h"
 #include "gamepad/GamepadTriggerEventArgs.h"

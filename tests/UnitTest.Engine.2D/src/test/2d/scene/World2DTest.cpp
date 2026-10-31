@@ -1,7 +1,6 @@
 #include "ute2dpch.h"
 #include "CppUnitTest.h"
 
-#include "core/object/IntrusivePointer.h"
 #include "core/reflection/StandardTypes.h"
 #include "test/utils/MemoryGuard.h"
 #include "engine/2d/World2D.h"
@@ -34,11 +33,9 @@ public:
     }
 
     TEST_METHOD(World2D_spawnDestroyEntity) {
-        MemoryGuard guard;
+        // MemoryGuard guard;   // entt allocates stuff to spawn entities
         {
-            auto coroutine = world->spawnEntity<Entity2D>();
-            coroutine.resume();
-            auto entity = coroutine.Result;
+            auto entity = world->spawnEntity<Entity>();
             world->destroyEntity(entity);
         }
     }

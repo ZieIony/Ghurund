@@ -3,11 +3,10 @@
 
 #include "core/object/IntrusivePointer.h"
 #include "core/reflection/StandardTypes.h"
-#include "engine/2d/physics/component/BoxComponent2D.h"
+#include "engine/2d/physics/RigidBodyComponent2D.h"
 #include "engine/2d/World2D.h"
 
 #include "core/logging/Logger.h"
-#include "ComponentTestUtils.h"
 #include "test/utils/ObjectGuard.h"
 #include "test/utils/TestUtils.h"
 
@@ -20,21 +19,16 @@ namespace UnitTest {
     using namespace Ghurund::Engine::_2D;
     using namespace std;
 
-    class TestBoxComponent2D:public BoxComponent2D {
-    public:
-        TestBoxComponent2D(NotNull<Entity2D> owner):BoxComponent2D(owner) {
-            isVisualized = false;
-        }
-    };
-
     TEST_CLASS(BoxComponentTest) {
 private:
     GameApplication app;
     SharedPointer<World2D> world;
+    IntrusivePointer<PhysicsSystem2D> physicsSystem;
 
 public:
     BoxComponentTest() {
         world = makeShared<World2D>(app);
+        physicsSystem = makeIntrusive<PhysicsSystem2D>(world.ref());
     }
 
     TEST_CLASS_INITIALIZE(construct) {
@@ -43,9 +37,11 @@ public:
 
     TEST_METHOD_INITIALIZE(init) {
         world->init();
+        physicsSystem->init();
     }
 
     TEST_METHOD_CLEANUP(uninit) {
+        physicsSystem->deinit();
         world->deinit();
     }
 
@@ -53,12 +49,14 @@ public:
         //MemoryGuard guard; // box2d allocates on init
         ObjectGuard guard;
         {
-            auto component = makeComponent<TestBoxComponent2D>(world.ref());
+            auto entity = world->spawnEntity<Entity>();
+            auto component = entity.addComponent<RigidBodyComponent2D>();
 
-            runCoroutineBlocking(component->init());
-            runCoroutineBlocking(component->init());
+            component.init(physicsSystem.ref(), ShapeType::BOX);
+            component.init(physicsSystem.ref(), ShapeType::BOX);
 
-            destroyComponent(world.ref(), component);
+            entity.removeComponent<RigidBodyComponent2D>();
+            world->destroyEntity(entity);
         }
     }
 
@@ -67,14 +65,16 @@ public:
         //MemoryGuard guard; // box2d allocates on init
         ObjectGuard guard;
         {
-            auto component = makeComponent<TestBoxComponent2D>(world.ref());
+            auto entity = world->spawnEntity<Entity>();
+            auto component = entity.addComponent<RigidBodyComponent2D>();
+            component.init(physicsSystem.ref(), ShapeType::BOX);
 
-            runCoroutineBlocking(component->init());
-            component->Position = { 100, 30 };
-            Assert::AreEqual(100.0f, component->Position.x);
-            Assert::AreEqual(30.0f, component->Position.y);
+            component.Position = { 100, 30 };
+            Assert::AreEqual(100.0f, component.Position.x);
+            Assert::AreEqual(30.0f, component.Position.y);
 
-            destroyComponent(world.ref(), component);
+            entity.removeComponent<RigidBodyComponent2D>();
+            world->destroyEntity(entity);
         }
     }
 
@@ -82,14 +82,16 @@ public:
         //MemoryGuard guard; // box2d allocates on init
         ObjectGuard guard;
         {
-            auto component = makeComponent<TestBoxComponent2D>(world.ref());
+            auto entity = world->spawnEntity<Entity>();
+            auto component = entity.addComponent<RigidBodyComponent2D>();
+            component.init(physicsSystem.ref(), ShapeType::BOX);
 
-            runCoroutineBlocking(component->init());
-            component->Size = { 100, 30 };
-            Assert::AreEqual(100.0f, component->Size.Width);
-            Assert::AreEqual(30.0f, component->Size.Height);
+            component.Size = { 100, 30 };
+            Assert::AreEqual(100.0f, component.Size.Width);
+            Assert::AreEqual(30.0f, component.Size.Height);
 
-            destroyComponent(world.ref(), component);
+            entity.removeComponent<RigidBodyComponent2D>();
+            world->destroyEntity(entity);
         }
     }
 
@@ -97,13 +99,15 @@ public:
         //MemoryGuard guard; // box2d allocates on init
         ObjectGuard guard;
         {
-            auto component = makeComponent<TestBoxComponent2D>(world.ref());
+            auto entity = world->spawnEntity<Entity>();
+            auto component = entity.addComponent<RigidBodyComponent2D>();
+            component.init(physicsSystem.ref(), ShapeType::BOX);
 
-            runCoroutineBlocking(component->init());
-            component->Rotation = 90.0f;
-            Assert::AreEqual(90.0f, component->Rotation);
+            component.Rotation = 90.0f;
+            Assert::AreEqual(90.0f, component.Rotation);
 
-            destroyComponent(world.ref(), component);
+            entity.removeComponent<RigidBodyComponent2D>();
+            world->destroyEntity(entity);
         }
     }
     };

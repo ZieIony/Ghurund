@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/string/String.h"
-#include "core/EnumOperators.h"
+#include "core/enum/EnumOperators.h"
 
 namespace Ghurund::Core {
 	enum class ResourceFormatOptions {

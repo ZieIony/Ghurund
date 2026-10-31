@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Enum.h"
+#include "core/enum/Enum.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>

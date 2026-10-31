@@ -3,7 +3,7 @@
 #include "Type.h"
 
 #include "core/exception/Exceptions.h"
-#include "core/EnumOperators.h"
+#include "core/enum/EnumOperators.h"
 
 #include <typeinfo>
 

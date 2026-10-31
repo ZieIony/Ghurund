@@ -2,7 +2,7 @@
 
 #include "Component3D.h"
 
-#include "core/Event.h"
+#include "core/event/Event.h"
 
 namespace Ghurund::Engine::_3D {
 	using namespace Ghurund::Core;

@@ -60,8 +60,8 @@ public:
             auto shader = makeIntrusive<DxGraphicsShader>();
             runCoroutineBlocking(shaderLoader->load(shader.ref(), stream));
             auto material = makeIntrusive<Material>();
-            material->init(memoryManager.ref());
             material->Shader = shader.get();
+            material->init(memoryManager.ref());
         }
     }
 
@@ -73,8 +73,8 @@ public:
             auto shader = makeIntrusive<DxGraphicsShader>();
             runCoroutineBlocking(shaderLoader->load(shader.ref(), stream));
             auto material = makeIntrusive<Material>();
-            material->init(memoryManager.ref());
             material->Shader = shader.get();
+            material->init(memoryManager.ref());
             auto material2 = IntrusivePointer<Material>((Material*)material->clone());
             material.set(nullptr);
         }

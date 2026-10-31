@@ -59,7 +59,7 @@
       <PrecompiledHeaderFile>ute2dpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;RES_DIR=LR"($(solutionDir)resources\test)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;..\..\engine\Engine\src;..\..\engine\Engine.2D\src;..\..\engine\Engine.DirectX\src;..\..\engine\Engine.OpenGL\src;..\UnitTest.Utils\src;..\..\libs\CRCpp\inc;..\..\libs;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;..\..\libs\box2d-3.1.1\include\box2d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;..\..\engine\Engine\src;..\..\engine\Engine.2D\src;..\..\engine\Engine.DirectX\src;..\..\engine\Engine.OpenGL\src;..\UnitTest.Utils\src;..\..\libs\CRCpp\inc;..\..\libs;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;..\..\libs\entt\single_include\entt;..\..\libs\box2d-3.1.1\include\box2d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -79,7 +79,7 @@
       <PrecompiledHeaderFile>ute2dpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;RES_DIR=LR"($(solutionDir)resources\test)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;..\..\engine\Engine\src;..\..\engine\Engine.2D\src;..\..\engine\Engine.DirectX\src;..\..\engine\Engine.OpenGL\src;..\UnitTest.Utils\src;..\..\libs\CRCpp\inc;..\..\libs;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;..\..\libs\box2d-3.1.1\include\box2d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\..\engine\Core\src;..\..\engine\Engine\src;..\..\engine\Engine.2D\src;..\..\engine\Engine.DirectX\src;..\..\engine\Engine.OpenGL\src;..\UnitTest.Utils\src;..\..\libs\CRCpp\inc;..\..\libs;..\..\libs\glew-2.1.0\include;..\..\libs\glfw-3.3.6\include;..\..\libs\entt\single_include\entt;..\..\libs\box2d-3.1.1\include\box2d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -98,7 +98,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\test\2d\scene\ComponentTestUtils.h" />
     <ClInclude Include="src\ute2dpch.h" />
   </ItemGroup>
   <ItemGroup>

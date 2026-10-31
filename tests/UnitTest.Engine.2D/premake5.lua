@@ -32,6 +32,7 @@ project "UnitTest.Engine.2D"
 		includeDir["DirectX"],
 		includeDir["GLEW"],
 		includeDir["GLFW"],
+		includeDir["entt"],
 		includeDir["Box2D"]
 	}
 

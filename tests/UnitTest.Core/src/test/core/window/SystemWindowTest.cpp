@@ -1,10 +1,10 @@
 #include "utcpch.h"
 #include "CppUnitTest.h"
 
-#include "core/Timer.h"
+#include "core/time/Timer.h"
 #include "core/window/SystemWindow.h"
 #include "test/utils/MemoryGuard.h"
-#include "test/utils/TestUtils.h"
+#include "test/utils/TestUtils.h"   // needed for String asserts
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

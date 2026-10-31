@@ -56,6 +56,8 @@ public:
             auto thudSound = runCoroutineBlocking(resourceManager.load<Sound>(path, dir));
             thudSound->deinit();
             thudSound->deinit();
+
+            resourceManager.Resources.clear();
         }
     }
     };

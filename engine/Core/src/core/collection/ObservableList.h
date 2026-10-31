@@ -1,7 +1,7 @@
 #pragma once
 
 #include "List.h"
-#include "core/Event.h"
+#include "core/event/Event.h"
 
 namespace Ghurund::Core {
     template<class Value>

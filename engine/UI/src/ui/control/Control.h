@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Event.h"
+#include "core/event/Event.h"
 #include "core/input/EventConsumer.h"
 #include "core/math/Size.h"
 #include "core/reflection/Property.h"

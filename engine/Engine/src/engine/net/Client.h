@@ -3,7 +3,7 @@
 #include "Connection.h"
 #include "ServerMessage.h"
 #include "ReliableUDP.h"
-#include "core/Event.h"
+#include "core/event/Event.h"
 #include "core/collection/List.h"
 #include "core/state/StateMachine.h"
 

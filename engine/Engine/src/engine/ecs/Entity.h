@@ -39,7 +39,7 @@ namespace Ghurund::Engine {
 		template<typename T>
 		inline void removeComponent() {
 			_ASSERTE(hasComponent<T>());
-			registry->emplace<T>(id);
+			registry->remove<T>(id);
 		}
 	};
 }

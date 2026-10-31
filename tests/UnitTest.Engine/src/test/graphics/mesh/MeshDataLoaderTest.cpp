@@ -24,14 +24,14 @@ public:
 
         try {
             auto meshData = makeIntrusive<MeshData>();
-            runCoroutineBlocking(loader->load(meshData.ref(), stream));
+            loader->loadAssimp(meshData.ref(), stream);
         } catch (...) {
             return;
         }
         Assert::Fail(L"expected exception");
     }
 
-    TEST_METHOD(MeshDataLoader_loadObj) {
+    TEST_METHOD(MeshDataLoader_loadFbx) {
         IntrusivePointer<MeshDataLoader> loader(ghnew MeshDataLoader());
         FilePath meshFilePath = FilePath(L"../../resources/models/cube.fbx");
         File meshFile = File(meshFilePath);
@@ -39,7 +39,7 @@ public:
         meshFile.read(buffer);
         MemoryInputStream stream(buffer.Data, buffer.Size);
         auto mesh = makeIntrusive<MeshData>();
-        runCoroutineBlocking(loader->load(mesh.ref(), stream));
+        loader->loadAssimp(mesh.ref(), stream);
 
         Assert::AreEqual(24u, mesh->VertexCount);
         Assert::AreEqual(36u, mesh->IndexCount);
@@ -47,7 +47,7 @@ public:
         Assert::AreEqual(4ull, mesh->VertexStreams.Size);   // positions, normals, texCoords, tangents
     }
 
-    TEST_METHOD(MeshDataLoader_saveLoadNative) {
+    TEST_METHOD(MeshDataLoader_saveLoadMesh) {
         IntrusivePointer<MeshDataLoader> loader(ghnew MeshDataLoader());
 
         List<XMFLOAT3> vertices = { {1,0,0}, {1,1,0}, {0,1,0} };
@@ -58,11 +58,11 @@ public:
         auto outMesh = makeIntrusive<MeshData>();
         outMesh->init({ posStream }, vertices.Size, Buffer(&indices[0], sizeof(uint32_t) * indices.Size), (uint32_t)indices.Size, boundingBox);
         MemoryOutputStream outStream;
-        loader->save(outMesh.ref(), outStream);
+        loader->saveMesh(outMesh.ref(), outStream);
 
         MemoryInputStream inStream(outStream.Data, outStream.BytesWritten);
         auto inMesh = makeIntrusive<MeshData>();
-        runCoroutineBlocking(loader->load(inMesh.ref(), inStream));
+        loader->loadMesh(inMesh.ref(), inStream);
 
         Assert::AreEqual(outMesh->VertexCount, inMesh->VertexCount);
         Assert::AreEqual(outMesh->IndexCount, inMesh->IndexCount);

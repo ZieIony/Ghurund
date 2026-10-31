@@ -5,8 +5,9 @@
 #include "core/reflection/StandardTypes.h"
 #include "test/utils/MemoryGuard.h"
 #include "engine/2d/World2D.h"
+#include <engine/2d/scene/transform/TransformComponent2D.h>
+#include "core/math/Matrix.h"
 
-#include "ComponentTestUtils.h"
 #include <test/utils/ObjectGuard.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -22,10 +23,12 @@ namespace UnitTest {
 private:
     GameApplication app;
     SharedPointer<World2D> world;
+    IntrusivePointer<PhysicsSystem2D> physicsSystem;
 
 public:
     TransformComponent2DTest() {
         world = makeShared<World2D>(app);
+        physicsSystem = makeIntrusive<PhysicsSystem2D>(world.ref());
     }
 
     TEST_CLASS_INITIALIZE(construct) {
@@ -34,52 +37,27 @@ public:
 
     TEST_METHOD_INITIALIZE(init) {
         world->init();
+        physicsSystem->init();
     }
 
     TEST_METHOD_CLEANUP(uninit) {
+        physicsSystem->deinit();
         world->deinit();
     }
-
-    TEST_METHOD(TransformComponent2D_doubleInit) {
-        //MemoryGuard guard; // box2d allocates on init
-        ObjectGuard guard;
-        {
-            auto component = makeComponent<TransformComponent2D>(world.ref());
-
-            runCoroutineBlocking(component->init());
-            runCoroutineBlocking(component->init());
-
-            destroyComponent(world.ref(), component);
-        }
-    }
-
 
     TEST_METHOD(TransformComponent2D_position) {
         //MemoryGuard guard; // box2d allocates on init
         ObjectGuard guard;
         {
-            auto component = makeComponent<TransformComponent2D>(world.ref());
-            runCoroutineBlocking(component->init());
+            auto entity = world->spawnEntity<Entity>();
+            auto component = entity.addComponent<TransformComponent2D>();
 
-            component->Position = { 100, 30 };
-            Assert::AreEqual(100.0f, component->Position.x);
-            Assert::AreEqual(30.0f, component->Position.y);
+            component.Position = { 100, 30 };
+            Assert::AreEqual(100.0f, component.Position.x);
+            Assert::AreEqual(30.0f, component.Position.y);
 
-            destroyComponent(world.ref(), component);
-        }
-    }
-
-    TEST_METHOD(TransformComponent2D_position_uninitialized) {
-        //MemoryGuard guard; // box2d allocates on init
-        ObjectGuard guard;
-        {
-            auto component = makeComponent<TransformComponent2D>(world.ref());
-
-            component->Position = { 100, 30 };
-            Assert::AreEqual(100.0f, component->Position.x);
-            Assert::AreEqual(30.0f, component->Position.y);
-
-            destroyComponent(world.ref(), component);
+            entity.removeComponent<TransformComponent2D>();
+            world->destroyEntity(entity);
         }
     }
 
@@ -87,28 +65,15 @@ public:
         //MemoryGuard guard; // box2d allocates on init
         ObjectGuard guard;
         {
-            auto component = makeComponent<TransformComponent2D>(world.ref());
-            runCoroutineBlocking(component->init());
+            auto entity = world->spawnEntity<Entity>();
+            auto component = entity.addComponent<TransformComponent2D>();
 
-            component->Scale = { 2, 3 };
-            Assert::AreEqual(2.0f, component->Scale.x);
-            Assert::AreEqual(3.0f, component->Scale.y);
+            component.Scale = { 2, 3 };
+            Assert::AreEqual(2.0f, component.Scale.x);
+            Assert::AreEqual(3.0f, component.Scale.y);
 
-            destroyComponent(world.ref(), component);
-        }
-    }
-
-    TEST_METHOD(TransformComponent2D_scale_uninitialized) {
-        //MemoryGuard guard; // box2d allocates on init
-        ObjectGuard guard;
-        {
-            auto component = makeComponent<TransformComponent2D>(world.ref());
-
-            component->Scale = { 2, 3 };
-            Assert::AreEqual(2.0f, component->Scale.x);
-            Assert::AreEqual(3.0f, component->Scale.y);
-   
-            destroyComponent(world.ref(), component);
+            entity.removeComponent<TransformComponent2D>();
+            world->destroyEntity(entity);
         }
     }
 
@@ -116,26 +81,34 @@ public:
         //MemoryGuard guard; // box2d allocates on init
         ObjectGuard guard;
         {
-            auto component = makeComponent<TransformComponent2D>(world.ref());
-            runCoroutineBlocking(component->init());
+            auto entity = world->spawnEntity<Entity>();
+            auto component = entity.addComponent<TransformComponent2D>();
 
-            component->Rotation = 90.0f;
-            Assert::AreEqual(90.0f, component->Rotation);
+            component.Rotation = 90.0f;
+            Assert::AreEqual(90.0f, component.Rotation);
     
-            destroyComponent(world.ref(), component);
+            entity.removeComponent<TransformComponent2D>();
+            world->destroyEntity(entity);
         }
     }
 
-    TEST_METHOD(TransformComponent2D_rotation_uninitialized) {
+    TEST_METHOD(TransformComponent2D_update) {
         //MemoryGuard guard; // box2d allocates on init
         ObjectGuard guard;
         {
-            auto component = makeComponent<TransformComponent2D>(world.ref());
+            auto entity = world->spawnEntity<Entity>();
+            auto component = entity.addComponent<TransformComponent2D>();
 
-            component->Rotation = 90.0f;
-            Assert::AreEqual(90.0f, component->Rotation);
+            component.Position = { 2, 3 };
+            component.Rotation = 5;
+            component.Scale = { 3, 4 };
+            component.update();
+
+            auto identity = makeIdentityMatrix();
+			Assert::IsFalse(memcmp(&component.WorldTransformation, &identity, sizeof(XMFLOAT4X4)) == 0);
   
-            destroyComponent(world.ref(), component);
+            entity.removeComponent<TransformComponent2D>();
+            world->destroyEntity(entity);
         }
     }
     };

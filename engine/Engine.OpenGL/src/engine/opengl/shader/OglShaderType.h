@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Enum.h"
+#include "core/enum/Enum.h"
 
 namespace Ghurund::Engine::OpenGL {
 	using namespace Ghurund::Core;
