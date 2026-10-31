@@ -172,12 +172,23 @@ namespace Ghurund::Engine::_2D {
 			b2Body_ApplyForceToCenter(id, { force.x, force.y }, true);
 		}
 
+		inline void applyImpulse(const XMFLOAT2& impulse) {
+			b2Body_ApplyLinearImpulseToCenter(id, { impulse.x, impulse.y }, true);
+		}
+
 		void updateShape();
 
-		inline void update(TransformComponent2D& transform) const {
+		inline void update(const Timer& timer, TransformComponent2D& transform) const {
 			if (BodyType != BodyType::STATIC) {
-				transform.Position = Position;
-				transform.Rotation = Rotation;
+				if (interpolateTransform) {
+					auto pos = Position;
+					auto vel = LinearVelocity;
+					transform.setPosition(pos.x + vel.x * timer.FrameTimeReminder, pos.y + vel.y * timer.FrameTimeReminder);
+					transform.Rotation = Rotation + AngularVelocity * timer.FrameTimeReminder;
+				} else {
+					transform.Position = Position;
+					transform.Rotation = Rotation;
+				}
 			}
 		}
 	};

@@ -12,7 +12,7 @@ namespace Sample {
 		Ghurund::Core::Timer& timer;
 
 		virtual void onInProgress(uint64_t duration) override {
-			double dt = timer.FrameTime;
+			double dt = timer.FrameTime.value;
 			auto v = Value * dt * 1000;
 			window.Position = window.Position + XMINT2{ (int32_t)v.x, -(int32_t)v.y };
 		}

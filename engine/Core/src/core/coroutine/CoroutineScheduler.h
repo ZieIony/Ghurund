@@ -8,7 +8,7 @@
 #include "UpdateAwaiter.h"
 
 #include "core/collection/Bag.h"
-#include "core/Timer.h"
+#include "core/time/Timer.h"
 #include "core/object/Noncopyable.h"
 
 #include <mutex>
@@ -38,7 +38,7 @@ namespace Ghurund::Core {
 		}
 
 		DelayedUpdateAwaiter delayedUpdate(float delay, bool useScaledTime = true) {
-			auto resumeTime = (useScaledTime ? timer.ScaledTime : timer.Time) + delay;
+			auto resumeTime = (useScaledTime ? timer.ApplicationTime.scaledValue : timer.ApplicationTime.value) + delay;
 			return { delayedUpdateAwaiters, resumeTime, useScaledTime };
 		}
 

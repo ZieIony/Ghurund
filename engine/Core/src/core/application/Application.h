@@ -8,12 +8,11 @@
 #include "core/object/Initializable.h"
 #include "core/object/Noncopyable.h"
 #include "core/resource/ResourceManager.h"
-#include "core/Timer.h"
+#include "core/time/Timer.h"
 
 namespace Ghurund::Core {
 	class Application:public Noncopyable, public Initializable {
 	private:
-		float frameTimeReminder = 0;
 		Timer timer;
 
 		WindowCollection windows;

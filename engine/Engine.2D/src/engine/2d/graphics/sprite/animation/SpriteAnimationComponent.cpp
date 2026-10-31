@@ -8,6 +8,6 @@ namespace Ghurund::Engine::_2D {
 			Animation = animator->CurrentState->Animation;
 		}
 		if (animation)
-			animation->update(timer.ScaledFrameTime);
+			animation->update(timer.FrameTime.scaledValue);
 	}
 }

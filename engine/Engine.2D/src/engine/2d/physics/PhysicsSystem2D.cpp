@@ -21,9 +21,11 @@ namespace Ghurund::Engine::_2D {
 	}
 
 	void PhysicsSystem2D::update(const Timer& timer) {
+		if (timer.TimeScale == 0.0f)
+			return;
 		auto view = world.entityRegistry.view<TransformComponent2D, const RigidBodyComponent2D>();
 		for (auto [id, transform, rigidBody] : view.each()) {
-			rigidBody.update(transform);
+			rigidBody.update(timer, transform);
 		};
 	}
 }

@@ -19,7 +19,7 @@ namespace Ghurund::Core {
 		List<DelayedUpdateAwaiter> delayAwaitersToResume;
 		for (size_t i = 0; i < delayedUpdateAwaiters.Size;) {
 			auto& awaiter = delayedUpdateAwaiters[i];
-			if (awaiter.ResumeTime <= (awaiter.UseScaledTime ? timer.ScaledTime : timer.Time)) {
+			if (awaiter.ResumeTime <= (awaiter.UseScaledTime ? timer.ApplicationTime.scaledValue : timer.ApplicationTime.value)) {
 				delayAwaitersToResume.add(awaiter);
 				delayedUpdateAwaiters.removeAt(i);
 			} else {

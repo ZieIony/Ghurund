@@ -121,7 +121,6 @@
     <ClInclude Include="src\core\Provider.h" />
     <ClInclude Include="src\core\StackTrace.h" />
     <ClInclude Include="src\core\SystemInfo.h" />
-    <ClInclude Include="src\core\Timer.h" />
     <ClInclude Include="src\core\Tuple.h" />
     <ClInclude Include="src\core\allocation\AllocationStrategy.h" />
     <ClInclude Include="src\core\allocation\Allocator.h" />
@@ -290,6 +289,8 @@
     <ClInclude Include="src\core\threading\ThreadPoolExecutor.h" />
     <ClInclude Include="src\core\threading\Waitable.h" />
     <ClInclude Include="src\core\threading\WorkerThread.h" />
+    <ClInclude Include="src\core\time\Time.h" />
+    <ClInclude Include="src\core\time\Timer.h" />
     <ClInclude Include="src\core\window\Clipboard.h" />
     <ClInclude Include="src\core\window\Cursor.h" />
     <ClInclude Include="src\core\window\DisplayManager.h" />
@@ -311,7 +312,6 @@
     <ClCompile Include="src\core\Color.cpp" />
     <ClCompile Include="src\core\StackTrace.cpp" />
     <ClCompile Include="src\core\SystemInfo.cpp" />
-    <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
     <ClCompile Include="src\core\allocation\SimpleBufferStrategy.cpp" />
     <ClCompile Include="src\core\application\Application.cpp" />
@@ -354,6 +354,7 @@
     <ClCompile Include="src\core\string\GenericString.cpp" />
     <ClCompile Include="src\core\threading\ThreadPoolExecutor.cpp" />
     <ClCompile Include="src\core\threading\WorkerThread.cpp" />
+    <ClCompile Include="src\core\time\Timer.cpp" />
     <ClCompile Include="src\core\window\Cursor.cpp" />
     <ClCompile Include="src\core\window\DisplayManager.cpp" />
     <ClCompile Include="src\core\window\DragDropManager.cpp" />

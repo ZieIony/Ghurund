@@ -3,7 +3,7 @@
 #include "SpriteAnimation.h"
 #include "SpriteAnimator.h"
 
-#include "core/Timer.h"
+#include "core/time/Timer.h"
 #include "engine/2d/graphics/sprite/SpriteRenderingSystem.h"
 
 namespace Ghurund::Engine::_2D {

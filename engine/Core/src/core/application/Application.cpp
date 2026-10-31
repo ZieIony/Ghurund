@@ -49,8 +49,6 @@ namespace Ghurund::Core {
         init();
         isRunning = true;
 
-        timer.tick();
-
         while (windows.Size != 0) {
             if (handleMessages())
                 break;
@@ -81,11 +79,8 @@ namespace Ghurund::Core {
     void Application::update() {
         timer.tick();
 
-        frameTimeReminder += timer.ScaledFrameTime;
-        while (frameTimeReminder >= timer.FixedFrameTime) {
-            frameTimeReminder -= timer.FixedFrameTime;
+        while (timer.step())
             onFixedUpdate();
-        }
 
         onUpdate();
     }

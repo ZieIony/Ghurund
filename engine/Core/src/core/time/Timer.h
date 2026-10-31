@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cstdint>
 #include <Windows.h>
+#include "Time.h"
 
 namespace Ghurund::Core {
     class Timer {
@@ -10,81 +10,55 @@ namespace Ghurund::Core {
         double fqMs = 0.0, fqNs = 0.0;
         LARGE_INTEGER startFrame, currentFrame;
 
-        double time = 0.0;
-        float frameTime = 0.0f;
-        uint32_t timeMs = 0, frameTimeMs = 0;
-        uint64_t timeNs = 0, frameTimeNs = 0;
+        Time<double> appTime = {};
+        Time<float> frameTime = {};
 
-        double scaledTime = 0.0;
-        float scaledFrameTime = 0.0f;
         float timeScale = 1, maxFrameTime = 1;
         float fixedFrameTime = 1 / 60.0f;
 
         float fps = 60, fpsTime = 0.0f;
         uint32_t fpsFrames = 0, frameWindow = 60;
 
+        float frameTimeReminder = 0;
+
         Timer& operator=(const Timer& other) = delete;
 
     public:
         Timer();
 
+        /**
+        * Updates application time and frame time to the current time.
+        **/
         void tick();
 
-        inline double getTime() const {
-            return time;
+        /**
+        * Updates step time by the fixed time step. Returns true if the step fits into the current frame, false otherwise.
+        **/
+        bool step();
+
+        /**
+        * Time span between this timer creation and the last timer tick.
+        **/
+        inline const Time<double>& getApplicationTime() const {
+            return appTime;
         }
 
-        __declspec(property(get = getTime)) double Time;
+        /**
+        * Time span between this timer creation and the last timer tick.
+        **/
+        __declspec(property(get = getApplicationTime)) const Time<double>& ApplicationTime;
 
-        inline uint32_t getTimeMs() const {
-            return timeMs;
-        }
-
-        __declspec(property(get = getTimeMs)) uint32_t TimeMs;
-
-        inline uint64_t getTimeNs() const {
-            return timeNs;
-        }
-
-        __declspec(property(get = getTimeNs)) uint64_t TimeNs;
-
-        inline float getFrameTime() const {
+        /**
+        * Time span between the previous timer tick and the last timer tick.
+        **/
+        inline const Time<float>& getFrameTime() const {
             return frameTime;
         }
 
-        __declspec(property(get = getFrameTime)) float FrameTime;
-
-        inline uint32_t getFrameTimeMs() const {
-            return frameTimeMs;
-        }
-
-        __declspec(property(get = getFrameTimeMs)) uint32_t FrameTimeMs;
-
-        inline uint64_t getFrameTimeNs() const {
-            return frameTimeNs;
-        }
-
-        __declspec(property(get = getFrameTimeNs)) uint64_t FrameTimeNs;
-
         /**
-        * Scaled time takes max frame time into account,
-        * so scaled time may not be equal to time even if time scale == 1.
+        * Time span between the previous timer tick and the last timer tick.
         **/
-        inline double getScaledTime() const {
-            return scaledTime;
-        }
-
-        __declspec(property(get = getScaledTime)) double ScaledTime;
-
-        /**
-        * Scaled frame time takes max frame time into account,
-        * so scaled frame time may not be equal to frame time even if time scale == 1.
-        **/
-        inline float getScaledFrameTime() const {
-            return scaledFrameTime;
-        }
-
-        __declspec(property(get = getScaledFrameTime)) float ScaledFrameTime;
+        __declspec(property(get = getFrameTime)) const Time<float>& FrameTime;
 
         inline float getTimeScale() const {
             return timeScale;
@@ -115,6 +89,12 @@ namespace Ghurund::Core {
         }
 
         __declspec(property(get = getFixedFrameTime, put = setFixedFrameTime)) float FixedFrameTime;
+
+        inline float getFrameTimeReminder() const {
+            return frameTimeReminder;
+        }
+
+        __declspec(property(get = getFrameTimeReminder)) float FrameTimeReminder;
 
         inline float getFramesPerSecond() const {
             return fps;

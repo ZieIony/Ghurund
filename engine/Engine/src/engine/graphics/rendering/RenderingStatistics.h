@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Timer.h"
+#include "core/time/Timer.h"
 #include "core/reflection/Type.h"
 
 namespace Ghurund {
@@ -33,7 +33,7 @@ namespace Ghurund {
 
         void finishFrame() {
             timer.tick();
-            renderingTime = timer.FrameTime;
+            renderingTime = timer.FrameTime.value;
         }
     };
 }

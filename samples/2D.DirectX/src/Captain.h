@@ -45,16 +45,16 @@ namespace Sample {
 		}
 
 		inline void jump() {
-			CapsuleComponent.applyForce({0, 100});
+			CapsuleComponent.applyImpulse({0, 3});
 		}
 
 		inline void moveLeft() {
-			CapsuleComponent.applyForce({-50, 0});
+			CapsuleComponent.applyImpulse({-1, 0});
 			Transform.Scale = { -1, 1 };
 		}
 
 		inline void moveRight() {
-			CapsuleComponent.applyForce({ 50, 0 });
+			CapsuleComponent.applyImpulse({ 1, 0 });
 			Transform.Scale = { 1, 1 };
 		}
 

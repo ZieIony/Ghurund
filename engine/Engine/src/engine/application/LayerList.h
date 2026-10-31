@@ -87,9 +87,9 @@ namespace Ghurund::Engine {
             return consumed;
         }
 
-        inline void update(uint64_t time) {
+        inline void update(const Timer& timer) {
             for (auto& layer : layers)
-                layer->update(time);
+                layer->update(timer.ApplicationTime.valueMs);
         }
 
         inline void draw(RenderingContext& renderingContext, ParameterManager& parameterManager) {

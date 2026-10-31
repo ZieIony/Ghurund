@@ -87,8 +87,21 @@ namespace Sample {
 			Logger::print(LogType::INFO, _T("\n"));
 			//Logger::print(LogType::INFO, captain->printTree().Data);
 			Logger::print(LogType::INFO, _T("\n"));
-		} else if (args.KeyCode == 'p') {
-			Timer.TimeScale = Timer.TimeScale == 1.0f ? 0.1f : 1.0f;
+		} else if (args.KeyCode == '0') {
+			Timer.TimeScale = 0.0f;
+			Timer.FixedFrameTime = 1.0f / 60 * Timer.TimeScale;
+		} else if (args.KeyCode == '1') {
+			Timer.TimeScale = 0.25f;
+			Timer.FixedFrameTime = 1.0f / 60 * Timer.TimeScale;
+		} else if (args.KeyCode == '2') {
+			Timer.TimeScale = 0.5f;
+			Timer.FixedFrameTime = 1.0f / 60 * Timer.TimeScale;
+		} else if (args.KeyCode == '3') {
+			Timer.TimeScale = 1.0f;
+			Timer.FixedFrameTime = 1.0f / 60 * Timer.TimeScale;
+		} else if (args.KeyCode == '4') {
+			Timer.TimeScale = 2.0f;
+			Timer.FixedFrameTime = 1.0f / 60 * Timer.TimeScale;
 		}
 		return true;
 	}

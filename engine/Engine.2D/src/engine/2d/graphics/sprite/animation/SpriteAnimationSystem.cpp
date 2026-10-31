@@ -15,6 +15,8 @@ namespace Ghurund::Engine::_2D {
     }
 
     void SpriteAnimationSystem::update(const Timer& timer) {
+        if (timer.TimeScale == 0.0f)
+            return;
         auto view = world.entityRegistry.view<SpriteComponent, SpriteAnimationComponent>();
         for (auto [id, sprite, animation] : view.each()) {
             animation.update(timer);
