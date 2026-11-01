@@ -16,7 +16,7 @@ namespace Ghurund::UI {
 			layout.reset(ghnew ThemedLayout(layoutKey));
 		} else {
 			FilePath path = FilePath(convertText<char, wchar_t>(s));
-			auto coroutine = resourceManager.load<ControlLayout>(path, workingDir, ResourceFormat::AUTO, ResourceManager::LOAD_GENERATE_NAME, { .clone = true });
+			auto coroutine = resourceManager.load<ControlLayout>(path, workingDir, ResourceFormat::AUTO, { .clone = true });
 			coroutine.resume();
 			auto controlLayout = coroutine.Result;
 			layout.reset(ghnew ThemedLayout(controlLayout->control));

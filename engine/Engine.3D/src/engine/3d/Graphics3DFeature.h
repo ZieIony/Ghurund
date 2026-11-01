@@ -3,6 +3,8 @@
 #include "core/feature/Feature.h"
 #include "core/reflection/Type.h"
 #include "core/resource/ResourceManager.h"
+#include "engine/graphics/mesh/Mesh.h"
+#include "engine/graphics/material/Material.h"
 
 namespace Ghurund::Engine::_3D {
     using namespace Ghurund::Core;
@@ -24,13 +26,13 @@ namespace Ghurund::Engine::_3D {
         ResourceManager& resourceManager;
 
     public:
-        inline static const WString MESH_CUBE = L"gh cube mesh";
+        inline static Mesh* MESH_CUBE = nullptr;
 
-        inline static const WString MATERIAL_FORWARD_BASIC = L"gh basic forward material";
-        inline static const WString MATERIAL_FORWARD_LIT = L"gh lit forward material";
-        inline static const WString MATERIAL_FORWARD_NORMALS = L"gh normals forward material";
-        inline static const WString MATERIAL_FORWARD_TANGENTS = L"gh tangents forward material";
-        inline static const WString MATERIAL_FORWARD_TEXCOORDS = L"gh texCoords forward material";
+        inline static Material* MATERIAL_FORWARD_BASIC = nullptr;
+        inline static Material* MATERIAL_FORWARD_LIT = nullptr;
+        inline static Material* MATERIAL_FORWARD_NORMALS = nullptr;
+        inline static Material* MATERIAL_FORWARD_TANGENTS = nullptr;
+        inline static Material* MATERIAL_FORWARD_TEXCOORDS = nullptr;
 
         Graphics3DFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 

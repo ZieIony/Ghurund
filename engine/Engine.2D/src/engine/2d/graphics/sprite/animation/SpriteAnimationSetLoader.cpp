@@ -21,7 +21,7 @@ namespace Ghurund::Engine::_2D {
 				auto textureAttribute = frameElement->requireAttribute(L"texture");
 				auto durationAttribute = frameElement->requireAttribute(L"duration");
 				auto texturePath = FilePath(textureAttribute);
-				auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, nullptr, options);
+				auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, options);
 				animation->addFrame(texture.ref(), parse<float>(convertText<wchar_t, char>(durationAttribute)));
 			}
 			resource.add(animation.get());

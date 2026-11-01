@@ -20,8 +20,7 @@ namespace Sample {
 	}
 
 	void SampleWindow::init() {
-		auto fpsSystem = makeIntrusive<FpsSystem>(*this);
-		Systems.add(fpsSystem);
+		Systems.add(makeIntrusive<FpsSystem>(*this));
 
 		world = ghnew World2D(app);
 		world->init();
@@ -42,10 +41,11 @@ namespace Sample {
 	}
 
 	CoroutineTask<void> SampleWindow::initScene() {
+		auto graphicsFeature = app.Features.get<GraphicsFeature>();
 		ground = world->spawnEntity<Ground>();
-		co_await ground.init(*Systems.get<PhysicsSystem2D>(), app.Features.get<GraphicsFeature>()->ResourceFactory, app.ResourceManager);
+		co_await ground.init(*Systems.get<PhysicsSystem2D>(), graphicsFeature->ResourceFactory, app.ResourceManager, graphicsFeature->MemoryManager);
 		captain = world->spawnEntity<Captain>();
-		co_await captain.init(*Systems.get<PhysicsSystem2D>(), app.ResourceManager, *world);
+		co_await captain.init(*Systems.get<PhysicsSystem2D>(), app.ResourceManager, graphicsFeature->MemoryManager, *world);
 		captain.CapsuleComponent.Position = {0, 2};
 
 		spriteRenderingSystem->Camera = world->Scene.Camera;

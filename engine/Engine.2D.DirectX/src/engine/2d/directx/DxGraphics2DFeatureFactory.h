@@ -15,7 +15,7 @@ namespace Ghurund::Engine::_2D::DirectX {
 
 		virtual OwnedNotNull<Feature> make() const override {
 			auto graphicsFeature = app.Features.get<DxGraphicsFeature>();
-			return OwnedNotNull<Feature>(ghnew DxGraphics2DFeature(app.ResourceManager, graphicsFeature->MemoryManager));
+			return OwnedNotNull<Feature>(ghnew DxGraphics2DFeature(app.ResourceManager, (DxGPUMemoryManager&)graphicsFeature->MemoryManager));
 		}
 	};
 }

@@ -11,17 +11,20 @@ namespace Ghurund::Engine::_2D {
 			material->release();
 	}
 
-	CoroutineTask<void> VisualizationComponent2D::init(ResourceManager& resourceManager, const RigidBodyComponent2D& rigidBody) {
-		auto visMesh = co_await resourceManager.load<Ghurund::Engine::Mesh>(Graphics2DFeature::MESH_SPRITE);
-		Mesh = visMesh.get();
+	void VisualizationComponent2D::init(IGPUMemoryManager& memoryManager, const RigidBodyComponent2D& rigidBody) {
+		Mesh = Graphics2DFeature::MESH_SPRITE;
 		if (rigidBody.ShapeType == ShapeType::BOX) {
-			auto visMaterial = co_await resourceManager.load<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_VISUALIZATION_BOX);
+			// TODO: replace cloning with material instances
+			auto visMaterial = IntrusivePointer<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_VISUALIZATION_BOX->clone());
+			visMaterial->init(memoryManager);
 			Material = visMaterial.get();
 		} else if (rigidBody.ShapeType == ShapeType::CAPSULE) {
-			auto visMaterial = co_await resourceManager.load<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_VISUALIZATION_CAPSULE);
+			auto visMaterial = IntrusivePointer<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_VISUALIZATION_CAPSULE->clone());
+			visMaterial->init(memoryManager);
 			Material = visMaterial.get();
 		} else if (rigidBody.ShapeType == ShapeType::SEGMENT) {
-			auto visMaterial = co_await resourceManager.load<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_VISUALIZATION_SEGMENT);
+			auto visMaterial = IntrusivePointer<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_VISUALIZATION_SEGMENT->clone());
+			visMaterial->init(memoryManager);
 			Material = visMaterial.get();
 		}
 	}

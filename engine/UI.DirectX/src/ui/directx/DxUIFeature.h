@@ -25,7 +25,7 @@ namespace Ghurund::UI::DirectX {
     private:
         ResourceManager& resourceManager;
         DxGraphics& graphics;
-        DxGPUMemoryManager& memoryManager;
+        IGPUMemoryManager& memoryManager;
         Ghurund::UI::ConstraintFactory* constraintFactory = nullptr;
         IntrusivePointer<Ghurund::UI::LayoutLoader> layoutLoader;
 
@@ -33,7 +33,7 @@ namespace Ghurund::UI::DirectX {
         DxUIFeature(
             ResourceManager& resourceManager,
             DxGraphics& graphics,
-            DxGPUMemoryManager& memoryManager
+            IGPUMemoryManager& memoryManager
         ):resourceManager(resourceManager), graphics(graphics), memoryManager(memoryManager) {}
 
         [[nodiscard]]

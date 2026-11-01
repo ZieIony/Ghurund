@@ -45,6 +45,13 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getAnimator, put = setAnimator)) SpriteAnimator* Animator;
 
-		void update(const Timer& timer);
+		inline void update(const Timer& timer) {
+			if (animator) {
+				animator->update();
+				Animation = animator->CurrentState->Animation;
+			}
+			if (animation)
+				animation->update(timer.FrameTime.scaledValue);
+		}
 	};
 }

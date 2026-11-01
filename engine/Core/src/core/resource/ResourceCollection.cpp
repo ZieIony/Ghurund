@@ -2,18 +2,10 @@
 #include "ResourceCollection.h"
 
 namespace Ghurund::Core {
-	Resource* ResourceCollection::get(const WString& name) {
-		std::unique_lock lock(mutex);
-		auto iterator = resourcesByName.find(name);
-		if (iterator != resourcesByName.end())
-			return iterator->value.get();
-		return nullptr;
-	}
-
 	Resource* ResourceCollection::get(const FilePath& path) {
 		std::unique_lock lock(mutex);
-		auto iterator = resourcesByPath.find(path);
-		if (iterator != resourcesByPath.end())
+		auto iterator = resources.find(path);
+		if (iterator != resources.end())
 			return iterator->value.get();
 		return nullptr;
 	}
@@ -21,64 +13,40 @@ namespace Ghurund::Core {
 	void ResourceCollection::put(NotNull<Resource> resource) {
 		std::unique_lock lock(mutex);
 		// don't accept resources without a usable id
-		_ASSERTE(resource->Name != nullptr || resource->Path != nullptr);
-		if (resource->Path) {
-			_ASSERTE(!resourcesByPath.contains(*resource->Path));
-			resource->addReference();
-			resourcesByPath.put(*resource->Path, IntrusivePointer(resource.get()));
-		} else if (resource->Name) {
-			_ASSERTE(!resourcesByName.contains(*resource->Name));
-			resource->addReference();
-			resourcesByName.put(*resource->Name, IntrusivePointer(resource.get()));
-		}
+		_ASSERTE(resource->Path != nullptr);
+		_ASSERTE(!resources.contains(*resource->Path));
+		resource->addReference();
+		resources.put(*resource->Path, IntrusivePointer(resource.get()));
 	}
 
 	void ResourceCollection::remove(NotNull<Resource> resource) {
 		std::unique_lock lock(mutex);
 #ifdef _DEBUG
 		// don't accept resources without a usable id
-		_ASSERTE(resource->Name || resource->Path);
+		_ASSERTE(resource->Path);
 #endif
-		if (resource->Path)
-			resourcesByPath.remove(*resource->Path);
-		if (resource->Name)
-			resourcesByName.remove(*resource->Name);
-	}
-
-	void ResourceCollection::remove(const WString& name) {
-		std::unique_lock lock(mutex);
-
-		auto iterator = resourcesByName.find(name);
-		if (iterator != resourcesByName.end()) {
-			// TODO: implement iterator.erase() or replace with std::map
-			resourcesByName.remove(name);
-			if(iterator->value->Path)
-				resourcesByPath.remove(*iterator->value->Path);
-		}
+		resources.remove(*resource->Path);
 	}
 
 	void ResourceCollection::remove(const FilePath& path) {
 		std::unique_lock lock(mutex);
 
-		auto iterator = resourcesByPath.find(path);
-		if (iterator != resourcesByPath.end()) {
+		auto iterator = resources.find(path);
+		if (iterator != resources.end()) {
 			// TODO: implement iterator.erase() or replace with std::map
-			resourcesByPath.remove(path);
-			if (iterator->value->Name)
-				resourcesByName.remove(*iterator->value->Name);
+			resources.remove(path);
 		}
 	}
 
 	void ResourceCollection::clear() {
 		std::unique_lock lock(mutex);
-		resourcesByName.clear();
-		resourcesByPath.clear();
+		resources.clear();
 	}
 
 #ifdef _DEBUG
 	void ResourceCollection::validateResources() {
 		std::unique_lock lock(mutex);
-		for (auto& entry : resourcesByPath) {
+		for (auto& entry : resources) {
 			_ASSERTE(entry.value != nullptr);
 			_ASSERTE(entry.value->Path != nullptr);
 			_ASSERTE(entry.value->Type.isOrExtends(Resource::TYPE));
@@ -87,9 +55,8 @@ namespace Ghurund::Core {
 
 	void ResourceCollection::printResources() {
 		std::unique_lock lock(mutex);
-		for (auto& entry : resourcesByPath) {
+		for (auto& entry : resources) {
 			auto resource = entry.value.get();
-			auto name = resource->Name ? *resource->Name : L"[null]";
 			auto path = resource->Path ? resource->Path->toString() : L"[null]";
 			auto state = [&] {
 				if (resource->State == ResourceState::EMPTY) {
@@ -110,13 +77,12 @@ namespace Ghurund::Core {
 				}
 			};
 			auto message = std::format(
-				_T("type: {}, state: {}, size: s: {}, g: {}, refs: {}, name: \"{}\", path: \"{}\"\n"),
+				_T("type: {}, state: {}, size: s: {}, g: {}, refs: {}, path: \"{}\"\n"),
 				resource->Type.Name,
 				state,
 				formatMem(resource->DataSize.system),
 				formatMem(resource->DataSize.graphical),
 				resource->ReferenceCount,
-				name,
 				path
 			);
 			Logger::print(LogType::INFO, message.c_str());

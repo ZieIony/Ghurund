@@ -23,8 +23,7 @@ namespace Ghurund::UI {
 				path,
 				DirectoryPath::getCurrentDirectory(),
 				ResourceFormat::AUTO,
-				ResourceManager::LOAD_GENERATE_NAME,
-				{ .clone = false }
+				{ .clone = true }
 			);
 			coroutine.resume();
 			return coroutine.Result->control;

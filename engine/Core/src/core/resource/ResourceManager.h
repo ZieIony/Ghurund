@@ -81,17 +81,17 @@ namespace Ghurund::Core {
 			scheduler.launch(reload(resource));
 		}
 
-		inline static const WString LOAD_GENERATE_NAME_VALUE = L"";
-
 	public:
 		inline static const WString ENGINE_LIB_NAME = L"Ghurund";
 		static const DirectoryPath ENGINE_LIB_PATH;
 		inline static const WString LIB_PROTOCOL = L"lib://";
 
-		static constexpr const WString* LOAD_GENERATE_NAME = &LOAD_GENERATE_NAME_VALUE;
-
 		explicit ResourceManager(CoroutineScheduler& scheduler):scheduler(scheduler) {
 			IsHotReloadEnabled = IS_DEBUG_BUILD && !IS_UNIT_TEST;
+		}
+
+		static inline FilePath makeEngineResourcePath(const WString& pathStr) {
+			return ResourceManager::ENGINE_LIB_PATH / FilePath(pathStr.Data);
 		}
 
 		FilePath resolvePath(const FilePath& absoluteOrLibPath) const;
@@ -129,64 +129,8 @@ namespace Ghurund::Core {
 		CoroutineTask<void> reload(Resource& resource);
 
 		/**
-		* Loads a resource by name. May throw if loading the resource fails.
-		* Parameter 'path' can lead to a file, or to a library entry. Parameter 'name' can be nullptr. If parameter 'name' is 'LOAD_GENERATE_NAME', then a name will be generated.
-		* Default parameters are: workingDir = DirectoryPath::getCurrentDirectory(), format = ResourceFormat::AUTO, name = LOAD_GENERATE_NAME, options = {}.
-		**/
-		template<Derived<Resource> T>
-		[[nodiscard]]
-		CoroutineTask<IntrusivePointer<T>> load(
-			const WString& name,
-			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
-			const ResourceFormat& format = ResourceFormat::AUTO,
-			LoadOptions options = {}
-		) {
-			IntrusivePointer<T> resource = IntrusivePointer<T>((T*)resources.get(name));
-			if (resource == nullptr) {
-				throw std::invalid_argument("resource is not present in cache");
-			} else {
-				resource->addReference();
-			}
-
-			BaseLoader& loader = *getLoader(Ghurund::Core::getType<T>());
-
-			if (resource->State == ResourceState::EMPTY && options.targetState != ResourceState::EMPTY) {
-				auto absoluteOrLibPath = resource->Path;
-				if (!absoluteOrLibPath)
-					throw InvalidStateException("resource needs a valid path to be loaded by name");
-
-				auto& loadFormat = guessResourceFormat<T>(*absoluteOrLibPath, format);
-
-#ifdef _DEBUG
-				auto message = std::format(_T("Loading resource by name '{}'.\n"), name);
-				Logger::log(LogType::INFO, message.c_str());
-#endif
-				SharedPointer<Buffer> buffer = resolveResource(*absoluteOrLibPath);
-				MemoryInputStream stream = MemoryInputStream(buffer->Data, buffer->Size);
-				auto localDir = getLocalDir(*absoluteOrLibPath, workingDir);
-				co_await load_internal(resource.ref(), loader, stream, localDir, loadFormat, options);
-			}
-
-			if (options.clone)
-				resource = IntrusivePointer<T>((T*)resource->clone());
-
-			if (resource->State == ResourceState::LOADED && options.targetState != ResourceState::LOADED) {
-#ifdef _DEBUG
-				auto message = std::format(_T("Initializing resource by name '{}'.\n"), name);
-				Logger::log(LogType::INFO, message.c_str());
-#endif
-				co_await init_internal(resource.ref(), loader);
-			}
-
-#ifdef _DEBUG
-			resources.validateResources();
-#endif
-			co_return resource;
-		}
-
-		/**
 		* Loads a resource from file path, optionally caches the resource and watches for file changes. May throw if loading the resource fails.
-		* Parameter 'path' can lead to a file, or to a library entry. Parameter 'name' can be nullptr. If parameter 'name' is 'LOAD_GENERATE_NAME', then a name will be generated.
+		* Parameter 'path' can lead to a file, or to a library entry.
 		* Default parameters are: workingDir = DirectoryPath::getCurrentDirectory(), format = ResourceFormat::AUTO, name = LOAD_GENERATE_NAME, options = {}.
 		**/
 		template<Derived<Resource> T>
@@ -195,7 +139,6 @@ namespace Ghurund::Core {
 			const FilePath& path,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			const WString* name = LOAD_GENERATE_NAME,
 			LoadOptions options = {}
 		) {
 			BaseLoader& loader = *getLoader(Ghurund::Core::getType<T>());
@@ -207,11 +150,6 @@ namespace Ghurund::Core {
 				typelessResource->addReference();
 				resource = IntrusivePointer<T>((T*)typelessResource.get());
 				resource->Path = &absoluteOrLibPath;
-				if (name == LOAD_GENERATE_NAME) {
-					resource->Name = WString(absoluteOrLibPath.FileName.Data);
-				} else if (name) {
-					resource->Name = name;
-				}
 				resources.put(resource.ref());
 				if (options.watch && absoluteOrLibPath.IsAbsolute)
 					watcher.addFile(absoluteOrLibPath);
@@ -251,7 +189,6 @@ namespace Ghurund::Core {
 
 		/**
 		* Loads a resource from memory stream, optionally caches the resource. May throw if loading the resource fails.
-		* Parameter 'name' can be nullptr.
 		* Default parameters are: workingDir = DirectoryPath::getCurrentDirectory(), format = ResourceFormat::AUTO, name = LOAD_GENERATE_NAME, options = {}.
 		**/
 		template<Derived<Resource> T>
@@ -260,24 +197,14 @@ namespace Ghurund::Core {
 			MemoryInputStream& stream,
 			const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(),
 			const ResourceFormat& format = ResourceFormat::AUTO,
-			const WString* name = LOAD_GENERATE_NAME,
 			LoadOptions options = {}
 		) {
 			BaseLoader& loader = *getLoader(Ghurund::Core::getType<T>());
 
-			IntrusivePointer<T> resource;
-			if (name && name != LOAD_GENERATE_NAME)
-				resource = IntrusivePointer<T>((T*)resources.get(*name));
-			if (resource == nullptr) {
-				auto typelessResource = loader.makeResource();
-				typelessResource->addReference();
-				resource = IntrusivePointer<T>((T*)typelessResource.get());
-				if (name)
-					resource->Name = *name;
-				resources.put(resource.ref());
-			} else {
-				resource->addReference();
-			}
+			auto typelessResource = loader.makeResource();
+			typelessResource->addReference();
+			IntrusivePointer<T> resource = IntrusivePointer<T>((T*)typelessResource.get());
+			resources.put(resource.ref());
 
 			if (resource->State == ResourceState::EMPTY && options.targetState != ResourceState::EMPTY) {
 #ifdef _DEBUG

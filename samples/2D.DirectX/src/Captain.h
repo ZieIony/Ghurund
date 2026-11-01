@@ -20,7 +20,7 @@ namespace Sample {
 
 		Captain(entt::registry& registry, entt::entity id):Entity(registry, id) {}
 
-		CoroutineTask<void> init(PhysicsSystem2D& physicsSystem, ResourceManager& resourceManager, World2D& world);
+		CoroutineTask<void> init(PhysicsSystem2D& physicsSystem, ResourceManager& resourceManager, IGPUMemoryManager& memoryManager, World2D& world);
 
 		inline TransformComponent2D& getTransform() {
 			return getComponent<TransformComponent2D>();

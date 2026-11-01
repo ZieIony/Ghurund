@@ -13,7 +13,7 @@ namespace Ghurund::Engine {
 	
 		auto textureAttribute = xml.requireAttribute(L"texture");
 		auto texturePath = FilePath(textureAttribute);
-		auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, nullptr, options);
+		auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, options);
 
 		IntSize size = [&] {
 			auto sizeAttribute = xml.findAttribute(L"size");

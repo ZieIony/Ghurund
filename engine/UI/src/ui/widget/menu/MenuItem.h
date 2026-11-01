@@ -2,7 +2,7 @@
 
 #include "ui/adapter/ItemAdapter.h"
 #include "ui/widget/Separator.h"
-#include "core/EventHandler.h"
+#include "core/event/EventHandler.h"
 #include "core/reflection/Type.h"
 
 namespace Ghurund::UI {

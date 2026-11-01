@@ -5,6 +5,7 @@
 #include "engine/parameter/ValueParameter.h"
 
 #include <DirectXMath.h>
+#include <DirectXCollision.h>
 
 namespace Ghurund::Engine::_2D {
 	using namespace ::DirectX;
@@ -26,6 +27,7 @@ namespace Ghurund::Engine::_2D {
 		XMFLOAT3 pos, right, up;
 		float zNear, zFar;
 		IntSize viewSize;
+		BoundingOrientedBox boundingOrientedBox;
 
 		inline static const AString CAMERA_POSITION = "gh_cameraPosition";
 		inline static const AString CAMERA_UP = "gh_cameraUp";
@@ -102,5 +104,14 @@ namespace Ghurund::Engine::_2D {
 
 		void rotate(float delta);
 		void pan(float x, float y);
+
+		/**
+		* Returns a box that includes exactly the space this camera sees.
+		**/
+		const BoundingOrientedBox& getViewBox() const {
+			return boundingOrientedBox;
+		}
+
+		__declspec(property(get = getViewBox)) const BoundingOrientedBox& ViewBox;
 	};
 }

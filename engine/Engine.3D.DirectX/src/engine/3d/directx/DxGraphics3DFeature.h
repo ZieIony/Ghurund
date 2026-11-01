@@ -20,8 +20,6 @@ namespace Ghurund::Engine::_3D::DirectX {
 #pragma endregion
 
     private:
-        DxGPUMemoryManager& memoryManager;
-     
         void uninitDxGraphics3DFeature();
 
     protected:
@@ -31,11 +29,7 @@ namespace Ghurund::Engine::_3D::DirectX {
         virtual void onDeinit() override;
 
     public:
-        DxGraphics3DFeature(
-            ResourceManager& resourceManager,
-            DxGPUMemoryManager& memoryManager
-        ):Graphics3DFeature(resourceManager), memoryManager(memoryManager) {
-        }
+        DxGraphics3DFeature(ResourceManager& resourceManager):Graphics3DFeature(resourceManager) {}
 
         virtual ~DxGraphics3DFeature() {
             if (IsInitialized)

@@ -141,7 +141,7 @@ namespace Ghurund::UI {
         if (name == L"include") {
             auto layoutAttr = xml.requireAttribute(L"layout");
             try {
-                auto coroutine = resourceManager.load<ControlLayout>(FilePath(layoutAttr), workingDir, ControlLayout::FORMAT_XML, ResourceManager::LOAD_GENERATE_NAME, { .clone = true });
+                auto coroutine = resourceManager.load<ControlLayout>(FilePath(layoutAttr), workingDir, ControlLayout::FORMAT_XML, { .clone = true });
                 coroutine.resume();
                 IntrusivePointer<ControlLayout> control = coroutine.Result;
                 PartialConstraintSet loadedConstraints;

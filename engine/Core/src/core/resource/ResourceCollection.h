@@ -9,16 +9,10 @@
 namespace Ghurund::Core {
 	class ResourceCollection {
 	private:
-		Map<WString, IntrusivePointer<Resource>> resourcesByName;
-		Map<FilePath, IntrusivePointer<Resource>> resourcesByPath;
+		Map<FilePath, IntrusivePointer<Resource>> resources;
 		std::mutex mutex;
 
 	public:
-		/**
-		* Thread-safe.
-		**/
-		Resource* get(const WString& name);
-
 		/**
 		* Thread-safe. ResourceManager uses absolute paths if possible.
 		**/
@@ -33,11 +27,6 @@ namespace Ghurund::Core {
 		* Thread-safe.
 		**/
 		void remove(NotNull<Resource> resource);
-
-		/**
-		* Thread-safe.
-		**/
-		void remove(const WString& name);
 
 		/**
 		* Thread-safe. ResourceManager uses absolute paths if possible.

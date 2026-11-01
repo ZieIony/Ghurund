@@ -63,7 +63,8 @@ namespace Ghurund::Engine::DirectX {
 		computeShaderLoader->includeDirs.add(ResourceManager::ENGINE_LIB_PATH / DirectoryPath(L"/shaders/DirectX/include"));
 		resourceManager.Loaders.set<DxComputeShader>(computeShaderLoader.ref());
 
-		memoryManager = ghnew DxGPUMemoryManager(*graphics, *commandList);
+		auto memoryManager = ghnew DxGPUMemoryManager(*graphics, *commandList);
+		this->memoryManager = memoryManager;
 		auto materialLoader = makeIntrusive<MaterialLoader>(resourceManager, *memoryManager);
 		resourceManager.Loaders.set<Material>(materialLoader.ref());
 

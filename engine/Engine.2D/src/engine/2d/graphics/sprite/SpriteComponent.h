@@ -1,10 +1,13 @@
 #pragma once
 
+#include "SpriteInputs.h"
+
 #include "core/Colors.h"
 #include "core/math/Size.h"
 #include "engine/graphics/material/Material.h"
 #include "engine/graphics/mesh/Mesh.h"
 #include "engine/graphics/texture/ITexture.h"
+#include <engine/2d/scene/transform/TransformComponent2D.h>
 
 #include <DirectXCollision.h>
 
@@ -18,23 +21,23 @@ namespace Ghurund::Engine::_2D {
 		bool culled = false;
 		bool selectable = true, visible = true, cullingEnabled = true;
 
-	protected:
 		Mesh* mesh = nullptr;
 		Material* material = nullptr;
+		SpriteInputs inputs;
 		ITexture* colorTexture = nullptr;
+		Color tint = Colors::WHITE;
+		float alpha = 1.0f;
 
 	public:
 		XMFLOAT2 offset = { 0, 0 };
 		FloatSize size = { 1, 1 };
-		Color tint = Colors::WHITE;
-		float alpha = 1.0f;
 
 	public:
 		~SpriteComponent() {
 			deinit();
 		}
 
-		CoroutineTask<void> init(ResourceManager& resourceManager);
+		void init(IGPUMemoryManager& memoryManager);
 
 		inline void deinit() {
 			safeRelease(colorTexture);
@@ -58,6 +61,12 @@ namespace Ghurund::Engine::_2D {
 
 		inline void setMaterial(Material* material) {
 			setPointer(this->material, material);
+			if (material) {
+				inputs.init(material->Inputs);
+				inputs.ColorTexture = colorTexture;
+				inputs.Tint = tint;
+				inputs.Alpha = alpha;
+			}
 		}
 
 		__declspec(property(get = getMaterial, put = setMaterial)) Material* Material;
@@ -68,25 +77,45 @@ namespace Ghurund::Engine::_2D {
 
 		inline void setColorTexture(ITexture* colorTexture) {
 			setPointer(this->colorTexture, colorTexture);
+			if (material)
+				inputs.ColorTexture = colorTexture;
 		}
 
 		__declspec(property(get = getColorTexture, put = setColorTexture)) ITexture* ColorTexture;
 
-		/*bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {
-			return mesh->intersects(pos, dir, dist);
+		inline const Color& getTint() const {
+			return tint;
 		}
 
-		bool isCulled() {
+		inline void setTint(const Color& color) {
+			this->tint = color;
+			if (material)
+				inputs.Tint = tint;
+		}
+
+		__declspec(property(get = getTint, put = setTint)) const Color& Tint;
+
+		inline float getAlpha() const {
+			return alpha;
+		}
+
+		inline void setAlpha(float alpha) {
+			this->alpha = alpha;
+			if (material)
+				inputs.Alpha = alpha;
+		}
+
+		__declspec(property(get = getAlpha, put = setAlpha)) float Alpha;
+
+		/*bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {
+			return mesh->intersects(pos, dir, dist);
+		}*/
+
+		inline bool getIsCulled() const {
 			return culled;
 		}
 
-		__declspec(property(get = isCulled)) bool Culled;
-
-		::DirectX::BoundingBox* getBoundingBox() const {
-			return &mesh->BoundingBox;
-		}
-
-		__declspec(property(get = getBoundingBox)) BoundingBox* BoundingBox;*/
+		__declspec(property(get = getIsCulled)) bool IsCulled;
 
 		inline void setSelectable(bool selectable) {
 			this->selectable = selectable;
@@ -118,13 +147,21 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = isVisible, put = setVisible)) bool Visible;
 
-		/*void update(const XMFLOAT4X4& transformation) {
-			BoundingOrientedBox::CreateFromBoundingBox(transformedBoundingBox, boundingBox);
-			transformedBoundingBox.Transform(transformedBoundingBox, XMLoadFloat4x4(&transformation));
-		}*/
+		inline void update(const TransformComponent2D& transform) {
+			auto w = XMMatrixTranslation(offset.x, offset.y, 0) *
+				XMMatrixScaling(size.Width, size.Height, 1) *
+				XMLoadFloat4x4(&transform.WorldTransformation);
+			XMFLOAT4X4 world;
+			XMStoreFloat4x4(&world, XMMatrixTranspose(w));
 
-		void cull(BoundingFrustum& frustum) {
-			culled = CullingEnabled && frustum.Contains(transformedBoundingBox) == ContainmentType::DISJOINT;
+			inputs.Transformation = world;
+
+			BoundingOrientedBox::CreateFromBoundingBox(transformedBoundingBox, boundingBox);
+			transformedBoundingBox.Transform(transformedBoundingBox, w);
+		}
+
+		inline void cull(const BoundingOrientedBox& viewBox) {
+			culled = CullingEnabled && viewBox.Contains(transformedBoundingBox) == ContainmentType::DISJOINT;
 		}
 	};
 }

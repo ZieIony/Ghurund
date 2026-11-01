@@ -1,9 +1,7 @@
 #pragma once
 
 #include "core/feature/Feature.h"
-#include "texture/TextureAtlasLoader.h"
 #include "engine/resource/IGraphicsResourceFactory.h"
-#include "memory/IGPUMemoryManager.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
@@ -25,12 +23,13 @@ namespace Ghurund::Engine {
         void uninitGraphicsFeature();
 
     protected:
+        class IGraphicsResourceFactory* resourceFactory = nullptr;
+        class IGPUMemoryManager* memoryManager = nullptr;
+  
         [[nodiscard]]
         virtual CoroutineTask<void> onInit() override;
 
         virtual void onDeinit() override;
-
-        virtual IGraphicsResourceFactory& getResourceFactory_internal() = 0;
 
     public:
         ResourceManager& resourceManager;
@@ -43,9 +42,15 @@ namespace Ghurund::Engine {
         }
 
         inline IGraphicsResourceFactory& getResourceFactory() {
-            return getResourceFactory_internal();
+            return *resourceFactory;
         }
 
         __declspec(property(get = getResourceFactory)) IGraphicsResourceFactory& ResourceFactory;
+
+        inline IGPUMemoryManager& getMemoryManager() {
+            return *memoryManager;
+        }
+
+        __declspec(property(get = getMemoryManager)) IGPUMemoryManager& MemoryManager;
     };
 }

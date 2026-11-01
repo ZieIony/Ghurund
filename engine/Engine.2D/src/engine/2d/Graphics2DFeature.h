@@ -4,8 +4,10 @@
 #include "core/reflection/Type.h"
 #include "scene/tiles/TileSetLoader.h"
 #include "scene/tiles/TileMapLoader.h"
-
+#include "engine/graphics/mesh/Mesh.h"
+#include "engine/graphics/material/Material.h"
 #include "graphics/sprite/animation/SpriteAnimationSetLoader.h"
+
 namespace Ghurund::Engine::_2D {
     using namespace Ghurund::Core;
 
@@ -38,12 +40,12 @@ namespace Ghurund::Engine::_2D {
         virtual void onDeinit() override;
 
     public:
-        inline static const WString MESH_SPRITE = L"gh sprite mesh";
+        inline static Mesh* MESH_SPRITE = nullptr;
 
-        inline static const WString MATERIAL_SPRITE = L"gh sprite material";
-        inline static const WString MATERIAL_VISUALIZATION_BOX = L"gh box visualization material";
-        inline static const WString MATERIAL_VISUALIZATION_CAPSULE = L"gh capsule visualization material";
-        inline static const WString MATERIAL_VISUALIZATION_SEGMENT = L"gh segment visualization material";
+        inline static Material* MATERIAL_SPRITE = nullptr;
+        inline static Material* MATERIAL_VISUALIZATION_BOX = nullptr;
+        inline static Material* MATERIAL_VISUALIZATION_CAPSULE = nullptr;
+        inline static Material* MATERIAL_VISUALIZATION_SEGMENT = nullptr;
 
         Graphics2DFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 

@@ -2,7 +2,7 @@
 #include "GraphicsFeature.h"
 
 #include "core/reflection/Type.h"
-#include "mesh/MeshDataLoader.h"
+#include "texture/TextureAtlasLoader.h"
 
 namespace Ghurund::Engine {
     const Ghurund::Core::Type& GraphicsFeature::GET_TYPE() {

@@ -26,7 +26,7 @@ namespace Ghurund::Engine::_2D {
 
 		~VisualizationComponent2D();
 
-		CoroutineTask<void> init(ResourceManager& resourceManager, const RigidBodyComponent2D& rigidBody);
+		void init(IGPUMemoryManager& memoryManager, const RigidBodyComponent2D& rigidBody);
 
 		inline Mesh* getMesh() const {
 			return mesh;

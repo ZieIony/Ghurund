@@ -16,6 +16,6 @@ namespace Sample {
 
 		Ground(entt::registry& registry, entt::entity id):Entity(registry, id) {}
 
-		CoroutineTask<void> init(PhysicsSystem2D& physicsSystem, IGraphicsResourceFactory& resourceFactory, ResourceManager& resourceManager);
+		CoroutineTask<void> init(PhysicsSystem2D& physicsSystem, IGraphicsResourceFactory& resourceFactory, ResourceManager& resourceManager, IGPUMemoryManager& memoryManager);
 	};
 }

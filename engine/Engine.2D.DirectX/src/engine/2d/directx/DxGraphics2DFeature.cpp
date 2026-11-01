@@ -16,41 +16,41 @@ namespace Ghurund::Engine::_2D::DirectX {
     }
 
 	void DxGraphics2DFeature::uninitDxGraphicsFeature() {
-		resourceManager.Resources.remove(MESH_SPRITE);
+		// resourceManager.Resources.remove(MESH_SPRITE);	// this resource is not present in resource cache
+		safeRelease(MESH_SPRITE);
 		resourceManager.Resources.remove(MATERIAL_SPRITE);
+		safeRelease(MATERIAL_SPRITE);
 		resourceManager.Resources.remove(MATERIAL_VISUALIZATION_BOX);
+		safeRelease(MATERIAL_VISUALIZATION_BOX);
 		resourceManager.Resources.remove(MATERIAL_VISUALIZATION_CAPSULE);
+		safeRelease(MATERIAL_VISUALIZATION_CAPSULE);
 		resourceManager.Resources.remove(MATERIAL_VISUALIZATION_SEGMENT);
+		safeRelease(MATERIAL_VISUALIZATION_SEGMENT);
 	}
 
 	CoroutineTask<void> DxGraphics2DFeature::onInit() {
 		co_await __super::onInit();
-		auto workingDir = DirectoryPath::getCurrentDirectory();
 		
 		auto mesh = makeIntrusive<DxMesh>();
 		auto spriteMeshData = makeIntrusive<SpriteMeshData>();
 		spriteMeshData->init();
 		mesh->Data = spriteMeshData.get();
 		mesh->init(memoryManager);
-		mesh->Name = &MESH_SPRITE;
-		resourceManager.Resources.put(mesh.get());
+		MESH_SPRITE = mesh.get();
+		MESH_SPRITE->addReference();
 		
-		co_await resourceManager.load<Material>(
-			ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/2d/sprite.xml"),
-			workingDir, ResourceFormat::AUTO, &MATERIAL_SPRITE
-		);
-		co_await resourceManager.load<Material>(
-			ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/2d/box.xml"),
-			workingDir, ResourceFormat::AUTO, &MATERIAL_VISUALIZATION_BOX
-		);
-		co_await resourceManager.load<Material>(
-			ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/2d/capsule.xml"),
-			workingDir, ResourceFormat::AUTO, &MATERIAL_VISUALIZATION_CAPSULE
-		);
-		co_await resourceManager.load<Material>(
-			ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/2d/segment.xml"),
-			workingDir, ResourceFormat::AUTO, &MATERIAL_VISUALIZATION_SEGMENT
-		);
+		auto materialSprite = co_await resourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/2d/sprite.xml"));
+		MATERIAL_SPRITE = materialSprite.get();
+		MATERIAL_SPRITE->addReference();
+		auto materialBox = co_await resourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/2d/box.xml"));
+		MATERIAL_VISUALIZATION_BOX = materialBox.get();
+		MATERIAL_VISUALIZATION_BOX->addReference();
+		auto materialCapsule = co_await resourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/2d/capsule.xml"));
+		MATERIAL_VISUALIZATION_CAPSULE = materialCapsule.get();
+		MATERIAL_VISUALIZATION_CAPSULE->addReference();
+		auto materialSegment = co_await resourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/2d/segment.xml"));
+		MATERIAL_VISUALIZATION_SEGMENT= materialSegment.get();
+		MATERIAL_VISUALIZATION_SEGMENT->addReference();
 	}
 
 	void DxGraphics2DFeature::onDeinit() {

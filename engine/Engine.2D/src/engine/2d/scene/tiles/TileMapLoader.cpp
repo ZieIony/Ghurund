@@ -13,7 +13,7 @@ namespace Ghurund::Engine::_2D {
 	
 		auto tileSetAttribute = xml.requireAttribute(L"tileSet");
 		auto tileSetPath = FilePath(tileSetAttribute);
-		auto tileSet = co_await resourceManager.load<TileSet>(tileSetPath, workingDir, ResourceFormat::AUTO, nullptr, options);
+		auto tileSet = co_await resourceManager.load<TileSet>(tileSetPath, workingDir, ResourceFormat::AUTO, options);
 
 		IntSize size = [&] {
 			auto sizeAttribute = xml.findAttribute(L"size");

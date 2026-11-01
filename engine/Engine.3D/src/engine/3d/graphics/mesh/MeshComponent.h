@@ -25,7 +25,7 @@ namespace Ghurund::Engine::_3D {
 		}
 
 		[[nodiscard]]
-		CoroutineTask<void> init(ResourceManager& resourceManager);
+		CoroutineTask<void> init(IGPUMemoryManager& memoryManager);
 
 		inline void deinit() {
 			safeRelease(mesh);

@@ -2,8 +2,8 @@
 
 #include "TileMap.h"
 
-#include "engine/2d/graphics/sprite/SpriteComponent.h"
 #include "engine/resource/IGraphicsResourceFactory.h"
+#include <engine/graphics/material/Material.h>
 
 namespace Ghurund::Engine::_2D {
 	using namespace Ghurund::Core;
@@ -27,7 +27,7 @@ namespace Ghurund::Engine::_2D {
 			deinit();
 		}
 
-		CoroutineTask<void> init(IGraphicsResourceFactory& resourceFactory, ResourceManager& resourceManager);
+		void init(IGraphicsResourceFactory& resourceFactory, IGPUMemoryManager& memoryManager);
 
 		void deinit() {
 			safeRelease(mesh);

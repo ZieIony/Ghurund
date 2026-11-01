@@ -26,18 +26,12 @@ namespace Ghurund::Engine::DirectX {
     private:
         class DxGraphics* graphics = nullptr;
         class DxGraphicsCommandList* commandList = nullptr;
-        class DxGPUMemoryManager* memoryManager = nullptr;
         class DxShaderCompiler* shaderCompiler = nullptr;
-        class DxGraphicsResourceFactory* resourceFactory = nullptr;
         class DxRenderer* renderer = nullptr;
 
         void uninitGraphicsFeature();
 
     protected:
-        virtual IGraphicsResourceFactory& getResourceFactory_internal() override {
-            return *resourceFactory;
-        }
-
         [[nodiscard]]
         virtual CoroutineTask<void> onInit() override;
 
@@ -62,11 +56,5 @@ namespace Ghurund::Engine::DirectX {
         }
 
         __declspec(property(get = getRenderer)) DxRenderer& Renderer;
-
-        inline DxGPUMemoryManager& getMemoryManager() {
-            return *memoryManager;
-        }
-
-        __declspec(property(get = getMemoryManager)) DxGPUMemoryManager& MemoryManager;
     };
 }

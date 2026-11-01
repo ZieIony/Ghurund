@@ -44,7 +44,6 @@ namespace Ghurund::UI {
     void UILayer::draw(RenderingContext& renderingContext, ParameterManager& parameterManager) {
         RenderGroup group(DrawGroup(0, DrawOrder::BACK_TO_FRONT));
 		rootView->draw(group, { 0, 0 });
-        Set<RenderGroup> groups = { group };
-        renderingContext.draw(groups, parameterManager);
+        renderingContext.draw(group, parameterManager);
     }
 }

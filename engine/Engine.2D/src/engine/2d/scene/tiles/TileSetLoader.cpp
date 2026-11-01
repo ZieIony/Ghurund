@@ -13,7 +13,7 @@ namespace Ghurund::Engine::_2D {
 	
 		auto textureAttribute = xml.requireAttribute(L"texture");
 		auto texturePath = FilePath(textureAttribute);
-		auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, nullptr, options);
+		auto texture = co_await resourceManager.load<ITexture>(texturePath, workingDir, ResourceFormat::AUTO, options);
 
 		auto tileSizeAttribute = xml.requireAttribute(L"tileSize");
 		auto tileSize = IntSize::parse(convertText<wchar_t, char>(tileSizeAttribute));

@@ -16,7 +16,7 @@
 #include <engine/2d/physics/visualization/VisualizationComponent2D.h>
 
 namespace Sample {
-	CoroutineTask<void> Captain::init(PhysicsSystem2D& physicsSystem, ResourceManager& resourceManager, World2D& world) {
+	CoroutineTask<void> Captain::init(PhysicsSystem2D& physicsSystem, ResourceManager& resourceManager, IGPUMemoryManager& memoryManager, World2D& world) {
 		addComponent<TransformComponent2D>();
 
 		auto& capsuleComponent = addComponent<RigidBodyComponent2D>();
@@ -25,11 +25,11 @@ namespace Sample {
 		capsuleComponent.IsRotationFixed = true;
 		capsuleComponent.setSize(0.4f, 0.7f);
 		auto& visComponent = addComponent<VisualizationComponent2D>();
-		co_await visComponent.init(resourceManager, capsuleComponent);
+		visComponent.init(memoryManager, capsuleComponent);
 
 		{
 			auto& captainSprite = addComponent<SpriteComponent>();
-			co_await captainSprite.init(resourceManager);
+			captainSprite.init(memoryManager);
 			captainSprite.offset = { 0, -0.05f };
 			captainSprite.size = { 1.6f, 1 };
 		}

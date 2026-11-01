@@ -73,6 +73,14 @@ namespace Ghurund::Engine::_2D {
 		parameterViewProjection->Value = viewProjTransposed;
 		XMStoreFloat4x4(&viewProjInvTransposed, XMMatrixTranspose(viewProjInvTemp));
 		parameterViewProjectionInv->Value = viewProjInvTransposed;
+
+		BoundingBox boundingBox;
+		XMFLOAT3 leftTop = { -(viewSize.Width / 2.0f), -(viewSize.Height / 2.0f), zNear };
+		XMFLOAT3 rightBottom = { viewSize.Width / 2.0f, viewSize.Height / 2.0f, zFar };
+		BoundingBox::CreateFromPoints(boundingBox, XMLoadFloat3(&leftTop), XMLoadFloat3(&rightBottom));
+		BoundingOrientedBox::CreateFromBoundingBox(boundingOrientedBox, boundingBox);
+		auto viewInvTemp = XMMatrixInverse(nullptr, viewTemp);
+		boundingOrientedBox.Transform(boundingOrientedBox, viewInvTemp);
 	}
 
 	void Camera2D::apply(ParameterManager& parameterManager) {

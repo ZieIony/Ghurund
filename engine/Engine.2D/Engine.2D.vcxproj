@@ -104,7 +104,6 @@
     <ClInclude Include="src\engine\2d\audio\AudioSystem2D.h" />
     <ClInclude Include="src\engine\2d\audio\component\AudioListenerComponent2D.h" />
     <ClInclude Include="src\engine\2d\audio\component\SoundComponent2D.h" />
-    <ClInclude Include="src\engine\2d\graphics\mesh\TileMapMeshData.h" />
     <ClInclude Include="src\engine\2d\graphics\sprite\SpriteComponent.h" />
     <ClInclude Include="src\engine\2d\graphics\sprite\SpriteInputs.h" />
     <ClInclude Include="src\engine\2d\graphics\sprite\SpriteRenderingSystem.h" />
@@ -126,6 +125,7 @@
     <ClInclude Include="src\engine\2d\scene\tiles\TileMap.h" />
     <ClInclude Include="src\engine\2d\scene\tiles\TileMapComponent.h" />
     <ClInclude Include="src\engine\2d\scene\tiles\TileMapLoader.h" />
+    <ClInclude Include="src\engine\2d\scene\tiles\TileMapMeshData.h" />
     <ClInclude Include="src\engine\2d\scene\tiles\TileMapSystem.h" />
     <ClInclude Include="src\engine\2d\scene\tiles\TileSet.h" />
     <ClInclude Include="src\engine\2d\scene\tiles\TileSetLoader.h" />
@@ -137,11 +137,9 @@
     <ClCompile Include="src\engine\2d\Graphics2DFeature.cpp" />
     <ClCompile Include="src\engine\2d\World2D.cpp" />
     <ClCompile Include="src\engine\2d\audio\AudioSystem2D.cpp" />
-    <ClCompile Include="src\engine\2d\graphics\mesh\TileMapMeshData.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\SpriteComponent.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\SpriteRenderingSystem.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\animation\SpriteAnimation.cpp" />
-    <ClCompile Include="src\engine\2d\graphics\sprite\animation\SpriteAnimationComponent.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\animation\SpriteAnimationSet.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\animation\SpriteAnimationSetLoader.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\animation\SpriteAnimationSystem.cpp" />
@@ -155,6 +153,7 @@
     <ClCompile Include="src\engine\2d\scene\camera\CameraSystem2D.cpp" />
     <ClCompile Include="src\engine\2d\scene\tiles\TileMapComponent.cpp" />
     <ClCompile Include="src\engine\2d\scene\tiles\TileMapLoader.cpp" />
+    <ClCompile Include="src\engine\2d\scene\tiles\TileMapMeshData.cpp" />
     <ClCompile Include="src\engine\2d\scene\tiles\TileMapSystem.cpp" />
     <ClCompile Include="src\engine\2d\scene\tiles\TileSet.cpp" />
     <ClCompile Include="src\engine\2d\scene\tiles\TileSetLoader.cpp" />

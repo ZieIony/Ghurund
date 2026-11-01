@@ -2,11 +2,11 @@
 #include "TileMapComponent.h"
 
 #include "core/application/Application.h"
-#include "engine/2d/graphics/mesh/TileMapMeshData.h"
+#include "engine/2d/scene/tiles/TileMapMeshData.h"
 #include "engine/2d/Graphics2DFeature.h"
 
 namespace Ghurund::Engine::_2D {
-	CoroutineTask<void> TileMapComponent::init(IGraphicsResourceFactory& resourceFactory, ResourceManager& resourceManager) {
+	void TileMapComponent::init(IGraphicsResourceFactory& resourceFactory, IGPUMemoryManager& memoryManager) {
 		Array<TileInfo> tiles = tileMap->Size.Width * tileMap->Size.Height;
 		uint32_t tileIndex = 0;
 		for (TileInfo& tileInfo : tiles) {
@@ -25,12 +25,8 @@ namespace Ghurund::Engine::_2D {
 		tileMapMeshData->init(tileMap->Size, tiles);
 		mesh = resourceFactory.makeMesh(tileMapMeshData.ref());
 
-		auto spriteMaterial = co_await resourceManager.load<Ghurund::Engine::Material>(
-			Graphics2DFeature::MATERIAL_SPRITE,
-			DirectoryPath::getCurrentDirectory(),
-			ResourceFormat::AUTO,
-			{ .clone = true }
-		);
+		auto spriteMaterial = IntrusivePointer<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_SPRITE->clone());
+		spriteMaterial->init(memoryManager);
 		Material = spriteMaterial.get();
 	}
 

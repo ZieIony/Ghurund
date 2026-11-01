@@ -27,7 +27,7 @@ namespace Ghurund::Core {
 		INITIALIZED
 	};
 
-	class Resource: public RefCountedObject, public WStringNamedObject {
+	class Resource: public RefCountedObject {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
