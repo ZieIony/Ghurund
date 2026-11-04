@@ -21,12 +21,12 @@ namespace Ghurund::UI::DirectX {
         ITextMeshFactory& textMeshFactory,
         class IGraphicsResourceFactory& resourceFactory
     ):UIContext(window, textMeshFactory, resourceFactory), memoryManager(memoryManager) {
-        auto mesh = ghnew DxMesh();
-        auto meshData = ghnew QuadMeshData();
+        auto mesh = makeIntrusive<DxMesh>();
+        auto meshData = makeIntrusive<QuadMeshData>();
         meshData->init();
-        mesh->init(*meshData, memoryManager);
-        meshData->release();
-        this->mesh.set(mesh);
+        mesh->Data = meshData.get();
+        mesh->init(memoryManager);
+        this->mesh = mesh;
     }
 
     Mesh* DxUIContext::makeControlMesh() {

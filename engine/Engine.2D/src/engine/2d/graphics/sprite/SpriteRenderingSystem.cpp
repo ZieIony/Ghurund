@@ -37,6 +37,6 @@ namespace Ghurund::Engine::_2D {
 				group.objects.add(DrawPacket(sprite.Mesh, sprite.Material, 0.0f));
 		}
 		if (!group.objects.IsEmpty)
-			renderingContext.draw(group, parameterManager);
+			renderingContext.draw(group, parameterManager, MaterialVariantType::UNLIT);
 	}
 }

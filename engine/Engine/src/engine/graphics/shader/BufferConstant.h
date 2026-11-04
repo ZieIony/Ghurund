@@ -4,8 +4,7 @@
 #include "ValueConstant.h"
 
 #include "core/string/String.h"
-
-#include <memory>
+#include <core/collection/Array.h>
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
@@ -35,6 +34,11 @@ namespace Ghurund::Engine {
 		BufferConstant(
 			BufferConstant&& other
 		) noexcept:name(other.name), bindSlot(other.bindSlot), size(other.size), valueConstants(other.valueConstants) {
+		}
+
+		~BufferConstant() {
+			if (constantBuffer)
+				constantBuffer->release();
 		}
 	};
 }

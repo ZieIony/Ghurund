@@ -1,5 +1,5 @@
 #include "ghedxpch.h"
-#include "DxConstantsCollection.h"
+#include "DxConstantCollection.h"
 
 #include "DxConstantBuffer.h"
 
@@ -7,7 +7,7 @@
 #include <engine/directx/texture/DxTexture.h>
 
 namespace Ghurund::Engine::DirectX {
-	void DxConstantsCollection::init(
+	void DxConstantCollection::init(
 		const List<DxBufferConstantInfo*>& bufferConstantInfos,
 		const List<DxTextureConstantInfo*>& textureConstantInfos,
 		const List<DxTextureConstantInfo*>& uavConstantInfos
@@ -15,7 +15,7 @@ namespace Ghurund::Engine::DirectX {
 		for (auto& cb : bufferConstantInfos) {
 			List<ValueConstant> cbInputs;
 			for (auto& v : cb->Fields)
-				cbInputs.add(ValueConstant(v.name, v.makeInputType(), v.size, v.offset, v.defaultValue));
+				cbInputs.add(ValueConstant(v.name, v.makeConstantType(), v.size, v.offset, v.defaultValue));
 			bufferConstants.add(BufferConstant(cb->Name, cb->BindSlot, cb->Size, cbInputs));
 		}
 		for (auto& t : textureConstantInfos) {
@@ -29,7 +29,7 @@ namespace Ghurund::Engine::DirectX {
 			uavConstants.add(TextureConstant(t->Name, t->BindSlot));
 	}
 
-	void DxConstantsCollection::apply(CommandList& commandList) {
+	void DxConstantCollection::apply(CommandList& commandList) {
 		for (size_t i = 0; i < bufferConstants.Size; i++) {
 			DxConstantBuffer* buffer = (DxConstantBuffer*)bufferConstants[i].constantBuffer;
 			if (!buffer) {

@@ -48,14 +48,15 @@ namespace Ghurund::Engine::DirectX {
 
 		graphics = ghnew DxGraphics();
 		graphics->init();
-
 		commandList = ghnew DxGraphicsCommandList();
 		commandList->init(*graphics, graphics->DirectQueue);
+		auto memoryManager = ghnew DxGPUMemoryManager(*graphics, *commandList);
+		this->memoryManager = memoryManager;
 
 		renderer = ghnew DxRenderer(*graphics);
 		renderer->init();
 
-		shaderCompiler = ghnew DxShaderCompiler(*graphics);
+		shaderCompiler = ghnew DxShaderCompiler(*graphics, *memoryManager);
 		auto graphicsShaderLoader = makeIntrusive<DxGraphicsShaderLoader>(resourceManager, *shaderCompiler);
 		graphicsShaderLoader->includeDirs.add(ResourceManager::ENGINE_LIB_PATH / DirectoryPath(L"/shaders/DirectX/include"));
 		resourceManager.Loaders.set<DxGraphicsShader>(graphicsShaderLoader.ref());
@@ -63,22 +64,20 @@ namespace Ghurund::Engine::DirectX {
 		computeShaderLoader->includeDirs.add(ResourceManager::ENGINE_LIB_PATH / DirectoryPath(L"/shaders/DirectX/include"));
 		resourceManager.Loaders.set<DxComputeShader>(computeShaderLoader.ref());
 
-		auto memoryManager = ghnew DxGPUMemoryManager(*graphics, *commandList);
-		this->memoryManager = memoryManager;
-		auto materialLoader = makeIntrusive<MaterialLoader>(resourceManager, *memoryManager);
-		resourceManager.Loaders.set<Material>(materialLoader.ref());
-
 		auto textureLoader = makeIntrusive<DxTextureLoader>(resourceManager, *memoryManager, *graphics);
 		resourceManager.Loaders.set<DxTexture>(textureLoader.ref());
 		auto cubeMapLoader = makeIntrusive<DxCubeMapLoader>(resourceManager, *memoryManager);
 		resourceManager.Loaders.set<DxCubeMap>(cubeMapLoader.ref());
 
+		auto materialLoader = makeIntrusive<MaterialLoader>(resourceManager, *memoryManager);
+		resourceManager.Loaders.set<Material>(materialLoader.ref());
+		auto defaultMaterial = co_await resourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"/materials/DirectX/3d/forward/default.xml"));
+		materialLoader->DefaultMaterial = defaultMaterial.get();
+
 		auto meshLoader = makeIntrusive<DxMeshLoader>(*memoryManager);
 		resourceManager.Loaders.set<DxMesh>(meshLoader.ref());
 
 		resourceFactory = ghnew DxGraphicsResourceFactory(*memoryManager, *graphics);
-
-		co_return;
 	}
 
 	void DxGraphicsFeature::onDeinit() {

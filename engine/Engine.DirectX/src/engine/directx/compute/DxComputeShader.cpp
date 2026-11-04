@@ -2,7 +2,7 @@
 #include "DxComputeShader.h"
 
 #include "core/reflection/TypeBuilder.h"
-#include "engine/directx/shader/DxConstantsCollection.h"
+#include "engine/directx/shader/DxConstantCollection.h"
 
 namespace Ghurund::Engine::DirectX {
 	const Ghurund::Core::Type& DxComputeShader::GET_TYPE() {
@@ -26,7 +26,7 @@ namespace Ghurund::Engine::DirectX {
 		this->rootSignature = rootSignature.reset();
 		this->pipelineState = pipelineState.reset();
 		constants = [&] {
-			auto c = ghnew DxConstantsCollection();
+			auto c = ghnew DxConstantCollection();
 			c->init(bufferConstantInfos, textureConstantInfos, uavConstantInfos);
 			return c;
 		}();
@@ -42,7 +42,7 @@ namespace Ghurund::Engine::DirectX {
 		bool rsChanged = commandList.setRootSignature(rootSignature);
 		bool psChanged = commandList.setPipelineState(pipelineState);
 
-		((DxConstantsCollection*)constants)->apply(commandList);
+		((DxConstantCollection*)constants)->apply(commandList);
 
 		return rsChanged || psChanged;
 	}

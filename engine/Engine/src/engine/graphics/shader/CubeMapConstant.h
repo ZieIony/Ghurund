@@ -1,7 +1,5 @@
 #pragma once
 
-#include "InputType.h"
-
 #include "engine/graphics/CubeMap/ICubeMap.h"
 
 namespace Ghurund::Engine {

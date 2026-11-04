@@ -44,8 +44,8 @@ namespace Ghurund::Engine {
 
 		__declspec(property(get = getValue, put = setValue)) const ICubeMap* Value;
 
-		virtual InputType getType() const override {
-			return InputType::CUBEMAP;
+		virtual ConstantType getType() const override {
+			return ConstantType::CUBEMAP;
 		}
 
 		inline void applyValue() {

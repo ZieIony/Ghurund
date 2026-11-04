@@ -22,9 +22,9 @@ namespace Ghurund::UI {
     void ImageView::onMaterialChanged() {
         __super::onMaterialChanged();
         if (material != nullptr) {
-            imageInput = (TextureInput*)material->Inputs.get("image");
+            imageInput = (TextureInput*)material->getShader(MaterialVariantType::UNLIT)->Inputs.get("image");
             imageInput->Value = image.get().get();
-            tintInput = (Float4Input*)material->Inputs.get("tint");
+            tintInput = (Float4Input*)material->getShader(MaterialVariantType::UNLIT)->Inputs.get("tint");
             tintInput->Value = tint.get().toFloat4();
         } else {
             imageInput = nullptr;

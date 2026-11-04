@@ -128,7 +128,7 @@
     <ClInclude Include="src\engine\directx\rendering\DxRenderingContext.h" />
     <ClInclude Include="src\engine\directx\resource\DxGraphicsResourceFactory.h" />
     <ClInclude Include="src\engine\directx\shader\DxConstantBuffer.h" />
-    <ClInclude Include="src\engine\directx\shader\DxConstantsCollection.h" />
+    <ClInclude Include="src\engine\directx\shader\DxConstantCollection.h" />
     <ClInclude Include="src\engine\directx\shader\DxShaderSource.h" />
     <ClInclude Include="src\engine\directx\shader\DxShaderType.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\CompilationTarget.h" />
@@ -178,7 +178,7 @@
     <ClCompile Include="src\engine\directx\rendering\DxRenderer.cpp" />
     <ClCompile Include="src\engine\directx\rendering\DxRenderingContext.cpp" />
     <ClCompile Include="src\engine\directx\shader\DxConstantBuffer.cpp" />
-    <ClCompile Include="src\engine\directx\shader\DxConstantsCollection.cpp" />
+    <ClCompile Include="src\engine\directx\shader\DxConstantCollection.cpp" />
     <ClCompile Include="src\engine\directx\shader\DxShaderType.cpp" />
     <ClCompile Include="src\engine\directx\shader\compiler\CompilationTarget.cpp" />
     <ClCompile Include="src\engine\directx\shader\compiler\CompilerInclude.cpp" />

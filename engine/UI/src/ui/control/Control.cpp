@@ -88,11 +88,11 @@ namespace Ghurund::UI {
 
 	void Control::onMaterialChanged() {
 		if (material != nullptr) {
-			alphaInput = (FloatInput*)material->Inputs.get("alpha");
-			enabledInput = (FloatInput*)material->Inputs.get("enabled");
+			alphaInput = (FloatInput*)material->getShader(MaterialVariantType::UNLIT)->Inputs.get("alpha");
+			enabledInput = (FloatInput*)material->getShader(MaterialVariantType::UNLIT)->Inputs.get("enabled");
 			if (enabledInput)
 				enabledInput->Value = enabled ? 1.0f : 0.0f;
-			focusedInput = (FloatInput*)material->Inputs.get("focused");
+			focusedInput = (FloatInput*)material->getShader(MaterialVariantType::UNLIT)->Inputs.get("focused");
 			if (focusedInput)
 				focusedInput->Value = Focused ? 1.0f : 0.0f;
 		} else {

@@ -19,11 +19,11 @@ namespace Ghurund::Engine::DirectX {
 			if (cullModeAttribute) {
 				auto cullModeValue = *cullModeAttribute;
 				if (cullModeValue == L"none") {
-					shaderSource->settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_NONE;
+					shaderSource->settings.cullMode = CullMode::NONE;
 				} else if (cullModeValue == L"front") {
-					shaderSource->settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_FRONT;
+					shaderSource->settings.cullMode = CullMode::FRONT;
 				} else if (cullModeValue == L"back") {
-					shaderSource->settings.cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
+					shaderSource->settings.cullMode = CullMode::BACK;
 				}
 			}
 			auto transparencyAttribute = settingsElement->findAttribute(L"isTransparencyEnabled");
@@ -39,13 +39,13 @@ namespace Ghurund::Engine::DirectX {
 			if (depthFuncAttribute) {
 				auto depthFuncValue = *depthFuncAttribute;
 				if (depthFuncValue == L"never") {
-					shaderSource->settings.depthFunc = D3D12_COMPARISON_FUNC_NEVER;
+					shaderSource->settings.depthFunc = ComparisonFunc::NEVER;
 				} else if (depthFuncValue == L"always") {
-					shaderSource->settings.depthFunc = D3D12_COMPARISON_FUNC_ALWAYS;
+					shaderSource->settings.depthFunc = ComparisonFunc::ALWAYS;
 				} else if (depthFuncValue == L"less") {
-					shaderSource->settings.depthFunc = D3D12_COMPARISON_FUNC_LESS;
+					shaderSource->settings.depthFunc = ComparisonFunc::LESS;
 				} else if (depthFuncValue == L"greater") {
-					shaderSource->settings.depthFunc = D3D12_COMPARISON_FUNC_GREATER;
+					shaderSource->settings.depthFunc = ComparisonFunc::GREATER;
 				}
 			}
 		}

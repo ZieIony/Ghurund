@@ -44,8 +44,8 @@ namespace Ghurund::Engine {
 
 		__declspec(property(get = getValue, put = setValue)) const ITexture* Value;
 
-		virtual InputType getType() const override {
-			return InputType::TEXTURE;
+		virtual ConstantType getType() const override {
+			return ConstantType::TEXTURE;
 		}
 
 		inline void applyValue() {

@@ -16,7 +16,7 @@ namespace Ghurund::UI {
 			return;
 		for (auto& param : themeParameters) {
 			if (param.type == ThemeParameterType::COLOR) {
-				Float4Input* input = (Float4Input*)Inputs.get(param.name);
+				Float4Input* input = (Float4Input*)getShader(MaterialVariantType::UNLIT)->Inputs.get(param.name);
 				input->Value = theme->Colors.get(param.key).toFloat4();
 			} else {
 				// TODO: dimensions

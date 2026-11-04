@@ -9,7 +9,7 @@ namespace Ghurund::Engine::_3D {
 			Mesh = Graphics3DFeature::MESH_CUBE;
 		if (!Material) {
 			auto basicMaterial = IntrusivePointer((Ghurund::Engine::Material*)Graphics3DFeature::MATERIAL_FORWARD_LIT->clone());
-			basicMaterial->init(memoryManager);
+			//basicMaterial->init(memoryManager);
 			Material = basicMaterial.get();
 		}
 		co_return;

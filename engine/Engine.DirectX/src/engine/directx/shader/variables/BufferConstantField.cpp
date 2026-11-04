@@ -4,32 +4,32 @@
 #include "engine/parameter/ValueParameter.h"
 
 namespace Ghurund::Engine::DirectX {
-	InputType BufferConstantField::makeInputType() const {
+	ConstantType BufferConstantField::makeConstantType() const {
 		if (variableClass == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_SCALAR) {
 			if (variableType == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_INT) {
 				if (size == IntParameter::SIZE)
-					return InputType::INT;
+					return ConstantType::INT;
 			} else if (variableType == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_UINT) {
 				if (size == IntParameter::SIZE)
-					return InputType::UINT;
+					return ConstantType::UINT;
 			} else if (variableType == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_BOOL) {
 				if (size == IntParameter::SIZE)
-					return InputType::BOOL;
+					return ConstantType::BOOL;
 			} else if (variableType == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
 				if (size == FloatParameter::SIZE)
-					return InputType::FLOAT;
+					return ConstantType::FLOAT;
 			}
 		} else if (variableClass == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_VECTOR) {
 			if (variableType == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_INT) {
 				if (size == Int2Parameter::SIZE)
-					return InputType::INT2;
+					return ConstantType::INT2;
 			} else if (variableType == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
 				if (size == Float2Parameter::SIZE) {
-					return InputType::FLOAT2;
+					return ConstantType::FLOAT2;
 				} else if (size == Float3Parameter::SIZE) {
-					return InputType::FLOAT3;
+					return ConstantType::FLOAT3;
 				} else if (size == Float4Parameter::SIZE) {
-					return InputType::FLOAT4;
+					return ConstantType::FLOAT4;
 				}
 			}
 		} else if (
@@ -39,7 +39,7 @@ namespace Ghurund::Engine::DirectX {
 			) {
 			if (variableType == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
 				if (size == MatrixParameter::SIZE) {
-					return InputType::MATRIX;
+					return ConstantType::MATRIX;
 				}
 			}
 		}

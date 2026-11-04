@@ -10,6 +10,7 @@ namespace Ghurund::Engine {
 	private:
 		ResourceManager& resourceManager;
 		IGPUMemoryManager& memoryManager;
+		Material* defaultMaterial = nullptr;
 
 		CoroutineTask<void> loadXmlFormat(Material& resource, const XMLElement& xml, const DirectoryPath& workingDir);
 
@@ -23,18 +24,6 @@ namespace Ghurund::Engine {
 		) override;
 
 		virtual CoroutineTask<void> onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value);
-
-		[[nodiscard]]
-		virtual CoroutineTask<void> init_internal(Material& resource) {
-			resource.init(memoryManager);
-			co_return;
-		}
-
-		[[nodiscard]]
-		virtual CoroutineTask<void> deinit_internal(Material& resource) {
-			resource.deinit();
-			co_return;
-		}
 
 		[[nodiscard]]
 		virtual CoroutineTask<void> unload_internal(Material& resource) {
@@ -56,5 +45,20 @@ namespace Ghurund::Engine {
 			IGPUMemoryManager& memoryManager
 		):resourceManager(resourceManager), memoryManager(memoryManager) {
 		}
+
+		~MaterialLoader() {
+			if (defaultMaterial)
+				defaultMaterial->release();
+		}
+
+		inline void setDefaultMaterial(Material* material) {
+			setPointer(defaultMaterial, material);
+		}
+
+		inline Material* getDefaultMaterial() const {
+			return defaultMaterial;
+		}
+
+		__declspec(property(get = getDefaultMaterial, put = setDefaultMaterial)) Material* DefaultMaterial;
 	};
 }

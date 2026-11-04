@@ -36,8 +36,8 @@ namespace Ghurund::UI {
 		UIMaterial() {}
 
 		void init(NotNull<IGPUMemoryManager> memoryManager) {
-			uiInputs.init(Inputs);
-			__super::init(memoryManager);
+			//uiInputs.init(Inputs);
+			//__super::init(memoryManager);
 		}
 
 		inline UIInputs& getUIInputs() {

@@ -1,8 +1,6 @@
 #include "ghedxpch.h"
 #include "DxConstantBuffer.h"
 
-#include "core/logging/Logger.h"
-
 #pragma warning(push, 0)
 #include <d3dx12.h>
 #pragma warning(pop)

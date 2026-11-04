@@ -71,6 +71,7 @@ namespace Ghurund::Engine::DirectX {
 		__declspec(property(get = getLayout)) const Array<VertexRole>& Layout;
 		
 		void init(
+			NotNull<IGPUMemoryManager> memoryManager,
 			const Array<VertexRole>& layout,
 			OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> rootSignature,
 			OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,

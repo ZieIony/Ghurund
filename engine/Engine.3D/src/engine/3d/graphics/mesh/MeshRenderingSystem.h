@@ -30,6 +30,8 @@ namespace Ghurund::Engine::_3D {
         virtual const Array<std::reference_wrapper<const Ghurund::Core::Type>>& getDependencies_internal() const override;
 
     public:
+        MaterialVariantType defaultMaterialType = MaterialVariantType::LIT;
+
         MeshRenderingSystem(
             World& world,
             ParameterManager& parameterManager

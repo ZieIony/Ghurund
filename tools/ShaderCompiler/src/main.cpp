@@ -35,7 +35,11 @@ int main() {
 	resourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"./resources")));
 	DxGraphics graphics;
 	graphics.init();
-	DxShaderCompiler compiler(graphics);
+	auto commandList = makeIntrusive<DxGraphicsCommandList>();
+	commandList->init(graphics, graphics.DirectQueue);
+	auto memoryManager = DxGPUMemoryManager(graphics, commandList.ref());
+
+	DxShaderCompiler compiler(graphics, memoryManager);
 
 	FilePath filePath = FilePath(convertText<char, wchar_t>(filePathArgument));
 	File file(filePath);

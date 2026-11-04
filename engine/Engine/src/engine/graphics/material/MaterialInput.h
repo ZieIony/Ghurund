@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/string/String.h"
-#include "engine/graphics/shader/InputType.h"
+#include "engine/graphics/shader/ConstantType.h"
 #include <core/object/Object.h>
 
 namespace Ghurund::Engine {
@@ -28,8 +28,8 @@ namespace Ghurund::Engine {
 
 		__declspec(property(get = getName)) const AString& Name;
 
-		virtual InputType getType() const = 0;
+		virtual ConstantType getType() const = 0;
 
-		__declspec(property(get = getType)) InputType Type;
+		__declspec(property(get = getType)) ConstantType Type;
 	};
 }

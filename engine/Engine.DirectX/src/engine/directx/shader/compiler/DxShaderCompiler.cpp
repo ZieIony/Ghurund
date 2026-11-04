@@ -139,6 +139,7 @@ namespace Ghurund::Engine::DirectX {
 		auto rootSignature = makeRootSignature(constantBuffers, textures, uavs, samplers);
 		auto pipelineState = makeGraphicsPipelineState(programs, inputLayout, &rootSignature, shaderSettings);
 		shader.init(
+			memoryManager,
 			layout,
 			std::move(rootSignature),
 			std::move(pipelineState),
@@ -184,10 +185,10 @@ namespace Ghurund::Engine::DirectX {
 		psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC1(D3D12_DEFAULT);
 		psoDesc.DepthStencilState.DepthEnable = shaderSettings.isDepthTestEnabled;
 		psoDesc.DepthStencilState.DepthWriteMask = shaderSettings.isDepthWriteEnabled ? D3D12_DEPTH_WRITE_MASK_ALL : D3D12_DEPTH_WRITE_MASK_ZERO;
-		psoDesc.DepthStencilState.DepthFunc = shaderSettings.depthFunc;
+		psoDesc.DepthStencilState.DepthFunc = convertComparisonFunc(shaderSettings.depthFunc);
 		psoDesc.pRootSignature = rootSignature;
 		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-		psoDesc.RasterizerState.CullMode = shaderSettings.cullMode;
+		psoDesc.RasterizerState.CullMode = convertCullMode(shaderSettings.cullMode);
 
 		for (auto& program : programs) {
 			if (program->Type == DxShaderType::VERTEX) {

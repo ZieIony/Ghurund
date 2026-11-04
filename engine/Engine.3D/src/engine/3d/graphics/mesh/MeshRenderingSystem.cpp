@@ -35,12 +35,12 @@ namespace Ghurund::Engine::_3D {
             XMStoreFloat4x4(&world, XMMatrixTranspose(w));
 
             MeshInputs inputs;
-            inputs.init(mesh.Material->Inputs);
+            inputs.init(mesh.Material->getShader(defaultMaterialType)->Inputs);
             inputs.Transformation = world;
 
             // TODO: maybe not declare draw order manually?
             group.objects.add(DrawPacket(mesh.Mesh, mesh.Material, 0.0f));
         }
-        renderingContext.draw(group, parameterManager);
+        renderingContext.draw(group, parameterManager, defaultMaterialType);
     }
 }

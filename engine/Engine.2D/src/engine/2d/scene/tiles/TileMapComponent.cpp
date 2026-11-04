@@ -25,8 +25,8 @@ namespace Ghurund::Engine::_2D {
 		tileMapMeshData->init(tileMap->Size, tiles);
 		mesh = resourceFactory.makeMesh(tileMapMeshData.ref());
 
-		auto spriteMaterial = IntrusivePointer<Ghurund::Engine::Material>(Graphics2DFeature::MATERIAL_SPRITE->clone());
-		spriteMaterial->init(memoryManager);
+		auto spriteMaterial = IntrusivePointer<Ghurund::Engine::Material>((Ghurund::Engine::Material*)Graphics2DFeature::MATERIAL_SPRITE->clone());
+		//spriteMaterial->init(memoryManager);
 		Material = spriteMaterial.get();
 	}
 

@@ -38,7 +38,7 @@ namespace Ghurund::Core {
 		inline const WString& requireAttribute(const WString& name) const {
 			auto attr = findAttribute(name);
 			if (!attr) {
-				auto message = std::format(_T("Required attribute '{}' on node '{}' is missing.\n"), this->name, name);
+				auto message = std::format(_T("Required attribute '{}' on node '{}' is missing.\n"), name, this->name);
 				Logger::logAndThrow<InvalidDataException>(message.c_str());
 			}
 			return *attr;
@@ -54,7 +54,7 @@ namespace Ghurund::Core {
 		inline const XMLElement& requireElement(const WString& name) const {
 			auto element = findElement(name);
 			if (!element) {
-				auto message = std::format(_T("Required node '{}' on node '{}' is missing.\n"), this->name, name);
+				auto message = std::format(_T("Required node '{}' on node '{}' is missing.\n"), name, this->name);
 				Logger::logAndThrow<InvalidDataException>(message.c_str());
 			}
 			return *element;

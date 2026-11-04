@@ -3,12 +3,12 @@
 #include "variables/DxBufferConstantInfo.h"
 #include "variables/DxTextureConstantInfo.h"
 #include <engine/directx/CommandList.h>
-#include "engine/graphics/shader/ConstantsCollection.h"
+#include "engine/graphics/shader/ConstantCollection.h"
 
 namespace Ghurund::Engine::DirectX {
-    class DxConstantsCollection:public ConstantsCollection {
+    class DxConstantCollection:public ConstantCollection {
     public:
-        DxConstantsCollection() {}
+        DxConstantCollection() {}
 
         void init(
             const List<DxBufferConstantInfo*>& bufferConstantInfos,

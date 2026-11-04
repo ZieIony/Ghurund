@@ -69,7 +69,7 @@ namespace Sample {
 		cameraController.Window = this;
 		meshRenderingSystem->Camera = world->Scene.Camera;
 
-		{
+		/*{
 			auto entity = world->spawnEntity<Entity>();
 			auto& transformComponent = entity.addComponent<TransformComponent3D>();
 			transformComponent.Position = { 0,0,-1000 };
@@ -82,7 +82,7 @@ namespace Sample {
 			quadComponent.Mesh = quadMesh.get();
 			auto material = co_await app.ResourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"materials/DirectX/3d/forward/cubeMap.xml"));
 			quadComponent.Material = material.get();
-		}
+		}*/
 
 		auto computeShader = co_await app.ResourceManager.load<ComputeShader>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"shaders/DirectX/compute/generateMipMaps.xml"));
 
@@ -90,29 +90,18 @@ namespace Sample {
 	}
 
 	bool SampleWindow::onKeyEvent(const KeyEventArgs& args) {
-		bool result = __super::onKeyEvent(args);
-		if (result)
-			return true;
+		//bool result = __super::onKeyEvent(args);
+		//if (result)
+			//return true;
 
-		if (args.KeyCode == VK_SPACE) {
-			//auto devices = DisplayManager::enumDisplayDevices();
-			//auto modes = DisplayManager::enumDisplayModes(&devices[0].name);
-			auto currentMode = DisplayManager::getDisplayMode();
-			Ghurund::Core::DisplayMode copy = currentMode;
-			copy.size = { 800, 600 };
-			DisplayManager::changeDisplayMode(copy);
-		} else if (args.KeyCode == VK_BACK) {
-			DisplayManager::revertDisplayMode();
-		} else if (args.KeyCode == VK_ESCAPE) {
+		if (args.KeyCode == VK_ESCAPE) {
 			app.quit();
-		} else if (args.KeyCode == 'f') {
-			Style = WindowStyle::FULLSCREEN;
-			auto currentMode = DisplayManager::getDisplayMode();
-			ClientSize = currentMode.size;
-			Position = { 0, 0 };
-		} else if (args.KeyCode == 'w') {
-			Style = DEFAULT_WINDOW_STYLE;
-			ClientSize = { 800, 600 };
+		} else if (args.KeyCode == 'b') {
+			meshRenderingSystem->defaultMaterialType = MaterialVariantType::LIT;
+		} else if (args.KeyCode == 'n') {
+			meshRenderingSystem->defaultMaterialType = MaterialVariantType::DEPTH;
+		} else if (args.KeyCode == 'm') {
+			meshRenderingSystem->defaultMaterialType = MaterialVariantType::NORMALS;
 		}
 		return true;
 	}

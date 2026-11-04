@@ -9,6 +9,11 @@ namespace Ghurund::Core {
         return Result::parse(text);
     }
 
+    template<typename Result>
+    inline Result parse(const WString& text) {
+        return Result::parse(text);
+    }
+
     template<>
     inline bool parse(const AString& text) {
         if (text == "true") {

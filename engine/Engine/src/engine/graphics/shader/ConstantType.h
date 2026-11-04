@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Ghurund::Engine {
-	enum class InputType {
+	enum class ConstantType {
 		INT, INT2,
 		UINT,
 		BOOL,

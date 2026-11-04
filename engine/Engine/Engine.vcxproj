@@ -98,6 +98,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\graphics\material\Material.h" />
+    <ClInclude Include="src\engine\graphics\material\MaterialVariantType.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\animation\Animation.h" />
     <ClInclude Include="src\engine\animation\AnimationSet.h" />
@@ -157,7 +159,6 @@
     <ClInclude Include="src\engine\graphics\compute\ComputeShader.h" />
     <ClInclude Include="src\engine\graphics\cubemap\ICubeMap.h" />
     <ClInclude Include="src\engine\graphics\material\CubeMapInput.h" />
-    <ClInclude Include="src\engine\graphics\material\Material.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialInput.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialInputCollection.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialLoader.h" />
@@ -184,10 +185,9 @@
     <ClInclude Include="src\engine\graphics\rendering\RenderingStatistics.h" />
     <ClInclude Include="src\engine\graphics\shader\BufferConstant.h" />
     <ClInclude Include="src\engine\graphics\shader\ConstantBuffer.h" />
-    <ClInclude Include="src\engine\graphics\shader\ConstantsCollection.h" />
+    <ClInclude Include="src\engine\graphics\shader\ConstantCollection.h" />
     <ClInclude Include="src\engine\graphics\shader\CubeMapConstant.h" />
-    <ClInclude Include="src\engine\graphics\shader\IShaderProvider.h" />
-    <ClInclude Include="src\engine\graphics\shader\InputType.h" />
+    <ClInclude Include="src\engine\graphics\shader\ConstantType.h" />
     <ClInclude Include="src\engine\graphics\shader\Shader.h" />
     <ClInclude Include="src\engine\graphics\shader\ShaderSettings.h" />
     <ClInclude Include="src\engine\graphics\shader\ShaderSource.h" />

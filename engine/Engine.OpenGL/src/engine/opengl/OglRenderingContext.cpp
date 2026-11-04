@@ -61,7 +61,7 @@ namespace Ghurund::Engine::OpenGL {
         glClear(GL_DEPTH_BUFFER_BIT);
     }
 
-    void OglRenderingContext::draw(RenderGroup& renderGroup, ParameterManager& parameterManager) {
+    void OglRenderingContext::draw(RenderGroup& renderGroup, ParameterManager& parameterManager, MaterialVariantType vatiantType) {
         renderGroup.objects.sort([&](const DrawPacket& first, const DrawPacket& second) -> bool {
             return (first.Order - second.Order) * (int8_t)renderGroup.DrawGroup.DrawOrder > 0;
         });

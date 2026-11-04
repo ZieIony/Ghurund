@@ -13,6 +13,7 @@
 #include "engine/graphics/mesh/VertexStream.h"
 #include <engine/directx/compute/DxComputeShader.h>
 #include <engine/directx/rendering/DxGraphicsShader.h>
+#include <engine/graphics/material/Material.h>
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
@@ -21,8 +22,10 @@ namespace Ghurund::Engine::DirectX {
 
 	class DxShaderCompiler {
 	private:
-		const CompilationTarget& target;
 		DxGraphics& graphics;
+		IGPUMemoryManager& memoryManager;
+		const CompilationTarget& target;
+		//Material* defaultMaterial;
 
 		Array<VertexRole> makeLayout(const D3D12_INPUT_LAYOUT_DESC& desc);
 			
@@ -36,8 +39,40 @@ namespace Ghurund::Engine::DirectX {
 			return text;
 		}
 
+		inline D3D12_CULL_MODE convertCullMode(CullMode mode) const {
+			switch (mode) {
+			case CullMode::NONE:	return D3D12_CULL_MODE_NONE;
+			case CullMode::FRONT:	return D3D12_CULL_MODE_FRONT;
+			case CullMode::BACK:	return D3D12_CULL_MODE_BACK;
+			}
+		}
+
+		inline D3D12_COMPARISON_FUNC convertComparisonFunc(ComparisonFunc func) const {
+			switch (func) {
+			case ComparisonFunc::NEVER:		return D3D12_COMPARISON_FUNC_NEVER;
+			case ComparisonFunc::ALWAYS:	return D3D12_COMPARISON_FUNC_ALWAYS;
+			case ComparisonFunc::LESS:		return D3D12_COMPARISON_FUNC_LESS;
+			case ComparisonFunc::GREATER:	return D3D12_COMPARISON_FUNC_GREATER;
+			}
+		}
+
 	public:
-		DxShaderCompiler(DxGraphics& graphics, const CompilationTarget& target = CompilationTarget::SHADER_5_0):graphics(graphics), target(target) {}
+		DxShaderCompiler(
+			DxGraphics& graphics,
+			IGPUMemoryManager& memoryManager,
+			const CompilationTarget& target = CompilationTarget::SHADER_5_0
+		):graphics(graphics), memoryManager(memoryManager), target(target) {
+		}
+
+		/*inline void setDefaultMaterial(Material* material) {
+			setPointer(defaultMaterial, material);
+		}
+
+		inline Material* getDefaultMaterial() const {
+			return defaultMaterial;
+		}
+
+		__declspec(property(get = getDefaultMaterial, put = setDefaultMaterial)) Material* DefaultMaterial;*/
 
 		D3D12_INPUT_LAYOUT_DESC getInputLayout(const Buffer& byteCode);
 

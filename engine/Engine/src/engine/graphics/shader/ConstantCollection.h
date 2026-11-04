@@ -10,7 +10,7 @@
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
 
-    class ConstantsCollection:public Noncopyable {
+    class ConstantCollection:public Noncopyable {
     protected:
         List<ValueConstant> valueConstants;
         List<BufferConstant> bufferConstants;
@@ -19,7 +19,7 @@ namespace Ghurund::Engine {
         List<TextureConstant> uavConstants;
 
     public:
-        ConstantsCollection() {}
+        ConstantCollection() {}
 
         inline const List<ValueConstant>& getValueConstants() const {
             return valueConstants;

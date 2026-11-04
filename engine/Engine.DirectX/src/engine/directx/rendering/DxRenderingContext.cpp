@@ -37,7 +37,7 @@ namespace Ghurund::Engine::DirectX {
 		}
 	}
 
-	void DxRenderingContext::draw(RenderGroup& renderGroup, ParameterManager& parameterManager) {
+	void DxRenderingContext::draw(RenderGroup& renderGroup, ParameterManager& parameterManager, MaterialVariantType variantType) {
 		auto commandList = swapChain->CurrentFrame.CommandList;
 		if (renderGroup.Camera)
 			renderGroup.Camera->apply(parameterManager);
@@ -48,9 +48,9 @@ namespace Ghurund::Engine::DirectX {
 		});
 		for (auto& packet : renderGroup.objects) {
 			auto mesh = (DxMesh*)packet.Mesh;
-			auto material = packet.Material;
-			material->applyInputs(parameterManager.Parameters);
-			auto shader = (DxGraphicsShader*)material->Shader;
+			auto materialVariant = packet.Material->getShader(variantType);
+			materialVariant->applyInputs(parameterManager.Parameters);
+			auto shader = (DxGraphicsShader*)materialVariant;
 			bool shaderChanged = shader->apply(*commandList);
 			mesh->draw(*commandList, shader->Layout);
 

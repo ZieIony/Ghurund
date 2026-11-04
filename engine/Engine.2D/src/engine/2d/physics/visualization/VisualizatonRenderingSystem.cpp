@@ -44,7 +44,7 @@ namespace Ghurund::Engine::_2D {
 
             // TODO: initialize inputs once
             VisualizationInputs inputs;
-            inputs.init(visualization.Material->Inputs);
+            inputs.init(visualization.Material->getShader(MaterialVariantType::UNLIT)->Inputs);
             inputs.Color = visualization.color;
             inputs.Transformation = world;
             inputs.Extents = { visualization.extents.x * 100, visualization.extents.y * 100 };
@@ -52,6 +52,6 @@ namespace Ghurund::Engine::_2D {
             // TODO: maybe not declare draw order manually?
             group.objects.add(DrawPacket(visualization.Mesh, visualization.Material, 0.0f));
         }
-        renderingContext.draw(group, parameterManager);
+        renderingContext.draw(group, parameterManager, MaterialVariantType::UNLIT);
     }
 }

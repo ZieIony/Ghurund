@@ -5,6 +5,7 @@
 #include "engine/graphics/material/Material.h"
 #include "engine/graphics/mesh/Mesh.h"
 #include "engine/graphics/rendering/RenderGroup.h"
+#include <engine/graphics/material/ValueInput.h>
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
@@ -50,7 +51,7 @@ namespace Ghurund::Engine {
 		inline void setMaterial(Material* material) {
 			setPointer(this->material, material);
 			if (material)
-				worldInput = (MatrixInput*)material->Inputs.get(MatrixInput::INPUT_NAME_WORLD);
+				worldInput = (MatrixInput*)material->getShader(MaterialVariantType::LIT)->Inputs.get(MatrixInput::INPUT_NAME_WORLD);
 		}
 
 		__declspec(property(put = setMaterial)) Material* Material;

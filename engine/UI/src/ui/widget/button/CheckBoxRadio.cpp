@@ -17,13 +17,13 @@ namespace Ghurund::UI {
 			iconView.set((Ghurund::UI::ImageView*)layoutControl->find("icon"));
 			iconView->addReference();
 			if (iconView->Material)
-				checkedParameter2 = (FloatInput*)iconView->Material->Inputs.get("checked");
+				checkedParameter2 = (FloatInput*)iconView->Material->getShader(MaterialVariantType::UNLIT)->Inputs.get("checked");
 		}
 	}
 	
 	void CheckBoxRadio::onMaterialChanged() {
 		if (material != nullptr) {
-			checkedParameter = (FloatInput*)material->Inputs.get("checked");
+			checkedParameter = (FloatInput*)material->getShader(MaterialVariantType::UNLIT)->Inputs.get("checked");
 		} else {
 			checkedParameter = nullptr;
 		}

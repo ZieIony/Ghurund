@@ -1,6 +1,6 @@
 #pragma once
 
-#include "InputType.h"
+#include "ConstantType.h"
 
 #include "core/string/String.h"
 
@@ -12,7 +12,7 @@ namespace Ghurund::Engine {
 	class ValueConstant {
 	private:
 		const AString name;
-		const InputType type;
+		const ConstantType type;
 		const size_t size, offset;
 		const void* defaultValue;
 		void* value = nullptr;
@@ -20,7 +20,7 @@ namespace Ghurund::Engine {
 	public:
 		ValueConstant(
 			const AString& name,
-			InputType type,
+			ConstantType type,
 			size_t size,
 			size_t offset,
 			const void* defaultValue
@@ -84,11 +84,11 @@ namespace Ghurund::Engine {
 
 		__declspec(property(get = getName)) const AString& Name;
 
-		inline InputType getType() const {
+		inline ConstantType getType() const {
 			return type;
 		}
 
-		__declspec(property(get = getType)) InputType Type;
+		__declspec(property(get = getType)) ConstantType Type;
 
 		inline size_t getSize() const {
 			return size;

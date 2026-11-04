@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ShaderSource.h"
-#include "ConstantsCollection.h"
+#include "ConstantCollection.h"
 
 #include "core/resource/Resource.h"
 
@@ -36,7 +36,7 @@ namespace Ghurund::Engine {
 
 	protected:
 		ShaderSource* source = nullptr;
-		ConstantsCollection* constants = nullptr;
+		ConstantCollection* constants = nullptr;
 
 		~Shader() {
 			deinit();
@@ -71,11 +71,11 @@ namespace Ghurund::Engine {
 
 		__declspec(property(get = getSource, put = setSource)) const ShaderSource* Source;
 
-		inline ConstantsCollection& getConstants() {
+		inline ConstantCollection& getConstants() {
 			return *constants;
 		}
 
-		__declspec(property(get = getConstants)) ConstantsCollection& Constants;
+		__declspec(property(get = getConstants)) ConstantCollection& Constants;
 
 		inline void deinit() {
 			if (State != ResourceState::INITIALIZED)

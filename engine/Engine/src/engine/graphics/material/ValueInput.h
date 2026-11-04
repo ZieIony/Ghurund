@@ -54,7 +54,7 @@ namespace Ghurund::Engine {
 			return shaderConstant.Name;
 		}
 
-		virtual InputType getType() const override {
+		virtual ConstantType getType() const override {
 			return shaderConstant.Type;
 		}
 

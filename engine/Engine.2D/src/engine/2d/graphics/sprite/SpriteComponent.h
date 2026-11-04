@@ -62,7 +62,7 @@ namespace Ghurund::Engine::_2D {
 		inline void setMaterial(Material* material) {
 			setPointer(this->material, material);
 			if (material) {
-				inputs.init(material->Inputs);
+				inputs.init(material->getShader(MaterialVariantType::UNLIT)->Inputs);
 				inputs.ColorTexture = colorTexture;
 				inputs.Tint = tint;
 				inputs.Alpha = alpha;
