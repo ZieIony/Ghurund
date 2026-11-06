@@ -10,11 +10,11 @@ namespace Ghurund::Engine::_2D {
     }
 
 	void Graphics2DFeature::uninitGraphicsFeature() {
-		resourceManager.Loaders.remove<SpriteAnimationSetLoader>();
+		resourceManager.Loaders.remove<SpriteAnimationSet>();
 		animationSetLoader.set(nullptr);
-		resourceManager.Loaders.remove<TileSetLoader>();
+		resourceManager.Loaders.remove<TileSet>();
 		tileSetLoader.set(nullptr);
-		resourceManager.Loaders.remove<TileMapLoader>();
+		resourceManager.Loaders.remove<TileMap>();
 		tileMapLoader.set(nullptr);
 	}
 

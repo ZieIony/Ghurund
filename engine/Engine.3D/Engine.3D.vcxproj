@@ -106,24 +106,27 @@
     <ClInclude Include="src\engine\3d\audio\component\SoundComponent3D.h" />
     <ClInclude Include="src\engine\3d\graphics\camera\Camera3D.h" />
     <ClInclude Include="src\engine\3d\graphics\camera\CameraComponent3D.h" />
+    <ClInclude Include="src\engine\3d\graphics\camera\CameraComponent3DLoader.h" />
     <ClInclude Include="src\engine\3d\graphics\camera\CameraController.h" />
     <ClInclude Include="src\engine\3d\graphics\camera\CameraSystem3D.h" />
     <ClInclude Include="src\engine\3d\graphics\light\Light.h" />
     <ClInclude Include="src\engine\3d\graphics\light\LightComponent3D.h" />
     <ClInclude Include="src\engine\3d\graphics\light\LightSystem3D.h" />
     <ClInclude Include="src\engine\3d\graphics\mesh\MeshComponent.h" />
+    <ClInclude Include="src\engine\3d\graphics\mesh\MeshComponentLoader.h" />
     <ClInclude Include="src\engine\3d\graphics\mesh\MeshInputs.h" />
     <ClInclude Include="src\engine\3d\graphics\mesh\MeshRenderingSystem.h" />
+    <ClInclude Include="src\engine\3d\graphics\transform\TransformComponent3D.h" />
+    <ClInclude Include="src\engine\3d\graphics\transform\TransformComponent3DLoader.h" />
+    <ClInclude Include="src\engine\3d\graphics\transform\TransformSystem3D.h" />
     <ClInclude Include="src\engine\3d\physics\Physics.h" />
     <ClInclude Include="src\engine\3d\physics\PhysicsSystem3D.h" />
     <ClInclude Include="src\engine\3d\physics\RigidBodyComponent3D.h" />
-    <ClInclude Include="src\engine\3d\scene\Scene3D.h" />
-    <ClInclude Include="src\engine\3d\scene\transform\TransformComponent3D.h" />
-    <ClInclude Include="src\engine\3d\scene\transform\TransformSystem3D.h" />
     <ClInclude Include="src\ghe3dpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\3d\Graphics3DFeature.cpp" />
+    <ClCompile Include="src\engine\3d\graphics\transform\TransformComponent3DLoader.cpp" />
     <ClCompile Include="src\engine\3d\World3D.cpp" />
     <ClCompile Include="src\engine\3d\audio\AudioSystem3D.cpp" />
     <ClCompile Include="src\engine\3d\graphics\camera\Camera3D.cpp" />
@@ -132,10 +135,10 @@
     <ClCompile Include="src\engine\3d\graphics\light\Light.cpp" />
     <ClCompile Include="src\engine\3d\graphics\light\LightSystem3D.cpp" />
     <ClCompile Include="src\engine\3d\graphics\mesh\MeshComponent.cpp" />
+    <ClCompile Include="src\engine\3d\graphics\mesh\MeshComponentLoader.cpp" />
     <ClCompile Include="src\engine\3d\graphics\mesh\MeshRenderingSystem.cpp" />
+    <ClCompile Include="src\engine\3d\graphics\transform\TransformSystem3D.cpp" />
     <ClCompile Include="src\engine\3d\physics\Physics.cpp" />
-    <ClCompile Include="src\engine\3d\scene\Scene3D.cpp" />
-    <ClCompile Include="src\engine\3d\scene\transform\TransformSystem3D.cpp" />
     <ClCompile Include="src\ghe3dpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

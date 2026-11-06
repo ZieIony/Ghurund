@@ -98,9 +98,12 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\graphics\material\Material.h" />
-    <ClInclude Include="src\engine\graphics\material\MaterialVariantType.h" />
+    <ClInclude Include="src\engine\ecs\NameComponent.h" />
+    <ClInclude Include="src\engine\ecs\NameComponentLoader.h" />
+    <ClInclude Include="src\engine\EngineFeatureFactory.h" />
+    <ClInclude Include="src\engine\script\ScriptComponent.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
+    <ClInclude Include="src\engine\EngineFeature.h" />
     <ClInclude Include="src\engine\animation\Animation.h" />
     <ClInclude Include="src\engine\animation\AnimationSet.h" />
     <ClInclude Include="src\engine\animation\Animator.h" />
@@ -115,11 +118,14 @@
     <ClInclude Include="src\engine\audio\AudioFeature.h" />
     <ClInclude Include="src\engine\audio\AudioFeatureFactory.h" />
     <ClInclude Include="src\engine\audio\AudioListener.h" />
-    <ClInclude Include="src\engine\audio\component\SoundComponent.h" />
     <ClInclude Include="src\engine\audio\sound\Sound.h" />
+    <ClInclude Include="src\engine\audio\sound\SoundComponent.h" />
     <ClInclude Include="src\engine\audio\sound\SoundEmitter.h" />
     <ClInclude Include="src\engine\audio\sound\SoundLoader.h" />
+    <ClInclude Include="src\engine\ecs\ComponentLoader.h" />
     <ClInclude Include="src\engine\ecs\Entity.h" />
+    <ClInclude Include="src\engine\ecs\Scene.h" />
+    <ClInclude Include="src\engine\ecs\SceneLoader.h" />
     <ClInclude Include="src\engine\ecs\System.h" />
     <ClInclude Include="src\engine\ecs\SystemCollection.h" />
     <ClInclude Include="src\engine\ecs\World.h" />
@@ -127,7 +133,6 @@
     <ClInclude Include="src\engine\editor\EditorComponent.h" />
     <ClInclude Include="src\engine\editor\ObservableObject.h" />
     <ClInclude Include="src\engine\editor\ThumbnailRenderer.h" />
-    <ClInclude Include="src\engine\game\Component.h" />
     <ClInclude Include="src\engine\game\NamedIntrusiveOrderedObservableCollection.h" />
     <ClInclude Include="src\engine\game\StaticDrawable.h" />
     <ClInclude Include="src\engine\game\action\ActionMapping.h" />
@@ -153,15 +158,17 @@
     <ClInclude Include="src\engine\game\tag\Tag.h" />
     <ClInclude Include="src\engine\game\tag\TagCollection.h" />
     <ClInclude Include="src\engine\game\tag\TagManager.h" />
+    <ClInclude Include="src\engine\graphics\Camera.h" />
     <ClInclude Include="src\engine\graphics\GraphicsFeature.h" />
-    <ClInclude Include="src\engine\graphics\ICamera.h" />
     <ClInclude Include="src\engine\graphics\LightSystem.h" />
     <ClInclude Include="src\engine\graphics\compute\ComputeShader.h" />
     <ClInclude Include="src\engine\graphics\cubemap\ICubeMap.h" />
     <ClInclude Include="src\engine\graphics\material\CubeMapInput.h" />
+    <ClInclude Include="src\engine\graphics\material\Material.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialInput.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialInputCollection.h" />
     <ClInclude Include="src\engine\graphics\material\MaterialLoader.h" />
+    <ClInclude Include="src\engine\graphics\material\MaterialVariantType.h" />
     <ClInclude Include="src\engine\graphics\material\TextureInput.h" />
     <ClInclude Include="src\engine\graphics\material\ValueInput.h" />
     <ClInclude Include="src\engine\graphics\memory\IGPUMemoryManager.h" />
@@ -186,8 +193,8 @@
     <ClInclude Include="src\engine\graphics\shader\BufferConstant.h" />
     <ClInclude Include="src\engine\graphics\shader\ConstantBuffer.h" />
     <ClInclude Include="src\engine\graphics\shader\ConstantCollection.h" />
-    <ClInclude Include="src\engine\graphics\shader\CubeMapConstant.h" />
     <ClInclude Include="src\engine\graphics\shader\ConstantType.h" />
+    <ClInclude Include="src\engine\graphics\shader\CubeMapConstant.h" />
     <ClInclude Include="src\engine\graphics\shader\Shader.h" />
     <ClInclude Include="src\engine\graphics\shader\ShaderSettings.h" />
     <ClInclude Include="src\engine\graphics\shader\ShaderSource.h" />
@@ -213,21 +220,25 @@
     <ClInclude Include="src\engine\parameter\TextureParameter.h" />
     <ClInclude Include="src\engine\parameter\ValueParameter.h" />
     <ClInclude Include="src\engine\resource\IGraphicsResourceFactory.h" />
+    <ClInclude Include="src\engine\script\Script.h" />
+    <ClInclude Include="src\engine\script\ScriptComponentLoader.h" />
+    <ClInclude Include="src\engine\script\ScriptManager.h" />
     <ClInclude Include="src\ghepch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\EngineFeature.cpp" />
     <ClCompile Include="src\engine\animation\Animation.cpp" />
     <ClCompile Include="src\engine\application\GameWindow.cpp" />
     <ClCompile Include="src\engine\application\LayerList.cpp" />
     <ClCompile Include="src\engine\audio\Audio.cpp" />
     <ClCompile Include="src\engine\audio\AudioFeature.cpp" />
-    <ClCompile Include="src\engine\audio\component\SoundComponent.cpp" />
     <ClCompile Include="src\engine\audio\sound\Sound.cpp" />
     <ClCompile Include="src\engine\audio\sound\SoundLoader.cpp" />
+    <ClCompile Include="src\engine\ecs\Scene.cpp" />
+    <ClCompile Include="src\engine\ecs\SceneLoader.cpp" />
     <ClCompile Include="src\engine\ecs\System.cpp" />
     <ClCompile Include="src\engine\ecs\SystemCollection.cpp" />
     <ClCompile Include="src\engine\editor\ThumbnailRenderer.cpp" />
-    <ClCompile Include="src\engine\game\Component.cpp" />
     <ClCompile Include="src\engine\game\StaticDrawable.cpp" />
     <ClCompile Include="src\engine\game\action\ActionMapping.cpp" />
     <ClCompile Include="src\engine\game\behavior\BehaviorTree.cpp" />

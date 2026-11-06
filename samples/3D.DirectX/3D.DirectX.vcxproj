@@ -94,10 +94,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\LookAtEntityScript.h" />
     <ClInclude Include="src\SampleApplication.h" />
     <ClInclude Include="src\SampleWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\LookAtEntityScript.cpp" />
     <ClCompile Include="src\SampleApplication.cpp" />
     <ClCompile Include="src\SampleWindow.cpp" />
     <ClCompile Include="src\main.cpp" />

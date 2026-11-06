@@ -1,11 +1,7 @@
 #pragma once
 
-#include "engine/2d/scene/camera/Camera2D.h"
+#include "engine/2d/graphics/camera/Camera2D.h"
 #include "engine/ecs/System.h"
-
-namespace Ghurund::Engine {
-    class World;
-}
 
 namespace Ghurund::Engine::_2D {
     class SpriteRenderingSystem:public System {
@@ -22,7 +18,7 @@ namespace Ghurund::Engine::_2D {
 #pragma endregion
 
     private:
-        World& world;
+        class World2D& world;
         Camera2D* camera = nullptr;
         ParameterManager& parameterManager;
 
@@ -31,7 +27,7 @@ namespace Ghurund::Engine::_2D {
 
     public:
         SpriteRenderingSystem(
-            World& world,
+            World2D& world,
             ParameterManager& parameterManager
         ):world(world), parameterManager(parameterManager) {
         }

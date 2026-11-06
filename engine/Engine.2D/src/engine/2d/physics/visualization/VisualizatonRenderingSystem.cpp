@@ -4,11 +4,11 @@
 #include "VisualizationInputs.h"
 #include "VisualizationComponent2D.h"
 
-#include "engine/ecs/World.h"
-#include "engine/2d/scene/transform/TransformComponent2D.h"
+#include "engine/2d/World2d.h"
+#include "engine/2d/graphics/transform/TransformComponent2D.h"
 #include <engine/2d/physics/RigidBodyComponent2D.h>
-#include "engine/2d/scene/transform/TransformSystem2D.h"
-#include "engine/2d/scene/camera/CameraSystem2D.h"
+#include "engine/2d/graphics/transform/TransformSystem2D.h"
+#include "engine/2d/graphics/camera/CameraSystem2D.h"
 
 namespace Ghurund::Engine::_2D {
     const Ghurund::Core::Type& VisualizationRenderingSystem::GET_TYPE() {
@@ -24,7 +24,7 @@ namespace Ghurund::Engine::_2D {
     }
 
     void VisualizationRenderingSystem::update(const Timer& timer) {
-		auto view = world.entityRegistry.view<VisualizationComponent2D, const RigidBodyComponent2D>();
+		auto view = world.Scene->entityRegistry.view<VisualizationComponent2D, const RigidBodyComponent2D>();
 		for (auto [id, visualization, rigidBody] : view.each()) {
 			visualization.update(rigidBody);
 		};
@@ -33,7 +33,7 @@ namespace Ghurund::Engine::_2D {
     void VisualizationRenderingSystem::queueDraw(RenderingContext& renderingContext) {
         RenderGroup group = DrawGroup();
         group.Camera = camera;
-        auto view = world.entityRegistry.view<const TransformComponent2D, const VisualizationComponent2D>();
+        auto view = world.Scene->entityRegistry.view<const TransformComponent2D, const VisualizationComponent2D>();
         for (auto [id, transform, visualization] : view.each()) {
             if (!visualization.Mesh || !visualization.Material)
                 continue;

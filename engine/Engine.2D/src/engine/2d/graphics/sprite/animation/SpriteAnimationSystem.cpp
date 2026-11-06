@@ -3,7 +3,7 @@
 
 #include "SpriteAnimationComponent.h"
 
-#include "engine/ecs/World.h"
+#include "engine/2d/World2d.h"
 #include "engine/2d/graphics/sprite/SpriteComponent.h"
 
 namespace Ghurund::Engine::_2D {
@@ -17,7 +17,7 @@ namespace Ghurund::Engine::_2D {
     void SpriteAnimationSystem::update(const Timer& timer) {
         if (timer.TimeScale == 0.0f)
             return;
-        auto view = world.entityRegistry.view<SpriteComponent, SpriteAnimationComponent>();
+        auto view = world.Scene->entityRegistry.view<SpriteComponent, SpriteAnimationComponent>();
         for (auto [id, sprite, animation] : view.each()) {
             animation.update(timer);
             sprite.ColorTexture = animation.Animation->CurrentTexture;

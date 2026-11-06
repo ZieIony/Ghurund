@@ -9,9 +9,9 @@
 #include <core/resource/ResourceManager.h>
 #include <engine/2d/graphics/sprite/animation/SpriteAnimation.h>
 #include <engine/2d/graphics/sprite/animation/SpriteAnimationSet.h>
-#include <engine/2d/scene/camera/Camera2D.h>
+#include <engine/2d/graphics/camera/Camera2D.h>
 #include <engine/animation/AnimatorState.h>
-#include <engine/2d/scene/camera/CameraComponent2D.h>
+#include <engine/2d/graphics/camera/CameraComponent2D.h>
 #include <engine/2d/graphics/sprite/SpriteComponent.h>
 #include <engine/2d/physics/visualization/VisualizationComponent2D.h>
 
@@ -53,7 +53,7 @@ namespace Sample {
 		auto& cameraComponent = addComponent<CameraComponent2D>();
 		cameraComponent.Camera->ViewSize = { 8, 6 };
 		cameraComponent.Camera->setPositionUp({ 0, 0 });
-		world.Scene.Camera = cameraComponent.Camera;
+		world.Scene->Camera = cameraComponent.Camera;
 
 		auto thudSound = co_await resourceManager.load<Sound>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/sounds/thud.wav"));
 		auto& audioListenerComponent = addComponent<AudioListenerComponent2D>();

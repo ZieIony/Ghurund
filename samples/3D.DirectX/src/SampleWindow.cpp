@@ -3,15 +3,11 @@
 #include "SampleApplication.h"
 
 #include "core/Colors.h"
-#include "core/window/DisplayManager.h"
-#include "engine/3d/graphics/mesh/MeshComponent.h"
 #include "engine/graphics/compute/ComputeShader.h"
-#include <engine/3d/scene/transform/TransformComponent3D.h>
-#include <engine/graphics/mesh/QuadMeshData.h>
-#include <engine/3d/scene/transform/TransformSystem3D.h>
+#include <engine/3d/graphics/transform/TransformSystem3D.h>
 #include <engine/3d/graphics/camera/CameraSystem3D.h>
 #include "engine/directx/rendering/DxRenderer.h"
-#include <engine/3d/graphics/camera/CameraComponent3D.h>
+#include <LookAtEntityScript.h>
 
 namespace Sample {
 	SampleWindow::SampleWindow(SampleApplication& app):GameWindow(app), app(app) {
@@ -28,6 +24,9 @@ namespace Sample {
 		world = ghnew World3D(app);
 		world->init();
 
+		auto& scriptManager = app.Features.get<EngineFeature>()->ScriptManager;
+		scriptManager.registerScript<LookAtEntityScript>();
+
 		meshRenderingSystem = makeIntrusive<MeshRenderingSystem>(*world, ParameterManager);
 		Systems.add(makeIntrusive<TransformSystem3D>(*world));
 		Systems.add(meshRenderingSystem);
@@ -39,35 +38,12 @@ namespace Sample {
 	}
 
 	CoroutineTask<void> SampleWindow::initScene() {
-		BoundingOrientedBox bob, transformedBob;
-		{
-			auto entity = world->spawnEntity<Entity>();
-			auto& meshComponent = entity.addComponent<MeshComponent>();
-			auto mesh = co_await app.ResourceManager.load<Mesh>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/spartan helmet/spartan helmet.fbx"));
-			meshComponent.Mesh = mesh.get();
+		auto scene = co_await app.ResourceManager.load<Scene>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/spartan helmet/spartan helmet scene.xml"));
+		world->Scene = scene.get();
 
-			auto& transformComponent = entity.addComponent<TransformComponent3D>();
-			transformComponent.Position = { 10,0,0 };
-			BoundingOrientedBox::CreateFromBoundingBox(bob, mesh->BoundingBox);
-			transformComponent.update();
-			auto transform = XMLoadFloat4x4(&transformComponent.WorldTransformation);
-			bob.Transform(transformedBob, transform);
-
-			auto material = co_await app.ResourceManager.load<Material>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/models/spartan helmet/spartan helmet material.xml"));
-			meshComponent.Material = material.get();
-		}
-
-		{
-			auto entity = world->spawnEntity<Entity>();
-			auto& transformComponent = entity.addComponent<TransformComponent3D>();
-			auto& cameraComponent = entity.addComponent<CameraComponent3D>();
-			world->Scene.Camera = cameraComponent.Camera;
-			cameraComponent.Camera->setDirectionBoxUp({ -1, -0.2f, 1 }, transformedBob);
-		}
-
-		cameraController.Camera = world->Scene.Camera;
+		cameraController.Camera = (Camera3D*)world->Scene->Camera;
 		cameraController.Window = this;
-		meshRenderingSystem->Camera = world->Scene.Camera;
+		meshRenderingSystem->Camera = world->Scene->Camera;
 
 		/*{
 			auto entity = world->spawnEntity<Entity>();
@@ -108,10 +84,10 @@ namespace Sample {
 
 	bool SampleWindow::onSizeChanged() {
 		__super::onSizeChanged();
-		world->Scene.Camera->ViewSize = ClientSize;
+		world->Scene->Camera->ViewSize = ClientSize;
 
 		// recalculate horizontal fov based on current vertical fov and new aspect ratio
-		world->Scene.Camera->FOV = world->Scene.Camera->FOV.y;
+		((Camera3D*)world->Scene->Camera)->FOV = ((Camera3D*)world->Scene->Camera)->FOV.y;
 		return true;
 	}
 

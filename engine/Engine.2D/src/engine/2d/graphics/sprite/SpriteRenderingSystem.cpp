@@ -2,10 +2,10 @@
 #include "SpriteRenderingSystem.h"
 
 #include "engine/ecs/World.h"
-#include "engine/2d/scene/transform/TransformComponent2D.h"
+#include "engine/2d/graphics/transform/TransformComponent2D.h"
 #include "engine/2d/graphics/sprite/SpriteComponent.h"
-#include "engine/2d/scene/transform/TransformSystem2D.h"
-#include "engine/2d/scene/camera/CameraSystem2D.h"
+#include "engine/2d/graphics/transform/TransformSystem2D.h"
+#include "engine/2d/graphics/camera/CameraSystem2D.h"
 
 namespace Ghurund::Engine::_2D {
     const Ghurund::Core::Type& SpriteRenderingSystem::GET_TYPE() {
@@ -23,7 +23,7 @@ namespace Ghurund::Engine::_2D {
     void SpriteRenderingSystem::queueDraw(RenderingContext& renderingContext) {
         RenderGroup group = DrawGroup();
         group.Camera = camera;
-        auto view = world.entityRegistry.view<TransformComponent2D, SpriteComponent>().each();
+        auto view = world.Scene->entityRegistry.view<TransformComponent2D, SpriteComponent>().each();
         for (auto [id, transform, sprite] : view) {
             if (!sprite.Mesh || !sprite.Material)
                 continue;

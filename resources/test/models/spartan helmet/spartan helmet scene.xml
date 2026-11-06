@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Scene
+	xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd"
+	version="1">
+	<Entity>
+		<NameComponent name="helmet"/>
+		<TransformComponent3D position="10,0,0"/>
+		<MeshComponent
+			mesh="lib://Ghurund/test/models/spartan helmet/spartan helmet.fbx"
+			material="lib://Ghurund/test/models/spartan helmet/spartan helmet material.xml"/>
+	</Entity>
+	<Entity>
+		<TransformComponent3D/>
+		<CameraComponent3D/>
+		<ScriptComponent script="LookAtEntityScript"/>
+	</Entity>
+</Scene>

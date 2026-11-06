@@ -29,7 +29,10 @@ namespace Ghurund::Engine::_3D::DirectX {
         virtual void onDeinit() override;
 
     public:
-        DxGraphics3DFeature(ResourceManager& resourceManager):Graphics3DFeature(resourceManager) {}
+        DxGraphics3DFeature(
+            ResourceManager& resourceManager,
+            SceneLoader& sceneLoader
+        ):Graphics3DFeature(resourceManager, sceneLoader) {}
 
         virtual ~DxGraphics3DFeature() {
             if (IsInitialized)

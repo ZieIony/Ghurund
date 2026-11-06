@@ -4,7 +4,7 @@
 #include "core/math/Matrix.h"
 #include "engine/graphics/mesh/Mesh.h"
 #include "engine/graphics/material/Material.h"
-#include <engine/2d/scene/transform/TransformComponent2D.h>
+#include <engine/2d/graphics/transform/TransformComponent2D.h>
 #include <engine/2d/physics/RigidBodyComponent2D.h>
 
 namespace Ghurund::Engine::_2D {

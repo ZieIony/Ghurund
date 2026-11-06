@@ -2,10 +2,6 @@
 
 #include "engine/ecs/System.h"
 
-namespace Ghurund::Engine {
-    class World;
-}
-
 namespace Ghurund::Engine::_2D {
     class SpriteAnimationSystem:public System {
 #pragma region reflection
@@ -21,10 +17,10 @@ namespace Ghurund::Engine::_2D {
 #pragma endregion
 
     private:
-        World& world;
+        class World2D& world;
 
     public:
-        SpriteAnimationSystem(World& world):world(world) {}
+        SpriteAnimationSystem(World2D& world):world(world) {}
 
         virtual void update(const Timer& timer) override;
     };

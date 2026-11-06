@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/2d/scene/transform/TransformComponent2D.h"
+#include "engine/2d/graphics/transform/TransformComponent2D.h"
 #include <core/math/Size.h>
 #include <core/time/Timer.h>
 

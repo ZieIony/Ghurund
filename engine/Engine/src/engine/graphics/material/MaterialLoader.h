@@ -12,8 +12,6 @@ namespace Ghurund::Engine {
 		IGPUMemoryManager& memoryManager;
 		Material* defaultMaterial = nullptr;
 
-		CoroutineTask<void> loadXmlFormat(Material& resource, const XMLElement& xml, const DirectoryPath& workingDir);
-
 	protected:
 		virtual CoroutineTask<void> load_internal(
 			Material& resource,

@@ -1,7 +1,7 @@
 #include "ghe3dpch.h"
 #include "LightSystem3D.h"
 
-#include "engine/ecs/World.h"
+#include "engine/3d/World3D.h"
 #include "engine/3d/graphics/light/LightComponent3D.h"
 
 namespace Ghurund::Engine::_3D {
@@ -13,7 +13,7 @@ namespace Ghurund::Engine::_3D {
 	}
 
 	void LightSystem3D::update(const Timer& timer) {
-		auto view = world.entityRegistry.view<LightComponent3D, TransformComponent3D>();
+		auto view = world.Scene->entityRegistry.view<LightComponent3D, TransformComponent3D>();
 		view.each([](entt::entity id, LightComponent3D& light, const TransformComponent3D& transform) {
 			light.update(transform);
 		});

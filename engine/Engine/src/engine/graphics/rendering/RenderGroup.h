@@ -2,7 +2,7 @@
 
 #include "DrawPacket.h"
 
-#include "engine/graphics/ICamera.h"
+#include "engine/graphics/Camera.h"
 #include "core/collection/List.h"
 #include "engine/application/DrawGroup.h"
 
@@ -13,7 +13,7 @@ namespace Ghurund::Engine {
 	class RenderGroup {
 	private:
 		DrawGroup group;
-		ICamera* camera = nullptr;
+		Camera* camera = nullptr;
 
 	public:
 		List<DrawPacket> objects;
@@ -32,15 +32,15 @@ namespace Ghurund::Engine {
 
 		__declspec(property(get = getDrawGroup)) DrawGroup DrawGroup;
 
-		inline void setCamera(ICamera* camera) {
+		inline void setCamera(Camera* camera) {
 			setPointer(this->camera, camera);
 		}
 
-		inline ICamera* getCamera() const {
+		inline Camera* getCamera() const {
 			return camera;
 		}
 
-		__declspec(property(get = getCamera, put = setCamera)) ICamera* Camera;
+		__declspec(property(get = getCamera, put = setCamera)) Camera* Camera;
 
 		inline auto operator<=>(const RenderGroup& other) const {
 			return group.DrawOrder <=> other.group.DrawOrder;

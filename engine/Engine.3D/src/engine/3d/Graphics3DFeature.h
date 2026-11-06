@@ -5,6 +5,7 @@
 #include "core/resource/ResourceManager.h"
 #include "engine/graphics/mesh/Mesh.h"
 #include "engine/graphics/material/Material.h"
+#include <engine/ecs/SceneLoader.h>
 
 namespace Ghurund::Engine::_3D {
     using namespace Ghurund::Core;
@@ -22,8 +23,17 @@ namespace Ghurund::Engine::_3D {
         inline static const Ghurund::Core::Type& TYPE = Graphics3DFeature::GET_TYPE();
 #pragma endregion
 
+    private:
+        void uninitGraphicsFeature();
+
     protected:
         ResourceManager& resourceManager;
+        SceneLoader& sceneLoader;
+
+        [[nodiscard]]
+        virtual CoroutineTask<void> onInit() override;
+
+        virtual void onDeinit() override;
 
     public:
         inline static Mesh* MESH_CUBE = nullptr;
@@ -34,8 +44,14 @@ namespace Ghurund::Engine::_3D {
         inline static Material* MATERIAL_FORWARD_TANGENTS = nullptr;
         inline static Material* MATERIAL_FORWARD_TEXCOORDS = nullptr;
 
-        Graphics3DFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
+        Graphics3DFeature(
+            ResourceManager& resourceManager,
+            SceneLoader& sceneLoader
+        ):resourceManager(resourceManager), sceneLoader(sceneLoader) {}
 
-        virtual ~Graphics3DFeature() = 0 {}
+        virtual ~Graphics3DFeature() = 0 {
+            if (IsInitialized)
+                uninitGraphicsFeature();
+        }
     };
 }

@@ -5,10 +5,11 @@
 #include "core/Colors.h"
 #include "core/window/DisplayManager.h"
 #include <FpsSystem.h>
-#include <engine/2d/scene/transform/TransformSystem2D.h>
-#include <engine/2d/scene/tiles/TileMapSystem.h>
+#include <engine/2d/graphics/transform/TransformSystem2D.h>
+#include <engine/2d/graphics/tiles/TileMapSystem.h>
 #include <engine/2d/graphics/sprite/animation/SpriteAnimationSystem.h>
-#include <engine/2d/scene/camera/CameraSystem2D.h>
+#include <engine/2d/graphics/camera/CameraSystem2D.h>
+#include <engine/2d/graphics/camera/CameraComponent2D.h>
 
 namespace Sample {
 	SampleWindow::SampleWindow(SampleApplication& app):GameWindow(app), app(app) {
@@ -42,14 +43,14 @@ namespace Sample {
 
 	CoroutineTask<void> SampleWindow::initScene() {
 		auto graphicsFeature = app.Features.get<GraphicsFeature>();
-		ground = world->spawnEntity<Ground>();
+		ground = world->Scene->spawnEntity<Ground>();
 		co_await ground.init(*Systems.get<PhysicsSystem2D>(), graphicsFeature->ResourceFactory, app.ResourceManager, graphicsFeature->MemoryManager);
-		captain = world->spawnEntity<Captain>();
+		captain = world->Scene->spawnEntity<Captain>();
 		co_await captain.init(*Systems.get<PhysicsSystem2D>(), app.ResourceManager, graphicsFeature->MemoryManager, *world);
 		captain.CapsuleComponent.Position = {0, 2};
 
-		spriteRenderingSystem->Camera = world->Scene.Camera;
-		visualizationRenderingSystem->Camera = world->Scene.Camera;
+		spriteRenderingSystem->Camera = captain.getComponent<CameraComponent2D>().Camera;
+		visualizationRenderingSystem->Camera = captain.getComponent<CameraComponent2D>().Camera;
 
 		app.ResourceManager.Resources.printResources();
 	}

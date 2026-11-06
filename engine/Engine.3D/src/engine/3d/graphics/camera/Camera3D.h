@@ -1,8 +1,7 @@
 #pragma once
 
 #include "core/math/Size.h"
-#include "engine/graphics/ICamera.h"
-#include "engine/parameter/ValueParameter.h"
+#include "engine/graphics/Camera.h"
 
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
@@ -10,7 +9,7 @@
 namespace Ghurund::Engine::_3D {
 	using namespace ::DirectX;
 
-	class Camera3D: public ICamera {
+	class Camera3D: public Camera {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -26,9 +25,8 @@ namespace Ghurund::Engine::_3D {
 	private:
 		XMFLOAT3 pos, target, dir, right, up;
 		//XMFLOAT4X4 facing;
-		IntSize viewSize;
 		XMFLOAT2 fov;
-		float aspectRatio, zNear, zFar, dist;
+		float dist;
 		bool pers;
 
 		inline static const AString PARAMETER_NAME_DIRECTION = "gh_cameraDirection";
@@ -36,20 +34,9 @@ namespace Ghurund::Engine::_3D {
 		inline static const AString PARAMETER_NAME_TARGET = "gh_cameraTarget";
 		inline static const AString PARAMETER_NAME_UP = "gh_cameraUp";
 		inline static const AString PARAMETER_NAME_RIGHT = "gh_cameraRight";
-		inline static const AString PARAMETER_NAME_FOV = "gh_fov";
-		inline static const AString PARAMETER_NAME_ZNEAR = "gh_zNear";
-		inline static const AString PARAMETER_NAME_ZFAR = "gh_zFar";
-		inline static const AString PARAMETER_NAME_VIEW = "gh_view";
-		inline static const AString PARAMETER_NAME_PROJECTION = "gh_projection";
-		inline static const AString PARAMETER_NAME_VIEW_PROJECTION = "gh_viewProjection";
-		inline static const AString PARAMETER_NAME_VIEW_PROJECTION_INV = "gh_viewProjectionInv";
 
 		Float3Parameter* parameterDirection = nullptr, * parameterPosition = nullptr, * parameterTarget = nullptr;
 		Float3Parameter* parameterUp = nullptr, * parameterRight = nullptr;
-		Float2Parameter* parameterFov = nullptr;
-		FloatParameter* parameterZNear = nullptr, * parameterZFar = nullptr;
-		MatrixParameter* parameterView = nullptr, * parameterProjection = nullptr;
-		MatrixParameter* parameterViewProjection = nullptr, * parameterViewProjectionInv = nullptr;
 
 	public:
 		inline static const XMFLOAT3 DEFAULT_UP = { 0, 1, 0 };
@@ -94,30 +81,6 @@ namespace Ghurund::Engine::_3D {
 
 		__declspec(property(get = getRight)) XMFLOAT3& Right;
 
-
-		inline const IntSize& getViewSize() const {
-			return viewSize;
-		}
-
-		inline void setViewSize(const IntSize& viewSize) {
-#ifdef _DEBUG
-			_ASSERT(viewSize.Width > 0 && viewSize.Height > 0);
-#endif
-			this->viewSize = viewSize;
-			aspectRatio = (float)viewSize.Width / (float)viewSize.Height;
-		}
-
-		inline void setViewSize(uint32_t w, uint32_t h) {
-#ifdef _DEBUG
-			_ASSERT(w > 0 && h > 0);
-#endif
-			viewSize.Width = w;
-			viewSize.Height = h;
-			aspectRatio = (float)viewSize.Width / (float)viewSize.Height;
-		}
-
-		__declspec(property(get = getViewSize, put = setViewSize)) IntSize& ViewSize;
-
 		inline void setFOV(float verticalFOVRad) {
 #ifdef _DEBUG
 			_ASSERT(verticalFOVRad > 0 && verticalFOVRad < XM_PI / 2.0f);
@@ -138,12 +101,6 @@ namespace Ghurund::Engine::_3D {
 		}
 
 		__declspec(property(get = getFOV, put = setFOV)) const XMFLOAT2& FOV;
-
-		inline float getAspectRatio() const {
-			return aspectRatio;
-		}
-
-		__declspec(property(get = getAspectRatio)) float AspectRatio;
 
 		inline float getDistance() const {
 			return dist;

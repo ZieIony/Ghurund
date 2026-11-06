@@ -1,11 +1,11 @@
 #pragma once
 
-#include "scene/Scene2D.h"
-#include "audio/AudioSystem2D.h"
-#include "physics/PhysicsSystem2D.h"
 #include "engine/ecs/SystemCollection.h"
 #include "engine/ecs/World.h"
+#include "engine/ecs/Scene.h"
 #include "engine/application/GameApplication.h"
+#include <engine/2d/audio/AudioSystem2D.h>
+#include <engine/2d/physics/PhysicsSystem2D.h>
 
 namespace Ghurund::Core {
 	class Application;
@@ -17,13 +17,13 @@ namespace Ghurund::Engine::_2D {
 		IntrusivePointer<AudioSystem2D> audioSystem;
 		IntrusivePointer<PhysicsSystem2D> physicsSystem;
 		SystemCollection systems;
-		IntrusivePointer<Scene2D> scene;
+		Scene* scene = nullptr;
 
 	protected:
 		virtual void onInit() override;
 
 		inline void uninitWorld2D() {
-			scene.set(nullptr);
+			safeRelease(scene);
 			systems.clear();
 			physicsSystem.set(nullptr);
 			audioSystem.set(nullptr);
@@ -54,10 +54,14 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getPhysicsSystem)) PhysicsSystem2D& PhysicsSystem;
 
-		inline Scene2D& getScene() {
-			return scene.ref();
+		inline Scene* getScene() {
+			return scene;
 		}
 
-		__declspec(property(get = getScene)) Scene2D& Scene;
+		inline void setScene(Scene* scene) {
+			setPointer(this->scene, scene);
+		}
+
+		__declspec(property(get = getScene)) Scene* Scene;
 	};
 }

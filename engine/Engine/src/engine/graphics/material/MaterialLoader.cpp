@@ -27,10 +27,12 @@ namespace Ghurund::Engine {
 		co_return;
 	}
 
-	CoroutineTask<void> MaterialLoader::loadXmlFormat(
+	CoroutineTask<void> MaterialLoader::load_internal(
 		Material& resource,
 		const XMLElement& xml,
-		const DirectoryPath& workingDir
+		const DirectoryPath& workingDir,
+		const ResourceFormat& format,
+		LoadOptions options
 	) {
 		checkXmlRoot(xml, L"Material", Material::FORMAT_XML);
 
@@ -63,20 +65,6 @@ namespace Ghurund::Engine {
 		for (size_t i = 0; i < (size_t)MaterialVariantType::NUM_VARIANTS; i++) {
 			if (resource.getShader((MaterialVariantType)i) == nullptr)
 				resource.setShader((MaterialVariantType)i, defaultMaterial->getShader((MaterialVariantType)i));
-		}
-	}
-
-	CoroutineTask<void> MaterialLoader::load_internal(
-		Material& resource,
-		const XMLElement& xml,
-		const DirectoryPath& workingDir,
-		const ResourceFormat& format,
-		LoadOptions options
-	) {
-		if (format == Material::FORMAT_XML) {
-			co_await loadXmlFormat(resource, xml, workingDir);
-		} else if (format == ResourceFormat::AUTO) {
-			co_await loadXmlFormat(resource, xml, workingDir);
 		}
 	}
 

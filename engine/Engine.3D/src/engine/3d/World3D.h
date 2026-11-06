@@ -1,11 +1,11 @@
 #pragma once
 
-#include "scene/Scene3D.h"
 #include "audio/AudioSystem3D.h"
 #include "physics/PhysicsSystem3D.h"
 #include "engine/ecs/SystemCollection.h"
 #include "engine/application/GameApplication.h"
 #include "engine/ecs/World.h"
+#include <engine/ecs/Scene.h>
 
 namespace Ghurund::Core {
 	class Application;
@@ -17,13 +17,12 @@ namespace Ghurund::Engine::_3D {
 		IntrusivePointer<AudioSystem3D> audioSystem;
 		IntrusivePointer<PhysicsSystem3D> physicsSystem;
 		SystemCollection systems;
-		IntrusivePointer<Scene3D> scene;
+		Scene* scene = nullptr;
 
 	protected:
 		virtual void onInit() override;
 
 		inline void deinitWorld3D() {
-			scene.set(nullptr);
 			systems.clear();
 			physicsSystem.set(nullptr);
 			audioSystem.set(nullptr);
@@ -40,6 +39,8 @@ namespace Ghurund::Engine::_3D {
 		~World3D() {
 			if (IsInitialized)
 				deinitWorld3D();
+			if (scene)
+				scene->release();
 		}
 
 		inline AudioSystem3D* getAudioSystem() {
@@ -54,10 +55,14 @@ namespace Ghurund::Engine::_3D {
 
 		__declspec(property(get = getPhysicsSystem)) PhysicsSystem3D& PhysicsSystem;
 
-		inline Scene3D& getScene() {
-			return scene.ref();
+		inline Scene* getScene() {
+			return scene;
 		}
 
-		__declspec(property(get = getScene)) Scene3D& Scene;
+		inline void setScene(Scene* scene) {
+			setPointer(this->scene, scene);
+		}
+
+		__declspec(property(get = getScene, put = setScene)) Scene* Scene;
 	};
 }

@@ -1,11 +1,7 @@
 #pragma once
 
-#include "engine/3d/graphics/camera/Camera3D.h"
 #include "engine/ecs/System.h"
-
-namespace Ghurund::Engine {
-    class World;
-}
+#include <engine/graphics/Camera.h>
 
 namespace Ghurund::Engine::_3D {
     class MeshRenderingSystem:public System {
@@ -22,8 +18,8 @@ namespace Ghurund::Engine::_3D {
 #pragma endregion
 
     private:
-        World& world;
-        Camera3D* camera = nullptr;
+        class World3D& world;
+        Camera* camera = nullptr;
         ParameterManager& parameterManager;
 
     protected:
@@ -33,7 +29,7 @@ namespace Ghurund::Engine::_3D {
         MaterialVariantType defaultMaterialType = MaterialVariantType::LIT;
 
         MeshRenderingSystem(
-            World& world,
+            World3D& world,
             ParameterManager& parameterManager
         ):world(world), parameterManager(parameterManager) {
         }
@@ -43,15 +39,15 @@ namespace Ghurund::Engine::_3D {
                 camera->release();
         }
 
-        inline void setCamera(Camera3D* camera) {
+        inline void setCamera(Camera* camera) {
             setPointer(this->camera, camera);
         }
 
-        inline Camera3D* getCamera() const {
+        inline Camera* getCamera() const {
             return camera;
         }
 
-        __declspec(property(put = setCamera, get = getCamera)) Camera3D* Camera;
+        __declspec(property(put = setCamera, get = getCamera)) Camera* Camera;
      
         virtual void queueDraw(RenderingContext& renderingContext) override;
     };

@@ -1,0 +1,94 @@
+#pragma once
+
+#include "core/math/Size.h"
+#include "engine/graphics/Camera.h"
+#include "engine/parameter/ValueParameter.h"
+
+#include <DirectXMath.h>
+#include <DirectXCollision.h>
+
+namespace Ghurund::Engine::_2D {
+	using namespace ::DirectX;
+
+	class Camera2D: public Camera {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Camera2D::GET_TYPE();
+#pragma endregion
+
+	private:
+		XMFLOAT3 pos, right, up;
+		BoundingOrientedBox boundingOrientedBox;
+
+		inline static const AString CAMERA_POSITION = "gh_cameraPosition";
+		inline static const AString CAMERA_UP = "gh_cameraUp";
+		inline static const AString CAMERA_RIGHT = "gh_cameraRight";
+		inline static const AString ZNEAR = "gh_zNear";
+		inline static const AString ZFAR = "gh_zFar";
+		inline static const AString VIEW = "gh_view";
+		inline static const AString PROJECTION = "gh_projection";
+		inline static const AString VIEW_PROJECTION = "gh_viewProjection";
+		inline static const AString VIEW_PROJECTION_INV = "gh_viewProjectionInv";
+
+		Float3Parameter* parameterPosition = nullptr, * parameterUp = nullptr, * parameterRight = nullptr;
+		FloatParameter* parameterZNear = nullptr, * parameterZFar = nullptr;
+		MatrixParameter* parameterView = nullptr, * parameterProjection = nullptr;
+		MatrixParameter* parameterViewProjection = nullptr, * parameterViewProjectionInv = nullptr;
+
+	public:
+		Camera2D();
+
+		~Camera2D();
+
+		virtual void update() override;
+
+		virtual void apply(ParameterManager& parameterManager) override;
+
+		inline XMFLOAT2 getPosition() const {
+			return { pos.x, pos.y };
+		}
+
+		__declspec(property(get = getPosition)) XMFLOAT2 Position;
+
+		inline XMFLOAT2 getUp() const {
+			return { up.x, up.y };
+		}
+
+		__declspec(property(get = getUp)) XMFLOAT2 Up;
+
+		inline XMFLOAT2 getRight() const {
+			return { right.x, right.y };
+		}
+
+		__declspec(property(get = getRight)) XMFLOAT2 Right;
+
+		void setPositionUp(const XMFLOAT2& pos, const XMFLOAT2& up = XMFLOAT2(0, 1));
+
+		inline float getRoll() const {
+			return atan2f(right.y, right.x);
+		}
+
+		void setRoll(float rotation);
+
+		__declspec(property(get = getRoll, put = setRoll)) float Roll;
+
+		void rotate(float delta);
+		void pan(float x, float y);
+
+		/**
+		* Returns a box that includes exactly the space this camera sees.
+		**/
+		const BoundingOrientedBox& getViewBox() const {
+			return boundingOrientedBox;
+		}
+
+		__declspec(property(get = getViewBox)) const BoundingOrientedBox& ViewBox;
+	};
+}

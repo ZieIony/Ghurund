@@ -2,10 +2,6 @@
 
 #include "engine/ecs/System.h"
 
-namespace Ghurund::Engine {
-	class World;
-}
-
 namespace Ghurund::Engine::_3D {
 	class LightSystem3D:public System {
 #pragma region reflection
@@ -21,10 +17,10 @@ namespace Ghurund::Engine::_3D {
 #pragma endregion
 
     private:
-		World& world;
+		class World3D& world;
 
 	public:
-		LightSystem3D(World& world):world(world) {}
+		LightSystem3D(World3D& world):world(world) {}
 
 		virtual void update(const Timer& timer);
 	};

@@ -3,12 +3,11 @@
 #include "engine/audio/Audio.h"
 #include "engine/ecs/System.h"
 #include "component/AudioListenerComponent3D.h"
-#include <engine/ecs/World.h>
 
 namespace Ghurund::Engine::_3D {
 	class AudioSystem3D:public System {
 	private:
-		World& world;
+		class World3D& world;
 		Audio& audio;
 		AudioListenerComponent3D* audioListenerComponent = nullptr;
 
@@ -18,7 +17,7 @@ namespace Ghurund::Engine::_3D {
 		}
 
 	public:
-		AudioSystem3D(Audio& audio, World& world):audio(audio), world(world) {}
+		AudioSystem3D(Audio& audio, World3D& world):audio(audio), world(world) {}
 
 		~AudioSystem3D();
 

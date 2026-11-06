@@ -4,9 +4,9 @@
 #include "MeshComponent.h"
 #include "MeshInputs.h"
 
-#include "engine/ecs/World.h"
-#include "engine/3d/scene/transform/TransformComponent3D.h"
-#include "engine/3d/scene/transform/TransformSystem3D.h"
+#include "engine/3d/World3D.h"
+#include "engine/3d/graphics/transform/TransformComponent3D.h"
+#include "engine/3d/graphics/transform/TransformSystem3D.h"
 #include "engine/3d/graphics/camera/CameraSystem3D.h"
 
 namespace Ghurund::Engine::_3D {
@@ -25,7 +25,7 @@ namespace Ghurund::Engine::_3D {
     void MeshRenderingSystem::queueDraw(RenderingContext& renderingContext) {
         RenderGroup group = DrawGroup();
         group.Camera = camera;
-        auto view = world.entityRegistry.view<TransformComponent3D, MeshComponent>().each();
+        auto view = world.Scene->entityRegistry.view<TransformComponent3D, MeshComponent>().each();
         for (auto [id, transform, mesh] : view) {
             if (!mesh.Mesh || !mesh.Material)
                 continue;

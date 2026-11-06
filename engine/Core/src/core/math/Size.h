@@ -82,7 +82,7 @@ namespace Ghurund::Core {
 
 	template<>
 	inline ::DirectX::XMINT2 parse(const AString& text) {
-		std::regex regex(" *(d+) *, *(d+) *");
+		std::regex regex(" *(\\d+) *, *(\\d+) *");
 		std::smatch m;
 		std::string s = text.Data;
 		if (std::regex_match(s, m, regex)) {

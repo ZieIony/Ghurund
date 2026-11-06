@@ -1,7 +1,6 @@
 #pragma once
 
 #include "engine/ecs/System.h"
-#include "engine/3d/World3D.h"
 
 namespace Ghurund::Engine::_3D {
 	class CameraSystem3D:public System {
@@ -18,7 +17,7 @@ namespace Ghurund::Engine::_3D {
 #pragma endregion
 
 	private:
-		World3D& world;
+		class World3D& world;
 
 	protected:
 		virtual const Array<std::reference_wrapper<const Ghurund::Core::Type>>& getDependencies_internal() const override;

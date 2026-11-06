@@ -2,10 +2,11 @@
 #include "AudioSystem3D.h"
 
 #include "component/SoundComponent3D.h"
+#include "engine/3d/World3D.h"
 
 namespace Ghurund::Engine::_3D {
 	AudioSystem3D::~AudioSystem3D() {
-		auto viewSound = world.getView<SoundComponent3D>();
+		auto viewSound = world.Scene->getView<SoundComponent3D>();
 		viewSound.each([](const auto& id, auto& soundComponent) {
 			if (!soundComponent.Sound)
 				return;
@@ -19,7 +20,7 @@ namespace Ghurund::Engine::_3D {
 		if (!audioListenerComponent)
 			return;
 
-		auto viewSound = world.getView<SoundComponent3D>();
+		auto viewSound = world.Scene->getView<SoundComponent3D>();
 		viewSound.each([&](const auto& id, auto& soundComponent) {
 			if (!soundComponent.Sound)
 				return;

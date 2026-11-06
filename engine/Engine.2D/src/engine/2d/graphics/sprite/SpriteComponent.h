@@ -7,7 +7,7 @@
 #include "engine/graphics/material/Material.h"
 #include "engine/graphics/mesh/Mesh.h"
 #include "engine/graphics/texture/ITexture.h"
-#include <engine/2d/scene/transform/TransformComponent2D.h>
+#include <engine/2d/graphics/transform/TransformComponent2D.h>
 
 #include <DirectXCollision.h>
 

@@ -2,11 +2,11 @@
 
 #include "core/feature/Feature.h"
 #include "core/reflection/Type.h"
-#include "scene/tiles/TileSetLoader.h"
-#include "scene/tiles/TileMapLoader.h"
 #include "engine/graphics/mesh/Mesh.h"
 #include "engine/graphics/material/Material.h"
 #include "graphics/sprite/animation/SpriteAnimationSetLoader.h"
+#include "graphics/tiles/TileSetLoader.h"
+#include "graphics/tiles/TileMapLoader.h"
 
 namespace Ghurund::Engine::_2D {
     using namespace Ghurund::Core;

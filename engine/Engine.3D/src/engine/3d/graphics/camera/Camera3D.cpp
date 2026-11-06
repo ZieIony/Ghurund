@@ -10,8 +10,6 @@ namespace Ghurund::Engine::_3D {
 	using namespace ::DirectX;
 
 	Camera3D::Camera3D():
-		zNear(0.1f),
-		zFar(10000.0f),
 		pers(true),
 		pos(XMFLOAT3(0, 0, 0)),
 		up(XMFLOAT3(0, 1, 0)),
@@ -20,6 +18,8 @@ namespace Ghurund::Engine::_3D {
 		right(XMFLOAT3(1, 0, 0)),
 		dist(1.0f) {
 
+		zNear = 0.1f;
+		zFar = 10000.0f;
 		ViewSize = { 640, 480 };
 		FOV = XM_PI / 4;
 
@@ -28,15 +28,6 @@ namespace Ghurund::Engine::_3D {
 		parameterTarget = ghnew Float3Parameter(PARAMETER_NAME_TARGET);
 		parameterUp = ghnew Float3Parameter(PARAMETER_NAME_UP);
 		parameterRight = ghnew Float3Parameter(PARAMETER_NAME_RIGHT);
-
-		parameterFov = ghnew Float2Parameter(PARAMETER_NAME_FOV);
-		parameterZNear = ghnew FloatParameter(PARAMETER_NAME_ZNEAR);
-		parameterZFar = ghnew FloatParameter(PARAMETER_NAME_ZFAR);
-
-		parameterView = ghnew MatrixParameter(PARAMETER_NAME_VIEW);
-		parameterProjection = ghnew MatrixParameter(PARAMETER_NAME_PROJECTION);
-		parameterViewProjection = ghnew MatrixParameter(PARAMETER_NAME_VIEW_PROJECTION);
-		parameterViewProjectionInv = ghnew MatrixParameter(PARAMETER_NAME_VIEW_PROJECTION_INV);
 	}
 
 	Camera3D::~Camera3D() {
@@ -45,15 +36,6 @@ namespace Ghurund::Engine::_3D {
 		parameterTarget->release();
 		parameterUp->release();
 		parameterRight->release();
-
-		parameterFov->release();
-		parameterZNear->release();
-		parameterZFar->release();
-
-		parameterView->release();
-		parameterProjection->release();
-		parameterViewProjection->release();
-		parameterViewProjectionInv->release();
 	}
 
 	void Camera3D::update() {

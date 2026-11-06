@@ -2,10 +2,11 @@
 #include "AudioSystem2D.h"
 
 #include "component/SoundComponent2D.h"
+#include <engine/2d/World2D.h>
 
 namespace Ghurund::Engine::_2D {
 	AudioSystem2D::~AudioSystem2D() {
-		auto viewSound = world.getView<SoundComponent2D>();
+		auto viewSound = world.Scene->entityRegistry.view<SoundComponent2D>();
 		viewSound.each([](const auto& id, auto& soundComponent) {
 			if (!soundComponent.Sound)
 				return;
@@ -19,7 +20,7 @@ namespace Ghurund::Engine::_2D {
 		if (!audioListenerComponent)
 			return;
 
-		auto viewSound = world.getView<SoundComponent2D>();
+		auto viewSound = world.Scene->entityRegistry.view<SoundComponent2D>();
 		viewSound.each([&](const auto& id, auto& soundComponent) {
 			if (!soundComponent.Sound)
 				return;

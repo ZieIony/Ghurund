@@ -23,6 +23,7 @@ project "Engine.3D.DirectX"
 		includeDir["Engine"],
 		includeDir["Engine.DirectX"],
 		includeDir["Engine.3D"],
+		includeDir["entt"],
 		includeDir["DirectX"]
 	}
 

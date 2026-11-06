@@ -4,10 +4,6 @@
 
 #include <box2d.h>
 
-namespace Ghurund::Engine {
-	class World;
-}
-
 namespace Ghurund::Engine::_2D {
 	class PhysicsSystem2D:public System {
 #pragma region reflection
@@ -23,7 +19,7 @@ namespace Ghurund::Engine::_2D {
 #pragma endregion
 
 	private:
-		World& world;
+		class World2D& world;
 		b2WorldId id = {};
 		static const uint16_t subStepCount = 4;
 
@@ -43,7 +39,7 @@ namespace Ghurund::Engine::_2D {
 		};
 
 	public:
-		PhysicsSystem2D(World& world):world(world) {}
+		PhysicsSystem2D(World2D& world):world(world) {}
 		
 		~PhysicsSystem2D() {
 			if (IsInitialized)
