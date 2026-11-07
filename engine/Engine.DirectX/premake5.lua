@@ -19,6 +19,7 @@ project "Engine.DirectX"
 		"src",
 		includeDir["Core"],
 		includeDir["Engine"],
+		includeDir["imgui"],
 		includeDir["DirectX"]
 	}
 

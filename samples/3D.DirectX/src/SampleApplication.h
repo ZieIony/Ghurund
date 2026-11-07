@@ -8,6 +8,7 @@
 #include "ui/directx/DxUIFeature.h"
 #include "ui/directx/DxUIFeatureFactory.h"
 #include <engine/EngineFeatureFactory.h>
+#include <engine/directx/imgui/ImGuiFeatureFactory.h>
 
 namespace Sample {
     using namespace Ghurund::Engine;
@@ -36,6 +37,7 @@ namespace Sample {
             Features.add<DxGraphics3DFeature, DxGraphics3DFeatureFactory>();
             Features.add<DxGraphicsFeature, DxGraphicsFeatureFactory>();
             Features.add<DxUIFeature, DxUIFeatureFactory>();
+            Features.add<ImGuiFeature, ImGuiFeatureFactory>();
         }
 
         ~SampleApplication() {

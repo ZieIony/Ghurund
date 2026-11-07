@@ -126,7 +126,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\3d\Graphics3DFeature.cpp" />
-    <ClCompile Include="src\engine\3d\graphics\transform\TransformComponent3DLoader.cpp" />
     <ClCompile Include="src\engine\3d\World3D.cpp" />
     <ClCompile Include="src\engine\3d\audio\AudioSystem3D.cpp" />
     <ClCompile Include="src\engine\3d\graphics\camera\Camera3D.cpp" />
@@ -137,6 +136,7 @@
     <ClCompile Include="src\engine\3d\graphics\mesh\MeshComponent.cpp" />
     <ClCompile Include="src\engine\3d\graphics\mesh\MeshComponentLoader.cpp" />
     <ClCompile Include="src\engine\3d\graphics\mesh\MeshRenderingSystem.cpp" />
+    <ClCompile Include="src\engine\3d\graphics\transform\TransformComponent3DLoader.cpp" />
     <ClCompile Include="src\engine\3d\graphics\transform\TransformSystem3D.cpp" />
     <ClCompile Include="src\engine\3d\physics\Physics.cpp" />
     <ClCompile Include="src\ghe3dpch.cpp">

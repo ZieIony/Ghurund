@@ -2,11 +2,12 @@
 
 #include "SampleApplication.h"
 
-#include "engine/application/GameWindow.h"
 #include "core/coroutine/CoroutineTask.h"
-#include "engine/3d/World3D.h"
 #include "engine/3d/graphics/camera/CameraController.h"
+#include "engine/3d/World3D.h"
+#include "engine/application/GameWindow.h"
 #include <engine/3d/graphics/mesh/MeshRenderingSystem.h>
+#include <engine/directx/imgui/ImGuiSystem.h>
 
 namespace Sample {
 	using namespace Ghurund;
@@ -21,6 +22,7 @@ namespace Sample {
 		World3D* world = nullptr;
 		CameraController cameraController;
 		IntrusivePointer<MeshRenderingSystem> meshRenderingSystem;
+		IntrusivePointer<ImGuiSystem> imGuiSystem;
 
 	protected:
 		virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override {
@@ -43,6 +45,7 @@ namespace Sample {
 		SampleWindow(SampleApplication& app);
 
 		~SampleWindow() {
+			imGuiSystem->deinitWindow();
 			delete world;
 		}
 

@@ -14,7 +14,8 @@ namespace Ghurund::Engine::DirectX {
 
     class Frame {
     private:
-        DxGraphicsCommandList* commandList;
+        DxGraphicsCommandList* startCommandList;
+        DxGraphicsCommandList* renderCommandList;
         D3D12_VIEWPORT viewport = {};
         D3D12_RECT scissorRect = {};
         RenderTarget* renderTarget = nullptr;
@@ -22,11 +23,13 @@ namespace Ghurund::Engine::DirectX {
 
     public:
         Frame() {
-            commandList = ghnew DxGraphicsCommandList();
+            startCommandList = ghnew DxGraphicsCommandList();
+            renderCommandList = ghnew DxGraphicsCommandList();
         }
 
         ~Frame() {
-            commandList->release();
+            startCommandList->release();
+            renderCommandList->release();
             delete renderTarget;
             delete depthBuffer;
         }
@@ -34,6 +37,7 @@ namespace Ghurund::Engine::DirectX {
         void init(DxGraphics& graphics, D3D12_VIEWPORT& viewport, D3D12_RECT& scissorRect, RenderTarget* renderTarget, DepthBuffer* depthBuffer);
 
         void start();
+        void startFrame(CommandList& commandList);
         void clear(const Color* color);
         void finish();
         void flush();
@@ -44,10 +48,16 @@ namespace Ghurund::Engine::DirectX {
 
         __declspec(property(get = getRenderTarget)) RenderTarget& RenderTarget;
 
-        inline DxGraphicsCommandList* getCommandList() const {
-            return commandList;
+        inline DxGraphicsCommandList* getStartCommandList() const {
+            return startCommandList;
         }
 
-        __declspec(property(get = getCommandList)) DxGraphicsCommandList* CommandList;
+        __declspec(property(get = getStartCommandList)) DxGraphicsCommandList* StartCommandList;
+
+        inline DxGraphicsCommandList* getRenderCommandList() const {
+            return renderCommandList;
+        }
+
+        __declspec(property(get = getRenderCommandList)) DxGraphicsCommandList* RenderCommandList;
     };
 }

@@ -98,12 +98,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\ecs\NameComponent.h" />
-    <ClInclude Include="src\engine\ecs\NameComponentLoader.h" />
-    <ClInclude Include="src\engine\EngineFeatureFactory.h" />
-    <ClInclude Include="src\engine\script\ScriptComponent.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\EngineFeature.h" />
+    <ClInclude Include="src\engine\EngineFeatureFactory.h" />
     <ClInclude Include="src\engine\animation\Animation.h" />
     <ClInclude Include="src\engine\animation\AnimationSet.h" />
     <ClInclude Include="src\engine\animation\Animator.h" />
@@ -124,6 +121,8 @@
     <ClInclude Include="src\engine\audio\sound\SoundLoader.h" />
     <ClInclude Include="src\engine\ecs\ComponentLoader.h" />
     <ClInclude Include="src\engine\ecs\Entity.h" />
+    <ClInclude Include="src\engine\ecs\NameComponent.h" />
+    <ClInclude Include="src\engine\ecs\NameComponentLoader.h" />
     <ClInclude Include="src\engine\ecs\Scene.h" />
     <ClInclude Include="src\engine\ecs\SceneLoader.h" />
     <ClInclude Include="src\engine\ecs\System.h" />
@@ -221,6 +220,7 @@
     <ClInclude Include="src\engine\parameter\ValueParameter.h" />
     <ClInclude Include="src\engine\resource\IGraphicsResourceFactory.h" />
     <ClInclude Include="src\engine\script\Script.h" />
+    <ClInclude Include="src\engine\script\ScriptComponent.h" />
     <ClInclude Include="src\engine\script\ScriptComponentLoader.h" />
     <ClInclude Include="src\engine\script\ScriptManager.h" />
     <ClInclude Include="src\ghepch.h" />

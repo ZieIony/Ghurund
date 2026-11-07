@@ -17,8 +17,7 @@ namespace Ghurund::Engine::DirectX {
 	void DxRenderingContext::startFrame() {
 		swapChain->CurrentFrame.start();
 
-		CommandList* commandList = swapChain->CurrentFrame.CommandList;
-		graphics.DescriptorAllocator.set(commandList->get());   // TODO: apply allocator properly
+		graphics.DescriptorAllocator.set(swapChain->CurrentFrame.StartCommandList->get());   // TODO: apply allocator properly
 		stats.startFrame();
 	}
 
@@ -27,7 +26,7 @@ namespace Ghurund::Engine::DirectX {
 		swapChain->CurrentFrame.finish();
 		swapChain->present();
 	}
-	
+
 	void DxRenderingContext::setSize(Ghurund::Core::IntSize size) {
 		if (swapChain)
 			swapChain->uninitBuffers();
@@ -38,7 +37,7 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	void DxRenderingContext::draw(RenderGroup& renderGroup, ParameterManager& parameterManager, MaterialVariantType variantType) {
-		auto commandList = swapChain->CurrentFrame.CommandList;
+		auto commandList = swapChain->CurrentFrame.RenderCommandList;
 		if (renderGroup.Camera)
 			renderGroup.Camera->apply(parameterManager);
 

@@ -10,36 +10,55 @@ namespace Ghurund::Engine::DirectX {
         this->viewport = viewport;
         this->scissorRect = scissorRect;
 
-        commandList->init(graphics, graphics.DirectQueue);
-        commandList->Name = L"frame command list";
+        startCommandList->init(graphics, graphics.DirectQueue);
+        startCommandList->Name = L"start command list";
+        renderCommandList->init(graphics, graphics.DirectQueue);
+        renderCommandList->Name = L"render command list";
     }
 
     void Frame::start() {
-		if (commandList->State == CommandListState::CLOSED)
-			commandList->wait();
-        commandList->reset();
+		if (startCommandList->State == CommandListState::CLOSED)
+            startCommandList->wait();
+        startCommandList->reset();
 
-        commandList->get()->OMSetRenderTargets(1, &renderTarget->Handle, FALSE, &depthBuffer->Handle);
-        renderTarget->start(*commandList);
+        startCommandList->get()->OMSetRenderTargets(1, &renderTarget->Handle, FALSE, &depthBuffer->Handle);
+        renderTarget->start(*startCommandList);
 
-        commandList->get()->RSSetViewports(1, &viewport);
-        commandList->get()->RSSetScissorRects(1, &scissorRect);
+        startCommandList->get()->RSSetViewports(1, &viewport);
+        startCommandList->get()->RSSetScissorRects(1, &scissorRect);
+    }
+
+    void Frame::startFrame(CommandList& commandList) {
+        if (commandList.State == CommandListState::CLOSED)
+            commandList.wait();
+        commandList.reset();
+        commandList.get()->OMSetRenderTargets(1, &renderTarget->Handle, FALSE, &depthBuffer->Handle);
+        commandList.get()->RSSetViewports(1, &viewport);
+        commandList.get()->RSSetScissorRects(1, &scissorRect);
     }
 
     void Frame::clear(const Color* color) {
         if (color != nullptr)
-            renderTarget->clear(*commandList, { color->R, color->G, color->B, color->A });
-        depthBuffer->clear(*commandList);
+            renderTarget->clear(*startCommandList, { color->R, color->G, color->B, color->A });
+        depthBuffer->clear(*startCommandList);
+        startCommandList->finish();
+
+        if (renderCommandList->State == CommandListState::CLOSED)
+            renderCommandList->wait();
+        renderCommandList->reset();
+        renderCommandList->get()->OMSetRenderTargets(1, &renderTarget->Handle, FALSE, &depthBuffer->Handle);
+        renderCommandList->get()->RSSetViewports(1, &viewport);
+        renderCommandList->get()->RSSetScissorRects(1, &scissorRect);
     }
 
     void Frame::finish() {
-        renderTarget->finish(*commandList);
-        commandList->finish();
+        renderTarget->finish(*renderCommandList);
+        renderCommandList->finish();
     }
 
     void Frame::flush() {
-        commandList->finish();
-        commandList->wait();
-        commandList->reset();
+        renderCommandList->finish();
+        renderCommandList->wait();
+        renderCommandList->reset();
     }
 }

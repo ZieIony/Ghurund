@@ -34,6 +34,7 @@ includeDir["DirectX"] = "%{libsDir}"
 includeDir["GLEW"] = "%{libsDir}/glew-2.1.0/include"
 includeDir["GLFW"] = "%{libsDir}/glfw-3.3.6/include"
 includeDir["assimp"] = "%{libsDir}/assimp/include"
+includeDir["imgui"] = "%{libsDir}/imgui"
 
 libraryDir = {}
 libraryDir["msdfgen_Debug"] = "%{libsDir}/msdfgen/x64/Debug Library"

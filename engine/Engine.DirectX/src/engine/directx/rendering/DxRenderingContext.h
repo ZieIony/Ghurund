@@ -2,6 +2,7 @@
 
 #include "engine/directx/buffer/RenderTarget.h"
 #include "engine/directx/SwapChain.h"
+#include "engine/directx/CommandList.h"
 #include "engine/graphics/rendering/RenderingContext.h"
 
 namespace Ghurund::Engine::DirectX {
@@ -31,9 +32,14 @@ namespace Ghurund::Engine::DirectX {
 		virtual void startFrame() override;
 
 		virtual void finishFrame() override;
-		
+
+		inline void startFrame(CommandList& commandList) {
+			swapChain->CurrentFrame.startFrame(commandList);
+		}
+
 		virtual void clear(const Ghurund::Core::Color* clearColor) override {
 			swapChain->CurrentFrame.clear(clearColor);
+			graphics.DescriptorAllocator.set(swapChain->CurrentFrame.RenderCommandList->get());   // TODO: apply allocator properly
 		}
 
 		virtual void setSize(Ghurund::Core::IntSize size) override;

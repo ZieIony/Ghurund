@@ -8,6 +8,7 @@
 #include <engine/3d/graphics/camera/CameraSystem3D.h>
 #include "engine/directx/rendering/DxRenderer.h"
 #include <LookAtEntityScript.h>
+#include <engine/directx/imgui/ImGuiSystem.h>
 
 namespace Sample {
 	SampleWindow::SampleWindow(SampleApplication& app):GameWindow(app), app(app) {
@@ -31,6 +32,11 @@ namespace Sample {
 		Systems.add(makeIntrusive<TransformSystem3D>(*world));
 		Systems.add(meshRenderingSystem);
 		Systems.add(makeIntrusive<CameraSystem3D>(*world));
+
+		auto graphicsFeature = app.Features.get<DxGraphicsFeature>();
+		imGuiSystem = makeIntrusive<ImGuiSystem>(graphicsFeature->Graphics);
+		Systems.add(imGuiSystem);
+		imGuiSystem->initWindow(*this);
 
 		Systems.printGraph();
 
