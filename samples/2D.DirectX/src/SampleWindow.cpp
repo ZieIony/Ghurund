@@ -1,15 +1,15 @@
 #include "SampleWindow.h"
 
+#include "FpsSystem.h"
 #include "SampleApplication.h"
 
 #include "core/Colors.h"
 #include "core/window/DisplayManager.h"
-#include <FpsSystem.h>
-#include <engine/2d/graphics/transform/TransformSystem2D.h>
-#include <engine/2d/graphics/tiles/TileMapSystem.h>
-#include <engine/2d/graphics/sprite/animation/SpriteAnimationSystem.h>
-#include <engine/2d/graphics/camera/CameraSystem2D.h>
-#include <engine/2d/graphics/camera/CameraComponent2D.h>
+#include "engine/2d/graphics/camera/CameraComponent2D.h"
+#include "engine/2d/graphics/camera/CameraSystem2D.h"
+#include "engine/2d/graphics/sprite/animation/SpriteAnimationSystem.h"
+#include "engine/2d/graphics/tiles/TileMapSystem.h"
+#include "engine/2d/graphics/transform/TransformSystem2D.h"
 
 namespace Sample {
 	SampleWindow::SampleWindow(SampleApplication& app):GameWindow(app), app(app) {

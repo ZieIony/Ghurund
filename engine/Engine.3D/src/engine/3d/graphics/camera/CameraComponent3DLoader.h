@@ -1,7 +1,7 @@
 #pragma once
 
-#include <engine/3d/graphics/camera/CameraComponent3D.h>
-#include <engine/ecs/ComponentLoader.h>
+#include "engine/3d/graphics/camera/CameraComponent3D.h"
+#include "engine/ecs/ComponentLoader.h"
 
 namespace Ghurund::Engine::_3D {
 

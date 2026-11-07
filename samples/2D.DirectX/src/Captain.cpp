@@ -2,18 +2,17 @@
 #include <Windows.h>
 
 #include "Captain.h"
-
 #include "CaptainStates.h"
 
+#include "core/resource/ResourceManager.h"
+#include "engine/2d/graphics/camera/Camera2D.h"
+#include "engine/2d/graphics/camera/CameraComponent2D.h"
+#include "engine/2d/graphics/sprite/animation/SpriteAnimation.h"
+#include "engine/2d/graphics/sprite/animation/SpriteAnimationSet.h"
+#include "engine/2d/graphics/sprite/SpriteComponent.h"
+#include "engine/2d/physics/visualization/VisualizationComponent2D.h"
 #include "engine/2d/World2D.h"
-#include <core/resource/ResourceManager.h>
-#include <engine/2d/graphics/sprite/animation/SpriteAnimation.h>
-#include <engine/2d/graphics/sprite/animation/SpriteAnimationSet.h>
-#include <engine/2d/graphics/camera/Camera2D.h>
-#include <engine/animation/AnimatorState.h>
-#include <engine/2d/graphics/camera/CameraComponent2D.h>
-#include <engine/2d/graphics/sprite/SpriteComponent.h>
-#include <engine/2d/physics/visualization/VisualizationComponent2D.h>
+#include "engine/animation/AnimatorState.h"
 
 namespace Sample {
 	CoroutineTask<void> Captain::init(PhysicsSystem2D& physicsSystem, ResourceManager& resourceManager, IGPUMemoryManager& memoryManager, World2D& world) {

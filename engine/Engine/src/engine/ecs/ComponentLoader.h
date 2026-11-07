@@ -1,10 +1,10 @@
 #pragma once
 
-#include <core/io/DirectoryPath.h>
-#include <core/object/RefCountedObject.h>
-#include <core/xml/XMLElement.h>
-#include <engine/ecs/Entity.h>
-#include <engine/ecs/Scene.h>
+#include "core/io/DirectoryPath.h"
+#include "core/object/RefCountedObject.h"
+#include "core/xml/XMLElement.h"
+#include "engine/ecs/Entity.h"
+#include "engine/ecs/Scene.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;

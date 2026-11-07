@@ -11,9 +11,9 @@
 #include "engine/directx/shader/variables/DxSamplerInfo.h"
 #include "engine/directx/shader/variables/DxTextureConstantInfo.h"
 #include "engine/graphics/mesh/VertexStream.h"
-#include <engine/directx/compute/DxComputeShader.h>
-#include <engine/directx/rendering/DxGraphicsShader.h>
-#include <engine/graphics/material/Material.h>
+#include "engine/directx/compute/DxComputeShader.h"
+#include "engine/directx/rendering/DxGraphicsShader.h"
+#include "engine/graphics/material/Material.h"
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;

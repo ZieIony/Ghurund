@@ -1,9 +1,9 @@
 #pragma once
 
+#include "core/object/NotNull.h"
 #include "core/object/RefCountedObject.h"
-#include <core/object/NotNull.h>
-#include <engine/ecs/Entity.h>
-#include <engine/ecs/Scene.h>
+#include "engine/ecs/Entity.h"
+#include "engine/ecs/Scene.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;

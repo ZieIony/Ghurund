@@ -1,10 +1,11 @@
 #include "ghepch.h"
 #include "MaterialLoader.h"
 
+#include "CubeMapInput.h"
+
 #include "core/Color.h"
 #include "engine/graphics/cubemap/ICubeMap.h"
-#include "CubeMapInput.h"
-#include <engine/graphics/rendering/GraphicsShader.h>
+#include "engine/graphics/rendering/GraphicsShader.h"
 
 namespace Ghurund::Engine {
 	CoroutineTask<void> MaterialLoader::onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value) {

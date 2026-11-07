@@ -1,11 +1,11 @@
 #pragma once
 
-#include <engine/script/Script.h>
-#include <engine/ecs/Entity.h>
-#include <engine/3d/graphics/mesh/MeshComponent.h>
-#include <engine/3d/graphics/transform/TransformComponent3D.h>
-#include <engine/3d/graphics/camera/CameraComponent3D.h>
-#include <engine/ecs/NameComponent.h>
+#include "engine/script/Script.h"
+#include "engine/ecs/Entity.h"
+#include "engine/3d/graphics/mesh/MeshComponent.h"
+#include "engine/3d/graphics/transform/TransformComponent3D.h"
+#include "engine/3d/graphics/camera/CameraComponent3D.h"
+#include "engine/ecs/NameComponent.h"
 
 #include <DirectXCollision.h>
 

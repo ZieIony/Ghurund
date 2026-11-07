@@ -5,7 +5,7 @@
 #include "core/resource/ResourceManager.h"
 #include "engine/graphics/mesh/Mesh.h"
 #include "engine/graphics/material/Material.h"
-#include <engine/ecs/SceneLoader.h>
+#include "engine/ecs/SceneLoader.h"
 
 namespace Ghurund::Engine::_3D {
     using namespace Ghurund::Core;

@@ -3,9 +3,9 @@
 #include "ScriptComponent.h"
 #include "ScriptManager.h"
 
-#include <core/xml/XMLElement.h>
-#include <engine/ecs/Entity.h>
-#include <engine/ecs/ComponentLoader.h>
+#include "core/xml/XMLElement.h"
+#include "engine/ecs/ComponentLoader.h"
+#include "engine/ecs/Entity.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;

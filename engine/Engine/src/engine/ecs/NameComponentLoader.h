@@ -3,7 +3,7 @@
 #include "ComponentLoader.h"
 #include "NameComponent.h"
 
-#include <core/object/NotNull.h>
+#include "core/object/NotNull.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;

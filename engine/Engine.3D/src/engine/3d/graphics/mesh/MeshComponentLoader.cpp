@@ -1,7 +1,7 @@
 #include "ghe3dpch.h"
 #include "MeshComponentLoader.h"
 
-#include <engine/3d/graphics/mesh/MeshComponent.h>
+#include "engine/3d/graphics/mesh/MeshComponent.h"
 
 namespace Ghurund::Engine::_3D {
 	void MeshComponentLoader::loadComponent(

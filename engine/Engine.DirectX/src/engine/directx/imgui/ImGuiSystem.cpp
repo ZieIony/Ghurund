@@ -1,7 +1,7 @@
 #include "ghedxpch.h"
 #include "ImGuiSystem.h"
 
-#include <engine/directx/rendering/DxRenderingContext.h>
+#include "engine/directx/rendering/DxRenderingContext.h"
 
 #include <imgui/backends/imgui_impl_win32.h>
 #include <imgui/backends/imgui_impl_win32.cpp>

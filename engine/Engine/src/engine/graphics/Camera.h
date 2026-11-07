@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/object/RefCountedObject.h"
-#include <core/math/Size.h>
+#include "core/math/Size.h"
 #include "engine/parameter/ValueParameter.h"
 
 #include <DirectXMath.h>

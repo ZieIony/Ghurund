@@ -5,7 +5,7 @@
 #include "engine/ecs/SystemCollection.h"
 #include "engine/application/GameApplication.h"
 #include "engine/ecs/World.h"
-#include <engine/ecs/Scene.h>
+#include "engine/ecs/Scene.h"
 
 namespace Ghurund::Core {
 	class Application;

@@ -1,12 +1,11 @@
 #pragma once
 
 #include "Animation.h"
-#include "AnimationSet.h"
 
-#include "core/object/NotNull.h"
-#include <core/state/MachineState.h>
-#include <core/string/String.h>
 #include "core/concepts/Derived.h"
+#include "core/object/NotNull.h"
+#include "core/state/MachineState.h"
+#include "core/string/String.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "core/object/Initializable.h"
-#include <engine/application/DrawGroup.h>
-#include <engine/application/UpdateGroup.h>
-#include <engine/graphics/rendering/RenderingContext.h>
+#include "engine/application/DrawGroup.h"
+#include "engine/application/UpdateGroup.h"
+#include "engine/graphics/rendering/RenderingContext.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;

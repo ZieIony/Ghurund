@@ -1,14 +1,14 @@
 #include "SampleWindow.h"
 
+#include "LookAtEntityScript.h"
 #include "SampleApplication.h"
 
 #include "core/Colors.h"
-#include "engine/graphics/compute/ComputeShader.h"
-#include <engine/3d/graphics/transform/TransformSystem3D.h>
-#include <engine/3d/graphics/camera/CameraSystem3D.h>
+#include "engine/3d/graphics/camera/CameraSystem3D.h"
+#include "engine/3d/graphics/transform/TransformSystem3D.h"
+#include "engine/directx/imgui/ImGuiSystem.h"
 #include "engine/directx/rendering/DxRenderer.h"
-#include <LookAtEntityScript.h>
-#include <engine/directx/imgui/ImGuiSystem.h>
+#include "engine/graphics/compute/ComputeShader.h"
 
 namespace Sample {
 	SampleWindow::SampleWindow(SampleApplication& app):GameWindow(app), app(app) {

@@ -1,13 +1,13 @@
 #pragma once
 
+#include "core/coroutine/CoroutineTask.h"
+#include "engine/2d/audio/component/AudioListenerComponent2D.h"
+#include "engine/2d/audio/component/SoundComponent2D.h"
+#include "engine/2d/graphics/sprite/animation/SpriteAnimationComponent.h"
+#include "engine/2d/graphics/transform/TransformComponent2D.h"
+#include "engine/2d/physics/RigidBodyComponent2D.h"
+#include "engine/2d/World2D.h"
 #include "engine/ecs/Entity.h"
-#include <core/coroutine/CoroutineTask.h>
-#include <engine/2d/audio/component/AudioListenerComponent2D.h>
-#include <engine/2d/audio/component/SoundComponent2D.h>
-#include <engine/2d/graphics/transform/TransformComponent2D.h>
-#include <engine/2d/World2D.h>
-#include <engine/2d/graphics/sprite/animation/SpriteAnimationComponent.h>
-#include <engine/2d/physics/RigidBodyComponent2D.h>
 
 namespace Sample {
 	using namespace Ghurund::Core;

@@ -2,11 +2,11 @@
 
 #include "DxComputeCommandList.h"
 
-#include "engine/graphics/compute/ComputeShader.h"
-#include "engine/directx/shader/variables/DxBufferConstantInfo.h"
-#include <engine/directx/shader/variables/DxTextureConstantInfo.h>
-#include <core/IUnknownImpl.h>
+#include "core/IUnknownImpl.h"
 #include "core/object/OwnedNotNull.h"
+#include "engine/directx/shader/variables/DxBufferConstantInfo.h"
+#include "engine/directx/shader/variables/DxTextureConstantInfo.h"
+#include "engine/graphics/compute/ComputeShader.h"
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;

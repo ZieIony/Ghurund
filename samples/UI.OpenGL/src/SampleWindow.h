@@ -3,11 +3,11 @@
 #include "Ghurund.Engine.OpenGL.h"
 
 #include "engine/application/GameWindow.h"
-#include <engine/opengl/mesh/OglMesh.h>
-#include <engine/opengl/OGlRenderer.h>
-#include <engine/opengl/shader/OglShader.h>
-#include <engine/opengl/shader/OglShaderLoader.h>
-#include <engine/graphics/mesh/QuadMeshData.h>
+#include "engine/opengl/mesh/OglMesh.h"
+#include "engine/opengl/OGlRenderer.h"
+#include "engine/opengl/shader/OglShader.h"
+#include "engine/opengl/shader/OglShaderLoader.h"
+#include "engine/graphics/mesh/QuadMeshData.h"
 
 namespace Sample {
     using namespace Ghurund::Engine;

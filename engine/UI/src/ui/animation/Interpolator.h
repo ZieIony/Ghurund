@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cmath>
-#include <corecrt_math_defines.h>
+#include <DirectXMath.h>
 
 namespace Ghurund::UI {
 	class Interpolator {
@@ -21,7 +21,7 @@ namespace Ghurund::UI {
 	class CosInterpolator:public Interpolator {
 	public:
 		virtual float getProgress(float progress) const override {
-			return (float)(cos((progress + 1) * M_PI) / 2.0f) + 0.5f;
+			return (float)(cos((progress + 1) * ::DirectX::XM_PI) / 2.0f) + 0.5f;
 		}
 	};
 }

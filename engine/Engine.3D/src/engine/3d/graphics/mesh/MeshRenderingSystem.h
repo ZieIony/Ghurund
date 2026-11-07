@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine/ecs/System.h"
-#include <engine/graphics/Camera.h>
+#include "engine/graphics/Camera.h"
 
 namespace Ghurund::Engine::_3D {
     class MeshRenderingSystem:public System {

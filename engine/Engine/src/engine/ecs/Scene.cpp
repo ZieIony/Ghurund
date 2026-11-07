@@ -1,7 +1,7 @@
 #include "ghepch.h"
 #include "Scene.h"
 
-#include <engine/script/ScriptComponent.h>
+#include "engine/script/ScriptComponent.h"
 
 namespace Ghurund::Engine {
 	const Ghurund::Core::Type& Scene::GET_TYPE() {

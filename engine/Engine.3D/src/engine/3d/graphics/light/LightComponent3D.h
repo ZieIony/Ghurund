@@ -2,7 +2,7 @@
 
 #include "Light.h"
 
-#include <engine/3d/graphics/transform/TransformComponent3D.h>
+#include "engine/3d/graphics/transform/TransformComponent3D.h"
 
 namespace Ghurund::Engine::_3D {
 	class LightComponent3D {

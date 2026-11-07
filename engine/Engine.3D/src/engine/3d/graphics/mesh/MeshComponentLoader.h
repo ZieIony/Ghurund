@@ -1,9 +1,9 @@
 #pragma once
 
-#include <core/io/FilePath.h>
-#include <core/xml/XMLElement.h>
-#include <engine/ecs/ComponentLoader.h>
-#include <engine/ecs/Entity.h>
+#include "core/io/FilePath.h"
+#include "core/xml/XMLElement.h"
+#include "engine/ecs/ComponentLoader.h"
+#include "engine/ecs/Entity.h"
 
 namespace Ghurund::Engine::_3D {
 

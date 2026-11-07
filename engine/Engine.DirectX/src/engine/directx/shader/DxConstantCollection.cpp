@@ -3,8 +3,8 @@
 
 #include "DxConstantBuffer.h"
 
-#include <engine/directx/cubemap/DxCubeMap.h>
-#include <engine/directx/texture/DxTexture.h>
+#include "engine/directx/cubemap/DxCubeMap.h"
+#include "engine/directx/texture/DxTexture.h"
 
 namespace Ghurund::Engine::DirectX {
 	void DxConstantCollection::init(

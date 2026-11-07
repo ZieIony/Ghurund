@@ -3,7 +3,7 @@
 #include "core/feature/Feature.h"
 #include "core/reflection/Type.h"
 #include "ecs/SceneLoader.h"
-#include <engine/script/ScriptManager.h>
+#include "engine/script/ScriptManager.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;

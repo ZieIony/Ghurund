@@ -5,7 +5,7 @@
 #include "engine/graphics/material/Material.h"
 #include "engine/graphics/mesh/Mesh.h"
 #include "engine/graphics/rendering/RenderGroup.h"
-#include <engine/graphics/material/ValueInput.h>
+#include "engine/graphics/material/ValueInput.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;

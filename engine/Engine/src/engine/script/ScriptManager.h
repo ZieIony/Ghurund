@@ -3,9 +3,9 @@
 #include "Script.h"
 
 #include "core/collection/Map.h"
-#include "core/reflection/Type.h"
-#include <core/string/String.h>
 #include "core/concepts/Derived.h"
+#include "core/reflection/Type.h"
+#include "core/string/String.h"
 
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;

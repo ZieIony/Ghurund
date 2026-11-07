@@ -2,7 +2,7 @@
 #include "DxGraphicsShader.h"
 
 #include "core/reflection/TypeBuilder.h"
-#include <engine/directx/shader/DxConstantCollection.h>
+#include "engine/directx/shader/DxConstantCollection.h"
 
 namespace Ghurund::Engine::DirectX {
 

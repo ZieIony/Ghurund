@@ -1,10 +1,11 @@
 #include "ghepch.h"
 #include "GameWindow.h"
 
+#include "GameApplication.h"
+
 #include "core/reflection/Property.h"
 
 #include <windowsx.h>
-#include "GameApplication.h"
 
 namespace Ghurund::Engine {
     const Ghurund::Core::Type& GameWindow::GET_TYPE() {
