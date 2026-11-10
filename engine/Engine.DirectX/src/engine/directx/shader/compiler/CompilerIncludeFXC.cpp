@@ -1,12 +1,12 @@
 #include "ghedxpch.h"
-#include "CompilerInclude.h"
+#include "CompilerIncludeFXC.h"
 
 #include "core/logging/Logger.h"
 
 #include <format>
 
 namespace Ghurund::Engine::DirectX {
-	HRESULT __stdcall CompilerInclude::Open(D3D_INCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVOID pParentData, LPCVOID* ppData, UINT* pBytes) {
+	HRESULT __stdcall CompilerIncludeFXC::Open(D3D_INCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVOID pParentData, LPCVOID* ppData, UINT* pBytes) {
 		WString fullPath;
 		AString aFileName = pFileName;
 		WString fileName = convertText<char, wchar_t>(aFileName);

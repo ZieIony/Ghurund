@@ -7,25 +7,28 @@
 #include "core/Finally.h"
 #include "engine/directx/DxGraphics.h"
 
+#include <sstream>
+
 #pragma warning(push, 0)
-#include <d3dcompiler.h>
+#include <dxcapi.h>
+#include <core/collection/List.h>
 #pragma warning(pop)
+
+#pragma comment(lib, "dxcompiler.lib")
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Microsoft::WRL;
 
-	D3D12_INPUT_LAYOUT_DESC DxShaderCompiler::getInputLayout(const Buffer& byteCode) {
-		ID3D12ShaderReflection* reflector = nullptr;
-		D3DReflect(byteCode.Data, byteCode.Size, IID_ID3D12ShaderReflection, (void**)&reflector);
+	D3D12_INPUT_LAYOUT_DESC DxShaderCompiler::getInputLayout(const DxShaderProgram& program) {
 		D3D12_SHADER_DESC desc;
-		reflector->GetDesc(&desc);
+		program.Reflection->GetDesc(&desc);
 
 		D3D12_INPUT_LAYOUT_DESC inputLayoutDesc;
 		inputLayoutDesc.NumElements = desc.InputParameters;
 		D3D12_INPUT_ELEMENT_DESC* inputElements = ghnew D3D12_INPUT_ELEMENT_DESC[desc.InputParameters];
 		for (unsigned int i = 0; i < desc.InputParameters; i++) {
 			D3D12_SIGNATURE_PARAMETER_DESC parameterDesc;
-			reflector->GetInputParameterDesc(i, &parameterDesc);
+			program.Reflection->GetInputParameterDesc(i, &parameterDesc);
 			inputElements[i].SemanticName = copyStr(parameterDesc.SemanticName);
 			inputElements[i].SemanticIndex = parameterDesc.SemanticIndex;
 			inputElements[i].Format = getFormat(parameterDesc.Mask, parameterDesc.ComponentType);
@@ -35,8 +38,6 @@ namespace Ghurund::Engine::DirectX {
 			inputElements[i].InstanceDataStepRate = 0;
 		}
 		inputLayoutDesc.pInputElementDescs = inputElements;
-
-		reflector->Release();
 
 		return inputLayoutDesc;
 	}
@@ -77,15 +78,15 @@ namespace Ghurund::Engine::DirectX {
 		return DXGI_FORMAT_UNKNOWN;
 	}
 
-	DxShaderProgram* DxShaderCompiler::compile(
-		const DxShaderProgramSourceCode& shaderSource, CompilerInclude* include, bool debug
+	DxShaderProgram* DxShaderCompiler::compileFXC(
+		const DxShaderProgramSourceCode& shaderSource, CompilerIncludeFXC& include, bool debug
 	) {
 		unsigned int compileFlags = debug ? D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION : 0;
 
 		ID3DBlob* errorBlob;
 		ComPtr<ID3DBlob> shader;
 		AString target = makeCompilationTarget(shaderSource.shaderType);
-		HRESULT hr = D3DCompile(shaderSource.sourceCode.Data, shaderSource.sourceCode.Length, shaderSource.sourceName.Data, nullptr, include, shaderSource.entryPoint.Data, target.Data, compileFlags, 0, &shader, &errorBlob);
+		HRESULT hr = D3DCompile(shaderSource.sourceCode.Data, shaderSource.sourceCode.Length, shaderSource.sourceName.Data, nullptr, &include, shaderSource.entryPoint.Data, target.Data, compileFlags, 0, &shader, &errorBlob);
 		if (FAILED(hr)) {
 			if (errorBlob == nullptr) {
 				Logger::log(LogType::ERR0R, _T("Unknown error while compiling shader\n"));
@@ -103,7 +104,97 @@ namespace Ghurund::Engine::DirectX {
 			}
 		} else {
 			auto sourceCode = Buffer(shader->GetBufferPointer(), shader->GetBufferSize());
-			return ghnew DxShaderProgram(shaderSource.shaderType, sourceCode, shaderSource.entryPoint);
+			ComPtr<ID3D12ShaderReflection> reflection;
+			D3DReflect(sourceCode.Data, sourceCode.Size, IID_ID3D12ShaderReflection, (void**)reflection.GetAddressOf());
+			return ghnew DxShaderProgram(shaderSource.shaderType, sourceCode, shaderSource.entryPoint, reflection);
+		}
+	}
+
+	DxShaderProgram* DxShaderCompiler::compileDXC(
+		const DxShaderProgramSourceCode& shaderSource, CompilerIncludeDXC& include, bool debug
+	) {
+		ComPtr<IDxcUtils> utils;
+		DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(utils.GetAddressOf()));
+		ComPtr<IDxcCompiler3> compiler;
+		DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(compiler.GetAddressOf()));
+
+		// Clang looks for <> includes in include directories and reports
+		// errors even though the include handler loads these files just fine
+		std::string source = shaderSource.sourceCode.Data;
+		std::regex regex(" *\\#include +\\<(.*)\\> *");
+		source = std::regex_replace(source, regex, "#include \"$1\"");
+
+		DxcBuffer sourceBuffer;
+		sourceBuffer.Ptr = source.c_str();
+		sourceBuffer.Size = shaderSource.sourceCode.Length;
+		sourceBuffer.Encoding = 0;
+
+		WString target = convertText<char, wchar_t>(makeCompilationTarget(shaderSource.shaderType));
+		WString entryPoint = convertText<char, wchar_t>(shaderSource.entryPoint);
+
+		std::vector<LPCWSTR> arguments;
+		arguments.push_back(L"-E");
+		arguments.push_back(entryPoint.Data);
+		arguments.push_back(L"-T");
+		arguments.push_back(target.Data);
+		arguments.push_back(L"-fdiagnostics-format=msvc");
+		arguments.push_back(L"-all-resources-bound");
+		arguments.push_back(L"-Qstrip_reflect");
+		arguments.push_back(L"-Vi");
+
+		if (debug) {
+			arguments.push_back(L"-Od");
+			arguments.push_back(L"-Zi");
+		} else {
+			arguments.push_back(L"-O3");
+		}
+
+		ComPtr<IDxcResult> result;
+		compiler->Compile(&sourceBuffer, arguments.data(), uint32_t(arguments.size()), &include, IID_PPV_ARGS(result.GetAddressOf()));
+		HRESULT status;
+		result->GetStatus(&status);
+
+		ComPtr<IDxcBlobUtf8> errorBlob;
+		result->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(errorBlob.GetAddressOf()), nullptr);
+		AString errorMessages((char*)errorBlob->GetBufferPointer(), errorBlob->GetBufferSize());
+		errorBlob->Release();
+
+		if (FAILED(status)) {
+			if (errorMessages.contains("entrypoint not found")) {
+				return nullptr;
+			} else {
+				auto text = std::format(_T("Error while compiling shader:\n{}\n"), errorMessages);
+				Logger::log(LogType::ERR0R, text.c_str());
+				throw DxCompilationException(status, errorMessages.Data);
+			}
+		} else {
+			ComPtr<IDxcBlob> shaderBlob = nullptr;
+			ComPtr<IDxcBlobUtf16> shaderBlobName = nullptr;
+			result->GetOutput(DXC_OUT_OBJECT, IID_PPV_ARGS(shaderBlob.GetAddressOf()), &shaderBlobName);
+			auto sourceCode = Buffer(shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize());
+
+			ComPtr<IDxcBlob> pReflectionData;
+			result->GetOutput(DXC_OUT_REFLECTION, IID_PPV_ARGS(pReflectionData.GetAddressOf()), nullptr);
+			DxcBuffer reflectionBuffer;
+			reflectionBuffer.Ptr = pReflectionData->GetBufferPointer();
+			reflectionBuffer.Size = pReflectionData->GetBufferSize();
+			reflectionBuffer.Encoding = 0;
+			ComPtr<ID3D12ShaderReflection> pShaderReflection;
+			utils->CreateReflection(&reflectionBuffer, IID_PPV_ARGS(pShaderReflection.GetAddressOf()));
+			return ghnew DxShaderProgram(shaderSource.shaderType, sourceCode, shaderSource.entryPoint, pShaderReflection);
+		}
+	}
+
+	DxShaderProgram* DxShaderCompiler::compile(
+		const DxShaderProgramSourceCode& shaderSource, const DirectoryPath& workingDir, const List<DirectoryPath>* includeDirs, bool debug
+	) {
+		if (target.Value >= CompilationTargetEnum::SHADER_6_0) {
+			ComPtr<CompilerIncludeDXC> compilerInclude;
+			compilerInclude.Swap(ghnew CompilerIncludeDXC(resourceManager, workingDir, includeDirs ? *includeDirs : List<DirectoryPath>()));
+			return compileDXC(shaderSource, *compilerInclude.Get(), debug);
+		} else {
+			CompilerIncludeFXC compilerInclude = CompilerIncludeFXC(resourceManager, workingDir, includeDirs ? *includeDirs : List<DirectoryPath>());
+			return compileFXC(shaderSource, compilerInclude, debug);
 		}
 	}
 
@@ -122,7 +213,7 @@ namespace Ghurund::Engine::DirectX {
 		D3D12_INPUT_LAYOUT_DESC inputLayout;
 		for (auto& program : programs) {
 			if (program->Type == DxShaderType::VERTEX) {
-				inputLayout = getInputLayout(program->ByteCode);
+				inputLayout = getInputLayout(program.ref());
 				break;
 			}
 		}
@@ -337,21 +428,19 @@ namespace Ghurund::Engine::DirectX {
 		List<DxTextureConstantInfo*>& uavs,
 		List<DxSamplerInfo*>& samplers
 	) {
-		ID3D12ShaderReflection* reflector = nullptr;
-		D3DReflect(program.ByteCode.Data, program.ByteCode.Size, IID_ID3D12ShaderReflection, (void**)&reflector);
 		D3D12_SHADER_DESC desc;
-		reflector->GetDesc(&desc);
+		program.Reflection->GetDesc(&desc);
 
 		auto visibility = program.Type.Visibility;
 
 		for (unsigned int i = 0; i < desc.BoundResources; i++) {
 			D3D12_SHADER_INPUT_BIND_DESC bindDesc;
-			reflector->GetResourceBindingDesc(i, &bindDesc);
+			program.Reflection->GetResourceBindingDesc(i, &bindDesc);
 
 			switch (bindDesc.Type) {
 			case D3D_SIT_CBUFFER:
 			{
-				ID3D12ShaderReflectionConstantBuffer* constantBuffer = reflector->GetConstantBufferByName(bindDesc.Name);
+				ID3D12ShaderReflectionConstantBuffer* constantBuffer = program.Reflection->GetConstantBufferByName(bindDesc.Name);
 				D3D12_SHADER_BUFFER_DESC bufferDesc;
 				constantBuffer->GetDesc(&bufferDesc);
 				size_t index = constantBuffers.find([&](auto& item) {return strcmp(bindDesc.Name, item->Name.Data) == 0; });
@@ -401,7 +490,5 @@ namespace Ghurund::Engine::DirectX {
 			break;
 			}
 		}
-
-		reflector->Release();
 	}
 }

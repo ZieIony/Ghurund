@@ -66,7 +66,7 @@ namespace Sample {
 			quadComponent.Material = material.get();
 		}*/
 
-		auto computeShader = co_await app.ResourceManager.load<ComputeShader>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"shaders/DirectX/compute/generateMipMaps.xml"));
+		//auto computeShader = co_await app.ResourceManager.load<ComputeShader>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"shaders/DirectX/compute/generateMipMaps.xml"));
 
 		app.ResourceManager.Resources.printResources();
 	}

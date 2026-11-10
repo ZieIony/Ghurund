@@ -152,11 +152,10 @@ namespace Ghurund::Engine::DirectX {
 			Logger::log(LogType::ERR0R, _T("Pixel shader program is required.\n"));
 			throw DxEntrypointNotFoundException(DxShaderType::PIXEL);
 		}
-		CompilerInclude include(resourceManager, workingDir, includeDirs);
 		List<SharedPointer<DxShaderProgram>> programs;
 		for (auto sourceCode : shader.Source->programs) {
 			auto dxSourceCode = (DxShaderProgramSourceCode*)sourceCode;
-			auto program = SharedPointer<DxShaderProgram>(compiler.compile(*dxSourceCode, &include));
+			auto program = SharedPointer<DxShaderProgram>(compiler.compile(*dxSourceCode, workingDir, &includeDirs));
 			programs.add(program);
 		}
 		auto array = Array<SharedPointer<DxShaderProgram>>(programs);

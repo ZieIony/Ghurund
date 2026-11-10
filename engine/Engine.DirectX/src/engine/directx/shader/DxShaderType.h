@@ -10,7 +10,7 @@ namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
 
 	enum class DxShaderTypeEnum {
-		VERTEX = 1, PIXEL = 2, GEOMETRY = 4, HULL = 8, D0MAIN = 16, COMPUTE = 32
+		VERTEX, PIXEL, GEOMETRY, HULL, D0MAIN, MESH, AMPLIFICATION, COMPUTE
 	};
 
 	class DxShaderType:public Enum<DxShaderTypeEnum, DxShaderType> {
@@ -29,7 +29,7 @@ namespace Ghurund::Engine::DirectX {
 		}
 
 	public:
-		static const DxShaderType VERTEX, PIXEL, GEOMETRY, HULL, D0MAIN, COMPUTE;
+		static const DxShaderType VERTEX, PIXEL, GEOMETRY, HULL, D0MAIN, MESH, AMPLIFICATION, COMPUTE;
 
 		DxShaderType(
 			const DxShaderType& other

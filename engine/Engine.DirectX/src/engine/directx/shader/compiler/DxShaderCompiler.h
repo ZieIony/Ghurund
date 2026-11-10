@@ -1,7 +1,8 @@
 #pragma once
 
 #include "CompilationTarget.h"
-#include "CompilerInclude.h"
+#include "CompilerIncludeFXC.h"
+#include "CompilerIncludeDXC.h"
 #include "DxShaderProgram.h"
 
 #include "core/IUnknownImpl.h"
@@ -13,7 +14,6 @@
 #include "engine/graphics/mesh/VertexStream.h"
 #include "engine/directx/compute/DxComputeShader.h"
 #include "engine/directx/rendering/DxGraphicsShader.h"
-#include "engine/graphics/material/Material.h"
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;
@@ -23,6 +23,7 @@ namespace Ghurund::Engine::DirectX {
 	class DxShaderCompiler {
 	private:
 		DxGraphics& graphics;
+		ResourceManager& resourceManager;
 		IGPUMemoryManager& memoryManager;
 		const CompilationTarget& target;
 		//Material* defaultMaterial;
@@ -56,13 +57,20 @@ namespace Ghurund::Engine::DirectX {
 			}
 		}
 
+		DxShaderProgram* compileFXC(const DxShaderProgramSourceCode& shaderSource, CompilerIncludeFXC& include, bool debug);
+
+		DxShaderProgram* compileDXC(const DxShaderProgramSourceCode& shaderSource, CompilerIncludeDXC& include, bool debug);
+
 	public:
 		DxShaderCompiler(
 			DxGraphics& graphics,
+			ResourceManager& resourceManager,
 			IGPUMemoryManager& memoryManager,
-			const CompilationTarget& target = CompilationTarget::SHADER_5_0
-		):graphics(graphics), memoryManager(memoryManager), target(target) {
+			const CompilationTarget& target = CompilationTarget::SHADER_6_0
+		):graphics(graphics), resourceManager(resourceManager), memoryManager(memoryManager), target(target) {
 		}
+
+		void init();
 
 		/*inline void setDefaultMaterial(Material* material) {
 			setPointer(defaultMaterial, material);
@@ -74,7 +82,7 @@ namespace Ghurund::Engine::DirectX {
 
 		__declspec(property(get = getDefaultMaterial, put = setDefaultMaterial)) Material* DefaultMaterial;*/
 
-		D3D12_INPUT_LAYOUT_DESC getInputLayout(const Buffer& byteCode);
+		D3D12_INPUT_LAYOUT_DESC getInputLayout(const DxShaderProgram& program);
 
 		OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> makeGraphicsPipelineState(
 			const Array<SharedPointer<DxShaderProgram>>& programs,
@@ -104,7 +112,7 @@ namespace Ghurund::Engine::DirectX {
 			List<DxSamplerInfo*>& samplers
 		);
 
-		DxShaderProgram* compile(const DxShaderProgramSourceCode& shaderSource, CompilerInclude* include = nullptr, bool debug =
+		DxShaderProgram* compile(const DxShaderProgramSourceCode& shaderSource, const DirectoryPath& workingDir = DirectoryPath::getCurrentDirectory(), const List<DirectoryPath>* includeDirs = nullptr, bool debug =
 #ifdef _DEBUG
 			true
 #else

@@ -7,5 +7,8 @@ namespace Ghurund::Engine::DirectX {
     const DxShaderType DxShaderType::GEOMETRY = DxShaderType(DxShaderTypeEnum::GEOMETRY, "GEOMETRY", "gs", "geometryMain", D3D12_SHADER_VISIBILITY_GEOMETRY);
     const DxShaderType DxShaderType::HULL = DxShaderType(DxShaderTypeEnum::HULL, "HULL", "hs", "hullMain", D3D12_SHADER_VISIBILITY_HULL);
     const DxShaderType DxShaderType::D0MAIN = DxShaderType(DxShaderTypeEnum::D0MAIN, "D0MAIN", "ds", "domainMain", D3D12_SHADER_VISIBILITY_DOMAIN);
+    const DxShaderType DxShaderType::MESH = DxShaderType(DxShaderTypeEnum::MESH, "MESH", "ms", "meshMain", D3D12_SHADER_VISIBILITY_MESH);
+    const DxShaderType DxShaderType::AMPLIFICATION = DxShaderType(DxShaderTypeEnum::AMPLIFICATION, "AMPLIFICATION", "as", "amplificationMain", D3D12_SHADER_VISIBILITY_AMPLIFICATION);
+
     const DxShaderType DxShaderType::COMPUTE = DxShaderType(DxShaderTypeEnum::COMPUTE, "COMPUTE", "cs", "computeMain", D3D12_SHADER_VISIBILITY_ALL);
 }

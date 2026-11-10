@@ -76,14 +76,14 @@ namespace Ghurund::Core {
                 return;
 
             *ppObject = (InterfaceName*)this;
-        }
-    };
+		}
+	};
 
-    class IUnknownDeleter {
-    public:
-        inline void operator()(IUnknown* obj) {
-            if(obj)
-                obj->Release();
-        }
-    };
+	class IUnknownDeleter {
+	public:
+		inline void operator()(IUnknown* obj) {
+			if (obj)
+				obj->Release();
+		}
+	};
 }

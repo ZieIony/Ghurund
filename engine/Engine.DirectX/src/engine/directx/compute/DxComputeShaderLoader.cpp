@@ -10,8 +10,7 @@ namespace Ghurund::Engine::DirectX {
 			Logger::log(LogType::ERR0R, _T("Compute shader program is required.\n"));
 			throw DxEntrypointNotFoundException(DxShaderType::COMPUTE);
 		}
-		CompilerInclude include(resourceManager, workingDir, includeDirs);
-		auto computeProgram = SharedPointer<DxShaderProgram>(compiler.compile(*computeShaderSource, &include));
+		auto computeProgram = SharedPointer<DxShaderProgram>(compiler.compile(*computeShaderSource, workingDir, &includeDirs));
 		compiler.build(shader, computeProgram.ref());
 	}
 

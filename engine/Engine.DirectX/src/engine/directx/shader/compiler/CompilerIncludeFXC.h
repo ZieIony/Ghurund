@@ -12,13 +12,13 @@
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
 
-    class CompilerInclude:public ID3DInclude {
+    class CompilerIncludeFXC:public ID3DInclude {
         ResourceManager& resourceManager;
         DirectoryPath shaderDir;
         List<DirectoryPath> systemDirs;
 
     public:
-        CompilerInclude(
+        CompilerIncludeFXC(
             ResourceManager& resourceManager,
             const DirectoryPath& shaderDir,
             List<DirectoryPath> systemDirs

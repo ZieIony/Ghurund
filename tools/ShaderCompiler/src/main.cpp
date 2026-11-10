@@ -39,7 +39,7 @@ int main() {
 	commandList->init(graphics, graphics.DirectQueue);
 	auto memoryManager = DxGPUMemoryManager(graphics, commandList.ref());
 
-	DxShaderCompiler compiler(graphics, memoryManager);
+	DxShaderCompiler compiler(graphics, resourceManager, memoryManager);
 
 	FilePath filePath = FilePath(convertText<char, wchar_t>(filePathArgument));
 	File file(filePath);
@@ -53,7 +53,6 @@ int main() {
 			AString sourceName = convertText<wchar_t, char>(filePath.toString());
 			List<DirectoryPath> includeDirs;
 			includeDirs.add(ResourceManager::ENGINE_LIB_PATH / DirectoryPath(L"/shaders/DirectX/include"));
-			CompilerInclude include(resourceManager, filePath.Directory, includeDirs);
 
 			for (auto shaderType : DxShaderType::VALUES) {
 				if (!sourceCode.contains(shaderType.get().EntryPoint))
@@ -62,7 +61,7 @@ int main() {
 				auto message = std::format(_T("Compiling {}...\n"), shaderType.get().TypeName);
 				Logger::print(LogType::INFO, message.c_str());
 				auto shaderSource = DxShaderProgramSourceCode(shaderType, sourceCode, sourceName);
-				compiler.compile(shaderSource, &include, true);
+				compiler.compile(shaderSource, filePath.Directory, &includeDirs, true);
 				hasEntry = true;
 			}
 
