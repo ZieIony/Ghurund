@@ -24,8 +24,7 @@ namespace Ghurund::Engine::OpenGL {
 
 		Timer timer;
 		window = ghnew SystemWindow(timer);
-		ParameterManager parameterManager;
-		renderer = ghnew OglRenderer(parameterManager);
+		renderer = ghnew OglRenderer();
 		renderer->init();
 		context = renderer->makeRenderingContext(*window);
 		context->init();

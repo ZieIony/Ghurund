@@ -2,6 +2,8 @@
 
 #include "core/DataParsing.h"
 
+#include <stdexcept>
+
 namespace Ghurund::Engine {
 	enum class MaterialVariantType {
 		DEPTH, UNLIT, LIT, NORMALS, TANGENTS, TEXCOORDS, NUM_VARIANTS

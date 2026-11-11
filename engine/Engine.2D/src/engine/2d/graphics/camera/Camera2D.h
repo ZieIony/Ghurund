@@ -2,7 +2,7 @@
 
 #include "core/math/Size.h"
 #include "engine/graphics/Camera.h"
-#include "engine/parameter/ValueParameter.h"
+#include "engine/graphics/rendering/GlobalParameters.h"
 
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
@@ -27,29 +27,12 @@ namespace Ghurund::Engine::_2D {
 		XMFLOAT3 pos, right, up;
 		BoundingOrientedBox boundingOrientedBox;
 
-		inline static const AString CAMERA_POSITION = "gh_cameraPosition";
-		inline static const AString CAMERA_UP = "gh_cameraUp";
-		inline static const AString CAMERA_RIGHT = "gh_cameraRight";
-		inline static const AString ZNEAR = "gh_zNear";
-		inline static const AString ZFAR = "gh_zFar";
-		inline static const AString VIEW = "gh_view";
-		inline static const AString PROJECTION = "gh_projection";
-		inline static const AString VIEW_PROJECTION = "gh_viewProjection";
-		inline static const AString VIEW_PROJECTION_INV = "gh_viewProjectionInv";
-
-		Float3Parameter* parameterPosition = nullptr, * parameterUp = nullptr, * parameterRight = nullptr;
-		FloatParameter* parameterZNear = nullptr, * parameterZFar = nullptr;
-		MatrixParameter* parameterView = nullptr, * parameterProjection = nullptr;
-		MatrixParameter* parameterViewProjection = nullptr, * parameterViewProjectionInv = nullptr;
-
 	public:
 		Camera2D();
 
-		~Camera2D();
-
 		virtual void update() override;
 
-		virtual void apply(ParameterManager& parameterManager) override;
+		virtual void apply(GlobalParameters& globalParameters) override;
 
 		inline XMFLOAT2 getPosition() const {
 			return { pos.x, pos.y };

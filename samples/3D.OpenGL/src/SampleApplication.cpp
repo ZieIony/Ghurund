@@ -13,7 +13,7 @@ namespace Sample {
     void SampleApplication::onInit() {
         __super::onInit();
 
-        renderer = ghnew OglRenderer(parameterManager);
+        renderer = ghnew OglRenderer();
         renderer->init();
 
         window = ghnew SampleWindow(*this, *renderer);

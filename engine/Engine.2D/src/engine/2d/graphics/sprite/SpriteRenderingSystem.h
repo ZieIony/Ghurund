@@ -20,16 +20,12 @@ namespace Ghurund::Engine::_2D {
     private:
         class World2D& world;
         Camera2D* camera = nullptr;
-        ParameterManager& parameterManager;
 
     protected:
         virtual const Array<std::reference_wrapper<const Ghurund::Core::Type>>& getDependencies_internal() const override;
 
     public:
-        SpriteRenderingSystem(
-            World2D& world,
-            ParameterManager& parameterManager
-        ):world(world), parameterManager(parameterManager) {
+        SpriteRenderingSystem(World2D& world):world(world) {
         }
 
         ~SpriteRenderingSystem() {

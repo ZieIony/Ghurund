@@ -52,6 +52,6 @@ namespace Ghurund::Engine::_2D {
             // TODO: maybe not declare draw order manually?
             group.objects.add(DrawPacket(visualization.Mesh, visualization.Material, 0.0f));
         }
-        renderingContext.draw(group, parameterManager, MaterialVariantType::UNLIT);
+        renderingContext.draw(group, MaterialVariantType::UNLIT);
     }
 }

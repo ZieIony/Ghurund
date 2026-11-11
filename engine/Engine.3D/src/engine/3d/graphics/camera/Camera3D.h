@@ -29,27 +29,16 @@ namespace Ghurund::Engine::_3D {
 		float dist;
 		bool pers;
 
-		inline static const AString PARAMETER_NAME_DIRECTION = "gh_cameraDirection";
-		inline static const AString PARAMETER_NAME_POSITION = "gh_cameraPosition";
-		inline static const AString PARAMETER_NAME_TARGET = "gh_cameraTarget";
-		inline static const AString PARAMETER_NAME_UP = "gh_cameraUp";
-		inline static const AString PARAMETER_NAME_RIGHT = "gh_cameraRight";
-
-		Float3Parameter* parameterDirection = nullptr, * parameterPosition = nullptr, * parameterTarget = nullptr;
-		Float3Parameter* parameterUp = nullptr, * parameterRight = nullptr;
-
 	public:
 		inline static const XMFLOAT3 DEFAULT_UP = { 0, 1, 0 };
 
 		Camera3D();
 
-		~Camera3D();
-
 		void calcMouseRay(const XMINT2& mousePos, XMFLOAT3& rayPos, XMFLOAT3& rayDir) const;
 
 		virtual void update() override;
 
-		virtual void apply(ParameterManager& parameterManager) override;
+		virtual void apply(GlobalParameters& globalParameters) override;
 
 		inline const XMFLOAT3& getPosition() const {
 			return pos;

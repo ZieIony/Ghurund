@@ -1,9 +1,9 @@
 #pragma once
 
-#include "core/object/NotNull.h"
-#include "core/resource/Resource.h"
-#include "engine/graphics/memory/IGPUMemoryManager.h"
 #include "MaterialVariantType.h"
+
+#include "core/object/IntrusivePointer.h"
+#include "core/resource/Resource.h"
 #include "engine/graphics/rendering/GraphicsShader.h"
 
 namespace Ghurund::Engine {

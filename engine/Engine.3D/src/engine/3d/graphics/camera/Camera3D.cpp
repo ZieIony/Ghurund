@@ -2,7 +2,6 @@
 #include "Camera3D.h"
 
 #include "core/reflection/TypeBuilder.h"
-#include "engine/parameter/ParameterManager.h"
 
 #include <DirectXMath.h>
 
@@ -22,71 +21,30 @@ namespace Ghurund::Engine::_3D {
 		zFar = 10000.0f;
 		ViewSize = { 640, 480 };
 		FOV = XM_PI / 4;
-
-		parameterDirection = ghnew Float3Parameter(PARAMETER_NAME_DIRECTION);
-		parameterPosition = ghnew Float3Parameter(PARAMETER_NAME_POSITION);
-		parameterTarget = ghnew Float3Parameter(PARAMETER_NAME_TARGET);
-		parameterUp = ghnew Float3Parameter(PARAMETER_NAME_UP);
-		parameterRight = ghnew Float3Parameter(PARAMETER_NAME_RIGHT);
-	}
-
-	Camera3D::~Camera3D() {
-		parameterDirection->release();
-		parameterPosition->release();
-		parameterTarget->release();
-		parameterUp->release();
-		parameterRight->release();
 	}
 
 	void Camera3D::update() {
-		XMMATRIX viewTemp, projTemp, viewProjTemp, viewProjInvTemp;
-		XMFLOAT4X4 viewTransposed, projTransposed, viewProjTransposed, viewProjInvTransposed;
 	
-		viewTemp = XMMatrixLookAtLH(XMLoadFloat3(&pos), XMLoadFloat3(&target), XMLoadFloat3(&up));
+		XMMATRIX viewTemp = XMMatrixLookAtLH(XMLoadFloat3(&pos), XMLoadFloat3(&target), XMLoadFloat3(&up));
 		XMStoreFloat4x4(&view, XMMatrixTranspose(viewTemp));
+
+		XMMATRIX projTemp;
 		if (pers) {
 			projTemp = XMMatrixPerspectiveFovLH(fov.y, aspectRatio, zNear, zFar);
 		} else {
 			projTemp = XMMatrixOrthographicLH((float)viewSize.Width, (float)viewSize.Height, zNear, zFar);
 		}
-		XMStoreFloat4x4(&proj, projTemp);
+		XMStoreFloat4x4(&proj, projTemp);	// why view is transposed and proj is not?
 	
-		viewProjTemp = viewTemp * projTemp;
-		XMStoreFloat4x4(&viewProj, viewProjTemp);
-		viewProjInvTemp = XMMatrixInverse(nullptr, viewProjTemp);
-		XMStoreFloat4x4(&viewProjInv, viewProjInvTemp);
-
-		parameterDirection->Value = dir;
-		parameterPosition->Value = pos;
-		parameterUp->Value = up;
-		parameterRight->Value = right;
-		parameterFov->Value = fov;
-		parameterZNear->Value = zNear;
-		parameterZFar->Value = zFar;
-
-		XMStoreFloat4x4(&viewTransposed, XMMatrixTranspose(viewTemp));
-		parameterView->Value = viewTransposed;
-		XMStoreFloat4x4(&projTransposed, XMMatrixTranspose(projTemp));
-		parameterProjection->Value = projTransposed;
-		XMStoreFloat4x4(&viewProjTransposed, XMMatrixTranspose(viewProjTemp));
-		parameterViewProjection->Value = viewProjTransposed;
-		XMStoreFloat4x4(&viewProjInvTransposed, XMMatrixTranspose(viewProjInvTemp));
-		parameterViewProjectionInv->Value = viewProjInvTransposed;
+		XMMATRIX viewProjTemp = viewTemp * projTemp;
+		XMStoreFloat4x4(&viewProj, XMMatrixTranspose(viewProjTemp));
+		XMMATRIX viewProjInvTemp = XMMatrixInverse(nullptr, viewProjTemp);
+		XMStoreFloat4x4(&viewProjInv, XMMatrixTranspose(viewProjInvTemp));
 	}
 
-	void Camera3D::apply(ParameterManager& parameterManager) {
-		parameterManager.Parameters.put(parameterDirection);
-		parameterManager.Parameters.put(parameterPosition);
-		parameterManager.Parameters.put(parameterUp);
-		parameterManager.Parameters.put(parameterRight);
-
-		parameterManager.Parameters.put(parameterZNear);
-		parameterManager.Parameters.put(parameterZFar);
-
-		parameterManager.Parameters.put(parameterView);
-		parameterManager.Parameters.put(parameterProjection);
-		parameterManager.Parameters.put(parameterViewProjection);
-		parameterManager.Parameters.put(parameterViewProjectionInv);
+	void Camera3D::apply(GlobalParameters& globalParameters) {
+		globalParameters.viewProj = viewProj;
+		globalParameters.cameraPos = Position;
 	}
 
 	void Camera3D::calcMouseRay(const XMINT2& mousePos, XMFLOAT3& rayPos, XMFLOAT3& rayDir)const {

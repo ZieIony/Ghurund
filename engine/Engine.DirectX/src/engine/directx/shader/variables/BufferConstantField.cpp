@@ -1,34 +1,36 @@
 #include "ghedxpch.h"
 #include "BufferConstantField.h"
 
-#include "engine/parameter/ValueParameter.h"
+#include <DirectXMath.h>
 
 namespace Ghurund::Engine::DirectX {
+	using namespace ::DirectX;
+
 	ConstantType BufferConstantField::makeConstantType() const {
 		if (variableClass == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_SCALAR) {
 			if (variableType == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_INT) {
-				if (size == IntParameter::SIZE)
+				if (size == sizeof(int32_t))
 					return ConstantType::INT;
 			} else if (variableType == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_UINT) {
-				if (size == IntParameter::SIZE)
+				if (size == sizeof(uint32_t))
 					return ConstantType::UINT;
 			} else if (variableType == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_BOOL) {
-				if (size == IntParameter::SIZE)
+				if (size == 4)
 					return ConstantType::BOOL;
 			} else if (variableType == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
-				if (size == FloatParameter::SIZE)
+				if (size == sizeof(float))
 					return ConstantType::FLOAT;
 			}
 		} else if (variableClass == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_VECTOR) {
 			if (variableType == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_INT) {
-				if (size == Int2Parameter::SIZE)
+				if (size == sizeof(XMINT2))
 					return ConstantType::INT2;
 			} else if (variableType == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
-				if (size == Float2Parameter::SIZE) {
+				if (size == sizeof(XMFLOAT2)) {
 					return ConstantType::FLOAT2;
-				} else if (size == Float3Parameter::SIZE) {
+				} else if (size == sizeof(XMFLOAT3)) {
 					return ConstantType::FLOAT3;
-				} else if (size == Float4Parameter::SIZE) {
+				} else if (size == sizeof(XMFLOAT4)) {
 					return ConstantType::FLOAT4;
 				}
 			}
@@ -38,7 +40,7 @@ namespace Ghurund::Engine::DirectX {
 			variableClass == D3D_SHADER_VARIABLE_CLASS::D3D10_SVC_MATRIX_COLUMNS
 			) {
 			if (variableType == D3D_SHADER_VARIABLE_TYPE::D3D10_SVT_FLOAT) {
-				if (size == MatrixParameter::SIZE) {
+				if (size == sizeof(XMFLOAT4X4)) {
 					return ConstantType::MATRIX;
 				}
 			}

@@ -26,8 +26,8 @@ namespace Sample {
 		world = ghnew World2D(app);
 		world->init();
 
-		spriteRenderingSystem = makeIntrusive<SpriteRenderingSystem>(*world, ParameterManager);
-		visualizationRenderingSystem = makeIntrusive<VisualizationRenderingSystem>(*world, ParameterManager);
+		spriteRenderingSystem = makeIntrusive<SpriteRenderingSystem>(*world);
+		visualizationRenderingSystem = makeIntrusive<VisualizationRenderingSystem>(*world);
 		Systems.add(makeIntrusive<TransformSystem2D>(*world));
 		Systems.add(makeIntrusive<PhysicsSystem2D>(*world));
 		Systems.add(spriteRenderingSystem);

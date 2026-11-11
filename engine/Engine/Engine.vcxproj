@@ -98,6 +98,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\graphics\rendering\GlobalParameters.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\EngineFeature.h" />
     <ClInclude Include="src\engine\EngineFeatureFactory.h" />
@@ -213,11 +214,6 @@
     <ClInclude Include="src\engine\net\Server.h" />
     <ClInclude Include="src\engine\net\ServerMessage.h" />
     <ClInclude Include="src\engine\net\Socket.h" />
-    <ClInclude Include="src\engine\parameter\Parameter.h" />
-    <ClInclude Include="src\engine\parameter\ParameterCollection.h" />
-    <ClInclude Include="src\engine\parameter\ParameterManager.h" />
-    <ClInclude Include="src\engine\parameter\TextureParameter.h" />
-    <ClInclude Include="src\engine\parameter\ValueParameter.h" />
     <ClInclude Include="src\engine\resource\IGraphicsResourceFactory.h" />
     <ClInclude Include="src\engine\script\Script.h" />
     <ClInclude Include="src\engine\script\ScriptComponent.h" />
@@ -275,8 +271,6 @@
     <ClCompile Include="src\engine\net\ReliableUDP.cpp" />
     <ClCompile Include="src\engine\net\Server.cpp" />
     <ClCompile Include="src\engine\net\Socket.cpp" />
-    <ClCompile Include="src\engine\parameter\Parameter.cpp" />
-    <ClCompile Include="src\engine\parameter\ParameterManager.cpp" />
     <ClCompile Include="src\ghepch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

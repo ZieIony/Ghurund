@@ -5,6 +5,7 @@
 
 #include "engine/directx/cubemap/DxCubeMap.h"
 #include "engine/directx/texture/DxTexture.h"
+#include "engine/graphics/rendering/GlobalParameters.h"
 
 namespace Ghurund::Engine::DirectX {
 	void DxConstantCollection::init(
@@ -13,6 +14,8 @@ namespace Ghurund::Engine::DirectX {
 		const List<DxTextureConstantInfo*>& uavConstantInfos
 	) {
 		for (auto& cb : bufferConstantInfos) {
+			if (cb->Name == GlobalParameters::CB_NAME)
+				continue;
 			List<ValueConstant> cbInputs;
 			for (auto& v : cb->Fields)
 				cbInputs.add(ValueConstant(v.name, v.makeConstantType(), v.size, v.offset, v.defaultValue));

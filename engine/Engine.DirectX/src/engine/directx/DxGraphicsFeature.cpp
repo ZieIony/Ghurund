@@ -53,7 +53,7 @@ namespace Ghurund::Engine::DirectX {
 		auto memoryManager = ghnew DxGPUMemoryManager(*graphics, *commandList);
 		this->memoryManager = memoryManager;
 
-		renderer = ghnew DxRenderer(*graphics);
+		renderer = ghnew DxRenderer(*graphics, *memoryManager);
 		renderer->init();
 
 		shaderCompiler = ghnew DxShaderCompiler(*graphics, resourceManager, *memoryManager);

@@ -2,7 +2,7 @@
 
 #include "core/object/RefCountedObject.h"
 #include "core/math/Size.h"
-#include "engine/parameter/ValueParameter.h"
+#include "engine/graphics/rendering/GlobalParameters.h"
 
 #include <DirectXMath.h>
 
@@ -18,43 +18,11 @@ namespace Ghurund::Engine {
 		float aspectRatio, zNear, zFar;
 		XMFLOAT4X4 view, proj, viewProj, viewProjInv;
 
-		inline static const AString PARAMETER_NAME_FOV = "gh_fov";
-		inline static const AString PARAMETER_NAME_ZNEAR = "gh_zNear";
-		inline static const AString PARAMETER_NAME_ZFAR = "gh_zFar";
-		inline static const AString PARAMETER_NAME_VIEW = "gh_view";
-		inline static const AString PARAMETER_NAME_PROJECTION = "gh_projection";
-		inline static const AString PARAMETER_NAME_VIEW_PROJECTION = "gh_viewProjection";
-		inline static const AString PARAMETER_NAME_VIEW_PROJECTION_INV = "gh_viewProjectionInv";
-
-		Float2Parameter* parameterFov = nullptr;
-		FloatParameter* parameterZNear = nullptr, * parameterZFar = nullptr;
-		MatrixParameter* parameterView = nullptr, * parameterProjection = nullptr;
-		MatrixParameter* parameterViewProjection = nullptr, * parameterViewProjectionInv = nullptr;
-
 	public:
 		Camera():
 			viewSize({ 640, 480 }),
 			zNear(100.0f),
 			zFar(200.0f) {
-			parameterFov = ghnew Float2Parameter(PARAMETER_NAME_FOV);
-			parameterZNear = ghnew FloatParameter(PARAMETER_NAME_ZNEAR);
-			parameterZFar = ghnew FloatParameter(PARAMETER_NAME_ZFAR);
-
-			parameterView = ghnew MatrixParameter(PARAMETER_NAME_VIEW);
-			parameterProjection = ghnew MatrixParameter(PARAMETER_NAME_PROJECTION);
-			parameterViewProjection = ghnew MatrixParameter(PARAMETER_NAME_VIEW_PROJECTION);
-			parameterViewProjectionInv = ghnew MatrixParameter(PARAMETER_NAME_VIEW_PROJECTION_INV);
-		}
-
-		~Camera() {
-			parameterFov->release();
-			parameterZNear->release();
-			parameterZFar->release();
-
-			parameterView->release();
-			parameterProjection->release();
-			parameterViewProjection->release();
-			parameterViewProjectionInv->release();
 		}
 
 		inline const IntSize& getViewSize() const {
@@ -112,6 +80,6 @@ namespace Ghurund::Engine {
 
 		virtual void update() = 0;
 
-		virtual void apply(ParameterManager& parameterManager) = 0;
+		virtual void apply(GlobalParameters& globalParameters) = 0;
 	};
 }

@@ -32,7 +32,7 @@ namespace Ghurund::Engine::OpenGL {
 		
 		virtual void clear(const Color* color) override;
 
-		virtual void draw(RenderGroup& renderGroup, ParameterManager& parameterManager, MaterialVariantType variantType) override;
+		virtual void draw(RenderGroup& renderGroup, MaterialVariantType variantType) override;
 
         virtual void setSize(Ghurund::Core::IntSize size) override;
 	};

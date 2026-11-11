@@ -2,11 +2,12 @@
 #include "GraphicsShader.h"
 
 #include "core/reflection/TypeBuilder.h"
-#include "engine/parameter/ParameterCollection.h"
-#include "engine/parameter/ValueParameter.h"
-#include "engine/parameter/TextureParameter.h"
+
+#include <DirectXMath.h>
 
 namespace Ghurund::Engine {
+    using namespace ::DirectX;
+
     const Ghurund::Core::Type& GraphicsShader::GET_TYPE() {
         static const Ghurund::Core::Type TYPE = TypeBuilder<GraphicsShader>()
             .withSupertype(__super::GET_TYPE());
@@ -17,23 +18,23 @@ namespace Ghurund::Engine {
     BaseValueInput* makeInput(ValueConstant& valueInput) {
         switch (valueInput.Type) {
         case ConstantType::INT:
-            return ghnew ValueInput<IntParameter>(valueInput);
+            return ghnew ValueInput<int32_t>(valueInput);
         case ConstantType::INT2:
-            return ghnew ValueInput<Int2Parameter>(valueInput);
+            return ghnew ValueInput<XMINT2>(valueInput);
         case ConstantType::UINT:
-            return ghnew ValueInput<UIntParameter>(valueInput);
+            return ghnew ValueInput<uint32_t>(valueInput);
         case ConstantType::BOOL:
-            return ghnew ValueInput<BoolParameter>(valueInput);
+            return ghnew ValueInput<bool>(valueInput);
         case ConstantType::FLOAT:
-            return ghnew ValueInput<FloatParameter>(valueInput);
+            return ghnew ValueInput<float>(valueInput);
         case ConstantType::FLOAT2:
-            return ghnew ValueInput<Float2Parameter>(valueInput);
+            return ghnew ValueInput<XMFLOAT2>(valueInput);
         case ConstantType::FLOAT3:
-            return ghnew ValueInput<Float3Parameter>(valueInput);
+            return ghnew ValueInput<XMFLOAT3>(valueInput);
         case ConstantType::FLOAT4:
-            return ghnew ValueInput<Float4Parameter>(valueInput);
+            return ghnew ValueInput<XMFLOAT4>(valueInput);
         case ConstantType::MATRIX:
-            return ghnew ValueInput<MatrixParameter>(valueInput);
+            return ghnew ValueInput<XMFLOAT4X4>(valueInput);
         }
         throw std::invalid_argument("invalid valueInput type");
     }
@@ -67,15 +68,12 @@ namespace Ghurund::Engine {
         }
     }
 
-    void GraphicsShader::applyInputs(ParameterCollection& globals) {
+    void GraphicsShader::applyInputs() {
         uint32_t logId = 0;
         for (auto input : valueInputs) {
             logId++;
             if (input->IsEmpty) {
-                auto global = (BaseValueParameter*)globals.get(input->Name);
-                if (global && !global->IsEmpty) {
-                    input->applyValue(global->RawValue);
-                } else if (input->DefaultValue) {
+                if (input->DefaultValue) {
                     input->applyValue(input->DefaultValue);
                 } else {
                     auto text = std::format(_T("No value for input '{}'.\n"), input->Name);
@@ -102,14 +100,9 @@ namespace Ghurund::Engine {
         for (auto input : textureInputs) {
             logId++;
             if (input->IsEmpty) {
-                auto global = (TextureParameter*)globals.get(input->Name);
-                if (global && !global->IsEmpty) {
-                    input->applyValue(global->Value);
-                } else {
-                    auto text = std::format(_T("No value for input '{}'.\n"), input->Name);
-                    Logger::logOnce(LogType::WARNING, text.c_str(), logId);
-                    continue;
-                }
+                auto text = std::format(_T("No value for input '{}'.\n"), input->Name);
+                Logger::logOnce(LogType::WARNING, text.c_str(), logId);
+                continue;
             } else {
                 input->applyValue();
             }

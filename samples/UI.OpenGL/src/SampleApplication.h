@@ -12,7 +12,6 @@ namespace Sample {
 
     class SampleApplication:public Ghurund::Engine::GameApplication {
     private:
-        ParameterManager parameterManager;
         OglRenderer* renderer = nullptr;
         SampleWindow* window = nullptr;
 

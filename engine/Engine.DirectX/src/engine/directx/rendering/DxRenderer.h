@@ -24,6 +24,7 @@ namespace Ghurund::Engine::DirectX {
 
     private:
         DxGraphics& graphics;
+        DxGPUMemoryManager& memoryManager;
 
     protected:
         virtual void onInit() override;
@@ -32,14 +33,14 @@ namespace Ghurund::Engine::DirectX {
         void uninitDxRenderer();
 
     public:
-        DxRenderer(DxGraphics& graphics):graphics(graphics) {}
+        DxRenderer(DxGraphics& graphics, DxGPUMemoryManager& memoryManager):graphics(graphics), memoryManager(memoryManager) {}
 
         ~DxRenderer() {
             uninitDxRenderer();
         }
 
         virtual DxRenderingContext* makeRenderingContext(SystemWindow& window) override {
-            return ghnew DxRenderingContext(window, graphics);
+            return ghnew DxRenderingContext(window, graphics, memoryManager);
         }
     };
 }

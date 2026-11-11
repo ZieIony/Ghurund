@@ -5,7 +5,6 @@
 #include "engine/graphics/material/ValueInput.h"
 #include "engine/graphics/material/TextureInput.h"
 #include "engine/graphics/material/CubeMapInput.h"
-#include "engine/parameter/ParameterCollection.h"
 #include "engine/graphics/memory/IGPUMemoryManager.h"
 
 namespace Ghurund::Engine {
@@ -61,6 +60,6 @@ namespace Ghurund::Engine {
 
         __declspec(property(get = getIsTransparencyEnabled)) bool IsTransparencyEnabled;
 
-        void applyInputs(ParameterCollection& defaults);
+        void applyInputs();
     };
 }

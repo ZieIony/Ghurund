@@ -6,8 +6,6 @@
 #include "engine/application/GameApplication.h"
 #include "engine/game/action/ActionMapping.h"
 #include "engine/graphics/rendering/Renderer.h"
-#include "engine/parameter/ParameterManager.h"
-#include "engine/parameter/ValueParameter.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
@@ -26,20 +24,11 @@ namespace Ghurund::Engine {
 #pragma endregion
 
     private:
-        ParameterManager parameterManager;
         LayerList layers;
         SystemCollection systems;
         Renderer* renderer = nullptr;
         std::unique_ptr<RenderingContext> renderingContext = nullptr;
         ActionMapping actionMapping;
-
-        inline static const AString VIEWPORT_SIZE = "gh_viewportSize";
-        inline static const AString TIME = "gh_time";
-        inline static const AString MOUSE_POS = "gh_mousePos";
-
-        IntrusivePointer<Int2Parameter> viewportSizeParameter;
-        IntrusivePointer<FloatParameter> timeParameter;
-        IntrusivePointer<Int2Parameter> mousePosParameter;
 
     protected:
         virtual bool onGamepadButtonEvent(const GamepadButtonEventArgs& event) override {
@@ -61,7 +50,7 @@ namespace Ghurund::Engine {
         virtual bool onMouseButtonEvent(const MouseButtonEventArgs& args) override;
 
         virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override {
-            mousePosParameter->Value = { event.Position.x, event.Position.y };
+            renderingContext->globalParameters.mousePos = event.Position;
             return layers.dispatchMouseMotionEvent(event) || actionMapping.onMouseMotionEvent(event);
         }
 
@@ -74,7 +63,7 @@ namespace Ghurund::Engine {
         virtual bool onFocusedChanged() override;
 
     public:
-		GameWindow(GameApplication& app, WindowStyle style = SystemWindow::DEFAULT_WINDOW_STYLE);
+		GameWindow(GameApplication& app, WindowStyle style = SystemWindow::DEFAULT_WINDOW_STYLE):ApplicationWindow(app, style) {}
 
         inline LayerList& getLayers() {
             return layers;
@@ -112,12 +101,6 @@ namespace Ghurund::Engine {
         }
 
         __declspec(property(get = getActionMapping)) ActionMapping& ActionMapping;
-
-        inline ParameterManager& getParameterManager() {
-            return parameterManager;
-        }
-
-        __declspec(property(get = getParameterManager)) ParameterManager& ParameterManager;
 
         virtual void fixedUpdate() override;
 

@@ -4,14 +4,18 @@
 #include "engine/directx/SwapChain.h"
 #include "engine/directx/CommandList.h"
 #include "engine/graphics/rendering/RenderingContext.h"
+#include "engine/directx/shader/DxConstantBuffer.h"
 
 namespace Ghurund::Engine::DirectX {
 	class DxRenderingContext: public RenderingContext {
 	private:
 		SwapChain* swapChain = nullptr;
 		Ghurund::Engine::DirectX::DxGraphics& graphics;
+		DxGPUMemoryManager& memoryManager;
+		DxConstantBuffer* globalParametersCB = nullptr;
 
 		inline void uninitDxRenderingContext() {
+			safeRelease(globalParametersCB);
 			delete swapChain;
 			swapChain = nullptr;
 		}
@@ -22,8 +26,8 @@ namespace Ghurund::Engine::DirectX {
 		virtual void onDeinit() override;
 
 	public:
-		DxRenderingContext(SystemWindow& window, Ghurund::Engine::DirectX::DxGraphics& graphics)
-			:Ghurund::Engine::RenderingContext(window), graphics(graphics) {}
+		DxRenderingContext(SystemWindow& window, Ghurund::Engine::DirectX::DxGraphics& graphics, DxGPUMemoryManager& memoryManager)
+			:Ghurund::Engine::RenderingContext(window), graphics(graphics), memoryManager(memoryManager) {}
 
 		~DxRenderingContext() {
 			uninitDxRenderingContext();
@@ -44,6 +48,6 @@ namespace Ghurund::Engine::DirectX {
 
 		virtual void setSize(Ghurund::Core::IntSize size) override;
 
-		virtual void draw(RenderGroup& renderGroup, ParameterManager& parameterManager, MaterialVariantType variantType) override;
+		virtual void draw(RenderGroup& renderGroup, MaterialVariantType variantType) override;
 	};
 }

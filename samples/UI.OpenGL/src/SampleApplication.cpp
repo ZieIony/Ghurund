@@ -22,7 +22,7 @@ namespace Sample {
         ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
         ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
 
-        renderer = ghnew OglRenderer(parameterManager);
+        renderer = ghnew OglRenderer();
         renderer->init();
         window = ghnew SampleWindow(*this, *renderer);
         window->init();

@@ -92,9 +92,9 @@ namespace Ghurund::Engine {
                 layer->update(timer.ApplicationTime.valueMs);
         }
 
-        inline void draw(RenderingContext& renderingContext, ParameterManager& parameterManager) {
+        inline void draw(RenderingContext& renderingContext) {
             for (auto& layer : layers)
-                layer->draw(renderingContext, parameterManager);
+                layer->draw(renderingContext);
         }
     };
 }

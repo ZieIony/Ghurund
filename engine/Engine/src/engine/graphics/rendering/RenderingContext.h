@@ -1,17 +1,14 @@
 #pragma once
 
-#include "DrawPacket.h"
+#include "GlobalParameters.h"
 #include "RenderGroup.h"
 #include "RenderingStatistics.h"
 
-#include "core/collection/Set.h"
 #include "core/Color.h"
 #include "core/math/Size.h"
 #include "core/object/Initializable.h"
 #include "core/object/Noncopyable.h"
-#include "core/object/NotNull.h"
 #include "core/window/SystemWindow.h"
-#include "engine/parameter/ParameterManager.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;
@@ -22,6 +19,8 @@ namespace Ghurund::Engine {
         RenderingStatistics stats;
 
     public:
+        GlobalParameters globalParameters;
+
         RenderingContext(SystemWindow& window):window(window) {}
 
         // TODO: why is this return value a reference?
@@ -37,9 +36,11 @@ namespace Ghurund::Engine {
 
         virtual void clear(const Color* clearColor) = 0;
 
-        virtual void draw(RenderGroup& renderGroup, ParameterManager& parameterManager, MaterialVariantType variantType) = 0;
+        virtual void draw(RenderGroup& renderGroup, MaterialVariantType variantType) = 0;
 
-        virtual void setSize(IntSize size) = 0;
+        virtual void setSize(IntSize size) {
+            globalParameters.viewportSize = { (int32_t)size.Width, (int32_t)size.Height };
+        }
 
         __declspec(property(put = setSize)) IntSize Size;
     };

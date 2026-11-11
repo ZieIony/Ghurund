@@ -103,6 +103,6 @@ namespace Ghurund::UI {
 
         virtual void update(uint64_t time) override;
 
-        virtual void draw(RenderingContext& renderingContext, ParameterManager& parameterManager) override;
+        virtual void draw(RenderingContext& renderingContext) override;
     };
 }

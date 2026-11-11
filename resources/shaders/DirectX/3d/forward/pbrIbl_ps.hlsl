@@ -1,10 +1,7 @@
+#include <globalParameters.hlsli>
 #include <common.hlsli>
 #include <3d.hlsli>
 #include <pbr.hlsli>
-
-cbuffer pixelConstants : register(b0) {
-    float3 gh_cameraPosition;
-}
 
 SamplerState linearSampler : register(s0);
 Texture2D albedoTexture : register(t0);

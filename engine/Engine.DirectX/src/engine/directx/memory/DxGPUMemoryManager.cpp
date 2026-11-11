@@ -119,7 +119,7 @@ namespace Ghurund::Engine::DirectX {
 		return resource;
 	}
 
-    ConstantBuffer* DxGPUMemoryManager::makeConstantBuffer(size_t size) {
+	DxConstantBuffer* DxGPUMemoryManager::makeConstantBuffer(size_t size) {
 		auto uploadHeap = makeUploadResource(align<size_t>(size, 256), uploadCommandList, D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE);
         auto cb = ghnew DxConstantBuffer();
         cb->init(uploadHeap);

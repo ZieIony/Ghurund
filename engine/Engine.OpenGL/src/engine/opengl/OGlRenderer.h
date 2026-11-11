@@ -6,7 +6,6 @@
 #include "core/Color.h"
 #include "core/window/SystemWindow.h"
 #include "engine/graphics/rendering/Renderer.h"
-#include "engine/parameter/ParameterManager.h"
 #include "OglRenderingContext.h"
 
 namespace Ghurund::Engine::OpenGL {
@@ -25,15 +24,10 @@ namespace Ghurund::Engine::OpenGL {
 		inline static const Ghurund::Core::Type& TYPE = OglRenderer::GET_TYPE();
 #pragma endregion
 
-	private:
-		ParameterManager& parameterManager;
-
 	protected:
 		virtual void onInit() override;
 
 	public:
-		OglRenderer(ParameterManager& parameterManager):parameterManager(parameterManager) {}
-
 		virtual OglRenderingContext* makeRenderingContext(SystemWindow& window) override {
 			return ghnew OglRenderingContext(window);
 		}

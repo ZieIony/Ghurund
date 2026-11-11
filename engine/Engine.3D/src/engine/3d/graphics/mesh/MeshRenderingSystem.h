@@ -20,7 +20,6 @@ namespace Ghurund::Engine::_3D {
     private:
         class World3D& world;
         Camera* camera = nullptr;
-        ParameterManager& parameterManager;
 
     protected:
         virtual const Array<std::reference_wrapper<const Ghurund::Core::Type>>& getDependencies_internal() const override;
@@ -28,10 +27,7 @@ namespace Ghurund::Engine::_3D {
     public:
         MaterialVariantType defaultMaterialType = MaterialVariantType::LIT;
 
-        MeshRenderingSystem(
-            World3D& world,
-            ParameterManager& parameterManager
-        ):world(world), parameterManager(parameterManager) {
+        MeshRenderingSystem(World3D& world):world(world) {
         }
 
         ~MeshRenderingSystem() {

@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
+VisualStudioVersion = 17.14.37824.6 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apps", "apps", "{8017D45D-6CCF-15AB-D5D6-EE06C1ADB09B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Editor", "apps\Editor\Editor.vcxproj", "{8C1A20B0-78BC-4A86-6177-5EDA4DB8D1D6}"
@@ -394,5 +396,8 @@ Global
 		{A7E04CE0-93D9-6B32-BC0B-51B7A8634B3E} = {FD47AE19-69FD-260F-F2F1-20E65EA61D13}
 		{37C9FAD8-2397-EEDE-0C2B-5F05F897CA43} = {FD47AE19-69FD-260F-F2F1-20E65EA61D13}
 		{96DE598A-8296-9BD7-EB9D-7433D77436C8} = {FD47AE19-69FD-260F-F2F1-20E65EA61D13}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2E3AD04E-B157-40E4-8962-A963728F0F84}
 	EndGlobalSection
 EndGlobal

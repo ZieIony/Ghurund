@@ -2,7 +2,6 @@
 
 #include "engine/application/GameApplication.h"
 #include "engine/opengl/OglRenderer.h"
-#include "engine/parameter/ParameterManager.h"
 
 namespace Sample {
     using namespace Ghurund::Engine;
@@ -12,7 +11,6 @@ namespace Sample {
     class SampleApplication:public GameApplication {
     private:
         OglRenderer* renderer = nullptr;
-        ParameterManager parameterManager;
         class SampleWindow* window = nullptr;
 
         void uninitDemoApplication();

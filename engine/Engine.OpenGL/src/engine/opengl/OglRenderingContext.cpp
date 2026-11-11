@@ -61,7 +61,7 @@ namespace Ghurund::Engine::OpenGL {
         glClear(GL_DEPTH_BUFFER_BIT);
     }
 
-    void OglRenderingContext::draw(RenderGroup& renderGroup, ParameterManager& parameterManager, MaterialVariantType vatiantType) {
+    void OglRenderingContext::draw(RenderGroup& renderGroup, MaterialVariantType vatiantType) {
         renderGroup.objects.sort([&](const DrawPacket& first, const DrawPacket& second) -> bool {
             return (first.Order - second.Order) * (int8_t)renderGroup.DrawGroup.DrawOrder > 0;
         });
@@ -83,6 +83,7 @@ namespace Ghurund::Engine::OpenGL {
     }
 
     void OglRenderingContext::setSize(Ghurund::Core::IntSize size) {
+        __super::setSize(size);
         glViewport(0, 0, size.Width, size.Height);
     }
 }

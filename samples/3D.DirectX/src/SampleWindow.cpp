@@ -28,7 +28,7 @@ namespace Sample {
 		auto& scriptManager = app.Features.get<EngineFeature>()->ScriptManager;
 		scriptManager.registerScript<LookAtEntityScript>();
 
-		meshRenderingSystem = makeIntrusive<MeshRenderingSystem>(*world, ParameterManager);
+		meshRenderingSystem = makeIntrusive<MeshRenderingSystem>(*world);
 		Systems.add(makeIntrusive<TransformSystem3D>(*world));
 		Systems.add(meshRenderingSystem);
 		Systems.add(makeIntrusive<CameraSystem3D>(*world));
