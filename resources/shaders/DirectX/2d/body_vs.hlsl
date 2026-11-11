@@ -1,9 +1,9 @@
+#include <globalParameters.hlsli>
 #include <common.hlsli>
 #include <2d.hlsli>
 
-cbuffer vertexConstants: register(b0) {
+cbuffer vertexConstants: register(b1) {
     matrix gh_world;
-    matrix gh_viewProjection;
 }
 
 DefaultPixel2D vertexMain(DefaultVertex2D input) {

@@ -27,9 +27,9 @@ namespace Ghurund::Engine::_2D {
 		XMStoreFloat4x4(&proj, projTemp);
 	
 		XMMATRIX viewProjTemp = viewTemp * projTemp;
-		XMStoreFloat4x4(&viewProj, viewProjTemp);
+		XMStoreFloat4x4(&viewProj, XMMatrixTranspose(viewProjTemp));
 		XMMATRIX viewProjInvTemp = XMMatrixInverse(nullptr, viewProjTemp);
-		XMStoreFloat4x4(&viewProjInv, viewProjInvTemp);
+		XMStoreFloat4x4(&viewProjInv, XMMatrixTranspose(viewProjInvTemp));
 
 		BoundingBox boundingBox;
 		XMFLOAT3 leftTop = { -(viewSize.Width / 2.0f), -(viewSize.Height / 2.0f), zNear };

@@ -83,6 +83,10 @@ namespace Ghurund::Engine::DirectX {
 
 		bool apply(DxGraphicsCommandList& commandList);
 
+		virtual DxGraphicsShader* clone() const override {
+			return ghnew DxGraphicsShader(*this);
+		}
+
 #pragma region formats
 	protected:
 		virtual const Array<ResourceFormat>& getFormatsImpl() const override {

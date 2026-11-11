@@ -35,8 +35,8 @@ public:
     TEST_METHOD(World2D_spawnDestroyEntity) {
         // MemoryGuard guard;   // entt allocates stuff to spawn entities
         {
-            auto entity = world->spawnEntity<Entity>();
-            world->destroyEntity(entity);
+            auto entity = world->Scene->spawnEntity<Entity>();
+            world->Scene->destroyEntity(entity);
         }
     }
     };

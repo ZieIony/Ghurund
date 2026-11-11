@@ -66,7 +66,7 @@ namespace Ghurund::Engine::DirectX {
 			DxGraphics& graphics,
 			ResourceManager& resourceManager,
 			IGPUMemoryManager& memoryManager,
-			const CompilationTarget& target = CompilationTarget::SHADER_6_0
+			const CompilationTarget& target = CompilationTarget::SHADER_5_0
 		):graphics(graphics), resourceManager(resourceManager), memoryManager(memoryManager), target(target) {
 		}
 

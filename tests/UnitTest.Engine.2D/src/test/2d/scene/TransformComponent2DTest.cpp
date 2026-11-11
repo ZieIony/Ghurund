@@ -5,7 +5,7 @@
 #include "core/reflection/StandardTypes.h"
 #include "test/utils/MemoryGuard.h"
 #include "engine/2d/World2D.h"
-#include <engine/2d/scene/transform/TransformComponent2D.h>
+#include <engine/2d/graphics/transform/TransformComponent2D.h>
 #include "core/math/Matrix.h"
 
 #include <test/utils/ObjectGuard.h>
@@ -49,7 +49,7 @@ public:
         //MemoryGuard guard; // box2d allocates on init
         ObjectGuard guard;
         {
-            auto entity = world->spawnEntity<Entity>();
+            auto entity = world->Scene->spawnEntity<Entity>();
             auto component = entity.addComponent<TransformComponent2D>();
 
             component.Position = { 100, 30 };
@@ -57,7 +57,7 @@ public:
             Assert::AreEqual(30.0f, component.Position.y);
 
             entity.removeComponent<TransformComponent2D>();
-            world->destroyEntity(entity);
+            world->Scene->destroyEntity(entity);
         }
     }
 
@@ -65,7 +65,7 @@ public:
         //MemoryGuard guard; // box2d allocates on init
         ObjectGuard guard;
         {
-            auto entity = world->spawnEntity<Entity>();
+            auto entity = world->Scene->spawnEntity<Entity>();
             auto component = entity.addComponent<TransformComponent2D>();
 
             component.Scale = { 2, 3 };
@@ -73,7 +73,7 @@ public:
             Assert::AreEqual(3.0f, component.Scale.y);
 
             entity.removeComponent<TransformComponent2D>();
-            world->destroyEntity(entity);
+            world->Scene->destroyEntity(entity);
         }
     }
 
@@ -81,14 +81,14 @@ public:
         //MemoryGuard guard; // box2d allocates on init
         ObjectGuard guard;
         {
-            auto entity = world->spawnEntity<Entity>();
+            auto entity = world->Scene->spawnEntity<Entity>();
             auto component = entity.addComponent<TransformComponent2D>();
 
             component.Rotation = 90.0f;
             Assert::AreEqual(90.0f, component.Rotation);
     
             entity.removeComponent<TransformComponent2D>();
-            world->destroyEntity(entity);
+            world->Scene->destroyEntity(entity);
         }
     }
 
@@ -96,7 +96,7 @@ public:
         //MemoryGuard guard; // box2d allocates on init
         ObjectGuard guard;
         {
-            auto entity = world->spawnEntity<Entity>();
+            auto entity = world->Scene->spawnEntity<Entity>();
             auto component = entity.addComponent<TransformComponent2D>();
 
             component.Position = { 2, 3 };
@@ -108,7 +108,7 @@ public:
 			Assert::IsFalse(memcmp(&component.WorldTransformation, &identity, sizeof(XMFLOAT4X4)) == 0);
   
             entity.removeComponent<TransformComponent2D>();
-            world->destroyEntity(entity);
+            world->Scene->destroyEntity(entity);
         }
     }
     };

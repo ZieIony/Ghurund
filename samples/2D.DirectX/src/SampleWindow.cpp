@@ -43,6 +43,7 @@ namespace Sample {
 
 	CoroutineTask<void> SampleWindow::initScene() {
 		auto graphicsFeature = app.Features.get<GraphicsFeature>();
+		world->Scene = makeIntrusive<Scene>().get();
 		ground = world->Scene->spawnEntity<Ground>();
 		co_await ground.init(*Systems.get<PhysicsSystem2D>(), graphicsFeature->ResourceFactory, app.ResourceManager, graphicsFeature->MemoryManager);
 		captain = world->Scene->spawnEntity<Captain>();

@@ -5,7 +5,7 @@
 #include "core/resource/ResourceManager.h"
 #include "core/window/SystemWindow.h"
 #include "core/window/WindowClass.h"
-#include "core/Timer.h"
+#include "core/time/Timer.h"
 #include "ui/text/TextBlock.h"
 #include "ui/font/FontLoader.h"
 #include "ui/RootView.h"

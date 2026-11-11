@@ -52,7 +52,7 @@ namespace Sample {
 		meshRenderingSystem->Camera = world->Scene->Camera;
 
 		/*{
-			auto entity = world->spawnEntity<Entity>();
+			auto entity = world->Scene->spawnEntity<Entity>();
 			auto& transformComponent = entity.addComponent<TransformComponent3D>();
 			transformComponent.Position = { 0,0,-1000 };
 			auto& quadComponent = entity.addComponent<MeshComponent>();

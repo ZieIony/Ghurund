@@ -7,6 +7,18 @@
 namespace Ghurund::Engine {
 
 	class MaterialLoader:public Ghurund::Core::Loader<Material> {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = MaterialLoader::GET_TYPE();
+#pragma endregion
+
 	private:
 		ResourceManager& resourceManager;
 		IGPUMemoryManager& memoryManager;

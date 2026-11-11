@@ -40,7 +40,7 @@ public:
             constraints.removeAt(constraints.Size - 1);
             c->release();
         }
-        Microsoft::VisualStudio::CppUnitTestFramework::Logger::WriteMessage(std::format(_T("Sorting time: {}ms."), timer.FrameTimeMs).c_str());
+        Microsoft::VisualStudio::CppUnitTestFramework::Logger::WriteMessage(std::format(_T("Sorting time: {}ms."), timer.FrameTime.valueMs).c_str());
     }
     };
 }

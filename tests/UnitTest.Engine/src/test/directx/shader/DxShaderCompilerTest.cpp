@@ -68,11 +68,15 @@ float4 pixelMain(DefaultPixel input): SV_Target{
     ResourceManager resourceManager = ResourceManager(coroutineScheduler);
     DxGraphics graphics;
     SharedPointer<DxShaderCompiler> shaderCompiler;
+    SharedPointer<DxGPUMemoryManager> memoryManager;
 
 public:
     DxShaderCompilerTest() {
         graphics.init();
-        shaderCompiler = makeShared<DxShaderCompiler>(graphics);
+        auto commandList = makeIntrusive<DxGraphicsCommandList>();
+        commandList->init(graphics, graphics.CopyQueue);
+        memoryManager = makeShared<DxGPUMemoryManager>(graphics, commandList.ref());
+        shaderCompiler = makeShared<DxShaderCompiler>(graphics, resourceManager, memoryManager.ref());
     }
 
     TEST_METHOD(DxShaderCompiler_compileVertex) {

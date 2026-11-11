@@ -49,8 +49,11 @@ public:
         DxGraphics graphics;
 		graphics.init();
         resourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"../../resources").AbsolutePath));
+        auto commandList = makeIntrusive<DxGraphicsCommandList>();
+        commandList->init(graphics, graphics.DirectQueue);
+        DxGPUMemoryManager memoryManager(graphics, commandList.ref());
 
-		DxShaderCompiler compiler(graphics);
+		DxShaderCompiler compiler(graphics, resourceManager, memoryManager);
 		auto loader = makeIntrusive<DxGraphicsShaderLoader>(resourceManager, compiler);
         loader->includeDirs.add(DirectoryPath(L"../../resources/shaders/DirectX/include").AbsolutePath);
         DirectoryPath shaderDirectory = DirectoryPath(L"../../resources/shaders/DirectX/3d/forward").AbsolutePath;

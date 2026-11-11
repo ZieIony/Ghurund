@@ -48,8 +48,12 @@ public:
         DxGraphics graphics;
 		graphics.init();
 
-		DxShaderCompiler compiler(graphics);
-		auto loader = makeIntrusive<DxGraphicsShaderLoader>(resourceManager, compiler);
+        auto commandList = makeIntrusive<DxGraphicsCommandList>();
+        commandList->init(graphics, graphics.DirectQueue);
+        DxGPUMemoryManager memoryManager(graphics, commandList.ref());
+
+        DxShaderCompiler compiler(graphics, resourceManager, memoryManager);
+        auto loader = makeIntrusive<DxGraphicsShaderLoader>(resourceManager, compiler);
         loader->includeDirs.add(DirectoryPath(L"../../resources/shaders/DirectX/include").AbsolutePath);
         DirectoryPath shaderDirectory = DirectoryPath(L"../../resources/shaders/DirectX/2d").AbsolutePath;
 		auto files = shaderDirectory.Files;

@@ -23,10 +23,10 @@ namespace Ghurund::Engine::_2D {
 		virtual void onInit() override;
 
 		inline void uninitWorld2D() {
-			safeRelease(scene);
-			systems.clear();
 			physicsSystem.set(nullptr);
 			audioSystem.set(nullptr);
+			systems.clear();
+			safeRelease(scene);
 		}
 
 		virtual void onDeinit() override;
@@ -62,6 +62,6 @@ namespace Ghurund::Engine::_2D {
 			setPointer(this->scene, scene);
 		}
 
-		__declspec(property(get = getScene)) Scene* Scene;
+		__declspec(property(get = getScene, put = setScene)) Scene* Scene;
 	};
 }

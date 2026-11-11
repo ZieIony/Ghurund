@@ -6,7 +6,6 @@
 #include "core/reflection/StandardTypes.h"
 #include "engine/directx/DxGraphics.h"
 #include "engine/directx/rendering/DxGraphicsShaderLoader.h"
-#include "engine/parameter/ValueParameter.h"
 #include "engine/graphics/material/Material.h"
 
 #include "test/utils/MemoryGuard.h"
@@ -48,7 +47,7 @@ public:
         commandList = makeIntrusive<DxGraphicsCommandList>();
         commandList->init(graphics, graphics.CopyQueue);
         memoryManager = makeShared<DxGPUMemoryManager>(graphics, commandList.ref());
-        shaderCompiler = makeShared<DxShaderCompiler>(graphics);
+        shaderCompiler = makeShared<DxShaderCompiler>(graphics, resourceManager, memoryManager.ref());
         shaderLoader = makeIntrusive<DxGraphicsShaderLoader>(resourceManager, shaderCompiler.ref());
     }
 
@@ -60,8 +59,7 @@ public:
             auto shader = makeIntrusive<DxGraphicsShader>();
             runCoroutineBlocking(shaderLoader->load(shader.ref(), stream));
             auto material = makeIntrusive<Material>();
-            material->Shader = shader.get();
-            material->init(memoryManager.ref());
+            material->setShader(MaterialVariantType::UNLIT, shader.get());
         }
     }
 
@@ -73,8 +71,7 @@ public:
             auto shader = makeIntrusive<DxGraphicsShader>();
             runCoroutineBlocking(shaderLoader->load(shader.ref(), stream));
             auto material = makeIntrusive<Material>();
-            material->Shader = shader.get();
-            material->init(memoryManager.ref());
+            material->setShader(MaterialVariantType::UNLIT, shader.get());
             auto material2 = IntrusivePointer<Material>((Material*)material->clone());
             material.set(nullptr);
         }

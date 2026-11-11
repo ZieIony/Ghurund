@@ -49,14 +49,14 @@ public:
         //MemoryGuard guard; // box2d allocates on init
         ObjectGuard guard;
         {
-            auto entity = world->spawnEntity<Entity>();
+            auto entity = world->Scene->spawnEntity<Entity>();
             auto component = entity.addComponent<RigidBodyComponent2D>();
 
             component.init(physicsSystem.ref(), ShapeType::BOX);
             component.init(physicsSystem.ref(), ShapeType::BOX);
 
             entity.removeComponent<RigidBodyComponent2D>();
-            world->destroyEntity(entity);
+            world->Scene->destroyEntity(entity);
         }
     }
 
@@ -65,7 +65,7 @@ public:
         //MemoryGuard guard; // box2d allocates on init
         ObjectGuard guard;
         {
-            auto entity = world->spawnEntity<Entity>();
+            auto entity = world->Scene->spawnEntity<Entity>();
             auto component = entity.addComponent<RigidBodyComponent2D>();
             component.init(physicsSystem.ref(), ShapeType::BOX);
 
@@ -74,7 +74,7 @@ public:
             Assert::AreEqual(30.0f, component.Position.y);
 
             entity.removeComponent<RigidBodyComponent2D>();
-            world->destroyEntity(entity);
+            world->Scene->destroyEntity(entity);
         }
     }
 
@@ -82,7 +82,7 @@ public:
         //MemoryGuard guard; // box2d allocates on init
         ObjectGuard guard;
         {
-            auto entity = world->spawnEntity<Entity>();
+            auto entity = world->Scene->spawnEntity<Entity>();
             auto component = entity.addComponent<RigidBodyComponent2D>();
             component.init(physicsSystem.ref(), ShapeType::BOX);
 
@@ -91,7 +91,7 @@ public:
             Assert::AreEqual(30.0f, component.Size.Height);
 
             entity.removeComponent<RigidBodyComponent2D>();
-            world->destroyEntity(entity);
+            world->Scene->destroyEntity(entity);
         }
     }
 
@@ -99,7 +99,7 @@ public:
         //MemoryGuard guard; // box2d allocates on init
         ObjectGuard guard;
         {
-            auto entity = world->spawnEntity<Entity>();
+            auto entity = world->Scene->spawnEntity<Entity>();
             auto component = entity.addComponent<RigidBodyComponent2D>();
             component.init(physicsSystem.ref(), ShapeType::BOX);
 
@@ -107,7 +107,7 @@ public:
             Assert::AreEqual(90.0f, component.Rotation);
 
             entity.removeComponent<RigidBodyComponent2D>();
-            world->destroyEntity(entity);
+            world->Scene->destroyEntity(entity);
         }
     }
     };

@@ -320,6 +320,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\Color.cpp" />
+    <ClCompile Include="src\core\math\Vector.cpp" />
     <ClCompile Include="src\core\StackTrace.cpp" />
     <ClCompile Include="src\core\SystemInfo.cpp" />
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />

@@ -13,7 +13,7 @@ namespace UnitTest {
 	using namespace Ghurund::Engine;
 	using namespace UnitTest::Utils;
 
-	TEST_CLASS(BehaviorTreeNode) {
+	TEST_CLASS(BehaviorTreeNodeTest) {
 public:
 
 	TEST_METHOD(BehaviorTreeNode_abortSuccess) {

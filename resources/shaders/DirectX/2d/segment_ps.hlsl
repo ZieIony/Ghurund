@@ -1,3 +1,4 @@
+#include <globalParameters.hlsli>
 #include <common.hlsli>
 #include <2d.hlsli>
 

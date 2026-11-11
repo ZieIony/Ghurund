@@ -8,6 +8,13 @@
 #include "engine/graphics/rendering/GraphicsShader.h"
 
 namespace Ghurund::Engine {
+	const Ghurund::Core::Type& MaterialLoader::GET_TYPE() {
+		static const Ghurund::Core::Type TYPE = TypeBuilder<MaterialLoader>()
+			.withSupertype(__super::GET_TYPE());
+
+		return TYPE;
+	}
+
 	CoroutineTask<void> MaterialLoader::onLoadParameter(Material& material, const DirectoryPath& workingDir, MaterialInput& input, const AString& value) {
 		if (input.Type == ConstantType::TEXTURE) {
 			TextureInput& textureInput = (TextureInput&)input;

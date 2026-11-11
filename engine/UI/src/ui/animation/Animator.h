@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Event.h"
+#include "core/event/Event.h"
 #include "Animation.h"
 
 #include <algorithm>
@@ -23,43 +23,23 @@ namespace Ghurund::UI {
 	public:
 		Event<Animator, void, float> progressChanged = *this;
 
-		void start(const Animation& animation) {
+		inline void start(const Animation& animation) {
 			this->animation = &animation;
 			startTime = 0;
 			state = State::STARTING;
 		}
 
 		template<typename Type>
-		void start(const ValueAnimation<Type>& animation, Type& variable) {
+		inline void start(const ValueAnimation<Type>& animation, Type& variable) {
 			start(animation);
 			progressChanged += [this, &animation, &variable](Animator& animator, float progress) {
 				variable = lerp<Type>(animation.InitialValue, animation.TargetValue, progress);
 			};
 		}
 
-		void update(uint64_t time) {
-			if (state == State::IDLE)
-				return;
-			if (state == State::STARTING) {
-				startTime = time;
-				state = State::RUNNING;
-			}
-			currentTime = time;
-			progressChanged(Progress);
-			if (currentTime >= startTime + animation->Duration) {
-				state = State::IDLE;
-				progressChanged.clear();
-			}
-		}
+		void update(uint64_t time);
 
-		void finish() {
-			if (state == State::IDLE)
-				return;
-			startTime = currentTime - animation->Duration;
-			state = State::IDLE;
-			progressChanged(1.0f);
-			progressChanged.clear();
-		}
+		void finish();
 
 		inline float getProgress() const {
 			return animation->Interpolator->getProgress(std::max(0.0f, std::min((float)(currentTime - startTime) / animation->Duration, 1.0f)));
