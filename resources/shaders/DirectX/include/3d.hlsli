@@ -1,11 +1,14 @@
 #ifndef _3D_HLSLI
 #define _3D_HLSLI
 
+#include <objectParameters.hlsli>
+
 struct DefaultVertex3D {
     float3 position: POSITION;
     float3 normal: NORMAL;
     float3 tangent: TANGENT;
     float2 texCoord: TEXCOORD0;
+    uint objectId: OBJECT_ID;
 };
 
 struct DefaultPixel3D {
@@ -14,7 +17,17 @@ struct DefaultPixel3D {
     float3 normal: NORMAL;
     float3 tangent: TANGENT;
     float2 texCoord: TEXCOORD1;
+    nointerpolation uint objectId: OBJECT_ID;
 };
+
+DefaultPixel3D vertexMain(DefaultVertex3D input, ObjectParameters objectParameters);
+
+DefaultPixel3D vertexMain(DefaultVertex3D input) {
+    ObjectParameters parameters = gh_objectParameters[input.objectId];
+    DefaultPixel3D output = vertexMain(input, parameters);
+    output.objectId = input.objectId;
+    return output;
+}
 
 float getDiffuseIntensity(float3 normalNormalized, float3 vertexToLightNormalized) {
     return saturate(dot(normalNormalized, vertexToLightNormalized));

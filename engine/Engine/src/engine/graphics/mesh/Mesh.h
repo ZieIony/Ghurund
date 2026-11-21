@@ -95,7 +95,7 @@ namespace Ghurund::Engine {
 
 	public:
 		// TODO: maybe move formats to loaders?
-		static const inline ResourceFormat FORMAT_MESH = ResourceFormat(L"mesh", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD, 1);
+		static const inline ResourceFormat FORMAT_MESH = ResourceFormat(L"mesh", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD, 2);
 		static const inline ResourceFormat FORMAT_3DMF = ResourceFormat(L"3mf", ResourceFormatOptions::CAN_LOAD);
 		static const inline ResourceFormat FORMAT_COLLADA_DAE = ResourceFormat(L"dae", ResourceFormatOptions::CAN_LOAD);
 		static const inline ResourceFormat FORMAT_COLLADA_XML = ResourceFormat(L"xml", ResourceFormatOptions::CAN_LOAD);

@@ -11,11 +11,14 @@ namespace Ghurund::Engine::DirectX {
 	void DxConstantCollection::init(
 		const List<DxBufferConstantInfo*>& bufferConstantInfos,
 		const List<DxTextureConstantInfo*>& textureConstantInfos,
+		const List<DxBufferConstantInfo*>& srvConstantInfos,
 		const List<DxTextureConstantInfo*>& uavConstantInfos
 	) {
 		for (auto& cb : bufferConstantInfos) {
-			if (cb->Name == GlobalParameters::CB_NAME)
+			if (cb->Name == GlobalParameters::CB_NAME) {
+				globalParametersSlot = cb->BindSlot;
 				continue;
+			}
 			List<ValueConstant> cbInputs;
 			for (auto& v : cb->Fields)
 				cbInputs.add(ValueConstant(v.name, v.makeConstantType(), v.size, v.offset, v.defaultValue));
@@ -28,8 +31,29 @@ namespace Ghurund::Engine::DirectX {
 				cubeMapConstants.add(CubeMapConstant(t->Name, t->BindSlot));
 			}
 		}
+		for (auto& srv : srvConstantInfos) {
+			if (srv->Name == ObjectParameters::SRV_NAME) {
+				objectParametersSlot = srv->BindSlot;
+				continue;
+			}
+			List<ValueConstant> cbInputs;
+			for (auto& v : srv->Fields)
+				cbInputs.add(ValueConstant(v.name, v.makeConstantType(), v.size, v.offset, v.defaultValue));
+			bufferConstants.add(BufferConstant(srv->Name, srv->BindSlot, srv->Size, cbInputs));
+		}
 		for (auto& t : uavConstantInfos)
 			uavConstants.add(TextureConstant(t->Name, t->BindSlot));
+	}
+
+	void DxConstantCollection::apply(
+		CommandList& commandList,
+		DxConstantBuffer& globalParameters,
+		DxObjectParametersBuffer& objectParameters
+	) {
+		globalParameters.set(commandList, globalParametersSlot);
+		objectParameters.set(commandList, objectParametersSlot);
+
+		apply(commandList);
 	}
 
 	void DxConstantCollection::apply(CommandList& commandList) {

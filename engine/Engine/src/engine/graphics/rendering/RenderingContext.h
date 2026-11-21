@@ -3,6 +3,7 @@
 #include "GlobalParameters.h"
 #include "RenderGroup.h"
 #include "RenderingStatistics.h"
+#include "ObjectParameters.h"
 
 #include "core/Color.h"
 #include "core/math/Size.h"
@@ -35,6 +36,8 @@ namespace Ghurund::Engine {
         virtual void finishFrame() = 0;
 
         virtual void clear(const Color* clearColor) = 0;
+
+        virtual void setParameters(uint32_t id, const ObjectParameters& parameters) = 0;
 
         virtual void draw(RenderGroup& renderGroup, MaterialVariantType variantType) = 0;
 

@@ -4,6 +4,7 @@
 #include "engine/2d/physics/PhysicsSystem2D.h"
 #include "engine/ecs/Entity.h"
 #include "engine/resource/IGraphicsResourceFactory.h"
+#include "engine/ecs/Scene.h"
 
 namespace Sample {
 	using namespace Ghurund::Core;
@@ -16,6 +17,6 @@ namespace Sample {
 
 		Ground(entt::registry& registry, entt::entity id):Entity(registry, id) {}
 
-		CoroutineTask<void> init(PhysicsSystem2D& physicsSystem, IGraphicsResourceFactory& resourceFactory, ResourceManager& resourceManager, IGPUMemoryManager& memoryManager);
+		CoroutineTask<void> init(Scene& scene, PhysicsSystem2D& physicsSystem, IGraphicsResourceFactory& resourceFactory, ResourceManager& resourceManager, IGPUMemoryManager& memoryManager);
 	};
 }

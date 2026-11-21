@@ -26,7 +26,8 @@ namespace Sample {
 		world = ghnew World2D(app);
 		world->init();
 
-		spriteRenderingSystem = makeIntrusive<SpriteRenderingSystem>(*world);
+		auto graphicsFeature = app.Features.get<DxGraphicsFeature>();
+		spriteRenderingSystem = makeIntrusive<SpriteRenderingSystem>(*world, graphicsFeature->MemoryManager);
 		visualizationRenderingSystem = makeIntrusive<VisualizationRenderingSystem>(*world);
 		Systems.add(makeIntrusive<TransformSystem2D>(*world));
 		Systems.add(makeIntrusive<PhysicsSystem2D>(*world));
@@ -44,10 +45,24 @@ namespace Sample {
 	CoroutineTask<void> SampleWindow::initScene() {
 		auto graphicsFeature = app.Features.get<GraphicsFeature>();
 		world->Scene = makeIntrusive<Scene>().get();
+
 		ground = world->Scene->spawnEntity<Ground>();
-		co_await ground.init(*Systems.get<PhysicsSystem2D>(), graphicsFeature->ResourceFactory, app.ResourceManager, graphicsFeature->MemoryManager);
+		co_await ground.init(
+			*world->Scene,
+			*Systems.get<PhysicsSystem2D>(),
+			graphicsFeature->ResourceFactory,
+			app.ResourceManager,
+			graphicsFeature->MemoryManager
+		);
+
 		captain = world->Scene->spawnEntity<Captain>();
-		co_await captain.init(*Systems.get<PhysicsSystem2D>(), app.ResourceManager, graphicsFeature->MemoryManager, *world);
+		co_await captain.init(
+			*world->Scene,
+			*Systems.get<PhysicsSystem2D>(),
+			app.ResourceManager,
+			graphicsFeature->MemoryManager,
+			*world
+		);
 		captain.CapsuleComponent.Position = {0, 2};
 
 		spriteRenderingSystem->Camera = captain.getComponent<CameraComponent2D>().Camera;

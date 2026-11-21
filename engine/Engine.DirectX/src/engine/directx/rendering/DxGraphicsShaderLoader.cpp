@@ -4,6 +4,8 @@
 #include "engine/directx/shader/compiler/DxEntrypointNotFoundException.h"
 
 namespace Ghurund::Engine::DirectX {
+	using namespace Ghurund::Core;
+
 	void DxGraphicsShaderLoader::loadXmlFormat(
 		DxGraphicsShader& shader,
 		const XMLElement& xml,
@@ -11,65 +13,27 @@ namespace Ghurund::Engine::DirectX {
 	) {
 		checkXmlRoot(xml, L"GraphicsShader", DxGraphicsShader::FORMAT_XML);
 
-		auto shaderSource = makeIntrusive<ShaderSource>();
+		List<ShaderProgramSourceCode*> sources;
+		VertexShaderSettings vsSettings;
+		PixelShaderSettings psSettings;
 		auto settingsElementIndex = xml.children.find([](const SharedPointer<XMLElement>& element) { return element->name == L"Settings"; });
 		if (settingsElementIndex != xml.children.Size) {
 			auto& settingsElement = xml.children[settingsElementIndex];
 			auto cullModeAttribute = settingsElement->findAttribute(L"cullMode");
-			if (cullModeAttribute) {
-				auto cullModeValue = *cullModeAttribute;
-				if (cullModeValue == L"none") {
-					shaderSource->settings.cullMode = CullMode::NONE;
-				} else if (cullModeValue == L"front") {
-					shaderSource->settings.cullMode = CullMode::FRONT;
-				} else if (cullModeValue == L"back") {
-					shaderSource->settings.cullMode = CullMode::BACK;
-				}
-			}
+			if (cullModeAttribute)
+				vsSettings.cullMode = parse<CullMode>(*cullModeAttribute);
 			auto transparencyAttribute = settingsElement->findAttribute(L"isTransparencyEnabled");
 			if (transparencyAttribute)
-				shaderSource->settings.isTransparencyEnabled = *transparencyAttribute == L"true";
+				psSettings.isTransparencyEnabled = *transparencyAttribute == L"true";
 			auto depthTestAttribute = settingsElement->findAttribute(L"isDepthTestEnabled");
 			if (depthTestAttribute)
-				shaderSource->settings.isDepthTestEnabled = *depthTestAttribute == L"true";
+				vsSettings.isDepthTestEnabled = *depthTestAttribute == L"true";
 			auto depthWriteAttribute = settingsElement->findAttribute(L"isDepthWriteEnabled");
 			if (depthWriteAttribute)
-				shaderSource->settings.isDepthWriteEnabled = *depthTestAttribute == L"true";
+				vsSettings.isDepthWriteEnabled = *depthTestAttribute == L"true";
 			auto depthFuncAttribute = settingsElement->findAttribute(L"depthFunc");
-			if (depthFuncAttribute) {
-				auto depthFuncValue = *depthFuncAttribute;
-				if (depthFuncValue == L"never") {
-					shaderSource->settings.depthFunc = ComparisonFunc::NEVER;
-				} else if (depthFuncValue == L"always") {
-					shaderSource->settings.depthFunc = ComparisonFunc::ALWAYS;
-				} else if (depthFuncValue == L"less") {
-					shaderSource->settings.depthFunc = ComparisonFunc::LESS;
-				} else if (depthFuncValue == L"greater") {
-					shaderSource->settings.depthFunc = ComparisonFunc::GREATER;
-				}
-			}
-		}
-		auto samplersElementIndex = xml.children.find([](const SharedPointer<XMLElement>& element) { return element->name == L"Samplers"; });
-		if (samplersElementIndex != xml.children.Size) {
-			auto& samplersElement = xml.children[samplersElementIndex];
-			for (auto& samplerElement : samplersElement->children) {
-				SamplerInfo sampler;
-				auto samplerNameAttribute = samplerElement->findAttribute(L"name");
-				if (samplerNameAttribute)
-					sampler.name = convertText<wchar_t, char>(*samplerNameAttribute);
-				auto samplerFilterAttribute = samplerElement->findAttribute(L"filter");
-				if (samplerFilterAttribute) {
-					auto filterValue = *samplerFilterAttribute;
-					if (filterValue == L"point") {
-						sampler.filter = TextureFilter::POINT;
-					} else if (filterValue == L"linear") {
-						sampler.filter = TextureFilter::LINEAR;
-					} else if (filterValue == L"anisotropic") {
-						sampler.filter = TextureFilter::ANISOTROPIC;
-					}
-				}
-				shaderSource->samplers.add(sampler);
-			}
+			if (depthFuncAttribute)
+				vsSettings.depthFunc = parse<ComparisonFunc>(*depthFuncAttribute);
 		}
 		auto programsElementIndex = xml.children.find([](const SharedPointer<XMLElement>& element) { return element->name == L"Programs"; });
 		if (programsElementIndex != xml.children.Size) {
@@ -124,11 +88,33 @@ namespace Ghurund::Engine::DirectX {
 						}
 					}
 				}();
-				shaderSource->programs.add(ghnew DxShaderProgramSourceCode(type, sourceCode, sourceName));
+				DxShaderProgramSourceCode* source = [&]->DxShaderProgramSourceCode* {
+					if (type == DxShaderType::VERTEX) {
+						return ghnew DxVertexShaderProgramSourceCode(sourceCode, sourceName, vsSettings);
+					}else if (type == DxShaderType::PIXEL) {
+						return ghnew DxPixelShaderProgramSourceCode(sourceCode, sourceName, psSettings);
+					} else {
+						return ghnew DxShaderProgramSourceCode(type, sourceCode, sourceName);
+					}
+				}();
+				auto samplersElement = programElement->findElement(L"Samplers");
+				if (samplersElement) {
+					for (auto& samplerElement : samplersElement->children) {
+						SamplerInfo sampler;
+						auto samplerNameAttribute = samplerElement->findAttribute(L"name");
+						if (samplerNameAttribute)
+							sampler.name = convertText<wchar_t, char>(*samplerNameAttribute);
+						auto samplerFilterAttribute = samplerElement->findAttribute(L"filter");
+						if (samplerFilterAttribute)
+							sampler.filter = parse<TextureFilter>(*samplerFilterAttribute);
+						source->samplers.add(sampler);
+					}
+				}
+				sources.add(source);
 			}
 		}
 
-		shader.Source = shaderSource.get();
+		shader.Sources = sources;
 		initialize(shader, workingDir);
 	}
 
@@ -144,37 +130,52 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	void DxGraphicsShaderLoader::initialize(DxGraphicsShader& shader, const DirectoryPath& workingDir) {
-		if (!shader.Source->programs.any([](auto& program) { return ((DxShaderProgramSourceCode*)program)->shaderType == DxShaderType::VERTEX; })) {
-			Logger::log(LogType::ERR0R, _T("Vertex shader program is required.\n"));
-			throw DxEntrypointNotFoundException(DxShaderType::VERTEX);
+		List<ShaderProgramSourceCode*> sources = shader.Sources;
+		if (!shader.Sources.any([](auto& program) { return ((DxShaderProgramSourceCode*)program)->shaderType == DxShaderType::VERTEX; })) {
+			auto index = fallback.get()->Sources.find([](auto& program) { return ((DxShaderProgramSourceCode*)program)->shaderType == DxShaderType::VERTEX; });
+			if (index != fallback.get()->Sources.Size) {
+				sources.add(fallback.get()->Sources[index]);
+			} else {
+				Logger::log(LogType::ERR0R, _T("Vertex shader program is required.\n"));
+				throw DxEntrypointNotFoundException(DxShaderType::VERTEX);
+			}
 		}
-		if (!shader.Source->programs.any([](auto& program) { return ((DxShaderProgramSourceCode*)program)->shaderType == DxShaderType::PIXEL; })) {
-			Logger::log(LogType::ERR0R, _T("Pixel shader program is required.\n"));
-			throw DxEntrypointNotFoundException(DxShaderType::PIXEL);
+		if (!shader.Sources.any([](auto& program) { return ((DxShaderProgramSourceCode*)program)->shaderType == DxShaderType::PIXEL; })) {
+			auto index = fallback.get()->Sources.find([](auto& program) { return ((DxShaderProgramSourceCode*)program)->shaderType == DxShaderType::PIXEL; });
+			if (index != fallback.get()->Sources.Size) {
+				sources.add(fallback.get()->Sources[index]);
+			} else {
+				Logger::log(LogType::ERR0R, _T("Pixel shader program is required.\n"));
+				throw DxEntrypointNotFoundException(DxShaderType::PIXEL);
+			}
 		}
 		List<SharedPointer<DxShaderProgram>> programs;
-		for (auto sourceCode : shader.Source->programs) {
+		for (auto sourceCode : shader.Sources) {
 			auto dxSourceCode = (DxShaderProgramSourceCode*)sourceCode;
 			auto program = SharedPointer<DxShaderProgram>(compiler.compile(*dxSourceCode, workingDir, &includeDirs));
+			if (program->Type == DxShaderType::VERTEX) {
+				((DxVertexShaderProgram*)program.get())->settings = ((DxVertexShaderProgramSourceCode*)sourceCode)->settings;
+			} else if (program->Type == DxShaderType::PIXEL) {
+				((DxPixelShaderProgram*)program.get())->settings = ((DxPixelShaderProgramSourceCode*)sourceCode)->settings;
+			}
 			programs.add(program);
 		}
-		auto array = Array<SharedPointer<DxShaderProgram>>(programs);
-		compiler.build(shader, programs, shader.Source->settings);
+		compiler.build(shader, programs);
 	}
 
 	void DxGraphicsShaderLoader::loadHlslFormat(DxGraphicsShader& shader, const AString& sourceCode, const DirectoryPath& workingDir) {
-		auto shaderSource = makeIntrusive<ShaderSource>();
+		List<ShaderProgramSourceCode*> sources;
 
 		for (const DxShaderType& shaderType : DxShaderType::VALUES) {
 			AString entryPoint = shaderType.getEntryPoint();
 			if (sourceCode.contains(entryPoint)) {
 				// TODO: fix shader.Path name
 				AString sourceName = shader.Path ? convertText<wchar_t, char>(shader.Path->toString()) : AString("[unnamed shader]");
-				shaderSource->programs.add(ghnew DxShaderProgramSourceCode(shaderType, sourceCode, sourceName));
+				sources.add(ghnew DxShaderProgramSourceCode(shaderType, sourceCode, sourceName));
 			}
 		}
 
-		shader.Source = shaderSource.get();
+		shader.Sources = sources;
 		initialize(shader, workingDir);
 	}
 

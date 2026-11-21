@@ -9,11 +9,11 @@ namespace Ghurund::Core {
 		using value_t = Key;
 		using data_t = Key;
 
-		inline const Key& getKey(const data_t& data) const {
+		inline const key_t& getKey(const data_t& data) const {
 			return data;
 		}
 
-		inline data_t makeData(const Key& key) const {
+		inline data_t makeData(const key_t& key) const {
 			return key;
 		}
 	};

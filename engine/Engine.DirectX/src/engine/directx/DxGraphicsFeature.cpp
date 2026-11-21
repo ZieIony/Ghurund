@@ -78,6 +78,8 @@ namespace Ghurund::Engine::DirectX {
 		resourceManager.Loaders.set<DxMesh>(meshLoader.ref());
 
 		resourceFactory = ghnew DxGraphicsResourceFactory(*memoryManager, *graphics);
+
+		graphicsShaderLoader->fallback = co_await resourceManager.load<DxGraphicsShader>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"/shaders/DirectX/3d/forward/basic.xml"));
 	}
 
 	void DxGraphicsFeature::onDeinit() {

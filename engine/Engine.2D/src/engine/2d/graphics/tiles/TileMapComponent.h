@@ -18,7 +18,6 @@ namespace Ghurund::Engine::_2D {
 		};
 
 		Mesh* mesh = nullptr;
-		Material* material = nullptr;
 
 		void reloadResource();
 
@@ -27,11 +26,10 @@ namespace Ghurund::Engine::_2D {
 			deinit();
 		}
 
-		void init(IGraphicsResourceFactory& resourceFactory, IGPUMemoryManager& memoryManager);
+		void init(IGraphicsResourceFactory& resourceFactory);
 
 		void deinit() {
 			safeRelease(mesh);
-			safeRelease(material);
 			safeRelease(tileMap);
 		};
 
@@ -48,16 +46,6 @@ namespace Ghurund::Engine::_2D {
 		}
 
 		__declspec(property(get = getTileMap, put = setTileMap)) TileMap* TileMap;
-
-		inline Material* getMaterial() const {
-			return material;
-		}
-
-		inline void setMaterial(Material* material) {
-			setPointer(this->material, material);
-		}
-
-		__declspec(property(get = getMaterial, put = setMaterial)) Material* Material;
 
 		inline Mesh* getMesh() const {
 			return mesh;

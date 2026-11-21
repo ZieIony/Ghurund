@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GraphicsShader version="1">
+<GraphicsShader version="2">
 	<Settings isDepthTestEnabled="true" cullMode="back" isTransparencyEnabled="false"/>
 	<Programs>
 		<Program type="vertex" path="default_vs.hlsl"/>

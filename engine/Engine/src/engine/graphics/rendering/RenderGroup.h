@@ -6,9 +6,25 @@
 #include "core/collection/List.h"
 #include "engine/application/DrawGroup.h"
 
-
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
+
+	struct BatchId {
+		uint32_t meshId, materialId;
+
+		constexpr std::strong_ordering operator<=>(const BatchId& other) const noexcept {
+			auto result = meshId <=> other.meshId;
+			if (result != 0)
+				return result;
+			return materialId <=> other.materialId;
+		}
+	};
+
+	struct DrawBatch {
+		Mesh* mesh;
+		Material* material;
+		List<uint32_t> instances;
+	};
 
 	class RenderGroup {
 	private:
@@ -16,7 +32,7 @@ namespace Ghurund::Engine {
 		Camera* camera = nullptr;
 
 	public:
-		List<DrawPacket> objects;
+		Map<BatchId, DrawBatch> objects;
 
 		RenderGroup(DrawGroup group):group(group) {}
 

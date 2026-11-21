@@ -13,6 +13,7 @@ namespace Ghurund {
     public:
         size_t modelsCulled = 0;
         size_t modelsRendered = 0;
+        size_t instancesRendered = 0;
         size_t trianglesRendered = 0;
         size_t materialChanges = 0;
 

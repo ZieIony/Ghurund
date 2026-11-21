@@ -31,6 +31,12 @@ namespace Ghurund::Engine::_3D {
 		XMMATRIX projTemp;
 		if (pers) {
 			projTemp = XMMatrixPerspectiveFovLH(fov.y, aspectRatio, zNear, zFar);
+
+			XMFLOAT3 leftTop = { -(viewSize.Width / 2.0f), -(viewSize.Height / 2.0f), zNear };
+			XMFLOAT3 rightBottom = { viewSize.Width / 2.0f, viewSize.Height / 2.0f, zFar };
+			BoundingFrustum::CreateFromMatrix(boundingFrustum, projTemp);
+			auto viewInvTemp = XMMatrixInverse(nullptr, viewTemp);
+			boundingFrustum.Transform(boundingFrustum, viewInvTemp);
 		} else {
 			projTemp = XMMatrixOrthographicLH((float)viewSize.Width, (float)viewSize.Height, zNear, zFar);
 		}

@@ -9,8 +9,9 @@
 #include "core/object/IntrusivePointer.h"
 #include "engine/directx/buffer/DescriptorHeap.h"
 #include "engine/directx/CommandList.h"
-#include "engine/graphics/memory/IGPUMemoryManager.h"
 #include "engine/directx/shader/DxConstantBuffer.h"
+#include "engine/graphics/memory/IGPUMemoryManager.h"
+#include "engine/directx/rendering/DxObjectParametersBuffer.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
@@ -73,6 +74,9 @@ namespace Ghurund::Engine::DirectX {
         [[nodiscard]]
         virtual DxConstantBuffer* makeConstantBuffer(size_t size) override;
 
+        [[nodiscard]]
+        DxObjectParametersBuffer* makeParametersBuffer(size_t itemCount);
+            
         ComPtr<ID3D12Resource> makeTexture(const Array<IntrusivePointer<Image>>& images);
 
         ComPtr<ID3D12Resource> makeCubeMap(Array<List<IntrusivePointer<Ghurund::Core::Image>>>& images);
@@ -81,9 +85,9 @@ namespace Ghurund::Engine::DirectX {
 
         DescriptorHandle makeCubeMapRV(ComPtr<ID3D12Resource> textureResource, DXGI_FORMAT format, uint32_t mipLevels);
 
-        ComPtr<ID3D12Resource> makeVertexBuffer(const Buffer& buffer);
+        ComPtr<ID3D12Resource> makeVertexBuffer(const void* data, size_t size);
 
-        ComPtr<ID3D12Resource> makeIndexBuffer(const Buffer& buffer);
+        ComPtr<ID3D12Resource> makeIndexBuffer(const void* data, size_t size);
 
         inline void resetUpload() {
             // uploading shouldn't be this manual

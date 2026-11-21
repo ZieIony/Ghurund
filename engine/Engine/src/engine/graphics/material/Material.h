@@ -55,10 +55,6 @@ namespace Ghurund::Engine {
 				State = ResourceState::EMPTY;	// TODO: fix this
 			}
 		}
-
-		virtual Material* clone() const override {
-			return ghnew Material(*this);
-		}
 #pragma region formats
 	protected:
 		virtual const Array<ResourceFormat>& getFormatsImpl() const override {

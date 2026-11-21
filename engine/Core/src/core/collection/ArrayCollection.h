@@ -187,6 +187,30 @@ namespace Ghurund::Core {
 			return size;
 		}
 
+		/**
+		* Comparator is required to return an int value. The returned value should be:
+		*  - less than 0 if the compared item is smaller than the searched one
+		*  - equal to 0 if the compared item is the searched element one
+		*  - greater than 0 if the compared item is greater than the searched one
+		* Binary search works only for sorted containers.
+		**/
+		template<typename Comparator>
+		inline size_t findBinary(const Comparator& comparator) const {
+			size_t startIndex = 0, endIndex = size;
+			while (startIndex < endIndex) {
+				size_t mid = (endIndex - startIndex) / 2;
+				int result = comparator(v[mid]);
+				if (result == 0)
+					return mid;
+				if (result > 0) {
+					endIndex = mid;
+				} else {
+					startIndex = mid + 1;
+				}
+			}
+			return endIndex;
+		}
+
 		template<typename Predicate>
 		inline bool any(const Predicate& predicate) const {
 			return find(predicate) != size;

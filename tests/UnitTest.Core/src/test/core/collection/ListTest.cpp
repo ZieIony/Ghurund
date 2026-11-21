@@ -546,6 +546,37 @@ public:
 		}
 	}
 
+	TEST_METHOD(List_findBinary) {
+		MemoryGuard guard;
+		{
+			auto lookFor3 = [](const uint32_t& item)->int {
+				return (int)item - 3;
+			};
+
+			List<uint32_t> listEmpty = {};
+			Assert::AreEqual(0ull, listEmpty.findBinary(lookFor3));
+
+			List<uint32_t> listOneBigger = { 5 };
+			Assert::AreEqual(0ull, listOneBigger.findBinary(lookFor3));
+			List<uint32_t> listOneEqual = { 3 };
+			Assert::AreEqual(0ull, listOneEqual.findBinary(lookFor3));
+			List<uint32_t> listOneSmaller = { 1 };
+			Assert::AreEqual(1ull, listOneSmaller.findBinary(lookFor3));
+
+			List<uint32_t> listTwoBigger = { 5, 7 };
+			Assert::AreEqual(0ull, listTwoBigger.findBinary(lookFor3));
+			List<uint32_t> listTwoSides = { 2, 5 };
+			Assert::AreEqual(1ull, listTwoSides.findBinary(lookFor3));
+			List<uint32_t> listTwoEqual = { 3, 3 };
+			Assert::AreEqual(1ull, listTwoEqual.findBinary(lookFor3));
+			List<uint32_t> listTwoSmaller = { 1, 2 };
+			Assert::AreEqual(2ull, listTwoSmaller.findBinary(lookFor3));
+
+			List<uint32_t> listFive = { 1, 2, 3, 4, 5 };
+			Assert::AreEqual(2ull, listFive.findBinary(lookFor3));
+		}
+	}
+
 	TEST_METHOD(List_performance) {
 		Timer timer;
 		timer.tick();

@@ -18,6 +18,7 @@ namespace Ghurund::Engine::DirectX {
 		if (State != ResourceState::LOADED)
 			return;
 
+		this->memoryManager = &memoryManager;
 		memoryManager.resetUpload();
 		dataSize.graphical = 0;
 
@@ -28,7 +29,7 @@ namespace Ghurund::Engine::DirectX {
 
 		// sizeof(*this) contains indexBuffer and indexBufferView
 		dataSize.system = sizeof(*this) + meshData->getDataSize();
-		dataSize.system += roles.Size * sizeof(VertexRole);
+		dataSize.system += roles.Size * sizeof(ShaderInputSemanticEnum);
 		dataSize.system += vertexBuffers.Size * sizeof(ComPtr<ID3D12Resource>);
 		dataSize.system += vertexBuffersView.Size * sizeof(D3D12_VERTEX_BUFFER_VIEW);
 		State = ResourceState::INITIALIZED;
@@ -45,14 +46,14 @@ namespace Ghurund::Engine::DirectX {
 			// TODO: get the right size from vertexBuffer (alignment and stuff)
 			dataSize.graphical += vertexBufferSize;
 
-			ComPtr<ID3D12Resource> vertexBuffer = memoryManager.makeVertexBuffer(stream.data);
+			ComPtr<ID3D12Resource> vertexBuffer = memoryManager.makeVertexBuffer(stream.data.Data, stream.data.Size);
 
 			D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
 			vertexBufferView.BufferLocation = vertexBuffer->GetGPUVirtualAddress();
 			vertexBufferView.StrideInBytes = stream.vertexSize;
 			vertexBufferView.SizeInBytes = vertexBufferSize;
 
-			roles.add(stream.role);
+			roles.add(stream.semantic);
 			vertexBuffers.add(vertexBuffer);
 			vertexBuffersView.add(vertexBufferView);
 		}
@@ -64,7 +65,7 @@ namespace Ghurund::Engine::DirectX {
 		dataSize.graphical += indexBufferSize;
 		this->indexCount = indexCount;
 		
-		indexBuffer = memoryManager.makeIndexBuffer(buffer);
+		indexBuffer = memoryManager.makeIndexBuffer(buffer.Data, buffer.Size);
 
 		indexBufferView.BufferLocation = indexBuffer->GetGPUVirtualAddress();
 		size_t indexSize = buffer.Size / indexCount;
@@ -80,13 +81,30 @@ namespace Ghurund::Engine::DirectX {
 		indexBufferView.SizeInBytes = (UINT)indexBufferSize;
 	}
 
-	void DxMesh::draw(CommandList& commandList, const Array<VertexRole>& layout) {
+	void DxMesh::draw(CommandList& commandList, const Array<ShaderInputSemanticEnum>& layout, const List<uint32_t>& ids) {
 		commandList.addPointerRef(this);
 		ID3D12GraphicsCommandList* list = commandList.get();
 		list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+		//if (idBufferView.SizeInBytes != ids.Size * sizeof(uint32_t)) {
+			idBuffer = nullptr;
+			// TODO: don't block rendering with the upload
+			memoryManager->resetUpload();
+			idBuffer = memoryManager->makeVertexBuffer(ids.Data, ids.Size * sizeof(uint32_t));
+			memoryManager->executeUploads();
+
+			idBufferView.BufferLocation = idBuffer->GetGPUVirtualAddress();
+			idBufferView.StrideInBytes = sizeof(uint32_t);
+			idBufferView.SizeInBytes = ids.Size * sizeof(uint32_t);
+		//}
+
 		Array<D3D12_VERTEX_BUFFER_VIEW> bufferViews(layout.Size);
 		for (size_t j = 0; j < layout.Size; j++) {
+			if (layout[j] == ShaderInputSemanticEnum::OBJECT_ID) {
+				bufferViews[j] = idBufferView;
+				commandList.addResourceRef(idBuffer.Get());
+				continue;
+			}
 			for (size_t i = 0; i < roles.Size; i++) {
 				if (roles[i] == layout[j]) {
 					bufferViews[j] = vertexBuffersView[i];
@@ -97,6 +115,6 @@ namespace Ghurund::Engine::DirectX {
 		list->IASetVertexBuffers(0, (UINT)bufferViews.Size, &bufferViews[0]);
 
 		list->IASetIndexBuffer(&indexBufferView);
-		list->DrawIndexedInstanced(indexCount, 1, 0, 0, 0);
+		list->DrawIndexedInstanced(indexCount, ids.Size, 0, 0, 0);
 	}
 }

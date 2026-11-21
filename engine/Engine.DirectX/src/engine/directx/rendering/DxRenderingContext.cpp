@@ -4,15 +4,16 @@
 #include "engine/directx/mesh/DxMesh.h"
 #include "DxGraphicsShader.h"
 #include <engine/directx/shader/DxConstantBuffer.h>
+#include "DxObjectParametersBuffer.h"
 
 namespace Ghurund::Engine::DirectX {
 	void DxRenderingContext::onInit() {
 		swapChain = ghnew Ghurund::Engine::DirectX::SwapChain();
-		swapChain->init(graphics, window.Handle, window.Size);
-		globalParametersCB = memoryManager.makeConstantBuffer(sizeof(GlobalParameters));
-	}
-
-	inline void deinit() {
+		swapChain->init(graphics, window.Handle, window.Size, FRAME_COUNT);
+		for (auto& item : globalParameters)
+			item = memoryManager.makeConstantBuffer(sizeof(GlobalParameters));
+		for (auto& item : objectParameters)
+			item = (DxObjectParametersBuffer*)memoryManager.makeParametersBuffer(100);
 	}
 
 	void DxRenderingContext::onDeinit() {
@@ -42,28 +43,28 @@ namespace Ghurund::Engine::DirectX {
 		}
 	}
 
+	void DxRenderingContext::setParameters(uint32_t id, const ObjectParameters& parameters) {
+		objectParameters[currentFrame]->setValue(parameters, id);
+	}
+
 	void DxRenderingContext::draw(RenderGroup& renderGroup, MaterialVariantType variantType) {
 		auto commandList = swapChain->CurrentFrame.RenderCommandList;
-		if (renderGroup.Camera)
-			renderGroup.Camera->apply(globalParameters);
-		globalParametersCB->setValue(&globalParameters, sizeof(GlobalParameters), 0);
+		if (renderGroup.Camera) {
+			GlobalParameters p;
+			renderGroup.Camera->apply(p);
+			globalParameters[currentFrame]->setValue(&p, sizeof(GlobalParameters), 0);
+		}
 
-		// TODO: sort on insertion
-		renderGroup.objects.sort([&](const DrawPacket& first, const DrawPacket& second) -> bool {
-			return (first.Order - second.Order) * (int8_t)renderGroup.DrawGroup.DrawOrder > 0;
-		});
-		for (auto& packet : renderGroup.objects) {
-			auto mesh = (DxMesh*)packet.Mesh;
-			auto materialVariant = packet.Material->getShader(variantType);
+		for (auto& batch : renderGroup.objects) {
+			stats.materialChanges++;
+			auto materialVariant = batch.value.material->getShader(variantType);
 			materialVariant->applyInputs();
 			auto shader = (DxGraphicsShader*)materialVariant;
-			bool shaderChanged = shader->apply(*commandList);
-			globalParametersCB->set(*commandList, 0);
-			mesh->draw(*commandList, shader->Layout);
-
-			stats.modelsRendered++;
-			if (shaderChanged)
-				stats.materialChanges++;
+			bool shaderChanged = shader->apply(*commandList, *globalParameters[currentFrame], *objectParameters[currentFrame]);
+			stats.instancesRendered += batch.value.instances.Size;
+			auto mesh = (DxMesh*)batch.value.mesh;
+			mesh->draw(*commandList, shader->Layout, batch.value.instances);
+			stats.modelsRendered++;	// this mesh could have been rendered earlier with another material already
 		}
 	}
 }

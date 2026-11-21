@@ -6,6 +6,10 @@
 #include "core/math/MathUtils.h"
 #include "core/logging/Logger.h"
 
+#pragma warning(push, 0)
+#include <d3dx12.h>
+#pragma warning(pop)
+
 namespace Ghurund::Engine::DirectX {
     HeapAllocator::HeapAllocator(DxGraphics& graphics, uint64_t size, AllocationStrategy* strategy, D3D12_HEAP_TYPE type, D3D12_HEAP_FLAGS flags) {
         this->strategy = strategy == nullptr ? ghnew CircularBufferStrategy() : strategy;

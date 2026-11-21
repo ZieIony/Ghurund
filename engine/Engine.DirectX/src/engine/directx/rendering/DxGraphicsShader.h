@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DxGraphicsCommandList.h"
+#include "DxObjectParametersBuffer.h"
 
 #include "core/collection/Array.h"
 #include "core/collection/List.h"
@@ -10,6 +11,7 @@
 #include "engine/graphics/rendering/GraphicsShader.h"
 #include "engine/directx/shader/variables/DxBufferConstantInfo.h"
 #include "engine/directx/shader/variables/DxTextureConstantInfo.h"
+#include "engine/directx/shader/DxConstantBuffer.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
@@ -33,7 +35,7 @@ namespace Ghurund::Engine::DirectX {
 #pragma endregion
 
 	private:
-		Array<VertexRole> layout;
+		Array<ShaderInputSemanticEnum> layout;
 		ID3D12RootSignature* rootSignature = nullptr;
 		ID3D12PipelineState* pipelineState = nullptr;
 
@@ -64,24 +66,29 @@ namespace Ghurund::Engine::DirectX {
 	public:
 		DxGraphicsShader() {}
 
-		inline const Array<VertexRole>& getLayout() const {
+		inline const Array<ShaderInputSemanticEnum>& getLayout() const {
 			return layout;
 		}
 
-		__declspec(property(get = getLayout)) const Array<VertexRole>& Layout;
+		__declspec(property(get = getLayout)) const Array<ShaderInputSemanticEnum>& Layout;
 		
 		void init(
 			NotNull<IGPUMemoryManager> memoryManager,
-			const Array<VertexRole>& layout,
+			const Array<ShaderInputSemanticEnum>& layout,
 			OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> rootSignature,
 			OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,
 			const List<DxBufferConstantInfo*>& bufferConstantInfos,
 			const List<DxTextureConstantInfo*>& textureConstantInfos,
+			const List<DxBufferConstantInfo*>& srvConstantInfos,
 			const List<DxTextureConstantInfo*>& uavConstantInfos,
 			bool isTransparencyEnabled
 		);
 
-		bool apply(DxGraphicsCommandList& commandList);
+		bool apply(
+			DxGraphicsCommandList& commandList,
+			DxConstantBuffer& globalParameters,
+			DxObjectParametersBuffer& objectParameters
+		);
 
 		virtual DxGraphicsShader* clone() const override {
 			return ghnew DxGraphicsShader(*this);
@@ -94,7 +101,7 @@ namespace Ghurund::Engine::DirectX {
 		}
 
 	public:
-		static const inline ResourceFormat FORMAT_XML = ResourceFormat(L"xml", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD, 1);
+		static const inline ResourceFormat FORMAT_XML = ResourceFormat(L"xml", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD, 2);
 		static const inline ResourceFormat FORMAT_HLSL = ResourceFormat(L"hlsl", ResourceFormatOptions::CAN_LOAD);
 
 		inline static const Array<ResourceFormat>& FORMATS = { FORMAT_XML, FORMAT_HLSL };

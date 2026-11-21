@@ -106,6 +106,23 @@ namespace Ghurund::Core {
             A::size--;
         }
 
+        inline Value popFront() {
+            _____________________check(A::size == 0, "Index out of bounds.\n");
+            Value value = A::v[0];
+            A::v[0] = std::move(A::v[A::size - 1]);
+            A::v[A::size - 1].~Value();
+            A::size--;
+            return value;
+        }
+
+        inline Value popBack() {
+            _____________________check(A::size == 0, "Index out of bounds.\n");
+            Value value = A::v[A::size - 1];
+            A::v[A::size - 1].~Value();
+            A::size--;
+            return value;
+        }
+
         using A::operator==;
         using A::operator!=;
     };

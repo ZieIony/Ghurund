@@ -32,8 +32,8 @@ namespace Ghurund::Engine::_2D {
 			tileIndex++;
 			i += 4;
 		}
-		VertexStream positionStream = VertexStream(vertices, VertexRole::POSITION);
-		VertexStream texCoordStream = VertexStream(texCoords, VertexRole::TEXCOORD);
+		VertexStream positionStream = VertexStream(vertices, ShaderInputSemanticEnum::POSITION);
+		VertexStream texCoordStream = VertexStream(texCoords, ShaderInputSemanticEnum::TEXCOORD);
 
 		auto boundingBox = MeshProcessor::computeBoundingBox(positionStream);
 

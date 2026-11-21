@@ -1,6 +1,5 @@
 #pragma once
 
-#include "MeshInputs.h"
 #include "engine/graphics/material/Material.h"
 #include "engine/graphics/mesh/Mesh.h"
 
@@ -11,9 +10,8 @@ namespace Ghurund::Engine::_3D {
 	private:
 		BoundingBox boundingBox;
 		BoundingOrientedBox transformedBoundingBox;
-		bool culled = false;
 
-	protected:
+		uint32_t id;
 		Mesh* mesh = nullptr;
 		Material* material = nullptr;
 
@@ -25,12 +23,18 @@ namespace Ghurund::Engine::_3D {
 		}
 
 		[[nodiscard]]
-		CoroutineTask<void> init(IGPUMemoryManager& memoryManager);
+		void init(uint32_t id);
 
 		inline void deinit() {
 			safeRelease(mesh);
 			safeRelease(material);
 		}
+
+		inline uint32_t getId() const {
+			return id;
+		}
+
+		__declspec(property(get = getId)) uint32_t Id;
 
 		Mesh* getMesh() const {
 			return mesh;

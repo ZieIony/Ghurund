@@ -58,6 +58,7 @@ namespace Ghurund::Engine::DirectX {
 			OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,
 			const List<DxBufferConstantInfo*>& bufferConstantInfos,
 			const List<DxTextureConstantInfo*>& textureConstantInfos,
+			const List<DxBufferConstantInfo*>& srvsConstantInfos,
 			const List<DxTextureConstantInfo*>& uavConstantInfos
 		);
 

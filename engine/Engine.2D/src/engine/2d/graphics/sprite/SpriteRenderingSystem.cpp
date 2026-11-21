@@ -1,11 +1,13 @@
 #include "ghe2dpch.h"
 #include "SpriteRenderingSystem.h"
 
-#include "engine/ecs/World.h"
-#include "engine/2d/graphics/transform/TransformComponent2D.h"
-#include "engine/2d/graphics/sprite/SpriteComponent.h"
-#include "engine/2d/graphics/transform/TransformSystem2D.h"
 #include "engine/2d/graphics/camera/CameraSystem2D.h"
+#include "engine/2d/graphics/sprite/SpriteComponent.h"
+#include "engine/2d/graphics/transform/TransformComponent2D.h"
+#include "engine/2d/graphics/transform/TransformSystem2D.h"
+#include "engine/ecs/World.h"
+#include "engine/graphics/memory/IGPUMemoryManager.h"
+#include "engine/graphics/rendering/ObjectParameters.h"
 
 namespace Ghurund::Engine::_2D {
     const Ghurund::Core::Type& SpriteRenderingSystem::GET_TYPE() {
@@ -23,19 +25,26 @@ namespace Ghurund::Engine::_2D {
     void SpriteRenderingSystem::queueDraw(RenderingContext& renderingContext) {
         RenderGroup group = DrawGroup();
         group.Camera = camera;
+
         auto view = world.Scene->entityRegistry.view<TransformComponent2D, SpriteComponent>().each();
         for (auto [id, transform, sprite] : view) {
             if (!sprite.Mesh || !sprite.Material)
                 continue;
 
-            sprite.update(transform);
+            ObjectParameters objParameters;
+            sprite.update(transform, objParameters);
 
 			sprite.cull(camera->ViewBox);
 
-			if (!sprite.IsCulled)
-				// TODO: maybe not declare draw order manually?
-				group.objects.add(DrawPacket(sprite.Mesh, sprite.Material, 0.0f));
-		}
+            if (!sprite.IsCulled) {
+                BatchId batchId = { sprite.Mesh->id, sprite.Material->id };
+                if (!group.objects.contains(batchId))
+                    group.objects.put(batchId, { sprite.Mesh, sprite.Material });
+                renderingContext.setParameters(sprite.Id, objParameters);
+                group.objects.get(batchId).instances.add(sprite.Id);
+            }
+        }
+
 		if (!group.objects.IsEmpty)
 			renderingContext.draw(group, MaterialVariantType::UNLIT);
 	}

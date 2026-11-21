@@ -8,27 +8,26 @@ namespace Ghurund::Engine {
 	using namespace ::DirectX;
 
 	class DrawPacket {
-	private:
-		Mesh* mesh;
-		Material* material;
-		float order;
-
 	public:
+		const uint32_t id;
+		const Mesh* mesh;
+		const Material* material;
+
 		DrawPacket(
+			uint32_t id,
 			NotNull<Mesh> mesh,
-			NotNull<Material> material,
-			float order
-		):mesh(mesh.get()), material(material.get()), order(order) {
+			NotNull<Material> material
+		):id(id), mesh(mesh.get()), material(material.get()) {
 			mesh->addReference();
 			material->addReference();
 		}
 
-		DrawPacket(const DrawPacket& other):mesh(other.mesh), material(other.material), order(other.order) {
+		DrawPacket(const DrawPacket& other):id(other.id), mesh(other.mesh), material(other.material) {
 			mesh->addReference();
 			material->addReference();
 		}
 
-		DrawPacket(DrawPacket&& other) noexcept:mesh(other.mesh), material(other.material), order(other.order) {
+		DrawPacket(DrawPacket&& other) noexcept:id(other.id), mesh(other.mesh), material(other.material) {
 			other.mesh = nullptr;
 			other.material = nullptr;
 		}
@@ -38,46 +37,6 @@ namespace Ghurund::Engine {
 				mesh->release();
 			if (material)
 				material->release();
-		}
-
-		inline Mesh* getMesh() const {
-			return mesh;
-		}
-
-		__declspec(property(get = getMesh)) Mesh* Mesh;
-
-		inline Material* getMaterial() const {
-			return material;
-		}
-
-		__declspec(property(get = getMaterial)) Material* Material;
-
-		inline float getOrder() const {
-			return order;
-		}
-
-		__declspec(property(get = getOrder)) float Order;
-
-		inline DrawPacket& operator=(const DrawPacket& other) {
-			if (this == &other)
-				return *this;
-			mesh = other.mesh;
-			mesh->addReference();
-			material = other.material;
-			material->addReference();
-			order = other.order;
-			return *this;
-		}
-
-		inline DrawPacket& operator=(DrawPacket&& other) noexcept {
-			if (this == &other)
-				return *this;
-			mesh = other.mesh;
-			other.mesh = nullptr;
-			material = other.material;
-			other.material = nullptr;
-			order = other.order;
-			return *this;
 		}
 	};
 }

@@ -19,13 +19,14 @@ namespace Ghurund::Engine::_2D {
 
     private:
         class World2D& world;
+        class IGPUMemoryManager& memoryManager;
         Camera2D* camera = nullptr;
 
     protected:
         virtual const Array<std::reference_wrapper<const Ghurund::Core::Type>>& getDependencies_internal() const override;
 
     public:
-        SpriteRenderingSystem(World2D& world):world(world) {
+        SpriteRenderingSystem(World2D& world, IGPUMemoryManager& memoryManager):world(world), memoryManager(memoryManager) {
         }
 
         ~SpriteRenderingSystem() {

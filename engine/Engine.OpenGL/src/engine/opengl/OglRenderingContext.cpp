@@ -61,10 +61,9 @@ namespace Ghurund::Engine::OpenGL {
         glClear(GL_DEPTH_BUFFER_BIT);
     }
 
+    void OglRenderingContext::setParameters(uint32_t id, const ObjectParameters& parameters) {}
+
     void OglRenderingContext::draw(RenderGroup& renderGroup, MaterialVariantType vatiantType) {
-        renderGroup.objects.sort([&](const DrawPacket& first, const DrawPacket& second) -> bool {
-            return (first.Order - second.Order) * (int8_t)renderGroup.DrawGroup.DrawOrder > 0;
-        });
         for (auto& packet : renderGroup.objects) {
             /*renderingContext.startFrame();
             Color clearColor = { 0xff1f1f1f };

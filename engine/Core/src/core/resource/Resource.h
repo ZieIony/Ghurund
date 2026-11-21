@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ResourceFormat.h"
+#include "ResourceState.h"
 
 #include "core/io/FilePath.h"
 #include "core/object/NamedObject.h"
@@ -18,15 +19,6 @@ namespace Ghurund::Core {
 	class MemoryOutputStream;
 	class File;
 
-	enum class ResourceState {
-		// a path may be set, but the rest is missing
-		EMPTY,
-		// the resource was loaded, but can't be used yet, for example because it still needs to be uploaded to VRAM
-		LOADED,
-		// the resource is ready to use
-		INITIALIZED
-	};
-
 	class Resource: public RefCountedObject {
 #pragma region reflection
 	protected:
@@ -41,13 +33,14 @@ namespace Ghurund::Core {
 #pragma endregion
 
 	private:
+		static inline uint32_t ID = 0;
 		ResourceState state = ResourceState::EMPTY;
 		FilePath* path = nullptr;
 
 	protected:
 		DataSize dataSize = {};
 
-		Resource() {}
+		Resource():id(ID++) {}
 
 		Resource(const Resource& other):
 			state(other.state),
@@ -63,6 +56,7 @@ namespace Ghurund::Core {
 		}
 
 	public:
+		const uint32_t id = 0;
 		// needed for TileMapComponent, but maybe it could be done in a different way?
 		Event<Resource, void, ResourceState> stateChanged = *this;
 

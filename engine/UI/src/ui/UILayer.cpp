@@ -44,6 +44,6 @@ namespace Ghurund::UI {
     void UILayer::draw(RenderingContext& renderingContext) {
         RenderGroup group(DrawGroup(0, DrawOrder::BACK_TO_FRONT));
 		rootView->draw(group, { 0, 0 });
-        renderingContext.draw(group, MaterialVariantType::UNLIT);
+        //renderingContext.draw(group, MaterialVariantType::UNLIT);
     }
 }

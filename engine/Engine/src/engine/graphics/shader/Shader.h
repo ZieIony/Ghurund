@@ -29,13 +29,11 @@ namespace Ghurund::Engine {
 		}
 
 		inline void unload_internal() {
-			if (source)
-				source->release();
-			source = nullptr;
+			sources.deleteItems();
 		}
 
 	protected:
-		ShaderSource* source = nullptr;
+		List<ShaderProgramSourceCode*> sources;
 		ConstantCollection* constants = nullptr;
 
 		~Shader() {
@@ -52,24 +50,24 @@ namespace Ghurund::Engine {
 		}
 
 		virtual void updateDataSize() {
-			dataSize.system = sizeof(*this) + source->getDataSize();
+			dataSize.system = sizeof(*this);// +source->getDataSize();
 		}
 
 	public:
-		inline void setSource(ShaderSource* source) {
+		inline void setSources(const List<ShaderProgramSourceCode*>& sources) {
 			deinit();
-			setPointer(this->source, source);
-			if (source) {
+			this->sources = sources;
+			if (!sources.IsEmpty) {
 				updateDataSize();
 				State = ResourceState::LOADED;
 			}
 		}
 
-		inline const ShaderSource* getSource() const {
-			return source;
+		inline const List<ShaderProgramSourceCode*>& getSources() const {
+			return sources;
 		}
 
-		__declspec(property(get = getSource, put = setSource)) const ShaderSource* Source;
+		__declspec(property(get = getSources, put = setSources)) const List<ShaderProgramSourceCode*>& Sources;
 
 		inline ConstantCollection& getConstants() {
 			return *constants;

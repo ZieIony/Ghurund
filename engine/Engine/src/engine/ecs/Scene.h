@@ -1,8 +1,9 @@
 #pragma once
 
+#include "core/collection/Bag.h"
+#include "core/concepts/Derived.h"
 #include "core/resource/Resource.h"
 #include "engine/ecs/Entity.h"
-#include "core/concepts/Derived.h"
 #include "engine/graphics/Camera.h"
 
 #include <entt.hpp>
@@ -25,6 +26,8 @@ namespace Ghurund::Engine {
 
     private:
         Camera* camera = nullptr;
+        Bag<uint32_t> idPool;
+        uint32_t id = 0;
 
     public:
         entt::registry entityRegistry;	// TODO: fix getView<>() and make entityRegistry private
@@ -55,6 +58,22 @@ namespace Ghurund::Engine {
         inline void destroyEntity(Entity& entity) {
             entityRegistry.destroy(entity.Id);
         }
+
+        inline uint32_t makeId() {
+            if (idPool.IsEmpty)
+                return id++;
+            return idPool.popBack();
+        }
+
+        inline void returnId(uint32_t id) {
+            idPool.add(id);
+        }
+
+        inline uint32_t getIdCount() const {
+            return id;
+        }
+
+        __declspec(property(get = getIdCount)) uint32_t IdCount;
 
         // TODO: why this doesn't work?
         template<typename... T>

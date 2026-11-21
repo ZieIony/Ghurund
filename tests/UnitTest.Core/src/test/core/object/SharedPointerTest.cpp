@@ -14,8 +14,20 @@ namespace UnitTest {
     using namespace Ghurund::Core;
 
     TEST_CLASS(SharedPointerTest) {
-public:
+private:
+    class SPTestClassBase {
+    public:
+        AString text = "test";
 
+        virtual ~SPTestClassBase() {}
+    };
+
+    class SPTestClassDerived:public SPTestClassBase {
+    public:
+        AString test2 = "test2";
+    };
+
+public:
     TEST_METHOD(SharedPointer_empty) {
         MemoryGuard guard;
         {
@@ -132,6 +144,22 @@ public:
             ptr4.set(b2);
             Assert::AreEqual(3u, ptr.ReferenceCount);
             Assert::AreEqual(1u, ptr4.ReferenceCount);
+        }
+    }
+
+    TEST_METHOD(SharedPointer_polymorphicType) {
+        MemoryGuard guard;
+        {
+            SharedPointer<SPTestClassBase> ptr = SharedPointer<SPTestClassBase>(ghnew SPTestClassDerived());
+        }
+    }
+
+    TEST_METHOD(SharedPointer_polymorphicTypeList) {
+        MemoryGuard guard;
+        {
+            SharedPointer<SPTestClassBase> ptr = SharedPointer<SPTestClassBase>(ghnew SPTestClassDerived());
+            List<SharedPointer<SPTestClassBase>> list;
+            list.add(ptr);
         }
     }
     };

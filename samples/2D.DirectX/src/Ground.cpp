@@ -10,9 +10,10 @@
 namespace Sample {
 	using namespace Ghurund::Engine::_2D;
 
-	CoroutineTask<void> Ground::init(PhysicsSystem2D& physicsSystem, IGraphicsResourceFactory& resourceFactory, ResourceManager& resourceManager, IGPUMemoryManager& memoryManager) {
+	CoroutineTask<void> Ground::init(Scene& scene, PhysicsSystem2D& physicsSystem, IGraphicsResourceFactory& resourceFactory, ResourceManager& resourceManager, IGPUMemoryManager& memoryManager) {
 		addComponent<TransformComponent2D>();
-		addComponent<SpriteComponent>();
+		auto& sprite = addComponent<SpriteComponent>();
+		sprite.init(scene.makeId());
 
 		{
 			auto& groundBox = addComponent<RigidBodyComponent2D>();
@@ -20,14 +21,14 @@ namespace Sample {
 			groundBox.BodyType = BodyType::STATIC;
 			groundBox.Size = { 5, 3 };
 			auto& visComponent = addComponent<VisualizationComponent2D>();
-			visComponent.init(memoryManager, groundBox);
+			visComponent.init(scene.makeId(), groundBox);
 		}
 
 		{
 			auto& tileMapComponent = addComponent<TileMapComponent>();
 			auto tileMap = co_await resourceManager.load<TileMap>(ResourceManager::ENGINE_LIB_PATH / FilePath(L"test/images/terrainTileMap.xml"));
 			tileMapComponent.TileMap = tileMap.get();
-			tileMapComponent.init(resourceFactory, memoryManager);
+			tileMapComponent.init(resourceFactory);
 		}
 	}
 }

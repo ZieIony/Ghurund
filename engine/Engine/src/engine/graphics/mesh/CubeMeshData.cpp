@@ -41,7 +41,7 @@ namespace Ghurund::Engine {
 			{1.0f,  -1.0f, -1.0f},
 			{-1.0f, -1.0f,  1.0f}
 			});
-		VertexStream positionStream = VertexStream(positions, VertexRole::POSITION);
+		VertexStream positionStream = VertexStream(positions, ShaderInputSemanticEnum::POSITION);
 
 		VertexStream normalStream = VertexStream(Array<XMFLOAT3>({
 			{0,0,-1},{0,0,-1},{0,0,-1},{0,0,-1},
@@ -60,7 +60,7 @@ namespace Ghurund::Engine {
 
 			// bottom face
 			{0,-1,0},{0,-1,0},{0,-1,0},{0,-1,0}
-		}), VertexRole::NORMAL);
+		}), ShaderInputSemanticEnum::NORMAL);
 
 		VertexStream texCoordStream = VertexStream(Array<XMFLOAT2>({
 			{0,0},
@@ -97,7 +97,7 @@ namespace Ghurund::Engine {
 			{1,1},
 			{0,1},
 			{1,0},
-			}), VertexRole::TEXCOORD);
+			}), ShaderInputSemanticEnum::TEXCOORD);
 
 		Ghurund::Core::Array<uint16_t> indices = {
 			// front face

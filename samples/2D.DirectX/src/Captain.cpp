@@ -15,7 +15,7 @@
 #include "engine/animation/AnimatorState.h"
 
 namespace Sample {
-	CoroutineTask<void> Captain::init(PhysicsSystem2D& physicsSystem, ResourceManager& resourceManager, IGPUMemoryManager& memoryManager, World2D& world) {
+	CoroutineTask<void> Captain::init(Scene& scene, PhysicsSystem2D& physicsSystem, ResourceManager& resourceManager, IGPUMemoryManager& memoryManager, World2D& world) {
 		addComponent<TransformComponent2D>();
 
 		auto& capsuleComponent = addComponent<RigidBodyComponent2D>();
@@ -24,11 +24,12 @@ namespace Sample {
 		capsuleComponent.IsRotationFixed = true;
 		capsuleComponent.setSize(0.4f, 0.7f);
 		auto& visComponent = addComponent<VisualizationComponent2D>();
-		visComponent.init(memoryManager, capsuleComponent);
+		visComponent.init(scene.makeId(), capsuleComponent);
 
 		{
 			auto& captainSprite = addComponent<SpriteComponent>();
-			captainSprite.init(memoryManager);
+			// TODO: also return ids to the pool
+			captainSprite.init(scene.makeId());
 			captainSprite.offset = { 0, -0.05f };
 			captainSprite.size = { 1.6f, 1 };
 		}

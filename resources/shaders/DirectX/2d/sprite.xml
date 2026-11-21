@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GraphicsShader version="1">
+<GraphicsShader version="2">
 	<Settings isDepthTestEnabled="false" cullMode="none" isTransparencyEnabled="true"/>
-	<Samplers>
-		<Sampler name="pointSampler" filter="point"/>
-	</Samplers>
 	<Programs>
 		<Program type="vertex" path="basic_vs.hlsl"/>
-		<Program type="pixel" path="sprite_ps.hlsl"/>
+		<Program type="pixel" path="sprite_ps.hlsl">
+			<Samplers>
+				<Sampler name="pointSampler" filter="point"/>
+			</Samplers>
+		</Program>
 	</Programs>
 </GraphicsShader>

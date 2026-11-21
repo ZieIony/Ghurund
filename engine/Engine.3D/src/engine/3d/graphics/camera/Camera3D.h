@@ -28,6 +28,7 @@ namespace Ghurund::Engine::_3D {
 		XMFLOAT2 fov;
 		float dist;
 		bool pers;
+		BoundingFrustum boundingFrustum;
 
 	public:
 		inline static const XMFLOAT3 DEFAULT_UP = { 0, 1, 0 };
@@ -150,5 +151,15 @@ namespace Ghurund::Engine::_3D {
 		// move by d * direction, r * right, and u * up
 		void move(float d, float r, float u = 0.0f);
 		void zoom(float z);
+
+
+		/**
+		* Returns a box that includes exactly the space this camera sees.
+		**/
+		const BoundingFrustum& getBoundingFrustum() const {
+			return boundingFrustum;
+		}
+
+		__declspec(property(get = getBoundingFrustum)) const BoundingFrustum& BoundingFrustum;
 	};
 }

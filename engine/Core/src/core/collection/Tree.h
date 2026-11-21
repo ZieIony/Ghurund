@@ -372,10 +372,10 @@ namespace Ghurund::Core {
 #endif
 
 	public:
-		using iterator = TreeNodeIterator<data_t, Node>;
-		using const_iterator = ConstTreeNodeIterator<data_t, Node>;
-		using reverse_iterator = ReverseTreeNodeIterator<data_t, Node>;
-		using const_reverse_iterator = ConstReverseTreeNodeIterator<data_t, Node>;
+		using iterator_t = TreeNodeIterator<data_t, Node>;
+		using const_iterator_t = ConstTreeNodeIterator<data_t, Node>;
+		using reverse_iterator_t = ReverseTreeNodeIterator<data_t, Node>;
+		using const_reverse_iterator_t = ConstReverseTreeNodeIterator<data_t, Node>;
 
 		Tree(AllocatorType a = AllocatorType()):a(a) {}
 
@@ -495,64 +495,64 @@ namespace Ghurund::Core {
 			}
 		}
 
-		inline iterator find(const key_t& key) {
-			return iterator(findNode(key));
+		inline iterator_t find(const key_t& key) {
+			return iterator_t(findNode(key));
 		}
 
-		inline const_iterator find(const key_t& key) const {
-			return const_iterator(findNode(key));
+		inline const_iterator_t find(const key_t& key) const {
+			return const_iterator_t(findNode(key));
 		}
 
-		inline iterator begin() {
+		inline iterator_t begin() {
 			Node* node = root;
 			if (node) {
 				while (node->left)
 					node = node->left;
 			}
-			return iterator(node);
+			return iterator_t(node);
 		}
 
-		inline const_iterator begin() const {
+		inline const_iterator_t begin() const {
 			Node* node = root;
 			if (node) {
 				while (node->left)
 					node = node->left;
 			}
-			return const_iterator(node);
+			return const_iterator_t(node);
 		}
 
-		inline iterator end() {
-			return iterator();
+		inline iterator_t end() {
+			return iterator_t();
 		}
 
-		inline const_iterator end() const {
-			return const_iterator();
+		inline const_iterator_t end() const {
+			return const_iterator_t();
 		}
 
-		inline reverse_iterator rbegin() {
+		inline reverse_iterator_t rbegin() {
 			Node* node = root;
 			if (node) {
 				while (node->right)
 					node = node->right;
 			}
-			return reverse_iterator(node);
+			return reverse_iterator_t(node);
 		}
 
-		inline const_reverse_iterator rbegin() const {
+		inline const_reverse_iterator_t rbegin() const {
 			Node* node = root;
 			if (node) {
 				while (node->right)
 					node = node->right;
 			}
-			return const_reverse_iterator(node);
+			return const_reverse_iterator_t(node);
 		}
 
-		inline reverse_iterator rend() {
-			return reverse_iterator();
+		inline reverse_iterator_t rend() {
+			return reverse_iterator_t();
 		}
 
-		inline const_reverse_iterator rend() const {
-			return const_reverse_iterator();
+		inline const_reverse_iterator_t rend() const {
+			return const_reverse_iterator_t();
 		}
 
 		inline bool operator==(const Tree<TraitsType, AllocatorType>& other) const {

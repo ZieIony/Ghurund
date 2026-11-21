@@ -89,11 +89,11 @@ namespace Ghurund::UI {
 		for (auto& line : lines) {
 			for (auto& span : line.Spans) {
 				auto mesh = IntrusivePointer<Mesh>(textMeshFactory.makeMesh(line.Characters, span));
-				auto material = IntrusivePointer<Material>(textMaterial->clone());
+				//auto material = IntrusivePointer<Material>(textMaterial->clone());
 				// TODO: support multiple materials
 				TextureInput* colorTextureInput = (TextureInput*)material->getShader(MaterialVariantType::UNLIT)->Inputs.get("colorTexture");
 				colorTextureInput->Value = IntrusivePointer<ITexture>(resourceFactory.makeTexture(*span.textStyle->Atlas->Image)).get();
-				textMeshes.add({ mesh, material });
+				//textMeshes.add({ mesh, material });
 			}
 		}
 	}
@@ -136,7 +136,7 @@ namespace Ghurund::UI {
 		for (auto& mesh : textMeshes) {
 			Float2Input* positionInput = (Float2Input*)mesh.material->getShader(MaterialVariantType::UNLIT)->Inputs.get("position");
 			positionInput->Value = position;
-			group.objects.add(DrawPacket(mesh.mesh.get(), mesh.material.get(), 0));
+			//group.objects.add(DrawPacket(mesh.mesh.get(), mesh.material.get(), 0));
 		}
 	}
 

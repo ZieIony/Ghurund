@@ -26,8 +26,40 @@ namespace Ghurund::Engine::DirectX {
 #endif
 		}
 
-		virtual uint64_t getDataSize() {
+		virtual uint64_t getDataSize() const override {
 			return __super::getDataSize() + sizeof(*this) - sizeof(ShaderProgramSourceCode);
+		}
+	};
+
+	struct DxVertexShaderProgramSourceCode:public DxShaderProgramSourceCode {
+		VertexShaderSettings settings;
+
+		DxVertexShaderProgramSourceCode(
+			const AString& sourceCode,
+			const AString& sourceName,
+			const VertexShaderSettings& settings,
+			const AString& entryPoint = AString()
+		):DxShaderProgramSourceCode(DxShaderType::VERTEX, sourceCode, sourceName, entryPoint), settings(settings) {
+		}
+
+		virtual uint64_t getDataSize() const override {
+			return __super::getDataSize() + sizeof(*this) - sizeof(DxShaderProgramSourceCode);
+		}
+	};
+
+	struct DxPixelShaderProgramSourceCode:public DxShaderProgramSourceCode {
+		PixelShaderSettings settings;
+
+		DxPixelShaderProgramSourceCode(
+			const AString& sourceCode,
+			const AString& sourceName,
+			const PixelShaderSettings& settings,
+			const AString& entryPoint = AString()
+		):DxShaderProgramSourceCode(DxShaderType::PIXEL, sourceCode, sourceName, entryPoint), settings(settings) {
+		}
+
+		virtual uint64_t getDataSize() const override {
+			return __super::getDataSize() + sizeof(*this) - sizeof(DxShaderProgramSourceCode);
 		}
 	};
 }

@@ -9,7 +9,7 @@ namespace Ghurund::Engine {
 	using namespace ::DirectX;
 
 	struct GlobalParameters {
-		static const inline AString CB_NAME = "GlobalParams";
+		static const inline AString CB_NAME = "gh_globalParameters";
 
 		__declspec(align(4)) float time;
 		__declspec(align(4)) XMFLOAT3 cameraPos;

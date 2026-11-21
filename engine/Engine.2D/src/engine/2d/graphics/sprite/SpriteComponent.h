@@ -8,6 +8,8 @@
 #include "engine/graphics/mesh/Mesh.h"
 #include "engine/graphics/texture/ITexture.h"
 #include "engine/2d/graphics/transform/TransformComponent2D.h"
+#include "engine/graphics/rendering/ObjectParameters.h"
+#include "engine/2d/Graphics2DFeature.h"
 
 #include <DirectXCollision.h>
 
@@ -19,10 +21,11 @@ namespace Ghurund::Engine::_2D {
 		BoundingBox boundingBox;
 		BoundingOrientedBox transformedBoundingBox;
 		bool culled = false;
-		bool selectable = true, visible = true, cullingEnabled = true;
 
+		uint32_t id;
 		Mesh* mesh = nullptr;
 		Material* material = nullptr;
+
 		SpriteInputs inputs;
 		ITexture* colorTexture = nullptr;
 		Color tint = Colors::WHITE;
@@ -33,17 +36,29 @@ namespace Ghurund::Engine::_2D {
 		FloatSize size = { 1, 1 };
 
 	public:
+		bool selectable = true, visible = true, cullingEnabled = true;
+
 		~SpriteComponent() {
 			deinit();
 		}
 
-		void init(IGPUMemoryManager& memoryManager);
+		inline void init(uint32_t id) {
+			this->id = id;
+			Mesh = Graphics2DFeature::MESH_SPRITE;
+			Material = Graphics2DFeature::MATERIAL_SPRITE;
+		}
 
 		inline void deinit() {
 			safeRelease(colorTexture);
 			safeRelease(mesh);
 			safeRelease(material);
 		};
+
+		inline uint32_t getId() const {
+			return id;
+		}
+
+		__declspec(property(get = getId)) uint32_t Id;
 
 		inline Mesh* getMesh() const {
 			return mesh;
@@ -117,51 +132,26 @@ namespace Ghurund::Engine::_2D {
 
 		__declspec(property(get = getIsCulled)) bool IsCulled;
 
-		inline void setSelectable(bool selectable) {
-			this->selectable = selectable;
-		}
-
-		inline bool isSelectable() const {
-			return selectable;
-		}
-
-		__declspec(property(get = isSelectable, put = setSelectable)) bool Selectable;
-
-		inline void setCullingEnabled(bool cullingEnabled) {
-			this->cullingEnabled = cullingEnabled;
-		}
-
-		inline bool isCullingEnabled() const {
-			return cullingEnabled;
-		}
-
-		__declspec(property(get = isCullingEnabled, put = setCullingEnabled)) bool CullingEnabled;
-
-		inline void setVisible(bool visible) {
-			this->visible = visible;
-		}
-
-		inline bool isVisible() const {
-			return visible;
-		}
-
-		__declspec(property(get = isVisible, put = setVisible)) bool Visible;
-
-		inline void update(const TransformComponent2D& transform) {
+		inline void update(const TransformComponent2D& transform, ObjectParameters& parameters) {
 			auto w = XMMatrixTranslation(offset.x, offset.y, 0) *
 				XMMatrixScaling(size.Width, size.Height, 1) *
 				XMLoadFloat4x4(&transform.WorldTransformation);
 			XMFLOAT4X4 world;
 			XMStoreFloat4x4(&world, XMMatrixTranspose(w));
 
-			inputs.Transformation = world;
+			parameters.world = world;
 
+			auto bw = XMMatrixTranslation(offset.x, offset.y, 0) *
+				XMMatrixScaling(abs(size.Width), abs(size.Height), 1) *
+				XMLoadFloat4x4(&transform.WorldTransformation);
+			XMFLOAT4X4 boxWorld;
+			XMStoreFloat4x4(&boxWorld, XMMatrixTranspose(bw));
 			BoundingOrientedBox::CreateFromBoundingBox(transformedBoundingBox, boundingBox);
-			transformedBoundingBox.Transform(transformedBoundingBox, w);
+			transformedBoundingBox.Transform(transformedBoundingBox, bw);
 		}
 
 		inline void cull(const BoundingOrientedBox& viewBox) {
-			culled = CullingEnabled && viewBox.Contains(transformedBoundingBox) == ContainmentType::DISJOINT;
+			culled = cullingEnabled && viewBox.Contains(transformedBoundingBox) == ContainmentType::DISJOINT;
 		}
 	};
 }

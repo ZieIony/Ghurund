@@ -1,21 +1,31 @@
 #pragma once
 
-#include "engine/directx/buffer/RenderTarget.h"
-#include "engine/directx/SwapChain.h"
+#include "DxObjectParametersBuffer.h"
+#include "IdStreamFactory.h"
+
 #include "engine/directx/CommandList.h"
-#include "engine/graphics/rendering/RenderingContext.h"
 #include "engine/directx/shader/DxConstantBuffer.h"
+#include "engine/directx/SwapChain.h"
+#include "engine/graphics/rendering/RenderingContext.h"
 
 namespace Ghurund::Engine::DirectX {
 	class DxRenderingContext: public RenderingContext {
 	private:
+		static inline const uint32_t FRAME_COUNT = 2;
+
 		SwapChain* swapChain = nullptr;
 		Ghurund::Engine::DirectX::DxGraphics& graphics;
+		IdStreamFactory idStreamFactory;
 		DxGPUMemoryManager& memoryManager;
-		DxConstantBuffer* globalParametersCB = nullptr;
+		Array<DxConstantBuffer*> globalParameters = FRAME_COUNT;
+		Array<DxObjectParametersBuffer*> objectParameters = FRAME_COUNT;
+		uint32_t currentFrame = 0;
 
 		inline void uninitDxRenderingContext() {
-			safeRelease(globalParametersCB);
+			for (auto& item : globalParameters)
+				safeRelease(item);
+			for (auto& item : objectParameters)
+				delete item;
 			delete swapChain;
 			swapChain = nullptr;
 		}
@@ -27,7 +37,7 @@ namespace Ghurund::Engine::DirectX {
 
 	public:
 		DxRenderingContext(SystemWindow& window, Ghurund::Engine::DirectX::DxGraphics& graphics, DxGPUMemoryManager& memoryManager)
-			:Ghurund::Engine::RenderingContext(window), graphics(graphics), memoryManager(memoryManager) {}
+			:Ghurund::Engine::RenderingContext(window), graphics(graphics), memoryManager(memoryManager), idStreamFactory(memoryManager) {}
 
 		~DxRenderingContext() {
 			uninitDxRenderingContext();
@@ -47,6 +57,8 @@ namespace Ghurund::Engine::DirectX {
 		}
 
 		virtual void setSize(Ghurund::Core::IntSize size) override;
+
+		virtual void setParameters(uint32_t id, const ObjectParameters& parameters) override;
 
 		virtual void draw(RenderGroup& renderGroup, MaterialVariantType variantType) override;
 	};

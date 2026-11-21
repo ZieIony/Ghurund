@@ -17,7 +17,11 @@ namespace Ghurund::Engine {
 
 			if(worldInput)
 				worldInput->Value = world;
-			group.objects.add(DrawPacket(mesh, material, drawOrder));
+			BatchId batchId = { mesh->id, material->id };
+			if (!group.objects.contains(batchId))
+				group.objects.put(batchId, { mesh, material });
+			//renderingContext.setParameters(visualization.WorldId, objParameters);
+			//group.objects.get(batchId).instances.add(visualization.WorldId);
 		}
 	}
 }

@@ -42,6 +42,7 @@ namespace Ghurund::Engine::DirectX {
 
     public:
         List<DirectoryPath> includeDirs;
+        IntrusivePointer<DxGraphicsShader> fallback;
 
         DxGraphicsShaderLoader(ResourceManager& resourceManager, DxShaderCompiler& compiler):resourceManager(resourceManager), compiler(compiler) {}
 	};

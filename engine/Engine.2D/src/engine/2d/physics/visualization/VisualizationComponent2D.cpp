@@ -11,21 +11,15 @@ namespace Ghurund::Engine::_2D {
 			material->release();
 	}
 
-	void VisualizationComponent2D::init(IGPUMemoryManager& memoryManager, const RigidBodyComponent2D& rigidBody) {
+	void VisualizationComponent2D::init(uint32_t id, const RigidBodyComponent2D& rigidBody) {
+		this->id = id;
 		Mesh = Graphics2DFeature::MESH_SPRITE;
 		if (rigidBody.ShapeType == ShapeType::BOX) {
-			// TODO: replace cloning with material instances
-			auto visMaterial = IntrusivePointer<Ghurund::Engine::Material>((Ghurund::Engine::Material*)Graphics2DFeature::MATERIAL_VISUALIZATION_BOX->clone());
-			//visMaterial->init(memoryManager);
-			Material = visMaterial.get();
+			Material = Graphics2DFeature::MATERIAL_VISUALIZATION_BOX;
 		} else if (rigidBody.ShapeType == ShapeType::CAPSULE) {
-			auto visMaterial = IntrusivePointer<Ghurund::Engine::Material>((Ghurund::Engine::Material*)Graphics2DFeature::MATERIAL_VISUALIZATION_CAPSULE->clone());
-			//visMaterial->init(memoryManager);
-			Material = visMaterial.get();
+			Material = Graphics2DFeature::MATERIAL_VISUALIZATION_CAPSULE;
 		} else if (rigidBody.ShapeType == ShapeType::SEGMENT) {
-			auto visMaterial = IntrusivePointer<Ghurund::Engine::Material>((Ghurund::Engine::Material*)Graphics2DFeature::MATERIAL_VISUALIZATION_SEGMENT->clone());
-			//visMaterial->init(memoryManager);
-			Material = visMaterial.get();
+			Material = Graphics2DFeature::MATERIAL_VISUALIZATION_SEGMENT;
 		}
 	}
 
@@ -38,7 +32,7 @@ namespace Ghurund::Engine::_2D {
 			w = w * rotation * translation;
 		}
 		XMStoreFloat4x4(&world, w);
-		Transformation = world;
+		worldTransformation = world;
 		extents = { rigidBody.Size.Width / 2, rigidBody.Size.Height / 2 };
 	}
 }

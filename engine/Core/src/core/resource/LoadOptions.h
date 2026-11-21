@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Common.h"
+#include "ResourceState.h"
+
 namespace Ghurund::Core {
 	struct LoadOptions {
 		// keep track of this resource and reload if necessary

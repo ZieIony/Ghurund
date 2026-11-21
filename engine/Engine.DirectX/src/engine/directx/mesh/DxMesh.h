@@ -3,19 +3,15 @@
 #include "core/resource/Resource.h"
 #include "core/resource/ResourceManager.h"
 #include "engine/directx/CommandList.h"
-#include "engine/directx/Fence.h"
 #include "engine/directx/memory/DxGPUMemoryManager.h"
 #include "engine/graphics/mesh/MeshData.h"
 #include "engine/graphics/mesh/Mesh.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
-#include <dxgi1_4.h>
-#include <DirectXMath.h>
-#include "d3dx12.h"
+#pragma warning(pop)
 
 #include <wrl.h>
-#pragma warning(pop)
 
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Engine;
@@ -51,9 +47,13 @@ namespace Ghurund::Engine::DirectX {
         }
 
     protected:
-        List<VertexRole> roles;
+        List<ShaderInputSemanticEnum> roles;
         List<ComPtr<ID3D12Resource>> vertexBuffers;
         List<D3D12_VERTEX_BUFFER_VIEW> vertexBuffersView;
+
+        DxGPUMemoryManager* memoryManager;
+        ComPtr<ID3D12Resource> idBuffer;
+        D3D12_VERTEX_BUFFER_VIEW idBufferView;
 
         ComPtr<ID3D12Resource> indexBuffer;
         D3D12_INDEX_BUFFER_VIEW indexBufferView;
@@ -70,6 +70,6 @@ namespace Ghurund::Engine::DirectX {
         // TODO: move this to coroutines
         void init(DxGPUMemoryManager& memoryManager);
 
-        void draw(CommandList& commandList, const Array<VertexRole>& layout);
+        void draw(CommandList& commandList, const Array<ShaderInputSemanticEnum>& layout, const List<uint32_t>& ids);
     };
 }

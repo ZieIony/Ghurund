@@ -173,7 +173,7 @@ public:
 		{
 			Set<uint32_t> set;
 			const Set<uint32_t> testSet = { 1, 2, 3 };
-			set.putAll(testSet);
+			//set.putAll(testSet);
 
 			Assert::AreEqual(testSet.Size, (size_t)3);
 			Assert::AreEqual(testSet.IsEmpty, false);

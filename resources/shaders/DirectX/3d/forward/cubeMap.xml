@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GraphicsShader version="1">
+<GraphicsShader version="2">
 	<Settings isDepthTestEnabled="false" isDepthWriteEnabled="false" cullMode="none" isTransparencyEnabled="false"/>
 	<Programs>
 		<Program type="vertex" path="lib://Ghurund/shaders/DirectX/2d/fullscreenQuad_vs.hlsl"/>

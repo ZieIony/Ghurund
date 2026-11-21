@@ -5,6 +5,10 @@
 #include "core/math/Size.h"
 #include "engine/directx/DxGraphics.h"
 
+#pragma warning(push, 0)
+#include <d3dx12.h>
+#pragma warning(pop)
+
 namespace Ghurund::Engine::DirectX {
     void DepthBuffer::init(DxGraphics& graphics, IntSize size) {
         D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};

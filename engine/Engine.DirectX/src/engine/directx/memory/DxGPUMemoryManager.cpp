@@ -6,6 +6,7 @@
 #include "core/math/MathUtils.h"
 #include "engine/directx/DxGraphics.h"
 #include "engine/directx/shader/DxConstantBuffer.h"
+#include "engine/directx/rendering/DxObjectParametersBuffer.h"
 
 namespace Ghurund::Engine::DirectX {
     DxGPUMemoryManager::DxGPUMemoryManager(
@@ -126,6 +127,13 @@ namespace Ghurund::Engine::DirectX {
         return cb;
 	}
 
+	DxObjectParametersBuffer* DxGPUMemoryManager::makeParametersBuffer(size_t itemCount) {
+		auto uploadHeap = makeUploadResource(align<size_t>(sizeof(ObjectParameters)*itemCount, 256), uploadCommandList, D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE);
+		auto cb = ghnew DxObjectParametersBuffer();
+		cb->init(uploadHeap);
+		return cb;
+	}
+
 	ComPtr<ID3D12Resource> DxGPUMemoryManager::makeTexture(const Array<IntrusivePointer<Image>>& images) {
 		CD3DX12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 			images[0]->Format,
@@ -205,30 +213,30 @@ namespace Ghurund::Engine::DirectX {
 		return descHandle;
 	}
 
-    ComPtr<ID3D12Resource> DxGPUMemoryManager::makeVertexBuffer(const Buffer& buffer) {
+    ComPtr<ID3D12Resource> DxGPUMemoryManager::makeVertexBuffer(const void* data, size_t size) {
 		D3D12_SUBRESOURCE_DATA subresourceData = {};
-		subresourceData.pData = buffer.Data;
-		subresourceData.RowPitch = buffer.Size;
-		subresourceData.SlicePitch = buffer.Size;
+		subresourceData.pData = data;
+		subresourceData.RowPitch = size;
+		subresourceData.SlicePitch = size;
 
 		return makeCommitedResource(
 			uploadCommandList,
-			CD3DX12_RESOURCE_DESC::Buffer(buffer.Size),
+			CD3DX12_RESOURCE_DESC::Buffer(size),
 			&subresourceData,
 			1,
 			D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER
 		);
 	}
 
-	ComPtr<ID3D12Resource> DxGPUMemoryManager::makeIndexBuffer(const Buffer& buffer) {
+	ComPtr<ID3D12Resource> DxGPUMemoryManager::makeIndexBuffer(const void* data, size_t size) {
 		D3D12_SUBRESOURCE_DATA subresourceData = {};
-		subresourceData.pData = buffer.Data;
-		subresourceData.RowPitch = buffer.Size;
-		subresourceData.SlicePitch = buffer.Size;
+		subresourceData.pData = data;
+		subresourceData.RowPitch = size;
+		subresourceData.SlicePitch = size;
 
 		return makeCommitedResource(
 			uploadCommandList,
-			CD3DX12_RESOURCE_DESC::Buffer(buffer.Size),
+			CD3DX12_RESOURCE_DESC::Buffer(size),
 			&subresourceData,
 			1,
 			D3D12_RESOURCE_STATE_INDEX_BUFFER

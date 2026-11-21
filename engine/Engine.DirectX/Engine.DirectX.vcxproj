@@ -92,6 +92,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\directx\rendering\DxObjectParametersBuffer.h" />
+    <ClInclude Include="src\engine\directx\rendering\IdStreamFactory.h" />
     <ClInclude Include="src\engine\directx\shader\compiler\CompilerIncludeDXC.h" />
     <ClInclude Include="src\Ghurund.Engine.DirectX.h" />
     <ClInclude Include="src\engine\directx\CommandList.h" />
@@ -160,6 +162,8 @@
     <ClCompile Include="src\engine\directx\DxGraphicsFeature.cpp" />
     <ClCompile Include="src\engine\directx\Fence.cpp" />
     <ClCompile Include="src\engine\directx\Frame.cpp" />
+    <ClCompile Include="src\engine\directx\rendering\DxObjectParametersBuffer.cpp" />
+    <ClCompile Include="src\engine\directx\rendering\IdStreamFactory.cpp" />
     <ClCompile Include="src\engine\directx\shader\compiler\CompilerIncludeDXC.cpp" />
     <ClCompile Include="src\engine\directx\SwapChain.cpp" />
     <ClCompile Include="src\engine\directx\adapter\AdapterOutput.cpp" />

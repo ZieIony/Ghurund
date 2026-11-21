@@ -56,8 +56,8 @@ namespace Ghurund::UI {
 				});
 			prevC = info.c;
 		}
-		VertexStream positionStream = VertexStream(positions, VertexRole::POSITION);
-		VertexStream texCoordStream = VertexStream(texCoords, VertexRole::TEXCOORD);
+		VertexStream positionStream = VertexStream(positions, ShaderInputSemanticEnum::POSITION);
+		VertexStream texCoordStream = VertexStream(texCoords, ShaderInputSemanticEnum::TEXCOORD);
 
 		auto boundingBox = MeshProcessor::computeBoundingBox(positionStream);
 

@@ -24,7 +24,7 @@ namespace Ghurund::Engine::DirectX {
 
     private:
         DxGraphics& graphics;
-        DxGPUMemoryManager& memoryManager;
+        class DxGPUMemoryManager& memoryManager;
 
     protected:
         virtual void onInit() override;

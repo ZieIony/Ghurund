@@ -117,7 +117,7 @@ namespace Ghurund::UI {
 		material->UIInputs.Position = parentPosition + position;
 		material->UIInputs.Size = { Size.Width, Size.Height };
 		alphaInput->Value = alpha;
-		group.objects.add(DrawPacket(mesh.get(), material.get(), 0));
+		//group.objects.add(DrawPacket(mesh.get(), material.get(), 0));
 	}
 
 	bool Control::onMouseMotionEvent(const MouseMotionEventArgs& event) {

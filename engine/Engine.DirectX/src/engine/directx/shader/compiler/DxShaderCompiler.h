@@ -26,36 +26,16 @@ namespace Ghurund::Engine::DirectX {
 		ResourceManager& resourceManager;
 		IGPUMemoryManager& memoryManager;
 		const CompilationTarget& target;
-		//Material* defaultMaterial;
 
-		Array<VertexRole> makeLayout(const D3D12_INPUT_LAYOUT_DESC& desc);
+		Array<ShaderInputSemanticEnum> makeLayout(const D3D12_INPUT_LAYOUT_DESC& desc);
 			
 		DXGI_FORMAT getFormat(BYTE mask, D3D_REGISTER_COMPONENT_TYPE componentType);
 
-		AString makeCompilationTarget(const DxShaderType& shaderType) {
-			const char* targetText = target.TargetName.Data;
-			const char* typeText = shaderType.TypeName.Data;
-			char text[10];
-			sprintf_s(text, 10, "%s_%s", typeText, targetText);
-			return text;
-		}
+		AString makeCompilationTarget(const DxShaderType& shaderType) const;
 
-		inline D3D12_CULL_MODE convertCullMode(CullMode mode) const {
-			switch (mode) {
-			case CullMode::NONE:	return D3D12_CULL_MODE_NONE;
-			case CullMode::FRONT:	return D3D12_CULL_MODE_FRONT;
-			case CullMode::BACK:	return D3D12_CULL_MODE_BACK;
-			}
-		}
+		D3D12_CULL_MODE convertCullMode(CullMode mode) const;
 
-		inline D3D12_COMPARISON_FUNC convertComparisonFunc(ComparisonFunc func) const {
-			switch (func) {
-			case ComparisonFunc::NEVER:		return D3D12_COMPARISON_FUNC_NEVER;
-			case ComparisonFunc::ALWAYS:	return D3D12_COMPARISON_FUNC_ALWAYS;
-			case ComparisonFunc::LESS:		return D3D12_COMPARISON_FUNC_LESS;
-			case ComparisonFunc::GREATER:	return D3D12_COMPARISON_FUNC_GREATER;
-			}
-		}
+		D3D12_COMPARISON_FUNC convertDepthFunc(ComparisonFunc func) const;
 
 		DxShaderProgram* compileFXC(const DxShaderProgramSourceCode& shaderSource, CompilerIncludeFXC& include, bool debug);
 
@@ -72,23 +52,12 @@ namespace Ghurund::Engine::DirectX {
 
 		void init();
 
-		/*inline void setDefaultMaterial(Material* material) {
-			setPointer(defaultMaterial, material);
-		}
-
-		inline Material* getDefaultMaterial() const {
-			return defaultMaterial;
-		}
-
-		__declspec(property(get = getDefaultMaterial, put = setDefaultMaterial)) Material* DefaultMaterial;*/
-
 		D3D12_INPUT_LAYOUT_DESC getInputLayout(const DxShaderProgram& program);
 
 		OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> makeGraphicsPipelineState(
 			const Array<SharedPointer<DxShaderProgram>>& programs,
 			D3D12_INPUT_LAYOUT_DESC inputLayout,
-			ID3D12RootSignature* rootSignature,
-			ShaderSettings shaderSettings
+			ID3D12RootSignature* rootSignature
 		);
 
 		OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> makeComputePipelineState(
@@ -99,6 +68,7 @@ namespace Ghurund::Engine::DirectX {
 		OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> makeRootSignature(
 			const List<DxBufferConstantInfo*>& constantBuffers,
 			const List<DxTextureConstantInfo*>& textures,
+			const List<DxBufferConstantInfo*>& srvs,
 			const List<DxTextureConstantInfo*>& uavs,
 			const List<DxSamplerInfo*>& samplers
 		);
@@ -108,6 +78,7 @@ namespace Ghurund::Engine::DirectX {
 			const List<SamplerInfo>& samplerInfos,
 			List<DxBufferConstantInfo*>& constantBuffers,
 			List<DxTextureConstantInfo*>& textures,
+			List<DxBufferConstantInfo*>& srvs,
 			List<DxTextureConstantInfo*>& uavs,
 			List<DxSamplerInfo*>& samplers
 		);
@@ -122,8 +93,7 @@ namespace Ghurund::Engine::DirectX {
 
 		void build(
 			DxGraphicsShader& shader,
-			const Array<SharedPointer<DxShaderProgram>>& programs,
-			ShaderSettings shaderSettings
+			const List<SharedPointer<DxShaderProgram>>& programs
 		);
 
 		void build(

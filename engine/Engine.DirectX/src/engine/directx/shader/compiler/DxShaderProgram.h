@@ -3,6 +3,7 @@
 #include "core/Buffer.h"
 #include "core/string/String.h"
 #include "engine/directx/shader/DxShaderType.h"
+#include "engine/graphics/shader/ShaderSettings.h"
 
 #include <d3d12shader.h>
 #include <wrl/client.h>
@@ -27,6 +28,8 @@ namespace Ghurund::Engine::DirectX {
 			type(type), byteCode(std::move(other.byteCode)), entryPoint(std::move(other.entryPoint)), reflection(other.reflection) {
 		}
 
+		virtual ~DxShaderProgram() {}
+
 		const AString& getEntryPoint() const {
 			return entryPoint;
 		}
@@ -50,5 +53,23 @@ namespace Ghurund::Engine::DirectX {
 		}
 
 		__declspec(property(get = getReflection)) ID3D12ShaderReflection* Reflection;
+	};
+
+	class DxVertexShaderProgram:public DxShaderProgram {
+	public:
+		VertexShaderSettings settings;
+
+		DxVertexShaderProgram(Buffer& byteCode, const AString& entryPoint, ComPtr<ID3D12ShaderReflection> reflection):
+			DxShaderProgram(DxShaderType::VERTEX, byteCode, entryPoint, reflection) {
+		}
+	};
+
+	class DxPixelShaderProgram:public DxShaderProgram {
+	public:
+		PixelShaderSettings settings;
+
+		DxPixelShaderProgram(Buffer& byteCode, const AString& entryPoint, ComPtr<ID3D12ShaderReflection> reflection):
+			DxShaderProgram(DxShaderType::PIXEL, byteCode, entryPoint, reflection) {
+		}
 	};
 }

@@ -1,8 +1,8 @@
+#include <globalParameters.hlsli>
 #include <common.hlsli>
 #include <3d.hlsli>
 
-cbuffer pixelConstants : register(b0) {
-    float3 gh_cameraPosition;
+cbuffer pixelConstants : register(b1) {
     float4 ambientLight;
 }
 

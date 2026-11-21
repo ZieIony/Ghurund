@@ -114,7 +114,6 @@
     <ClInclude Include="src\engine\3d\graphics\light\LightSystem3D.h" />
     <ClInclude Include="src\engine\3d\graphics\mesh\MeshComponent.h" />
     <ClInclude Include="src\engine\3d\graphics\mesh\MeshComponentLoader.h" />
-    <ClInclude Include="src\engine\3d\graphics\mesh\MeshInputs.h" />
     <ClInclude Include="src\engine\3d\graphics\mesh\MeshRenderingSystem.h" />
     <ClInclude Include="src\engine\3d\graphics\transform\TransformComponent3D.h" />
     <ClInclude Include="src\engine\3d\graphics\transform\TransformComponent3DLoader.h" />

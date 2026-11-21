@@ -98,7 +98,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\graphics\shader\ShaderInputSemantic.h" />
     <ClInclude Include="src\engine\graphics\rendering\GlobalParameters.h" />
+    <ClInclude Include="src\engine\graphics\rendering\IdBuffer.h" />
+    <ClInclude Include="src\engine\graphics\rendering\ObjectParameters.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\EngineFeature.h" />
     <ClInclude Include="src\engine\EngineFeatureFactory.h" />
@@ -260,7 +263,7 @@
     <ClCompile Include="src\engine\graphics\rendering\Renderer.cpp" />
     <ClCompile Include="src\engine\graphics\rendering\RenderingStatistics.cpp" />
     <ClCompile Include="src\engine\graphics\shader\Shader.cpp" />
-    <ClCompile Include="src\engine\graphics\shader\ShaderSource.cpp" />
+    <ClCompile Include="src\engine\graphics\shader\ShaderInputSemantic.cpp" />
     <ClCompile Include="src\engine\graphics\texture\ITexture.cpp" />
     <ClCompile Include="src\engine\graphics\texture\TextureAtlas.cpp" />
     <ClCompile Include="src\engine\graphics\texture\TextureAtlasLoader.cpp" />

@@ -7,9 +7,8 @@
 #include "core/Finally.h"
 #include "engine/directx/DxGraphics.h"
 
-#include <sstream>
-
 #pragma warning(push, 0)
+#include <d3dx12.h>
 #include <dxcapi.h>
 #include <core/collection/List.h>
 #pragma warning(pop)
@@ -26,7 +25,7 @@ namespace Ghurund::Engine::DirectX {
 		D3D12_INPUT_LAYOUT_DESC inputLayoutDesc;
 		inputLayoutDesc.NumElements = desc.InputParameters;
 		D3D12_INPUT_ELEMENT_DESC* inputElements = ghnew D3D12_INPUT_ELEMENT_DESC[desc.InputParameters];
-		for (unsigned int i = 0; i < desc.InputParameters; i++) {
+		for (uint32_t i = 0; i < desc.InputParameters; i++) {
 			D3D12_SIGNATURE_PARAMETER_DESC parameterDesc;
 			program.Reflection->GetInputParameterDesc(i, &parameterDesc);
 			inputElements[i].SemanticName = copyStr(parameterDesc.SemanticName);
@@ -34,25 +33,24 @@ namespace Ghurund::Engine::DirectX {
 			inputElements[i].Format = getFormat(parameterDesc.Mask, parameterDesc.ComponentType);
 			inputElements[i].InputSlot = i;
 			inputElements[i].AlignedByteOffset = 0;
-			inputElements[i].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
-			inputElements[i].InstanceDataStepRate = 0;
+			if (parameterDesc.SemanticName == ShaderInputSemantic::OBJECT_ID.Name) {
+				inputElements[i].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_INSTANCE_DATA;
+				inputElements[i].InstanceDataStepRate = 1;
+			} else {
+				inputElements[i].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
+				inputElements[i].InstanceDataStepRate = 0;
+			}
 		}
 		inputLayoutDesc.pInputElementDescs = inputElements;
 
 		return inputLayoutDesc;
 	}
 
-	Array<VertexRole> DxShaderCompiler::makeLayout(const D3D12_INPUT_LAYOUT_DESC& desc) {
-		Array<VertexRole> layout(desc.NumElements);
+	Array<ShaderInputSemanticEnum> DxShaderCompiler::makeLayout(const D3D12_INPUT_LAYOUT_DESC& desc) {
+		Array<ShaderInputSemanticEnum> layout(desc.NumElements);
 		for (size_t i = 0; i < desc.NumElements; i++) {
 			auto& inputElement = desc.pInputElementDescs[i];
-			if (AString("POSITION") == inputElement.SemanticName) {
-				layout[i] = VertexRole::POSITION;
-			} else if (AString("TEXCOORD") == inputElement.SemanticName) {
-				layout[i] = VertexRole::TEXCOORD;
-			} else if (AString("NORMAL") == inputElement.SemanticName) {
-				layout[i] = VertexRole::NORMAL;
-			}
+			layout[i] = ShaderInputSemantic::fromName(inputElement.SemanticName).Value;
 		}
 		return layout;
 	}
@@ -76,6 +74,31 @@ namespace Ghurund::Engine::DirectX {
 			else if (componentType == D3D_REGISTER_COMPONENT_FLOAT32) return DXGI_FORMAT_R32G32B32A32_FLOAT;
 		}
 		return DXGI_FORMAT_UNKNOWN;
+	}
+
+	AString DxShaderCompiler::makeCompilationTarget(const DxShaderType& shaderType) const {
+		const char* targetText = target.TargetName.Data;
+		const char* typeText = shaderType.TypeName.Data;
+		char text[10];
+		sprintf_s(text, 10, "%s_%s", typeText, targetText);
+		return text;
+	}
+
+	D3D12_CULL_MODE DxShaderCompiler::convertCullMode(CullMode mode) const {
+		switch (mode) {
+		case CullMode::NONE:	return D3D12_CULL_MODE_NONE;
+		case CullMode::FRONT:	return D3D12_CULL_MODE_FRONT;
+		case CullMode::BACK:	return D3D12_CULL_MODE_BACK;
+		}
+	}
+
+	D3D12_COMPARISON_FUNC DxShaderCompiler::convertDepthFunc(ComparisonFunc func) const {
+		switch (func) {
+		case ComparisonFunc::NEVER:		return D3D12_COMPARISON_FUNC_NEVER;
+		case ComparisonFunc::ALWAYS:	return D3D12_COMPARISON_FUNC_ALWAYS;
+		case ComparisonFunc::LESS:		return D3D12_COMPARISON_FUNC_LESS;
+		case ComparisonFunc::GREATER:	return D3D12_COMPARISON_FUNC_GREATER;
+		}
 	}
 
 	DxShaderProgram* DxShaderCompiler::compileFXC(
@@ -106,7 +129,14 @@ namespace Ghurund::Engine::DirectX {
 			auto sourceCode = Buffer(shader->GetBufferPointer(), shader->GetBufferSize());
 			ComPtr<ID3D12ShaderReflection> reflection;
 			D3DReflect(sourceCode.Data, sourceCode.Size, IID_ID3D12ShaderReflection, (void**)reflection.GetAddressOf());
-			return ghnew DxShaderProgram(shaderSource.shaderType, sourceCode, shaderSource.entryPoint, reflection);
+
+			if (shaderSource.shaderType == DxShaderType::VERTEX) {
+				return ghnew DxVertexShaderProgram(sourceCode, shaderSource.entryPoint, reflection);
+			} else if (shaderSource.shaderType == DxShaderType::PIXEL) {
+				return ghnew DxPixelShaderProgram(sourceCode, shaderSource.entryPoint, reflection);
+			} else {
+				return ghnew DxShaderProgram(shaderSource.shaderType, sourceCode, shaderSource.entryPoint, reflection);
+			}
 		}
 	}
 
@@ -181,7 +211,14 @@ namespace Ghurund::Engine::DirectX {
 			reflectionBuffer.Encoding = 0;
 			ComPtr<ID3D12ShaderReflection> pShaderReflection;
 			utils->CreateReflection(&reflectionBuffer, IID_PPV_ARGS(pShaderReflection.GetAddressOf()));
-			return ghnew DxShaderProgram(shaderSource.shaderType, sourceCode, shaderSource.entryPoint, pShaderReflection);
+			
+			if (shaderSource.shaderType == DxShaderType::VERTEX) {
+				return ghnew DxVertexShaderProgram(sourceCode, shaderSource.entryPoint, pShaderReflection);
+			} else if (shaderSource.shaderType == DxShaderType::PIXEL) {
+				return ghnew DxPixelShaderProgram(sourceCode, shaderSource.entryPoint, pShaderReflection);
+			} else {
+				return ghnew DxShaderProgram(shaderSource.shaderType, sourceCode, shaderSource.entryPoint, pShaderReflection);
+			}
 		}
 	}
 
@@ -200,35 +237,42 @@ namespace Ghurund::Engine::DirectX {
 
 	void DxShaderCompiler::build(
 		DxGraphicsShader& shader,
-		const Array<SharedPointer<DxShaderProgram>>& programs,
-		ShaderSettings shaderSettings
+		const List<SharedPointer<DxShaderProgram>>& programs
 	) {
 		List<DxBufferConstantInfo*> constantBuffers;
 		List<DxTextureConstantInfo*> textures;
+		List<DxBufferConstantInfo*> srvs;
 		List<DxTextureConstantInfo*> uavs;
 		List<DxSamplerInfo*> samplers;
-		for (auto& program : programs)
-			initConstants(program.ref(), shader.Source->samplers, constantBuffers, textures, uavs, samplers);
+		for (size_t i = 0; i < programs.Size;i++) {
+			auto& program = programs.get(i);
+			auto& source = shader.Sources.get(i);
+			initConstants(program.ref(), source->samplers, constantBuffers, textures, srvs, uavs, samplers);
+		}
 
+		bool isTransparencyEnabled = false;
 		D3D12_INPUT_LAYOUT_DESC inputLayout;
 		for (auto& program : programs) {
 			if (program->Type == DxShaderType::VERTEX) {
 				inputLayout = getInputLayout(program.ref());
-				break;
+			} else if (program->Type == DxShaderType::PIXEL) {
+				isTransparencyEnabled = ((DxPixelShaderProgram*)program.get())->settings.isTransparencyEnabled;
 			}
 		}
-		Array<VertexRole> layout = makeLayout(inputLayout);
+		Array<ShaderInputSemanticEnum> layout = makeLayout(inputLayout);
 		Finally f = [&] {
 			for (size_t i = 0; i < inputLayout.NumElements; i++)
 				delete[] inputLayout.pInputElementDescs[i].SemanticName;
 			delete[] inputLayout.pInputElementDescs;
 			constantBuffers.deleteItems();
 			textures.deleteItems();
+			srvs.deleteItems();
+			uavs.deleteItems();
 			samplers.deleteItems();
 		};
 
-		auto rootSignature = makeRootSignature(constantBuffers, textures, uavs, samplers);
-		auto pipelineState = makeGraphicsPipelineState(programs, inputLayout, &rootSignature, shaderSettings);
+		auto rootSignature = makeRootSignature(constantBuffers, textures, srvs, uavs, samplers);
+		auto pipelineState = makeGraphicsPipelineState(programs, inputLayout, &rootSignature);
 		shader.init(
 			memoryManager,
 			layout,
@@ -236,32 +280,36 @@ namespace Ghurund::Engine::DirectX {
 			std::move(pipelineState),
 			constantBuffers,
 			textures,
+			srvs,
 			uavs,
-			shaderSettings.isTransparencyEnabled
+			isTransparencyEnabled
 		);
 	}
 
 	void DxShaderCompiler::build(DxComputeShader& shader, const DxShaderProgram& computeProgram) {
 		List<DxBufferConstantInfo*> constantBuffers;
 		List<DxTextureConstantInfo*> textures;
+		List<DxBufferConstantInfo*> srvs;
 		List<DxTextureConstantInfo*> uavs;
 		List<DxSamplerInfo*> samplers;
-		initConstants(computeProgram, shader.Source->samplers, constantBuffers, textures, uavs, samplers);
+		initConstants(computeProgram, shader.Sources[0]->samplers, constantBuffers, textures, srvs, uavs, samplers);
 
 		Finally f = [&] {
 			constantBuffers.deleteItems();
 			textures.deleteItems();
+			srvs.deleteItems();
 			uavs.deleteItems();
 			samplers.deleteItems();
 		};
 
-		auto rootSignature = makeRootSignature(constantBuffers, textures, uavs, samplers);
+		auto rootSignature = makeRootSignature(constantBuffers, textures, srvs, uavs, samplers);
 		auto pipelineState = makeComputePipelineState(computeProgram, &rootSignature);
 		shader.init(
 			std::move(rootSignature),
 			std::move(pipelineState),
 			constantBuffers,
 			textures,
+			srvs,
 			uavs
 		);
 	}
@@ -269,37 +317,58 @@ namespace Ghurund::Engine::DirectX {
 	OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> DxShaderCompiler::makeGraphicsPipelineState(
 		const Array<SharedPointer<DxShaderProgram>>& programs,
 		D3D12_INPUT_LAYOUT_DESC inputLayout,
-		ID3D12RootSignature* rootSignature,
-		ShaderSettings shaderSettings
+		ID3D12RootSignature* rootSignature
 	) {
+		bool isDepthTestEnabled = true;
+		auto depthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+		auto depthFunc = D3D12_COMPARISON_FUNC_LESS;
+		auto cullMode = D3D12_CULL_MODE_BACK;
+		bool isTransparencyEnabled = false;
+
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 		psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC1(D3D12_DEFAULT);
-		psoDesc.DepthStencilState.DepthEnable = shaderSettings.isDepthTestEnabled;
-		psoDesc.DepthStencilState.DepthWriteMask = shaderSettings.isDepthWriteEnabled ? D3D12_DEPTH_WRITE_MASK_ALL : D3D12_DEPTH_WRITE_MASK_ZERO;
-		psoDesc.DepthStencilState.DepthFunc = convertComparisonFunc(shaderSettings.depthFunc);
 		psoDesc.pRootSignature = rootSignature;
 		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-		psoDesc.RasterizerState.CullMode = convertCullMode(shaderSettings.cullMode);
 
 		for (auto& program : programs) {
 			if (program->Type == DxShaderType::VERTEX) {
+				if (psoDesc.VS.BytecodeLength != 0)
+					Logger::logAndThrow<std::invalid_argument>(_T("More than one vertex shader program provided.\n"));
 				psoDesc.InputLayout = inputLayout;
 				psoDesc.VS.pShaderBytecode = program->ByteCode.Data;
 				psoDesc.VS.BytecodeLength = program->ByteCode.Size;
+				auto vsProgram = ((DxVertexShaderProgram*)program.get());
+				depthWriteMask = vsProgram->settings.isDepthWriteEnabled ? D3D12_DEPTH_WRITE_MASK_ALL : D3D12_DEPTH_WRITE_MASK_ZERO;
+				depthFunc = convertDepthFunc(vsProgram->settings.depthFunc);
+				cullMode = convertCullMode(vsProgram->settings.cullMode);
 			} else if (program->Type == DxShaderType::PIXEL) {
+				if (psoDesc.PS.BytecodeLength != 0)
+					Logger::logAndThrow<std::invalid_argument>(_T("More than one pixel shader program provided.\n"));
 				psoDesc.PS.pShaderBytecode = program->ByteCode.Data;
 				psoDesc.PS.BytecodeLength = program->ByteCode.Size;
+				isTransparencyEnabled = ((DxPixelShaderProgram*)program.get())->settings.isTransparencyEnabled;
 			} else if (program->Type == DxShaderType::GEOMETRY) {
+				if (psoDesc.GS.BytecodeLength != 0)
+					Logger::logAndThrow<std::invalid_argument>(_T("More than one geometry shader program provided.\n"));
 				psoDesc.GS.pShaderBytecode = program->ByteCode.Data;
 				psoDesc.GS.BytecodeLength = program->ByteCode.Size;
 			} else if (program->Type == DxShaderType::HULL) {
+				if (psoDesc.HS.BytecodeLength != 0)
+					Logger::logAndThrow<std::invalid_argument>(_T("More than one hull shader program provided.\n"));
 				psoDesc.HS.pShaderBytecode = program->ByteCode.Data;
 				psoDesc.HS.BytecodeLength = program->ByteCode.Size;
 			} else if (program->Type == DxShaderType::D0MAIN) {
+				if (psoDesc.DS.BytecodeLength != 0)
+					Logger::logAndThrow<std::invalid_argument>(_T("More than one domain shader program provided.\n"));
 				psoDesc.DS.pShaderBytecode = program->ByteCode.Data;
 				psoDesc.DS.BytecodeLength = program->ByteCode.Size;
 			}
 		}
+
+		psoDesc.DepthStencilState.DepthEnable = isDepthTestEnabled;
+		psoDesc.DepthStencilState.DepthWriteMask = depthWriteMask;
+		psoDesc.DepthStencilState.DepthFunc = depthFunc;
+		psoDesc.RasterizerState.CullMode = cullMode;
 
 		if (psoDesc.VS.BytecodeLength == 0) {
 			Logger::log(LogType::ERR0R, _T("Vertex shader program is required.\n"));
@@ -310,7 +379,7 @@ namespace Ghurund::Engine::DirectX {
 			throw InvalidStateException("Pixel shader program is required.");
 		}
 
-		if (shaderSettings.isTransparencyEnabled) {
+		if (isTransparencyEnabled) {
 			psoDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
 			psoDesc.BlendState.RenderTarget[0].BlendEnable = true;
 			psoDesc.BlendState.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
@@ -361,10 +430,11 @@ namespace Ghurund::Engine::DirectX {
 	OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> DxShaderCompiler::makeRootSignature(
 		const List<DxBufferConstantInfo*>& constantBuffers,
 		const List<DxTextureConstantInfo*>& textures,
+		const List<DxBufferConstantInfo*>& srvs,
 		const List<DxTextureConstantInfo*>& uavs,
 		const List<DxSamplerInfo*>& samplers
 	) {
-		size_t paramCount = constantBuffers.Size + textures.Size + uavs.Size;
+		size_t paramCount = constantBuffers.Size + textures.Size + srvs.Size + uavs.Size;
 		Array<CD3DX12_ROOT_PARAMETER1> rootParameters(paramCount);
 
 		unsigned int r = 0;
@@ -380,6 +450,12 @@ namespace Ghurund::Engine::DirectX {
 			constant->BindSlot = r;
 			textureRanges[i].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, constant->getBindPoint(), 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
 			rootParameters[r].InitAsDescriptorTable(1, &textureRanges[i], constant->getVisibility());
+		}
+
+		for (size_t i = 0; i < srvs.Size; i++, r++) {
+			DxShaderConstantInfo* constant = srvs.get(i);
+			constant->BindSlot = r;
+			rootParameters[r].InitAsShaderResourceView(constant->getBindPoint(), 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, constant->getVisibility());
 		}
 
 		Array<CD3DX12_DESCRIPTOR_RANGE1> uavRanges(uavs.Size);
@@ -425,6 +501,7 @@ namespace Ghurund::Engine::DirectX {
 		const List<SamplerInfo>& samplerInfos,
 		List<DxBufferConstantInfo*>& constantBuffers,
 		List<DxTextureConstantInfo*>& textures,
+		List<DxBufferConstantInfo*>& srvs,
 		List<DxTextureConstantInfo*>& uavs,
 		List<DxSamplerInfo*>& samplers
 	) {
@@ -475,6 +552,22 @@ namespace Ghurund::Engine::DirectX {
 					size_t index = samplerInfos.find([&](auto& info) {return info.name == bindDesc.Name; });
 					if (index != samplerInfos.Size)
 						sampler->Filter = samplerInfos[index].filter;
+				}
+			}
+			break;
+			case D3D_SIT_STRUCTURED:
+			{
+				ID3D12ShaderReflectionConstantBuffer* constantBuffer = program.Reflection->GetConstantBufferByName(bindDesc.Name);
+				D3D12_SHADER_BUFFER_DESC bufferDesc;
+				constantBuffer->GetDesc(&bufferDesc);
+				size_t index = srvs.find([&](auto& item) {return strcmp(bindDesc.Name, item->Name.Data) == 0; });
+				if (index != srvs.Size) {
+					srvs[index]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
+					srvs[index]->init(*constantBuffer, bufferDesc);
+				} else {
+					DxBufferConstantInfo* cb = ghnew DxBufferConstantInfo(bindDesc.Name, bindDesc.BindPoint, visibility);
+					cb->init(*constantBuffer, bufferDesc);
+					srvs.add(cb);
 				}
 			}
 			break;

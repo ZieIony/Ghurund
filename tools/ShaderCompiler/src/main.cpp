@@ -7,6 +7,7 @@
 #include "engine/directx/shader/compiler/DxCompilationException.h"
 #include "engine/directx/shader/compiler/DxShaderCompiler.h"
 #include "engine/directx/rendering/DxGraphicsShaderLoader.h"
+#include "engine/directx/memory/DxGPUMemoryManager.h"
 
 using namespace Ghurund::Core;
 using namespace Ghurund::Engine::DirectX;

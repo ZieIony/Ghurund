@@ -17,11 +17,12 @@ namespace Ghurund::Engine::DirectX {
 
 	void DxGraphicsShader::init(
 		NotNull<IGPUMemoryManager> memoryManager,
-		const Array<VertexRole>& layout,
+		const Array<ShaderInputSemanticEnum>& layout,
 		OwnedNotNull<ID3D12RootSignature, IUnknownDeleter> rootSignature,
 		OwnedNotNull<ID3D12PipelineState, IUnknownDeleter> pipelineState,
 		const List<DxBufferConstantInfo*>& bufferConstantInfos,
 		const List<DxTextureConstantInfo*>& textureConstantInfos,
+		const List<DxBufferConstantInfo*>& srvConstantInfos,
 		const List<DxTextureConstantInfo*>& uavConstantInfos,
 		bool isTransparencyEnabled
 	) {
@@ -32,23 +33,29 @@ namespace Ghurund::Engine::DirectX {
 		this->pipelineState = pipelineState.reset();
 		constants = [&] {
 			auto c = ghnew DxConstantCollection();
-			c->init(bufferConstantInfos, textureConstantInfos, uavConstantInfos);
+			c->init(bufferConstantInfos, textureConstantInfos, srvConstantInfos, uavConstantInfos);
 			return c;
 		}();
 		this->isTransparencyEnabled = isTransparencyEnabled;
 
-		dataSize.system = sizeof(*this) + source->getDataSize();
+		dataSize.system = sizeof(*this);
+		for (auto& source : sources)
+			dataSize.system += source->getDataSize();
 
 		__super::init(memoryManager);
 
 		State = ResourceState::INITIALIZED;
 	}
 
-	bool DxGraphicsShader::apply(DxGraphicsCommandList& commandList) {
+	bool DxGraphicsShader::apply(
+		DxGraphicsCommandList& commandList,
+		DxConstantBuffer& globalParameters,
+		DxObjectParametersBuffer& objectParameters
+	) {
 		bool rsChanged = commandList.setRootSignature(rootSignature);
 		bool psChanged = commandList.setPipelineState(pipelineState);
 
-		((DxConstantCollection*)constants)->apply(commandList);
+		((DxConstantCollection*)constants)->apply(commandList, globalParameters, objectParameters);
 
 		return rsChanged || psChanged;
 	}

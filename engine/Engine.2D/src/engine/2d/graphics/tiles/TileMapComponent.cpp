@@ -6,7 +6,7 @@
 #include "engine/2d/Graphics2DFeature.h"
 
 namespace Ghurund::Engine::_2D {
-	void TileMapComponent::init(IGraphicsResourceFactory& resourceFactory, IGPUMemoryManager& memoryManager) {
+	void TileMapComponent::init(IGraphicsResourceFactory& resourceFactory) {
 		Array<TileInfo> tiles = tileMap->Size.Width * tileMap->Size.Height;
 		uint32_t tileIndex = 0;
 		for (TileInfo& tileInfo : tiles) {
@@ -24,10 +24,6 @@ namespace Ghurund::Engine::_2D {
 		auto tileMapMeshData = makeIntrusive<TileMapMeshData>();
 		tileMapMeshData->init(tileMap->Size, tiles);
 		mesh = resourceFactory.makeMesh(tileMapMeshData.ref());
-
-		auto spriteMaterial = IntrusivePointer<Ghurund::Engine::Material>((Ghurund::Engine::Material*)Graphics2DFeature::MATERIAL_SPRITE->clone());
-		//spriteMaterial->init(memoryManager);
-		Material = spriteMaterial.get();
 	}
 
 	void TileMapComponent::reloadResource() {

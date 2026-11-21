@@ -33,25 +33,34 @@ namespace Ghurund::Engine::_2D {
     void VisualizationRenderingSystem::queueDraw(RenderingContext& renderingContext) {
         RenderGroup group = DrawGroup();
         group.Camera = camera;
+    
         auto view = world.Scene->entityRegistry.view<const TransformComponent2D, const VisualizationComponent2D>();
         for (auto [id, transform, visualization] : view.each()) {
             if (!visualization.Mesh || !visualization.Material)
                 continue;
 
-            auto w = XMLoadFloat4x4(&visualization.Transformation) * XMLoadFloat4x4(&transform.WorldTransformation);
-            XMFLOAT4X4 world;
-            XMStoreFloat4x4(&world, XMMatrixTranspose(w));
+            ObjectParameters objParameters;
+            auto w = XMLoadFloat4x4(&visualization.worldTransformation) * XMLoadFloat4x4(&transform.WorldTransformation);
+            XMStoreFloat4x4(&objParameters.world, XMMatrixTranspose(w));
 
             // TODO: initialize inputs once
             VisualizationInputs inputs;
             inputs.init(visualization.Material->getShader(MaterialVariantType::UNLIT)->Inputs);
             inputs.Color = visualization.color;
-            inputs.Transformation = world;
             inputs.Extents = { visualization.extents.x * 100, visualization.extents.y * 100 };
 
-            // TODO: maybe not declare draw order manually?
-            group.objects.add(DrawPacket(visualization.Mesh, visualization.Material, 0.0f));
+            bool culled = false;
+
+            if (!culled) {
+                BatchId batchId = { visualization.Mesh->id, visualization.Material->id };
+                if (!group.objects.contains(batchId))
+                    group.objects.put(batchId, { visualization.Mesh, visualization.Material });
+                renderingContext.setParameters(visualization.Id, objParameters);
+                group.objects.get(batchId).instances.add(visualization.Id);
+            }
         }
-        renderingContext.draw(group, MaterialVariantType::UNLIT);
+
+		if (!group.objects.IsEmpty)
+			renderingContext.draw(group, MaterialVariantType::UNLIT);
     }
 }

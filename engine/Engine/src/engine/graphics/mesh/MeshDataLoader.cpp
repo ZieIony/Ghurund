@@ -79,10 +79,10 @@ namespace Ghurund::Engine {
 		}
 
 		Array<VertexStream> vertexStreams = {
-			VertexStream{Buffer(positions.Data, sizeof(XMFLOAT3) * positions.Size), sizeof(XMFLOAT3), VertexRole::POSITION},
-			VertexStream{Buffer(normals.Data, sizeof(XMFLOAT3) * normals.Size), sizeof(XMFLOAT3), VertexRole::NORMAL},
-			VertexStream{Buffer(tangents.Data, sizeof(XMFLOAT3) * tangents.Size), sizeof(XMFLOAT3), VertexRole::TANGENT},
-			VertexStream{Buffer(texCoords.Data, sizeof(XMFLOAT2) * texCoords.Size), sizeof(XMFLOAT2), VertexRole::TEXCOORD},
+			VertexStream{Buffer(positions.Data, sizeof(XMFLOAT3) * positions.Size), sizeof(XMFLOAT3), ShaderInputSemanticEnum::POSITION},
+			VertexStream{Buffer(normals.Data, sizeof(XMFLOAT3) * normals.Size), sizeof(XMFLOAT3), ShaderInputSemanticEnum::NORMAL},
+			VertexStream{Buffer(tangents.Data, sizeof(XMFLOAT3) * tangents.Size), sizeof(XMFLOAT3), ShaderInputSemanticEnum::TANGENT},
+			VertexStream{Buffer(texCoords.Data, sizeof(XMFLOAT2) * texCoords.Size), sizeof(XMFLOAT2), ShaderInputSemanticEnum::TEXCOORD},
 		};
 
 		mesh.init(
@@ -103,7 +103,7 @@ namespace Ghurund::Engine {
 			const void* data = stream.readBytes(dataSize);
 			vertexStream.data.setData(data, dataSize);
 			vertexStream.vertexSize = stream.readUInt32();
-			vertexStream.role = (VertexRole)stream.read<uint16_t>();
+			vertexStream.semantic = (ShaderInputSemanticEnum)stream.read<uint8_t>();
 		}
 
 		uint32_t indexCount = stream.readUInt32();
@@ -125,7 +125,7 @@ namespace Ghurund::Engine {
 			stream.writeUInt32((uint32_t)vertexStream.data.Size);
 			stream.writeBytes(vertexStream.data.Data, vertexStream.data.Size);
 			stream.writeUInt32(vertexStream.vertexSize);
-			stream.write<uint16_t>((uint16_t)(vertexStream.role));
+			stream.write<uint8_t>((uint8_t)(vertexStream.semantic));
 		}
 
 		stream.writeUInt32(resource.IndexCount);

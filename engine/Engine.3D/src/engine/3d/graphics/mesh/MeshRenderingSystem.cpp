@@ -2,7 +2,6 @@
 #include "MeshRenderingSystem.h"
 
 #include "MeshComponent.h"
-#include "MeshInputs.h"
 
 #include "engine/3d/World3D.h"
 #include "engine/3d/graphics/transform/TransformComponent3D.h"
@@ -25,22 +24,30 @@ namespace Ghurund::Engine::_3D {
     void MeshRenderingSystem::queueDraw(RenderingContext& renderingContext) {
         RenderGroup group = DrawGroup();
         group.Camera = camera;
+
         auto view = world.Scene->entityRegistry.view<TransformComponent3D, MeshComponent>().each();
         for (auto [id, transform, mesh] : view) {
             if (!mesh.Mesh || !mesh.Material)
                 continue;
 
             auto w = XMLoadFloat4x4(&transform.WorldTransformation);
-            XMFLOAT4X4 world;
-            XMStoreFloat4x4(&world, XMMatrixTranspose(w));
+            ObjectParameters objParameters;
+            XMStoreFloat4x4(&objParameters.world, XMMatrixTranspose(w));
+            
+            bool culled = false;// mesh.cullingEnabled&& camera->ViewBox->Contains(transformedBoundingBox) == ContainmentType::DISJOINT;
 
-            MeshInputs inputs;
-            inputs.init(mesh.Material->getShader(defaultMaterialType)->Inputs);
-            inputs.Transformation = world;
+            //mesh.cull(camera->ViewBox);
 
-            // TODO: maybe not declare draw order manually?
-            group.objects.add(DrawPacket(mesh.Mesh, mesh.Material, 0.0f));
+            if (!culled) {
+                BatchId batchId = { mesh.Mesh->id, mesh.Material->id };
+                if (!group.objects.contains(batchId))
+                    group.objects.put(batchId, { mesh.Mesh, mesh.Material });
+                renderingContext.setParameters(mesh.Id, objParameters);
+                group.objects.get(batchId).instances.add(mesh.Id);
+            }
         }
-        renderingContext.draw(group, defaultMaterialType);
+
+        if (!group.objects.IsEmpty)
+            renderingContext.draw(group, defaultMaterialType);
     }
 }

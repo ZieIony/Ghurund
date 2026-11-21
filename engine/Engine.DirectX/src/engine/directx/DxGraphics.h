@@ -7,7 +7,6 @@
 #include "core/reflection/Type.h"
 #include "engine/directx/adapter/GraphicsAdapter.h"
 #include "engine/directx/buffer/DescriptorHeap.h"
-#include "memory/DxGPUMemoryManager.h"
 
 namespace Ghurund::Engine::DirectX {
     using namespace DirectX;

@@ -138,7 +138,6 @@
     <ClCompile Include="src\engine\2d\audio\AudioSystem2D.cpp" />
     <ClCompile Include="src\engine\2d\graphics\camera\Camera2D.cpp" />
     <ClCompile Include="src\engine\2d\graphics\camera\CameraSystem2D.cpp" />
-    <ClCompile Include="src\engine\2d\graphics\sprite\SpriteComponent.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\SpriteRenderingSystem.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\animation\SpriteAnimation.cpp" />
     <ClCompile Include="src\engine\2d\graphics\sprite\animation\SpriteAnimationSet.cpp" />

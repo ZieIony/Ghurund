@@ -5,7 +5,7 @@
 
 namespace Ghurund::Engine::DirectX {
 	void DxComputeShaderLoader::initialize(const DirectoryPath& workingDir, DxComputeShader& shader) {
-		DxShaderProgramSourceCode* computeShaderSource = (DxShaderProgramSourceCode*)shader.Source->programs[0];
+		DxShaderProgramSourceCode* computeShaderSource = (DxShaderProgramSourceCode*)shader.Sources[0];
 		if(computeShaderSource->shaderType != DxShaderType::COMPUTE) {
 			Logger::log(LogType::ERR0R, _T("Compute shader program is required.\n"));
 			throw DxEntrypointNotFoundException(DxShaderType::COMPUTE);
@@ -15,45 +15,24 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	void DxComputeShaderLoader::loadHlslFormat(const AString& sourceCode, const DirectoryPath& workingDir, DxComputeShader& shader) {
-		auto shaderSource = makeIntrusive<ShaderSource>();
+		List<ShaderProgramSourceCode*> sources;
 
 		AString entryPoint = DxShaderType::COMPUTE.EntryPoint;
 		if (sourceCode.contains(entryPoint)) {
 			// TODO: fix shader.Path name
 			AString sourceName = shader.Path ? convertText<wchar_t, char>(shader.Path->toString()) : AString("[unnamed shader]");
-			shaderSource->programs.add(ghnew DxShaderProgramSourceCode(DxShaderType::COMPUTE, sourceCode, sourceName));
+			sources.add(ghnew DxShaderProgramSourceCode(DxShaderType::COMPUTE, sourceCode, sourceName));
 		}
 
-		shader.Source = shaderSource.get();
+		shader.Sources = sources;
 		initialize(workingDir, shader);
 	}
 
 	void DxComputeShaderLoader::loadXmlFormat(DxComputeShader& resource, const XMLElement& xml, const DirectoryPath& workingDir) {
 		checkXmlRoot(xml, L"ComputeShader", DxComputeShader::FORMAT_XML);
 
-		auto shaderSource = makeIntrusive<ShaderSource>();
+		List<ShaderProgramSourceCode*> sources;
 		//auto settingsElement = xml.findElement(L"Settings");
-		auto samplersElement = xml.findElement(L"Samplers");
-		if (samplersElement) {
-			for (auto& samplerElement : samplersElement->children) {
-				SamplerInfo sampler;
-				auto samplerNameAttribute = samplerElement->findAttribute(L"name");
-				if (samplerNameAttribute)
-					sampler.name = convertText<wchar_t, char>(*samplerNameAttribute);
-				auto samplerFilterAttribute = samplerElement->findAttribute(L"filter");
-				if (samplerFilterAttribute) {
-					auto filterValue = *samplerFilterAttribute;
-					if (filterValue == L"point") {
-						sampler.filter = TextureFilter::POINT;
-					} else if (filterValue == L"linear") {
-						sampler.filter = TextureFilter::LINEAR;
-					} else if (filterValue == L"anisotropic") {
-						sampler.filter = TextureFilter::ANISOTROPIC;
-					}
-				}
-				shaderSource->samplers.add(sampler);
-			}
-		}
 		auto programElement = xml.requireElement(L"Program");
 
 		AString entryPoint = [&]->AString {
@@ -91,8 +70,22 @@ namespace Ghurund::Engine::DirectX {
 				}
 			}
 		}();
-		shaderSource->programs.add(ghnew DxShaderProgramSourceCode(DxShaderType::COMPUTE, sourceCode, sourceName));
-		resource.Source = shaderSource.get();
+		auto source = ghnew DxShaderProgramSourceCode(DxShaderType::COMPUTE, sourceCode, sourceName);
+		sources.add(source);
+		auto samplersElement = programElement.findElement(L"Samplers");
+		if (samplersElement) {
+			for (auto& samplerElement : samplersElement->children) {
+				SamplerInfo sampler;
+				auto samplerNameAttribute = samplerElement->findAttribute(L"name");
+				if (samplerNameAttribute)
+					sampler.name = convertText<wchar_t, char>(*samplerNameAttribute);
+				auto samplerFilterAttribute = samplerElement->findAttribute(L"filter");
+				if (samplerFilterAttribute)
+					sampler.filter = parse<TextureFilter>(*samplerFilterAttribute);
+				source->samplers.add(sampler);
+			}
+		}
+		resource.Sources = sources;
 		initialize(workingDir, resource);
 	}
 
